@@ -1,0 +1,510 @@
+{
+  "custom": {
+    "label": "",
+    "metadata": "",
+    "values": {}
+  },
+  "params": {
+    "faceplate": null,
+    "tagPath": ""
+  },
+  "propConfig": {
+    "custom.label": {
+      "binding": {
+        "config": {
+          "expression": "try(\r\n    if(\r\n        isNull({view.custom.metadata.shortDescription}) ||\r\n        {view.custom.metadata.shortDescription} \u003d \u0027\u0027,\r\n        if({view.params.tagPath} \u003d \u0027\u0027,\r\n           \u0027\u0027,\r\n           subString({view.params.tagPath}, lastIndexOf({view.params.tagPath}, \u0027/\u0027) + 1)),\r\n        {view.custom.metadata.shortDescription}\r\n    ),\r\n\u0027\u0027)"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "custom.metadata": {
+      "binding": {
+        "config": {
+          "expression": "if(\r\n\t{view.params.tagPath}!\u003d\u0027\u0027 \u0026\u0026 isGood(tag({view.params.tagPath} + \u0027.Metadata\u0027)),\r\n\ttag({view.params.tagPath} + \u0027.Metadata\u0027),\r\n\t\u0027\u0027)"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "custom.values": {
+      "persistent": true
+    },
+    "custom.values.analog": {
+      "binding": {
+        "config": {
+          "expression": "if({view.params.tagPath} \u003d \u0027\u0027,\r\n\t\u0027\u0027,\r\n\t{view.params.tagPath} + \u0027/Temp/Value\u0027)"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.values.status": {
+      "binding": {
+        "config": {
+          "expression": "if({view.params.tagPath} \u003d \u0027\u0027,\r\n\t\u0027\u0027,\r\n\t{view.params.tagPath} + \u0027/Status/Value\u0027)"
+        },
+        "type": "expr"
+      }
+    },
+    "params.faceplate": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 200,
+      "width": 156
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "DeviceAlarmIndicator"
+            },
+            "position": {
+              "basis": "20px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "path": "view.params.tagPath"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "path": "03_Elements/01_Status/NotificationIcons/DeviceAlarmIndicator",
+              "useDefaultViewHeight": true,
+              "useDefaultViewWidth": true
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "DeviceLabel"
+            },
+            "position": {
+              "grow": 1
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.label"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "align": "center",
+              "style": {
+                "color": "#161616",
+                "cursor": "pointer",
+                "fontSize": "11px",
+                "fontWeight": "700",
+                "minHeight": "16px",
+                "textAlign": "center",
+                "width": "100%"
+              }
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "FaceplateIcon"
+            },
+            "position": {
+              "basis": "16px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.style.opacity": {
+                "binding": {
+                  "config": {
+                    "expression": "if(isNull({view.params.faceplate}),\r\n   0,\r\n   1)"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "path": "material/fullscreen",
+              "style": {
+                "height": "16px",
+                "minHeight": "16px",
+                "minWidth": "16px",
+                "width": "16px"
+              }
+            },
+            "type": "ia.display.icon"
+          }
+        ],
+        "meta": {
+          "name": "LabelAlarmIndicator"
+        },
+        "position": {
+          "basis": "18px",
+          "shrink": 0
+        },
+        "props": {
+          "align": "center",
+          "justify": "center",
+          "style": {
+            "minHeight": "18px",
+            "width": "100%"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "meta": {
+          "name": "Graphic"
+        },
+        "position": {
+          "basis": "110px",
+          "shrink": 0
+        },
+        "props": {
+          "elements": [
+            {
+              "fill": {
+                "paint": "#D8D8D8"
+              },
+              "height": 14.75,
+              "name": "receiver-vessel",
+              "rx": 7.375,
+              "stroke": {
+                "linecap": "butt",
+                "linejoin": "miter",
+                "paint": "#161616",
+                "width": "1.25"
+              },
+              "style": {},
+              "type": "rect",
+              "width": 64.75,
+              "x": 2.625,
+              "y": 34.625
+            },
+            {
+              "fill": {
+                "paint": "#767676"
+              },
+              "height": 4.5,
+              "name": "Rectangle",
+              "stroke": {
+                "linecap": "butt",
+                "linejoin": "miter",
+                "paint": "#161616",
+                "width": "0.5"
+              },
+              "style": {},
+              "type": "rect",
+              "width": 2.5,
+              "x": 10.25,
+              "y": 49.25
+            },
+            {
+              "fill": {
+                "paint": "#767676"
+              },
+              "height": 4.5,
+              "name": "Rectangle_2",
+              "stroke": {
+                "linecap": "butt",
+                "linejoin": "miter",
+                "paint": "#161616",
+                "width": "0.5"
+              },
+              "style": {},
+              "type": "rect",
+              "width": 2.5,
+              "x": 56.25,
+              "y": 49.25
+            },
+            {
+              "fill": {
+                "paint": "#767676"
+              },
+              "height": 16.75,
+              "name": "motor",
+              "rx": 1.375,
+              "stroke": {
+                "linecap": "butt",
+                "linejoin": "miter",
+                "paint": "#161616",
+                "width": "1.25"
+              },
+              "style": {},
+              "type": "rect",
+              "width": 26.75,
+              "x": 37.625,
+              "y": 19.625
+            },
+            {
+              "name": "Line",
+              "stroke": {
+                "linecap": "butt",
+                "linejoin": "miter",
+                "paint": "rgba(22,22,22,0.4)",
+                "width": "0.5"
+              },
+              "style": {},
+              "type": "line",
+              "x1": 40,
+              "x2": 62,
+              "y1": 22.35,
+              "y2": 22.35
+            },
+            {
+              "name": "Line_2",
+              "stroke": {
+                "linecap": "butt",
+                "linejoin": "miter",
+                "paint": "rgba(22,22,22,0.4)",
+                "width": "0.5"
+              },
+              "style": {},
+              "type": "line",
+              "x1": 40,
+              "x2": 62,
+              "y1": 25.95,
+              "y2": 25.95
+            },
+            {
+              "name": "Line_3",
+              "stroke": {
+                "linecap": "butt",
+                "linejoin": "miter",
+                "paint": "rgba(22,22,22,0.4)",
+                "width": "0.5"
+              },
+              "style": {},
+              "type": "line",
+              "x1": 40,
+              "x2": 62,
+              "y1": 29.55,
+              "y2": 29.55
+            },
+            {
+              "name": "Line_4",
+              "stroke": {
+                "linecap": "butt",
+                "linejoin": "miter",
+                "paint": "rgba(22,22,22,0.4)",
+                "width": "0.5"
+              },
+              "style": {},
+              "type": "line",
+              "x1": 40,
+              "x2": 62,
+              "y1": 33.15,
+              "y2": 33.15
+            },
+            {
+              "cx": 37,
+              "cy": 28,
+              "fill": {
+                "paint": "#D8D8D8"
+              },
+              "name": "Ellipse",
+              "r": 3.125,
+              "stroke": {
+                "linecap": "butt",
+                "linejoin": "miter",
+                "paint": "#161616",
+                "width": "0.75"
+              },
+              "style": {},
+              "type": "circle"
+            },
+            {
+              "fill": {
+                "paint": "#FAFAFA"
+              },
+              "height": 13.25,
+              "name": "compressor-head",
+              "rx": 0.625,
+              "stroke": {
+                "linecap": "butt",
+                "linejoin": "miter",
+                "paint": "#161616",
+                "width": "0.75"
+              },
+              "style": {},
+              "type": "rect",
+              "width": 11.25,
+              "x": 25.375,
+              "y": 25.375
+            },
+            {
+              "fill": {
+                "paint": "#D8D8D8"
+              },
+              "height": 21.25,
+              "name": "oil-separator",
+              "rx": 4.125,
+              "stroke": {
+                "linecap": "butt",
+                "linejoin": "miter",
+                "paint": "#161616",
+                "width": "0.75"
+              },
+              "style": {},
+              "type": "rect",
+              "width": 8.25,
+              "x": 4.375,
+              "y": 17.375
+            },
+            {
+              "fill": {
+                "paint": "#D8D8D8"
+              },
+              "height": 5.5,
+              "name": "Rectangle_3",
+              "stroke": {
+                "linecap": "butt",
+                "linejoin": "miter",
+                "paint": "#161616",
+                "width": "0.5"
+              },
+              "style": {},
+              "type": "rect",
+              "width": 3.5,
+              "x": 6.75,
+              "y": 12.25
+            },
+            {
+              "name": "Line_5",
+              "stroke": {
+                "linecap": "butt",
+                "linejoin": "miter",
+                "paint": "#161616",
+                "width": "1"
+              },
+              "style": {},
+              "type": "line",
+              "x1": 13,
+              "x2": 25,
+              "y1": 31.5,
+              "y2": 31.5
+            }
+          ],
+          "style": {
+            "cursor": "pointer",
+            "height": "110px",
+            "overflow": "visible",
+            "width": "140px"
+          },
+          "viewBox": "0 0 70 55"
+        },
+        "type": "ia.shapes.svg"
+      },
+      {
+        "meta": {
+          "name": "AnalogValue"
+        },
+        "position": {
+          "basis": "18px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.params.tagPath": {
+            "binding": {
+              "config": {
+                "expression": "{view.custom.values.analog}"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "params": {
+            "spacing": {
+              "center": true,
+              "data": 0,
+              "engUnit": 30
+            }
+          },
+          "path": "03_Elements/01_Status/AnalogValue",
+          "style": {
+            "cursor": "pointer",
+            "height": "18px",
+            "minHeight": "18px",
+            "overflow": "visible",
+            "width": "100%"
+          },
+          "useDefaultViewHeight": true
+        },
+        "type": "ia.display.view"
+      },
+      {
+        "meta": {
+          "name": "Status"
+        },
+        "position": {
+          "basis": "18px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.params.tagPath": {
+            "binding": {
+              "config": {
+                "expression": "{view.custom.values.status}"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "path": "03_Elements/01_Status/StatusIndicator",
+          "style": {
+            "cursor": "pointer",
+            "height": "18px",
+            "minHeight": "18px",
+            "overflow": "visible",
+            "width": "100%"
+          },
+          "useDefaultViewHeight": true
+        },
+        "type": "ia.display.view"
+      }
+    ],
+    "events": {
+      "dom": {
+        "onClick": {
+          "config": {
+            "script": "\tfaceplate \u003d self.view.params.faceplate\n\tif faceplate is None:\n\t\treturn\n\ttagPath \u003d str(self.view.params.tagPath or \u0027\u0027)\n\ttitle \u003d str(self.view.custom.label or \u0027\u0027)\n\tif title in (None, \u0027\u0027, \u0027nn\u0027):\n\t\ttitle \u003d tagPath.split(\u0027/\u0027)[-1] if tagPath else self.view.name\n\tif faceplate \u003d\u003d \u0027\u0027:\n\t\tview \u003d \u002701_Popups/00_Faceplates/\u0027 + self.view.name\n\telse:\n\t\tview \u003d \u002701_Popups/00_Faceplates/\u0027 + str(faceplate)\n\tsystem.perspective.openPopup(\n\t\t\u0027comp-fp-%s\u0027 % (tagPath or title),\n\t\tview,\n\t\tparams\u003d{\u0027tagPath\u0027: tagPath},\n\t\ttitle\u003dtitle,\n\t\tshowCloseIcon\u003dTrue,\n\t\tdraggable\u003dTrue,\n\t\tresizable\u003dTrue,\n\t\tmodal\u003dFalse,\n\t\tviewportBound\u003dTrue,\n\t\tposition\u003d{\u0027width\u0027: 420, \u0027height\u0027: 520}\n\t)\n"
+          },
+          "scope": "G",
+          "type": "script"
+        }
+      }
+    },
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "alignItems": "center",
+      "direction": "column",
+      "style": {
+        "gap": "2px",
+        "minHeight": "190px",
+        "overflow": "visible",
+        "width": "100%"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

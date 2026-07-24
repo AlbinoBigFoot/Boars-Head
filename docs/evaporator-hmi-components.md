@@ -8,6 +8,7 @@ Onboarding guide for the Boars Head (BH) Ignition Perspective evaporator demo. R
 | **Perspective root** | `gateways/standard/data/projects/BH/com.inductiveautomation.perspective/` |
 | **Scripts** | `gateways/standard/data/projects/BH/ignition/script-python/shared/` |
 | **Demo tags** | Import `taginstances.json` under `[default]Evaporators` |
+| **Compressor tags** | Import `taginstances-compressors.json` under `[default]Compressors` |
 | **Alarm UDT / Flash** | Import `tags-alarms.json` at provider root (`_Config`, `Config/_Alarms`) |
 
 Designer tip: after editing files on disk, **Update Project** (or restart the gateway if icons/CSS do not pick up).
@@ -39,9 +40,11 @@ Everything is **tag-path driven**. Pass a device UDT path like `[default]Evapora
 | View path | Page URL | Role |
 |-----------|----------|------|
 | `00_Pages/Evaporators/Overview` | `/` and `/evaporators` | Flex demo: status matrix + alarming matrix of device graphics |
+| `00_Pages/Compressors/Overview` | `/compressors` | COMP-01..03 NH3 compressor devices (Figma layout) |
 | `00_Pages/Unit/Overview` | *(not mapped in page-config)* | Table overview; cells are view paths + live tag paths |
 | `00_Pages/NoViewPath` | — | Stub |
 | `01_Popups/00_Faceplates/Evaporator` | *(popup, not a page)* | Faceplate opened from a device click |
+| `01_Popups/00_Faceplates/Compressor` | *(popup, not a page)* | Compressor faceplate (status + analog) |
 
 Page config lives at:
 
@@ -233,6 +236,7 @@ Trigger pattern for Overview rebuild: write `True` to the Overview UDT’s `Rebu
 |------|---------------|----------|
 | `tags-alarms.json` | Provider **root** | `_Config` (Flash, Icons, Colors) + UDT type `Config/_Alarms` |
 | `taginstances.json` | Folder `Evaporators` (or import so paths are `[default]Evaporators/EV-*`) | Demo evaporators + Overview instance |
+| `taginstances-compressors.json` | Folder `Compressors` → `[default]Compressors/COMP-*` | Demo compressors (Run / Off / Fault) |
 | `tags.json` | As needed | Overview UDT definition (`Rebuild`, `Instances`, …) |
 
 ### Evaporator instance shape
