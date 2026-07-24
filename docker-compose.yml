@@ -1,0 +1,95 @@
+# Boars Head — Ignition lab stack
+# Standard GW 8.1.43 | Edge GW 8.3.7 | MSSQL (named volume)
+
+services:
+  ignition-standard:
+    image: inductiveautomation/ignition:8.1.43
+    container_name: bh-ignition-standard
+    hostname: ignition-standard
+    ports:
+      - "${STANDARD_HTTP_PORT:-9088}:8088"
+      - "${STANDARD_HTTPS_PORT:-9043}:8043"
+      - "${STANDARD_GAN_PORT:-8060}:8060"
+    volumes:
+      # Host-mounted for Git revision control of projects / gateway data
+      - ./gateways/standard/data:/usr/local/bin/ignition/data
+    environment:
+      ACCEPT_IGNITION_EULA: "Y"
+      GATEWAY_ADMIN_USERNAME: "${GATEWAY_ADMIN_USERNAME:-admin}"
+      GATEWAY_ADMIN_PASSWORD: "${GATEWAY_ADMIN_PASSWORD:?Set GATEWAY_ADMIN_PASSWORD in .env}"
+      IGNITION_EDITION: standard
+      TZ: "${TZ:-America/New_York}"
+      # Required for Gateway Network with 8.3 Edge while Standard stays on 8.1
+      GATEWAY_NETWORK_ALLOWJAVASERIALIZATION: "${GATEWAY_NETWORK_ALLOWJAVASERIALIZATION:-true}"
+    command: >
+      -n bh-standard
+      -a localhost
+      -h ${STANDARD_HTTP_PORT:-9088}
+      -s ${STANDARD_HTTPS_PORT:-9043}
+      -m ${STANDARD_MAX_MEMORY_MB:-2048}
+    restart: unless-stopped
+    networks:
+      - bh-ot
+
+  ignition-edge:
+    image: inductiveautomation/ignition:8.3.7
+    container_name: bh-ignition-edge
+    hostname: ignition-edge
+    ports:
+      - "${EDGE_HTTP_PORT:-9188}:8088"
+      - "${EDGE_HTTPS_PORT:-9143}:8043"
+      - "${EDGE_GAN_PORT:-8160}:8060"
+    volumes:
+      - ./gateways/edge/data:/usr/local/bin/ignition/data
+    environment:
+      ACCEPT_IGNITION_EULA: "Y"
+      GATEWAY_ADMIN_USERNAME: "${GATEWAY_ADMIN_USERNAME:-admin}"
+      GATEWAY_ADMIN_PASSWORD: "${GATEWAY_ADMIN_PASSWORD:?Set GATEWAY_ADMIN_PASSWORD in .env}"
+      IGNITION_EDITION: edge
+      TZ: "${TZ:-America/New_York}"
+      GATEWAY_NETWORK_ALLOWJAVASERIALIZATION: "${GATEWAY_NETWORK_ALLOWJAVASERIALIZATION:-true}"
+    command: >
+      -n bh-edge
+      -a localhost
+      -h ${EDGE_HTTP_PORT:-9188}
+      -s ${EDGE_HTTPS_PORT:-9143}
+      -m ${EDGE_MAX_MEMORY_MB:-1024}
+    restart: unless-stopped
+    networks:
+      - bh-ot
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: bh-mssql
+    hostname: mssql
+    ports:
+      - "${MSSQL_PORT:-1433}:1433"
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "${MSSQL_SA_PASSWORD:?Set MSSQL_SA_PASSWORD in .env}"
+      MSSQL_PID: "${MSSQL_PID:-Developer}"
+    volumes:
+      # Internal named volume — not host-mounted / not in Git
+      - mssql-data:/var/opt/mssql
+    restart: unless-stopped
+    networks:
+      - bh-ot
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -C -Q \"SELECT 1\" || /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -Q \"SELECT 1\" || exit 1",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 40s
+
+networks:
+  bh-ot:
+    name: bh-ot
+    driver: bridge
+
+volumes:
+  mssql-data:
+    name: bh-mssql-data

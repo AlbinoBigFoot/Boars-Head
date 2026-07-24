@@ -1,0 +1,184 @@
+{
+  "custom": {
+    "engUnit": "",
+    "format": "",
+    "quality": "Uncertain_InitialValue",
+    "type": "Integer",
+    "value": ""
+  },
+  "params": {
+    "spacing": {
+      "center": false,
+      "data": 0,
+      "engUnit": 30
+    },
+    "tagPath": ""
+  },
+  "propConfig": {
+    "custom.engUnit": {
+      "binding": {
+        "config": {
+          "expression": "if({view.custom.quality} = 'Good',\r\n   tag({view.params.tagPath} + '.EngUnit'),\r\n   '')"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "custom.format": {
+      "binding": {
+        "config": {
+          "expression": "if({view.custom.quality} = 'Good',\r\n   if({view.custom.type} = 'Integer',\r\n      '#',\r\n      if(isNull(tag({view.params.tagPath} + '.FormatString')) || tag({view.params.tagPath} + '.FormatString') = '',\r\n         '#0.0',\r\n         tag({view.params.tagPath} + '.FormatString'))),\r\n   '')"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "custom.quality": {
+      "binding": {
+        "config": {
+          "fallbackDelay": 2.5,
+          "mode": "indirect",
+          "references": {
+            "tagPath": "{view.params.tagPath}"
+          },
+          "tagPath": "{tagPath}"
+        },
+        "transforms": [
+          {
+            "expression": "qualityOf({value})",
+            "type": "expression"
+          }
+        ],
+        "type": "tag"
+      },
+      "persistent": true
+    },
+    "custom.type": {
+      "binding": {
+        "config": {
+          "expression": "typeOf(tag({view.params.tagPath}))"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "custom.value": {
+      "binding": {
+        "config": {
+          "expression": "if({view.custom.quality} = 'Good',\r\n   numberFormat(tag({view.params.tagPath}), {view.custom.format}),\r\n   '')"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "params.spacing": {
+      "paramDirection": "inout",
+      "persistent": true
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 18,
+      "width": 92
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "alignContent": "flex-start",
+      "alignItems": "center",
+      "style": {
+        "cursor": "pointer",
+        "overflow": "visible"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "Value"
+        },
+        "position": {
+          "grow": 1
+        },
+        "propConfig": {
+          "props.style.color": {
+            "binding": {
+              "config": {
+                "expression": "if({view.custom.quality} = 'Good',\r\n\t'#114599',\r\n\t'#90A4AE')"
+              },
+              "type": "expr"
+            }
+          },
+          "props.style.paddingRight": {
+            "binding": {
+              "config": {
+                "expression": "if({view.params.spacing.data} = '',\r\n   '0em',\r\n   0.85 * {view.params.spacing.data} + 'em')"
+              },
+              "type": "expr"
+            }
+          },
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.custom.value"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "fontSize": "14px",
+            "overflow": "visible",
+            "textAlign": "right",
+            "color": "#114599"
+          },
+          "text": ""
+        }
+      },
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "EngineeringUnit"
+        },
+        "position": {
+          "grow": 1
+        },
+        "propConfig": {
+          "position.basis": {
+            "binding": {
+              "config": {
+                "expression": "if({view.params.spacing.center},\r\n   'auto',\r\n   if({view.params.spacing.engUnit} = '',\r\n      'auto',\r\n      {view.params.spacing.engUnit} + 'px'))"
+              },
+              "type": "expr"
+            }
+          },
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.custom.engUnit"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "color": "#767676",
+            "fontSize": "11px",
+            "marginTop": "1%"
+          },
+          "text": ""
+        }
+      }
+    ]
+  }
+}

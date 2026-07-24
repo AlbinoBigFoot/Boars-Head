@@ -1,0 +1,99 @@
+{
+  "custom": {
+    "flash": false,
+    "icon": "03_Elements/01_Status/NotificationIcons/Blank"
+  },
+  "params": {
+    "value": ""
+  },
+  "propConfig": {
+    "custom.flash": {
+      "binding": {
+        "config": {
+          "fallbackDelay": 2.5,
+          "mode": "indirect",
+          "references": {
+            "value": "{view.params.value}"
+          },
+          "tagPath": "{value}/_Flash"
+        },
+        "transforms": [
+          {
+            "expression": "if(isNull({value}),\r\n\tFalse,\r\n\t{value}\r\n)",
+            "type": "expression"
+          }
+        ],
+        "type": "tag"
+      },
+      "persistent": true
+    },
+    "custom.icon": {
+      "binding": {
+        "config": {
+          "fallbackDelay": 2.5,
+          "mode": "indirect",
+          "references": {
+            "value": "{view.params.value}"
+          },
+          "tagPath": "{value}/_Icon"
+        },
+        "transforms": [
+          {
+            "expression": "if(isNull({value}),\r\n\t\u002703_Elements/01_Status/NotificationIcons/Blank\u0027,\r\n\t{value}\r\n)",
+            "type": "expression"
+          }
+        ],
+        "type": "tag"
+      },
+      "persistent": true
+    },
+    "params.value": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 24,
+      "width": 24
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Icon"
+        },
+        "position": {
+          "grow": 1
+        },
+        "propConfig": {
+          "meta.visible": {
+            "binding": {
+              "config": {
+                "path": "view.custom.flash"
+              },
+              "type": "property"
+            }
+          },
+          "props.path": {
+            "binding": {
+              "config": {
+                "path": "view.custom.icon"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "type": "ia.display.view"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}

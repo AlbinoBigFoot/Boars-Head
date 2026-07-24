@@ -1,0 +1,45 @@
+# Secrets / local env
+.env
+.env.local
+*.pem
+*.key
+
+# Excel lock / temp
+~$*.xlsx
+_excel_dump.txt
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.cursor/
+
+# Local scratch
+_find_flash.py
+_fix_*.py
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Ignition host bind-mounts: track projects for Git; ignore runtime/cache/DB noise
+gateways/**/data/**
+!gateways/**/data/projects/
+!gateways/**/data/projects/**
+
+# Volatile even under projects if present
+gateways/**/data/log/
+gateways/**/data/logs/
+gateways/**/data/*.log
+gateways/**/data/cache/
+gateways/**/data/temp/
+gateways/**/data/local/
+gateways/**/data/.uuid
+gateways/**/data/ignition.conf.bak*
+
+
+# Graphify temp (keep reports if desired)
+graphify-out/.graphify_*
+graphify-out/cost.json

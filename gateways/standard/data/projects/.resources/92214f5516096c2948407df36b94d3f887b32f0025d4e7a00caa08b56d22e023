@@ -1,0 +1,156 @@
+{
+  "custom": {
+    "ackHighPriority": -1,
+    "active": false,
+    "activeHighPriority": -1,
+    "flash": true
+  },
+  "params": {
+    "tagPath": ""
+  },
+  "propConfig": {
+    "custom.ackHighPriority": {
+      "binding": {
+        "config": {
+          "fallbackDelay": 2.5,
+          "mode": "indirect",
+          "references": {
+            "tagPath": "{view.params.tagPath}"
+          },
+          "tagPath": "{tagPath}/Value/Alarms.HighestAckedPriority"
+        },
+        "transforms": [
+          {
+            "expression": "if(isNull({value}),\r\n\t-1,\r\n\t{value}\r\n)",
+            "type": "expression"
+          }
+        ],
+        "type": "tag"
+      },
+      "persistent": true
+    },
+    "custom.active": {
+      "binding": {
+        "config": {
+          "fallbackDelay": 2.5,
+          "mode": "indirect",
+          "references": {
+            "tagPath": "{view.params.tagPath}"
+          },
+          "tagPath": "{tagPath}/Value/Alarms.HasActive"
+        },
+        "transforms": [
+          {
+            "expression": "if(isNull({value}),\r\n\tFalse,\r\n\t{value}\r\n)",
+            "type": "expression"
+          }
+        ],
+        "type": "tag"
+      },
+      "persistent": true
+    },
+    "custom.activeHighPriority": {
+      "binding": {
+        "config": {
+          "fallbackDelay": 2.5,
+          "mode": "indirect",
+          "references": {
+            "tagPath": "{view.params.tagPath}"
+          },
+          "tagPath": "{tagPath}/Value/Alarms.HighestActivePriority"
+        },
+        "transforms": [
+          {
+            "expression": "if(isNull({value}),\r\n\t-1,\r\n\t{value}\r\n)",
+            "type": "expression"
+          }
+        ],
+        "type": "tag"
+      },
+      "persistent": true
+    },
+    "custom.flash": {
+      "binding": {
+        "config": {
+          "fallbackDelay": 2.5,
+          "mode": "direct",
+          "tagPath": "[default]_Config/Flash"
+        },
+        "transforms": [
+          {
+            "expression": "if(isNull({value}),\r\n\tFalse,\r\n\t{value}\r\n)",
+            "type": "expression"
+          }
+        ],
+        "type": "tag"
+      },
+      "persistent": true
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 20,
+      "width": 20
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Icon"
+        },
+        "position": {
+          "grow": 1
+        },
+        "propConfig": {
+          "meta.visible": {
+            "binding": {
+              "config": {
+                "struct": {
+                  "ackHighPriority": "{view.custom.ackHighPriority}",
+                  "active": "{view.custom.active}",
+                  "activeHighPriority": "{view.custom.activeHighPriority}",
+                  "flash": "{view.custom.flash}"
+                },
+                "waitOnAll": true
+              },
+              "transforms": [
+                {
+                  "expression": "if({value}[\u0027ackHighPriority\u0027] !\u003d {value}[\u0027activeHighPriority\u0027] \u0026\u0026 {value}[\u0027active\u0027],\r\n\t{value}[\u0027flash\u0027],\r\n\tTrue\r\n)",
+                  "type": "expression"
+                }
+              ],
+              "type": "expr-struct"
+            }
+          },
+          "props.path": {
+            "binding": {
+              "config": {
+                "path": "view.custom.activeHighPriority"
+              },
+              "transforms": [
+                {
+                  "expression": "case({value},\r\n     4, \u002703_Elements/01_Status/NotificationIcons/Alarms/Critical\u0027,\r\n     3, \u002703_Elements/01_Status/NotificationIcons/Alarms/High\u0027,\r\n     2, \u002703_Elements/01_Status/NotificationIcons/Alarms/Medium\u0027,\r\n     1, \u002703_Elements/01_Status/NotificationIcons/Alarms/Low\u0027,\r\n     \u002703_Elements/01_Status/NotificationIcons/Blank\u0027)",
+                  "type": "expression"
+                }
+              ],
+              "type": "property"
+            }
+          }
+        },
+        "type": "ia.display.view"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}

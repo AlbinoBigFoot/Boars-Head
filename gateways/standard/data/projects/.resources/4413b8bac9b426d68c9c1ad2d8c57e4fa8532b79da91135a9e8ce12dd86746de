@@ -1,0 +1,213 @@
+{
+  "custom": {
+    "engUnit": "",
+    "format": "00000.00",
+    "quality": "Bad_NotFound(\"Path \u0027[edge]SBAEdge/US_WCI01/COL02/FireProtection/Fire Protection General Alarm/Value.quality\u0027 not found.\")",
+    "tagPath": "[SBAEdge_GAN]SBAEdge/US_WCI01/COL02/FireProtection/Fire Protection General Alarm",
+    "value": "Quiet"
+  },
+  "params": {
+    "value": "[SBAEdge_GAN]SBAEdge/US_WCI01/COL02/FireProtection/Fire Protection General Alarm"
+  },
+  "propConfig": {
+    "custom.engUnit": {
+      "binding": {
+        "config": {
+          "fallbackDelay": 2.5,
+          "mode": "indirect",
+          "references": {
+            "tagPath": "{view.custom.tagPath}"
+          },
+          "tagPath": "{tagPath}/Value.EngUnit"
+        },
+        "transforms": [
+          {
+            "expression": "if(isNull({value}),\"\",{value})",
+            "type": "expression"
+          }
+        ],
+        "type": "tag"
+      },
+      "persistent": true
+    },
+    "custom.format": {
+      "binding": {
+        "config": {
+          "fallbackDelay": 2.5,
+          "mode": "indirect",
+          "references": {
+            "tagPath": "{view.custom.tagPath}"
+          },
+          "tagPath": "{tagPath}/Value.formatString"
+        },
+        "transforms": [
+          {
+            "expression": "if(isNull({value}),\u002700000.00\u0027,if(indexOf({value},\u0027#\u0027)!\u003d-1,\u002700000.00\u0027,{value}))",
+            "type": "expression"
+          }
+        ],
+        "type": "tag"
+      },
+      "persistent": true
+    },
+    "custom.quality": {
+      "persistent": true
+    },
+    "custom.tagPath": {
+      "binding": {
+        "config": {
+          "path": "view.params.value"
+        },
+        "type": "property"
+      },
+      "persistent": true
+    },
+    "custom.value": {
+      "binding": {
+        "config": {
+          "fallbackDelay": 2.5,
+          "mode": "indirect",
+          "references": {
+            "tagPath": "{view.custom.tagPath}"
+          },
+          "tagPath": "{tagPath}/Value.value"
+        },
+        "transforms": [
+          {
+            "code": "\tif value is None:\n\t\ttry:\n\t\t\ttagPath \u003d self.custom.tagPath\n\t\t\treturn system.tag.read(tagPath).value\n\t\texcept:\n\t\t\treturn \u0027\u0027\n\telse:\n\t\treturn value",
+            "type": "script"
+          }
+        ],
+        "type": "tag"
+      },
+      "persistent": true
+    },
+    "params.value": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 30,
+      "width": 100
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Markdown"
+        },
+        "position": {
+          "grow": 1
+        },
+        "propConfig": {
+          "props.source": {
+            "binding": {
+              "config": {
+                "path": "view.custom.value"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "classes": "Fonts/LiveData",
+            "overflow": "hidden",
+            "paddingRight": "4%",
+            "textAlign": "right"
+          }
+        },
+        "type": "ia.display.markdown"
+      },
+      {
+        "meta": {
+          "name": "Label"
+        },
+        "position": {
+          "basis": "30%",
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.custom.engUnit"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "classes": "Font/label",
+            "color": "--neutral-70",
+            "fontSize": "11px",
+            "marginTop": "1.2%"
+          }
+        },
+        "type": "ia.display.label"
+      }
+    ],
+    "events": {
+      "dom": {
+        "onContextMenu": {
+          "config": {
+            "draggable": false,
+            "id": "ContextMenu",
+            "modal": false,
+            "overlayDismiss": false,
+            "position": {
+              "relativeLocation": "bottom-right"
+            },
+            "positionType": "relative",
+            "resizable": false,
+            "showCloseIcon": false,
+            "type": "toggle",
+            "viewParams": {
+              "discrete": "false",
+              "tagPath": "{view.custom.tagPath}"
+            },
+            "viewPath": "01_Faceplates/Alerts/ContextMenu",
+            "viewportBound": true
+          },
+          "preventDefault": true,
+          "scope": "C",
+          "stopPropagation": true,
+          "type": "popup"
+        }
+      }
+    },
+    "meta": {
+      "name": "root"
+    },
+    "propConfig": {
+      "meta.visible": {
+        "binding": {
+          "config": {
+            "path": "view.params.value"
+          },
+          "transforms": [
+            {
+              "expression": "{value} !\u003d \u0027\u0027",
+              "type": "expression"
+            }
+          ],
+          "type": "property"
+        }
+      }
+    },
+    "props": {
+      "alignContent": "flex-start",
+      "alignItems": "center",
+      "style": {
+        "cursor": "pointer",
+        "minHeight": 20,
+        "overflow": "hidden"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

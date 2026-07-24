@@ -1,0 +1,264 @@
+{
+  "tags": [
+    {
+      "name": "_Config",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "valueSource": "expr",
+          "expression": "getSecond(now()) % 2 = 0",
+          "dataType": "Boolean",
+          "name": "Flash",
+          "tagType": "AtomicTag",
+          "metadata": {
+            "shortDescription": "flash",
+            "longDescription": "1 Hz blink clock for unacked alarm icons (Lightspeed/LGChem pattern)"
+          }
+        },
+        {
+          "name": "Icons",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "valueSource": "memory",
+              "dataType": "String",
+              "name": "Blank",
+              "value": "03_Elements/01_Status/NotificationIcons/Blank",
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "Alarms",
+              "tagType": "Folder",
+              "tags": [
+                {
+                  "valueSource": "memory",
+                  "dataType": "String",
+                  "name": "Critical",
+                  "value": "03_Elements/01_Status/NotificationIcons/Alarms/Critical",
+                  "tagType": "AtomicTag"
+                },
+                {
+                  "valueSource": "memory",
+                  "dataType": "String",
+                  "name": "High",
+                  "value": "03_Elements/01_Status/NotificationIcons/Alarms/High",
+                  "tagType": "AtomicTag"
+                },
+                {
+                  "valueSource": "memory",
+                  "dataType": "String",
+                  "name": "Medium",
+                  "value": "03_Elements/01_Status/NotificationIcons/Alarms/Medium",
+                  "tagType": "AtomicTag"
+                },
+                {
+                  "valueSource": "memory",
+                  "dataType": "String",
+                  "name": "Low",
+                  "value": "03_Elements/01_Status/NotificationIcons/Alarms/Low",
+                  "tagType": "AtomicTag"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Colors",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Alarms",
+              "tagType": "Folder",
+              "tags": [
+                {
+                  "valueSource": "memory",
+                  "dataType": "String",
+                  "name": "Critical",
+                  "value": "#E22028",
+                  "tagType": "AtomicTag"
+                },
+                {
+                  "valueSource": "memory",
+                  "dataType": "String",
+                  "name": "High",
+                  "value": "#EC8629",
+                  "tagType": "AtomicTag"
+                },
+                {
+                  "valueSource": "memory",
+                  "dataType": "String",
+                  "name": "Medium",
+                  "value": "#F5E11B",
+                  "tagType": "AtomicTag"
+                },
+                {
+                  "valueSource": "memory",
+                  "dataType": "String",
+                  "name": "Low",
+                  "value": "#916AAD",
+                  "tagType": "AtomicTag"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "_types_",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "name": "Config",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "_Alarms",
+              "tagType": "UdtType",
+              "metadata": {
+                "shortDescription": "alarms",
+                "longDescription": "Device/folder alarm rollup (LGChem Config/_Alarms) plus Lightspeed _Flash for DeviceLabelAlarmIndicator"
+              },
+              "tags": [
+                {
+                  "valueSource": "memory",
+                  "dataType": "String",
+                  "name": "Path",
+                  "value": "",
+                  "tagType": "AtomicTag"
+                },
+                {
+                  "valueSource": "memory",
+                  "dataType": "String",
+                  "name": "TagName",
+                  "value": "",
+                  "tagType": "AtomicTag"
+                },
+                {
+                  "valueSource": "memory",
+                  "dataType": "Boolean",
+                  "name": "Recursive",
+                  "value": false,
+                  "tagType": "AtomicTag"
+                },
+                {
+                  "valueSource": "memory",
+                  "dataType": "Boolean",
+                  "name": "ManualBuild",
+                  "value": false,
+                  "tagType": "AtomicTag"
+                },
+                {
+                  "valueSource": "memory",
+                  "eventScripts": [
+                    {
+                      "eventid": "valueChanged",
+                      "script": "\tif initialChange or currentValue.value != True:\n\t\treturn\n\t# Optional: call a project library rebuild when you add shared.Alarms.rebuild(tagPath)\n\ttry:\n\t\tfrom shared import Alarms\n\t\tAlarms.rebuild(tagPath)\n\texcept:\n\t\tpass\n\tsystem.tag.writeBlocking([tagPath], [False])\n"
+                    }
+                  ],
+                  "dataType": "Boolean",
+                  "name": "Rebuild",
+                  "value": false,
+                  "tagType": "AtomicTag"
+                },
+                {
+                  "valueSource": "memory",
+                  "dataType": "Boolean",
+                  "name": "_Active",
+                  "value": false,
+                  "tagType": "AtomicTag",
+                  "metadata": {
+                    "shortDescription": "active",
+                    "longDescription": "Memory \u2014 set true to simulate active alarms / badge visibility"
+                  }
+                },
+                {
+                  "valueSource": "memory",
+                  "dataType": "Boolean",
+                  "name": "_Unack",
+                  "value": false,
+                  "tagType": "AtomicTag",
+                  "metadata": {
+                    "shortDescription": "unack",
+                    "longDescription": "True = active unacknowledged (icon flashes). False while _Active = acknowledged (solid icon)."
+                  }
+                },
+                {
+                  "valueSource": "memory",
+                  "dataType": "Int4",
+                  "name": "_ActiveHighPriority",
+                  "value": 10,
+                  "tagType": "AtomicTag",
+                  "metadata": {
+                    "shortDescription": "priority",
+                    "longDescription": "Memory \u2014 1 Critical, 2 High, 3 Medium, 4 Low, 10 none"
+                  }
+                },
+                {
+                  "valueSource": "memory",
+                  "dataType": "Int4",
+                  "name": "_UnackHighPriority",
+                  "value": 10,
+                  "tagType": "AtomicTag"
+                },
+                {
+                  "valueSource": "expr",
+                  "expression": "min({[.]_ActiveHighPriority},\r\n\t{[.]_UnackHighPriority},\r\n\t10)",
+                  "dataType": "Int4",
+                  "name": "_HighestPriority",
+                  "tagType": "AtomicTag"
+                },
+                {
+                  "valueSource": "expr",
+                  "expression": "if({[.]_Active},\r\n\tif({[.]_Unack},\r\n\t\t{[~]_Config/Flash},\r\n\t\tTrue),\r\n\tFalse)",
+                  "dataType": "Boolean",
+                  "name": "_Flash",
+                  "tagType": "AtomicTag",
+                  "metadata": {
+                    "shortDescription": "flash",
+                    "longDescription": "Visibility driver: active+unack toggles with _Config/Flash; active+acked stays True (solid); inactive False"
+                  }
+                },
+                {
+                  "valueSource": "expr",
+                  "expression": "case({[.]_HighestPriority},\r\n     1, {[~]_Config/Icons/Alarms/Critical},\r\n     2, {[~]_Config/Icons/Alarms/High},\r\n     3, {[~]_Config/Icons/Alarms/Medium},\r\n     4, {[~]_Config/Icons/Alarms/Low},\r\n     {[~]_Config/Icons/Blank})",
+                  "dataType": "String",
+                  "name": "_Icon",
+                  "tagType": "AtomicTag"
+                },
+                {
+                  "valueSource": "expr",
+                  "expression": "case({[.]_HighestPriority},\r\n     1, {[~]_Config/Colors/Alarms/Critical},\r\n     2, {[~]_Config/Colors/Alarms/High},\r\n     3, {[~]_Config/Colors/Alarms/Medium},\r\n     4, {[~]_Config/Colors/Alarms/Low},\r\n     \"#00000000\")",
+                  "dataType": "String",
+                  "name": "_Color",
+                  "tagType": "AtomicTag"
+                },
+                {
+                  "valueSource": "expr",
+                  "expression": "0",
+                  "dataType": "Int4",
+                  "name": "_CriticalCount",
+                  "tagType": "AtomicTag"
+                },
+                {
+                  "valueSource": "expr",
+                  "expression": "0",
+                  "dataType": "Int4",
+                  "name": "_HighCount",
+                  "tagType": "AtomicTag"
+                },
+                {
+                  "valueSource": "expr",
+                  "expression": "0",
+                  "dataType": "Int4",
+                  "name": "_MediumCount",
+                  "tagType": "AtomicTag"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

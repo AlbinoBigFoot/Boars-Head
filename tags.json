@@ -1,0 +1,448 @@
+{
+  "metadata": {
+    "shortDescription": "evaporator overview",
+    "longDescription": "evaporator overview instances table"
+  },
+  "name": "Evaporator Overview",
+  "tagType": "UdtType",
+  "tags": [
+    {
+      "dataType": "Boolean",
+      "valueSource": "memory",
+      "value": false,
+      "name": "Rebuild",
+      "tagType": "AtomicTag",
+      "eventScripts": [
+        {
+          "eventid": "valueChanged",
+          "script": "\tif (not initialChange) and currentValue.value:\n\t\tshared.Overview.rebuildFromRebuildTag(tagPath)\n"
+        }
+      ],
+      "metadata": {
+        "shortDescription": "rebuild",
+        "longDescription": "Set True to rebuild Overview/Instances/Value via shared.Overview (UDT valueChanged). On Ignition 8.1, Gateway Tag Change scripts live in ignition/event-scripts/data.bin and must be created in Designer."
+      }
+    },
+    {
+      "metadata": {
+        "shortDescription": "instances",
+        "longDescription": "overview table columns + data (Lightspeed pattern)"
+      },
+      "name": "Instances",
+      "typeId": "_Root/Document",
+      "tagType": "UdtInstance",
+      "tags": [
+        {
+          "dataType": "Document",
+          "valueSource": "memory",
+          "value": {
+            "columns": [
+              {
+                "footer": {
+                  "title": "",
+                  "align": "center",
+                  "justify": "left",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "dateFormat": "MM/DD/YYYY",
+                "align": "center",
+                "number": "value",
+                "numberFormat": "0,0.##",
+                "justify": "center",
+                "progressBar": {
+                  "max": 100,
+                  "bar": {
+                    "color": "",
+                    "style": {
+                      "classes": ""
+                    }
+                  },
+                  "min": 0,
+                  "track": {
+                    "color": "",
+                    "style": {
+                      "classes": ""
+                    }
+                  },
+                  "value": {
+                    "format": "0,0.##",
+                    "enabled": true,
+                    "justify": "center",
+                    "style": {
+                      "classes": ""
+                    }
+                  }
+                },
+                "toggleSwitch": {
+                  "color": {
+                    "unselected": "",
+                    "selected": ""
+                  }
+                },
+                "viewParams": {
+                  "value": ""
+                },
+                "render": "auto",
+                "visible": true,
+                "nullFormat": {
+                  "nullFormatValue": "",
+                  "includeNullStrings": false,
+                  "strict": false
+                },
+                "resizable": true,
+                "editable": false,
+                "sortable": false,
+                "sort": "none",
+                "viewPath": "03_Elements/03_Table/DeviceLabelAlarmIndicator",
+                "filter": {
+                  "date": {
+                    "condition": "",
+                    "value": ""
+                  },
+                  "visible": "on-hover",
+                  "string": {
+                    "condition": "",
+                    "value": ""
+                  },
+                  "enabled": false,
+                  "number": {
+                    "condition": "",
+                    "value": ""
+                  },
+                  "boolean": {
+                    "condition": ""
+                  }
+                },
+                "boolean": "checkbox",
+                "strictWidth": true,
+                "field": "tagPath",
+                "width": 164,
+                "header": {
+                  "title": "Device Name",
+                  "align": "center",
+                  "justify": "center",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "style": {
+                  "classes": ""
+                }
+              },
+              {
+                "dateFormat": "MM/DD/YYYY",
+                "footer": {
+                  "title": "",
+                  "align": "center",
+                  "justify": "left",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "align": "center",
+                "number": "value",
+                "numberFormat": "0,0.##",
+                "justify": "auto",
+                "progressBar": {
+                  "max": 100,
+                  "bar": {
+                    "color": "",
+                    "style": {
+                      "classes": ""
+                    }
+                  },
+                  "min": 0,
+                  "track": {
+                    "color": "",
+                    "style": {
+                      "classes": ""
+                    }
+                  },
+                  "value": {
+                    "format": "0,0.##",
+                    "enabled": true,
+                    "justify": "center",
+                    "style": {
+                      "classes": ""
+                    }
+                  }
+                },
+                "toggleSwitch": {
+                  "color": {
+                    "unselected": "",
+                    "selected": ""
+                  }
+                },
+                "viewParams": {
+                  "value": ""
+                },
+                "render": "auto",
+                "visible": true,
+                "nullFormat": {
+                  "nullFormatValue": "",
+                  "includeNullStrings": false,
+                  "strict": false
+                },
+                "resizable": true,
+                "editable": false,
+                "sortable": false,
+                "sort": "none",
+                "viewPath": "03_Elements/03_Table/Numeric",
+                "filter": {
+                  "date": {
+                    "condition": "",
+                    "value": ""
+                  },
+                  "visible": "on-hover",
+                  "string": {
+                    "condition": "",
+                    "value": ""
+                  },
+                  "enabled": false,
+                  "number": {
+                    "condition": "",
+                    "value": ""
+                  },
+                  "boolean": {
+                    "condition": ""
+                  }
+                },
+                "boolean": "checkbox",
+                "strictWidth": false,
+                "field": "Temp",
+                "width": 100,
+                "header": {
+                  "title": "Temp",
+                  "align": "center",
+                  "justify": "center",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "style": {
+                  "classes": ""
+                }
+              },
+              {
+                "dateFormat": "MM/DD/YYYY",
+                "footer": {
+                  "title": "",
+                  "align": "center",
+                  "justify": "left",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "align": "center",
+                "number": "value",
+                "numberFormat": "0,0.##",
+                "justify": "auto",
+                "progressBar": {
+                  "max": 100,
+                  "bar": {
+                    "color": "",
+                    "style": {
+                      "classes": ""
+                    }
+                  },
+                  "min": 0,
+                  "track": {
+                    "color": "",
+                    "style": {
+                      "classes": ""
+                    }
+                  },
+                  "value": {
+                    "format": "0,0.##",
+                    "enabled": true,
+                    "justify": "center",
+                    "style": {
+                      "classes": ""
+                    }
+                  }
+                },
+                "toggleSwitch": {
+                  "color": {
+                    "unselected": "",
+                    "selected": ""
+                  }
+                },
+                "viewParams": {
+                  "value": ""
+                },
+                "render": "auto",
+                "visible": true,
+                "nullFormat": {
+                  "nullFormatValue": "",
+                  "includeNullStrings": false,
+                  "strict": false
+                },
+                "resizable": true,
+                "editable": false,
+                "sortable": false,
+                "sort": "none",
+                "viewPath": "03_Elements/03_Table/Numeric",
+                "filter": {
+                  "date": {
+                    "condition": "",
+                    "value": ""
+                  },
+                  "visible": "on-hover",
+                  "string": {
+                    "condition": "",
+                    "value": ""
+                  },
+                  "enabled": false,
+                  "number": {
+                    "condition": "",
+                    "value": ""
+                  },
+                  "boolean": {
+                    "condition": ""
+                  }
+                },
+                "boolean": "checkbox",
+                "strictWidth": false,
+                "field": "Pressure",
+                "width": 100,
+                "header": {
+                  "title": "Pressure",
+                  "align": "center",
+                  "justify": "center",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "style": {
+                  "classes": ""
+                }
+              },
+              {
+                "dateFormat": "MM/DD/YYYY",
+                "footer": {
+                  "title": "",
+                  "align": "center",
+                  "justify": "left",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "align": "center",
+                "number": "value",
+                "numberFormat": "0,0.##",
+                "justify": "auto",
+                "progressBar": {
+                  "max": 100,
+                  "bar": {
+                    "color": "",
+                    "style": {
+                      "classes": ""
+                    }
+                  },
+                  "min": 0,
+                  "track": {
+                    "color": "",
+                    "style": {
+                      "classes": ""
+                    }
+                  },
+                  "value": {
+                    "format": "0,0.##",
+                    "enabled": true,
+                    "justify": "center",
+                    "style": {
+                      "classes": ""
+                    }
+                  }
+                },
+                "toggleSwitch": {
+                  "color": {
+                    "unselected": "",
+                    "selected": ""
+                  }
+                },
+                "viewParams": {
+                  "value": ""
+                },
+                "render": "auto",
+                "visible": true,
+                "nullFormat": {
+                  "nullFormatValue": "",
+                  "includeNullStrings": false,
+                  "strict": false
+                },
+                "resizable": true,
+                "editable": false,
+                "sortable": false,
+                "sort": "none",
+                "viewPath": "03_Elements/03_Table/Boolean",
+                "filter": {
+                  "date": {
+                    "condition": "",
+                    "value": ""
+                  },
+                  "visible": "on-hover",
+                  "string": {
+                    "condition": "",
+                    "value": ""
+                  },
+                  "enabled": false,
+                  "number": {
+                    "condition": "",
+                    "value": ""
+                  },
+                  "boolean": {
+                    "condition": ""
+                  }
+                },
+                "boolean": "checkbox",
+                "strictWidth": false,
+                "field": "Status",
+                "width": 100,
+                "header": {
+                  "title": "Status",
+                  "align": "center",
+                  "justify": "center",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "style": {
+                  "classes": ""
+                }
+              }
+            ],
+            "data": [
+              {
+                "tagPath": "Evaporators/EV-001",
+                "Temp": "Evaporators/EV-001/Temp",
+                "Pressure": "Evaporators/EV-001/Pressure",
+                "Status": "Evaporators/EV-001/Status"
+              },
+              {
+                "tagPath": "Evaporators/EV-002",
+                "Temp": "Evaporators/EV-002/Temp",
+                "Pressure": "Evaporators/EV-002/Pressure",
+                "Status": "Evaporators/EV-002/Status"
+              },
+              {
+                "tagPath": "Evaporators/EV-003",
+                "Temp": "Evaporators/EV-003/Temp",
+                "Pressure": "Evaporators/EV-003/Pressure",
+                "Status": "Evaporators/EV-003/Status"
+              }
+            ]
+          },
+          "name": "Value",
+          "tagType": "AtomicTag",
+          "metadata": {
+            "shortDescription": "instances value",
+            "longDescription": "Document with columns[] (table defs) and data[] (rows of tag paths). Bound by 00_Pages/Units/Overview as Value[\"columns\"] / Value[\"data\"]."
+          }
+        }
+      ]
+    }
+  ]
+}
