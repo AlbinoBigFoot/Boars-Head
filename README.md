@@ -60,6 +60,13 @@ Knowledge graph of tracker + planning docs lives in `graphify-out/` (`GRAPH_REPO
 - Host from workstation: `localhost,11433` (or `MSSQL_PORT` from `.env`)
 - Auth: SA password from `.env` (lab only — replace with least-privilege SQL user for real work)
 
+## Perspective HMI (evaporators)
+
+New to the BH Perspective project? Start here:
+
+- **[docs/evaporator-hmi-components.md](docs/evaporator-hmi-components.md)** — pages, embedded device/element views, CSS (`fan-spin`, `alarm-flash`), scripts, tags, icons, and how Overview is wired
+- **[docs/central-alarming.md](docs/central-alarming.md)** — Alarm Status Table, `/alarms`, priority row colors (unack vs ack)
+
 ## Source documents
 
 | File | Purpose |
@@ -68,3 +75,4 @@ Knowledge graph of tracker + planning docs lives in `graphify-out/` (`GRAPH_REPO
 | `Refrigeration MCC IPs.xlsx` | OT device IPs on `10.80.31.0/24` |
 | `docs/network-inventory.md` | Cleaned inventory + Ignition implications |
 | `docs/ignition-license-quote-checklist.md` | Addon modules for distributor cost estimate |
+| `docs/evaporator-hmi-components.md` | Evaporator Overview / component onboarding |

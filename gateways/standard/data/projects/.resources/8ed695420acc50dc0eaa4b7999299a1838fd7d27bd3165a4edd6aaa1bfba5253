@@ -1,0 +1,84 @@
+{
+  "custom": {},
+  "params": {},
+  "props": {
+    "defaultSize": {
+      "height": 900,
+      "width": 1200
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Title"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "style": {
+            "classes": "font-title",
+            "color": "#000000",
+            "fontSize": "20px",
+            "fontWeight": "700",
+            "marginBottom": "4px"
+          },
+          "text": "Alarm Status"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Subtitle"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "style": {
+            "classes": "font-label",
+            "color": "#000000",
+            "fontSize": "13px",
+            "marginBottom": "12px"
+          },
+          "text": "Active unacked = full priority color (matches icons). Active acked = darker shade."
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "AlarmStatusTable"
+        },
+        "position": {
+          "grow": 1
+        },
+        "props": {
+          "params": {
+            "sourceFilter": "*"
+          },
+          "path": "00_Pages/Alarms/_Assets/AlarmStatusTable",
+          "style": {
+            "height": "100%",
+            "minHeight": "480px",
+            "width": "100%"
+          }
+        },
+        "type": "ia.display.view"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "backgroundColor": "#D8D8D8",
+        "height": "100%",
+        "padding": "16px",
+        "width": "100%"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}
