@@ -18,7 +18,7 @@
     "custom.engUnit": {
       "binding": {
         "config": {
-          "expression": "if({view.custom.quality} = 'Good',\r\n   tag({view.params.tagPath} + '.EngUnit'),\r\n   '')"
+          "expression": "if({view.custom.quality} = 'Good',\n   tag({view.params.tagPath} + '.EngUnit'),\n   '')"
         },
         "type": "expr"
       },
@@ -27,7 +27,7 @@
     "custom.format": {
       "binding": {
         "config": {
-          "expression": "if({view.custom.quality} = 'Good',\r\n   if({view.custom.type} = 'Integer',\r\n      '#',\r\n      if(isNull(tag({view.params.tagPath} + '.FormatString')) || tag({view.params.tagPath} + '.FormatString') = '',\r\n         '#0.0',\r\n         tag({view.params.tagPath} + '.FormatString'))),\r\n   '')"
+          "expression": "if({view.custom.quality} = 'Good',\n   if({view.custom.type} = 'Integer',\n      '#',\n      if(isNull(tag({view.params.tagPath} + '.FormatString')) || tag({view.params.tagPath} + '.FormatString') = '',\n         '#0.0',\n         tag({view.params.tagPath} + '.FormatString'))),\n   '')"
         },
         "type": "expr"
       },
@@ -65,7 +65,7 @@
     "custom.value": {
       "binding": {
         "config": {
-          "expression": "if({view.custom.quality} = 'Good',\r\n   numberFormat(tag({view.params.tagPath}), {view.custom.format}),\r\n   '')"
+          "expression": "if({view.custom.quality} = 'Good',\n\tnumberFormat(tag({view.params.tagPath}), {view.custom.format}),\n\t'')"
         },
         "type": "expr"
       },
@@ -112,7 +112,7 @@
           "props.style.color": {
             "binding": {
               "config": {
-                "expression": "if({view.custom.quality} = 'Good',\r\n\t'#114599',\r\n\t'#90A4AE')"
+                "expression": "if({view.custom.quality} = 'Good',\n\t'#114599',\n\t'#90A4AE')"
               },
               "type": "expr"
             }
@@ -120,7 +120,7 @@
           "props.style.paddingRight": {
             "binding": {
               "config": {
-                "expression": "if({view.params.spacing.data} = '',\r\n   '0em',\r\n   0.85 * {view.params.spacing.data} + 'em')"
+                "expression": "if({view.params.spacing.data} = '',\n   '0em',\n   0.85 * {view.params.spacing.data} + 'em')"
               },
               "type": "expr"
             }
@@ -156,7 +156,7 @@
           "position.basis": {
             "binding": {
               "config": {
-                "expression": "if({view.params.spacing.center},\r\n   'auto',\r\n   if({view.params.spacing.engUnit} = '',\r\n      'auto',\r\n      {view.params.spacing.engUnit} + 'px'))"
+                "expression": "if({view.params.spacing.center},\n   'auto',\n   if({view.params.spacing.engUnit} = '',\n      'auto',\n      {view.params.spacing.engUnit} + 'px'))"
               },
               "type": "expr"
             }

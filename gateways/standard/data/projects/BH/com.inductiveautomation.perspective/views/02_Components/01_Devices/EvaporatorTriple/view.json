@@ -12,7 +12,7 @@
     "custom.label": {
       "binding": {
         "config": {
-          "expression": "try(\r\n    if(\r\n        isNull({view.custom.metadata.shortDescription}) ||\r\n        {view.custom.metadata.shortDescription} = '',\r\n        if({view.params.tagPath} = '',\r\n           '',\r\n           subString({view.params.tagPath}, lastIndexOf({view.params.tagPath}, '/') + 1)),\r\n        {view.custom.metadata.shortDescription}\r\n    ),\r\n'')"
+          "expression": "try(\n    if(\n        isNull({view.custom.metadata.shortDescription}) ||\n        {view.custom.metadata.shortDescription} = '',\n        if({view.params.tagPath} = '',\n           '',\n           subString({view.params.tagPath}, lastIndexOf({view.params.tagPath}, '/') + 1)),\n        {view.custom.metadata.shortDescription}\n    ),\n'')"
         },
         "type": "expr"
       },
@@ -21,7 +21,7 @@
     "custom.metadata": {
       "binding": {
         "config": {
-          "expression": "if(\r\n\t{view.params.tagPath}!='' && isGood(tag({view.params.tagPath} + '.Metadata')),\r\n\ttag({view.params.tagPath} + '.Metadata'),\r\n\t'')"
+          "expression": "if(\n\t{view.params.tagPath}!='' && isGood(tag({view.params.tagPath} + '.Metadata')),\n\ttag({view.params.tagPath} + '.Metadata'),\n\t'')"
         },
         "type": "expr"
       },
@@ -33,7 +33,7 @@
     "custom.values.running1": {
       "binding": {
         "config": {
-          "expression": "if(qualityOf(tag({view.params.tagPath} + '/Fan 1/CMD/Value')) = 'Good',\r\n\ttag({view.params.tagPath} + '/Fan 1/CMD/Value'),\r\n\tnull)"
+          "expression": "if(qualityOf(tag({view.params.tagPath} + '/Fan 1/CMD/Value')) = 'Good',\n\ttag({view.params.tagPath} + '/Fan 1/CMD/Value'),\n\tnull)"
         },
         "type": "expr"
       }
@@ -41,7 +41,7 @@
     "custom.values.running2": {
       "binding": {
         "config": {
-          "expression": "if(qualityOf(tag({view.params.tagPath} + '/Fan 2/CMD/Value')) = 'Good',\r\n\ttag({view.params.tagPath} + '/Fan 2/CMD/Value'),\r\n\tnull)"
+          "expression": "if(qualityOf(tag({view.params.tagPath} + '/Fan 2/CMD/Value')) = 'Good',\n\ttag({view.params.tagPath} + '/Fan 2/CMD/Value'),\n\tnull)"
         },
         "type": "expr"
       }
@@ -49,7 +49,7 @@
     "custom.values.running3": {
       "binding": {
         "config": {
-          "expression": "if(qualityOf(tag({view.params.tagPath} + '/Fan 3/CMD/Value')) = 'Good',\r\n\ttag({view.params.tagPath} + '/Fan 3/CMD/Value'),\r\n\tnull)"
+          "expression": "if(qualityOf(tag({view.params.tagPath} + '/Fan 3/CMD/Value')) = 'Good',\n\ttag({view.params.tagPath} + '/Fan 3/CMD/Value'),\n\tnull)"
         },
         "type": "expr"
       }
@@ -57,7 +57,7 @@
     "custom.values.status": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '',\r\n\t'',\r\n\t{view.params.tagPath} + '/Status/Value')"
+          "expression": "if({view.params.tagPath} = '',\n\t'',\n\t{view.params.tagPath} + '/Status/Value')"
         },
         "type": "expr"
       }
@@ -65,7 +65,7 @@
     "custom.values.temp": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '',\r\n\t'',\r\n\t{view.params.tagPath} + '/Temp/Value')"
+          "expression": "if({view.params.tagPath} = '',\n\t'',\n\t{view.params.tagPath} + '/Temp/Value')"
         },
         "type": "expr"
       }
@@ -160,7 +160,7 @@
               "props.style.opacity": {
                 "binding": {
                   "config": {
-                    "expression": "if(isNull({view.params.faceplate}),\r\n   0,\r\n   1)"
+                    "expression": "if(isNull({view.params.faceplate}),\n   0,\n   1)"
                   },
                   "type": "expr"
                 }
@@ -761,7 +761,7 @@
       "props.style.cursor": {
         "binding": {
           "config": {
-            "expression": "if({view.params.faceplate} = null,\r\n   '',\r\n   'pointer')"
+            "expression": "if({view.params.faceplate} = null,\n   '',\n   'pointer')"
           },
           "type": "expr"
         }

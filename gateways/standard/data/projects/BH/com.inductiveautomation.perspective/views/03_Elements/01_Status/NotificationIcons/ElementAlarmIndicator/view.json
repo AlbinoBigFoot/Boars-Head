@@ -21,7 +21,7 @@
         },
         "transforms": [
           {
-            "expression": "if(isNull({value}),\r\n\t-1,\r\n\t{value}\r\n)",
+            "expression": "if(isNull({value}),\n\t-1,\n\t{value}\n)",
             "type": "expression"
           }
         ],
@@ -41,7 +41,7 @@
         },
         "transforms": [
           {
-            "expression": "if(isNull({value}),\r\n\tFalse,\r\n\t{value}\r\n)",
+            "expression": "if(isNull({value}),\n\tFalse,\n\t{value}\n)",
             "type": "expression"
           }
         ],
@@ -61,7 +61,7 @@
         },
         "transforms": [
           {
-            "expression": "if(isNull({value}),\r\n\t-1,\r\n\t{value}\r\n)",
+            "expression": "if(isNull({value}),\n\t-1,\n\t{value}\n)",
             "type": "expression"
           }
         ],
@@ -78,7 +78,7 @@
         },
         "transforms": [
           {
-            "expression": "if(isNull({value}),\r\n\tFalse,\r\n\t{value}\r\n)",
+            "expression": "if(isNull({value}),\n\tFalse,\n\t{value}\n)",
             "type": "expression"
           }
         ],
@@ -120,7 +120,7 @@
               },
               "transforms": [
                 {
-                  "expression": "if({value}['ackHighPriority'] != {value}['activeHighPriority'] && {value}['active'],\r\n\t{value}['flash'],\r\n\tTrue\r\n)",
+                  "expression": "if({value}['ackHighPriority'] != {value}['activeHighPriority'] && {value}['active'],\n\t{value}['flash'],\n\tTrue\n)",
                   "type": "expression"
                 }
               ],
@@ -134,7 +134,7 @@
               },
               "transforms": [
                 {
-                  "expression": "case({value},\r\n     4, '03_Elements/01_Status/NotificationIcons/Alarms/Critical',\r\n     3, '03_Elements/01_Status/NotificationIcons/Alarms/High',\r\n     2, '03_Elements/01_Status/NotificationIcons/Alarms/Medium',\r\n     1, '03_Elements/01_Status/NotificationIcons/Alarms/Low',\r\n     '03_Elements/01_Status/NotificationIcons/Blank')",
+                  "expression": "case({value},\n     4, '03_Elements/01_Status/NotificationIcons/Alarms/Critical',\n     3, '03_Elements/01_Status/NotificationIcons/Alarms/High',\n     2, '03_Elements/01_Status/NotificationIcons/Alarms/Medium',\n     1, '03_Elements/01_Status/NotificationIcons/Alarms/Low',\n     '03_Elements/01_Status/NotificationIcons/Blank')",
                   "type": "expression"
                 }
               ],

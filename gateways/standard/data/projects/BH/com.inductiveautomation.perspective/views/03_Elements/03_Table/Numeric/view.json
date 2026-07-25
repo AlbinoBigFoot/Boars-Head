@@ -62,7 +62,7 @@
         },
         "transforms": [
           {
-            "expression": "if(isNull({value}),\r\n\t\"\",\r\n\t{value}\r\n\t)",
+            "expression": "if(isNull({value}),\n\t\"\",\n\t{value}\n\t)",
             "type": "expression"
           }
         ],
@@ -127,7 +127,7 @@
               },
               "transforms": [
                 {
-                  "expression": "if(indexOf({value}, \".\") = -1,\r\n    concat(\r\n    \t\ttoInt({value}), \r\n\t\t\trepeat(\"&nbsp;\", 3)\r\n\t),\r\n    concat(\r\n\t\t\ttoInt(left({value}, indexOf({value}, \".\"))),\r\n\t\t\tright({value}, len({value}) - indexOf({value}, \".\")),\r\n\t\t\trepeat(\"&nbsp;\", 3 - (len({value}) - indexOf({value}, \".\")))\r\n\t)\r\n)\r\n\r\n",
+                  "expression": "if(indexOf({value}, \".\") = -1,\n    concat(\n    \t\ttoInt({value}), \n\t\t\trepeat(\"&nbsp;\", 3)\n\t),\n    concat(\n\t\t\ttoInt(left({value}, indexOf({value}, \".\"))),\n\t\t\tright({value}, len({value}) - indexOf({value}, \".\")),\n\t\t\trepeat(\"&nbsp;\", 3 - (len({value}) - indexOf({value}, \".\")))\n\t)\n)\n\n",
                   "type": "expression"
                 }
               ],
@@ -141,7 +141,7 @@
               },
               "transforms": [
                 {
-                  "expression": "if({value} = \"Good\",\r\n\t'font-livedata',\r\n\t'font-baddata'\r\n\t)",
+                  "expression": "if({value} = \"Good\",\n\t'font-livedata',\n\t'font-baddata'\n\t)",
                   "type": "expression"
                 }
               ],

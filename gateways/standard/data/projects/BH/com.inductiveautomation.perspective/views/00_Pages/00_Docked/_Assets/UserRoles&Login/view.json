@@ -42,7 +42,7 @@
                   },
                   "transforms": [
                     {
-                      "expression": "if({value}['authenticated'],\r\n\tif({value}['user']['firstName'] != None,\r\n\t\tif({value}['user']['lastName'] != None,\r\n\t\t\t{value}['user']['firstName'] + ' ' + {value}['user']['lastName'],\r\n\t\t\t{value}['user']['firstName']\r\n\t\t),\r\n\t\t{value}['user']['userName']\r\n\t),\r\n\t'Not logged in'\r\n)\r\n",
+                      "expression": "if({value}['authenticated'],\n\tif({value}['user']['firstName'] != None,\n\t\tif({value}['user']['lastName'] != None,\n\t\t\t{value}['user']['firstName'] + ' ' + {value}['user']['lastName'],\n\t\t\t{value}['user']['firstName']\n\t\t),\n\t\t{value}['user']['userName']\n\t),\n\t'Not logged in'\n)\n",
                       "type": "expression"
                     }
                   ],

@@ -20,7 +20,7 @@
         },
         "transforms": [
           {
-            "expression": "if(isNull({value}),\r\n\tFalse,\r\n\tif(typeof({value}) = 'java.lang.Boolean',\r\n\t\t{value},\r\n\t\t{value} = True || {value} = 1 || {value} = 'true' || {value} = 'True'))",
+            "expression": "if(isNull({value}),\n\tFalse,\n\tif(typeof({value}) = 'java.lang.Boolean',\n\t\t{value},\n\t\t{value} = True || {value} = 1 || {value} = 'true' || {value} = 'True'))",
             "type": "expression"
           }
         ],
@@ -40,7 +40,7 @@
         },
         "transforms": [
           {
-            "expression": "if(isNull({value}),\r\n\tFalse,\r\n\tif(typeof({value}) = 'java.lang.Boolean',\r\n\t\t{value},\r\n\t\t{value} = True || {value} = 1 || {value} = 'true' || {value} = 'True'))",
+            "expression": "if(isNull({value}),\n\tFalse,\n\tif(typeof({value}) = 'java.lang.Boolean',\n\t\t{value},\n\t\t{value} = True || {value} = 1 || {value} = 'true' || {value} = 'True'))",
             "type": "expression"
           }
         ],
@@ -60,7 +60,7 @@
         },
         "transforms": [
           {
-            "expression": "if(isNull({value}),\r\n\t10,\r\n\t{value})",
+            "expression": "if(isNull({value}),\n\t10,\n\t{value})",
             "type": "expression"
           }
         ],
@@ -92,7 +92,7 @@
           "props.path": {
             "binding": {
               "config": {
-                "expression": "case(\r\n\t{view.custom.priority},\r\n\t1, 'equipment/alarm_critical',\r\n\t2, 'equipment/alarm_high',\r\n\t3, 'equipment/alarm_medium',\r\n\t4, 'equipment/alarm_low',\r\n\t'equipment/alarm_critical'\r\n)"
+                "expression": "case(\n\t{view.custom.priority},\n\t1, 'equipment/alarm_critical',\n\t2, 'equipment/alarm_high',\n\t3, 'equipment/alarm_medium',\n\t4, 'equipment/alarm_low',\n\t'equipment/alarm_critical'\n)"
               },
               "type": "expr"
             }
@@ -108,7 +108,7 @@
           "props.style.classes": {
             "binding": {
               "config": {
-                "expression": "if({view.custom.active} && {view.custom.unack},\r\n\t'alarm-flash',\r\n\t'')"
+                "expression": "if({view.custom.active} && {view.custom.unack},\n\t'alarm-flash',\n\t'')"
               },
               "type": "expr"
             }

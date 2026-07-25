@@ -17,7 +17,7 @@
     "custom.multistates": {
       "binding": {
         "config": {
-          "expression": "if({view.custom.tagPath} = '',\r\n\t'',\r\n\tif(!isBad(tag({view.custom.tagPath} + '/Value.Metadata')),\r\n\t\tif(isNull(tag({view.custom.tagPath} + '/Value.Metadata')['states']),\r\n\t\t\t'',\r\n\t\t\ttag({view.custom.tagPath} + '/Value.Metadata')['states']),\r\n\t\tif(!isBad(tag({view.custom.tagPath} + '/Metadata')),\r\n\t\t\tif(isNull(jsonGet(tag({view.custom.tagPath} + '/Metadata'), 'states')),\r\n\t\t\t\t'',\r\n\t\t\t\tjsonGet(tag({view.custom.tagPath} + '/Metadata'), 'states')),\r\n\t\t\t'')))"
+          "expression": "if({view.custom.tagPath} = '',\n\t'',\n\tif(!isBad(tag({view.custom.tagPath} + '/Value.Metadata')),\n\t\tif(isNull(tag({view.custom.tagPath} + '/Value.Metadata')['states']),\n\t\t\t'',\n\t\t\ttag({view.custom.tagPath} + '/Value.Metadata')['states']),\n\t\tif(!isBad(tag({view.custom.tagPath} + '/Metadata')),\n\t\t\tif(isNull(jsonGet(tag({view.custom.tagPath} + '/Metadata'), 'states')),\n\t\t\t\t'',\n\t\t\t\tjsonGet(tag({view.custom.tagPath} + '/Metadata'), 'states')),\n\t\t\t'')))"
         },
         "type": "expr"
       },
@@ -35,7 +35,7 @@
         },
         "transforms": [
           {
-            "expression": "if(isNull({value}),\r\n\t\"\",\r\n\t{value}\r\n\t)",
+            "expression": "if(isNull({value}),\n\t\"\",\n\t{value}\n\t)",
             "type": "expression"
           }
         ],
@@ -121,7 +121,7 @@
               },
               "transforms": [
                 {
-                  "expression": "if({value} = \"Good\",\r\n\t'font-livedata',\r\n\t'font-baddata'\r\n\t)",
+                  "expression": "if({value} = \"Good\",\n\t'font-livedata',\n\t'font-baddata'\n\t)",
                   "type": "expression"
                 }
               ],

@@ -14,7 +14,7 @@
     "custom.label": {
       "binding": {
         "config": {
-          "expression": "try(\r\n    if(\r\n        isNull({view.custom.metadata.shortDescription}) ||\r\n        {view.custom.metadata.shortDescription} = '',\r\n        if({view.params.tagPath} = '',\r\n           '',\r\n           subString({view.params.tagPath}, lastIndexOf({view.params.tagPath}, '/') + 1)),\r\n        {view.custom.metadata.shortDescription}\r\n    ),\r\n'')"
+          "expression": "try(\n    if(\n        isNull({view.custom.metadata.shortDescription}) ||\n        {view.custom.metadata.shortDescription} = '',\n        if({view.params.tagPath} = '',\n           '',\n           subString({view.params.tagPath}, lastIndexOf({view.params.tagPath}, '/') + 1)),\n        {view.custom.metadata.shortDescription}\n    ),\n'')"
         },
         "type": "expr"
       },
@@ -23,7 +23,7 @@
     "custom.metadata": {
       "binding": {
         "config": {
-          "expression": "if(\r\n\t{view.params.tagPath}!='' && isGood(tag({view.params.tagPath} + '.Metadata')),\r\n\ttag({view.params.tagPath} + '.Metadata'),\r\n\t'')"
+          "expression": "if(\n\t{view.params.tagPath}!='' && isGood(tag({view.params.tagPath} + '.Metadata')),\n\ttag({view.params.tagPath} + '.Metadata'),\n\t'')"
         },
         "type": "expr"
       },
@@ -39,7 +39,7 @@
     "custom.values.temp": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '',\r\n\t'',\r\n\t{view.params.tagPath} + '/Temp/Value')"
+          "expression": "if({view.params.tagPath} = '',\n\t'',\n\t{view.params.tagPath} + '/Temp/Value')"
         },
         "type": "expr"
       }
@@ -47,7 +47,7 @@
     "custom.values.status": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '',\r\n\t'',\r\n\t{view.params.tagPath} + '/Status/Value')"
+          "expression": "if({view.params.tagPath} = '',\n\t'',\n\t{view.params.tagPath} + '/Status/Value')"
         },
         "type": "expr"
       }

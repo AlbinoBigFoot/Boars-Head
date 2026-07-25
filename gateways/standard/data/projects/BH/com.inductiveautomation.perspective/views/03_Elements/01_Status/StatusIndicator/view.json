@@ -67,7 +67,7 @@
     "custom.label": {
       "binding": {
         "config": {
-          "expression": "if(isNull({view.custom.states}),\r\n\t{view.custom.value},\r\n\t{view.custom.value})"
+          "expression": "if(isNull({view.custom.states}),\n\t{view.custom.value},\n\t{view.custom.value})"
         },
         "transforms": [
           {
@@ -91,7 +91,7 @@
         },
         "transforms": [
           {
-            "expression": "if(isNull({value}),\r\n\t'',\r\n\t{value})",
+            "expression": "if(isNull({value}),\n\t'',\n\t{value})",
             "type": "expression"
           }
         ],
@@ -102,7 +102,7 @@
     "custom.quality": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '',\r\n\t'Bad',\r\n\tqualityOf(tag({view.params.tagPath})))"
+          "expression": "if({view.params.tagPath} = '',\n\t'Bad',\n\tqualityOf(tag({view.params.tagPath})))"
         },
         "type": "expr"
       },
@@ -111,7 +111,7 @@
     "custom.states": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '' || qualityOf(tag({view.params.tagPath})) != 'Good',\r\n\tnull,\r\n\tif(isBad(tag({view.params.tagPath} + '.Metadata')),\r\n\t\tnull,\r\n\t\ttag({view.params.tagPath} + '.Metadata')['states']))"
+          "expression": "if({view.params.tagPath} = '' || qualityOf(tag({view.params.tagPath})) != 'Good',\n\tnull,\n\tif(isBad(tag({view.params.tagPath} + '.Metadata')),\n\t\tnull,\n\t\ttag({view.params.tagPath} + '.Metadata')['states']))"
         },
         "type": "expr"
       },
@@ -120,7 +120,7 @@
     "custom.value": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '' || qualityOf(tag({view.params.tagPath})) != 'Good',\r\n\tnull,\r\n\ttag({view.params.tagPath}))"
+          "expression": "if({view.params.tagPath} = '' || qualityOf(tag({view.params.tagPath})) != 'Good',\n\tnull,\n\ttag({view.params.tagPath}))"
         },
         "type": "expr"
       },
@@ -165,7 +165,7 @@
           "props.style.opacity": {
             "binding": {
               "config": {
-                "expression": "if({view.custom.label} = '',\r\n   0,\r\n   1)"
+                "expression": "if({view.custom.label} = '',\n   0,\n   1)"
               },
               "type": "expr"
             }
@@ -216,7 +216,7 @@
           "props.style.opacity": {
             "binding": {
               "config": {
-                "expression": "if({view.custom.label} = '',\r\n   0,\r\n   1)"
+                "expression": "if({view.custom.label} = '',\n   0,\n   1)"
               },
               "type": "expr"
             }
