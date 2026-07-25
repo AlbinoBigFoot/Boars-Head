@@ -33,11 +33,19 @@
     "params.tagPath": {
       "paramDirection": "input",
       "persistent": true
+    },
+    "props.defaultSize.height": {
+      "binding": {
+        "config": {
+          "expression": "if({session.custom.TicketLogAccess}, 152, 120)"
+        },
+        "type": "expr"
+      }
     }
   },
   "props": {
     "defaultSize": {
-      "height": 120,
+      "height": 152,
       "width": 180
     }
   },
@@ -48,7 +56,56 @@
           "dom": {
             "onClick": {
               "config": {
-                "script": "\tif len(self.session.custom.AdhocTrend.tags) < 10:\n\t\ttagPath = self.view.params.tagPath\n\t\tif tagPath not in self.session.custom.AdhocTrend.tags:\n\t\t\tself.session.custom.AdhocTrend.tags.append(tagPath)\n\t\t\tsystem.perspective.closePopup('ContextMenu')\n\telse:\n\t\tshared.Alerts.showAlert(state=\"warning\",title=\"Adhoc Trending\",message='You have exceeded the limit of 10 tags, Please remove tags that are not required from the trend.',showCloseBtn=False,btnTextPrimary=\"Okay\",btnTextSecondary=\"\",btnActionPrimary=\"\",btnActionSecondary=\"\",payload={})"
+                "script": "\ttagPath = self.view.params.tagPath\n\tviewName = self.view.id.split('@')[0]\n\tshared.Alerts.contextMenuTicketLog(tagPath, viewName)\n\tsystem.perspective.closePopup('ContextMenu')"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "TicketLogger"
+        },
+        "position": {
+          "basis": "32px",
+          "grow": 0,
+          "shrink": 0
+        },
+        "props": {
+          "params": {
+            "name": "Ticket Logger",
+            "classes": "container-item font-header",
+            "cursor": "pointer",
+            "fontWeight": "500"
+          },
+          "path": "01_Popups/00_Faceplates/Alerts/Menu"
+        },
+        "type": "ia.display.view",
+        "propConfig": {
+          "meta.visible": {
+            "binding": {
+              "config": {
+                "path": "session.custom.TicketLogAccess"
+              },
+              "type": "property"
+            }
+          },
+          "position.basis": {
+            "binding": {
+              "config": {
+                "expression": "if({session.custom.TicketLogAccess}, \"32px\", \"0px\")"
+              },
+              "type": "expr"
+            }
+          }
+        }
+      },
+      {
+        "events": {
+          "dom": {
+            "onClick": {
+              "config": {
+                "script": "\tif len(self.session.custom.AdhocTrend.tags) < 10:\n\t\ttagPath = self.view.params.tagPath\n\t\tif tagPath not in self.session.custom.AdhocTrend.tags:\n\t\t\tself.session.custom.AdhocTrend.tags.append(tagPath)\n\t\tshared.Alerts.showAdhocTrend()\n\t\tsystem.perspective.closePopup('ContextMenu')\n\telse:\n\t\tshared.Alerts.showAlert(state=\"warning\",title=\"Adhoc Trending\",message='You have exceeded the limit of 10 tags, Please remove tags that are not required from the trend.',showCloseBtn=False,btnTextPrimary=\"Okay\",btnTextSecondary=\"\",btnActionPrimary=\"\",btnActionSecondary=\"\",payload={})"
               },
               "scope": "G",
               "type": "script"
@@ -60,8 +117,16 @@
         },
         "position": {
           "basis": "32px",
-          "grow": 1
+          "grow": 0,
+          "shrink": 0
         },
+        "props": {
+          "params": {
+            "name": "(+) Add to trend"
+          },
+          "path": "01_Popups/00_Faceplates/Alerts/Menu"
+        },
+        "type": "ia.display.view",
         "propConfig": {
           "props.params.classes": {
             "binding": {
@@ -70,7 +135,7 @@
               },
               "transforms": [
                 {
-                  "expression": "if(!{value},\r\n\t\"Container/Card Container/Icon Fonts/Header\",\r\n\t\"Container/Card Colors/Disabled Fonts/Header\"\r\n)",
+                  "expression": "if(!{value},\r\n\t\"container-item font-header\",\r\n\t\"container-item bg-disabled font-baddata\"\r\n)",
                   "type": "expression"
                 }
               ],
@@ -105,14 +170,7 @@
               "type": "property"
             }
           }
-        },
-        "props": {
-          "params": {
-            "name": "(+) Add to trend"
-          },
-          "path": "01_Popups/00_Faceplates/Alerts/Menu"
-        },
-        "type": "ia.display.view"
+        }
       },
       {
         "events": {
@@ -131,8 +189,16 @@
         },
         "position": {
           "basis": "32px",
-          "grow": 1
+          "grow": 0,
+          "shrink": 0
         },
+        "props": {
+          "params": {
+            "name": "(-) Remove from trend"
+          },
+          "path": "01_Popups/00_Faceplates/Alerts/Menu"
+        },
+        "type": "ia.display.view",
         "propConfig": {
           "props.params.classes": {
             "binding": {
@@ -141,7 +207,7 @@
               },
               "transforms": [
                 {
-                  "expression": "if({value},\r\n\t\"Container/Card Container/Icon Fonts/Header\",\r\n\t\"Container/Card Colors/Disabled Fonts/Header\"\r\n)",
+                  "expression": "if({value},\r\n\t\"container-item font-header\",\r\n\t\"container-item bg-disabled font-baddata\"\r\n)",
                   "type": "expression"
                 }
               ],
@@ -176,21 +242,14 @@
               "type": "property"
             }
           }
-        },
-        "props": {
-          "params": {
-            "name": "(-) Remove from trend"
-          },
-          "path": "01_Popups/00_Faceplates/Alerts/Menu"
-        },
-        "type": "ia.display.view"
+        }
       },
       {
         "events": {
           "dom": {
             "onClick": {
               "config": {
-                "script": "\ttagPath = self.view.params.tagPath\n\tif tagPath in self.session.custom.AdhocTrend.tags:\n\t\tNavigation.Nav.navigate({\"viewPath\": \"98_Configuration/AdhocTrend/Trend\"})\n\t\tsystem.perspective.closePopup('ContextMenu')"
+                "script": "\ttagPath = self.view.params.tagPath\n\tif tagPath in self.session.custom.AdhocTrend.tags:\n\t\tshared.Alerts.showAdhocTrend()\n\t\tsystem.perspective.closePopup('ContextMenu')"
               },
               "scope": "G",
               "type": "script"
@@ -202,8 +261,16 @@
         },
         "position": {
           "basis": "32px",
-          "grow": 1
+          "grow": 0,
+          "shrink": 0
         },
+        "props": {
+          "params": {
+            "name": "Open Trend"
+          },
+          "path": "01_Popups/00_Faceplates/Alerts/Menu"
+        },
+        "type": "ia.display.view",
         "propConfig": {
           "props.params.classes": {
             "binding": {
@@ -212,7 +279,7 @@
               },
               "transforms": [
                 {
-                  "expression": "if({value},\r\n\t\"Container/Card Container/Icon Fonts/Header\",\r\n\t\"Container/Card Colors/Disabled Fonts/Header\"\r\n)",
+                  "expression": "if({value},\r\n\t\"container-item font-header\",\r\n\t\"container-item bg-disabled font-baddata\"\r\n)",
                   "type": "expression"
                 }
               ],
@@ -247,14 +314,7 @@
               "type": "property"
             }
           }
-        },
-        "props": {
-          "params": {
-            "name": "Open Trend"
-          },
-          "path": "01_Popups/00_Faceplates/Alerts/Menu"
-        },
-        "type": "ia.display.view"
+        }
       }
     ],
     "events": {
@@ -277,65 +337,14 @@
       }
     },
     "meta": {
-      "name": "root",
-      "contextMenu": {}
+      "name": "root"
     },
     "props": {
       "direction": "column",
       "style": {
-        "classes": "Colors/Component Container/Card"
+        "classes": "bg-component container-card"
       }
     },
-    "type": "ia.container.flex",
-    "propConfig": {
-      "meta.contextMenu.items": {
-        "binding": {
-          "config": {
-            "struct": {
-              "tagPath": "\"No TagPath: \""
-            },
-            "waitOnAll": true
-          },
-          "transforms": [
-            {
-              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = self.view.params.tagPath\n\texcept:\n\t\tpass\n\tif tagPath is None or str(tagPath).strip() == '':\n\t\ttagPath = value.tagPath + self.view.id.split('@')[0].split('/')[-1]\n\titems = [\n\t\t\t  {\n\t\t\t    \"text\": \"Ticket Logger\",\n\t\t\t    \"icon\": {\n\t\t\t      \"path\": \"material/info\",\n\t\t\t      \"color\": \"--neutral-80\",\n\t\t\t      \"style\": {}\n\t\t\t    },\n\t\t\t    \"style\": {\n\t\t\t      \"classes\": \"bg-component font-value\",\n\t\t\t      \"height\": 24,\n\t\t\t      \"width\": 120\n\t\t\t    },\n\t\t\t    \"type\": \"message\",\n\t\t\t    \"children\": [],\n\t\t\t    \"link\": {\n\t\t\t      \"url\": \"\",\n\t\t\t      \"target\": \"self\"\n\t\t\t    },\n\t\t\t    \"method\": {\n\t\t\t      \"name\": \"\",\n\t\t\t      \"params\": {}\n\t\t\t    },\n\t\t\t    \"message\": {\n\t\t\t      \"type\": \"ticketLog\",\n\t\t\t      \"payload\": {\n\t\t\t        \"tagPath\": tagPath,\n\t\t\t        \"viewName\": self.view.id.split('@')[0]\n\t\t\t      },\n\t\t\t      \"scope\": \"page\"\n\t\t\t    }\n\t\t\t  }\n\t\t\t]\n\treturn items",
-              "type": "script"
-            }
-          ],
-          "type": "expr-struct"
-        }
-      },
-      "meta.contextMenu.enabled": {
-        "binding": {
-          "config": {
-            "struct": {
-              "items": "{this.meta.contextMenu.items}",
-              "permission": "{session.custom.TicketLogAccess}"
-            },
-            "waitOnAll": true
-          },
-          "transforms": [
-            {
-              "expression": "len({value}['items']) > 0 && {value}['permission']",
-              "type": "expression"
-            }
-          ],
-          "type": "expr-struct"
-        }
-      }
-    },
-    "scripts": {
-      "customMethods": [],
-      "extensionFunctions": null,
-      "messageHandlers": [
-        {
-          "messageType": "ticketLog",
-          "pageScope": true,
-          "script": "\t# Ticket Logger context-menu opener\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
-          "sessionScope": false,
-          "viewScope": false
-        }
-      ]
-    }
+    "type": "ia.container.flex"
   }
 }

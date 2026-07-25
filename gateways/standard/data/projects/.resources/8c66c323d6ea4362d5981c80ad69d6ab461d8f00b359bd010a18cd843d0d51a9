@@ -407,7 +407,7 @@
 	padding: 10px 8px 10px 0;
 }
 
-/* Adhoc Trend ApexCharts — keep bottom crosshair date+time fully visible */
+/* Adhoc Trend ApexCharts — keep bottom crosshair date+time fully visible (full page) */
 .psc-adhoc-trend-chart-host,
 .psc-adhoc-trend-chart-host .inner-container,
 .psc-adhoc-trend-apex,
@@ -447,19 +447,256 @@
 	line-height: 1.2 !important;
 }
 
+/* Adhoc Trend faceplate popup — Ticket Logger card look; fit without outer scroll */
+.psc-adhoc-trend-faceplate {
+	position: relative;
+	border-radius: 0.5rem;
+	box-shadow: var(--boxShadow1);
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	min-height: 0;
+	min-width: 0;
+}
+
+/* Header + close must sit above ApexCharts pan/toolbar and nested embed layers */
+.psc-adhoc-trend-faceplate-header {
+	position: relative;
+	z-index: 40;
+	min-height: 40px;
+	align-items: center;
+	flex: 0 0 auto;
+	pointer-events: auto;
+	isolation: isolate;
+}
+
+.psc-adhoc-trend-faceplate-close {
+	position: relative;
+	z-index: 41;
+	cursor: pointer !important;
+	min-width: 36px !important;
+	min-height: 36px !important;
+	padding: 4px !important;
+	box-sizing: border-box;
+	pointer-events: auto !important;
+}
+
+.psc-adhoc-trend-faceplate-close:hover {
+	background-color: var(--neutral-40);
+	border-radius: var(--borderRadius);
+}
+
+/* Embedded Trend view inside faceplate — fill remaining height, allow shrink */
+.psc-adhoc-trend-faceplate-embed {
+	position: relative;
+	z-index: 1;
+	height: 100% !important;
+	width: 100% !important;
+	min-height: 0 !important;
+	min-width: 0 !important;
+	display: flex !important;
+	flex-direction: row !important;
+	overflow: hidden !important;
+}
+
+/* Faceplate: contain chart paint so outer popup does not grow a scrollbar */
+.psc-adhoc-trend-faceplate-embed.psc-adhoc-trend-chart-host,
+.psc-adhoc-trend-faceplate-embed .psc-adhoc-trend-chart-host,
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-chart-host,
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-chart-host .inner-container,
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-apex,
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-apex .apexcharts-canvas,
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-apex .apexcharts-svg,
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-apex .apexcharts-inner {
+	overflow: hidden !important;
+	min-height: 0 !important;
+	min-width: 0 !important;
+}
+
+.psc-adhoc-trend-faceplate-embed .psc-adhoc-trend-chart-host {
+	flex: 1 1 0 !important;
+}
+
+/* Pens: reserved height so table/chips are fully usable (scroll only inside pens if many rows) */
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-pens-faceplate {
+	margin: 4px 0 0 0 !important;
+	flex: 0 0 220px !important;
+	height: 220px !important;
+	max-height: 220px !important;
+	min-height: 220px !important;
+	overflow: hidden !important;
+	display: flex !important;
+	flex-direction: column !important;
+}
+
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-pens-faceplate .ia_flexRepeaterComponent,
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-pens-faceplate .ia_tableComponent {
+	min-width: 0 !important;
+	max-width: 100% !important;
+	flex: 1 1 auto !important;
+	min-height: 0 !important;
+	overflow-x: auto !important;
+	overflow-y: auto !important;
+}
+
+.psc-adhoc-trend-toolbar-actions {
+	gap: 10px !important;
+	flex-wrap: nowrap !important;
+	overflow: visible !important;
+}
+
+.psc-adhoc-trend-toolbar-actions-faceplate {
+	z-index: 5;
+	align-items: flex-start !important;
+	padding-top: 4px !important;
+	padding-bottom: 6px !important;
+	padding-right: 8px !important;
+}
+
+.psc-adhoc-trend-action-btn {
+	flex: 0 0 auto !important;
+	min-width: 108px !important;
+	margin-right: 0 !important;
+	white-space: nowrap !important;
+}
+
+.psc-adhoc-trend-action-btn-outline {
+	background-color: transparent !important;
+	border: 1px solid var(--neutral-80) !important;
+	color: var(--neutral-80) !important;
+	box-shadow: none !important;
+}
+
+.psc-adhoc-trend-action-btn-outline:hover {
+	background-color: var(--neutral-30) !important;
+}
+
+/* Faceplate: keep ApexCharts toolbar + pan layer below header / Save / Clear */
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-apex,
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-apex .apexcharts-canvas,
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-apex .apexcharts-svg {
+	position: relative;
+	z-index: 1;
+}
+
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-apex .apexcharts-toolbar {
+	top: 8px !important;
+	right: 8px !important;
+	z-index: 1 !important;
+}
+
+/* Nested Trend embed must not force full popup height over the faceplate header */
+#popup-AdhocTrend .psc-adhoc-trend-faceplate > .ia_embeddedView,
+#popup-AdhocTrend .psc-adhoc-trend-faceplate .ia_embeddedView,
+#popup-AdhocTrendConfig .psc-adhoc-trend-config-faceplate > .ia_embeddedView,
+#popup-AdhocTrendConfig .psc-adhoc-trend-config-faceplate .ia_embeddedView {
+	position: relative;
+	z-index: 1;
+	height: auto !important;
+	max-height: none !important;
+	flex: 1 1 0 !important;
+	min-height: 0 !important;
+	min-width: 0 !important;
+	overflow: hidden !important;
+}
+
+/* Keep NE/N resize handles from eating the close hit target */
+#popup-AdhocTrend .react-resizable-handle-ne,
+#popup-AdhocTrend .react-resizable-handle-n,
+#popup-AdhocTrend .react-resizable-handle-e {
+	z-index: 2;
+}
+
+/* Companion Trend Configuration faceplate (left of AdhocTrend) */
+.psc-adhoc-trend-config-faceplate {
+	border-radius: 0.5rem;
+	box-shadow: var(--boxShadow1);
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	min-height: 0;
+	min-width: 0;
+}
+
+.psc-adhoc-trend-config-faceplate-header {
+	position: relative;
+	z-index: 40;
+	min-height: 40px;
+	align-items: center;
+	flex: 0 0 auto;
+	pointer-events: auto;
+}
+
+.psc-adhoc-trend-config-faceplate-close {
+	position: relative;
+	z-index: 41;
+	cursor: pointer !important;
+	min-width: 36px !important;
+	min-height: 36px !important;
+	padding: 4px !important;
+	box-sizing: border-box;
+	pointer-events: auto !important;
+}
+
+.psc-adhoc-trend-config-faceplate-close:hover {
+	background-color: var(--neutral-40);
+	border-radius: var(--borderRadius);
+}
+
+.psc-adhoc-trend-config-toolbar {
+	background-color: transparent !important;
+	box-shadow: none !important;
+	border: none !important;
+	overflow: auto;
+	min-height: 0;
+}
+
 /* ----------------------------------------------------------------------------------------------------------------------------------------------------------------
  * Popups — hide Perspective chrome header (empty white bar when showCloseIcon=False).
- * Ticket Logger / Alerts supply their own header rows.
+ * Ticket Logger / Alerts / AdhocTrend supply their own header rows.
  * ---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
-#popup-alertDialog {
+#popup-alertDialog,
+#popup-AdhocTrend,
+#popup-AdhocTrendConfig {
 	background-color: transparent;
 	border: none;
 	box-shadow: none;
+	overflow: hidden !important;
+}
+
+/* Popup shell fills openPopup size — do NOT force nested embeds to 100% height
+   (that painted Trend/config body over the custom faceplate header / close X). */
+#popup-AdhocTrend > .ia_popup__content,
+#popup-AdhocTrend > .ia_popup__content > .view-parent,
+#popup-AdhocTrendConfig > .ia_popup__content,
+#popup-AdhocTrendConfig > .ia_popup__content > .view-parent {
+	height: 100% !important;
+	width: 100% !important;
+	min-height: 0 !important;
+	min-width: 0 !important;
+	max-height: 100% !important;
+	max-width: 100% !important;
+	overflow: hidden !important;
+}
+
+#popup-AdhocTrend .psc-adhoc-trend-faceplate,
+#popup-AdhocTrendConfig .psc-adhoc-trend-config-faceplate {
+	height: 100% !important;
+	width: 100% !important;
+	min-height: 0 !important;
+	min-width: 0 !important;
+	overflow: hidden !important;
 }
 
 #popup-alertDialog .popup-header,
-#popup-alertDialog .ia_popup__header {
+#popup-alertDialog .ia_popup__header,
+#popup-AdhocTrend .popup-header,
+#popup-AdhocTrend .ia_popup__header,
+#popup-AdhocTrendConfig .popup-header,
+#popup-AdhocTrendConfig .ia_popup__header {
 	display: none !important;
 }
 
@@ -488,4 +725,25 @@
 	margin: 0 !important;
 	border: none !important;
 	overflow: hidden !important;
+}
+
+
+/* Adhoc ContextMenu — opaque shell (global .ia_popup is transparent) */
+#popup-ContextMenu {
+	background-color: var(--neutral-20);
+	border: 1px solid var(--neutral-30);
+	border-radius: 0.5rem;
+	box-shadow: var(--boxShadow1);
+	overflow: visible;
+}
+
+#popup-ContextMenu > .ia_popup__content,
+#popup-ContextMenu > .ia_popup__content > .view-parent {
+	background-color: transparent;
+	overflow: visible;
+}
+
+/* Adhoc ContextMenu rows (Alerts/Menu) */
+.psc-container-item:hover {
+	background-color: var(--neutral-30);
 }

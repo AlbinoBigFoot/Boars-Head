@@ -217,8 +217,7 @@
       }
     },
     "meta": {
-      "name": "root",
-      "contextMenu": {}
+      "name": "root"
     },
     "propConfig": {
       "meta.visible": {
@@ -234,41 +233,6 @@
           ],
           "type": "property"
         }
-      },
-      "meta.contextMenu.items": {
-        "binding": {
-          "config": {
-            "struct": {
-              "tagPath": "\"No TagPath: \""
-            },
-            "waitOnAll": true
-          },
-          "transforms": [
-            {
-              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = self.view.params.tagPath\n\texcept:\n\t\tpass\n\tif tagPath is None or str(tagPath).strip() == '':\n\t\ttagPath = value.tagPath + self.view.id.split('@')[0].split('/')[-1]\n\titems = [\n\t\t\t  {\n\t\t\t    \"text\": \"Ticket Logger\",\n\t\t\t    \"icon\": {\n\t\t\t      \"path\": \"material/info\",\n\t\t\t      \"color\": \"--neutral-80\",\n\t\t\t      \"style\": {}\n\t\t\t    },\n\t\t\t    \"style\": {\n\t\t\t      \"classes\": \"bg-component font-value\",\n\t\t\t      \"height\": 24,\n\t\t\t      \"width\": 120\n\t\t\t    },\n\t\t\t    \"type\": \"message\",\n\t\t\t    \"children\": [],\n\t\t\t    \"link\": {\n\t\t\t      \"url\": \"\",\n\t\t\t      \"target\": \"self\"\n\t\t\t    },\n\t\t\t    \"method\": {\n\t\t\t      \"name\": \"\",\n\t\t\t      \"params\": {}\n\t\t\t    },\n\t\t\t    \"message\": {\n\t\t\t      \"type\": \"ticketLog\",\n\t\t\t      \"payload\": {\n\t\t\t        \"tagPath\": tagPath,\n\t\t\t        \"viewName\": self.view.id.split('@')[0]\n\t\t\t      },\n\t\t\t      \"scope\": \"page\"\n\t\t\t    }\n\t\t\t  }\n\t\t\t]\n\treturn items",
-              "type": "script"
-            }
-          ],
-          "type": "expr-struct"
-        }
-      },
-      "meta.contextMenu.enabled": {
-        "binding": {
-          "config": {
-            "struct": {
-              "items": "{this.meta.contextMenu.items}",
-              "permission": "{session.custom.TicketLogAccess}"
-            },
-            "waitOnAll": true
-          },
-          "transforms": [
-            {
-              "expression": "len({value}['items']) > 0 && {value}['permission']",
-              "type": "expression"
-            }
-          ],
-          "type": "expr-struct"
-        }
       }
     },
     "props": {
@@ -280,19 +244,6 @@
         "overflow": "hidden"
       }
     },
-    "type": "ia.container.flex",
-    "scripts": {
-      "customMethods": [],
-      "extensionFunctions": null,
-      "messageHandlers": [
-        {
-          "messageType": "ticketLog",
-          "pageScope": true,
-          "script": "\t# Ticket Logger context-menu opener\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
-          "sessionScope": false,
-          "viewScope": false
-        }
-      ]
-    }
+    "type": "ia.container.flex"
   }
 }

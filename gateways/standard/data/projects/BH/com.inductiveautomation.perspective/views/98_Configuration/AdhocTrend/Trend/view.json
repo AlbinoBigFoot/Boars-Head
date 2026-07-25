@@ -109,7 +109,9 @@
     "trendName": "",
     "username": ""
   },
-  "params": {},
+  "params": {
+    "faceplateMode": false
+  },
   "propConfig": {
     "custom.aggregate": {
       "binding": {
@@ -389,6 +391,10 @@
         },
         "type": "property"
       },
+      "persistent": true
+    },
+    "params.faceplateMode": {
+      "paramDirection": "input",
       "persistent": true
     }
   },
@@ -6172,9 +6178,19 @@
           "position.display": {
             "binding": {
               "config": {
-                "path": "view.custom.treeVisible"
+                "struct": {
+                  "faceplateMode": "{view.params.faceplateMode}",
+                  "treeVisible": "{view.custom.treeVisible}"
+                },
+                "waitOnAll": true
               },
-              "type": "property"
+              "transforms": [
+                {
+                  "expression": "!coalesce({value}['faceplateMode'], false) && {value}['treeVisible']",
+                  "type": "expression"
+                }
+              ],
+              "type": "expr-struct"
             }
           }
         },
@@ -6231,6 +6247,48 @@
                       "config": {
                         "path": "session.custom.AdhocTrend.chartType"
                       },
+                      "type": "property"
+                    }
+                  },
+                  "position.y": {
+                    "binding": {
+                      "config": {
+                        "path": "view.params.faceplateMode"
+                      },
+                      "transforms": [
+                        {
+                          "expression": "if(coalesce({value}, false), 0.12, 0.06)",
+                          "type": "expression"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  },
+                  "position.height": {
+                    "binding": {
+                      "config": {
+                        "path": "view.params.faceplateMode"
+                      },
+                      "transforms": [
+                        {
+                          "expression": "if(coalesce({value}, false), 0.86, 0.94)",
+                          "type": "expression"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  },
+                  "props.options.chart.offsetY": {
+                    "binding": {
+                      "config": {
+                        "path": "view.params.faceplateMode"
+                      },
+                      "transforms": [
+                        {
+                          "expression": "if(coalesce({value}, false), 0, -4)",
+                          "type": "expression"
+                        }
+                      ],
                       "type": "property"
                     }
                   }
@@ -6400,6 +6458,20 @@
                           ],
                           "type": "property"
                         }
+                      },
+                      "meta.visible": {
+                        "binding": {
+                          "config": {
+                            "path": "view.params.faceplateMode"
+                          },
+                          "transforms": [
+                            {
+                              "expression": "!coalesce({value}, false)",
+                              "type": "expression"
+                            }
+                          ],
+                          "type": "property"
+                        }
                       }
                     },
                     "props": {
@@ -6417,23 +6489,10 @@
                       "dom": {
                         "onClick": {
                           "config": {
-                            "draggable": true,
-                            "id": "AdhocTrendToolBar",
-                            "modal": true,
-                            "overlayDismiss": false,
-                            "position": {
-                              "left": 280,
-                              "top": 110
-                            },
-                            "positionType": "exact",
-                            "resizable": false,
-                            "showCloseIcon": false,
-                            "type": "toggle",
-                            "viewPath": "98_Configuration/AdhocTrend/_Assets/ToolBar",
-                            "viewportBound": false
+                            "script": "\tfrom shared import Alerts\n\tfaceplate = False\n\ttry:\n\t\tfaceplate = bool(self.view.params.faceplateMode)\n\texcept:\n\t\tfaceplate = False\n\tif faceplate:\n\t\tAlerts.showAdhocTrendConfig()\n\telse:\n\t\tsystem.perspective.openPopup(\n\t\t\tid=\"AdhocTrendToolBar\",\n\t\t\tview=\"98_Configuration/AdhocTrend/_Assets/ToolBar\",\n\t\t\tparams={\"faceplateShell\": False},\n\t\t\tposition={\"left\": 280, \"top\": 110},\n\t\t\tdraggable=True,\n\t\t\tresizable=False,\n\t\t\tshowCloseIcon=False,\n\t\t\tmodal=True,\n\t\t\toverlayDismiss=False,\n\t\t\tviewportBound=False\n\t\t)\n"
                           },
-                          "scope": "C",
-                          "type": "popup"
+                          "scope": "G",
+                          "type": "script"
                         }
                       }
                     },
@@ -6728,22 +6787,41 @@
                   "name": "Icons"
                 },
                 "position": {
-                  "height": 0.06,
-                  "width": 0.4
+                  "height": 0.07,
+                  "width": 0.5,
+                  "x": 0.0
                 },
                 "props": {
                   "alignContent": "flex-start",
                   "alignItems": "center",
                   "style": {
-                    "paddingTop": "0.2%",
-                    "gap": "12px",
+                    "paddingTop": "4px",
+                    "gap": "14px",
                     "alignItems": "center",
-                    "paddingLeft": "4px"
+                    "paddingLeft": "8px",
+                    "paddingRight": "8px",
+                    "overflow": "visible"
                   },
                   "wrap": "wrap",
                   "direction": "row"
                 },
-                "type": "ia.container.flex"
+                "type": "ia.container.flex",
+                "propConfig": {
+                  "position.height": {
+                    "binding": {
+                      "config": {
+                        "path": "view.params.faceplateMode"
+                      },
+                      "transforms": [
+                        {
+                          "expression": "if(coalesce({value}, false), 0.1, 0.07)",
+                          "type": "expression"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  }
+                }
               },
               {
                 "children": [
@@ -6776,7 +6854,8 @@
                       "name": "SaveTrendConfig"
                     },
                     "position": {
-                      "shrink": 0
+                      "shrink": 0,
+                      "basis": "auto"
                     },
                     "propConfig": {
                       "custom.id": {
@@ -6821,12 +6900,16 @@
                         }
                       },
                       "style": {
-                        "classes": "Container/Button Fonts/Button",
-                        "marginRight": "2%",
-                        "marginTop": "1px",
-                        "minHeight": 30,
-                        "minWidth": 120,
-                        "paddingTop": "3px"
+                        "classes": "container-button font-button adhoc-trend-action-btn",
+                        "marginRight": "0px",
+                        "marginTop": "0px",
+                        "minHeight": 32,
+                        "minWidth": 108,
+                        "paddingTop": "4px",
+                        "paddingLeft": "10px",
+                        "paddingRight": "10px",
+                        "paddingBottom": "4px",
+                        "whiteSpace": "nowrap"
                       },
                       "text": "Save Config"
                     },
@@ -6861,7 +6944,8 @@
                       "name": "UpdateTrendConfig"
                     },
                     "position": {
-                      "shrink": 0
+                      "shrink": 0,
+                      "basis": "auto"
                     },
                     "propConfig": {
                       "custom.id": {
@@ -6906,12 +6990,16 @@
                         }
                       },
                       "style": {
-                        "classes": "Container/Button Fonts/Button",
-                        "marginRight": "2%",
-                        "marginTop": "1px",
-                        "minHeight": 30,
-                        "minWidth": 120,
-                        "paddingTop": "3px"
+                        "classes": "container-button font-button adhoc-trend-action-btn",
+                        "marginRight": "0px",
+                        "marginTop": "0px",
+                        "minHeight": 32,
+                        "minWidth": 108,
+                        "paddingTop": "4px",
+                        "paddingLeft": "10px",
+                        "paddingRight": "10px",
+                        "paddingBottom": "4px",
+                        "whiteSpace": "nowrap"
                       },
                       "text": "Update Config"
                     },
@@ -6958,37 +7046,98 @@
                       },
                       "style": {
                         "backgroundColor": "transparent",
-                        "borderColor": "-neutral-80",
+                        "borderColor": "var(--neutral-80)",
                         "borderStyle": "solid",
                         "borderWidth": 1,
-                        "classes": "Container/Button Fonts/Button",
-                        "color": "--neutral-80",
-                        "marginRight": "2%",
-                        "marginTop": "1px",
-                        "minHeight": 30,
-                        "minWidth": 120,
-                        "paddingTop": "3px"
+                        "classes": "font-button adhoc-trend-action-btn adhoc-trend-action-btn-outline",
+                        "color": "var(--neutral-80)",
+                        "marginRight": "0px",
+                        "marginTop": "0px",
+                        "minHeight": 32,
+                        "minWidth": 108,
+                        "paddingTop": "4px",
+                        "paddingLeft": "10px",
+                        "paddingRight": "10px",
+                        "paddingBottom": "4px",
+                        "whiteSpace": "nowrap"
                       },
                       "text": "Clear Trends"
                     },
-                    "type": "ia.input.button"
+                    "type": "ia.input.button",
+                    "position": {
+                      "shrink": 0,
+                      "basis": "auto"
+                    }
                   }
                 ],
                 "meta": {
                   "name": "Buttons"
                 },
                 "position": {
-                  "height": 0.06,
-                  "width": 0.3,
-                  "x": 0.7
+                  "height": 0.07,
+                  "width": 0.48,
+                  "x": 0.51
                 },
                 "props": {
-                  "alignContent": "flex-start",
+                  "alignContent": "center",
                   "alignItems": "center",
                   "justify": "flex-end",
-                  "wrap": "wrap"
+                  "wrap": "nowrap",
+                  "direction": "row",
+                  "gap": 8,
+                  "style": {
+                    "classes": "adhoc-trend-toolbar-actions",
+                    "gap": "10px",
+                    "paddingRight": "12px",
+                    "paddingTop": "4px",
+                    "overflow": "visible"
+                  }
                 },
-                "type": "ia.container.flex"
+                "type": "ia.container.flex",
+                "propConfig": {
+                  "position.height": {
+                    "binding": {
+                      "config": {
+                        "path": "view.params.faceplateMode"
+                      },
+                      "transforms": [
+                        {
+                          "expression": "if(coalesce({value}, false), 0.1, 0.07)",
+                          "type": "expression"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  },
+                  "props.style.paddingBottom": {
+                    "binding": {
+                      "config": {
+                        "path": "view.params.faceplateMode"
+                      },
+                      "transforms": [
+                        {
+                          "expression": "if(coalesce({value}, false), '6px', '0px')",
+                          "type": "expression"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "config": {
+                        "path": "view.params.faceplateMode"
+                      },
+                      "transforms": [
+                        {
+                          "expression": "if(coalesce({value}, false), 'adhoc-trend-toolbar-actions adhoc-trend-toolbar-actions-faceplate', 'adhoc-trend-toolbar-actions')",
+                          "type": "expression"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  }
+                }
               },
               {
                 "meta": {
@@ -7040,11 +7189,57 @@
             "props": {
               "mode": "percent",
               "style": {
-                "overflow": "visible",
-                "classes": "adhoc-trend-chart-host"
+                "overflow": "hidden",
+                "classes": "adhoc-trend-chart-host",
+                "minHeight": 0,
+                "minWidth": 0
               }
             },
-            "type": "ia.container.coord"
+            "type": "ia.container.coord",
+            "propConfig": {
+              "position.basis": {
+                "binding": {
+                  "config": {
+                    "path": "view.params.faceplateMode"
+                  },
+                  "transforms": [
+                    {
+                      "expression": "if(coalesce({value}, false), '0px', '92%')",
+                      "type": "expression"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "position.shrink": {
+                "binding": {
+                  "config": {
+                    "path": "view.params.faceplateMode"
+                  },
+                  "transforms": [
+                    {
+                      "expression": "if(coalesce({value}, false), 1, 0)",
+                      "type": "expression"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.style.overflow": {
+                "binding": {
+                  "config": {
+                    "path": "view.params.faceplateMode"
+                  },
+                  "transforms": [
+                    {
+                      "expression": "if(coalesce({value}, false), 'hidden', 'visible')",
+                      "type": "expression"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            }
           },
           {
             "children": [
@@ -7129,6 +7324,20 @@
                           "transforms": [
                             {
                               "expression": "if({value} = 'row',\r\n\t'0%',\r\n\t'0.1%'\r\n)",
+                              "type": "expression"
+                            }
+                          ],
+                          "type": "property"
+                        }
+                      },
+                      "props.elementStyle.minWidth": {
+                        "binding": {
+                          "config": {
+                            "path": "view.params.faceplateMode"
+                          },
+                          "transforms": [
+                            {
+                              "expression": "if(coalesce({value}, false), 0, 320)",
                               "type": "expression"
                             }
                           ],
@@ -7798,15 +8007,19 @@
               "position.basis": {
                 "binding": {
                   "config": {
-                    "path": "./Toggle/Toggle.props.selected"
+                    "struct": {
+                      "faceplateMode": "{view.params.faceplateMode}",
+                      "selected": "{./Toggle/Toggle.props.selected}"
+                    },
+                    "waitOnAll": true
                   },
                   "transforms": [
                     {
-                      "expression": "if({value},\r\n\t'auto',\r\n\t'188px'\r\n)",
+                      "expression": "if(coalesce({value}['faceplateMode'], false),\n\t'220px',\n\tif({value}['selected'], 'auto', '188px')\n)",
                       "type": "expression"
                     }
                   ],
-                  "type": "property"
+                  "type": "expr-struct"
                 }
               },
               "position.display": {
@@ -7826,25 +8039,47 @@
               "position.grow": {
                 "binding": {
                   "config": {
-                    "path": "./Toggle/Toggle.props.selected"
+                    "struct": {
+                      "faceplateMode": "{view.params.faceplateMode}",
+                      "selected": "{./Toggle/Toggle.props.selected}"
+                    },
+                    "waitOnAll": true
                   },
                   "transforms": [
                     {
-                      "expression": "if({value},\r\n\t1,\r\n\t0\r\n)",
+                      "expression": "if(coalesce({value}['faceplateMode'], false),\n\t0,\n\tif({value}['selected'], 1, 0)\n)",
                       "type": "expression"
                     }
                   ],
-                  "type": "property"
+                  "type": "expr-struct"
                 }
               },
               "position.shrink": {
                 "binding": {
                   "config": {
-                    "path": "./Toggle/Toggle.props.selected"
+                    "struct": {
+                      "faceplateMode": "{view.params.faceplateMode}",
+                      "selected": "{./Toggle/Toggle.props.selected}"
+                    },
+                    "waitOnAll": true
                   },
                   "transforms": [
                     {
-                      "expression": "if({value},\r\n\t1,\r\n\t0\r\n)",
+                      "expression": "if(coalesce({value}['faceplateMode'], false),\n\t0,\n\tif({value}['selected'], 1, 0)\n)",
+                      "type": "expression"
+                    }
+                  ],
+                  "type": "expr-struct"
+                }
+              },
+              "props.style.classes": {
+                "binding": {
+                  "config": {
+                    "path": "view.params.faceplateMode"
+                  },
+                  "transforms": [
+                    {
+                      "expression": "if(coalesce({value}, false), 'container-card adhoc-trend-pens-faceplate', 'container-card')",
                       "type": "expression"
                     }
                   ],
@@ -7855,9 +8090,10 @@
             "props": {
               "direction": "column",
               "style": {
-                "classes": "Container/Card",
+                "classes": "container-card",
                 "margin": "1%",
-                "overflow": "hidden"
+                "overflow": "hidden",
+                "minHeight": 0
               }
             },
             "type": "ia.container.flex"
@@ -7883,6 +8119,20 @@
                   ],
                   "type": "property"
                 }
+              },
+              "position.basis": {
+                "binding": {
+                  "config": {
+                    "path": "view.params.faceplateMode"
+                  },
+                  "transforms": [
+                    {
+                      "expression": "if(coalesce({value}, false), '48px', '10%')",
+                      "type": "expression"
+                    }
+                  ],
+                  "type": "property"
+                }
               }
             },
             "props": {
@@ -7901,13 +8151,18 @@
           "name": "TrendContainer"
         },
         "position": {
-          "grow": 1
+          "grow": 1,
+          "shrink": 1,
+          "basis": "0px"
         },
         "props": {
           "direction": "column",
           "style": {
-            "overflow": "visible",
-            "classes": "adhoc-trend-chart-host"
+            "overflow": "hidden",
+            "classes": "adhoc-trend-chart-host",
+            "height": "100%",
+            "minHeight": 0,
+            "minWidth": 0
           }
         },
         "type": "ia.container.flex"
@@ -7963,11 +8218,43 @@
           ],
           "type": "expr-struct"
         }
+      },
+      "props.style.classes": {
+        "binding": {
+          "config": {
+            "path": "view.params.faceplateMode"
+          },
+          "transforms": [
+            {
+              "expression": "if(coalesce({value}, false), 'bg-container adhoc-trend-faceplate-embed', 'bg-container')",
+              "type": "expression"
+            }
+          ],
+          "type": "property"
+        }
+      },
+      "props.style.overflow": {
+        "binding": {
+          "config": {
+            "path": "view.params.faceplateMode"
+          },
+          "transforms": [
+            {
+              "expression": "if(coalesce({value}, false), 'hidden', 'visible')",
+              "type": "expression"
+            }
+          ],
+          "type": "property"
+        }
       }
     },
     "props": {
       "style": {
-        "classes": "Colors/Background"
+        "classes": "bg-container",
+        "height": "100%",
+        "width": "100%",
+        "minHeight": 0,
+        "minWidth": 0
       }
     },
     "scripts": {

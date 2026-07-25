@@ -5,8 +5,22 @@ allows to repeatable control of the popup
 
 The following functions are available
     * showAlert - Opens the alert popup
+    * showAdhocTrend - Opens the AdhocTrend faceplate popup (in-page trending)
+    * showAdhocTrendConfig - Opens Trend Configuration beside the AdhocTrend faceplate
 
 """
+POPUP_ADHOC_TREND = "AdhocTrend"
+VIEW_ADHOC_TREND = "01_Popups/00_Faceplates/AdhocTrend"
+POPUP_ADHOC_TREND_CONFIG = "AdhocTrendConfig"
+VIEW_ADHOC_TREND_CONFIG = "01_Popups/00_Faceplates/AdhocTrendConfig"
+
+# Faceplate geometry — config sits immediately left of AdhocTrend (bottom-right).
+ADHOC_TREND_WIDTH = 960
+ADHOC_TREND_HEIGHT = 780
+ADHOC_TREND_CONFIG_WIDTH = 340
+ADHOC_TREND_CONFIG_HEIGHT = 520
+ADHOC_TREND_GAP = 12
+
 def showAlert(state="info", title="", message="", showCloseBtn=True, btnTextPrimary="", btnTextSecondary="", btnIconPrimary="", btnIconSecondary="", btnIconAlignment="right", btnActionPrimary=None, btnActionSecondary=None, payload={}):
 	"""Opens the alert popup
 	
@@ -72,7 +86,66 @@ def showAlert(state="info", title="", message="", showCloseBtn=True, btnTextPrim
 		modal=False,
 		overlayDismiss=True
 	)
-	
+
+def showAdhocTrend():
+	"""Open (or refocus) the Adhoc trending faceplate on the current page.
+
+	Bottom-right placement matches Ticket Logger / contextMenuTicketLog.
+	Faceplate embeds Trend in faceplateMode (no tag browser tree); pens come
+	from ContextMenu Add to trend / session.custom.AdhocTrend.
+	"""
+	system.perspective.openPopup(
+		id=POPUP_ADHOC_TREND,
+		view=VIEW_ADHOC_TREND,
+		position={
+			"bottom": 10,
+			"right": 10,
+			"width": ADHOC_TREND_WIDTH,
+			"height": ADHOC_TREND_HEIGHT
+		},
+		draggable=True,
+		resizable=True,
+		showCloseIcon=False,
+		modal=False,
+		overlayDismiss=True,
+		viewportBound=True
+	)
+
+def showAdhocTrendConfig():
+	"""Open Trend Configuration as a floating companion to the AdhocTrend faceplate.
+
+	Non-modal (no viewport dim). Placed immediately left of AdhocTrend using the
+	same bottom offset. Binds to session.custom.AdhocTrend — closing config does
+	not close the trend faceplate.
+	"""
+	system.perspective.openPopup(
+		id=POPUP_ADHOC_TREND_CONFIG,
+		view=VIEW_ADHOC_TREND_CONFIG,
+		position={
+			"bottom": 10,
+			"right": 10 + ADHOC_TREND_WIDTH + ADHOC_TREND_GAP,
+			"width": ADHOC_TREND_CONFIG_WIDTH,
+			"height": ADHOC_TREND_CONFIG_HEIGHT
+		},
+		draggable=True,
+		resizable=False,
+		showCloseIcon=False,
+		modal=False,
+		overlayDismiss=True,
+		viewportBound=True
+	)
+
+def closeAdhocTrendConfig():
+	"""Close the companion Trend Configuration popup if open."""
+	try:
+		system.perspective.closePopup(POPUP_ADHOC_TREND_CONFIG)
+	except:
+		pass
+	try:
+		system.perspective.closePopup("AdhocTrendToolBar")
+	except:
+		pass
+
 def contextMenuTicketLog(tagPath="", viewName=None):
 	
 	params = {
