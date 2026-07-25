@@ -42,9 +42,100 @@
             "fontSize": "13px",
             "marginBottom": "12px"
           },
-          "text": "Active unacked = full priority color (matches icons). Active acked = darker shade."
+          "text": "Active unacked = full priority color (matches icons). Active acked = darker shade. Multi-select Device Type filters by tag folder (OR). Empty selection shows all."
         },
         "type": "ia.display.label"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "DeviceTypeLabel"
+            },
+            "position": {
+              "basis": "90px",
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "classes": "font-label",
+                "alignItems": "center",
+                "display": "flex",
+                "fontWeight": "600"
+              },
+              "text": "Device Type"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "DeviceTypeDropdown"
+            },
+            "position": {
+              "basis": "360px",
+              "grow": 0,
+              "shrink": 0
+            },
+            "props": {
+              "dropdownOptionStyle": {
+                "classes": "bg-component font-value"
+              },
+              "multiSelect": true,
+              "options": [
+                {
+                  "label": "Evaporators",
+                  "value": "Evaporators"
+                },
+                {
+                  "label": "Compressors",
+                  "value": "Compressors"
+                },
+                {
+                  "label": "Pumps",
+                  "value": "Pumps"
+                },
+                {
+                  "label": "Exhaust Fans",
+                  "value": "ExhaustFans"
+                },
+                {
+                  "label": "Cooling Towers",
+                  "value": "CoolingTowers"
+                }
+              ],
+              "placeholder": {
+                "text": "All device types"
+              },
+              "search": {
+                "enabled": false
+              },
+              "style": {
+                "classes": "bg-component container-card font-value",
+                "height": "32px",
+                "minWidth": "280px"
+              },
+              "value": null,
+              "wrapMultiSelectValues": true
+            },
+            "type": "ia.input.dropdown"
+          }
+        ],
+        "meta": {
+          "name": "Filters"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "alignItems": "center",
+          "style": {
+            "gap": "8px",
+            "marginBottom": "12px",
+            "overflow": "visible"
+          },
+          "wrap": "wrap"
+        },
+        "type": "ia.container.flex"
       },
       {
         "meta": {
@@ -52,6 +143,22 @@
         },
         "position": {
           "grow": 1
+        },
+        "propConfig": {
+          "props.params.sourceFilter": {
+            "binding": {
+              "config": {
+                "expression": "{../Filters/DeviceTypeDropdown.props.value}"
+              },
+              "transforms": [
+                {
+                  "code": "\treturn shared.Alarms.deviceTypeSourceFilter(value)",
+                  "type": "script"
+                }
+              ],
+              "type": "expr"
+            }
+          }
         },
         "props": {
           "params": {

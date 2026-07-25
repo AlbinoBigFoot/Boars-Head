@@ -5,6 +5,49 @@ import re
 
 logger = system.util.getLogger("shared.Alarms")
 
+# Top-level tag folders used as Device Type (plant equipment families).
+DEVICE_TYPE_FOLDERS = (
+	"Evaporators",
+	"Compressors",
+	"Pumps",
+	"ExhaustFans",
+	"CoolingTowers",
+)
+
+
+def deviceTypeSourceFilter(selected):
+	"""
+	Build Alarm Status / Alarm Journal source filter from a multi-select Device Type list.
+
+	Empty / None selection => '*' (show all device types).
+	One or more selections => comma-delimited '*Folder*' wildcards (OR match).
+	Device types map to tag path folders under [default], e.g. Evaporators → *Evaporators*.
+	"""
+	if selected is None or selected == "":
+		return "*"
+
+	items = []
+	if isinstance(selected, basestring):
+		if str(selected).strip():
+			items = [str(selected).strip()]
+	else:
+		try:
+			for item in selected:
+				if item is None:
+					continue
+				text = str(item).strip()
+				if text:
+					items.append(text)
+		except TypeError:
+			text = str(selected).strip()
+			if text:
+				items = [text]
+
+	if not items:
+		return "*"
+
+	return ",".join(["*%s*" % folder for folder in items])
+
 
 def rebuild(rebuildTagPath):
 	"""

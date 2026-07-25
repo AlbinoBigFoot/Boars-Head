@@ -77,7 +77,7 @@ New to the BH Perspective project? Start here:
 
 - **[Adhoc trending](wiki/docs/perspective/adhoc-trending.md)** (wiki: `/docs/perspective/adhoc-trending`) — `/trending`, saved configs, SQL, ApexCharts
 - **[docs/evaporator-hmi-components.md](docs/evaporator-hmi-components.md)** — pages, embedded device/element views, CSS (`fan-spin`, `alarm-flash`), scripts, tags, icons, and how Overview is wired
-- **[docs/central-alarming.md](docs/central-alarming.md)** — Alarm Status Table, `/alarms`, priority row colors (unack vs ack)
+- **[docs/central-alarming.md](docs/central-alarming.md)** — Alarm Status (`/alarms`), Alarm Journal (`/alarms/journal`), Device Type multi-select filter, priority row colors
 
 ## Source documents
 

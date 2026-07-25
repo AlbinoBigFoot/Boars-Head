@@ -7,21 +7,42 @@ Perspective views and styling for the plant-wide alarm area (BH project).
 | URL | View | Role |
 |-----|------|------|
 | `/alarms` | `00_Pages/Alarms/Summary` | Central Alarm Status page |
+| `/alarms/journal` | `00_Pages/Alarms/Journal` | Alarm Journal (historical events) |
 
 ## Views
 
 | Path | Role |
 |------|------|
 | `00_Pages/Alarms/_Assets/AlarmStatusTable` | Reusable built-in Alarm Status Table (`ia.display.alarmstatustable`) |
-| `00_Pages/Alarms/Summary` | Thin page shell that embeds the table |
+| `00_Pages/Alarms/_Assets/AlarmJournalTable` | Reusable built-in Alarm Journal Table (`ia.display.alarmjournaltable`) |
+| `00_Pages/Alarms/Summary` | Status page shell with Device Type filter + embedded status table |
+| `00_Pages/Alarms/Journal` | Journal page shell with Device Type filter + embedded journal table |
 
-### AlarmStatusTable params
+### AlarmStatusTable / AlarmJournalTable params
 
 | Param | Default | Meaning |
 |-------|---------|---------|
-| `sourceFilter` | `*` | Bound to `filters.active.conditions.source` (device faceplates can pass a scoped filter later) |
+| `sourceFilter` | `*` | Bound to Status `filters.active.conditions.source` or Journal `filter.conditions.source` |
 
-Columns shown: **priority**, **state**, **label**, **activeTime**. Sort: `isAcked` → `priority` → `activeTime`.
+Status columns: **priority**, **state**, **label**, **activeTime**. Sort: `isAcked` → `priority` → `activeTime`.
+
+Journal columns: **priority**, **state**, **eventState**, **label**, **eventTime**.
+
+### Device Type filter (multi-select)
+
+Both pages use an `ia.input.dropdown` with `multiSelect: true`. Options match plant tag folders:
+
+`Evaporators`, `Compressors`, `Pumps`, `ExhaustFans`, `CoolingTowers`
+
+`shared.Alarms.deviceTypeSourceFilter(selected)` builds the source condition:
+
+| Selection | Source filter |
+|-----------|---------------|
+| Empty / null (placeholder “All device types”) | `*` — show all |
+| One type, e.g. Evaporators | `*Evaporators*` |
+| Multiple types | Comma-delimited OR, e.g. `*Evaporators*,*Pumps*` |
+
+Device type is inferred from the alarm **source path** tag folder (not a separate UDT property).
 
 ## Row colors (CSS)
 
@@ -53,9 +74,12 @@ Showcase evaporators **EV-22–EV-33** each have an Ignition alarm on `Fan 1/Fau
 
 Re-import `taginstances.json` after pulling changes.
 
+## Gateway prerequisite (Journal)
+
+The Alarm Journal Table queries the existing Alarm Journal profile named **`MSSQL`** (`props.name`). Do **not** create a second write journal named `Journal` — use the gateway’s `MSSQL` profile. Without that profile the journal page will be empty / error.
+
 ## Not in this pass
 
-- Alarm Journal
 - Unacked row blink
 - Live PLC alarm pipeline beyond these demo memory tags
 - Row blink / `_Config/Flash` binding
