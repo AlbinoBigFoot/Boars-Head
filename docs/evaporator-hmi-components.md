@@ -303,7 +303,7 @@ Sim profiles live in `sim/build_plant_sim.py` (`EV_PROFILES`) → `sim/bh-plant-
 
 Custom Perspective icon library (gateway module data, **not** inside the BH project folder):
 
-`gateways/standard/data/modules/com.inductiveautomation.perspective/icons/equipment.svg`
+`gateways/standard/data/config/resources/core/com.inductiveautomation.perspective/icons/equipment/equipment.svg`
 
 Also registered in `icons.digest.json` (SHA). After changing SVG files, restart the gateway so 8.1 picks them up.
 
