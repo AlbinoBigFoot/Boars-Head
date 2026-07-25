@@ -1018,6 +1018,67 @@ body:has(.psc-animations-off) .container-fade-in {
 	text-transform: uppercase;
 }
 
+.psc-nav-search {
+	align-items: center;
+	display: flex;
+	gap: 4px;
+	width: 100%;
+}
+
+.psc-nav-search-field {
+	background-color: var(--surface-sunken);
+	border: 1px solid var(--border-nav);
+	border-radius: 0.375rem;
+	color: var(--text-nav);
+	font-family: Bahnschrift, 'Segoe UI', sans-serif;
+	font-size: 12px;
+	min-height: 28px;
+}
+
+.psc-nav-search-clear {
+	color: var(--text-nav-muted);
+	user-select: none;
+}
+
+.psc-nav-search-clear:hover {
+	color: var(--text-nav);
+}
+
+.psc-nav-search-count {
+	color: var(--text-nav-muted);
+	font-family: Bahnschrift, 'Segoe UI', sans-serif;
+	font-size: 10px;
+	padding-right: 2px;
+	white-space: nowrap;
+}
+
+/* Search hit / ancestor icon tint (applied via tree item icon.style.classes) */
+.psc-nav-search-hit {
+	color: var(--info);
+}
+
+/* Row highlight only for direct search matches (material/search icon).
+   Margin keeps adjacent hits from merging into one blob. */
+.psc-nav-tree .ia_treeComponent__node:has(svg[data-icon='material/search']),
+.psc-nav-tree .tree-row:has(svg[data-icon='material/search']),
+.psc-nav-tree .tree-item:has(svg[data-icon='material/search']) {
+	background-color: color-mix(in srgb, var(--info) 28%, transparent) !important;
+	border: 1px solid color-mix(in srgb, var(--info) 55%, transparent);
+	border-radius: 0.375rem;
+	box-sizing: border-box;
+	font-weight: 600;
+	margin: 3px 2px;
+}
+
+@supports not (background-color: color-mix(in srgb, red 50%, transparent)) {
+	.psc-nav-tree .ia_treeComponent__node:has(svg[data-icon='material/search']),
+	.psc-nav-tree .tree-row:has(svg[data-icon='material/search']),
+	.psc-nav-tree .tree-item:has(svg[data-icon='material/search']) {
+		background-color: rgba(33, 150, 243, 0.28) !important;
+		border: 1px solid rgba(33, 150, 243, 0.55);
+	}
+}
+
 .psc-nav-section {
 	color: var(--text-nav-muted);
 	font-family: Bahnschrift, 'Segoe UI', sans-serif;
@@ -1277,10 +1338,33 @@ body:has(.psc-animations-off) .container-fade-in {
 }
 .psc-theme-toggle-option {
 	align-items: center;
+	color: var(--text);
 	font-family: Bahnschrift, 'Segoe UI', sans-serif;
 	font-size: 12px;
 	gap: 4px;
 	justify-content: center;
 	min-height: 28px;
 	padding: 4px 6px;
+}
+/* Labels/icons inherit option color so selected contrast is not stomped by font-* classes */
+.psc-theme-toggle-option .psc-font-label,
+.psc-theme-toggle-option .psc-font-value,
+.psc-theme-toggle-option .psc-font-title {
+	color: inherit !important;
+}
+/* Selected segment: matches ChangeTheme (neutral-100 fill + inverse text).
+ * Neutrals invert in dark themes, so --text-inverse/--neutral-10 stays readable;
+ * --text-on-accent (fixed white) would fail on light selected fill in dark. */
+.psc-theme-toggle-option-selected {
+	background-color: var(--neutral-100) !important;
+	color: var(--text-inverse) !important;
+}
+.psc-theme-toggle-option-selected .psc-font-label,
+.psc-theme-toggle-option-selected .psc-font-value,
+.psc-theme-toggle-option-selected .psc-font-title,
+.psc-theme-toggle-option-selected .ia_labelComponent,
+.psc-theme-toggle-option-selected svg,
+.psc-theme-toggle-option-selected svg path:not([fill='none']) {
+	color: var(--text-inverse) !important;
+	fill: var(--text-inverse) !important;
 }
