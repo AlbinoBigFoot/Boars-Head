@@ -1,6 +1,7 @@
 # Secrets / local env
 .env
 .env.local
+.ignition-scan.json
 *.pem
 *.key
 
@@ -23,6 +24,11 @@ _fix_*.py
 __pycache__/
 *.pyc
 .venv/
+
+# Docusaurus wiki (deps / build artifacts tracked via Docker volume or local npm)
+wiki/node_modules/
+wiki/build/
+wiki/.docusaurus/
 
 # Ignition host bind-mounts: track projects for Git; ignore runtime/cache/DB noise
 gateways/**/data/**

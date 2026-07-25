@@ -18,9 +18,10 @@ docker compose up -d
 
 | Service | URL / port (defaults in `.env`) | Image |
 |---------|------------|-------|
-| Standard Gateway | http://localhost:19088 | `inductiveautomation/ignition:8.1.43` |
+| Standard Gateway | http://localhost:19088 | `inductiveautomation/ignition:8.3.7` |
 | Edge Gateway | http://localhost:19188 | `inductiveautomation/ignition:8.3.7` (`IGNITION_EDITION=edge`) |
 | MSSQL | localhost:11433 | `mcr.microsoft.com/mssql/server:2022-latest` |
+| Engineering Wiki | http://localhost:3030 | Docusaurus (`wiki/` — `docker compose up -d wiki`) |
 
 Ports are remappable in `.env` if something else already binds common Ignition/SQL ports.
 
@@ -52,7 +53,7 @@ Knowledge graph of tracker + planning docs lives in `graphify-out/` (`GRAPH_REPO
 1. Commission both gateways (accept EULA via env already set).
 2. Open Gateway Network on Standard → add Edge (`ignition-edge:8088` on Docker network `bh-ot`, or host ports).
 3. Use EAM / project sync so Edge mirrors the Standard project.
-4. While Standard remains **8.1** and Edge **8.3**, keep `GATEWAY_NETWORK_ALLOWJAVASERIALIZATION=true` (temporary; remove after both on 8.3).
+4. Both gateways are on **8.3.7** — `GATEWAY_NETWORK_ALLOWJAVASERIALIZATION` can stay `false` (only needed for mixed 8.1↔8.3 GAN).
 
 ## MSSQL from Ignition
 
@@ -60,10 +61,21 @@ Knowledge graph of tracker + planning docs lives in `graphify-out/` (`GRAPH_REPO
 - Host from workstation: `localhost,11433` (or `MSSQL_PORT` from `.env`)
 - Auth: SA password from `.env` (lab only — replace with least-privilege SQL user for real work)
 
-## Perspective HMI (evaporators)
+## Engineering wiki (Docusaurus)
+
+Living archive for components, scripting, named queries, tags, and gateway settings:
+
+```powershell
+docker compose up -d --build wiki
+```
+
+Open http://localhost:3030. Search is local (`@easyops-cn/docusaurus-search-local`) — no Algolia signup. Source lives in `wiki/`.
+
+## Perspective HMI
 
 New to the BH Perspective project? Start here:
 
+- **[Adhoc trending](wiki/docs/perspective/adhoc-trending.md)** (wiki: `/docs/perspective/adhoc-trending`) — `/trending`, saved configs, SQL, ApexCharts
 - **[docs/evaporator-hmi-components.md](docs/evaporator-hmi-components.md)** — pages, embedded device/element views, CSS (`fan-spin`, `alarm-flash`), scripts, tags, icons, and how Overview is wired
 - **[docs/central-alarming.md](docs/central-alarming.md)** — Alarm Status Table, `/alarms`, priority row colors (unack vs ack)
 
