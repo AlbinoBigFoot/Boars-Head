@@ -30,10 +30,17 @@ wiki/node_modules/
 wiki/build/
 wiki/.docusaurus/
 
-# Ignition host bind-mounts: track projects for Git; ignore runtime/cache/DB noise
+# Ignition host bind-mounts: track projects + Perspective themes for Git; ignore runtime/cache/DB noise
 gateways/**/data/**
 !gateways/**/data/projects/
 !gateways/**/data/projects/**
+# Gateway Perspective themes (light/dark × cool/warm) — required for session.props.theme
+!gateways/**/data/config/
+!gateways/**/data/config/resources/
+!gateways/**/data/config/resources/core/
+!gateways/**/data/config/resources/core/com.inductiveautomation.perspective/
+!gateways/**/data/config/resources/core/com.inductiveautomation.perspective/themes/
+!gateways/**/data/config/resources/core/com.inductiveautomation.perspective/themes/**
 
 # Volatile even under projects if present
 gateways/**/data/log/

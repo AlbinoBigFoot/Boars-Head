@@ -1,0 +1,301 @@
+{
+  "custom": {
+    "label": "Fault",
+    "metadata": {
+      "longDescription": "evaporator status",
+      "shortDescription": "status",
+      "states": [
+        {
+          "label": "Off",
+          "value": 0
+        },
+        {
+          "label": "Cooling",
+          "value": 1
+        },
+        {
+          "label": "Defrost",
+          "value": 2
+        },
+        {
+          "label": "Fault",
+          "value": 3
+        },
+        {
+          "label": "Manual",
+          "value": 4
+        },
+        {
+          "label": "Idle",
+          "value": 5
+        }
+      ]
+    },
+    "quality": "Good",
+    "states": [
+      {
+        "label": "Off",
+        "value": 0
+      },
+      {
+        "label": "Cooling",
+        "value": 1
+      },
+      {
+        "label": "Defrost",
+        "value": 2
+      },
+      {
+        "label": "Fault",
+        "value": 3
+      },
+      {
+        "label": "Manual",
+        "value": 4
+      },
+      {
+        "label": "Idle",
+        "value": 5
+      }
+    ],
+    "value": 3
+  },
+  "params": {
+    "tagPath": "[default]Evaporators/EV-001/Status/Value"
+  },
+  "propConfig": {
+    "custom.label": {
+      "binding": {
+        "config": {
+          "expression": "if(isNull({view.custom.states}),\n\t{view.custom.value},\n\t{view.custom.value})"
+        },
+        "transforms": [
+          {
+            "code": "\tif value is None:\n\t\treturn ''\n\ttry:\n\t\tv = int(value)\n\texcept:\n\t\treturn ''\n\t# Prefer short display codes (Cooling = CLG, never RUN)\n\tcodes = {0: 'STOP', 1: 'CLG', 2: 'DFT', 3: 'FLT', 4: 'MAN', 5: 'IDLE'}\n\tstates = self.custom.states\n\tif states:\n\t\ttry:\n\t\t\tfor s in states:\n\t\t\t\tsv = s['value'] if hasattr(s, '__getitem__') else getattr(s, 'value', None)\n\t\t\t\tsl = s['label'] if hasattr(s, '__getitem__') else getattr(s, 'label', None)\n\t\t\t\tif sv is not None and int(sv) == v and sl not in (None, ''):\n\t\t\t\t\tkey = str(sl).strip().upper()\n\t\t\t\t\talias = {\n\t\t\t\t\t\t'OFF': 'STOP', 'STOP': 'STOP', 'STOPPED': 'STOP',\n\t\t\t\t\t\t'COOLING': 'CLG', 'CLG': 'CLG',\n\t\t\t\t\t\t'DEFROST': 'DFT', 'DFT': 'DFT',\n\t\t\t\t\t\t'FAULT': 'FLT', 'ALARM': 'FLT', 'FLT': 'FLT',\n\t\t\t\t\t\t'MANUAL': 'MAN', 'MAN': 'MAN',\n\t\t\t\t\t\t'IDLE': 'IDLE', 'STANDBY': 'IDLE', 'IDL': 'IDLE',\n\t\t\t\t\t\t'RUN': 'RUN', 'RUNNING': 'RUN', 'ON': 'RUN'\n\t\t\t\t\t}\n\t\t\t\t\t# If tag metadata still says Run for cooling value, force CLG for value 1\n\t\t\t\t\tif v == 1:\n\t\t\t\t\t\treturn 'CLG'\n\t\t\t\t\treturn alias.get(key, key)\n\t\texcept:\n\t\t\tpass\n\treturn codes.get(v, '')\n",
+            "type": "script"
+          }
+        ],
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "custom.metadata": {
+      "binding": {
+        "config": {
+          "fallbackDelay": 2.5,
+          "mode": "indirect",
+          "references": {
+            "tagPath": "{view.params.tagPath}"
+          },
+          "tagPath": "{tagPath}.Metadata"
+        },
+        "transforms": [
+          {
+            "expression": "if(isNull({value}),\n\t'',\n\t{value})",
+            "type": "expression"
+          }
+        ],
+        "type": "tag"
+      },
+      "persistent": true
+    },
+    "custom.quality": {
+      "binding": {
+        "config": {
+          "expression": "if({view.params.tagPath} = '',\n\t'Bad',\n\tqualityOf(tag({view.params.tagPath})))"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "custom.states": {
+      "binding": {
+        "config": {
+          "expression": "if({view.params.tagPath} = '' || qualityOf(tag({view.params.tagPath})) != 'Good',\n\tnull,\n\tif(isBad(tag({view.params.tagPath} + '.Metadata')),\n\t\tnull,\n\t\ttag({view.params.tagPath} + '.Metadata')['states']))"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "custom.value": {
+      "binding": {
+        "config": {
+          "expression": "if({view.params.tagPath} = '' || qualityOf(tag({view.params.tagPath})) != 'Good',\n\tnull,\n\ttag({view.params.tagPath}))"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 22,
+      "width": 64
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "StatusDot"
+        },
+        "position": {
+          "basis": "10px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.style.backgroundColor": {
+            "binding": {
+              "config": {
+                "expression": "{view.custom.label}"
+              },
+              "transforms": [
+                {
+                  "code": "\ts = str(value).strip().upper()\n\tif not s:\n\t\treturn 'transparent'\n\tcolors = {\n\t\t'COOLING': '#039BE5',\n\t\t'CLG': '#039BE5',\n\t\t'RUN': '#228B22',\n\t\t'RUNNING': '#228B22',\n\t\t'ON': '#228B22',\n\t\t'DEFROST': '#EF6C00',\n\t\t'DFT': '#EF6C00',\n\t\t'FAULT': '#C62828',\n\t\t'ALARM': '#C62828',\n\t\t'FLT': '#C62828',\n\t\t'MANUAL': '#9C27B0',\n\t\t'MAN': '#9C27B0',\n\t\t'IDLE': '#90A4AE',\n\t\t'STANDBY': '#90A4AE',\n\t\t'IDL': '#90A4AE',\n\t\t'OFF': '#546E7A',\n\t\t'STOP': '#546E7A',\n\t\t'STOPPED': '#546E7A'\n\t}\n\treturn colors.get(s, '#607D8B')\n",
+                  "type": "script"
+                }
+              ],
+              "type": "expr"
+            }
+          },
+          "props.style.opacity": {
+            "binding": {
+              "config": {
+                "expression": "if({view.custom.label} = '',\n   0,\n   1)"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "borderRadius": "50%",
+            "height": "10px",
+            "minHeight": "10px",
+            "minWidth": "10px",
+            "width": "10px"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "meta": {
+          "name": "StatusLabel"
+        },
+        "position": {
+          "shrink": 0,
+          "basis": "auto"
+        },
+        "propConfig": {
+          "props.style.color": {
+            "binding": {
+              "config": {
+                "expression": "{view.custom.label}"
+              },
+              "transforms": [
+                {
+                  "code": "\ts = str(value).strip().upper()\n\tif not s:\n\t\treturn 'transparent'\n\tcolors = {\n\t\t'COOLING': '#039BE5',\n\t\t'CLG': '#039BE5',\n\t\t'RUN': '#228B22',\n\t\t'RUNNING': '#228B22',\n\t\t'ON': '#228B22',\n\t\t'DEFROST': '#EF6C00',\n\t\t'DFT': '#EF6C00',\n\t\t'FAULT': '#C62828',\n\t\t'ALARM': '#C62828',\n\t\t'FLT': '#C62828',\n\t\t'MANUAL': '#9C27B0',\n\t\t'MAN': '#9C27B0',\n\t\t'IDLE': '#90A4AE',\n\t\t'STANDBY': '#90A4AE',\n\t\t'IDL': '#90A4AE',\n\t\t'OFF': '#546E7A',\n\t\t'STOP': '#546E7A',\n\t\t'STOPPED': '#546E7A'\n\t}\n\treturn colors.get(s, '#607D8B')\n",
+                  "type": "script"
+                }
+              ],
+              "type": "expr"
+            }
+          },
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.custom.label"
+              },
+              "type": "property"
+            }
+          },
+          "props.style.opacity": {
+            "binding": {
+              "config": {
+                "expression": "if({view.custom.label} = '',\n   0,\n   1)"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "fontSize": "12px",
+            "fontWeight": "700",
+            "minHeight": "16px"
+          }
+        },
+        "type": "ia.display.label"
+      }
+    ],
+    "meta": {
+      "name": "root",
+      "contextMenu": {}
+    },
+    "props": {
+      "alignItems": "center",
+      "justify": "center",
+      "style": {
+        "cursor": "pointer",
+        "gap": "5px",
+        "overflow": "visible",
+        "minHeight": "22px"
+      }
+    },
+    "type": "ia.container.flex",
+    "propConfig": {
+      "meta.contextMenu.items": {
+        "binding": {
+          "config": {
+            "struct": {
+              "tagPath": "\"No TagPath: \""
+            },
+            "waitOnAll": true
+          },
+          "transforms": [
+            {
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = self.view.params.tagPath\n\texcept:\n\t\tpass\n\tif tagPath is None or str(tagPath).strip() == '':\n\t\ttagPath = value.tagPath + self.view.id.split('@')[0].split('/')[-1]\n\titems = [\n\t\t\t  {\n\t\t\t    \"text\": \"Ticket Logger\",\n\t\t\t    \"icon\": {\n\t\t\t      \"path\": \"material/info\",\n\t\t\t      \"color\": \"--neutral-80\",\n\t\t\t      \"style\": {}\n\t\t\t    },\n\t\t\t    \"style\": {\n\t\t\t      \"classes\": \"bg-component font-value\",\n\t\t\t      \"height\": 24,\n\t\t\t      \"width\": 120\n\t\t\t    },\n\t\t\t    \"type\": \"message\",\n\t\t\t    \"children\": [],\n\t\t\t    \"link\": {\n\t\t\t      \"url\": \"\",\n\t\t\t      \"target\": \"self\"\n\t\t\t    },\n\t\t\t    \"method\": {\n\t\t\t      \"name\": \"\",\n\t\t\t      \"params\": {}\n\t\t\t    },\n\t\t\t    \"message\": {\n\t\t\t      \"type\": \"ticketLog\",\n\t\t\t      \"payload\": {\n\t\t\t        \"tagPath\": tagPath,\n\t\t\t        \"viewName\": self.view.id.split('@')[0]\n\t\t\t      },\n\t\t\t      \"scope\": \"page\"\n\t\t\t    }\n\t\t\t  }\n\t\t\t]\n\treturn items",
+              "type": "script"
+            }
+          ],
+          "type": "expr-struct"
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "config": {
+            "struct": {
+              "items": "{this.meta.contextMenu.items}",
+              "permission": "{session.custom.TicketLogAccess}"
+            },
+            "waitOnAll": true
+          },
+          "transforms": [
+            {
+              "expression": "len({value}['items']) > 0 && {value}['permission']",
+              "type": "expression"
+            }
+          ],
+          "type": "expr-struct"
+        }
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    }
+  }
+}
