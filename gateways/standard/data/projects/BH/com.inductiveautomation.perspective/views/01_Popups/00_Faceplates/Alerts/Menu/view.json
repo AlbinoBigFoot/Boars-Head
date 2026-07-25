@@ -1,0 +1,93 @@
+{
+  "custom": {},
+  "params": {
+    "classes": "Container/Card Container/Icon Fonts/Header",
+    "cursor": "pointer",
+    "fontWeight": "normal",
+    "name": ""
+  },
+  "propConfig": {
+    "params.classes": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.cursor": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.fontWeight": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.name": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {},
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Label"
+        },
+        "position": {
+          "grow": 1
+        },
+        "propConfig": {
+          "props.style.classes": {
+            "binding": {
+              "config": {
+                "path": "view.params.classes"
+              },
+              "type": "property"
+            }
+          },
+          "props.style.cursor": {
+            "binding": {
+              "config": {
+                "path": "view.params.cursor"
+              },
+              "type": "property"
+            }
+          },
+          "props.style.fontWeight": {
+            "binding": {
+              "config": {
+                "path": "view.params.fontWeight"
+              },
+              "type": "property"
+            }
+          },
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.params.name"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "transition": "background-color 0.25s linear"
+          },
+          "textStyle": {
+            "textAlign": "left"
+          }
+        },
+        "type": "ia.display.label"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "marginLeft": "0.7%"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

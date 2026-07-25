@@ -8,7 +8,7 @@ Architecture to license:
 
 | Role | Version (current plan) | Purpose |
 |------|------------------------|---------|
-| Standard Gateway | 8.1.43 (may move to 8.3 later) | Primary development / central gateway |
+| Standard Gateway | 8.3.7 | Primary development / central gateway |
 | Edge Gateway | 8.3.7 | Local mirror of Standard project |
 | Database | MSSQL (lab now; prod TBD) | Historian / forms / audit storage |
 

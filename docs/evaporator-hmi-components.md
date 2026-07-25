@@ -9,6 +9,8 @@ Onboarding guide for the Boars Head (BH) Ignition Perspective evaporator demo. R
 | **Scripts** | `gateways/standard/data/projects/BH/ignition/script-python/shared/` |
 | **Demo tags** | Import `taginstances.json` under `[default]Evaporators` |
 | **Compressor tags** | Import `taginstances-compressors.json` under `[default]Compressors` |
+| **Exhaust Fan tags** | Import `taginstances-exhaust-fans.json` under `[default]ExhaustFans` |
+| **Cooling Tower tags** | Import `taginstances-cooling-towers.json` under `[default]CoolingTowers` |
 | **Alarm UDT / Flash** | Import `tags-alarms.json` at provider root (`_Config`, `Config/_Alarms`) |
 
 Designer tip: after editing files on disk, **Update Project** (or restart the gateway if icons/CSS do not pick up).
@@ -41,6 +43,10 @@ Everything is **tag-path driven**. Pass a device UDT path like `[default]Evapora
 |-----------|----------|------|
 | `00_Pages/Evaporators/Overview` | `/` and `/evaporators` | Flex demo: status matrix + alarming matrix of device graphics |
 | `00_Pages/Compressors/Overview` | `/compressors` | COMP-01..03 NH3 compressor devices (Figma layout) |
+| `00_Pages/ExhaustFans/Overview` | `/exhaust-fans` | EFAN-01..03 radiator-style exhaust fans (impeller spins on Run) |
+| `01_Popups/00_Faceplates/ExhaustFan` | *(popup, not a page)* | Exhaust Fan faceplate (status + analog) |
+| `00_Pages/CoolingTowers/Overview` | `/cooling-towers` | CT-01..03 BH-style towers (Hoffman silhouette) |
+| `01_Popups/00_Faceplates/CoolingTower` | *(popup, not a page)* | Cooling Tower faceplate (status + analog) |
 | `00_Pages/Unit/Overview` | *(not mapped in page-config)* | Table overview; cells are view paths + live tag paths |
 | `00_Pages/NoViewPath` | — | Stub |
 | `01_Popups/00_Faceplates/Evaporator` | *(popup, not a page)* | Faceplate opened from a device click |
@@ -237,6 +243,8 @@ Trigger pattern for Overview rebuild: write `True` to the Overview UDT’s `Rebu
 | `tags-alarms.json` | Provider **root** | `_Config` (Flash, Icons, Colors) + UDT type `Config/_Alarms` |
 | `taginstances.json` | Folder `Evaporators` (or import so paths are `[default]Evaporators/EV-*`) | Demo evaporators + Overview instance |
 | `taginstances-compressors.json` | Folder `Compressors` → `[default]Compressors/COMP-*` | Demo compressors (Run / Off / Fault) |
+| `taginstances-exhaust-fans.json` | Folder `ExhaustFans` → `[default]ExhaustFans/EFAN-*` | Demo exhaust fans (Run spins impeller) |
+| `taginstances-cooling-towers.json` | Folder `CoolingTowers` → `[default]CoolingTowers/CT-*` | Demo cooling towers |
 | `tags.json` | As needed | Overview UDT definition (`Rebuild`, `Instances`, …) |
 
 ### Evaporator instance shape

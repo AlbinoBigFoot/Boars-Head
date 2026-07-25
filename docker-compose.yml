@@ -1,9 +1,9 @@
 # Boars Head — Ignition lab stack
-# Standard GW 8.1.43 | Edge GW 8.3.7 | MSSQL (named volume)
+# Standard GW 8.3.7 | Edge GW 8.3.7 | MSSQL (named volume)
 
 services:
   ignition-standard:
-    image: inductiveautomation/ignition:8.1.43
+    image: inductiveautomation/ignition:8.3.7
     container_name: bh-ignition-standard
     hostname: ignition-standard
     ports:
@@ -12,6 +12,7 @@ services:
       - "${STANDARD_GAN_PORT:-8060}:8060"
     volumes:
       # Host-mounted for Git revision control of projects / gateway data
+      # 8.3 layout: config/, projects/, modules.json (same shape as Edge / Lightspeed)
       - ./gateways/standard/data:/usr/local/bin/ignition/data
     environment:
       ACCEPT_IGNITION_EULA: "Y"
@@ -19,8 +20,8 @@ services:
       GATEWAY_ADMIN_PASSWORD: "${GATEWAY_ADMIN_PASSWORD:?Set GATEWAY_ADMIN_PASSWORD in .env}"
       IGNITION_EDITION: standard
       TZ: "${TZ:-America/New_York}"
-      # Required for Gateway Network with 8.3 Edge while Standard stays on 8.1
-      GATEWAY_NETWORK_ALLOWJAVASERIALIZATION: "${GATEWAY_NETWORK_ALLOWJAVASERIALIZATION:-true}"
+      # Optional; both gateways are 8.3 so Java serialization is no longer required for GAN
+      GATEWAY_NETWORK_ALLOWJAVASERIALIZATION: "${GATEWAY_NETWORK_ALLOWJAVASERIALIZATION:-false}"
     command: >
       -n bh-standard
       -a localhost
@@ -85,6 +86,26 @@ services:
       retries: 10
       start_period: 40s
 
+  # Engineering archive (Docusaurus). Bring up alone: docker compose up -d wiki
+  wiki:
+    build:
+      context: ./wiki
+    container_name: bh-wiki
+    hostname: wiki
+    ports:
+      - "${WIKI_PORT:-3030}:3000"
+    volumes:
+      # Live-edit docs from the host; keep container node_modules
+      - ./wiki:/app
+      - wiki-node-modules:/app/node_modules
+    environment:
+      TZ: "${TZ:-America/New_York}"
+      CHOKIDAR_USEPOLLING: "true"
+      WATCHPACK_POLLING: "true"
+    restart: unless-stopped
+    networks:
+      - bh-ot
+
 networks:
   bh-ot:
     name: bh-ot
@@ -93,3 +114,5 @@ networks:
 volumes:
   mssql-data:
     name: bh-mssql-data
+  wiki-node-modules:
+    name: bh-wiki-node-modules

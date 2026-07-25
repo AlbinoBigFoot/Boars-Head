@@ -1,0 +1,146 @@
+{
+  "custom": {},
+  "params": {},
+  "props": {
+    "defaultSize": {
+      "height": 480,
+      "width": 640
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Title"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "style": {
+            "color": "#000000",
+            "fontSize": "20px",
+            "fontWeight": "700",
+            "marginBottom": "4px"
+          },
+          "text": "Pump Overview"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Subtitle"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "style": {
+            "color": "#000000",
+            "fontSize": "13px",
+            "marginBottom": "16px"
+          },
+          "text": "Non-Hoffman Pump from Figma \u2014 PMP-01 Run (spin) \u00b7 PMP-02 Off \u00b7 PMP-03 Fault"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "PMP-01"
+            },
+            "position": {
+              "basis": "130px",
+              "shrink": 0
+            },
+            "props": {
+              "params": {
+                "faceplate": "Pump",
+                "tagPath": "[default]Pumps/PMP-01"
+              },
+              "path": "02_Components/01_Devices/Pump",
+              "style": {
+                "height": "166px",
+                "width": "130px"
+              }
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "PMP-02"
+            },
+            "position": {
+              "basis": "130px",
+              "shrink": 0
+            },
+            "props": {
+              "params": {
+                "faceplate": "Pump",
+                "tagPath": "[default]Pumps/PMP-02"
+              },
+              "path": "02_Components/01_Devices/Pump",
+              "style": {
+                "height": "166px",
+                "width": "130px"
+              }
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "PMP-03"
+            },
+            "position": {
+              "basis": "130px",
+              "shrink": 0
+            },
+            "props": {
+              "params": {
+                "faceplate": "Pump",
+                "tagPath": "[default]Pumps/PMP-03"
+              },
+              "path": "02_Components/01_Devices/Pump",
+              "style": {
+                "height": "166px",
+                "width": "130px"
+              }
+            },
+            "type": "ia.display.view"
+          }
+        ],
+        "meta": {
+          "name": "Row"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "alignItems": "flex-start",
+          "style": {
+            "backgroundColor": "#ECEFF1",
+            "borderRadius": "8px",
+            "gap": "24px",
+            "padding": "16px",
+            "width": "100%"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "backgroundColor": "#D8D8D8",
+        "height": "100%",
+        "padding": "16px",
+        "width": "100%"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}
