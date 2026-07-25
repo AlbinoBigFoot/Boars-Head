@@ -37,8 +37,162 @@ def infer_dtype(path: str, dt: str | None) -> tuple[str, str]:
     return "Float", "Float4"
 
 
+# Per-EV plant profiles so Overview units look distinct (Status 0–5:
+# STOP / CLG / DFT / FLT / MAN / IDLE).
+EV_PROFILES: dict[str, dict[str, str]] = {
+    # 01–02 STOP/IDLE, fans off, cool room temps
+    "EV-01": {
+        "Status": "0",
+        "Temp": "realistic(38.0, 0.8, 0.04, 0.2, true)",
+        "Pressure": "ramp(22.0, 32.0, 90, true)",
+        "SPD_FBK": "0.0",
+        "CMD": "false",
+        "Fault": "false",
+    },
+    "EV-02": {
+        "Status": "5",
+        "Temp": "realistic(36.0, 0.9, 0.05, 0.22, true)",
+        "Pressure": "ramp(24.0, 34.0, 85, true)",
+        "SPD_FBK": "0.0",
+        "CMD": "false",
+        "Fault": "false",
+    },
+    # 03–06 CLG, fans spinning, colder
+    "EV-03": {
+        "Status": "1",
+        "Temp": "realistic(22.0, 1.0, 0.06, 0.25, true)",
+        "Pressure": "ramp(40.0, 55.0, 70, true)",
+        "SPD_FBK": "ramp(45.0, 60.0, 50, true)",
+        "CMD": "true",
+        "Fault": "false",
+    },
+    "EV-04": {
+        "Status": "1",
+        "Temp": "realistic(20.0, 1.1, 0.06, 0.25, true)",
+        "Pressure": "ramp(42.0, 58.0, 65, true)",
+        "SPD_FBK": "ramp(48.0, 62.0, 48, true)",
+        "CMD": "true",
+        "Fault": "false",
+    },
+    "EV-05": {
+        "Status": "1",
+        "Temp": "realistic(18.0, 1.0, 0.05, 0.24, true)",
+        "Pressure": "ramp(44.0, 60.0, 72, true)",
+        "SPD_FBK": "ramp(50.0, 65.0, 45, true)",
+        "CMD": "true",
+        "Fault": "false",
+    },
+    "EV-06": {
+        "Status": "1",
+        "Temp": "realistic(16.0, 0.9, 0.05, 0.23, true)",
+        "Pressure": "ramp(46.0, 62.0, 68, true)",
+        "SPD_FBK": "ramp(52.0, 68.0, 42, true)",
+        "CMD": "true",
+        "Fault": "false",
+    },
+    # 07–08 DFT, fans off, rising temp
+    "EV-07": {
+        "Status": "2",
+        "Temp": "realistic(42.0, 1.5, 0.08, 0.3, true)",
+        "Pressure": "ramp(30.0, 40.0, 80, true)",
+        "SPD_FBK": "0.0",
+        "CMD": "false",
+        "Fault": "false",
+    },
+    "EV-08": {
+        "Status": "2",
+        "Temp": "realistic(45.0, 1.6, 0.09, 0.32, true)",
+        "Pressure": "ramp(28.0, 38.0, 78, true)",
+        "SPD_FBK": "0.0",
+        "CMD": "false",
+        "Fault": "false",
+    },
+    # 09–10 FLT
+    "EV-09": {
+        "Status": "3",
+        "Temp": "realistic(40.0, 1.2, 0.07, 0.28, true)",
+        "Pressure": "ramp(18.0, 28.0, 95, true)",
+        "SPD_FBK": "0.0",
+        "CMD": "false",
+        "Fault": "true",
+    },
+    "EV-10": {
+        "Status": "3",
+        "Temp": "realistic(41.0, 1.3, 0.07, 0.28, true)",
+        "Pressure": "ramp(16.0, 26.0, 100, true)",
+        "SPD_FBK": "0.0",
+        "CMD": "false",
+        "Fault": "true",
+    },
+    # 11–12 MAN, fans on, mid temps
+    "EV-11": {
+        "Status": "4",
+        "Temp": "realistic(28.0, 1.0, 0.06, 0.25, true)",
+        "Pressure": "ramp(35.0, 48.0, 75, true)",
+        "SPD_FBK": "ramp(30.0, 50.0, 55, true)",
+        "CMD": "true",
+        "Fault": "false",
+    },
+    "EV-12": {
+        "Status": "4",
+        "Temp": "realistic(30.0, 1.1, 0.06, 0.26, true)",
+        "Pressure": "ramp(36.0, 50.0, 73, true)",
+        "SPD_FBK": "ramp(35.0, 55.0, 52, true)",
+        "CMD": "true",
+        "Fault": "false",
+    },
+    # 13–16 mixed / staggered cycles
+    "EV-13": {
+        "Status": "list(1, 1, 5, 1, true)",
+        "Temp": "realistic(24.0, 1.2, 0.06, 0.25, true)",
+        "Pressure": "ramp(38.0, 56.0, 60, true)",
+        "SPD_FBK": "ramp(40.0, 58.0, 47, true)",
+        "CMD": "true",
+        "Fault": "false",
+    },
+    "EV-14": {
+        "Status": "list(5, 0, 5, 1, true)",
+        "Temp": "realistic(34.0, 1.0, 0.05, 0.22, true)",
+        "Pressure": "ramp(26.0, 36.0, 88, true)",
+        "SPD_FBK": "list(0.0, 0.0, 20.0, 0.0, true)",
+        "CMD": "false",
+        "Fault": "false",
+    },
+    "EV-15": {
+        "Status": "list(0, 5, 0, 1, true)",
+        "Temp": "realistic(37.0, 0.9, 0.04, 0.2, true)",
+        "Pressure": "ramp(20.0, 30.0, 92, true)",
+        "SPD_FBK": "0.0",
+        "CMD": "false",
+        "Fault": "false",
+    },
+    "EV-16": {
+        "Status": "list(1, 2, 1, 1, true)",
+        "Temp": "realistic(19.0, 1.4, 0.07, 0.27, true)",
+        "Pressure": "ramp(48.0, 68.0, 58, true)",
+        "SPD_FBK": "ramp(55.0, 72.0, 40, true)",
+        "CMD": "true",
+        "Fault": "false",
+    },
+}
+
+
+def _ev_id(path: str) -> str | None:
+    """Return EV-## from Evaporators/EV-##/... browse path."""
+    parts = path.split("/")
+    if len(parts) >= 2 and parts[0] == "Evaporators" and parts[1].startswith("EV-"):
+        return parts[1]
+    return None
+
+
 def value_source(path: str, sim_dtype: str) -> str:
     leaf_parent = path.split("/")[-2]
+    ev = _ev_id(path)
+    if ev and ev in EV_PROFILES:
+        profile = EV_PROFILES[ev]
+        if leaf_parent in profile:
+            return profile[leaf_parent]
+
     if leaf_parent == "Status":
         if path.startswith("Evaporators/"):
             return "list(0, 1, 2, 3, 4, 5, true)"
@@ -139,19 +293,20 @@ def main() -> None:
         )
     rows.sort(key=lambda r: r["Browse Path"])
 
+    fieldnames = ["Time Interval", "Browse Path", "Value Source", "Data Type"]
+    # Gateway Sim device historically uses spaced unquoted headers.
+    header_line = "Time Interval, Browse Path, Value Source, Data Type\n"
+
     OUT_CSV.parent.mkdir(parents=True, exist_ok=True)
     with OUT_CSV.open("w", encoding="utf-8", newline="") as fh:
-        writer = csv.DictWriter(
-            fh,
-            fieldnames=["Time Interval", "Browse Path", "Value Source", "Data Type"],
-            quoting=csv.QUOTE_ALL,
-        )
-        writer.writeheader()
+        fh.write(header_line)
+        writer = csv.DictWriter(fh, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)
         writer.writerows(rows)
 
-    shutil.copy2(OUT_CSV, DEVICE_SIM / "instructions.csv")
+    dest = DEVICE_SIM / "instructions.csv"
+    shutil.copy2(OUT_CSV, dest)
     print(f"Wrote {OUT_CSV} ({len(rows)} instructions)")
-    print(f"Copied to {DEVICE_SIM / 'instructions.csv'}")
+    print(f"Copied to {dest}")
 
     tree = {"name": "_Sim_", "children": {}, "tags": []}
     for path, tag in leaves:
@@ -192,17 +347,11 @@ def main() -> None:
     )
     print(f"Wrote _Sim_/udts.json top folders: {[x['name'] for x in sim_udts]}")
 
-    total = 0
-    for f, data in folder_data.items():
-        n = patch_tags(data, f)
-        total += n
-        (TAG_DEF / f / "udts.json").write_text(
-            json.dumps(data, indent=2) + "\n", encoding="utf-8", newline="\n"
-        )
-        print(f"Patched {f}: {n} reference tags")
-    print(f"Total reference conversions: {total}")
+    # Plant tags stay OPC → ns=1;s=[Sim]<path> (live wiring). _Sim_ mirror
+    # above is for optional reference browse; do not rewrite plant Value leaves.
+    print("Skipped plant tag reference patch (preserving OPC wiring)")
     print("Sample CSV:")
-    for r in rows[:5]:
+    for r in rows[:8]:
         print(r)
 
 

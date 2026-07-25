@@ -22,12 +22,12 @@ Designer tip: after editing files on disk, **Update Project** (or restart the ga
 ```
 Page: Evaporators/Overview  (URLs: /  and  /evaporators)
   │
-  └─ Embedded device view  (Evaporator | EvaporatorDual | EvaporatorTriple)
+  └─ Embedded device view  (Evaporator — single fan)
        params: tagPath, faceplate
        │
        ├─ DeviceAlarmIndicator     ← _Alarms/_Active, _Unack, _ActiveHighPriority
        ├─ Label + faceplate icon   ← metadata / material/fullscreen
-       ├─ SVG fan graphic(s)       ← Fan N/CMD/Value + CSS class fan-spin
+       ├─ SVG fan graphic          ← Fan 1/CMD/Value + CSS class fan-spin
        ├─ AnalogValue              ← Temp/Value
        ├─ StatusIndicator          ← Status/Value (+ states metadata)
        └─ onClick                  → popup Faceplates/Evaporator (same tagPath)
@@ -41,7 +41,7 @@ Everything is **tag-path driven**. Pass a device UDT path like `[default]Evapora
 
 | View path | Page URL | Role |
 |-----------|----------|------|
-| `00_Pages/Evaporators/Overview` | `/` and `/evaporators` | Flex demo: status matrix + alarming matrix of device graphics |
+| `00_Pages/Evaporators/Overview` | `/` and `/evaporators` | 4×4 grid of 16 single-fan evaporators (`EV-01`…`EV-16`) |
 | `00_Pages/Compressors/Overview` | `/compressors` | COMP-01..03 NH3 compressor devices (Figma layout) |
 | `00_Pages/ExhaustFans/Overview` | `/exhaust-fans` | EFAN-01..03 radiator-style exhaust fans (impeller spins on Run) |
 | `01_Popups/00_Faceplates/ExhaustFan` | *(popup, not a page)* | Exhaust Fan faceplate (status + analog) |
@@ -58,14 +58,10 @@ Page config lives at:
 
 ### Overview page layout
 
-`Evaporators/Overview` is a column flex container (light gray background, black labels).
+`Evaporators/Overview` is a column flex container (light gray background, black labels), matching Compressors / Cooling Towers:
 
-1. **Title / subtitle**
-2. **Column headers** — 1 Fan · 2 Fan · 3 Fan
-3. **Status rows** — Off, Cooling, Defrost, Fault, Manual, Idle  
-   Each row embeds one single-, dual-, and triple-fan device bound to the EV tags below.
-4. **Alarming section** — Critical / High / Medium / Low rows (same 1/2/3-fan columns)
-5. **Legend**
+1. **Title / subtitle** — 16 single-fan plant overview
+2. **Four rows × four embeds** — `EV-01`…`EV-16`, all `02_Components/01_Devices/Evaporator`
 
 Every device instance passes:
 
@@ -82,9 +78,9 @@ Path: `views/02_Components/01_Devices/`
 
 | View | Fans | Typical size |
 |------|------|--------------|
-| `Evaporator` | 1 (`Fan 1`) | ~96 × 167 |
-| `EvaporatorDual` | 2 | ~120 × 176 |
-| `EvaporatorTriple` | 3 | ~168 × 176 |
+| `Evaporator` | 1 (`Fan 1`) | ~96 × 176 |
+| `EvaporatorDual` | 2 | ~120 × 176 (available; not on Overview) |
+| `EvaporatorTriple` | 3 | ~168 × 176 (available; not on Overview) |
 
 ### Params
 
@@ -254,7 +250,7 @@ Trigger pattern for Overview rebuild: write `True` to the Overview UDT’s `Rebu
   Status/Value                       Int4 + metadata.states (0–5)
   Temp/Value                         Float + eng unit
   Pressure/Value                     Float + eng unit
-  Fan 1|2|3/
+  Fan 1/                             (plant Overview set is single-fan only)
     CMD/Value                        Boolean  ← fan-spin
     SPD_FBK/Value                    Float
     Fault/Value                      Boolean
@@ -284,31 +280,22 @@ Trigger pattern for Overview rebuild: write `True` to the Overview UDT’s `Rebu
 
 To **ack** in the demo: set `_Alarms/_Unack` to `false` (leave `_Active` true) → icon stays on, stops flashing.
 
-### Demo EV matrix
+### Plant EV set (Overview + sim)
 
-Status rows on the Overview page:
+Gateway tags and plant sim are slimmed to **16 single-fan** instances `EV-01`…`EV-16` (Fan 1 only; no Fan 2/3). Legacy `EV-17`–`EV-33` and `EV-001`–`EV-003` placeholders were removed.
 
-| Row | 1-fan | 2-fan | 3-fan | Status | Fans CMD on |
-|-----|-------|-------|-------|--------|-------------|
-| Off | EV-01 | EV-08 | EV-15 | 0 STOP | — |
-| Cooling | EV-02 | EV-09 | EV-16 | 1 CLG | 1 / 1–2 / 1–3 |
-| Defrost | EV-03 | EV-10 | EV-17 | 2 DFT | — |
-| Fault | EV-04 | EV-11 | EV-18 | 3 FLT | — (+ Critical unack) |
-| Manual | EV-05 | EV-12 | EV-19 | 4 MAN | — |
-| Idle | EV-06 | EV-13 | EV-20 | 5 IDLE | — |
+| EV | Status | Fan CMD | Notes |
+|----|--------|---------|-------|
+| 01–02 | STOP / IDLE | false | cool room temps |
+| 03–06 | CLG | true | colder + spinning |
+| 07–08 | DFT | false | rising temp |
+| 09–10 | FLT | false | Fault true; `_Alarms` active |
+| 11–12 | MAN | true | mid temps |
+| 13–16 | mixed cycle | staggered | unique realistic / list sims |
 
-Alarming rows (Idle status, Active + Unack, priority by row):
+Sim profiles live in `sim/build_plant_sim.py` (`EV_PROFILES`) → `sim/bh-plant-sim.csv` and gateway `opcua/device/Sim/instructions.csv`.
 
-| Priority | 1-fan | 2-fan | 3-fan |
-|----------|-------|-------|-------|
-| Critical (1) | EV-22 | EV-26 | EV-30 |
-| High (2) | EV-23 | EV-27 | EV-31 |
-| Medium (3) | EV-24 | EV-28 | EV-32 |
-| Low (4) | EV-25 | EV-29 | EV-33 |
-
-Gaps at EV-07 / EV-14 / EV-21 are intentional (old “cooling + fans” row removed).
-
-Table Overview document currently samples Cooling demos **EV-02, EV-09, EV-16**. A full rebuild can rediscover instances under the folder.
+**Note:** Adhoc Trend’s saved tag tree may still list old `EV-001` / `EV-17+` paths until refreshed in Designer; live Overview / tags use `EV-01`…`EV-16` only.
 
 ---
 
