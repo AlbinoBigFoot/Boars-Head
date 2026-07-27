@@ -107,7 +107,8 @@
     "treeVisible": false,
     "trendId": "",
     "trendName": "",
-    "username": ""
+    "username": "",
+    "dualPlot": false
   },
   "params": {
     "faceplateMode": false
@@ -396,6 +397,24 @@
     "params.faceplateMode": {
       "paramDirection": "input",
       "persistent": true
+    },
+    "custom.dualPlot": {
+      "binding": {
+        "config": {
+          "struct": {
+            "dataset": "{view.custom.dataset}",
+            "pens": "{view.custom.pens}"
+          },
+          "waitOnAll": true
+        },
+        "transforms": [
+          {
+            "code": "\tif value is None:\n\t\treturn False\n\treturn shared.AdhocTrend.needs_dual_plot(value.dataset, value.pens)\n",
+            "type": "script"
+          }
+        ],
+        "type": "expr-struct"
+      }
     }
   },
   "props": {
@@ -456,7 +475,7 @@
               "props.items": {
                 "onChange": {
                   "enabled": null,
-                  "script": "\t# Accordion cleanup only \u2014 tree is fully loaded on startup for lab scale\n\tif origin == 'Script':\n\t\treturn\n"
+                  "script": "\t# Accordion cleanup only — tree is fully loaded on startup for lab scale\n\tif origin == 'Script':\n\t\treturn\n"
                 }
               }
             },
@@ -6235,7 +6254,7 @@
                       },
                       "transforms": [
                         {
-                          "code": "\tseries = []\n\tif value is None:\n\t\treturn series\n\tdataset = getattr(value, \"dataset\", None)\n\tpens = getattr(value, \"pens\", None)\n\tif dataset is None or pens is None:\n\t\treturn series\n\ttry:\n\t\tif dataset.getRowCount() <= 0 or pens.getRowCount() <= 0:\n\t\t\treturn series\n\texcept:\n\t\treturn series\n\tpens_ds = system.dataset.toPyDataSet(pens)\n\tfilterColumns = [\"t_stamp\"]\n\tfor pen in pens_ds:\n\t\tif pen[\"penEnabled\"]:\n\t\t\talias = pen[\"alias\"]\n\t\t\tif alias in (None, \"\"):\n\t\t\t\tcontinue\n\t\t\ttry:\n\t\t\t\tcols = list(dataset.getColumnNames())\n\t\t\t\tuse = alias if alias in cols else None\n\t\t\t\tif use is None:\n\t\t\t\t\tleaf = str(alias).split(\"-\")[-1]\n\t\t\t\t\tfor c in cols:\n\t\t\t\t\t\tif c == \"t_stamp\":\n\t\t\t\t\t\t\tcontinue\n\t\t\t\t\t\tif c == leaf or str(c).endswith(leaf) or (leaf and leaf in str(c)):\n\t\t\t\t\t\t\tuse = c\n\t\t\t\t\t\t\tbreak\n\t\t\t\tif use is None:\n\t\t\t\t\tcontinue\n\t\t\t\tfilterColumns.append(use)\n\t\t\t\tseries.append({\n\t\t\t\t\t\"name\": pen[\"penName\"] or pen[\"alias\"],\n\t\t\t\t\t\"color\": pen[\"penColor\"],\n\t\t\t\t\t\"data\": system.dataset.filterColumns(dataset, filterColumns)\n\t\t\t\t})\n\t\t\t\tfilterColumns.remove(use)\n\t\t\texcept:\n\t\t\t\tpass\n\treturn series\n",
+                          "code": "\tif value is None:\n\t\treturn []\n\treturn shared.AdhocTrend.build_series(value.dataset, value.pens, 0)\n",
                           "type": "script"
                         }
                       ],
@@ -6253,29 +6272,37 @@
                   "position.y": {
                     "binding": {
                       "config": {
-                        "path": "view.params.faceplateMode"
+                        "struct": {
+                          "faceplate": "{view.params.faceplateMode}",
+                          "dual": "{view.custom.dualPlot}"
+                        },
+                        "waitOnAll": true
                       },
                       "transforms": [
                         {
-                          "expression": "if(coalesce({value}, false), 0.12, 0.06)",
-                          "type": "expression"
+                          "code": "\tfp = bool(getattr(value, 'faceplate', False))\n\tdual = bool(getattr(value, 'dual', False))\n\tif fp:\n\t\treturn 0.12\n\treturn 0.06\n",
+                          "type": "script"
                         }
                       ],
-                      "type": "property"
+                      "type": "expr-struct"
                     }
                   },
                   "position.height": {
                     "binding": {
                       "config": {
-                        "path": "view.params.faceplateMode"
+                        "struct": {
+                          "faceplate": "{view.params.faceplateMode}",
+                          "dual": "{view.custom.dualPlot}"
+                        },
+                        "waitOnAll": true
                       },
                       "transforms": [
                         {
-                          "expression": "if(coalesce({value}, false), 0.86, 0.94)",
-                          "type": "expression"
+                          "code": "\tfp = bool(getattr(value, 'faceplate', False))\n\tdual = bool(getattr(value, 'dual', False))\n\tif dual:\n\t\treturn 0.40 if fp else 0.44\n\treturn 0.86 if fp else 0.94\n",
+                          "type": "script"
                         }
                       ],
-                      "type": "property"
+                      "type": "expr-struct"
                     }
                   },
                   "props.options.chart.offsetY": {
@@ -6287,6 +6314,20 @@
                         {
                           "expression": "if(coalesce({value}, false), 0, -4)",
                           "type": "expression"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  },
+                  "props.options.xaxis.labels.show": {
+                    "binding": {
+                      "config": {
+                        "path": "view.custom.dualPlot"
+                      },
+                      "transforms": [
+                        {
+                          "code": "\treturn not bool(value)\n",
+                          "type": "script"
                         }
                       ],
                       "type": "property"
@@ -6335,7 +6376,9 @@
                         "enabled": true,
                         "type": "x"
                       },
-                      "offsetY": -4
+                      "offsetY": -4,
+                      "id": "adhoc-trend-plot-0",
+                      "group": "adhoc-trend"
                     },
                     "dataLabels": {
                       "enabled": false
@@ -6419,6 +6462,248 @@
                   "style": {
                     "overflow": "visible",
                     "classes": "adhoc-trend-apex"
+                  }
+                },
+                "type": "kyvislabs.display.apexchart"
+              },
+              {
+                "meta": {
+                  "name": "apexchartPlot2"
+                },
+                "position": {
+                  "height": 0.44,
+                  "width": 1,
+                  "y": 0.52
+                },
+                "propConfig": {
+                  "props.options.tooltip.theme": {
+                    "binding": {
+                      "config": {
+                        "path": "session.props.theme"
+                      },
+                      "type": "property"
+                    }
+                  },
+                  "props.series": {
+                    "binding": {
+                      "config": {
+                        "struct": {
+                          "dataset": "{view.custom.dataset}",
+                          "pens": "{view.custom.pens}"
+                        },
+                        "waitOnAll": true
+                      },
+                      "transforms": [
+                        {
+                          "code": "\tif value is None:\n\t\treturn []\n\treturn shared.AdhocTrend.build_series(value.dataset, value.pens, 1)\n",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "expr-struct"
+                    }
+                  },
+                  "props.type": {
+                    "binding": {
+                      "config": {
+                        "path": "session.custom.AdhocTrend.chartType"
+                      },
+                      "type": "property"
+                    }
+                  },
+                  "position.y": {
+                    "binding": {
+                      "config": {
+                        "struct": {
+                          "faceplate": "{view.params.faceplateMode}",
+                          "dual": "{view.custom.dualPlot}"
+                        },
+                        "waitOnAll": true
+                      },
+                      "transforms": [
+                        {
+                          "code": "\tfp = bool(getattr(value, 'faceplate', False))\n\tdual = bool(getattr(value, 'dual', False))\n\tif not dual:\n\t\treturn 1.0\n\treturn 0.54 if fp else 0.52\n",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "expr-struct"
+                    }
+                  },
+                  "position.height": {
+                    "binding": {
+                      "config": {
+                        "struct": {
+                          "faceplate": "{view.params.faceplateMode}",
+                          "dual": "{view.custom.dualPlot}"
+                        },
+                        "waitOnAll": true
+                      },
+                      "transforms": [
+                        {
+                          "code": "\tfp = bool(getattr(value, 'faceplate', False))\n\tdual = bool(getattr(value, 'dual', False))\n\tif not dual:\n\t\treturn 0.0\n\treturn 0.44 if fp else 0.46\n",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "expr-struct"
+                    }
+                  },
+                  "props.options.chart.offsetY": {
+                    "binding": {
+                      "config": {
+                        "path": "view.params.faceplateMode"
+                      },
+                      "transforms": [
+                        {
+                          "expression": "if(coalesce({value}, false), 0, -4)",
+                          "type": "expression"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  },
+                  "meta.visible": {
+                    "binding": {
+                      "config": {
+                        "path": "view.custom.dualPlot"
+                      },
+                      "transforms": [
+                        {
+                          "code": "\treturn bool(value)\n",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "options": {
+                    "chart": {
+                      "events": {
+                        "animationEnd": false,
+                        "beforeMount": false,
+                        "beforeResetZoom": false,
+                        "beforeZoom": false,
+                        "brushScrolled": false,
+                        "click": false,
+                        "dataPointMouseEnter": false,
+                        "dataPointMouseLeave": false,
+                        "dataPointSelection": true,
+                        "legendClick": false,
+                        "markerClick": true,
+                        "mounted": false,
+                        "mouseLeave": false,
+                        "mouseMove": false,
+                        "scrolled": false,
+                        "selection": false,
+                        "updated": false,
+                        "xAxisLabelClick": false,
+                        "zoomed": false
+                      },
+                      "fontFamily": "sans-serif",
+                      "height": 350,
+                      "stacked": false,
+                      "toolbar": {
+                        "show": false,
+                        "export": {
+                          "csv": {
+                            "categoryFormatter": "function (x) {return new Date(x)}",
+                            "filename": "export"
+                          }
+                        }
+                      },
+                      "type": "line",
+                      "zoom": {
+                        "autoScaleYaxis": false,
+                        "enabled": true,
+                        "type": "x"
+                      },
+                      "offsetY": -4,
+                      "id": "adhoc-trend-plot-1",
+                      "group": "adhoc-trend"
+                    },
+                    "dataLabels": {
+                      "enabled": false
+                    },
+                    "fill": {
+                      "opacity": 1
+                    },
+                    "grid": {
+                      "show": false,
+                      "padding": {
+                        "bottom": 28,
+                        "top": 4,
+                        "left": 10,
+                        "right": 10
+                      }
+                    },
+                    "legend": {
+                      "labels": {
+                        "colors": "#808080",
+                        "useSeriesColors": false
+                      },
+                      "position": "top",
+                      "show": false
+                    },
+                    "markers": {
+                      "size": 0
+                    },
+                    "stroke": {
+                      "curve": "straight",
+                      "width": 1.2
+                    },
+                    "tooltip": {
+                      "enabled": true,
+                      "style": {
+                        "fontFamily": "sans-serif",
+                        "fontSize": "12px"
+                      },
+                      "x": {
+                        "format": "dd MMM yyyy HH:mm:ss",
+                        "show": true
+                      }
+                    },
+                    "xaxis": {
+                      "axisBorder": {
+                        "offsetY": 5,
+                        "show": true
+                      },
+                      "labels": {
+                        "datetimeFormatter": {
+                          "day": "dd MMM",
+                          "hour": "HH:mm",
+                          "month": "MMM yy",
+                          "year": "yyyy"
+                        },
+                        "datetimeUTC": false,
+                        "style": {
+                          "colors": "var(--neutral-90)",
+                          "fontFamily": "sans-serif",
+                          "fontSize": "12px"
+                        },
+                        "show": true
+                      },
+                      "type": "datetime"
+                    },
+                    "yaxis": {
+                      "axisBorder": {
+                        "show": false
+                      },
+                      "labels": {
+                        "formatter": "function(val) { return val.toLocaleString(); }",
+                        "style": {
+                          "colors": "var(--neutral-90)",
+                          "fontFamily": "sans-serif",
+                          "fontSize": "12px"
+                        }
+                      },
+                      "title": {
+                        "text": ""
+                      }
+                    }
+                  },
+                  "style": {
+                    "overflow": "visible",
+                    "classes": "adhoc-trend-apex adhoc-trend-apex-plot2"
                   }
                 },
                 "type": "kyvislabs.display.apexchart"
