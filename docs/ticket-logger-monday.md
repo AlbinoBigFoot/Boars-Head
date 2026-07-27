@@ -318,6 +318,23 @@ Never commit real tokens. Prefer env for the token; tags OK for board/column IDs
 
 ---
 
+## 9. Webhook → local Cursor agent (Dylan-only)
+
+| | |
+| --- | --- |
+| Webhook id | `614195738` |
+| Board | Tickets `18423731526` |
+| Event | `create_item` (payload type `create_pulse`) |
+| URL host | Tailscale Funnel `desktop-tqun3fn.tailc23270.ts.net` path `/monday-webhook` |
+| Local receiver | `scripts/monday_webhook_proxy.py` (port `9876`) |
+| Behavior | Echo challenge; enrich via Monday API; **filter Dylan Jones / dylan.jones**; spawn local Cursor Agent CLI (`agent -p --force --trust`) — **not** Cursor Cloud Automations |
+| Ops doc | [`docs/monday-local-agent.md`](./monday-local-agent.md) |
+| Start / stop | `scripts/start-monday-webhook.ps1` / `stop-monday-webhook.ps1`; scheduled task `BH-Monday-Local-Agent-Proxy` |
+
+Monday cannot set Cursor’s `Authorization: Bearer crsr_…` header, so the local agent path replaces cloud webhook forward.
+
+---
+
 ## Implementation checklist (for next agent)
 
 1. Create Monday board + columns; run discover query; record IDs in tags/env.
