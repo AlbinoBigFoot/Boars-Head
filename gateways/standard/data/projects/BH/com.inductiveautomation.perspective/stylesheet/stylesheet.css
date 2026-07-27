@@ -635,6 +635,30 @@ body:has(.psc-animations-off) .container-fade-in {
 	padding: 10px 8px 10px 0;
 }
 
+/* Save Custom Trend dialog — opaque card (Designer Colors/Background classes removed) */
+.psc-adhoc-trend-save-dialog {
+	background-color: var(--surface-raised) !important;
+	border: 1px solid var(--border);
+	border-radius: 0.5rem;
+	box-sizing: border-box;
+}
+
+.psc-adhoc-trend-save-title {
+	font-family: Bahnschrift, "Segoe UI", sans-serif;
+	font-size: 1.25rem;
+	font-weight: 600;
+	color: var(--text);
+	margin: 0;
+	padding: 0;
+}
+
+.psc-adhoc-trend-save-label {
+	font-family: Bahnschrift, "Segoe UI", sans-serif;
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: var(--text-secondary);
+}
+
 /* Adhoc Trend ApexCharts — keep bottom crosshair date+time fully visible (full page) */
 .psc-adhoc-trend-chart-host,
 .psc-adhoc-trend-chart-host .inner-container,
@@ -959,7 +983,8 @@ body:has(.psc-animations-off) .container-fade-in {
 /* Adhoc ContextMenu / account popups — opaque shell (global .ia_popup is transparent) */
 #popup-ContextMenu,
 #popup-userRolesLogin,
-#popup-changeTheme {
+#popup-changeTheme,
+.ia_popup[id^='popup-SaveTrendConfig'] {
 	background-color: var(--surface-raised);
 	border: 1px solid var(--border);
 	border-radius: 0.5rem;
@@ -973,6 +998,18 @@ body:has(.psc-animations-off) .container-fade-in {
 
 /* ChangeTheme — sized to fit (220×210); no inner scrollbar */
 #popup-changeTheme {
+	overflow: hidden !important;
+}
+
+.ia_popup[id^='popup-SaveTrendConfig'] {
+	overflow: hidden !important;
+}
+
+.ia_popup[id^='popup-SaveTrendConfig'] > .ia_popup__content,
+.ia_popup[id^='popup-SaveTrendConfig'] > .ia_popup__content > .view-parent {
+	background-color: var(--surface-raised);
+	height: 100% !important;
+	width: 100% !important;
 	overflow: hidden !important;
 }
 
