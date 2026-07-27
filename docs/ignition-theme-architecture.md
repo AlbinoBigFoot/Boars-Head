@@ -120,7 +120,7 @@ gateways/standard/data/config/resources/core/com.inductiveautomation.perspective
 | `light-cool` | Cool light **alias** (optional) | Same cool light neutrals as `light` |
 | `dark-cool` | Cool dark **alias** (optional) | Same cool dark neutrals as `dark` |
 
-**BH UX convention:** ChangeTheme treats **Cool** as writing `light` / `dark`, and **Warm** as `light-warm` / `dark-warm`. Keep `light-cool` / `dark-cool` on disk as aliases for interoperability with stock Ignition / Lightspeed exports; prefer `light` / `dark` in session scripts so Cool stays the short names.
+**BH UX convention:** ChangeTheme writes **Cool** as `light-cool` / `dark-cool`, and **Warm** as `light-warm` / `dark-warm`. Stock Ignition `light` / `dark` theme bundles do **not** apply BH disk `variables.css` overrides (verified: served `/data/perspective/themes/light.css` lacks `--ct-water` / BH neutrals), so Cool must use the thin cool themes. Legacy `light` / `dark` session values remain accepted in UI bindings and are upgraded on click. Advanced Stylesheet also defines `--ct-water` as a safety net.
 
 ### Required resource files (every theme folder)
 

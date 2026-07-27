@@ -2,7 +2,7 @@
 
 Practical guide for operators, designers, and implementers working on Boar’s Head (BH) HMI theming on Ignition **8.3.x**.
 
-> **Status (`feature/themes`):** Four operator themes (`light`, `dark`, `light-warm`, `dark-warm`) are live on Standard. ChangeTheme swaps gateway CSS; Advanced Stylesheet semantic aliases ride those neutrals. Prefer this doc + the linked deep dives over any leftover hardcoded hex in views or stylesheet comments that still say status/device fills are “theme-independent.”
+> **Status (`feature/themes`):** Four operator themes (`light-cool`, `dark-cool`, `light-warm`, `dark-warm`) are live on Standard. ChangeTheme swaps gateway CSS; Advanced Stylesheet semantic aliases ride those neutrals. Prefer this doc + the linked deep dives over any leftover hardcoded hex in views or stylesheet comments that still say status/device fills are “theme-independent.”
 >
 > **Verification screenshots:** Playwright captures from the BH client live under [`verify-screenshots/themes/`](../verify-screenshots/themes/) (overview + header/nav per theme; optional faceplate / Adhoc Trend / alarms).
 
@@ -13,7 +13,7 @@ Practical guide for operators, designers, and implementers working on Boar’s H
 | What | Where |
 |------|--------|
 | Switch theme / animations | Top-right **settings gear** → **ChangeTheme** (Light/Dark × Cool/Warm + Animations On/Off) |
-| Theme session value | `session.props.theme` (default: `light`) |
+| Theme session value | `session.props.theme` (default: `light` / prefer `light-cool`) |
 | Animations session value | `session.props.animations` (boolean, default: `true`) |
 | Gateway theme CSS | `gateways/standard/data/config/resources/core/com.inductiveautomation.perspective/themes/<name>/` |
 | Product CSS (classes + semantic aliases) | `gateways/standard/data/projects/BH/com.inductiveautomation.perspective/stylesheet/stylesheet.css` |
@@ -31,12 +31,12 @@ BH exposes **four** operator-facing themes. ChangeTheme is a 2×2 picker: **Ligh
 
 | UI selection | `session.props.theme` | Meaning |
 |--------------|----------------------|---------|
-| Light + Cool | `light` | Light surfaces, cool neutrals (**default**) |
-| Dark + Cool | `dark` | Dark surfaces, cool neutrals |
+| Light + Cool | `light-cool` | Light surfaces, cool neutrals (**default**) |
+| Dark + Cool | `dark-cool` | Dark surfaces, cool neutrals |
 | Light + Warm | `light-warm` | Light surfaces, warm neutrals |
 | Dark + Warm | `dark-warm` | Dark surfaces, warm neutrals |
 
-**Cool = short names.** Cool does **not** write `light-cool` / `dark-cool`. Those folders may exist on disk as aliases for stock Ignition / Lightspeed interoperability; session scripts and ChangeTheme prefer `light` / `dark`.
+**Cool = `light-cool` / `dark-cool`.** Stock Ignition `light` / `dark` bundles do **not** apply BH disk `variables.css` overrides (including `--ct-water`), so ChangeTheme writes the thin cool themes. Legacy `light` / `dark` session values are still treated as cool in UI bindings and upgraded on the next Cool/Light/Dark click. Advanced Stylesheet also defines `--ct-water` as a safety net.
 
 Figma’s Theme property maps the same four modes (`Light` / `Dark` / `Light Warm` / `Dark Warm`) — see [theme-figma-tokens.md](./theme-figma-tokens.md).
 

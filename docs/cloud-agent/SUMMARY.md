@@ -107,7 +107,7 @@ Never create `01_Faceplates/`.
 
 ### How themes work
 
-1. Operator picks theme → writes `session.props.theme` (`light` | `dark` | `light-warm` | `dark-warm`).
+1. Operator picks theme → writes `session.props.theme` (`light-cool` | `dark-cool` | `light-warm` | `dark-warm`; legacy `light`/`dark` still accepted).
 2. Gateway serves that folder’s theme CSS **first**.
 3. Advanced Stylesheet loads **after** and must **consume** `var(--neutral-*)` / semantic aliases — **never redefine `--neutral-*` in stylesheet.css** (that stomps every theme).
 4. There is **no** reliable `data-theme` DOM attribute for stylesheet scoping. Theme swap = swap CSS file.
