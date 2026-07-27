@@ -1,0 +1,172 @@
+[
+  {
+    "typeColor": -47105,
+    "metadata": {
+      "shortDescription": "multistate",
+      "longDescription": "multistate"
+    },
+    "name": "Multistate",
+    "tagType": "UdtType",
+    "tags": [
+      {
+        "valueSource": "memory",
+        "historyEnabled": true,
+        "historyProvider": "historian",
+        "historicalDeadbandMode": "Absolute",
+        "historicalDeadbandStyle": "Discrete",
+        "historicalDeadband": 0.0,
+        "sampleMode": "OnChange",
+        "metadata": {
+          "shortDescription": "",
+          "longDescription": "",
+          "states": [
+            {
+              "label": "Start",
+              "value": 0
+            },
+            {
+              "label": "Stop",
+              "value": 1
+            },
+            {
+              "label": "Auto",
+              "value": 2
+            }
+          ]
+        },
+        "dataType": "Int4",
+        "name": "Value",
+        "tagType": "AtomicTag"
+      }
+    ]
+  },
+  {
+    "typeColor": -2525440,
+    "metadata": {},
+    "name": "Expression",
+    "tagType": "UdtType",
+    "tags": [
+      {
+        "valueSource": "expr",
+        "historicalDeadband": 0.5,
+        "historicalDeadbandMode": "Absolute",
+        "historicalDeadbandStyle": "Discrete",
+        "formatString": "00000.00",
+        "historySampleRateUnits": "MIN",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "historyProvider": "historian",
+        "historyEnabled": false,
+        "name": "Value",
+        "executionMode": "TagGroupRate",
+        "historySampleRate": 5,
+        "sampleMode": "Periodic",
+        "opcServer": "Ignition OPC UA Server"
+      },
+      {
+        "dataType": "Document",
+        "name": "Metadata",
+        "tagType": "AtomicTag",
+        "value": {
+          "longDescription": "",
+          "shortDescription": ""
+        },
+        "valueSource": "memory"
+      }
+    ],
+    "parameters": {
+      "exprFunction": {
+        "dataType": "String",
+        "value": "(OverviewOnly)"
+      },
+      "exprTargetPath": {
+        "dataType": "String",
+        "value": "(OverviewOnly)"
+      }
+    }
+  },
+  {
+    "typeColor": -185,
+    "metadata": {
+      "shortDescription": "analog",
+      "longDescription": "analog"
+    },
+    "name": "Document",
+    "tagType": "UdtType",
+    "tags": [
+      {
+        "valueSource": "memory",
+        "metadata": {
+          "shortDescription": "value",
+          "longDescription": "value"
+        },
+        "dataType": "Document",
+        "name": "Value",
+        "tagType": "AtomicTag"
+      }
+    ]
+  },
+  {
+    "typeColor": -16776961,
+    "metadata": {
+      "shortDescription": "digital",
+      "longDescription": "digital"
+    },
+    "name": "Digital",
+    "tagType": "UdtType",
+    "tags": [
+      {
+        "valueSource": "memory",
+        "historyEnabled": true,
+        "historyProvider": "historian",
+        "historicalDeadbandMode": "Absolute",
+        "historicalDeadbandStyle": "Discrete",
+        "historicalDeadband": 0.0,
+        "sampleMode": "OnChange",
+        "metadata": {
+          "shortDescription": "value",
+          "longDescription": "value",
+          "states": [
+            {
+              "label": "Off",
+              "value": 0
+            },
+            {
+              "label": "On",
+              "value": 1
+            }
+          ]
+        },
+        "name": "Value",
+        "tagType": "AtomicTag"
+      }
+    ]
+  },
+  {
+    "typeColor": -21433,
+    "metadata": {
+      "shortDescription": "analog",
+      "longDescription": "analog"
+    },
+    "name": "Analog",
+    "tagType": "UdtType",
+    "tags": [
+      {
+        "valueSource": "memory",
+        "historyEnabled": true,
+        "historyProvider": "historian",
+        "historicalDeadband": 0.01,
+        "historicalDeadbandMode": "Absolute",
+        "historicalDeadbandStyle": "Discrete",
+        "sampleMode": "OnChange",
+        "metadata": {
+          "shortDescription": "value",
+          "longDescription": "value"
+        },
+        "dataType": "Float4",
+        "name": "Value",
+        "tagType": "AtomicTag"
+      }
+    ]
+  }
+]

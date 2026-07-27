@@ -1,0 +1,86 @@
+[
+  {
+    "metadata": {
+      "shortDescription": "ahu",
+      "longDescription": "ahu"
+    },
+    "name": "AHU",
+    "tagType": "UdtType",
+    "tags": [
+      {
+        "name": "Status",
+        "typeId": "_Root/Multistate",
+        "tagType": "UdtInstance"
+      },
+      {
+        "name": "Temp",
+        "typeId": "_Root/Analog",
+        "tagType": "UdtInstance"
+      },
+      {
+        "name": "SummaryInstances",
+        "typeId": "_Root/Expression",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "dataType": "Document",
+            "historyEnabled": false,
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": {
+              "overviewInstances": [],
+              "deviceDetails": {}
+            }
+          },
+          {
+            "name": "Metadata",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Document",
+            "value": {
+              "instanceTemplate": {
+                "bottom": "auto",
+                "height": "24px",
+                "left": "0px",
+                "position": "relative",
+                "right": "auto",
+                "style": {
+                  "classes": ""
+                },
+                "top": "0px",
+                "viewParams": {
+                  "tagPath": ""
+                },
+                "viewPath": "",
+                "width": "auto",
+                "zIndex": "auto"
+              },
+              "longDescription": "Overview Container Instances",
+              "shortDescription": "SummaryInstances",
+              "tagsForDeviceDetails": {
+                "parameters": [
+                  {
+                    "tagPath": "/Temp",
+                    "viewPath": "03_Elements/01_Status/AnalogValue"
+                  }
+                ],
+                "status": [
+                  {
+                    "tagPath": "/Status",
+                    "viewPath": "03_Elements/01_Status/StatusIndicator"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "_Alarms",
+        "typeId": "Config/_Alarms",
+        "tagType": "UdtInstance"
+      }
+    ]
+  }
+]

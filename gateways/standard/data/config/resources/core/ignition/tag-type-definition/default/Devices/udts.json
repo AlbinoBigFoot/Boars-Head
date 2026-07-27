@@ -1,0 +1,806 @@
+[
+  {
+    "metadata": {
+      "shortDescription": "pump",
+      "longDescription": "pump"
+    },
+    "name": "Pump",
+    "tagType": "UdtType",
+    "tags": [
+      {
+        "metadata": {
+          "shortDescription": "status",
+          "longDescription": "pump status"
+        },
+        "name": "Status",
+        "typeId": "_Root/Multistate",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "status",
+              "longDescription": "pump status",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "Run",
+                  "value": 1
+                },
+                {
+                  "label": "Fault",
+                  "value": 2
+                },
+                {
+                  "label": "Manual",
+                  "value": 3
+                },
+                {
+                  "label": "Idle",
+                  "value": 4
+                }
+              ]
+            },
+            "dataType": "Int4",
+            "name": "Value",
+            "value": 0,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Flow",
+          "longDescription": "Pump Flow"
+        },
+        "name": "Temp",
+        "typeId": "_Root/Analog",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "engUnit": "gpm",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "SummaryInstances",
+        "typeId": "_Root/Expression",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "dataType": "Document",
+            "historyEnabled": false,
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": {
+              "overviewInstances": [],
+              "deviceDetails": {}
+            }
+          },
+          {
+            "name": "Metadata",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Document",
+            "value": {
+              "instanceTemplate": {
+                "bottom": "auto",
+                "height": "24px",
+                "left": "0px",
+                "position": "relative",
+                "right": "auto",
+                "style": {
+                  "classes": ""
+                },
+                "top": "0px",
+                "viewParams": {
+                  "tagPath": ""
+                },
+                "viewPath": "",
+                "width": "auto",
+                "zIndex": "auto"
+              },
+              "longDescription": "Overview Container Instances",
+              "shortDescription": "SummaryInstances",
+              "tagsForDeviceDetails": {
+                "parameters": [
+                  {
+                    "tagPath": "/Temp",
+                    "viewPath": "03_Elements/01_Status/AnalogValue"
+                  }
+                ],
+                "status": [
+                  {
+                    "tagPath": "/Status",
+                    "viewPath": "03_Elements/01_Status/StatusIndicator"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "_Alarms",
+        "typeId": "Config/_Alarms",
+        "tagType": "UdtInstance"
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "compressor",
+      "longDescription": "compressor"
+    },
+    "name": "Compressor",
+    "tagType": "UdtType",
+    "tags": [
+      {
+        "metadata": {
+          "shortDescription": "status",
+          "longDescription": "compressor status"
+        },
+        "name": "Status",
+        "typeId": "_Root/Multistate",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "status",
+              "longDescription": "compressor status",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "Run",
+                  "value": 1
+                },
+                {
+                  "label": "Fault",
+                  "value": 2
+                },
+                {
+                  "label": "Manual",
+                  "value": 3
+                },
+                {
+                  "label": "Idle",
+                  "value": 4
+                }
+              ]
+            },
+            "dataType": "Int4",
+            "name": "Value",
+            "value": 0,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Discharge Press",
+          "longDescription": "Compressor Discharge Pressure"
+        },
+        "name": "Temp",
+        "typeId": "_Root/Analog",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "engUnit": "psi",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "SummaryInstances",
+        "typeId": "_Root/Expression",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "dataType": "Document",
+            "historyEnabled": false,
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": {
+              "overviewInstances": [],
+              "deviceDetails": {}
+            }
+          },
+          {
+            "name": "Metadata",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Document",
+            "value": {
+              "instanceTemplate": {
+                "bottom": "auto",
+                "height": "24px",
+                "left": "0px",
+                "position": "relative",
+                "right": "auto",
+                "style": {
+                  "classes": ""
+                },
+                "top": "0px",
+                "viewParams": {
+                  "tagPath": ""
+                },
+                "viewPath": "",
+                "width": "auto",
+                "zIndex": "auto"
+              },
+              "longDescription": "Overview Container Instances",
+              "shortDescription": "SummaryInstances",
+              "tagsForDeviceDetails": {
+                "parameters": [
+                  {
+                    "tagPath": "/Temp",
+                    "viewPath": "03_Elements/01_Status/AnalogValue"
+                  }
+                ],
+                "status": [
+                  {
+                    "tagPath": "/Status",
+                    "viewPath": "03_Elements/01_Status/StatusIndicator"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "_Alarms",
+        "typeId": "Config/_Alarms",
+        "tagType": "UdtInstance"
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "vfd",
+      "longDescription": "vfd"
+    },
+    "name": "VFD",
+    "tagType": "UdtType",
+    "tags": [
+      {
+        "name": "CMD",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance"
+      },
+      {
+        "name": "Fault",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance"
+      },
+      {
+        "name": "SPD_FBK",
+        "typeId": "_Root/Analog",
+        "tagType": "UdtInstance"
+      },
+      {
+        "name": "SummaryInstances",
+        "typeId": "_Root/Expression",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "dataType": "Document",
+            "historyEnabled": false,
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": {
+              "overviewInstances": [],
+              "deviceDetails": {}
+            }
+          },
+          {
+            "name": "Metadata",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Document",
+            "value": {
+              "instanceTemplate": {
+                "bottom": "auto",
+                "height": "24px",
+                "left": "0px",
+                "position": "relative",
+                "right": "auto",
+                "style": {
+                  "classes": ""
+                },
+                "top": "0px",
+                "viewParams": {
+                  "tagPath": ""
+                },
+                "viewPath": "",
+                "width": "auto",
+                "zIndex": "auto"
+              },
+              "longDescription": "Overview Container Instances",
+              "shortDescription": "SummaryInstances",
+              "tagsForDeviceDetails": {
+                "parameters": [
+                  {
+                    "tagPath": "/SPD_FBK",
+                    "viewPath": "03_Elements/01_Status/AnalogValue"
+                  }
+                ],
+                "status": [
+                  {
+                    "tagPath": "/Fault",
+                    "viewPath": "03_Elements/01_Status/StatusIndicator"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "evaporator",
+      "longDescription": "evaporator"
+    },
+    "name": "Evaporator",
+    "tagType": "UdtType",
+    "tags": [
+      {
+        "metadata": {
+          "shortDescription": "Fan 1 VFD",
+          "longDescription": "Fan 1 Variable Frequency Drive"
+        },
+        "name": "Fan 1",
+        "typeId": "Devices/VFD",
+        "tagType": "UdtInstance"
+      },
+      {
+        "metadata": {
+          "shortDescription": "Fan 2 VFD",
+          "longDescription": "Fan 2 Variable Frequency Drive (disabled \u2014 BH plant is single-fan EV-01..16)"
+        },
+        "name": "Fan 2",
+        "typeId": "Devices/VFD",
+        "tagType": "UdtInstance",
+        "enabled": false
+      },
+      {
+        "metadata": {
+          "shortDescription": "Fan 3 VFD",
+          "longDescription": "Fan 3 Variable Frequency Drive (disabled \u2014 BH plant is single-fan EV-01..16)"
+        },
+        "name": "Fan 3",
+        "typeId": "Devices/VFD",
+        "tagType": "UdtInstance",
+        "enabled": false
+      },
+      {
+        "metadata": {
+          "shortDescription": "Evap Press",
+          "longDescription": "Evaporator Pressure"
+        },
+        "typeColor": -21433,
+        "name": "Pressure",
+        "typeId": "_Root/Analog",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "engUnit": "psi",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "status",
+          "longDescription": "evaporator status"
+        },
+        "name": "Status",
+        "typeId": "_Root/Multistate",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "status",
+              "longDescription": "evaporator status",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "Cooling",
+                  "value": 1
+                },
+                {
+                  "label": "Defrost",
+                  "value": 2
+                },
+                {
+                  "label": "Fault",
+                  "value": 3
+                },
+                {
+                  "label": "Manual",
+                  "value": 4
+                },
+                {
+                  "label": "Idle",
+                  "value": 5
+                }
+              ]
+            },
+            "dataType": "Int4",
+            "name": "Value",
+            "value": 0,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Evap Temp",
+          "longDescription": "Evaporator Temperature"
+        },
+        "name": "Temp",
+        "typeId": "_Root/Analog",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "engUnit": "\u00b0F",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "SummaryInstances",
+        "typeId": "_Root/Expression",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "dataType": "Document",
+            "historyEnabled": false,
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": {
+              "overviewInstances": [],
+              "deviceDetails": {}
+            }
+          },
+          {
+            "name": "Metadata",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Document",
+            "value": {
+              "instanceTemplate": {
+                "bottom": "auto",
+                "height": "24px",
+                "left": "0px",
+                "position": "relative",
+                "right": "auto",
+                "style": {
+                  "classes": ""
+                },
+                "top": "0px",
+                "viewParams": {
+                  "tagPath": ""
+                },
+                "viewPath": "",
+                "width": "auto",
+                "zIndex": "auto"
+              },
+              "longDescription": "Overview Container Instances",
+              "shortDescription": "SummaryInstances",
+              "tagsForDeviceDetails": {
+                "parameters": [
+                  {
+                    "tagPath": "/Temp",
+                    "viewPath": "03_Elements/01_Status/AnalogValue"
+                  }
+                ],
+                "status": [
+                  {
+                    "tagPath": "/Status",
+                    "viewPath": "03_Elements/01_Status/StatusIndicator"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "_Alarms",
+        "typeId": "Config/_Alarms",
+        "tagType": "UdtInstance"
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "exhaust fan",
+      "longDescription": "exhaust fan"
+    },
+    "name": "ExhaustFan",
+    "tagType": "UdtType",
+    "tags": [
+      {
+        "metadata": {
+          "shortDescription": "status",
+          "longDescription": "exhaust fan status"
+        },
+        "name": "Status",
+        "typeId": "_Root/Multistate",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "status",
+              "longDescription": "exhaust fan status",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "Run",
+                  "value": 1
+                },
+                {
+                  "label": "Fault",
+                  "value": 2
+                },
+                {
+                  "label": "Manual",
+                  "value": 3
+                },
+                {
+                  "label": "Idle",
+                  "value": 4
+                }
+              ]
+            },
+            "dataType": "Int4",
+            "name": "Value",
+            "value": 0,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Airflow",
+          "longDescription": "Exhaust Fan Airflow"
+        },
+        "name": "Temp",
+        "typeId": "_Root/Analog",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "engUnit": "cfm",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "SummaryInstances",
+        "typeId": "_Root/Expression",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "dataType": "Document",
+            "historyEnabled": false,
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": {
+              "overviewInstances": [],
+              "deviceDetails": {}
+            }
+          },
+          {
+            "name": "Metadata",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Document",
+            "value": {
+              "instanceTemplate": {
+                "bottom": "auto",
+                "height": "24px",
+                "left": "0px",
+                "position": "relative",
+                "right": "auto",
+                "style": {
+                  "classes": ""
+                },
+                "top": "0px",
+                "viewParams": {
+                  "tagPath": ""
+                },
+                "viewPath": "",
+                "width": "auto",
+                "zIndex": "auto"
+              },
+              "longDescription": "Overview Container Instances",
+              "shortDescription": "SummaryInstances",
+              "tagsForDeviceDetails": {
+                "parameters": [
+                  {
+                    "tagPath": "/Temp",
+                    "viewPath": "03_Elements/01_Status/AnalogValue"
+                  }
+                ],
+                "status": [
+                  {
+                    "tagPath": "/Status",
+                    "viewPath": "03_Elements/01_Status/StatusIndicator"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "_Alarms",
+        "typeId": "Config/_Alarms",
+        "tagType": "UdtInstance"
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "cooling tower",
+      "longDescription": "cooling tower"
+    },
+    "name": "CoolingTower",
+    "tagType": "UdtType",
+    "tags": [
+      {
+        "metadata": {
+          "shortDescription": "status",
+          "longDescription": "cooling tower status"
+        },
+        "name": "Status",
+        "typeId": "_Root/Multistate",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "status",
+              "longDescription": "cooling tower status",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "Run",
+                  "value": 1
+                },
+                {
+                  "label": "Fault",
+                  "value": 2
+                },
+                {
+                  "label": "Manual",
+                  "value": 3
+                },
+                {
+                  "label": "Idle",
+                  "value": 4
+                }
+              ]
+            },
+            "dataType": "Int4",
+            "name": "Value",
+            "value": 0,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Basin Temp",
+          "longDescription": "Cooling Tower Basin Temperature"
+        },
+        "name": "Temp",
+        "typeId": "_Root/Analog",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "engUnit": "\u00b0F",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "SummaryInstances",
+        "typeId": "_Root/Expression",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "dataType": "Document",
+            "historyEnabled": false,
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": {
+              "overviewInstances": [],
+              "deviceDetails": {}
+            }
+          },
+          {
+            "name": "Metadata",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Document",
+            "value": {
+              "instanceTemplate": {
+                "bottom": "auto",
+                "height": "24px",
+                "left": "0px",
+                "position": "relative",
+                "right": "auto",
+                "style": {
+                  "classes": ""
+                },
+                "top": "0px",
+                "viewParams": {
+                  "tagPath": ""
+                },
+                "viewPath": "",
+                "width": "auto",
+                "zIndex": "auto"
+              },
+              "longDescription": "Overview Container Instances",
+              "shortDescription": "SummaryInstances",
+              "tagsForDeviceDetails": {
+                "parameters": [
+                  {
+                    "tagPath": "/Temp",
+                    "viewPath": "03_Elements/01_Status/AnalogValue"
+                  }
+                ],
+                "status": [
+                  {
+                    "tagPath": "/Status",
+                    "viewPath": "03_Elements/01_Status/StatusIndicator"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "_Alarms",
+        "typeId": "Config/_Alarms",
+        "tagType": "UdtInstance"
+      }
+    ]
+  }
+]
