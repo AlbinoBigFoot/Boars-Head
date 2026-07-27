@@ -22,10 +22,11 @@ Implement a fix for the Monday ticket described at the bottom of this prompt.
    - Scripts: `shared.*` never `HBT.*`; faceplates only under `01_Popups/00_Faceplates/`
    - Perspective JSON: scoped `propConfig` keys; tab-indented script bodies; `\n` only (no `\r\n`) in expression/code/script strings
    - New/edited views: Ticket Logger context-menu + `ticketLog` handler per project rules
-4. **Scan:** after project/config edits, POST Ignition scan using `docs/cloud-agent/ignition-scan.json` (`scan/projects` and/or `scan/config` as appropriate). Prefer `127.0.0.1` over `localhost` on Windows.
-5. **Commit** with a clear message focused on why (only when the fix is real). Do **not** commit `.env`, tokens, or secrets.
-6. **Draft PR:** if `gh` is available and authenticated, push the branch and open a **draft** PR. Do **not** merge. If `gh` is missing, leave the branch committed locally and note that in your final summary.
-7. **Stop** when the draft PR exists (or branch is committed if PR impossible). Summarize what changed.
+4. **Signatures (projects):** after any edit under `gateways/*/data/projects/`, run `python scripts/repair-resource-signatures.py` then `python scripts/repair-resource-signatures.py --check` (must exit 0). Skipping this causes Designer `ProtoSerializationException` / `No value present`. See `docs/ignition-resource-signatures.md`.
+5. **Scan:** after project/config edits, POST Ignition scan using `docs/cloud-agent/ignition-scan.json` (`scan/projects` and/or `scan/config` as appropriate). Prefer `127.0.0.1` over `localhost` on Windows.
+6. **Commit** with a clear message focused on why (only when the fix is real). Do **not** commit `.env`, tokens, or secrets.
+7. **Draft PR:** if `gh` is available and authenticated, push the branch and open a **draft** PR. Do **not** merge. If `gh` is missing, leave the branch committed locally and note that in your final summary.
+8. **Stop** when the draft PR exists (or branch is committed if PR impossible). Summarize what changed.
 
 ## Do not
 
@@ -39,5 +40,6 @@ Implement a fix for the Monday ticket described at the bottom of this prompt.
 
 - Fix matches the ticket
 - Conventions respected
+- Signature repair + `--check` exit 0 when projects changed
 - Scan performed when files under projects/config changed
 - Branch committed; draft PR preferred

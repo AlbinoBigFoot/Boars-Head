@@ -111,4 +111,5 @@ Install GitHub CLI if needed: `winget install --id GitHub.cli -e`. Authenticate 
 
 - `docs/ticket-logger-monday.md` — board/columns/Ticket Logger
 - `docs/cloud-agent/SUMMARY.md` — agent conventions + scan API
+- `docs/ignition-resource-signatures.md` — mandatory signature + CAS repair after project edits
 - `docs/tailscale-funnel.md` — Funnel for Perspective (gateway `/`); webhook uses `/monday-webhook`

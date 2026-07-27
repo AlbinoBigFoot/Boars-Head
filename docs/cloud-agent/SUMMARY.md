@@ -12,9 +12,22 @@
 
 ---
 
-## 1. Mandatory: reload from disk after edits (scan API)
+## 1. Mandatory: resource signatures + reload from disk
 
 Ignition 8.3 is **file-based**. Editing files under `gateways/*/data/projects/` or `gateways/*/data/config/` does **nothing** until you scan.
+
+### 1a. Resource signatures (projects only — do this FIRST)
+
+Disk edits that change resource content (`view.json`, `code.py`, `stylesheet.css`, …) **must** refresh `attributes.lastModificationSignature` and copy content digests into `projects/.resources/`. Skipping this causes Designer/gateway `ProtoSerializationException` / `ImmutableResourceSerializer` / `No value present`.
+
+```powershell
+python scripts/repair-resource-signatures.py
+python scripts/repair-resource-signatures.py --check   # must exit 0
+```
+
+Details: [`docs/ignition-resource-signatures.md`](../ignition-resource-signatures.md). Cursor rule: `.cursor/rules/ignition-resource-signatures.mdc`.
+
+### 1b. Scan API
 
 ### Credentials (committed)
 
@@ -179,10 +192,11 @@ Nav icons: `equipment/*` from the committed equipment icon library (not missing 
 
 1. Match BH conventions (CSS-only, `shared.*`, faceplate paths, tab-indented scripts, LF-only).
 2. Edit the right tree (project vs config).
-3. **Scan** projects and/or config with the token above.
-4. Hard-refresh Perspective client (`127.0.0.1:19088`).
-5. For theme/visual work: verify all four themes; keep `--alarm-*` unchanged.
-6. Commit only when asked; don’t force-push `main`.
+3. If project resources changed: **`python scripts/repair-resource-signatures.py`** then `--check` (exit 0).
+4. **Scan** projects and/or config with the token above.
+5. Hard-refresh Perspective client (`127.0.0.1:19088`).
+6. For theme/visual work: verify all four themes; keep `--alarm-*` unchanged.
+7. Commit only when asked; don’t force-push `main`.
 
 ---
 
@@ -191,6 +205,8 @@ Nav icons: `equipment/*` from the committed equipment icon library (not missing 
 ```text
 docs/cloud-agent/SUMMARY.md          ← you are here
 docs/cloud-agent/ignition-scan.json  ← API token for scans
+docs/ignition-resource-signatures.md ← signature + CAS repair (mandatory)
+scripts/repair-resource-signatures.py
 docs/themes.md
 docs/ignition-theme-architecture.md
 docs/theme-figma-tokens.md
@@ -202,4 +218,4 @@ gateways/standard/data/projects/BH/
 gateways/standard/data/config/resources/core/com.inductiveautomation.perspective/themes/
 ```
 
-**Tell the cloud agent:** *Read `docs/cloud-agent/SUMMARY.md` and `docs/cloud-agent/ignition-scan.json` before editing or scanning.*
+**Tell the cloud agent:** *Read `docs/cloud-agent/SUMMARY.md` and `docs/cloud-agent/ignition-scan.json` before editing or scanning. After project edits, run `scripts/repair-resource-signatures.py` then scan.*

@@ -1,0 +1,31 @@
+---
+description: Mandatory Ignition resource signature + CAS repair after project file edits
+alwaysApply: true
+---
+
+# Ignition resource signatures (mandatory post-edit)
+
+Disk edits to BH project resources **without** updating `lastModificationSignature` / CAS digests cause Designer/gateway `ProtoSerializationException` → `ImmutableResourceSerializer` → `NoSuchElementException: No value present`.
+
+## Failure mode
+
+Ignition stores file bytes in `gateways/*/data/projects/.resources/<sha256>`. Pull/load opens that digest. Agent edits that change `view.json` / `code.py` / `stylesheet.css` / etc. but skip signature repair leave:
+
+1. Missing or stale `attributes.lastModificationSignature` in `resource.json`, and/or
+2. New content digests absent from `.resources/`
+
+→ Optional empty → ProtoSerializationException.
+
+## After ANY create/edit under `gateways/*/data/projects/`
+
+Including `view.json`, `resource.json`, `props.json`, `config.json`, `code.py`, `stylesheet.css`, named queries, page-config, session-*, timers, tag-change:
+
+1. Run: `python scripts/repair-resource-signatures.py`
+2. Confirm clean: `python scripts/repair-resource-signatures.py --check` (exit 0)
+3. POST scan/projects (`docs/cloud-agent/ignition-scan.json` or ignition-scan hook)
+
+Do **not** invent signatures or leave `lastModificationSignature` as `0`×64. Do **not** skip this because “only content changed.”
+
+## Details
+
+See `docs/ignition-resource-signatures.md`.
