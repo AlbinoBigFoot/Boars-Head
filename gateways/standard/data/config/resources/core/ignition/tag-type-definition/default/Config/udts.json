@@ -1,0 +1,100 @@
+[
+  {
+    "typeColor": -29696,
+    "name": "_Alarms",
+    "tagType": "UdtType",
+    "tags": [
+      {
+        "valueSource": "reference",
+        "expression": "false\r\n",
+        "dataType": "Int4",
+        "sourceTagPath": "[.]../Alarm Metrics.highestAckedPriority",
+        "name": "_AckHighPriority",
+        "tagType": "AtomicTag"
+      },
+      {
+        "valueSource": "reference",
+        "expression": "false\r\n",
+        "dataType": "Boolean",
+        "sourceTagPath": "[.]../Alarm Metrics.hasActive",
+        "name": "_Active",
+        "tagType": "AtomicTag"
+      },
+      {
+        "valueSource": "reference",
+        "expression": "false\r\n",
+        "dataType": "Int4",
+        "sourceTagPath": "[.]../Alarm Metrics.activeUnackCount",
+        "name": "_ActiveCount",
+        "tagType": "AtomicTag"
+      },
+      {
+        "valueSource": "reference",
+        "expression": "false\r\n",
+        "dataType": "Int4",
+        "sourceTagPath": "[.]../Alarm Metrics.activeCountCritical",
+        "name": "_ActiveCountCritical",
+        "tagType": "AtomicTag"
+      },
+      {
+        "valueSource": "reference",
+        "expression": "false\r\n",
+        "dataType": "Int4",
+        "sourceTagPath": "[.]../Alarm Metrics.activeCountHigh",
+        "name": "_ActiveCountHigh",
+        "tagType": "AtomicTag"
+      },
+      {
+        "valueSource": "reference",
+        "expression": "false\r\n",
+        "dataType": "Int4",
+        "sourceTagPath": "[.]../Alarm Metrics.activeCountLow",
+        "name": "_ActiveCountLow",
+        "tagType": "AtomicTag"
+      },
+      {
+        "valueSource": "reference",
+        "expression": "false\r\n",
+        "dataType": "Int4",
+        "sourceTagPath": "[.]../Alarm Metrics.activeCountMedium",
+        "name": "_ActiveCountMedium",
+        "tagType": "AtomicTag"
+      },
+      {
+        "valueSource": "reference",
+        "expression": "false\r\n",
+        "dataType": "Int4",
+        "sourceTagPath": "[.]../Alarm Metrics.highestActivePriority",
+        "name": "_ActiveHighPriority",
+        "tagType": "AtomicTag"
+      },
+      {
+        "valueSource": "expr",
+        "expression": "case({[.]_HighestPriority},\r\n     4, {[~]_Config/Colors/Alarms/Critical},\r\n     3, {[~]_Config/Colors/Alarms/High},\r\n     2, {[~]_Config/Colors/Alarms/Medium},\r\n     1, {[~]_Config/Colors/Alarms/Low},\r\n     \u0027\u0027)",
+        "dataType": "String",
+        "name": "_Color",
+        "tagType": "AtomicTag"
+      },
+      {
+        "valueSource": "expr",
+        "expression": "if({[.]_AckHighPriority} !\u003d {[.]_ActiveHighPriority} \u0026\u0026 {[.]_Active},\r\n\t{[~]_Config/Flash},\r\n\tTrue\r\n)",
+        "dataType": "Boolean",
+        "name": "_Flash",
+        "tagType": "AtomicTag"
+      },
+      {
+        "valueSource": "expr",
+        "expression": "max({[.]_ActiveHighPriority},\r\n\t{[.]_AckHighPriority},\r\n\t-1)",
+        "name": "_HighestPriority",
+        "tagType": "AtomicTag"
+      },
+      {
+        "valueSource": "expr",
+        "expression": "case({[.]_HighestPriority},\r\n     4, {[~]_Config/Icons/Alarms/Critical},\r\n     3, {[~]_Config/Icons/Alarms/High},\r\n     2, {[~]_Config/Icons/Alarms/Medium},\r\n     1, {[~]_Config/Icons/Alarms/Low},\r\n     {[~]_Config/Icons/Blank})",
+        "dataType": "String",
+        "name": "_Icon",
+        "tagType": "AtomicTag"
+      }
+    ]
+  }
+]

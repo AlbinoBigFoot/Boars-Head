@@ -1,0 +1,502 @@
+[
+  {
+    "metadata": {
+      "shortDescription": "pump overview",
+      "longDescription": "pump overview instances table"
+    },
+    "name": "Pump Overview",
+    "tagType": "UdtType",
+    "tags": [
+      {
+        "name": "DeviceCount",
+        "typeId": "_Root/Expression",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Metadata",
+            "tagType": "AtomicTag",
+            "value": {
+              "longDescription": "Device Count",
+              "shortDescription": "DeviceCount"
+            },
+            "valueSource": "memory",
+            "dataType": "Document"
+          },
+          {
+            "dataType": "Int4",
+            "formatString": "0",
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": 0
+          }
+        ]
+      },
+      {
+        "name": "ActiveAlarmCount",
+        "typeId": "_Root/Expression",
+        "tagType": "UdtInstance",
+        "parameters": {
+          "exprFunction": {
+            "dataType": "String",
+            "value": "sum"
+          },
+          "exprTargetPath": {
+            "dataType": "String",
+            "value": "/_Alarms/_Active"
+          }
+        },
+        "tags": [
+          {
+            "name": "Metadata",
+            "tagType": "AtomicTag",
+            "value": {
+              "longDescription": "Active Alarm Count",
+              "shortDescription": "ActiveAlarmCount"
+            },
+            "valueSource": "memory",
+            "dataType": "Document"
+          },
+          {
+            "dataType": "Int4",
+            "formatString": "0",
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": 0
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "instances",
+          "longDescription": "overview table columns + data (Lightspeed pattern)"
+        },
+        "name": "Instances",
+        "typeId": "_Root/Document",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "",
+              "longDescription": ""
+            },
+            "value": {
+              "data": {},
+              "columns": {}
+            },
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "name": "Rebuild",
+        "value": false,
+        "tagType": "AtomicTag"
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "compressor overview",
+      "longDescription": "compressor overview instances table"
+    },
+    "name": "Compressor Overview",
+    "tagType": "UdtType",
+    "tags": [
+      {
+        "name": "DeviceCount",
+        "typeId": "_Root/Expression",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Metadata",
+            "tagType": "AtomicTag",
+            "value": {
+              "longDescription": "Device Count",
+              "shortDescription": "DeviceCount"
+            },
+            "valueSource": "memory",
+            "dataType": "Document"
+          },
+          {
+            "dataType": "Int4",
+            "formatString": "0",
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": 0
+          }
+        ]
+      },
+      {
+        "name": "ActiveAlarmCount",
+        "typeId": "_Root/Expression",
+        "tagType": "UdtInstance",
+        "parameters": {
+          "exprFunction": {
+            "dataType": "String",
+            "value": "sum"
+          },
+          "exprTargetPath": {
+            "dataType": "String",
+            "value": "/_Alarms/_Active"
+          }
+        },
+        "tags": [
+          {
+            "name": "Metadata",
+            "tagType": "AtomicTag",
+            "value": {
+              "longDescription": "Active Alarm Count",
+              "shortDescription": "ActiveAlarmCount"
+            },
+            "valueSource": "memory",
+            "dataType": "Document"
+          },
+          {
+            "dataType": "Int4",
+            "formatString": "0",
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": 0
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "instances",
+          "longDescription": "overview table columns + data (Lightspeed pattern)"
+        },
+        "name": "Instances",
+        "typeId": "_Root/Document",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "",
+              "longDescription": ""
+            },
+            "value": {
+              "data": {},
+              "columns": {}
+            },
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "name": "Rebuild",
+        "value": false,
+        "tagType": "AtomicTag"
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "exhaust fan overview",
+      "longDescription": "exhaust fan overview instances table"
+    },
+    "name": "Exhaust Fan Overview",
+    "tagType": "UdtType",
+    "tags": [
+      {
+        "name": "DeviceCount",
+        "typeId": "_Root/Expression",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Metadata",
+            "tagType": "AtomicTag",
+            "value": {
+              "longDescription": "Device Count",
+              "shortDescription": "DeviceCount"
+            },
+            "valueSource": "memory",
+            "dataType": "Document"
+          },
+          {
+            "dataType": "Int4",
+            "formatString": "0",
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": 0
+          }
+        ]
+      },
+      {
+        "name": "ActiveAlarmCount",
+        "typeId": "_Root/Expression",
+        "tagType": "UdtInstance",
+        "parameters": {
+          "exprFunction": {
+            "dataType": "String",
+            "value": "sum"
+          },
+          "exprTargetPath": {
+            "dataType": "String",
+            "value": "/_Alarms/_Active"
+          }
+        },
+        "tags": [
+          {
+            "name": "Metadata",
+            "tagType": "AtomicTag",
+            "value": {
+              "longDescription": "Active Alarm Count",
+              "shortDescription": "ActiveAlarmCount"
+            },
+            "valueSource": "memory",
+            "dataType": "Document"
+          },
+          {
+            "dataType": "Int4",
+            "formatString": "0",
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": 0
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "instances",
+          "longDescription": "overview table columns + data (Lightspeed pattern)"
+        },
+        "name": "Instances",
+        "typeId": "_Root/Document",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "",
+              "longDescription": ""
+            },
+            "value": {
+              "data": {},
+              "columns": {}
+            },
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "name": "Rebuild",
+        "value": false,
+        "tagType": "AtomicTag"
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "evaporator overview",
+      "longDescription": "evaporator overview instances table"
+    },
+    "name": "Evaporator Overview",
+    "tagType": "UdtType",
+    "tags": [
+      {
+        "name": "DeviceCount",
+        "typeId": "_Root/Expression",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Metadata",
+            "tagType": "AtomicTag",
+            "value": {
+              "longDescription": "Device Count",
+              "shortDescription": "DeviceCount"
+            },
+            "valueSource": "memory",
+            "dataType": "Document"
+          },
+          {
+            "dataType": "Int4",
+            "formatString": "0",
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": 0
+          }
+        ]
+      },
+      {
+        "name": "ActiveAlarmCount",
+        "typeId": "_Root/Expression",
+        "tagType": "UdtInstance",
+        "parameters": {
+          "exprFunction": {
+            "dataType": "String",
+            "value": "sum"
+          },
+          "exprTargetPath": {
+            "dataType": "String",
+            "value": "/_Alarms/_Active"
+          }
+        },
+        "tags": [
+          {
+            "name": "Metadata",
+            "tagType": "AtomicTag",
+            "value": {
+              "longDescription": "Active Alarm Count",
+              "shortDescription": "ActiveAlarmCount"
+            },
+            "valueSource": "memory",
+            "dataType": "Document"
+          },
+          {
+            "dataType": "Int4",
+            "formatString": "0",
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": 0
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "instances",
+          "longDescription": "overview table columns + data (Lightspeed pattern)"
+        },
+        "name": "Instances",
+        "typeId": "_Root/Document",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "",
+              "longDescription": ""
+            },
+            "value": {
+              "data": {},
+              "columns": {}
+            },
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "name": "Rebuild",
+        "value": false,
+        "tagType": "AtomicTag"
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "cooling tower overview",
+      "longDescription": "cooling tower overview instances table"
+    },
+    "name": "Cooling Tower Overview",
+    "tagType": "UdtType",
+    "tags": [
+      {
+        "name": "DeviceCount",
+        "typeId": "_Root/Expression",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Metadata",
+            "tagType": "AtomicTag",
+            "value": {
+              "longDescription": "Device Count",
+              "shortDescription": "DeviceCount"
+            },
+            "valueSource": "memory",
+            "dataType": "Document"
+          },
+          {
+            "dataType": "Int4",
+            "formatString": "0",
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": 0
+          }
+        ]
+      },
+      {
+        "name": "ActiveAlarmCount",
+        "typeId": "_Root/Expression",
+        "tagType": "UdtInstance",
+        "parameters": {
+          "exprFunction": {
+            "dataType": "String",
+            "value": "sum"
+          },
+          "exprTargetPath": {
+            "dataType": "String",
+            "value": "/_Alarms/_Active"
+          }
+        },
+        "tags": [
+          {
+            "name": "Metadata",
+            "tagType": "AtomicTag",
+            "value": {
+              "longDescription": "Active Alarm Count",
+              "shortDescription": "ActiveAlarmCount"
+            },
+            "valueSource": "memory",
+            "dataType": "Document"
+          },
+          {
+            "dataType": "Int4",
+            "formatString": "0",
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": 0
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "instances",
+          "longDescription": "overview table columns + data (Lightspeed pattern)"
+        },
+        "name": "Instances",
+        "typeId": "_Root/Document",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "",
+              "longDescription": ""
+            },
+            "value": {
+              "data": {},
+              "columns": {}
+            },
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "name": "Rebuild",
+        "value": false,
+        "tagType": "AtomicTag"
+      }
+    ]
+  }
+]

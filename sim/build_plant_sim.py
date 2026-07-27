@@ -14,7 +14,7 @@ DEVICE_SIM = (
 )
 OUT_CSV = ROOT / "sim/bh-plant-sim.csv"
 
-FOLDERS = ["Evaporators", "Compressors", "Pumps", "ExhaustFans"]
+FOLDERS = ["Evaporators", "Compressors", "Pumps", "ExhaustFans", "CoolingTowers"]
 
 DTYPE_MAP = {
     "Boolean": "Boolean",
@@ -177,10 +177,36 @@ EV_PROFILES: dict[str, dict[str, str]] = {
 }
 
 
+# Per-CT profiles matching Overview copy: CT-01 Run · CT-02 Off · CT-03 Fault.
+# Status 0–4: Off / Run / Fault / Manual / Idle. Fan spin on graphic uses Status==1.
+CT_PROFILES: dict[str, dict[str, str]] = {
+    "CT-01": {
+        "Status": "1",
+        "Temp": "realistic(78.5, 1.0, 0.05, 0.22, true)",
+    },
+    "CT-02": {
+        "Status": "0",
+        "Temp": "realistic(70.0, 0.6, 0.03, 0.15, true)",
+    },
+    "CT-03": {
+        "Status": "2",
+        "Temp": "realistic(92.0, 1.4, 0.08, 0.3, true)",
+    },
+}
+
+
 def _ev_id(path: str) -> str | None:
     """Return EV-## from Evaporators/EV-##/... browse path."""
     parts = path.split("/")
     if len(parts) >= 2 and parts[0] == "Evaporators" and parts[1].startswith("EV-"):
+        return parts[1]
+    return None
+
+
+def _ct_id(path: str) -> str | None:
+    """Return CT-## from CoolingTowers/CT-##/... browse path."""
+    parts = path.split("/")
+    if len(parts) >= 2 and parts[0] == "CoolingTowers" and parts[1].startswith("CT-"):
         return parts[1]
     return None
 
@@ -190,6 +216,11 @@ def value_source(path: str, sim_dtype: str) -> str:
     ev = _ev_id(path)
     if ev and ev in EV_PROFILES:
         profile = EV_PROFILES[ev]
+        if leaf_parent in profile:
+            return profile[leaf_parent]
+    ct = _ct_id(path)
+    if ct and ct in CT_PROFILES:
+        profile = CT_PROFILES[ct]
         if leaf_parent in profile:
             return profile[leaf_parent]
 
