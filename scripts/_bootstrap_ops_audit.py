@@ -150,6 +150,25 @@ def _status_code(quality):
 			return 0
 
 
+def _target_from_tag_path(tagPath):
+	"""Build a short target label from a tag path, e.g. EV-01 Temp SP."""
+	path = str(tagPath or "").strip()
+	if not path:
+		return ""
+	# Strip [provider] prefix
+	if path.startswith("["):
+		close = path.find("]")
+		if close >= 0:
+			path = path[close + 1:]
+	parts = [p for p in path.split("/") if p]
+	if not parts:
+		return path
+	# Prefer device + folder + leaf (EV-01 Temp SP)
+	if len(parts) >= 3:
+		return " ".join(parts[-3:])
+	return " ".join(parts)
+
+
 def writeTag(tagPath, value, label=None, viewName=None):
 	"""Write a tag and log the change to OpsAudit.
 
@@ -160,7 +179,8 @@ def writeTag(tagPath, value, label=None, viewName=None):
 	value : any
 		New value.
 	label : str, optional
-		Human label for the audit action_target (defaults to tag leaf).
+		Unused for audit target (kept for call-site compatibility /
+		confirm dialogs). Target is derived from the tag path.
 	viewName : str, optional
 		Perspective view path for originating_system context.
 
@@ -185,7 +205,7 @@ def writeTag(tagPath, value, label=None, viewName=None):
 
 	status = _status_code(quality) if quality is not None else 0
 	leaf = tagPath.split("/")[-1]
-	target = label if label not in (None, "") else tagPath
+	target = _target_from_tag_path(tagPath) or (label if label not in (None, "") else tagPath)
 	action_value = "%s -> %s" % (old_value, value)
 
 	origin = ["tagPath", tagPath, "tagName", leaf]
@@ -215,8 +235,6 @@ def writeTag(tagPath, value, label=None, viewName=None):
 		"statusCode": status,
 	}
 '''
-	# Convert to tab-indented Ignition style for body of functions
-	# (module-level docstring/imports stay; function bodies use tabs)
 	pkg = IGN / "script-python/shared/Audit"
 	pkg.mkdir(parents=True, exist_ok=True)
 	(pkg / "code.py").write_text(code.replace("    ", "\t"), encoding="utf-8", newline="\n")
@@ -234,16 +252,13 @@ def write_named_query():
     actor_host,
     action,
     action_target,
-    action_value,
-    status_code,
-    originating_system,
-    originating_context,
-    audit_events_id
+    action_value
 FROM dbo.ops_audit_events
 WHERE event_timestamp BETWEEN :startDate AND :endDate
   AND (
         COALESCE(:search, '') = ''
         OR actor LIKE :search
+        OR actor_host LIKE :search
         OR action_target LIKE :search
         OR action_value LIKE :search
         OR action LIKE :search
@@ -929,28 +944,28 @@ def audit_log_view():
 										"dateFormat": "YYYY-MM-DD HH:mm:ss",
 										"sortable": True,
 										"resizable": True,
-										"width": "170px",
+										"width": "180px",
 									},
 									{
 										"field": "actor",
 										"header": {"title": "Actor"},
 										"sortable": True,
 										"resizable": True,
-										"width": "110px",
+										"width": "120px",
 									},
 									{
 										"field": "actor_host",
 										"header": {"title": "Host"},
 										"sortable": True,
 										"resizable": True,
-										"width": "120px",
+										"width": "140px",
 									},
 									{
 										"field": "action",
 										"header": {"title": "Action"},
 										"sortable": True,
 										"resizable": True,
-										"width": "100px",
+										"width": "110px",
 									},
 									{
 										"field": "action_target",
@@ -964,35 +979,7 @@ def audit_log_view():
 										"header": {"title": "Value"},
 										"sortable": True,
 										"resizable": True,
-										"width": "140px",
-									},
-									{
-										"field": "status_code",
-										"header": {"title": "Status"},
-										"sortable": True,
-										"resizable": True,
-										"width": "80px",
-									},
-									{
-										"field": "originating_system",
-										"header": {"title": "Origin"},
-										"sortable": True,
-										"resizable": True,
-										"width": "220px",
-									},
-									{
-										"field": "originating_context",
-										"header": {"title": "Ctx"},
-										"sortable": True,
-										"resizable": True,
-										"width": "60px",
-									},
-									{
-										"field": "audit_events_id",
-										"header": {"title": "ID"},
-										"sortable": True,
-										"resizable": True,
-										"width": "70px",
+										"width": "160px",
 									},
 								],
 								"header": {
