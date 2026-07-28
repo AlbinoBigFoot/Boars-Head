@@ -13,14 +13,6 @@
       "#4F4F4F",
       "#6C757D"
     ],
-    "dataset": {
-      "$": [
-        "ds",
-        192,
-        1784934301257
-      ],
-      "$columns": []
-    },
     "dbTrendConfig": {},
     "endDate": {
       "$": [
@@ -30,16 +22,7 @@
       ],
       "$ts": 1784931765499
     },
-    "historicalDataset": {
-      "$": [
-        "ds",
-        192,
-        1784933341289
-      ],
-      "$columns": []
-    },
     "isConfigUpdated": false,
-    "key": [],
     "pens": {
       "$": [
         "ds",
@@ -86,14 +69,6 @@
     },
     "pointCount": 120,
     "realTime": true,
-    "realTimeDataset": {
-      "$": [
-        "ds",
-        192,
-        1784934301256
-      ],
-      "$columns": []
-    },
     "startDate": {
       "$": [
         "ts",
@@ -128,26 +103,6 @@
           "path": "session.custom.AdhocTrend.colors"
         },
         "type": "property"
-      },
-      "persistent": true
-    },
-    "custom.dataset": {
-      "binding": {
-        "config": {
-          "struct": {
-            "historicalDataset": "{view.custom.historicalDataset}",
-            "realTime": "{view.custom.realTime}",
-            "realTimeDataset": "{view.custom.realTimeDataset}"
-          },
-          "waitOnAll": true
-        },
-        "transforms": [
-          {
-            "expression": "if({value}['realTime'],\n\t{value}['realTimeDataset'],\n\t{value}['historicalDataset']\n)",
-            "type": "expression"
-          }
-        ],
-        "type": "expr-struct"
       },
       "persistent": true
     },
@@ -188,30 +143,6 @@
       },
       "persistent": true
     },
-    "custom.historicalDataset": {
-      "binding": {
-        "config": {
-          "aggregate": "Average",
-          "avoidScanClassValidation": true,
-          "dateRange": {
-            "endDate": "{view.custom.endDate}",
-            "startDate": "{view.custom.startDate}"
-          },
-          "enableValueCache": true,
-          "ignoreBadQuality": false,
-          "preventInterpolation": false,
-          "returnFormat": "Wide",
-          "returnSize": {
-            "numRows": "{view.custom.pointCount}",
-            "type": "FIXED"
-          },
-          "tags": "{view.custom.key}",
-          "valueFormat": "DATASET"
-        },
-        "type": "tag-history"
-      },
-      "persistent": true
-    },
     "custom.isConfigUpdated": {
       "binding": {
         "config": {
@@ -225,25 +156,6 @@
         "transforms": [
           {
             "code": "\tif value is None or getattr(value, \"dbTrendConfig\", None) is None:\n\t\treturn False\n\tdb_cfg = value.dbTrendConfig\n\ttry:\n\t\t_ = db_cfg.keys()\n\texcept:\n\t\treturn False\n\n\t# This recursively digs through arrays (like your tags) and dictionaries,\n\t# permanently deleting the sneaky \"quality\" and \"timestamp\" wrappers!\n\tdef clean_wrappers(obj):\n\t\ttry:\n\t\t\t# If it's an Ignition Property Wrapper, drill down into its core value\n\t\t\tif hasattr(obj, \"value\") and hasattr(obj, \"quality\"):\n\t\t\t\treturn clean_wrappers(obj.value)\n\t\texcept: pass\n\t\t\n\t\t# If it's a standard dictionary that looks like a wrapper, strip it\n\t\tif isinstance(obj, dict) or str(type(obj)).find(\"DictionaryWrapper\") > -1:\n\t\t\tif \"value\" in obj and \"quality\" in obj:\n\t\t\t\treturn clean_wrappers(obj[\"value\"])\n\t\t\t# Clean all keys inside the dict\n\t\t\treturn {k: clean_wrappers(v) for k, v in dict(obj).items() if k not in ['timestamp', 'quality']}\n\t\t\t\n\t\t# If it's an array (like your tags list), clean every single item inside it!\n\t\tif hasattr(obj, \"__iter__\") and not isinstance(obj, basestring):\n\t\t\treturn [clean_wrappers(item) for item in obj]\n\t\t\t\n\t\treturn obj\n\n\t# --- 2. The Extraction ---\n\t# These are the ONLY keys that matter for checking if the chart was modified.\n\tkeys_to_check = db_cfg.keys()\n\n\t# Determine the config got updated only when the logged in user is matching the user who has loaded the trend\n\tif 'username' in keys_to_check:\n\t\tif value.sessionUsername == db_cfg.username:\n\t\t\tfor key in keys_to_check:\n\t\t\t\t# Grab the messy block from both the Live Session and the Database Config\n\t\t\t\tmessy_live = value.sessionTrendConfig.get(key)\n\t\t\t\tmessy_db = db_cfg.get(key)\n\t\t\t\t\n\t\t\t\t# Run both through the surgical cleaner so only the true values remain!\n\t\t\t\tpure_live = clean_wrappers(messy_live)\n\t\t\t\tpure_db = clean_wrappers(messy_db)\n\t\t\t\t\n\t\t\t\t# Wash them into perfectly formatted strings and check if they mismatch!\n\t\t\t\tif system.util.jsonEncode(pure_live) != system.util.jsonEncode(pure_db):\n\t\t\t\t\t\n\t\t\t\t\t# Returning True means \"YES! Unsaved Changes exist!\"\n\t\t\t\t\treturn True\n\t\t\t\t\n\t# If the loop finishes and every single key matched perfectly, there are no changes!\n\treturn False",
-            "type": "script"
-          }
-        ],
-        "type": "expr-struct"
-      },
-      "persistent": true
-    },
-    "custom.key": {
-      "binding": {
-        "config": {
-          "struct": {
-            "aggregate": "{view.custom.aggregate}",
-            "pens": "{view.custom.pens}"
-          },
-          "waitOnAll": true
-        },
-        "transforms": [
-          {
-            "code": "\tkey = []\n\tif value is None:\n\t\treturn key\n\tpens = getattr(value, \"pens\", None)\n\tif pens is None:\n\t\treturn key\n\ttry:\n\t\tif pens.getRowCount() <= 0:\n\t\t\treturn key\n\texcept:\n\t\treturn key\n\tpens_ds = system.dataset.toPyDataSet(pens)\n\taggregate = getattr(value, \"aggregate\", \"\") or \"\"\n\tif len(pens_ds) > 0 and aggregate != \"\":\n\t\tfor pen in pens_ds:\n\t\t\tif pen[\"penEnabled\"]:\n\t\t\t\tkey.append({\"aggregate\": aggregate, \"alias\": pen[\"alias\"], \"path\": pen[\"tagPath\"]})\n\treturn key\n",
             "type": "script"
           }
         ],
@@ -286,34 +198,6 @@
           "path": "session.custom.AdhocTrend.realtime"
         },
         "type": "property"
-      },
-      "persistent": true
-    },
-    "custom.realTimeDataset": {
-      "binding": {
-        "config": {
-          "aggregate": "Average",
-          "avoidScanClassValidation": true,
-          "dateRange": {
-            "mostRecent": "{view.custom.timeRange}",
-            "mostRecentUnits": "HOUR"
-          },
-          "enableValueCache": true,
-          "ignoreBadQuality": false,
-          "polling": {
-            "enabled": true,
-            "rate": "5"
-          },
-          "preventInterpolation": false,
-          "returnFormat": "Wide",
-          "returnSize": {
-            "numRows": "{view.custom.pointCount}",
-            "type": "FIXED"
-          },
-          "tags": "{view.custom.key}",
-          "valueFormat": "DATASET"
-        },
-        "type": "tag-history"
       },
       "persistent": true
     },
@@ -457,7 +341,7 @@
               "props.items": {
                 "onChange": {
                   "enabled": null,
-                  "script": "\t# Accordion cleanup only \u2014 tree is fully loaded on startup for lab scale\n\tif origin == 'Script':\n\t\treturn\n"
+                  "script": "\t# Accordion cleanup only — tree is fully loaded on startup for lab scale\n\tif origin == 'Script':\n\t\treturn\n"
                 }
               }
             },
@@ -6208,14 +6092,787 @@
           {
             "children": [
               {
+                "meta": {
+                  "name": "TrendName"
+                },
+                "position": {
+                  "basis": "22px",
+                  "shrink": 0,
+                  "grow": 0
+                },
+                "props": {
+                  "style": {
+                    "classes": "font-title",
+                    "textAlign": "center"
+                  },
+                  "textStyle": {
+                    "textAlign": "center"
+                  }
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "PlotToolbar"
+                },
+                "position": {
+                  "basis": "48px",
+                  "shrink": 0,
+                  "grow": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "classes": "adhoc-trend-plot-toolbar",
+                    "overflow": "visible",
+                    "alignItems": "center",
+                    "width": "100%",
+                    "minHeight": "48px"
+                  }
+                },
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "events": {
+                          "dom": {
+                            "onClick": {
+                              "config": {
+                                "script": "\tfrom shared import tagsTree\n\tshowing = not self.view.custom.treeVisible\n\tself.view.custom.treeVisible = showing\n\ttree = self.parent.parent.parent.parent.getChild(\"TagTree\").getChild(\"Tree\")\n\ttree.props.selection = []\n\ttree.props.selectionData = []\n\t# Rebuild historized tree when opening (no view.custom.treeItems cache)\n\tif showing:\n\t\ttree.props.items = tagsTree.createTree(tagsTree.getHistoricalTags())\n"
+                              },
+                              "scope": "G",
+                              "type": "script"
+                            }
+                          }
+                        },
+                        "meta": {
+                          "name": "tagBrowser"
+                        },
+                        "position": {
+                          "basis": "30px",
+                          "shrink": 0
+                        },
+                        "propConfig": {
+                          "props.path": {
+                            "binding": {
+                              "config": {
+                                "path": "view.custom.treeVisible"
+                              },
+                              "transforms": [
+                                {
+                                  "expression": "if({value},'material/keyboard_arrow_left','material/local_offer')",
+                                  "type": "expression"
+                                }
+                              ],
+                              "type": "property"
+                            }
+                          },
+                          "meta.visible": {
+                            "binding": {
+                              "config": {
+                                "path": "view.params.faceplateMode"
+                              },
+                              "transforms": [
+                                {
+                                  "expression": "!coalesce({value}, false)",
+                                  "type": "expression"
+                                }
+                              ],
+                              "type": "property"
+                            }
+                          }
+                        },
+                        "props": {
+                          "style": {
+                            "classes": "color-icon container-icon",
+                            "cursor": "pointer",
+                            "marginLeft": "4px",
+                            "marginRight": "4px"
+                          }
+                        },
+                        "type": "ia.display.icon"
+                      },
+                      {
+                        "events": {
+                          "dom": {
+                            "onClick": {
+                              "config": {
+                                "script": "\tfrom shared import Alerts\n\tfaceplate = False\n\ttry:\n\t\tfaceplate = bool(self.view.params.faceplateMode)\n\texcept:\n\t\tfaceplate = False\n\tif faceplate:\n\t\tAlerts.showAdhocTrendConfig()\n\telse:\n\t\tsystem.perspective.openPopup(\n\t\t\tid=\"AdhocTrendToolBar\",\n\t\t\tview=\"98_Configuration/AdhocTrend/_Assets/ToolBar\",\n\t\t\tparams={\"faceplateShell\": False},\n\t\t\tposition={\"left\": 280, \"top\": 110},\n\t\t\tdraggable=True,\n\t\t\tresizable=False,\n\t\t\tshowCloseIcon=False,\n\t\t\tmodal=True,\n\t\t\toverlayDismiss=False,\n\t\t\tviewportBound=False\n\t\t)\n"
+                              },
+                              "scope": "G",
+                              "type": "script"
+                            }
+                          }
+                        },
+                        "meta": {
+                          "name": "trendConfig"
+                        },
+                        "position": {
+                          "basis": "30px",
+                          "shrink": 0
+                        },
+                        "propConfig": {
+                          "meta.visible": {
+                            "binding": {
+                              "config": {
+                                "path": "view.custom.tags"
+                              },
+                              "transforms": [
+                                {
+                                  "expression": "len({value})>0",
+                                  "type": "expression"
+                                }
+                              ],
+                              "type": "property"
+                            }
+                          }
+                        },
+                        "props": {
+                          "path": "material/settings",
+                          "style": {
+                            "classes": "color-icon container-icon adhoc-trend-toolbar-icon",
+                            "cursor": "pointer",
+                            "marginLeft": "8px",
+                            "marginRight": "4px"
+                          }
+                        },
+                        "type": "ia.display.icon"
+                      },
+                      {
+                        "meta": {
+                          "name": "ChartType"
+                        },
+                        "position": {
+                          "basis": "64px",
+                          "shrink": 0
+                        },
+                        "propConfig": {
+                          "meta.visible": {
+                            "binding": {
+                              "config": {
+                                "path": "view.custom.tags"
+                              },
+                              "transforms": [
+                                {
+                                  "expression": "len({value})>0",
+                                  "type": "expression"
+                                }
+                              ],
+                              "type": "property"
+                            }
+                          },
+                          "props.text": {
+                            "binding": {
+                              "config": {
+                                "path": "view.custom.realTime"
+                              },
+                              "transforms": [
+                                {
+                                  "fallback": "",
+                                  "inputType": "scalar",
+                                  "mappings": [
+                                    {
+                                      "input": true,
+                                      "output": "Realtime"
+                                    },
+                                    {
+                                      "input": false,
+                                      "output": "Historical"
+                                    }
+                                  ],
+                                  "outputType": "scalar",
+                                  "type": "map"
+                                }
+                              ],
+                              "type": "property"
+                            }
+                          }
+                        },
+                        "props": {
+                          "style": {
+                            "classes": "font-label adhoc-trend-toolbar-label",
+                            "marginLeft": "8px",
+                            "marginRight": "4px",
+                            "whiteSpace": "nowrap"
+                          }
+                        },
+                        "type": "ia.display.label"
+                      },
+                      {
+                        "meta": {
+                          "name": "TimeRange"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "propConfig": {
+                          "meta.visible": {
+                            "binding": {
+                              "config": {
+                                "struct": {
+                                  "realtime": "{view.custom.realTime}",
+                                  "tags": "{view.custom.tags}"
+                                },
+                                "waitOnAll": true
+                              },
+                              "transforms": [
+                                {
+                                  "expression": "{value}['realtime'] && len({value}['tags']) > 0",
+                                  "type": "expression"
+                                }
+                              ],
+                              "type": "expr-struct"
+                            }
+                          },
+                          "props.text": {
+                            "binding": {
+                              "config": {
+                                "path": "view.custom.timeRange"
+                              },
+                              "transforms": [
+                                {
+                                  "fallback": "",
+                                  "inputType": "scalar",
+                                  "mappings": [
+                                    {
+                                      "input": 1,
+                                      "output": "Last Hour"
+                                    },
+                                    {
+                                      "input": 3,
+                                      "output": "Last 3 Hours"
+                                    },
+                                    {
+                                      "input": 6,
+                                      "output": "Last 6 Hours"
+                                    },
+                                    {
+                                      "input": 12,
+                                      "output": "Last 12 Hours"
+                                    },
+                                    {
+                                      "input": 24,
+                                      "output": "Last 24 hours"
+                                    },
+                                    {
+                                      "input": 168,
+                                      "output": "Last Week"
+                                    },
+                                    {
+                                      "input": 730,
+                                      "output": "Last Month"
+                                    },
+                                    {
+                                      "input": 2190,
+                                      "output": "Last 3 Months"
+                                    },
+                                    {
+                                      "input": 4380,
+                                      "output": "Last 6 Months"
+                                    }
+                                  ],
+                                  "outputType": "scalar",
+                                  "type": "map"
+                                }
+                              ],
+                              "type": "property"
+                            }
+                          }
+                        },
+                        "props": {
+                          "style": {
+                            "classes": "font-label adhoc-trend-toolbar-label",
+                            "marginLeft": "8px",
+                            "whiteSpace": "nowrap"
+                          }
+                        },
+                        "type": "ia.display.label"
+                      },
+                      {
+                        "meta": {
+                          "name": "StartDate"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "propConfig": {
+                          "meta.visible": {
+                            "binding": {
+                              "config": {
+                                "struct": {
+                                  "realtime": "{view.custom.realTime}",
+                                  "tags": "{view.custom.tags}"
+                                },
+                                "waitOnAll": true
+                              },
+                              "transforms": [
+                                {
+                                  "expression": "!{value}['realtime'] && len({value}['tags']) > 0",
+                                  "type": "expression"
+                                }
+                              ],
+                              "type": "expr-struct"
+                            }
+                          },
+                          "props.text": {
+                            "binding": {
+                              "config": {
+                                "path": "view.custom.startDate"
+                              },
+                              "transforms": [
+                                {
+                                  "formatType": "datetime",
+                                  "formatValue": "d MMM YYYY h:mm a",
+                                  "type": "format"
+                                },
+                                {
+                                  "expression": "{value} + \" -  \"",
+                                  "type": "expression"
+                                }
+                              ],
+                              "type": "property"
+                            }
+                          }
+                        },
+                        "props": {
+                          "style": {
+                            "classes": "font-label"
+                          }
+                        },
+                        "type": "ia.display.label"
+                      },
+                      {
+                        "meta": {
+                          "name": "EndDate"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "propConfig": {
+                          "meta.visible": {
+                            "binding": {
+                              "config": {
+                                "struct": {
+                                  "realtime": "{view.custom.realTime}",
+                                  "tags": "{view.custom.tags}"
+                                },
+                                "waitOnAll": true
+                              },
+                              "transforms": [
+                                {
+                                  "expression": "!{value}['realtime'] && len({value}['tags']) > 0",
+                                  "type": "expression"
+                                }
+                              ],
+                              "type": "expr-struct"
+                            }
+                          },
+                          "props.text": {
+                            "binding": {
+                              "config": {
+                                "path": "view.custom.endDate"
+                              },
+                              "transforms": [
+                                {
+                                  "formatType": "datetime",
+                                  "formatValue": "d MMM YYYY h:mm a",
+                                  "type": "format"
+                                }
+                              ],
+                              "type": "property"
+                            }
+                          }
+                        },
+                        "props": {
+                          "style": {
+                            "classes": "font-label"
+                          }
+                        },
+                        "type": "ia.display.label"
+                      }
+                    ],
+                    "meta": {
+                      "name": "Icons"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "shrink": 1,
+                      "basis": "0px"
+                    },
+                    "props": {
+                      "alignContent": "flex-start",
+                      "alignItems": "center",
+                      "style": {
+                        "gap": "14px",
+                        "alignItems": "center",
+                        "paddingLeft": "8px",
+                        "paddingRight": "8px",
+                        "overflow": "visible",
+                        "minHeight": "40px"
+                      },
+                      "wrap": "wrap",
+                      "direction": "row"
+                    },
+                    "type": "ia.container.flex"
+                  },
+                  {
+                    "children": [
+                      {
+                        "type": "ia.input.button",
+                        "meta": {
+                          "name": "AddPlot"
+                        },
+                        "position": {
+                          "basis": "36px",
+                          "shrink": 0,
+                          "grow": 0
+                        },
+                        "props": {
+                          "text": "",
+                          "align": "center",
+                          "image": {
+                            "icon": {
+                              "color": "--neutral-10",
+                              "path": "material/add"
+                            }
+                          },
+                          "style": {
+                            "classes": "container-button font-button adhoc-trend-action-btn adhoc-trend-add-plot-btn",
+                            "marginRight": "0px",
+                            "marginTop": "0px",
+                            "minHeight": 32,
+                            "minWidth": 36,
+                            "width": 36,
+                            "paddingTop": "4px",
+                            "paddingLeft": "4px",
+                            "paddingRight": "4px",
+                            "paddingBottom": "4px"
+                          }
+                        },
+                        "events": {
+                          "component": {
+                            "onActionPerformed": {
+                              "config": {
+                                "script": "\t# Append empty plot and reassign plain list so Perspective bindings refresh.\n\tself.session.custom.AdhocTrend.plots = shared.AdhocTrend.apply_add_plot(self.session.custom.AdhocTrend)\n"
+                              },
+                              "scope": "G",
+                              "type": "script"
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "events": {
+                          "component": {
+                            "onActionPerformed": {
+                              "config": {
+                                "draggable": false,
+                                "id": "{/root/TrendContainer/Trend/Buttons/SaveTrendConfig.custom.id}",
+                                "modal": false,
+                                "overlayDismiss": false,
+                                "position": {
+                                  "right": 130,
+                                  "top": 120
+                                },
+                                "positionType": "exact",
+                                "resizable": false,
+                                "showCloseIcon": false,
+                                "type": "toggle",
+                                "viewPath": "98_Configuration/AdhocTrend/_Assets/SaveTrendConfig",
+                                "viewportBound": false
+                              },
+                              "scope": "C",
+                              "type": "popup"
+                            }
+                          }
+                        },
+                        "meta": {
+                          "name": "SaveTrendConfig"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "auto"
+                        },
+                        "propConfig": {
+                          "custom.id": {
+                            "binding": {
+                              "config": {
+                                "path": "session.props.auth.user.id"
+                              },
+                              "transforms": [
+                                {
+                                  "expression": "'SaveTrendConfig-' + coalesce(toString({value}), 'anon')",
+                                  "type": "expression"
+                                }
+                              ],
+                              "type": "property"
+                            }
+                          },
+                          "position.display": {
+                            "binding": {
+                              "config": {
+                                "struct": {
+                                  "tags": "{view.custom.tags}",
+                                  "trendId": "{view.custom.trendId}"
+                                },
+                                "waitOnAll": true
+                              },
+                              "transforms": [
+                                {
+                                  "expression": "len({value}['tags']) > 0 && ({value}['trendId'] = '' || isNull({value}['trendId']))",
+                                  "type": "expression"
+                                }
+                              ],
+                              "type": "expr-struct"
+                            }
+                          }
+                        },
+                        "props": {
+                          "align": "stretch",
+                          "image": {
+                            "icon": {
+                              "color": "--neutral-10",
+                              "path": "material/save"
+                            }
+                          },
+                          "style": {
+                            "classes": "container-button font-button adhoc-trend-action-btn",
+                            "marginRight": "0px",
+                            "marginTop": "0px",
+                            "minHeight": 32,
+                            "minWidth": 108,
+                            "paddingTop": "4px",
+                            "paddingLeft": "10px",
+                            "paddingRight": "10px",
+                            "paddingBottom": "4px",
+                            "whiteSpace": "nowrap"
+                          },
+                          "text": "Save Config"
+                        },
+                        "type": "ia.input.button"
+                      },
+                      {
+                        "events": {
+                          "component": {
+                            "onActionPerformed": {
+                              "config": {
+                                "draggable": false,
+                                "id": "{/root/TrendContainer/Trend/Buttons/SaveTrendConfig.custom.id}",
+                                "modal": false,
+                                "overlayDismiss": false,
+                                "position": {
+                                  "right": 130,
+                                  "top": 120
+                                },
+                                "positionType": "exact",
+                                "resizable": false,
+                                "showCloseIcon": false,
+                                "type": "toggle",
+                                "viewPath": "98_Configuration/AdhocTrend/_Assets/SaveTrendConfig",
+                                "viewportBound": false
+                              },
+                              "scope": "C",
+                              "type": "popup"
+                            }
+                          }
+                        },
+                        "meta": {
+                          "name": "UpdateTrendConfig"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "auto"
+                        },
+                        "propConfig": {
+                          "custom.id": {
+                            "binding": {
+                              "config": {
+                                "path": "session.props.auth.user.id"
+                              },
+                              "transforms": [
+                                {
+                                  "expression": "'SaveTrendConfig-' + coalesce(toString({value}), 'anon')",
+                                  "type": "expression"
+                                }
+                              ],
+                              "type": "property"
+                            }
+                          },
+                          "position.display": {
+                            "binding": {
+                              "config": {
+                                "struct": {
+                                  "tags": "{view.custom.tags}",
+                                  "trendId": "{view.custom.trendId}"
+                                },
+                                "waitOnAll": true
+                              },
+                              "transforms": [
+                                {
+                                  "expression": "len({value}['tags']) > 0 && {value}['trendId'] != '' && !isNull({value}['trendId'])",
+                                  "type": "expression"
+                                }
+                              ],
+                              "type": "expr-struct"
+                            }
+                          }
+                        },
+                        "props": {
+                          "align": "stretch",
+                          "image": {
+                            "icon": {
+                              "color": "--neutral-10",
+                              "path": "material/save"
+                            }
+                          },
+                          "style": {
+                            "classes": "container-button font-button adhoc-trend-action-btn",
+                            "marginRight": "0px",
+                            "marginTop": "0px",
+                            "minHeight": 32,
+                            "minWidth": 108,
+                            "paddingTop": "4px",
+                            "paddingLeft": "10px",
+                            "paddingRight": "10px",
+                            "paddingBottom": "4px",
+                            "whiteSpace": "nowrap"
+                          },
+                          "text": "Update Config"
+                        },
+                        "type": "ia.input.button"
+                      },
+                      {
+                        "events": {
+                          "component": {
+                            "onActionPerformed": {
+                              "config": {
+                                "script": "\t# Default Adhoc Trend Config\n\tdefault_config = {\n\t\t\"tags\": [],\n\t\t\"colors\": [\n\t\t\t\"#008FFB\",\n\t\t\t\"#34C759\",\n\t\t\t\"#FFA726\",\n\t\t\t\"#FF4560\",\n\t\t\t\"#775DD0\",\n\t\t\t\"#1C4E80\",\n\t\t\t\"#008080\",\n\t\t\t\"#26C6DA\",\n\t\t\t\"#4F4F4F\",\n\t\t\t\"#6C757D\"\n\t\t],\n\t\t\"realtime\": True,\n\t\t\"timeRange\": 1,\n\t\t\"pointCount\": 120,\n\t\t\"chartType\": \"line\",\n\t\t\"aggregate\": \"Average\",\n\t\t\"trendId\": \"\",\n\t\t\"trendName\": \"\",\n\t\t\"username\": \"\",\n\t\t\"isShared\": True,\n\t\t\"plots\": shared.AdhocTrend.default_plots(),\n\t\t\"penPlots\": {},\n\t\t\"startDate\": system.date.addHours(system.date.now(), -8),\n\t\t\"endDate\": system.date.now()\n\t}\n\tself.session.custom.AdhocTrend = default_config\n\tself.view.custom.trendId = \"\"\n"
+                              },
+                              "scope": "G",
+                              "type": "script"
+                            }
+                          }
+                        },
+                        "meta": {
+                          "name": "ClearPens"
+                        },
+                        "propConfig": {
+                          "meta.visible": {
+                            "binding": {
+                              "config": {
+                                "path": "view.custom.tags"
+                              },
+                              "transforms": [
+                                {
+                                  "expression": "len({value})>0",
+                                  "type": "expression"
+                                }
+                              ],
+                              "type": "property"
+                            }
+                          }
+                        },
+                        "props": {
+                          "align": "stretch",
+                          "image": {
+                            "icon": {
+                              "color": "--neutral-80",
+                              "path": "material/refresh"
+                            }
+                          },
+                          "style": {
+                            "backgroundColor": "transparent",
+                            "borderColor": "var(--neutral-80)",
+                            "borderStyle": "solid",
+                            "borderWidth": 1,
+                            "classes": "font-button adhoc-trend-action-btn adhoc-trend-action-btn-outline",
+                            "color": "var(--neutral-80)",
+                            "marginRight": "0px",
+                            "marginTop": "0px",
+                            "minHeight": 32,
+                            "minWidth": 108,
+                            "paddingTop": "4px",
+                            "paddingLeft": "10px",
+                            "paddingRight": "10px",
+                            "paddingBottom": "4px",
+                            "whiteSpace": "nowrap"
+                          },
+                          "text": "Clear Trends"
+                        },
+                        "type": "ia.input.button",
+                        "position": {
+                          "shrink": 0,
+                          "basis": "auto"
+                        }
+                      }
+                    ],
+                    "meta": {
+                      "name": "Buttons"
+                    },
+                    "position": {
+                      "shrink": 0,
+                      "grow": 0,
+                      "basis": "auto"
+                    },
+                    "props": {
+                      "alignContent": "center",
+                      "alignItems": "center",
+                      "justify": "flex-end",
+                      "wrap": "nowrap",
+                      "direction": "row",
+                      "gap": 8,
+                      "style": {
+                        "classes": "adhoc-trend-toolbar-actions",
+                        "gap": "10px",
+                        "paddingRight": "12px",
+                        "overflow": "visible",
+                        "minHeight": "40px"
+                      }
+                    },
+                    "type": "ia.container.flex",
+                    "propConfig": {
+                      "props.style.paddingBottom": {
+                        "binding": {
+                          "config": {
+                            "path": "view.params.faceplateMode"
+                          },
+                          "transforms": [
+                            {
+                              "expression": "if(coalesce({value}, false), '6px', '0px')",
+                              "type": "expression"
+                            }
+                          ],
+                          "type": "property"
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "path": "view.params.faceplateMode"
+                          },
+                          "transforms": [
+                            {
+                              "expression": "if(coalesce({value}, false), 'adhoc-trend-toolbar-actions adhoc-trend-toolbar-actions-faceplate', 'adhoc-trend-toolbar-actions')",
+                              "type": "expression"
+                            }
+                          ],
+                          "type": "property"
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
                 "type": "ia.display.flex-repeater",
                 "meta": {
                   "name": "Plots"
                 },
                 "position": {
-                  "height": 0.94,
-                  "width": 1,
-                  "y": 0.06
+                  "grow": 1,
+                  "shrink": 1,
+                  "basis": "0px"
                 },
                 "props": {
                   "direction": "column",
@@ -6279,807 +6936,6 @@
                     }
                   }
                 }
-              },
-              {
-                "children": [
-                  {
-                    "events": {
-                      "dom": {
-                        "onClick": {
-                          "config": {
-                            "script": "\tfrom shared import tagsTree\n\tshowing = not self.view.custom.treeVisible\n\tself.view.custom.treeVisible = showing\n\ttree = self.parent.parent.parent.parent.getChild(\"TagTree\").getChild(\"Tree\")\n\ttree.props.selection = []\n\ttree.props.selectionData = []\n\t# Rebuild historized tree when opening (no view.custom.treeItems cache)\n\tif showing:\n\t\ttree.props.items = tagsTree.createTree(tagsTree.getHistoricalTags())\n"
-                          },
-                          "scope": "G",
-                          "type": "script"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "name": "tagBrowser"
-                    },
-                    "position": {
-                      "basis": "30px",
-                      "shrink": 0
-                    },
-                    "propConfig": {
-                      "props.path": {
-                        "binding": {
-                          "config": {
-                            "path": "view.custom.treeVisible"
-                          },
-                          "transforms": [
-                            {
-                              "expression": "if({value},'material/keyboard_arrow_left','material/local_offer')",
-                              "type": "expression"
-                            }
-                          ],
-                          "type": "property"
-                        }
-                      },
-                      "meta.visible": {
-                        "binding": {
-                          "config": {
-                            "path": "view.params.faceplateMode"
-                          },
-                          "transforms": [
-                            {
-                              "expression": "!coalesce({value}, false)",
-                              "type": "expression"
-                            }
-                          ],
-                          "type": "property"
-                        }
-                      }
-                    },
-                    "props": {
-                      "style": {
-                        "classes": "color-icon container-icon",
-                        "cursor": "pointer",
-                        "marginLeft": "4px",
-                        "marginRight": "4px"
-                      }
-                    },
-                    "type": "ia.display.icon"
-                  },
-                  {
-                    "events": {
-                      "dom": {
-                        "onClick": {
-                          "config": {
-                            "script": "\tfrom shared import Alerts\n\tfaceplate = False\n\ttry:\n\t\tfaceplate = bool(self.view.params.faceplateMode)\n\texcept:\n\t\tfaceplate = False\n\tif faceplate:\n\t\tAlerts.showAdhocTrendConfig()\n\telse:\n\t\tsystem.perspective.openPopup(\n\t\t\tid=\"AdhocTrendToolBar\",\n\t\t\tview=\"98_Configuration/AdhocTrend/_Assets/ToolBar\",\n\t\t\tparams={\"faceplateShell\": False},\n\t\t\tposition={\"left\": 280, \"top\": 110},\n\t\t\tdraggable=True,\n\t\t\tresizable=False,\n\t\t\tshowCloseIcon=False,\n\t\t\tmodal=True,\n\t\t\toverlayDismiss=False,\n\t\t\tviewportBound=False\n\t\t)\n"
-                          },
-                          "scope": "G",
-                          "type": "script"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "name": "trendConfig"
-                    },
-                    "position": {
-                      "basis": "30px",
-                      "shrink": 0
-                    },
-                    "propConfig": {
-                      "meta.visible": {
-                        "binding": {
-                          "config": {
-                            "path": "view.custom.tags"
-                          },
-                          "transforms": [
-                            {
-                              "expression": "len({value})>0",
-                              "type": "expression"
-                            }
-                          ],
-                          "type": "property"
-                        }
-                      }
-                    },
-                    "props": {
-                      "path": "material/settings",
-                      "style": {
-                        "classes": "color-icon container-icon adhoc-trend-toolbar-icon",
-                        "cursor": "pointer",
-                        "marginLeft": "8px",
-                        "marginRight": "4px"
-                      }
-                    },
-                    "type": "ia.display.icon"
-                  },
-                  {
-                    "meta": {
-                      "name": "ChartType"
-                    },
-                    "position": {
-                      "basis": "64px",
-                      "shrink": 0
-                    },
-                    "propConfig": {
-                      "meta.visible": {
-                        "binding": {
-                          "config": {
-                            "path": "view.custom.tags"
-                          },
-                          "transforms": [
-                            {
-                              "expression": "len({value})>0",
-                              "type": "expression"
-                            }
-                          ],
-                          "type": "property"
-                        }
-                      },
-                      "props.text": {
-                        "binding": {
-                          "config": {
-                            "path": "view.custom.realTime"
-                          },
-                          "transforms": [
-                            {
-                              "fallback": "",
-                              "inputType": "scalar",
-                              "mappings": [
-                                {
-                                  "input": true,
-                                  "output": "Realtime"
-                                },
-                                {
-                                  "input": false,
-                                  "output": "Historical"
-                                }
-                              ],
-                              "outputType": "scalar",
-                              "type": "map"
-                            }
-                          ],
-                          "type": "property"
-                        }
-                      }
-                    },
-                    "props": {
-                      "style": {
-                        "classes": "font-label adhoc-trend-toolbar-label",
-                        "marginLeft": "8px",
-                        "marginRight": "4px",
-                        "whiteSpace": "nowrap"
-                      }
-                    },
-                    "type": "ia.display.label"
-                  },
-                  {
-                    "meta": {
-                      "name": "TimeRange"
-                    },
-                    "position": {
-                      "shrink": 0
-                    },
-                    "propConfig": {
-                      "meta.visible": {
-                        "binding": {
-                          "config": {
-                            "struct": {
-                              "realtime": "{view.custom.realTime}",
-                              "tags": "{view.custom.tags}"
-                            },
-                            "waitOnAll": true
-                          },
-                          "transforms": [
-                            {
-                              "expression": "{value}['realtime'] && len({value}['tags']) > 0",
-                              "type": "expression"
-                            }
-                          ],
-                          "type": "expr-struct"
-                        }
-                      },
-                      "props.text": {
-                        "binding": {
-                          "config": {
-                            "path": "view.custom.timeRange"
-                          },
-                          "transforms": [
-                            {
-                              "fallback": "",
-                              "inputType": "scalar",
-                              "mappings": [
-                                {
-                                  "input": 1,
-                                  "output": "Last Hour"
-                                },
-                                {
-                                  "input": 3,
-                                  "output": "Last 3 Hours"
-                                },
-                                {
-                                  "input": 6,
-                                  "output": "Last 6 Hours"
-                                },
-                                {
-                                  "input": 12,
-                                  "output": "Last 12 Hours"
-                                },
-                                {
-                                  "input": 24,
-                                  "output": "Last 24 hours"
-                                },
-                                {
-                                  "input": 168,
-                                  "output": "Last Week"
-                                },
-                                {
-                                  "input": 730,
-                                  "output": "Last Month"
-                                },
-                                {
-                                  "input": 2190,
-                                  "output": "Last 3 Months"
-                                },
-                                {
-                                  "input": 4380,
-                                  "output": "Last 6 Months"
-                                }
-                              ],
-                              "outputType": "scalar",
-                              "type": "map"
-                            }
-                          ],
-                          "type": "property"
-                        }
-                      }
-                    },
-                    "props": {
-                      "style": {
-                        "classes": "font-label adhoc-trend-toolbar-label",
-                        "marginLeft": "8px",
-                        "whiteSpace": "nowrap"
-                      }
-                    },
-                    "type": "ia.display.label"
-                  },
-                  {
-                    "meta": {
-                      "name": "StartDate"
-                    },
-                    "position": {
-                      "shrink": 0
-                    },
-                    "propConfig": {
-                      "meta.visible": {
-                        "binding": {
-                          "config": {
-                            "struct": {
-                              "realtime": "{view.custom.realTime}",
-                              "tags": "{view.custom.tags}"
-                            },
-                            "waitOnAll": true
-                          },
-                          "transforms": [
-                            {
-                              "expression": "!{value}['realtime'] && len({value}['tags']) > 0",
-                              "type": "expression"
-                            }
-                          ],
-                          "type": "expr-struct"
-                        }
-                      },
-                      "props.text": {
-                        "binding": {
-                          "config": {
-                            "path": "view.custom.startDate"
-                          },
-                          "transforms": [
-                            {
-                              "formatType": "datetime",
-                              "formatValue": "d MMM YYYY h:mm a",
-                              "type": "format"
-                            },
-                            {
-                              "expression": "{value} + \" -  \"",
-                              "type": "expression"
-                            }
-                          ],
-                          "type": "property"
-                        }
-                      }
-                    },
-                    "props": {
-                      "style": {
-                        "classes": "font-label"
-                      }
-                    },
-                    "type": "ia.display.label"
-                  },
-                  {
-                    "meta": {
-                      "name": "EndDate"
-                    },
-                    "position": {
-                      "shrink": 0
-                    },
-                    "propConfig": {
-                      "meta.visible": {
-                        "binding": {
-                          "config": {
-                            "struct": {
-                              "realtime": "{view.custom.realTime}",
-                              "tags": "{view.custom.tags}"
-                            },
-                            "waitOnAll": true
-                          },
-                          "transforms": [
-                            {
-                              "expression": "!{value}['realtime'] && len({value}['tags']) > 0",
-                              "type": "expression"
-                            }
-                          ],
-                          "type": "expr-struct"
-                        }
-                      },
-                      "props.text": {
-                        "binding": {
-                          "config": {
-                            "path": "view.custom.endDate"
-                          },
-                          "transforms": [
-                            {
-                              "formatType": "datetime",
-                              "formatValue": "d MMM YYYY h:mm a",
-                              "type": "format"
-                            }
-                          ],
-                          "type": "property"
-                        }
-                      }
-                    },
-                    "props": {
-                      "style": {
-                        "classes": "font-label"
-                      }
-                    },
-                    "type": "ia.display.label"
-                  }
-                ],
-                "meta": {
-                  "name": "Icons"
-                },
-                "position": {
-                  "height": 0.07,
-                  "width": 0.5,
-                  "x": 0.0
-                },
-                "props": {
-                  "alignContent": "flex-start",
-                  "alignItems": "center",
-                  "style": {
-                    "paddingTop": "4px",
-                    "gap": "14px",
-                    "alignItems": "center",
-                    "paddingLeft": "8px",
-                    "paddingRight": "8px",
-                    "overflow": "visible",
-                    "minHeight": "40px"
-                  },
-                  "wrap": "wrap",
-                  "direction": "row"
-                },
-                "type": "ia.container.flex",
-                "propConfig": {
-                  "position.height": {
-                    "binding": {
-                      "config": {
-                        "path": "view.params.faceplateMode"
-                      },
-                      "transforms": [
-                        {
-                          "expression": "if(coalesce({value}, false), 0.1, 0.07)",
-                          "type": "expression"
-                        }
-                      ],
-                      "type": "property"
-                    }
-                  }
-                }
-              },
-              {
-                "children": [
-                  {
-                    "type": "ia.input.button",
-                    "meta": {
-                      "name": "AddPlot"
-                    },
-                    "position": {
-                      "basis": "36px",
-                      "shrink": 0,
-                      "grow": 0
-                    },
-                    "props": {
-                      "text": "",
-                      "align": "center",
-                      "image": {
-                        "icon": {
-                          "color": "--neutral-10",
-                          "path": "material/add"
-                        }
-                      },
-                      "style": {
-                        "classes": "container-button font-button adhoc-trend-action-btn adhoc-trend-add-plot-btn",
-                        "marginRight": "0px",
-                        "marginTop": "0px",
-                        "minHeight": 32,
-                        "minWidth": 36,
-                        "width": 36,
-                        "paddingTop": "4px",
-                        "paddingLeft": "4px",
-                        "paddingRight": "4px",
-                        "paddingBottom": "4px"
-                      }
-                    },
-                    "events": {
-                      "component": {
-                        "onActionPerformed": {
-                          "config": {
-                            "script": "\t# Append empty plot and reassign plain list so Perspective bindings refresh.\n\tself.session.custom.AdhocTrend.plots = shared.AdhocTrend.apply_add_plot(self.session.custom.AdhocTrend)\n"
-                          },
-                          "scope": "G",
-                          "type": "script"
-                        }
-                      }
-                    }
-                  },
-                  {
-                    "events": {
-                      "component": {
-                        "onActionPerformed": {
-                          "config": {
-                            "draggable": false,
-                            "id": "{/root/TrendContainer/Trend/Buttons/SaveTrendConfig.custom.id}",
-                            "modal": false,
-                            "overlayDismiss": false,
-                            "position": {
-                              "right": 130,
-                              "top": 120
-                            },
-                            "positionType": "exact",
-                            "resizable": false,
-                            "showCloseIcon": false,
-                            "type": "toggle",
-                            "viewPath": "98_Configuration/AdhocTrend/_Assets/SaveTrendConfig",
-                            "viewportBound": false
-                          },
-                          "scope": "C",
-                          "type": "popup"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "name": "SaveTrendConfig"
-                    },
-                    "position": {
-                      "shrink": 0,
-                      "basis": "auto"
-                    },
-                    "propConfig": {
-                      "custom.id": {
-                        "binding": {
-                          "config": {
-                            "path": "session.props.auth.user.id"
-                          },
-                          "transforms": [
-                            {
-                              "expression": "'SaveTrendConfig-' + coalesce(toString({value}), 'anon')",
-                              "type": "expression"
-                            }
-                          ],
-                          "type": "property"
-                        }
-                      },
-                      "position.display": {
-                        "binding": {
-                          "config": {
-                            "struct": {
-                              "tags": "{view.custom.tags}",
-                              "trendId": "{view.custom.trendId}"
-                            },
-                            "waitOnAll": true
-                          },
-                          "transforms": [
-                            {
-                              "expression": "len({value}['tags']) > 0 && ({value}['trendId'] = '' || isNull({value}['trendId']))",
-                              "type": "expression"
-                            }
-                          ],
-                          "type": "expr-struct"
-                        }
-                      }
-                    },
-                    "props": {
-                      "align": "stretch",
-                      "image": {
-                        "icon": {
-                          "color": "--neutral-10",
-                          "path": "material/save"
-                        }
-                      },
-                      "style": {
-                        "classes": "container-button font-button adhoc-trend-action-btn",
-                        "marginRight": "0px",
-                        "marginTop": "0px",
-                        "minHeight": 32,
-                        "minWidth": 108,
-                        "paddingTop": "4px",
-                        "paddingLeft": "10px",
-                        "paddingRight": "10px",
-                        "paddingBottom": "4px",
-                        "whiteSpace": "nowrap"
-                      },
-                      "text": "Save Config"
-                    },
-                    "type": "ia.input.button"
-                  },
-                  {
-                    "events": {
-                      "component": {
-                        "onActionPerformed": {
-                          "config": {
-                            "draggable": false,
-                            "id": "{/root/TrendContainer/Trend/Buttons/SaveTrendConfig.custom.id}",
-                            "modal": false,
-                            "overlayDismiss": false,
-                            "position": {
-                              "right": 130,
-                              "top": 120
-                            },
-                            "positionType": "exact",
-                            "resizable": false,
-                            "showCloseIcon": false,
-                            "type": "toggle",
-                            "viewPath": "98_Configuration/AdhocTrend/_Assets/SaveTrendConfig",
-                            "viewportBound": false
-                          },
-                          "scope": "C",
-                          "type": "popup"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "name": "UpdateTrendConfig"
-                    },
-                    "position": {
-                      "shrink": 0,
-                      "basis": "auto"
-                    },
-                    "propConfig": {
-                      "custom.id": {
-                        "binding": {
-                          "config": {
-                            "path": "session.props.auth.user.id"
-                          },
-                          "transforms": [
-                            {
-                              "expression": "'SaveTrendConfig-' + coalesce(toString({value}), 'anon')",
-                              "type": "expression"
-                            }
-                          ],
-                          "type": "property"
-                        }
-                      },
-                      "position.display": {
-                        "binding": {
-                          "config": {
-                            "struct": {
-                              "tags": "{view.custom.tags}",
-                              "trendId": "{view.custom.trendId}"
-                            },
-                            "waitOnAll": true
-                          },
-                          "transforms": [
-                            {
-                              "expression": "len({value}['tags']) > 0 && {value}['trendId'] != '' && !isNull({value}['trendId'])",
-                              "type": "expression"
-                            }
-                          ],
-                          "type": "expr-struct"
-                        }
-                      }
-                    },
-                    "props": {
-                      "align": "stretch",
-                      "image": {
-                        "icon": {
-                          "color": "--neutral-10",
-                          "path": "material/save"
-                        }
-                      },
-                      "style": {
-                        "classes": "container-button font-button adhoc-trend-action-btn",
-                        "marginRight": "0px",
-                        "marginTop": "0px",
-                        "minHeight": 32,
-                        "minWidth": 108,
-                        "paddingTop": "4px",
-                        "paddingLeft": "10px",
-                        "paddingRight": "10px",
-                        "paddingBottom": "4px",
-                        "whiteSpace": "nowrap"
-                      },
-                      "text": "Update Config"
-                    },
-                    "type": "ia.input.button"
-                  },
-                  {
-                    "events": {
-                      "component": {
-                        "onActionPerformed": {
-                          "config": {
-                            "script": "\t# Default Adhoc Trend Config\n\tdefault_config = {\n\t\t\"tags\": [],\n\t\t\"colors\": [\n\t\t\t\"#008FFB\",\n\t\t\t\"#34C759\",\n\t\t\t\"#FFA726\",\n\t\t\t\"#FF4560\",\n\t\t\t\"#775DD0\",\n\t\t\t\"#1C4E80\",\n\t\t\t\"#008080\",\n\t\t\t\"#26C6DA\",\n\t\t\t\"#4F4F4F\",\n\t\t\t\"#6C757D\"\n\t\t],\n\t\t\"realtime\": True,\n\t\t\"timeRange\": 1,\n\t\t\"pointCount\": 120,\n\t\t\"chartType\": \"line\",\n\t\t\"aggregate\": \"Average\",\n\t\t\"trendId\": \"\",\n\t\t\"trendName\": \"\",\n\t\t\"username\": \"\",\n\t\t\"isShared\": True,\n\t\t\"plots\": shared.AdhocTrend.default_plots(),\n\t\t\"penPlots\": {},\n\t\t\"startDate\": system.date.addHours(system.date.now(), -8),\n\t\t\"endDate\": system.date.now()\n\t}\n\tself.session.custom.AdhocTrend = default_config\n\tself.view.custom.trendId = \"\"\n"
-                          },
-                          "scope": "G",
-                          "type": "script"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "name": "ClearPens"
-                    },
-                    "propConfig": {
-                      "meta.visible": {
-                        "binding": {
-                          "config": {
-                            "path": "view.custom.tags"
-                          },
-                          "transforms": [
-                            {
-                              "expression": "len({value})>0",
-                              "type": "expression"
-                            }
-                          ],
-                          "type": "property"
-                        }
-                      }
-                    },
-                    "props": {
-                      "align": "stretch",
-                      "image": {
-                        "icon": {
-                          "color": "--neutral-80",
-                          "path": "material/refresh"
-                        }
-                      },
-                      "style": {
-                        "backgroundColor": "transparent",
-                        "borderColor": "var(--neutral-80)",
-                        "borderStyle": "solid",
-                        "borderWidth": 1,
-                        "classes": "font-button adhoc-trend-action-btn adhoc-trend-action-btn-outline",
-                        "color": "var(--neutral-80)",
-                        "marginRight": "0px",
-                        "marginTop": "0px",
-                        "minHeight": 32,
-                        "minWidth": 108,
-                        "paddingTop": "4px",
-                        "paddingLeft": "10px",
-                        "paddingRight": "10px",
-                        "paddingBottom": "4px",
-                        "whiteSpace": "nowrap"
-                      },
-                      "text": "Clear Trends"
-                    },
-                    "type": "ia.input.button",
-                    "position": {
-                      "shrink": 0,
-                      "basis": "auto"
-                    }
-                  }
-                ],
-                "meta": {
-                  "name": "Buttons"
-                },
-                "position": {
-                  "height": 0.07,
-                  "width": 0.48,
-                  "x": 0.51
-                },
-                "props": {
-                  "alignContent": "center",
-                  "alignItems": "center",
-                  "justify": "flex-end",
-                  "wrap": "nowrap",
-                  "direction": "row",
-                  "gap": 8,
-                  "style": {
-                    "classes": "adhoc-trend-toolbar-actions",
-                    "gap": "10px",
-                    "paddingRight": "12px",
-                    "paddingTop": "4px",
-                    "overflow": "visible",
-                    "minHeight": "40px"
-                  }
-                },
-                "type": "ia.container.flex",
-                "propConfig": {
-                  "position.height": {
-                    "binding": {
-                      "config": {
-                        "path": "view.params.faceplateMode"
-                      },
-                      "transforms": [
-                        {
-                          "expression": "if(coalesce({value}, false), 0.1, 0.07)",
-                          "type": "expression"
-                        }
-                      ],
-                      "type": "property"
-                    }
-                  },
-                  "props.style.paddingBottom": {
-                    "binding": {
-                      "config": {
-                        "path": "view.params.faceplateMode"
-                      },
-                      "transforms": [
-                        {
-                          "expression": "if(coalesce({value}, false), '6px', '0px')",
-                          "type": "expression"
-                        }
-                      ],
-                      "type": "property"
-                    }
-                  },
-                  "props.style.classes": {
-                    "binding": {
-                      "config": {
-                        "path": "view.params.faceplateMode"
-                      },
-                      "transforms": [
-                        {
-                          "expression": "if(coalesce({value}, false), 'adhoc-trend-toolbar-actions adhoc-trend-toolbar-actions-faceplate', 'adhoc-trend-toolbar-actions')",
-                          "type": "expression"
-                        }
-                      ],
-                      "type": "property"
-                    }
-                  }
-                }
-              },
-              {
-                "meta": {
-                  "name": "TrendName"
-                },
-                "position": {
-                  "height": 0.0471,
-                  "width": 0.4,
-                  "x": 0.3
-                },
-                "propConfig": {
-                  "props.text": {
-                    "binding": {
-                      "config": {
-                        "struct": {
-                          "tags": "{view.custom.tags}",
-                          "trendName": "{view.custom.trendName}"
-                        },
-                        "waitOnAll": true
-                      },
-                      "transforms": [
-                        {
-                          "expression": "if({value}['trendName'] != \"\",\n\t{value}['trendName'],\n\tif(len({value}['tags']),\n\t\t\"Unsaved Adhoc Trend\",\n\t\t\"\"\n\t)\n)",
-                          "type": "expression"
-                        }
-                      ],
-                      "type": "expr-struct"
-                    }
-                  }
-                },
-                "props": {
-                  "style": {
-                    "classes": "font-title"
-                  },
-                  "textStyle": {
-                    "textAlign": "center"
-                  }
-                },
-                "type": "ia.display.label"
               }
             ],
             "meta": {
@@ -7090,7 +6946,6 @@
               "grow": 1
             },
             "props": {
-              "mode": "percent",
               "style": {
                 "overflow": "hidden",
                 "classes": "adhoc-trend-chart-host",
@@ -7098,9 +6953,10 @@
                 "minWidth": 0,
                 "height": "100%",
                 "width": "100%"
-              }
+              },
+              "direction": "column"
             },
-            "type": "ia.container.coord",
+            "type": "ia.container.flex",
             "propConfig": {
               "position.basis": {
                 "binding": {
