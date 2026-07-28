@@ -793,6 +793,28 @@
         ]
       },
       {
+        "metadata": {
+          "shortDescription": "Fan 1 VFD",
+          "longDescription": "Cooling tower fan Variable Frequency Drive"
+        },
+        "name": "Fan 1",
+        "typeId": "Devices/VFD",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "SPD_FBK",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "engUnit": "Hz",
+                "tagType": "AtomicTag"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "SummaryInstances",
         "typeId": "_Root/Expression",
         "tagType": "UdtInstance",
@@ -837,6 +859,10 @@
                 "parameters": [
                   {
                     "tagPath": "/Temp",
+                    "viewPath": "03_Elements/01_Status/AnalogValue"
+                  },
+                  {
+                    "tagPath": "/Fan 1/SPD_FBK",
                     "viewPath": "03_Elements/01_Status/AnalogValue"
                   }
                 ],

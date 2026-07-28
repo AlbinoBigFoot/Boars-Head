@@ -184,22 +184,34 @@ EV_PROFILES: dict[str, dict[str, str]] = {
 # Four Overview slots → Run / Idle / Fault / Off (no Manual; Comm Loss only on EV-01).
 # Fan/pump spin graphics use Status==1 (Run).
 CT_PROFILES: dict[str, dict[str, str]] = {
-    # CT-01: Run + PV > SP (90 > 85) → AnalogValue red
+    # CT-01: Run + PV > SP (90 > 85) → AnalogValue red; fan VFD Hz on screen
     "CT-01": {
         "Status": "1",
         "Temp": "90.0",
+        "SPD_FBK": "ramp(48.0, 60.0, 40, true)",
+        "CMD": "true",
+        "Fault": "false",
     },
     "CT-02": {
         "Status": "4",
         "Temp": "realistic(72.0, 0.6, 0.03, 0.15, true)",
+        "SPD_FBK": "0.0",
+        "CMD": "false",
+        "Fault": "false",
     },
     "CT-03": {
         "Status": "2",
         "Temp": "realistic(80.0, 1.0, 0.05, 0.2, true)",
+        "SPD_FBK": "0.0",
+        "CMD": "false",
+        "Fault": "true",
     },
     "CT-04": {
         "Status": "0",
         "Temp": "realistic(68.0, 0.5, 0.03, 0.14, true)",
+        "SPD_FBK": "0.0",
+        "CMD": "false",
+        "Fault": "false",
     },
 }
 
