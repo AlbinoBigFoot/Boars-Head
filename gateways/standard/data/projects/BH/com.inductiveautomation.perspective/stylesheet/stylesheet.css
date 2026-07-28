@@ -2078,3 +2078,46 @@ body:has(.psc-animations-off) .container-fade-in {
 	color: var(--text-inverse) !important;
 	fill: var(--text-inverse) !important;
 }
+
+/* --- Scout-style device alarm chrome (feature/scout-alarm-icon-header) --- */
+.psc-alarm-priority-critical {
+	--alarm-color: var(--alarm-critical);
+}
+.psc-alarm-priority-high {
+	--alarm-color: var(--alarm-high);
+}
+.psc-alarm-priority-medium {
+	--alarm-color: var(--alarm-medium);
+}
+.psc-alarm-priority-low {
+	--alarm-color: var(--alarm-low);
+}
+
+/* content-box so 2px border does not shrink SVG / misalign coils */
+.psc-alarm-border {
+	border-style: solid;
+	border-width: 2px !important;
+	border-color: var(--alarm-color, var(--alarm-critical)) !important;
+	box-sizing: content-box;
+}
+
+.psc-device-graphic {
+	position: relative;
+	overflow: visible !important;
+}
+
+.psc-alarm-header {
+	pointer-events: none;
+	z-index: 10;
+}
+
+.psc-icon-header {
+	min-height: 20px;
+	min-width: 20px;
+	overflow: visible;
+}
+
+/* Scout unack flash on priority letter badge */
+.psc-alarm-icon-unack {
+	animation: alarm-flash 1s steps(1, end) infinite;
+}
