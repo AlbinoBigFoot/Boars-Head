@@ -134,7 +134,7 @@ Themes drive **ambient chrome** — anything that should feel light/dark and coo
 **OK to keep fixed (not “chrome”):**
 
 - Trend **pen / series** qualitative colors (data encoding).
-- Saturated **attention** accents for FAULT / DEFROST / MANUAL (ISA-101), separate from alarm-table tokens — but do not freeze *normal* device fills as cool-gray forever.
+- Saturated **attention** accents for FAULT / DEFROST on StatusIndicator text (ISA-101), separate from alarm-table tokens. Device body fills stay grayscale except Comm Loss.
 
 Hex tables and Figma → semantic mapping: [theme-figma-tokens.md](./theme-figma-tokens.md).
 
