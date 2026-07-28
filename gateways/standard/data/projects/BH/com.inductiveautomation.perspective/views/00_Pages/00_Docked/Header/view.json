@@ -68,12 +68,17 @@
             "enabled": true,
             "location": "bottom",
             "style": {
-              "classes": "font-value",
+              "backgroundColor": "var(--surface-card)",
+              "borderColor": "var(--border)",
+              "borderRadius": 4,
+              "borderStyle": "solid",
+              "borderWidth": 1,
+              "color": "var(--text)",
               "fontSize": "12px",
               "padding": "6px 10px"
             },
             "text": "Roles: (none)",
-            "width": "220px"
+            "width": "240px"
           }
         },
         "position": {
@@ -104,7 +109,7 @@
               },
               "transforms": [
                 {
-                  "code": "\tif value is None or len(value) == 0:\n\t\treturn 'Roles: (none)'\n\treturn 'Roles: ' + ', '.join([str(r) for r in value])",
+                  "code": "\troles = []\n\tif value is not None:\n\t\ttry:\n\t\t\troles = [str(r) for r in value]\n\t\texcept:\n\t\t\troles = [str(value)]\n\tif not roles:\n\t\treturn 'Roles: (none)'\n\treturn 'Roles: ' + ', '.join(roles)",
                   "type": "script"
                 }
               ],
@@ -134,7 +139,7 @@
             "cursor": "help",
             "height": "36px",
             "marginRight": "8px",
-            "overflow": "hidden",
+            "overflow": "visible",
             "width": "36px"
           }
         },
