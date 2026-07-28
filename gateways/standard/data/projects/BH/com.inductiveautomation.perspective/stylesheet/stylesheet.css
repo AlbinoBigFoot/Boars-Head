@@ -41,10 +41,15 @@
  * Chrome:    --borderRadius  --boxShadow1
  *
  * Alarm tokens below are theme-independent (ISA-101). Normal status / deviceFill
- * follow theme --neutral-*.
+ * follow theme --neutral-*. Comm Loss fill (--deviceFill-commLoss) is fixed red
+ * like alarm colors — never remapped per theme.
  *
  * Apply classes:  Refridgeration_STS sts-<TOKEN>
- * Tokens (uppercase): COOLING | DEFROST | FAULT | MANUAL | IDLE | OFF | UNKNOWN
+ * Tokens (uppercase): COOLING | DEFROST | FAULT | MANUAL | IDLE | OFF | UNKNOWN | COMMLOSS
+ *
+ * Device Comm Loss priority (Status/Value tag quality not Good):
+ *   Comm Loss > Fault > Manual > Defrost > Running/Idle/Off
+ * Bad quality means PLC state bits cannot be trusted, so Comm Loss wins over FLT.
  *
  * Refs: ISA-101, Rockwell Process HMI Style Guide, ScoutMotors / Lightspeed themes
  */
@@ -132,6 +137,8 @@
 	--sts-fault: #c62828;
 	--sts-defrost: #ef6c00;
 	--sts-manual: #9c27b0;
+	/* Comm Loss fill — fixed red in every theme (same family as --sts-fault) */
+	--deviceFill-commLoss: #c62828;
 
 	/* Alarm Status Table / icon priority palette */
 	--alarm-critical: #e22028;
@@ -160,6 +167,7 @@
 	--deviceFill-running: var(--neutral-10);
 	--deviceFill-stopped: var(--neutral-60);
 	--deviceFill-faulted: var(--neutral-100);
+	/* --deviceFill-commLoss defined above with alarm colors (theme-invariant) */
 }
 
 /* Base marker class for refrigeration status chips */
@@ -204,6 +212,13 @@
 	border-left: var(--sts-accent-width) solid #7f0000 !important;
 }
 
+/* --- Abnormal: Comm Loss (tag quality not Good) — theme-invariant red + accent --- */
+.psc-Refridgeration_STS.psc-sts-COMMLOSS {
+	background-color: var(--deviceFill-commLoss);
+	color: #ffffff;
+	border-left: var(--sts-accent-width) solid #7f0000 !important;
+}
+
 /* --- Abnormal: Manual / override — magenta (ISA-101 operator-intervention convention) + accent --- */
 .psc-Refridgeration_STS.psc-sts-MANUAL {
 	background-color: var(--sts-manual);
@@ -216,6 +231,21 @@
 	background-color: var(--sts-unknown-bg);
 	color: var(--sts-unknown-fg);
 	border-style: dashed !important;
+}
+
+/*
+ * Device graphic Comm Loss fill (Scout-style data-loss pattern, BH red).
+ * Apply style.classes = device-comm-loss on Graphic (coord or svg) when
+ * qualityOf(tagPath + '/Status/Value') != 'Good'. Overrides running/stopped
+ * grayscale fills via SVG presentation attributes.
+ */
+.psc-device-comm-loss,
+.psc-device-comm-loss path,
+.psc-device-comm-loss circle,
+.psc-device-comm-loss ellipse,
+.psc-device-comm-loss rect,
+.psc-device-comm-loss polygon {
+	fill: var(--deviceFill-commLoss) !important;
 }
 
 /* --- Evaporator overview fan: counter-clockwise spin when Cooling/Running --- */

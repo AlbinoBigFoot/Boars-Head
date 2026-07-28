@@ -61,6 +61,14 @@
     "params.tagPath": {
       "paramDirection": "input",
       "persistent": true
+    },
+    "custom.values.commLoss": {
+      "binding": {
+        "config": {
+          "expression": "if({view.params.tagPath} = '',\n\tfalse,\n\tqualityOf(tag({view.params.tagPath} + '/Status/Value')) != 'Good')"
+        },
+        "type": "expr"
+      }
     }
   },
   "props": {
@@ -302,7 +310,17 @@
             "width": "114px"
           }
         },
-        "type": "ia.container.coord"
+        "type": "ia.container.coord",
+        "propConfig": {
+          "props.style.classes": {
+            "binding": {
+              "config": {
+                "expression": "if({view.custom.values.commLoss},\n\t'device-comm-loss',\n\t'')"
+              },
+              "type": "expr"
+            }
+          }
+        }
       },
       {
         "meta": {

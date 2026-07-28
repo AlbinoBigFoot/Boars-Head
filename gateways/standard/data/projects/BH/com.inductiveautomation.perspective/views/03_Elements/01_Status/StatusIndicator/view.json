@@ -71,7 +71,7 @@
         },
         "transforms": [
           {
-            "code": "\tif value is None:\n\t\treturn ''\n\ttry:\n\t\tv = int(value)\n\texcept:\n\t\treturn ''\n\t# Prefer short display codes (Cooling = CLG, never RUN)\n\tcodes = {0: 'STOP', 1: 'CLG', 2: 'DFT', 3: 'FLT', 4: 'MAN', 5: 'IDLE'}\n\tstates = self.custom.states\n\tif states:\n\t\ttry:\n\t\t\tfor s in states:\n\t\t\t\tsv = s['value'] if hasattr(s, '__getitem__') else getattr(s, 'value', None)\n\t\t\t\tsl = s['label'] if hasattr(s, '__getitem__') else getattr(s, 'label', None)\n\t\t\t\tif sv is not None and int(sv) == v and sl not in (None, ''):\n\t\t\t\t\tkey = str(sl).strip().upper()\n\t\t\t\t\talias = {\n\t\t\t\t\t\t'OFF': 'STOP', 'STOP': 'STOP', 'STOPPED': 'STOP',\n\t\t\t\t\t\t'COOLING': 'CLG', 'CLG': 'CLG',\n\t\t\t\t\t\t'DEFROST': 'DFT', 'DFT': 'DFT',\n\t\t\t\t\t\t'FAULT': 'FLT', 'ALARM': 'FLT', 'FLT': 'FLT',\n\t\t\t\t\t\t'MANUAL': 'MAN', 'MAN': 'MAN',\n\t\t\t\t\t\t'IDLE': 'IDLE', 'STANDBY': 'IDLE', 'IDL': 'IDLE',\n\t\t\t\t\t\t'RUN': 'RUN', 'RUNNING': 'RUN', 'ON': 'RUN'\n\t\t\t\t\t}\n\t\t\t\t\t# If tag metadata still says Run for cooling value, force CLG for value 1\n\t\t\t\t\tif v == 1:\n\t\t\t\t\t\treturn 'CLG'\n\t\t\t\t\treturn alias.get(key, key)\n\t\texcept:\n\t\t\tpass\n\treturn codes.get(v, '')\n",
+            "code": "\tif value is None:\n\t\t# Priority: Comm Loss (quality not Good) wins over Fault/other Status enum\n\t\t# Bad quality means PLC bits cannot be trusted.\n\t\ttag_path = ''\n\t\ttry:\n\t\t\ttag_path = self.view.params.tagPath or ''\n\t\texcept:\n\t\t\tpass\n\t\tif str(tag_path).strip() == '':\n\t\t\treturn ''\n\t\tq = ''\n\t\ttry:\n\t\t\tq = str(self.custom.quality or '')\n\t\texcept:\n\t\t\tpass\n\t\tif not q.startswith('Good'):\n\t\t\treturn 'Comm Loss'\n\t\treturn ''\n\ttry:\n\t\tv = int(value)\n\texcept:\n\t\treturn ''\n\t# Prefer short display codes (Cooling = CLG, never RUN)\n\tcodes = {0: 'STOP', 1: 'CLG', 2: 'DFT', 3: 'FLT', 4: 'MAN', 5: 'IDLE'}\n\tstates = self.custom.states\n\tif states:\n\t\ttry:\n\t\t\tfor s in states:\n\t\t\t\tsv = s['value'] if hasattr(s, '__getitem__') else getattr(s, 'value', None)\n\t\t\t\tsl = s['label'] if hasattr(s, '__getitem__') else getattr(s, 'label', None)\n\t\t\t\tif sv is not None and int(sv) == v and sl not in (None, ''):\n\t\t\t\t\tkey = str(sl).strip().upper()\n\t\t\t\t\talias = {\n\t\t\t\t\t\t'OFF': 'STOP', 'STOP': 'STOP', 'STOPPED': 'STOP',\n\t\t\t\t\t\t'COOLING': 'CLG', 'CLG': 'CLG',\n\t\t\t\t\t\t'DEFROST': 'DFT', 'DFT': 'DFT',\n\t\t\t\t\t\t'FAULT': 'FLT', 'ALARM': 'FLT', 'FLT': 'FLT',\n\t\t\t\t\t\t'MANUAL': 'MAN', 'MAN': 'MAN',\n\t\t\t\t\t\t'IDLE': 'IDLE', 'STANDBY': 'IDLE', 'IDL': 'IDLE',\n\t\t\t\t\t\t'RUN': 'RUN', 'RUNNING': 'RUN', 'ON': 'RUN',\n\t\t\t\t\t\t'COMM LOSS': 'Comm Loss', 'COMMLOSS': 'Comm Loss', 'COMM': 'Comm Loss'\n\t\t\t\t\t}\n\t\t\t\t\t# If tag metadata still says Run for cooling value, force CLG for value 1\n\t\t\t\t\tif v == 1:\n\t\t\t\t\t\treturn 'CLG'\n\t\t\t\t\treturn alias.get(key, key)\n\t\texcept:\n\t\t\tpass\n\treturn codes.get(v, '')\n",
             "type": "script"
           }
         ],
@@ -134,7 +134,7 @@
   "props": {
     "defaultSize": {
       "height": 22,
-      "width": 64
+      "width": 96
     }
   },
   "root": {
@@ -155,7 +155,7 @@
               },
               "transforms": [
                 {
-                  "code": "\ts = str(value).strip().upper()\n\tif not s:\n\t\treturn 'transparent'\n\tcolors = {\n\t\t'COOLING': '#039BE5',\n\t\t'CLG': '#039BE5',\n\t\t'RUN': '#228B22',\n\t\t'RUNNING': '#228B22',\n\t\t'ON': '#228B22',\n\t\t'DEFROST': '#EF6C00',\n\t\t'DFT': '#EF6C00',\n\t\t'FAULT': '#C62828',\n\t\t'ALARM': '#C62828',\n\t\t'FLT': '#C62828',\n\t\t'MANUAL': '#9C27B0',\n\t\t'MAN': '#9C27B0',\n\t\t'IDLE': '#90A4AE',\n\t\t'STANDBY': '#90A4AE',\n\t\t'IDL': '#90A4AE',\n\t\t'OFF': '#546E7A',\n\t\t'STOP': '#546E7A',\n\t\t'STOPPED': '#546E7A'\n\t}\n\treturn colors.get(s, '#607D8B')\n",
+                  "code": "\ts = str(value).strip().upper()\n\tif not s:\n\t\treturn 'transparent'\n\tcolors = {\n\t\t'COOLING': '#039BE5',\n\t\t'CLG': '#039BE5',\n\t\t'RUN': '#228B22',\n\t\t'RUNNING': '#228B22',\n\t\t'ON': '#228B22',\n\t\t'DEFROST': '#EF6C00',\n\t\t'DFT': '#EF6C00',\n\t\t'FAULT': '#C62828',\n\t\t'ALARM': '#C62828',\n\t\t'FLT': '#C62828',\n\t\t'COMM LOSS': '#C62828',\n\t\t'COMMLOSS': '#C62828',\n\t\t'COMM': '#C62828',\n\t\t'MANUAL': '#9C27B0',\n\t\t'MAN': '#9C27B0',\n\t\t'IDLE': '#90A4AE',\n\t\t'STANDBY': '#90A4AE',\n\t\t'IDL': '#90A4AE',\n\t\t'OFF': '#546E7A',\n\t\t'STOP': '#546E7A',\n\t\t'STOPPED': '#546E7A'\n\t}\n\treturn colors.get(s, '#607D8B')\n",
                   "type": "script"
                 }
               ],
@@ -198,7 +198,7 @@
               },
               "transforms": [
                 {
-                  "code": "\ts = str(value).strip().upper()\n\tif not s:\n\t\treturn 'transparent'\n\tcolors = {\n\t\t'COOLING': '#039BE5',\n\t\t'CLG': '#039BE5',\n\t\t'RUN': '#228B22',\n\t\t'RUNNING': '#228B22',\n\t\t'ON': '#228B22',\n\t\t'DEFROST': '#EF6C00',\n\t\t'DFT': '#EF6C00',\n\t\t'FAULT': '#C62828',\n\t\t'ALARM': '#C62828',\n\t\t'FLT': '#C62828',\n\t\t'MANUAL': '#9C27B0',\n\t\t'MAN': '#9C27B0',\n\t\t'IDLE': '#90A4AE',\n\t\t'STANDBY': '#90A4AE',\n\t\t'IDL': '#90A4AE',\n\t\t'OFF': '#546E7A',\n\t\t'STOP': '#546E7A',\n\t\t'STOPPED': '#546E7A'\n\t}\n\treturn colors.get(s, '#607D8B')\n",
+                  "code": "\ts = str(value).strip().upper()\n\tif not s:\n\t\treturn 'transparent'\n\tcolors = {\n\t\t'COOLING': '#039BE5',\n\t\t'CLG': '#039BE5',\n\t\t'RUN': '#228B22',\n\t\t'RUNNING': '#228B22',\n\t\t'ON': '#228B22',\n\t\t'DEFROST': '#EF6C00',\n\t\t'DFT': '#EF6C00',\n\t\t'FAULT': '#C62828',\n\t\t'ALARM': '#C62828',\n\t\t'FLT': '#C62828',\n\t\t'COMM LOSS': '#C62828',\n\t\t'COMMLOSS': '#C62828',\n\t\t'COMM': '#C62828',\n\t\t'MANUAL': '#9C27B0',\n\t\t'MAN': '#9C27B0',\n\t\t'IDLE': '#90A4AE',\n\t\t'STANDBY': '#90A4AE',\n\t\t'IDL': '#90A4AE',\n\t\t'OFF': '#546E7A',\n\t\t'STOP': '#546E7A',\n\t\t'STOPPED': '#546E7A'\n\t}\n\treturn colors.get(s, '#607D8B')\n",
                   "type": "script"
                 }
               ],
