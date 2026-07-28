@@ -1402,6 +1402,45 @@ body:has(.psc-animations-off) .container-fade-in {
 	scrollbar-width: none;
 }
 
+/* Account permission badge (ReadOnly → lock; else lock_open) */
+.psc-perm-badge {
+	align-items: center;
+	background-color: var(--surface-card);
+	border: 1px solid var(--border);
+	border-radius: 0.5rem;
+	box-shadow: var(--boxShadow1);
+	box-sizing: border-box;
+	color: var(--icon);
+	display: inline-flex;
+	height: 36px;
+	justify-content: center;
+	width: 36px;
+}
+.psc-perm-badge:hover {
+	background-color: var(--surface-sunken);
+}
+.psc-perm-badge-read {
+	color: var(--text-muted);
+}
+.psc-perm-badge-write {
+	color: var(--icon);
+}
+.psc-perm-badge svg.psc-color-icon,
+.psc-perm-badge .ia_icon svg,
+.psc-perm-badge .ia_icon,
+.psc-perm-badge svg {
+	color: inherit !important;
+	fill: initial;
+	height: 20px !important;
+	width: 20px !important;
+}
+.psc-perm-badge svg path:not([fill='none']) {
+	fill: currentColor !important;
+}
+.psc-perm-badge svg path[fill='none'] {
+	fill: none !important;
+}
+
 /* Account / login chip */
 .psc-account-chip {
 	align-items: center;
