@@ -3,7 +3,8 @@
 
 - Echoes Monday URL-verification challenge.
 - On create_item / create_pulse: enrich via Monday API when possible, filter for
-  Dylan Jones / dylan.jones, then spawn local `agent` CLI headlessly.
+  Dylan Jones as the *filer* (Employee Name / Email / Created By — not the API
+  token owner), then spawn local `agent` CLI headlessly. Non-Dylan → Pushover only.
 - No Cursor Cloud Automations forward.
 
 Usage:

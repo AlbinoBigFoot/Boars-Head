@@ -1,21 +1,72 @@
 # Monday → local Cursor agent pipeline
 
-Fully automatic path: Monday Tickets board `create_item` webhook → Tailscale Funnel → local Python proxy → Dylan-only filter → headless **Cursor Agent CLI** on this PC (not Cursor Cloud Automations).
+Fully automatic path: Monday Tickets board `create_item` webhook → Tailscale Funnel → local Python proxy → **Dylan-only filer filter** → headless **Cursor Agent CLI** on this PC (not Cursor Cloud Automations).
+
+Non-Dylan tickets never spawn an agent; they get a **Pushover** “ticket added” notification instead.
 
 ## Architecture
 
 ```text
 Monday create_item (board 18423731526, webhook 614195738)
   → https://desktop-tqun3fn.tailc23270.ts.net/monday-webhook
-  → Tailscale Funnel → http://127.0.0.1:9876
+    → Tailscale Funnel → http://127.0.0.1:9876
   → scripts/monday_webhook_proxy.py
        ├─ echo challenge
        ├─ parse create_pulse / create_item
        ├─ enrich via Monday GraphQL (token from env or Ignition Monday tag file)
-       ├─ filter Dylan Jones only (else log skip)
-       └─ spawn: agent -p --force --trust --workspace <repo> <prompt>
+       ├─ filter Dylan Jones filer only
+       │    ├─ accept → spawn: agent -p --force --trust --workspace <repo> <prompt>
+       │    └─ reject → Pushover “Monday ticket added by {filer}: {name}” + link (no agent)
             → branch + fix + scan + commit + draft PR (gh)
 ```
+
+## Why filer ≠ Monday creator
+
+Ticket Logger (`shared.TicketLogger`) creates board items with the gateway’s Monday **API token**. That token belongs to Dylan, so every HMI-submitted ticket has:
+
+- webhook `userId` = Dylan (`111292620`)
+- GraphQL `items.creator` = Dylan
+
+The **real filer** is stored in:
+
+| Source | Column / field |
+|--------|----------------|
+| Employee Name | `text` |
+| Email | `email` |
+| Description line | `Created By: …` inside `long_text7` |
+
+The filter **must** use those when present. Trusting webhook/`creator.id` alone falsely auto-agents every Ticket Logger ticket (e.g. Tylor Slack).
+
+## Dylan filter
+
+### When Employee Name / Email / `Created By` is present (Ticket Logger)
+
+Accept only if filer identity matches Dylan (name/email substrings). **Ignore** API `creator.id` / webhook `userId` (token owner).
+
+### When those are empty (manual Monday UI create)
+
+Accept if Monday `creator.id` / webhook `userId` is `111292620`, or creator name/email matches Dylan substrings.
+
+### Never
+
+- Match against ticket **title**, description body, or update **text** (too loose).
+- Spawn an agent when enrich fails and filer columns are unknown (avoids false accepts if Monday API is down). Still Pushover-notifies.
+
+### Match substrings / ids
+
+| Signal | Default |
+|--------|---------|
+| Monday user id (manual creates only) | `111292620` |
+| Email / name | `dylan.jones`, `dylan jones`, `djones@oneshotautomation`, `death2bigfoot@proton.me`, `dylan.jones@hbtech.com` |
+
+Configure via `.env`:
+
+```bash
+MONDAY_AGENT_USER_IDS=111292620
+MONDAY_AGENT_MATCH_SUBSTRINGS=dylan.jones,dylan jones,djones@oneshotautomation
+```
+
+Accept/reject decisions are logged to `logs/monday-agent/proxy-stderr.log` with `source=filer_columns|monday_creator|enrich_failed`.
 
 ## Local agent CLI
 
@@ -28,24 +79,6 @@ Monday create_item (board 18423731526, webhook 614195738)
 | Prompt | `scripts/prompts/monday-hmi-fix.md` + ticket JSON |
 
 Official docs: [Cursor CLI headless](https://cursor.com/docs/cli/headless).
-
-## Dylan filter
-
-Accept if **any** of:
-
-| Signal | Default |
-|--------|---------|
-| Monday `userId` / creator id | `111292620` (Dylan Jones) |
-| Email / name / Employee Name (`text`) / description / pulse name contains | `dylan.jones`, `dylan jones`, `djones@oneshotautomation`, `death2bigfoot@proton.me`, `dylan.jones@hbtech.com` |
-
-Configure via `.env`:
-
-```bash
-MONDAY_AGENT_USER_IDS=111292620
-MONDAY_AGENT_MATCH_SUBSTRINGS=dylan.jones,dylan jones,djones@oneshotautomation
-```
-
-Skips are logged to the proxy stderr / `logs/monday-agent/proxy-stderr.log`.
 
 ## Start / stop (service)
 
@@ -69,14 +102,14 @@ Funnel path `/monday-webhook` → `127.0.0.1:9876` is verified/repaired by the s
 
 | Source | Use |
 |--------|-----|
-| `.env` `PUSHOVER_TOKEN` / `PUSHOVER_USER` | setup + job start/finish notifications |
+| `.env` `PUSHOVER_TOKEN` / `PUSHOVER_USER` | non-Dylan ticket alerts + Dylan job start/finish |
 | `.env` `MONDAY_API_TOKEN` (optional) | item enrich; else read Ignition tag default from gitignored `…/_Config/Monday/tags.json` |
 | Cursor agent login / `CURSOR_API_KEY` | headless agent auth |
 
 ## Verify
 
 ```powershell
-# Filter unit tests (no agent spawn)
+# Filter unit tests (no agent spawn, no Pushover)
 python scripts/monday_webhook_proxy.py --self-test
 
 # Challenge echo (local)
@@ -85,9 +118,9 @@ Invoke-RestMethod -Method POST -Uri http://127.0.0.1:9876/ -Body '{"challenge":"
 # Challenge echo (Funnel)
 Invoke-RestMethod -Method POST -Uri https://desktop-tqun3fn.tailc23270.ts.net/monday-webhook -Body '{"challenge":"x"}' -ContentType application/json
 
-# Synthetic Dylan webhook (dry-run — set env first or use proxy --dry-run)
+# Synthetic Dylan Ticket Logger webhook (dry-run)
 $env:MONDAY_AGENT_DRY_RUN = "1"
-# restart proxy, then:
+# restart proxy with --dry-run, then:
 $body = @{
   event = @{
     type = "create_pulse"
@@ -101,7 +134,9 @@ $body = @{
 Invoke-RestMethod -Method POST -Uri http://127.0.0.1:9876/ -Body $body -ContentType application/json
 ```
 
-**Live test:** submit a Ticket Logger ticket as Dylan (or create an item while logged in as Dylan). Expect Pushover START/FINISH and a local agent log under `logs/monday-agent/`.
+Self-test covers: Tylor-style Ticket Logger (reject despite Dylan `userId`), Dylan Employee Name (accept), email column (accept), title-substring trap (reject).
+
+**Live test:** submit a Ticket Logger ticket as Dylan → agent + START/FINISH Pushover. Submit as anyone else → Pushover only, no `logs/monday-agent/*` agent spawn.
 
 ## Draft PR note
 
