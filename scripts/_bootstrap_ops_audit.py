@@ -1126,12 +1126,14 @@ def patch_navigation():
 			"transforms": [
 				{
 					"code": (
-						"\timport copy\n"
-						"\titems = copy.deepcopy(value['items'])\n"
+						"\t# json round-trip yields plain dicts — Perspective DotReferenceJythonMap\n"
+						"\t# from deepcopy/bindings does not support item assignment (n['items'] = ...).\n"
+						"\traw = value['items'] if value['items'] is not None else []\n"
+						"\titems = system.util.jsonDecode(system.util.jsonEncode(raw))\n"
 						"\tis_admin = bool(value['isAdmin'])\n"
 						"\tdef filter_nodes(nodes):\n"
 						"\t\tout = []\n"
-						"\t\tfor n in nodes:\n"
+						"\t\tfor n in nodes or []:\n"
 						"\t\t\tdata = n.get('data') or {}\n"
 						"\t\t\tif data.get('adminOnly') and not is_admin:\n"
 						"\t\t\t\tcontinue\n"
