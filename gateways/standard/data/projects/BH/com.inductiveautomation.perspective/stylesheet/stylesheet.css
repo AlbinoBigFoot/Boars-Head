@@ -652,11 +652,12 @@ body:has(.psc-animations-off) .container-fade-in {
 	letter-spacing: 0.02em;
 	color: var(--text-secondary);
 	white-space: nowrap;
-	padding: 0 4px;
+	padding: 0 !important;
+	margin: 0 !important;
 }
 
 .psc-adhoc-trend-toolbar-icon {
-	margin: 0 4px;
+	margin: 0 !important;
 }
 
 .psc-adhoc-trend-share-label {
@@ -694,14 +695,16 @@ body:has(.psc-animations-off) .container-fade-in {
 	color: var(--text-secondary);
 }
 
-/* Adhoc Trend ApexCharts — keep bottom crosshair date+time fully visible (full page) */
+/* Adhoc Trend ApexCharts — contain paint (no outer scrollbars); tip stays visible */
 .psc-adhoc-trend-chart-host,
 .psc-adhoc-trend-chart-host .inner-container,
 .psc-adhoc-trend-apex,
 .psc-adhoc-trend-apex .apexcharts-canvas,
 .psc-adhoc-trend-apex .apexcharts-svg,
 .psc-adhoc-trend-apex .apexcharts-inner {
-	overflow: visible !important;
+	overflow: hidden !important;
+	min-width: 0 !important;
+	max-width: 100% !important;
 }
 
 .psc-adhoc-trend-apex .apexcharts-xaxistooltip,
@@ -720,42 +723,110 @@ body:has(.psc-animations-off) .container-fade-in {
 	white-space: pre-line;
 }
 
-/* Multi-plot stack: 1 plot fills area; 2+ share equal flex height */
+/* Multi-plot stack: 1 plot fills area; 2+ share equal flex height.
+   Use flex fill (height:0 + flex 1 1 0) — height:auto left a dead gray band
+   under the chart before Pens. */
 .psc-adhoc-trend-plots {
-	display: flex;
-	flex-direction: column;
-	flex: 1 1 0;
-	gap: 6px;
-	height: 100%;
-	min-height: 0;
+	display: flex !important;
+	flex-direction: column !important;
+	flex: 1 1 0 !important;
+	gap: 2px;
+	width: 100% !important;
+	height: 0 !important;
+	max-height: 100% !important;
+	min-height: 0 !important;
+	min-width: 0 !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	overflow: hidden !important;
 }
 
 .psc-adhoc-trend-plots > *,
+.psc-adhoc-trend-plots .ia_flexRepeaterComponent__instance,
 .psc-adhoc-trend-plots .ia_embeddedView,
 .psc-adhoc-trend-plots .view-parent {
 	flex: 1 1 0 !important;
 	min-height: 0 !important;
-	height: auto !important;
+	min-width: 0 !important;
+	width: 100% !important;
+	max-width: 100% !important;
+	height: 0 !important;
+	/* Plot defaultSize used to cap embeds at 480px — kill that ceiling */
+	max-height: none !important;
+	overflow: hidden !important;
 }
 
 .psc-adhoc-trend-plot-slot {
-	display: flex;
-	flex-direction: column;
-	flex: 1 1 0;
-	min-height: 0;
-	height: 100%;
+	display: flex !important;
+	flex-direction: column !important;
+	flex: 1 1 0 !important;
+	min-height: 0 !important;
+	min-width: 0 !important;
+	width: 100% !important;
+	height: 0 !important;
+	max-height: none !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	overflow: hidden !important;
 	border-top: 1px solid var(--neutral-40, #c8c8c8);
 }
 
 .psc-adhoc-trend-plot-slot .psc-adhoc-trend-apex,
 .psc-adhoc-trend-plot-slot .ia_component {
-	flex: 1 1 0;
-	min-height: 0;
+	flex: 1 1 0 !important;
+	min-height: 0 !important;
+	min-width: 0 !important;
+	width: 100% !important;
+	max-width: 100% !important;
+	height: 0 !important;
+	max-height: none !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	margin-bottom: 0 !important;
+	padding-bottom: 0 !important;
+}
+
+/* After Pens collapse, force apex SVG/canvas to stretch with host */
+.psc-adhoc-trend-apex > div,
+.psc-adhoc-trend-apex .apexcharts-canvas,
+.psc-adhoc-trend-apex .apexcharts-svg {
+	height: 100% !important;
+	max-height: none !important;
+}
+
+/* Single-plot only: chart.toolbar.show is driven by showToolbar (n == 1).
+   Keep toolbar above zoom/pan SVG layers so icon clicks work; below faceplate header (40). */
+.psc-adhoc-trend-apex .apexcharts-toolbar {
+	position: absolute !important;
+	z-index: 25 !important;
+	pointer-events: auto !important;
+	overflow: visible !important;
+}
+
+.psc-adhoc-trend-apex .apexcharts-toolbar svg,
+.psc-adhoc-trend-apex .apexcharts-toolbar .apexcharts-zoom-icon,
+.psc-adhoc-trend-apex .apexcharts-toolbar .apexcharts-zoomin-icon,
+.psc-adhoc-trend-apex .apexcharts-toolbar .apexcharts-zoomout-icon,
+.psc-adhoc-trend-apex .apexcharts-toolbar .apexcharts-pan-icon,
+.psc-adhoc-trend-apex .apexcharts-toolbar .apexcharts-reset-icon,
+.psc-adhoc-trend-apex .apexcharts-toolbar .apexcharts-menu-icon {
+	pointer-events: auto !important;
+}
+
+/* ApexCharts must stretch to host — avoid default ~800px leaving a right gap */
+.psc-adhoc-trend-apex,
+.psc-adhoc-trend-apex > div,
+.psc-adhoc-trend-apex .apexcharts-canvas,
+.psc-adhoc-trend-apex .apexcharts-svg {
+	width: 100% !important;
+	max-width: 100% !important;
 }
 
 .psc-adhoc-trend-plot-header {
 	flex: 0 0 auto;
-	min-height: 28px;
+	min-height: 22px;
+	height: 22px;
+	overflow: hidden !important;
 }
 
 .psc-adhoc-trend-plot-title {
@@ -763,23 +834,181 @@ body:has(.psc-animations-off) .container-fade-in {
 }
 
 .psc-adhoc-trend-plot-toolbar {
-	flex: 0 0 auto;
-	min-height: 48px;
-	height: 48px;
-	overflow: visible;
-	gap: 8px;
+	flex: 0 0 36px !important;
+	min-height: 36px !important;
+	height: 36px !important;
+	max-height: 36px !important;
+	overflow: hidden !important;
+	gap: 2px !important;
+	justify-content: space-between !important;
+	align-items: center !important;
+	width: 100% !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	padding-left: 0 !important;
 }
 
-.psc-adhoc-trend-add-plot-btn {
-	min-width: 36px !important;
-	width: 36px;
-	padding-left: 4px !important;
-	padding-right: 4px !important;
+/* Left cluster: gear / Realtime / range — flush left with comfortable gaps */
+.psc-adhoc-trend-plot-toolbar > .ia_flexContainer:first-child,
+.psc-adhoc-trend-plot-toolbar [data-component="ia.container.flex"]:first-child {
+	justify-content: flex-start !important;
+	align-items: center !important;
+	flex-wrap: nowrap !important;
+	gap: 10px !important;
+	min-width: 0 !important;
+	padding: 0 !important;
+	padding-left: 0 !important;
+	margin: 0 !important;
+	margin-left: 0 !important;
 }
 
-.psc-adhoc-trend-pen-plot-select {
-	min-width: 80px;
-	font-size: 12px;
+/* Icon-only − / + / Save / Clear — beat .adhoc-trend-action-btn min-width:108px */
+.psc-adhoc-trend-add-plot-btn,
+.psc-adhoc-trend-remove-plot-btn,
+.psc-adhoc-trend-save-btn,
+.psc-adhoc-trend-clear-btn {
+	flex: 0 0 32px !important;
+	min-width: 32px !important;
+	max-width: 32px !important;
+	width: 32px !important;
+	min-height: 32px !important;
+	height: 32px !important;
+	max-height: 32px !important;
+	padding: 0 !important;
+	margin: 0 !important;
+}
+
+/* PenPlot dropdown: single clean control — no stacked white chrome / overflow peek.
+   Column style.classes also apply to the header cell — do NOT force transparent on
+   the header or it punches a white hole through bg-header. */
+.psc-adhoc-trend-pen-plot-cell {
+	padding: 0 !important;
+	overflow: hidden !important;
+	vertical-align: middle !important;
+}
+
+.ia_table__body .psc-adhoc-trend-pen-plot-cell,
+.ia_table__body .tc.psc-adhoc-trend-pen-plot-cell {
+	background: transparent !important;
+	background-color: transparent !important;
+}
+
+.ia_table__head .psc-adhoc-trend-pen-plot-cell,
+.ia_table__headContainer .psc-adhoc-trend-pen-plot-cell,
+.ia_table__head .tc.psc-adhoc-trend-pen-plot-cell,
+.ia_table__head .psc-adhoc-trend-pen-plot-cell .ia_table__headCell,
+.ia_table__headContainer .tc.psc-adhoc-trend-pen-plot-cell {
+	background-color: var(--surface-header) !important;
+	background: var(--surface-header) !important;
+}
+
+/* Pens table fills edge-to-edge — no orphan white column chrome after last col */
+.psc-container-card .ia_table,
+.psc-container-card .ia_table__head,
+.psc-container-card .ia_table__headContainer,
+.psc-container-card .ia_table__body {
+	width: 100% !important;
+	max-width: 100% !important;
+}
+
+.psc-container-card .ia_table__head,
+.psc-container-card .ia_table__headContainer,
+.psc-container-card .ia_table__head .tc,
+.psc-container-card .ia_table__headCell {
+	background-color: var(--surface-header) !important;
+	background: var(--surface-header) !important;
+}
+
+.ia_table__body .psc-adhoc-trend-pen-plot-cell .ia_embeddedView,
+.ia_table__body .psc-adhoc-trend-pen-plot-cell .view-parent,
+.ia_table__body .psc-adhoc-trend-pen-plot-cell .ia_flexContainer,
+.psc-adhoc-trend-pen-plot-wrap {
+	background: transparent !important;
+	background-color: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+.psc-adhoc-trend-pen-plot-wrap {
+	width: 96px !important;
+	max-width: 96px !important;
+	min-width: 0 !important;
+	height: 28px !important;
+	max-height: 28px !important;
+	min-height: 28px !important;
+	overflow: hidden !important;
+	margin: 0 auto !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+}
+
+.psc-adhoc-trend-pen-plot-select,
+.psc-adhoc-trend-pen-plot-cell .ia_dropdown,
+.psc-adhoc-trend-pen-plot-cell .ia_dropdown__control,
+.psc-adhoc-trend-pen-plot-cell .ia_dropdown__value,
+.psc-adhoc-trend-pen-plot-cell .ia_dropdown__valueContainer,
+.psc-adhoc-trend-pen-plot-wrap .ia_dropdown,
+.psc-adhoc-trend-pen-plot-wrap .ia_dropdown__control,
+.psc-adhoc-trend-pen-plot-wrap .ia_dropdown__value,
+.psc-adhoc-trend-pen-plot-wrap .ia_dropdown__valueContainer {
+	min-width: 0 !important;
+	max-width: 96px !important;
+	width: 100% !important;
+	height: 28px !important;
+	max-height: 28px !important;
+	min-height: 28px !important;
+	overflow: hidden !important;
+	font-size: 12px !important;
+	line-height: 1.2 !important;
+	box-sizing: border-box !important;
+	margin: 0 !important;
+}
+
+/* Kill outer dropdown shell that stacks a second white rect above the control */
+.psc-adhoc-trend-pen-plot-wrap .ia_dropdown,
+.psc-adhoc-trend-pen-plot-cell .ia_dropdown {
+	border: none !important;
+	background: transparent !important;
+	padding: 0 !important;
+	box-shadow: none !important;
+}
+
+.psc-adhoc-trend-pen-plot-wrap .ia_dropdown__control,
+.psc-adhoc-trend-pen-plot-cell .ia_dropdown__control {
+	min-height: 28px !important;
+	height: 28px !important;
+	max-height: 28px !important;
+}
+
+.psc-adhoc-trend-pen-plot-select .ia_dropdown__indicators,
+.psc-adhoc-trend-pen-plot-wrap .ia_dropdown__indicators {
+	flex-shrink: 0;
+	height: 28px !important;
+	padding: 0 !important;
+}
+
+.psc-adhoc-trend-pen-plot-select .ia_dropdown__single-value,
+.psc-adhoc-trend-pen-plot-wrap .ia_dropdown__single-value {
+	overflow: hidden !important;
+	text-overflow: ellipsis !important;
+	white-space: nowrap !important;
+	max-width: 68px !important;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+/* Open menu: compact list (portal may still pick up these when nested under cell) */
+.psc-adhoc-trend-pen-plot-cell .ia_dropdown__menu,
+.psc-adhoc-trend-pen-plot-wrap .ia_dropdown__menu,
+.psc-adhoc-trend-pen-plot-select .ia_dropdown__menu {
+	max-height: 160px !important;
+	max-width: 140px !important;
+	min-width: 88px !important;
+	overflow-y: auto !important;
+	font-size: 12px !important;
 }
 
 /* Saved trends Load/Delete embedded view — avoid clipped labels */
@@ -801,12 +1030,15 @@ body:has(.psc-animations-off) .container-fade-in {
 	position: relative;
 	border-radius: 0.5rem;
 	box-shadow: var(--boxShadow1);
-	overflow: hidden;
+	overflow: hidden !important;
 	display: flex;
 	flex-direction: column;
 	height: 100%;
+	max-height: 100%;
 	min-height: 0;
 	min-width: 0;
+	margin: 0 !important;
+	box-sizing: border-box !important;
 }
 
 /* Header + close must sit above ApexCharts pan/toolbar and nested embed layers */
@@ -867,34 +1099,74 @@ body:has(.psc-animations-off) .container-fade-in {
 	flex: 1 1 0 !important;
 }
 
-/* Pens: reserved height so table/chips are fully usable (scroll only inside pens if many rows) */
+/* Pens: expanded ~header + 2–3 rows; collapsed = 32px header docked at bottom. */
 .psc-adhoc-trend-faceplate .psc-adhoc-trend-pens-faceplate {
-	margin: 4px 0 0 0 !important;
-	flex: 0 0 220px !important;
-	height: 220px !important;
-	max-height: 220px !important;
-	min-height: 220px !important;
+	margin: 0 !important;
+	margin-top: 0 !important;
+	padding: 0 !important;
+	padding-top: 0 !important;
+	flex: 0 0 200px !important;
+	height: 200px !important;
+	max-height: 200px !important;
+	min-height: 0 !important;
 	overflow: hidden !important;
 	display: flex !important;
 	flex-direction: column !important;
+	width: 100% !important;
+	min-width: 0 !important;
+	gap: 0 !important;
+	border-top: 1px solid var(--neutral-40, #c8c8c8);
+}
+
+/* Collapsed Pens: header only — pin to bottom, free chart flex space above. */
+.psc-adhoc-trend-pens-collapsed,
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-pens-faceplate.psc-adhoc-trend-pens-collapsed {
+	flex: 0 0 32px !important;
+	height: 32px !important;
+	max-height: 32px !important;
+	min-height: 32px !important;
+	overflow: hidden !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	gap: 0 !important;
+}
+
+.psc-adhoc-trend-pens-header {
+	flex: 0 0 32px !important;
+	height: 32px !important;
+	max-height: 32px !important;
+	min-height: 32px !important;
+	overflow: hidden !important;
+	width: 100% !important;
 }
 
 .psc-adhoc-trend-faceplate .psc-adhoc-trend-pens-faceplate .ia_flexRepeaterComponent,
 .psc-adhoc-trend-faceplate .psc-adhoc-trend-pens-faceplate .ia_tableComponent {
 	min-width: 0 !important;
 	max-width: 100% !important;
+	width: 100% !important;
 	flex: 1 1 auto !important;
 	min-height: 0 !important;
-	overflow-x: auto !important;
+	overflow-x: hidden !important;
 	overflow-y: auto !important;
 }
 
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-pens-faceplate .ia_table__body,
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-pens-faceplate .ia_table__head,
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-pens-faceplate .ia_table__cell,
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-pens-faceplate .tc {
+	overflow-x: hidden !important;
+	min-width: 0 !important;
+}
+
 .psc-adhoc-trend-toolbar-actions {
-	gap: 10px !important;
+	gap: 4px !important;
 	flex-wrap: nowrap !important;
 	overflow: visible !important;
-	min-height: 40px !important;
+	min-height: 32px !important;
 	align-items: center !important;
+	padding: 0 !important;
+	margin: 0 !important;
 }
 
 .psc-adhoc-trend-toolbar-label {
@@ -903,18 +1175,89 @@ body:has(.psc-animations-off) .container-fade-in {
 }
 
 .psc-adhoc-trend-chart-host {
-	display: flex;
-	flex-direction: column;
+	display: flex !important;
+	flex-direction: column !important;
+	flex: 1 1 0 !important;
 	min-height: 0 !important;
+	min-width: 0 !important;
+	width: 100% !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	gap: 0 !important;
+	overflow: hidden !important;
+	justify-content: flex-start !important;
+}
+
+/* Trend column only (direct Plots child) — height:0 + flex grow fills space
+   freed when Pens collapses. Do NOT apply to TrendContainer (row sibling).
+   height:auto / height:100% left a dead gray band above the pens bar. */
+.psc-adhoc-trend-chart-host:has(> .psc-adhoc-trend-plots) {
+	flex: 1 1 0 !important;
+	height: 0 !important;
+	max-height: none !important;
+	min-height: 0 !important;
+	align-self: stretch !important;
+}
+
+/* Flex-repeater instances must be column flex so plot-slot/apex can grow */
+.psc-adhoc-trend-plots > .ia_flexRepeaterComponent__instance,
+.psc-adhoc-trend-plots .ia_embeddedView,
+.psc-adhoc-trend-plots .view-parent {
+	display: flex !important;
+	flex-direction: column !important;
+}
+
+/* Faceplate Trend column: chart band fills leftover; Pens sits flush below */
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-chart-host > .ia_flexContainer,
+.psc-adhoc-trend-faceplate-embed .adhoc-trend-chart-host > [data-component="ia.container.flex"] {
+	margin-bottom: 0 !important;
+	padding-bottom: 0 !important;
+}
+
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-chart-host {
+	overflow: hidden !important;
+}
+
+/* Faceplate: same plots-column fill when pens docks to 32px */
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-chart-host:has(> .psc-adhoc-trend-plots),
+.psc-adhoc-trend-faceplate-embed .psc-adhoc-trend-chart-host:has(> .psc-adhoc-trend-plots) {
+	flex: 1 1 0 !important;
+	height: 0 !important;
+	min-height: 0 !important;
+}
+
+/* Kill stray scroll gutter above ApexCharts toolbar / plot host */
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-plots,
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-plot-slot,
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-apex,
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-apex > div,
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-apex .apexcharts-canvas,
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-apex .apexcharts-inner,
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-apex .apexcharts-svg {
+	overflow: hidden !important;
+	scrollbar-width: none;
+}
+
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-apex::-webkit-scrollbar,
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-apex > div::-webkit-scrollbar,
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-plot-slot::-webkit-scrollbar {
+	width: 0 !important;
+	height: 0 !important;
+	display: none !important;
+}
+
+.psc-adhoc-trend-faceplate .psc-adhoc-trend-apex .apexcharts-toolbar {
+	position: absolute !important;
 	overflow: visible !important;
 }
 
 .psc-adhoc-trend-toolbar-actions-faceplate {
 	z-index: 5;
-	align-items: flex-start !important;
-	padding-top: 4px !important;
-	padding-bottom: 6px !important;
-	padding-right: 8px !important;
+	align-items: center !important;
+	padding: 0 !important;
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+	padding-right: 0 !important;
 }
 
 .psc-adhoc-trend-action-btn {
@@ -935,7 +1278,7 @@ body:has(.psc-animations-off) .container-fade-in {
 	background-color: var(--neutral-30) !important;
 }
 
-/* Faceplate: keep ApexCharts toolbar + pan layer below header / Save / Clear */
+/* Faceplate: chart canvas below header / Save / Clear; toolbar above zoom layer */
 .psc-adhoc-trend-faceplate .psc-adhoc-trend-apex,
 .psc-adhoc-trend-faceplate .psc-adhoc-trend-apex .apexcharts-canvas,
 .psc-adhoc-trend-faceplate .psc-adhoc-trend-apex .apexcharts-svg {
@@ -946,14 +1289,13 @@ body:has(.psc-animations-off) .container-fade-in {
 .psc-adhoc-trend-faceplate .psc-adhoc-trend-apex .apexcharts-toolbar {
 	top: 8px !important;
 	right: 8px !important;
-	z-index: 1 !important;
+	z-index: 25 !important;
+	pointer-events: auto !important;
 }
 
 /* Nested Trend embed must not force full popup height over the faceplate header */
 #popup-AdhocTrend .psc-adhoc-trend-faceplate > .ia_embeddedView,
-#popup-AdhocTrend .psc-adhoc-trend-faceplate .ia_embeddedView,
-#popup-AdhocTrendConfig .psc-adhoc-trend-config-faceplate > .ia_embeddedView,
-#popup-AdhocTrendConfig .psc-adhoc-trend-config-faceplate .ia_embeddedView {
+#popup-AdhocTrend .psc-adhoc-trend-faceplate .ia_embeddedView {
 	position: relative;
 	z-index: 1;
 	height: auto !important;
@@ -962,6 +1304,19 @@ body:has(.psc-animations-off) .container-fade-in {
 	min-height: 0 !important;
 	min-width: 0 !important;
 	overflow: hidden !important;
+}
+
+/* Config ToolBar embed: size to content (no stretch gap); overflow visible for calendars */
+#popup-AdhocTrendConfig .psc-adhoc-trend-config-faceplate > .ia_embeddedView,
+#popup-AdhocTrendConfig .psc-adhoc-trend-config-faceplate .ia_embeddedView {
+	position: relative;
+	z-index: 1;
+	height: auto !important;
+	max-height: none !important;
+	flex: 0 0 auto !important;
+	min-height: 0 !important;
+	min-width: 0 !important;
+	overflow: visible !important;
 }
 
 /* Keep NE/N resize handles from eating the close hit target */
@@ -975,7 +1330,7 @@ body:has(.psc-animations-off) .container-fade-in {
 .psc-adhoc-trend-config-faceplate {
 	border-radius: 0.5rem;
 	box-shadow: var(--boxShadow1);
-	overflow: hidden;
+	overflow: visible;
 	display: flex;
 	flex-direction: column;
 	height: 100%;
@@ -1012,30 +1367,54 @@ body:has(.psc-animations-off) .container-fade-in {
 	background-color: transparent !important;
 	box-shadow: none !important;
 	border: none !important;
-	overflow: auto;
+	overflow: visible !important;
+	height: auto !important;
 	min-height: 0;
+	justify-content: flex-start !important;
+	gap: 8px;
 }
 
 /* ----------------------------------------------------------------------------------------------------------------------------------------------------------------
  * Popups — hide Perspective chrome header (empty white bar when showCloseIcon=False).
- * Ticket Logger / Alerts / AdhocTrend supply their own header rows.
+ * Ticket Logger / Alerts / AdhocTrend supply their own in-view header rows.
+ *
+ * Drag is NOT via .ia_popup__header. Working BH faceplates (Pump, Evaporator, …)
+ * drag via Perspective's sibling .popup-drag strip (cursor: grab), even while the
+ * chrome header stays display:none. Never overlay chrome on top of .popup-drag.
  * ---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
 #popup-alertDialog,
-#popup-AdhocTrend,
-#popup-AdhocTrendConfig {
+#popup-AdhocTrend {
 	background-color: transparent;
 	border: none;
 	box-shadow: none;
 	overflow: hidden !important;
+	scrollbar-width: none;
+}
+
+/* Config: overflow visible so date-time calendars are not clipped.
+   Drag still uses sibling .popup-drag (unchanged). */
+#popup-AdhocTrendConfig {
+	background-color: transparent;
+	border: none;
+	box-shadow: none;
+	overflow: visible !important;
+	scrollbar-width: none;
+}
+
+#popup-AdhocTrend::-webkit-scrollbar,
+#popup-AdhocTrendConfig::-webkit-scrollbar {
+	width: 0 !important;
+	height: 0 !important;
+	display: none !important;
 }
 
 /* Popup shell fills openPopup size — do NOT force nested embeds to 100% height
    (that painted Trend/config body over the custom faceplate header / close X). */
+#popup-AdhocTrend > .body-wrapper,
 #popup-AdhocTrend > .ia_popup__content,
-#popup-AdhocTrend > .ia_popup__content > .view-parent,
-#popup-AdhocTrendConfig > .ia_popup__content,
-#popup-AdhocTrendConfig > .ia_popup__content > .view-parent {
+#popup-AdhocTrend > .body-wrapper > .view-parent,
+#popup-AdhocTrend > .ia_popup__content > .view-parent {
 	height: 100% !important;
 	width: 100% !important;
 	min-height: 0 !important;
@@ -1045,8 +1424,20 @@ body:has(.psc-animations-off) .container-fade-in {
 	overflow: hidden !important;
 }
 
-#popup-AdhocTrend .psc-adhoc-trend-faceplate,
-#popup-AdhocTrendConfig .psc-adhoc-trend-config-faceplate {
+#popup-AdhocTrendConfig > .body-wrapper,
+#popup-AdhocTrendConfig > .ia_popup__content,
+#popup-AdhocTrendConfig > .body-wrapper > .view-parent,
+#popup-AdhocTrendConfig > .ia_popup__content > .view-parent {
+	height: 100% !important;
+	width: 100% !important;
+	min-height: 0 !important;
+	min-width: 0 !important;
+	max-height: none !important;
+	max-width: 100% !important;
+	overflow: visible !important;
+}
+
+#popup-AdhocTrend .psc-adhoc-trend-faceplate {
 	height: 100% !important;
 	width: 100% !important;
 	min-height: 0 !important;
@@ -1054,13 +1445,46 @@ body:has(.psc-animations-off) .container-fade-in {
 	overflow: hidden !important;
 }
 
+#popup-AdhocTrendConfig .psc-adhoc-trend-config-faceplate {
+	height: 100% !important;
+	width: 100% !important;
+	min-height: 0 !important;
+	min-width: 0 !important;
+	overflow: visible !important;
+}
+
+/* Date-time picker calendar must paint above config chrome / siblings */
+#popup-AdhocTrendConfig .ia_dateTimeInputComponent,
+#popup-AdhocTrendConfig [data-component="ia.input.date-time-input"] {
+	overflow: visible !important;
+	position: relative;
+	z-index: 60;
+}
+
 #popup-alertDialog .popup-header,
-#popup-alertDialog .ia_popup__header,
-#popup-AdhocTrend .popup-header,
-#popup-AdhocTrend .ia_popup__header,
-#popup-AdhocTrendConfig .popup-header,
-#popup-AdhocTrendConfig .ia_popup__header {
+#popup-alertDialog .ia_popup__header {
 	display: none !important;
+}
+
+/*
+ * AdhocTrend / Config: match device faceplates — drag via .popup-drag.
+ * Cover the custom 40px title bar; inset right so the in-view close X stays clickable.
+ */
+#popup-AdhocTrend > .popup-drag,
+#popup-AdhocTrendConfig > .popup-drag {
+	z-index: 100;
+	top: 0;
+	left: 0;
+	right: 44px;
+	width: auto;
+	height: 40px;
+	cursor: grab;
+	pointer-events: auto;
+}
+
+#popup-AdhocTrend > .popup-drag:active,
+#popup-AdhocTrendConfig > .popup-drag:active {
+	cursor: grabbing;
 }
 
 .client-root .popup {

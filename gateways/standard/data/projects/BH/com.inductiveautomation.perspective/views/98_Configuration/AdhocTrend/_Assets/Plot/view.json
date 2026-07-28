@@ -13,12 +13,23 @@
     "timeRange": 1
   },
   "params": {
+    "chartHeight": 400,
+    "layoutKey": "e",
     "plotCount": 1,
     "plotId": "p0",
     "plotKind": "analog",
-    "plotTitle": "Plot 1"
+    "plotTitle": "Default",
+    "showToolbar": true
   },
   "propConfig": {
+    "params.chartHeight": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.layoutKey": {
+      "paramDirection": "input",
+      "persistent": true
+    },
     "params.plotCount": {
       "paramDirection": "input",
       "persistent": true
@@ -110,7 +121,7 @@
         },
         "transforms": [
           {
-            "code": "\tif value is None:\n\t\treturn shared.AdhocTrend.build_pens([], [])\n\tcfg = getattr(value, \"cfg\", None)\n\tplotId = getattr(value, \"plotId\", None)\n\tif cfg is None:\n\t\treturn shared.AdhocTrend.build_pens([], [])\n\ttags = shared.AdhocTrend._cfg_get(cfg, \"tags\", [])\n\tcolors = shared.AdhocTrend._cfg_get(cfg, \"colors\", shared.AdhocTrend.DEFAULT_COLORS)\n\tpenPlots = shared.AdhocTrend.plain_pen_plots(cfg)\n\tplots = shared.AdhocTrend.plain_plots(cfg)\n\tfirstId = plots[0][\"id\"] if plots else \"p0\"\n\tpens = shared.AdhocTrend.build_pens(tags, colors, penPlots, plots)\n\treturn shared.AdhocTrend.pens_for_plot(pens, penPlots, plotId, firstId)\n",
+            "code": "\tif value is None:\n\t\treturn shared.AdhocTrend.build_pens([], [])\n\tcfg = getattr(value, \"cfg\", None)\n\tplotId = getattr(value, \"plotId\", None)\n\tif cfg is None:\n\t\treturn shared.AdhocTrend.build_pens([], [])\n\ttags = shared.AdhocTrend._cfg_get(cfg, \"tags\", [])\n\tcolors = shared.AdhocTrend._cfg_get(cfg, \"colors\", shared.AdhocTrend.DEFAULT_COLORS)\n\tpenPlots = shared.AdhocTrend.plain_pen_plots(cfg)\n\tplots = shared.AdhocTrend.plain_plots(cfg)\n\tdisabled = shared.AdhocTrend.plain_disabled_pens(cfg)\n\tfirstId = plots[0][\"id\"] if plots else \"p0\"\n\tpens = shared.AdhocTrend.build_pens(tags, colors, penPlots, plots, disabled)\n\treturn shared.AdhocTrend.pens_for_plot(pens, penPlots, plotId, firstId)\n",
             "type": "script"
           }
         ],
@@ -208,11 +219,15 @@
         "type": "expr-struct"
       },
       "persistent": true
+    },
+    "params.showToolbar": {
+      "paramDirection": "input",
+      "persistent": true
     }
   },
   "props": {
     "defaultSize": {
-      "height": 480,
+      "height": 2000,
       "width": 800
     }
   },
@@ -229,7 +244,14 @@
         "height": "100%",
         "width": "100%",
         "minHeight": 0,
-        "flex": "1 1 0"
+        "maxHeight": "none",
+        "flex": "1 1 0",
+        "minWidth": 0,
+        "overflow": "hidden",
+        "margin": "0",
+        "padding": "0",
+        "marginBottom": "0px",
+        "paddingBottom": "0px"
       }
     },
     "propConfig": {
@@ -289,9 +311,9 @@
           "name": "Header"
         },
         "position": {
-          "basis": "28px",
-          "shrink": 0,
-          "grow": 0
+          "grow": 0,
+          "basis": "22px",
+          "shrink": 0
         },
         "props": {
           "alignItems": "center",
@@ -299,7 +321,10 @@
           "style": {
             "classes": "adhoc-trend-plot-header",
             "paddingLeft": "8px",
-            "paddingRight": "8px"
+            "paddingRight": "8px",
+            "overflow": "hidden",
+            "minHeight": "22px",
+            "height": "22px"
           }
         },
         "children": [
@@ -323,49 +348,6 @@
                     "path": "view.params.plotTitle"
                   },
                   "type": "property"
-                }
-              }
-            }
-          },
-          {
-            "type": "ia.input.button",
-            "meta": {
-              "name": "RemovePlot"
-            },
-            "position": {
-              "basis": "90px",
-              "shrink": 0
-            },
-            "props": {
-              "text": "Remove",
-              "style": {
-                "classes": "font-button adhoc-trend-action-btn adhoc-trend-action-btn-outline"
-              }
-            },
-            "propConfig": {
-              "meta.visible": {
-                "binding": {
-                  "config": {
-                    "path": "view.params.plotCount"
-                  },
-                  "transforms": [
-                    {
-                      "expression": "coalesce({value}, 1) > 1",
-                      "type": "expression"
-                    }
-                  ],
-                  "type": "property"
-                }
-              }
-            },
-            "events": {
-              "component": {
-                "onActionPerformed": {
-                  "config": {
-                    "script": "\tfrom shared import Alerts\n\tcfg = self.session.custom.AdhocTrend\n\tok, msg = shared.AdhocTrend.remove_plot(cfg, self.view.params.plotId)\n\tif not ok:\n\t\tAlerts.showAlert(state=\"warning\", title=\"Cannot Remove Plot\", message=msg, showCloseBtn=True, btnTextPrimary=\"OK\", btnActionPrimary=\"closeAlert\")\n\telse:\n\t\tself.session.custom.AdhocTrend.plots = shared.AdhocTrend.plain_plots(cfg)\n"
-                  },
-                  "scope": "G",
-                  "type": "script"
                 }
               }
             }
@@ -408,6 +390,8 @@
               },
               "fontFamily": "sans-serif",
               "height": "100%",
+              "redrawOnParentResize": true,
+              "redrawOnWindowResize": true,
               "stacked": false,
               "toolbar": {
                 "export": {
@@ -416,7 +400,19 @@
                     "filename": "export"
                   }
                 },
-                "show": true
+                "show": true,
+                "offsetX": 0,
+                "offsetY": 0,
+                "autoSelected": "none",
+                "tools": {
+                  "download": true,
+                  "selection": false,
+                  "zoom": true,
+                  "zoomin": true,
+                  "zoomout": true,
+                  "pan": true,
+                  "reset": true
+                }
               },
               "type": "line",
               "zoom": {
@@ -424,9 +420,13 @@
                 "enabled": true,
                 "type": "x"
               },
-              "offsetY": -4,
+              "offsetY": 0,
               "id": "adhoc-trend-plot",
-              "group": "adhoc-trend"
+              "group": "adhoc-trend",
+              "width": "100%",
+              "selection": {
+                "enabled": false
+              }
             },
             "dataLabels": {
               "enabled": false
@@ -437,10 +437,10 @@
             "grid": {
               "show": false,
               "padding": {
-                "bottom": 56,
-                "top": 10,
-                "left": 10,
-                "right": 10
+                "bottom": 0,
+                "top": 0,
+                "left": 8,
+                "right": 8
               }
             },
             "legend": {
@@ -467,11 +467,14 @@
               "x": {
                 "format": "dd MMM yyyy HH:mm:ss",
                 "show": true
-              }
+              },
+              "shared": true,
+              "intersect": false,
+              "followCursor": true
             },
             "xaxis": {
               "axisBorder": {
-                "offsetY": 5,
+                "offsetY": 0,
                 "show": true
               },
               "labels": {
@@ -482,13 +485,25 @@
                   "year": "yyyy"
                 },
                 "datetimeUTC": false,
+                "offsetY": 0,
                 "style": {
                   "colors": "var(--neutral-90)",
                   "fontFamily": "sans-serif",
                   "fontSize": "12px"
                 }
               },
-              "type": "datetime"
+              "type": "datetime",
+              "crosshairs": {
+                "show": true,
+                "width": 1,
+                "position": "back",
+                "opacity": 0.9,
+                "stroke": {
+                  "color": "#b6b6b6",
+                  "width": 1,
+                  "dashArray": 0
+                }
+              }
             },
             "yaxis": {
               "axisBorder": {
@@ -505,14 +520,30 @@
               "title": {
                 "text": ""
               }
-            }
+            },
+            "colors": [
+              "#008FFB",
+              "#34C759",
+              "#FFA726",
+              "#FF4560",
+              "#775DD0",
+              "#1C4E80",
+              "#008080",
+              "#26C6DA",
+              "#4F4F4F",
+              "#6C757D"
+            ]
           },
           "style": {
             "classes": "adhoc-trend-apex",
-            "overflow": "visible",
+            "overflow": "hidden",
             "height": "100%",
             "width": "100%",
-            "minHeight": 0
+            "minHeight": 0,
+            "maxHeight": "none",
+            "minWidth": 0,
+            "marginBottom": "0px",
+            "paddingBottom": "0px"
           }
         },
         "propConfig": {
@@ -573,6 +604,62 @@
                 {
                   "expression": "if({value} = 'discrete', 'stepline', 'straight')",
                   "type": "expression"
+                }
+              ],
+              "type": "property"
+            }
+          },
+          "props.options.chart.toolbar.show": {
+            "binding": {
+              "config": {
+                "path": "view.params.showToolbar"
+              },
+              "transforms": [
+                {
+                  "expression": "coalesce({value}, true)",
+                  "type": "expression"
+                }
+              ],
+              "type": "property"
+            }
+          },
+          "props.options.chart.height": {
+            "binding": {
+              "config": {
+                "path": "view.params.chartHeight"
+              },
+              "transforms": [
+                {
+                  "code": "\ttry:\n\t\th = int(value)\n\texcept:\n\t\th = 400\n\tif h < 120:\n\t\th = 120\n\treturn h\n",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          },
+          "props.style.height": {
+            "binding": {
+              "config": {
+                "path": "view.params.chartHeight"
+              },
+              "transforms": [
+                {
+                  "code": "\ttry:\n\t\th = int(value)\n\texcept:\n\t\th = 400\n\tif h < 120:\n\t\th = 120\n\treturn str(h) + 'px'\n",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          },
+          "props.options.colors": {
+            "binding": {
+              "config": {
+                "path": "view.custom.pens"
+              },
+              "transforms": [
+                {
+                  "code": "\treturn shared.AdhocTrend.series_color_list(value)\n",
+                  "type": "script"
                 }
               ],
               "type": "property"
