@@ -2093,22 +2093,41 @@ body:has(.psc-animations-off) .container-fade-in {
 	--alarm-color: var(--alarm-low);
 }
 
-/* content-box so border does not shrink SVG / misalign coils */
-.psc-alarm-border {
-	border-style: solid;
-	border-width: 4px !important;
-	border-color: var(--alarm-color, var(--alarm-critical)) !important;
-	box-sizing: content-box;
-}
-
+/*
+ * AlarmFrame sits above drawings in DOM order. Drawings are inset 4px
+ * in view.json so the 4px border has a clear gutter (SVG cannot cover it).
+ */
 .psc-device-graphic {
-	position: relative;
+	position: relative !important;
 	overflow: visible !important;
+	box-sizing: border-box;
 }
 
-.psc-alarm-header {
-	pointer-events: none;
-	z-index: 10;
+/* Keep Perspective SVG under AlarmFrame / AlarmHeader stacking.
+ * overflow:hidden stops SVG strokes from painting into the 4px border gutter. */
+.psc-device-graphic > svg {
+	z-index: 1 !important;
+	overflow: hidden !important;
+}
+
+.psc-alarm-frame {
+	pointer-events: none !important;
+	z-index: 40 !important;
+	box-sizing: border-box !important;
+	background: transparent !important;
+}
+
+.psc-alarm-frame.psc-alarm-border {
+	border: 4px solid var(--alarm-color, var(--alarm-critical)) !important;
+	outline: none !important;
+	box-shadow: none !important;
+}
+
+.psc-alarm-header,
+.psc-device-graphic > .psc-alarm-header,
+.psc-device-graphic > .view-parent.psc-alarm-header {
+	pointer-events: none !important;
+	z-index: 50 !important;
 }
 
 .psc-icon-header {
