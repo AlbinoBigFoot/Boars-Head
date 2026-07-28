@@ -155,7 +155,7 @@
               },
               "transforms": [
                 {
-                  "code": "\ts = str(value).strip().upper()\n\tif not s:\n\t\treturn 'transparent'\n\tcolors = {\n\t\t'COOLING': '#039BE5',\n\t\t'CLG': '#039BE5',\n\t\t'RUN': '#228B22',\n\t\t'RUNNING': '#228B22',\n\t\t'ON': '#228B22',\n\t\t'DEFROST': '#EF6C00',\n\t\t'DFT': '#EF6C00',\n\t\t'FAULT': '#C62828',\n\t\t'ALARM': '#C62828',\n\t\t'FLT': '#C62828',\n\t\t'COMM LOSS': '#C62828',\n\t\t'COMMLOSS': '#C62828',\n\t\t'COMM': '#C62828',\n\t\t'MANUAL': '#9C27B0',\n\t\t'MAN': '#9C27B0',\n\t\t'IDLE': '#90A4AE',\n\t\t'STANDBY': '#90A4AE',\n\t\t'IDL': '#90A4AE',\n\t\t'OFF': '#546E7A',\n\t\t'STOP': '#546E7A',\n\t\t'STOPPED': '#546E7A'\n\t}\n\treturn colors.get(s, '#607D8B')\n",
+                  "code": "\ts = str(value).strip().upper()\n\tif not s:\n\t\treturn 'transparent'\n\t# Figma Dev Jam status colors (theme-invariant)\n\tcolors = {\n\t\t'COOLING': '#1E88E5',\n\t\t'CLG': '#1E88E5',\n\t\t'RUN': '#1E88E5',\n\t\t'RUNNING': '#1E88E5',\n\t\t'ON': '#1E88E5',\n\t\t'DEFROST': '#EC407A',\n\t\t'DFT': '#EC407A',\n\t\t'FAULT': '#C62828',\n\t\t'ALARM': '#C62828',\n\t\t'FLT': '#C62828',\n\t\t'COMM LOSS': '#C62828',\n\t\t'COMMLOSS': '#C62828',\n\t\t'COMM': '#C62828',\n\t\t'MANUAL': '#9C27B0',\n\t\t'MAN': '#9C27B0',\n\t\t'IDLE': '#228B22',\n\t\t'STANDBY': '#228B22',\n\t\t'IDL': '#228B22',\n\t\t'OFF': '#9E9E9E',\n\t\t'STOP': '#9E9E9E',\n\t\t'STOPPED': '#9E9E9E'\n\t}\n\treturn colors.get(s, '#607D8B')\n",
                   "type": "script"
                 }
               ],
@@ -198,7 +198,7 @@
               },
               "transforms": [
                 {
-                  "code": "\ts = str(value).strip().upper()\n\tif not s:\n\t\treturn 'transparent'\n\tcolors = {\n\t\t'COOLING': '#039BE5',\n\t\t'CLG': '#039BE5',\n\t\t'RUN': '#228B22',\n\t\t'RUNNING': '#228B22',\n\t\t'ON': '#228B22',\n\t\t'DEFROST': '#EF6C00',\n\t\t'DFT': '#EF6C00',\n\t\t'FAULT': '#C62828',\n\t\t'ALARM': '#C62828',\n\t\t'FLT': '#C62828',\n\t\t'COMM LOSS': '#C62828',\n\t\t'COMMLOSS': '#C62828',\n\t\t'COMM': '#C62828',\n\t\t'MANUAL': '#9C27B0',\n\t\t'MAN': '#9C27B0',\n\t\t'IDLE': '#90A4AE',\n\t\t'STANDBY': '#90A4AE',\n\t\t'IDL': '#90A4AE',\n\t\t'OFF': '#546E7A',\n\t\t'STOP': '#546E7A',\n\t\t'STOPPED': '#546E7A'\n\t}\n\treturn colors.get(s, '#607D8B')\n",
+                  "code": "\ts = str(value).strip().upper()\n\tif not s:\n\t\treturn 'transparent'\n\t# Figma Dev Jam status colors (theme-invariant)\n\tcolors = {\n\t\t'COOLING': '#1E88E5',\n\t\t'CLG': '#1E88E5',\n\t\t'RUN': '#1E88E5',\n\t\t'RUNNING': '#1E88E5',\n\t\t'ON': '#1E88E5',\n\t\t'DEFROST': '#EC407A',\n\t\t'DFT': '#EC407A',\n\t\t'FAULT': '#C62828',\n\t\t'ALARM': '#C62828',\n\t\t'FLT': '#C62828',\n\t\t'COMM LOSS': '#C62828',\n\t\t'COMMLOSS': '#C62828',\n\t\t'COMM': '#C62828',\n\t\t'MANUAL': '#9C27B0',\n\t\t'MAN': '#9C27B0',\n\t\t'IDLE': '#228B22',\n\t\t'STANDBY': '#228B22',\n\t\t'IDL': '#228B22',\n\t\t'OFF': '#9E9E9E',\n\t\t'STOP': '#9E9E9E',\n\t\t'STOPPED': '#9E9E9E'\n\t}\n\treturn colors.get(s, '#607D8B')\n",
                   "type": "script"
                 }
               ],

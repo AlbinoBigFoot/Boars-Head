@@ -40,9 +40,12 @@
  * Neutrals:  --neutral-10 … --neutral-100  (owned by gateway theme)
  * Chrome:    --borderRadius  --boxShadow1
  *
- * Alarm tokens below are theme-independent (ISA-101). Normal status / deviceFill
- * follow theme --neutral-*. Comm Loss fill (--deviceFill-commLoss) is fixed red
- * like alarm colors — never remapped per theme.
+ * Alarm tokens and component status colors are theme-independent (Figma Dev Jam).
+ * Comm Loss fill (--deviceFill-commLoss) and analog-over-SP are fixed red —
+ * never remapped per theme.
+ *
+ * Component status (Figma --status-*): Idle green, Cooling blue, Defrost pink, Off gray.
+ * (User override of prior ISA-101 grayscale-for-normal guidance.)
  *
  * Apply classes:  Refridgeration_STS sts-<TOKEN>
  * Tokens (uppercase): COOLING | DEFROST | FAULT | MANUAL | IDLE | OFF | UNKNOWN | COMMLOSS
@@ -51,7 +54,10 @@
  *   Comm Loss > Fault > Manual > Defrost > Running/Idle/Off
  * Bad quality means PLC state bits cannot be trusted, so Comm Loss wins over FLT.
  *
- * Refs: ISA-101, Rockwell Process HMI Style Guide, ScoutMotors / Lightspeed themes
+ * Device fill classes (Graphic style.classes): device-comm-loss | device-sts-idle |
+ *   device-sts-cooling | device-sts-defrost | device-sts-off
+ *
+ * Refs: Figma Q8EmmXokQsiX91aPMtLm2w, ISA-101 (alarms), ScoutMotors / Lightspeed themes
  */
 
 :root {
@@ -135,10 +141,21 @@
 
 	/* Alarm / attention (saturated — theme-independent) */
 	--sts-fault: #c62828;
-	--sts-defrost: #ef6c00;
 	--sts-manual: #9c27b0;
 	/* Comm Loss fill — fixed red in every theme (same family as --sts-fault) */
 	--deviceFill-commLoss: #c62828;
+	/* AnalogValue over setpoint — theme-invariant red (same family as Comm Loss) */
+	--analog-over-sp: #c62828;
+
+	/*
+	 * Component status colors (Figma Dev Jam Light — theme-invariant).
+	 * Idle #228b22 | Cooling #1e88e5 | Defrost #ec407a | Off #9e9e9e
+	 */
+	--status-idle: #228b22;
+	--status-cooling: #1e88e5;
+	--status-defrost: #ec407a;
+	--status-off: #9e9e9e;
+	--sts-defrost: var(--status-defrost);
 
 	/* Alarm Status Table / icon priority palette */
 	--alarm-critical: #e22028;
@@ -152,21 +169,26 @@
 	--alarm-row-fg-light: #ffffff;
 	--alarm-row-fg-dark: #212121;
 
-	/* Normal / grayscale status + device fills — follow theme neutrals */
-	--sts-cooling-bg: var(--neutral-20);
-	--sts-cooling-fg: var(--neutral-100);
-	--sts-idle-bg: var(--neutral-50);
-	--sts-idle-fg: var(--neutral-100);
-	--sts-off-bg: var(--neutral-70);
-	--sts-off-fg: var(--neutral-10);
+	/* Status chip fills — colored component states (Figma) */
+	--sts-cooling-bg: var(--status-cooling);
+	--sts-cooling-fg: #ffffff;
+	--sts-idle-bg: var(--status-idle);
+	--sts-idle-fg: #ffffff;
+	--sts-off-bg: var(--status-off);
+	--sts-off-fg: #ffffff;
 	--sts-unknown-bg: var(--neutral-60);
 	--sts-unknown-fg: var(--neutral-10);
 	--sts-border: var(--neutral-50);
 	--sts-accent-width: 4px;
 
+	/* Default housing fill when no status class; status classes override */
 	--deviceFill-running: var(--neutral-10);
-	--deviceFill-stopped: var(--neutral-60);
+	--deviceFill-stopped: var(--status-off);
 	--deviceFill-faulted: var(--neutral-100);
+	--deviceFill-idle: var(--status-idle);
+	--deviceFill-cooling: var(--status-cooling);
+	--deviceFill-defrost: var(--status-defrost);
+	--deviceFill-off: var(--status-off);
 	/* --deviceFill-commLoss defined above with alarm colors (theme-invariant) */
 }
 
@@ -180,29 +202,32 @@
 	box-shadow: none;
 }
 
-/* --- Normal: Cooling (running as expected) — light gray, not green/blue --- */
-.psc-Refridgeration_STS.psc-sts-COOLING {
+/* --- Cooling — Figma blue --- */
+.psc-Refridgeration_STS.psc-sts-COOLING,
+.psc-Refridgeration_STS.psc-sts-CLG {
 	background-color: var(--sts-cooling-bg);
 	color: var(--sts-cooling-fg);
 }
 
-/* --- Normal: Idle / standby — mid gray --- */
+/* --- Idle / standby — Figma green --- */
 .psc-Refridgeration_STS.psc-sts-IDLE {
 	background-color: var(--sts-idle-bg);
 	color: var(--sts-idle-fg);
 }
 
-/* --- Normal: Off / stopped — darker gray --- */
-.psc-Refridgeration_STS.psc-sts-OFF {
+/* --- Off / stopped — Figma gray --- */
+.psc-Refridgeration_STS.psc-sts-OFF,
+.psc-Refridgeration_STS.psc-sts-STOP {
 	background-color: var(--sts-off-bg);
 	color: var(--sts-off-fg);
 }
 
-/* --- Attention: Defrost (expected mode, still warrants notice) — amber + left accent --- */
-.psc-Refridgeration_STS.psc-sts-DEFROST {
+/* --- Defrost — Figma pink --- */
+.psc-Refridgeration_STS.psc-sts-DEFROST,
+.psc-Refridgeration_STS.psc-sts-DFT {
 	background-color: var(--sts-defrost);
 	color: #ffffff;
-	border-left: var(--sts-accent-width) solid #bf360c !important;
+	border-left: var(--sts-accent-width) solid #ad1457 !important;
 }
 
 /* --- Abnormal: Fault / alarm — red + left accent --- */
@@ -246,6 +271,48 @@
 .psc-device-comm-loss rect,
 .psc-device-comm-loss polygon {
 	fill: var(--deviceFill-commLoss) !important;
+}
+
+/* Device graphic status fills (Figma component states — not sensors / Fan glyphs) */
+.psc-device-sts-idle,
+.psc-device-sts-idle path,
+.psc-device-sts-idle circle,
+.psc-device-sts-idle ellipse,
+.psc-device-sts-idle rect,
+.psc-device-sts-idle polygon {
+	fill: var(--deviceFill-idle) !important;
+}
+
+.psc-device-sts-cooling,
+.psc-device-sts-cooling path,
+.psc-device-sts-cooling circle,
+.psc-device-sts-cooling ellipse,
+.psc-device-sts-cooling rect,
+.psc-device-sts-cooling polygon {
+	fill: var(--deviceFill-cooling) !important;
+}
+
+.psc-device-sts-defrost,
+.psc-device-sts-defrost path,
+.psc-device-sts-defrost circle,
+.psc-device-sts-defrost ellipse,
+.psc-device-sts-defrost rect,
+.psc-device-sts-defrost polygon {
+	fill: var(--deviceFill-defrost) !important;
+}
+
+.psc-device-sts-off,
+.psc-device-sts-off path,
+.psc-device-sts-off circle,
+.psc-device-sts-off ellipse,
+.psc-device-sts-off rect,
+.psc-device-sts-off polygon {
+	fill: var(--deviceFill-off) !important;
+}
+
+/* AnalogValue text when PV > SP — theme-invariant */
+.psc-analog-over-sp {
+	color: var(--analog-over-sp) !important;
 }
 
 /* --- Evaporator overview fan: counter-clockwise spin when Cooling/Running --- */
