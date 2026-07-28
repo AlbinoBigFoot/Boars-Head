@@ -48,8 +48,9 @@
  * Defrost pink, Off gray. Device BODY fills stay grayscale except Comm Loss.
  *
  * Apply classes:  Refridgeration_STS sts-<TOKEN>
- * Tokens (uppercase): COOLING | DEFROST | FAULT | IDLE | OFF | UNKNOWN | COMMLOSS
- * (Manual is not a displayed status code.)
+ * Tokens (uppercase): COOL | COOLING | CLG | DEF | DEFROST | DFT | FAULT | FLT |
+ * IDLE | OFF | STOP | UNKNOWN | COMMLOSS
+ * (Manual/Operator and defrost phase codes are not displayed status codes.)
  *
  * Device fill: ONLY device-comm-loss (Bad Status/Value quality). No fills for
  * Idle / Cooling / Defrost / Off / Fault / Manual.
@@ -196,6 +197,7 @@
 }
 
 /* --- Cooling — Figma blue --- */
+.psc-Refridgeration_STS.psc-sts-COOL,
 .psc-Refridgeration_STS.psc-sts-COOLING,
 .psc-Refridgeration_STS.psc-sts-CLG {
 	background-color: var(--sts-cooling-bg);
@@ -216,6 +218,7 @@
 }
 
 /* --- Defrost — Figma pink --- */
+.psc-Refridgeration_STS.psc-sts-DEF,
 .psc-Refridgeration_STS.psc-sts-DEFROST,
 .psc-Refridgeration_STS.psc-sts-DFT {
 	background-color: var(--sts-defrost);
@@ -224,7 +227,8 @@
 }
 
 /* --- Abnormal: Fault / alarm — red + left accent --- */
-.psc-Refridgeration_STS.psc-sts-FAULT {
+.psc-Refridgeration_STS.psc-sts-FAULT,
+.psc-Refridgeration_STS.psc-sts-FLT {
 	background-color: var(--sts-fault);
 	color: #ffffff;
 	border-left: var(--sts-accent-width) solid #7f0000 !important;

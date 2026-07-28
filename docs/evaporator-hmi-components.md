@@ -100,7 +100,7 @@ Top → bottom:
 | Faceplate affordance | `ia.display.icon` `material/fullscreen` | Right side; only meaningful when `faceplate` is set |
 | Fan SVG(s) | Drawing / icon group | Spin when that fan’s `CMD/Value` is true |
 | `AnalogValue` | Embedded view | Temperature |
-| `StatusIndicator` | Embedded view | CLG / STOP / DFT / … |
+| `StatusIndicator` | Embedded view | COOL / OFF / DEF / FLT / IDLE / Comm Loss |
 
 ### Key bindings (pattern)
 
@@ -113,7 +113,7 @@ Top → bottom:
 | Alarm | DeviceAlarmIndicator `params.tagPath` = device `tagPath` |
 | Click | `system.perspective.openPopup(...)` → `01_Popups/00_Faceplates/{faceplate}` with `{ tagPath }`, popup id like `ev-fp-{tagPath}` |
 
-Cooling (**CLG**) is a **status**, not “running.” Running is communicated only by **spinning fans** (CMD on).
+Cooling (**COOL**) is a **status**, not “running.” Running is communicated only by **spinning fans** (CMD on).
 
 ---
 
@@ -129,13 +129,13 @@ Path: `views/03_Elements/`
 
 | Value | Code | Color (approx) |
 |------:|------|----------------|
-| 0 | STOP | gray `#9E9E9E` |
-| 1 | CLG | blue `#1E88E5` |
-| 2 | DFT | pink `#EC407A` |
+| 0 | OFF | gray `#9E9E9E` |
+| 1 | COOL | blue `#1E88E5` |
+| 2 | DEF | pink `#EC407A` |
 | 3 | FLT | red `#C62828` |
 | 5 | IDLE | green `#228B22` |
 
-**Important:** status `1` is **CLG** (cooling), not green RUN. Fan spin is separate. Enum value `4` (Manual) is **not displayed** as a status code.
+**Important:** status `1` is **COOL** (cooling), not green RUN. Fan spin is separate. Enum value `4` (Manual) is **not displayed** as a status code (never Operator). Defrost phase codes (`1.PD` / `2.HG` / `3.BLD` / `3.FD`) are not shown — collapse to **DEF**.
 
 ### AnalogValue — `01_Status/AnalogValue`
 
@@ -371,7 +371,7 @@ Changing a child view updates every parent that embeds it — that is why Status
 
 | Symptom | Check |
 |---------|--------|
-| No CLG / wrong green “RUN” | StatusIndicator mapping; status value should be `1` for cooling |
+| No COOL / wrong green “RUN” | StatusIndicator mapping; status value should be `1` for cooling |
 | Fans not spinning | `Fan N/CMD/Value` true? Advanced stylesheet loaded? Class name `fan-spin`? |
 | Alarm badge missing | `_Alarms/_Active` memory true? Priority 1–4? Equipment icons registered + gateway restarted? |
 | Badge solid, never blinks | `_Unack` must be true for CSS flash; for table icons, `_Flash` / `_Config/Flash` |
