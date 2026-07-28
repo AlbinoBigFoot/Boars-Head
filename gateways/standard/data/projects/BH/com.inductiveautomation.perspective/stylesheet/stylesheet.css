@@ -47,7 +47,7 @@
  * Apply classes:  Refridgeration_STS sts-<TOKEN>
  * Tokens (uppercase): COOLING | DEFROST | FAULT | MANUAL | IDLE | OFF | UNKNOWN | COMMLOSS
  *
- * Device Comm Loss priority (Status/Value tag quality not Good):
+ * Device Comm Loss priority (Status/Value tag quality is Bad via isBad()):
  *   Comm Loss > Fault > Manual > Defrost > Running/Idle/Off
  * Bad quality means PLC state bits cannot be trusted, so Comm Loss wins over FLT.
  *
@@ -212,7 +212,7 @@
 	border-left: var(--sts-accent-width) solid #7f0000 !important;
 }
 
-/* --- Abnormal: Comm Loss (tag quality not Good) — theme-invariant red + accent --- */
+/* --- Abnormal: Comm Loss (tag quality Bad) — theme-invariant red + accent --- */
 .psc-Refridgeration_STS.psc-sts-COMMLOSS {
 	background-color: var(--deviceFill-commLoss);
 	color: #ffffff;
@@ -236,8 +236,8 @@
 /*
  * Device graphic Comm Loss fill (Scout-style data-loss pattern, BH red).
  * Apply style.classes = device-comm-loss on Graphic (coord or svg) when
- * qualityOf(tagPath + '/Status/Value') != 'Good'. Overrides running/stopped
- * grayscale fills via SVG presentation attributes.
+ * isBad(tagPath + '/Status/Value'). Overrides SVG presentation fills only
+ * under this class — does NOT redefine --deviceFill-running globally.
  */
 .psc-device-comm-loss,
 .psc-device-comm-loss path,

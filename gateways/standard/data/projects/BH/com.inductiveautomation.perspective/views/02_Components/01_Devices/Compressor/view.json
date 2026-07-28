@@ -57,7 +57,7 @@
     "custom.values.commLoss": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '',\n\tfalse,\n\tqualityOf(tag({view.params.tagPath} + '/Status/Value')) != 'Good')"
+          "expression": "if({view.params.tagPath} = '',\n\tfalse,\n\tisBad(tag({view.params.tagPath} + '/Status/Value')))"
         },
         "type": "expr"
       }
