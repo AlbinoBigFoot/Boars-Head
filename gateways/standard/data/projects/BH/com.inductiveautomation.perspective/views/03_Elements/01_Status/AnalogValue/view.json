@@ -1,5 +1,7 @@
 {
-  "custom": {},
+  "custom": {
+    "effectiveSpPath": ""
+  },
   "params": {
     "spacing": {
       "center": true,
@@ -7,7 +9,8 @@
       "engUnit": 30,
       "textAlign": "center"
     },
-    "tagPath": ""
+    "tagPath": "",
+    "spTagPath": ""
   },
   "propConfig": {
     "params.spacing": {
@@ -16,6 +19,19 @@
     },
     "params.tagPath": {
       "paramDirection": "input",
+      "persistent": true
+    },
+    "params.spTagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.effectiveSpPath": {
+      "binding": {
+        "config": {
+          "expression": "if({view.params.spTagPath} != '',\n\t{view.params.spTagPath},\n\tif({view.params.tagPath} = '',\n\t\t'',\n\t\tif(right({view.params.tagPath}, 6) = '/Value',\n\t\t\tleft({view.params.tagPath}, len({view.params.tagPath}) - 6) + '/SP',\n\t\t\t'')))"
+        },
+        "type": "expr"
+      },
       "persistent": true
     }
   },
@@ -80,6 +96,14 @@
               },
               "type": "expr"
             }
+          },
+          "props.params.spTagPath": {
+            "binding": {
+              "config": {
+                "path": "view.custom.effectiveSpPath"
+              },
+              "type": "property"
+            }
           }
         },
         "props": {
@@ -89,7 +113,8 @@
               "data": 0,
               "engUnit": 30
             },
-            "tagPath": ""
+            "tagPath": "",
+            "spTagPath": ""
           },
           "path": "03_Elements/01_Status/_Assets/Numeric",
           "style": {

@@ -4,7 +4,8 @@
     "format": "",
     "quality": "Uncertain_InitialValue",
     "type": "Integer",
-    "value": ""
+    "value": "",
+    "overSp": false
   },
   "params": {
     "spacing": {
@@ -12,7 +13,8 @@
       "data": 0,
       "engUnit": 30
     },
-    "tagPath": ""
+    "tagPath": "",
+    "spTagPath": ""
   },
   "propConfig": {
     "custom.engUnit": {
@@ -78,6 +80,19 @@
     "params.tagPath": {
       "paramDirection": "input",
       "persistent": true
+    },
+    "params.spTagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.overSp": {
+      "binding": {
+        "config": {
+          "expression": "if({view.params.tagPath} = '' || {view.params.spTagPath} = '' || {view.custom.quality} != 'Good' || isBad(tag({view.params.spTagPath})),\n\tfalse,\n\ttag({view.params.tagPath}) > tag({view.params.spTagPath}))"
+        },
+        "type": "expr"
+      },
+      "persistent": true
     }
   },
   "props": {
@@ -112,7 +127,7 @@
           "props.style.color": {
             "binding": {
               "config": {
-                "expression": "if({view.custom.quality} = 'Good',\n\t'var(--accent)',\n\t'#90A4AE')"
+                "expression": "if({view.custom.quality} != 'Good',\n\t'#90A4AE',\n\tif({view.custom.overSp},\n\t\t'var(--analog-over-sp)',\n\t\t'var(--accent)'))"
               },
               "type": "expr"
             }
@@ -131,6 +146,14 @@
                 "path": "view.custom.value"
               },
               "type": "property"
+            }
+          },
+          "props.style.classes": {
+            "binding": {
+              "config": {
+                "expression": "if({view.custom.overSp},\n\t'analog-over-sp',\n\t'')"
+              },
+              "type": "expr"
             }
           }
         },
