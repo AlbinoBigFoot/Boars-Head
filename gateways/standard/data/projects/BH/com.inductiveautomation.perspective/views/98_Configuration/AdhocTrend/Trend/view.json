@@ -256,13 +256,14 @@
         "config": {
           "struct": {
             "colors": "{view.custom.colors}",
-            "tags": "{view.custom.tags}"
+            "tags": "{view.custom.tags}",
+            "session": "{session.custom.AdhocTrend}"
           },
           "waitOnAll": true
         },
         "transforms": [
           {
-            "code": "\trows = []\n\theaders = [\"penEnabled\", \"tagPath\", \"penName\", \"alias\", \"engUnit\", \"penColor\", \"penAction\"]\n\tif value is None:\n\t\treturn system.dataset.toDataSet(headers, rows)\n\ttags = value.tags if hasattr(value, \"tags\") else None\n\tcolors = value.colors if hasattr(value, \"colors\") else None\n\tif tags is None or colors is None:\n\t\treturn system.dataset.toDataSet(headers, rows)\n\n\tdef _as_dict(obj):\n\t\tif obj in (None, \"\"):\n\t\t\treturn {}\n\t\ttry:\n\t\t\treturn dict(obj)\n\t\texcept:\n\t\t\ttry:\n\t\t\t\treturn {\n\t\t\t\t\t\"longDescription\": getattr(obj, \"longDescription\", None),\n\t\t\t\t\t\"shortDescription\": getattr(obj, \"shortDescription\", None),\n\t\t\t\t}\n\t\t\texcept:\n\t\t\t\treturn {}\n\n\tdef _pen_name(tag, name_val):\n\t\tmeta = {}\n\t\ttry:\n\t\t\treads = system.tag.readBlocking([tag + \"/Metadata\", tag + \"/Value.Metadata\", tag + \".Metadata\"])\n\t\t\tfor qv in reads:\n\t\t\t\tif qv.value not in (None, \"\"):\n\t\t\t\t\tmeta = _as_dict(qv.value)\n\t\t\t\t\tif meta:\n\t\t\t\t\t\tbreak\n\t\texcept:\n\t\t\tmeta = {}\n\t\treturn meta.get(\"longDescription\") or meta.get(\"shortDescription\") or name_val\n\n\tif len(tags) > 0 and len(colors) > 0:\n\t\tfor i, tag in enumerate(tags):\n\t\t\tif tag != \"\":\n\t\t\t\ttag = str(tag)\n\t\t\t\t# Avoid .../Value/Value when session tags already include /Value\n\t\t\t\thistPath = tag if tag.endswith(\"/Value\") else (tag + \"/Value\")\n\t\t\t\tbase = tag[:-6] if tag.endswith(\"/Value\") else tag\n\t\t\t\tread = system.tag.readBlocking([base + \".Name\", histPath + \".EngUnit\", tag + \".Name\"])\n\t\t\t\tname_val = read[0].value\n\t\t\t\tif name_val in (None, \"\"):\n\t\t\t\t\tname_val = read[2].value\n\t\t\t\tif name_val in (None, \"\"):\n\t\t\t\t\tname_val = base.split(\"/\")[-1] if \"/\" in base else base\n\t\t\t\tpenName = _pen_name(base, name_val)\n\t\t\t\talias = base.split(\"]\")[1].replace(\"/\", \"-\") if len(base.split(\"]\")) > 1 else str(base).replace(\"/\", \"-\")\n\t\t\t\talias = alias.replace(\" \", \"_\")\n\t\t\t\tengUnit = read[1].value if read[1].value not in (None, \"\") else \"\"\n\t\t\t\tpenColor = colors[i] if i < len(colors) else colors[0]\n\t\t\t\trows.append([True, histPath, penName, alias, engUnit, penColor, \"\"])\n\treturn system.dataset.toDataSet(headers, rows)\n",
+            "code": "\trows = []\n\theaders = [\"penEnabled\", \"tagPath\", \"penName\", \"alias\", \"engUnit\", \"penColor\", \"plotId\", \"penAction\"]\n\tif value is None:\n\t\treturn system.dataset.toDataSet(headers, rows)\n\ttags = value.tags if hasattr(value, \"tags\") else None\n\tcolors = value.colors if hasattr(value, \"colors\") else None\n\tcfg = None\n\ttry:\n\t\tcfg = self.session.custom.AdhocTrend\n\texcept:\n\t\tcfg = None\n\tif tags is None or colors is None:\n\t\treturn system.dataset.toDataSet(headers, rows)\n\ttry:\n\t\treturn shared.AdhocTrend.build_pens(tags, colors, shared.AdhocTrend.plain_pen_plots(cfg), shared.AdhocTrend.plain_plots(cfg))\n\texcept:\n\t\t# Fallback: UDT labels without plot helpers\n\t\tfor i, tag in enumerate(tags):\n\t\t\tif tag != \"\":\n\t\t\t\ttag = str(tag)\n\t\t\t\thistPath = tag if tag.endswith(\"/Value\") else (tag + \"/Value\")\n\t\t\t\tpenName = shared.AdhocTrend.pen_label(tag)\n\t\t\t\talias = shared.AdhocTrend.alias_for(tag)\n\t\t\t\tengUnit = \"\"\n\t\t\t\ttry:\n\t\t\t\t\tread = system.tag.readBlocking([histPath + \".EngUnit\"])\n\t\t\t\t\tengUnit = read[0].value if read[0].value not in (None, \"\") else \"\"\n\t\t\t\texcept:\n\t\t\t\t\tpass\n\t\t\t\tpenColor = colors[i] if i < len(colors) else colors[0]\n\t\t\t\trows.append([True, histPath, penName, alias, engUnit, penColor, \"p0\", \"\"])\n\t\treturn system.dataset.toDataSet(headers, rows)\n",
             "type": "script"
           }
         ],
@@ -6128,7 +6129,7 @@
               "component": {
                 "onActionPerformed": {
                   "config": {
-                    "script": "\tfrom shared import Alerts\n\tselectionData = self.getSibling(\"Tree\").props.selectionData\n\tfor data in selectionData:\n\t\tif 'value' in data.keys():\n\t\t\tif 'tagPath' in data['value'].keys() and 'hasChildren' in data['value'].keys():\n\t\t\t\ttagPath = data['value']['tagPath']\n\t\t\t\tif tagPath in self.session.custom.AdhocTrend.tags:\n\t\t\t\t\tAlerts.showAlert(state=\"info\",title=\"Adhoc Trending\",message='Tag is already added to the trend.<br><br>TagPath:<br>' + str(tagPath), showCloseBtn=False,btnTextPrimary=\"Okay\",btnTextSecondary=\"\",btnActionPrimary=\"\",btnActionSecondary=\"\",payload={})\n\t\t\t\telse:\n\t\t\t\t\tif len(self.session.custom.AdhocTrend.tags) < 10:\n\t\t\t\t\t\tself.session.custom.AdhocTrend.tags.append(tagPath)\n\t\t\t\t\telse:\n\t\t\t\t\t\tAlerts.showAlert(state=\"warning\",title=\"Adhoc Trending\",message='You have exceeded the limit of 10 tags, Please remove tags that are not required from the trend.',showCloseBtn=False,btnTextPrimary=\"Okay\",btnTextSecondary=\"\",btnActionPrimary=\"\",btnActionSecondary=\"\",payload={})"
+                    "script": "\tfrom shared import Alerts\n\tselectionData = self.getSibling(\"Tree\").props.selectionData\n\tfor data in selectionData:\n\t\tif 'value' in data.keys():\n\t\t\tif 'tagPath' in data['value'].keys() and 'hasChildren' in data['value'].keys():\n\t\t\t\ttagPath = data['value']['tagPath']\n\t\t\t\tif tagPath in self.session.custom.AdhocTrend.tags:\n\t\t\t\t\tAlerts.showAlert(state=\"info\",title=\"Adhoc Trending\",message='Tag is already added to the trend.<br><br>TagPath:<br>' + str(tagPath), showCloseBtn=False,btnTextPrimary=\"Okay\",btnTextSecondary=\"\",btnActionPrimary=\"\",btnActionSecondary=\"\",payload={})\n\t\t\t\telse:\n\t\t\t\t\tif len(self.session.custom.AdhocTrend.tags) < 10:\n\t\t\t\t\t\tself.session.custom.AdhocTrend.tags.append(tagPath)\n\t\t\t\t\t\t_pid, plots, penPlots = shared.AdhocTrend.route_new_pen(self.session.custom.AdhocTrend, tagPath)\n\t\t\t\t\t\tself.session.custom.AdhocTrend.plots = plots\n\t\t\t\t\t\tself.session.custom.AdhocTrend.penPlots = penPlots\n\t\t\t\t\telse:\n\t\t\t\t\t\tAlerts.showAlert(state=\"warning\",title=\"Adhoc Trending\",message='You have exceeded the limit of 10 tags, Please remove tags that are not required from the trend.',showCloseBtn=False,btnTextPrimary=\"Okay\",btnTextSecondary=\"\",btnActionPrimary=\"\",btnActionSecondary=\"\",payload={})\n"
                   },
                   "scope": "G",
                   "type": "script"
@@ -6207,46 +6208,45 @@
           {
             "children": [
               {
+                "type": "ia.display.flex-repeater",
                 "meta": {
-                  "name": "apexchart"
+                  "name": "Plots"
                 },
                 "position": {
                   "height": 0.94,
                   "width": 1,
                   "y": 0.06
                 },
-                "propConfig": {
-                  "props.options.tooltip.theme": {
-                    "binding": {
-                      "config": {
-                        "path": "session.props.theme"
-                      },
-                      "type": "property"
-                    }
+                "props": {
+                  "direction": "column",
+                  "elementPosition": {
+                    "grow": 1,
+                    "shrink": 1,
+                    "basis": "0px"
                   },
-                  "props.series": {
+                  "path": "98_Configuration/AdhocTrend/_Assets/Plot",
+                  "style": {
+                    "classes": "adhoc-trend-plots",
+                    "height": "100%",
+                    "width": "100%",
+                    "minHeight": 0,
+                    "overflow": "hidden",
+                    "flex": "1 1 0"
+                  },
+                  "instances": []
+                },
+                "propConfig": {
+                  "props.instances": {
                     "binding": {
                       "config": {
-                        "struct": {
-                          "dataset": "{view.custom.dataset}",
-                          "pens": "{view.custom.pens}"
-                        },
-                        "waitOnAll": true
+                        "path": "session.custom.AdhocTrend.plots"
                       },
                       "transforms": [
                         {
-                          "code": "\tseries = []\n\tif value is None:\n\t\treturn series\n\tdataset = getattr(value, \"dataset\", None)\n\tpens = getattr(value, \"pens\", None)\n\tif dataset is None or pens is None:\n\t\treturn series\n\ttry:\n\t\tif dataset.getRowCount() <= 0 or pens.getRowCount() <= 0:\n\t\t\treturn series\n\texcept:\n\t\treturn series\n\tpens_ds = system.dataset.toPyDataSet(pens)\n\tfilterColumns = [\"t_stamp\"]\n\tfor pen in pens_ds:\n\t\tif pen[\"penEnabled\"]:\n\t\t\talias = pen[\"alias\"]\n\t\t\tif alias in (None, \"\"):\n\t\t\t\tcontinue\n\t\t\ttry:\n\t\t\t\tcols = list(dataset.getColumnNames())\n\t\t\t\tuse = alias if alias in cols else None\n\t\t\t\tif use is None:\n\t\t\t\t\tleaf = str(alias).split(\"-\")[-1]\n\t\t\t\t\tfor c in cols:\n\t\t\t\t\t\tif c == \"t_stamp\":\n\t\t\t\t\t\t\tcontinue\n\t\t\t\t\t\tif c == leaf or str(c).endswith(leaf) or (leaf and leaf in str(c)):\n\t\t\t\t\t\t\tuse = c\n\t\t\t\t\t\t\tbreak\n\t\t\t\tif use is None:\n\t\t\t\t\tcontinue\n\t\t\t\tfilterColumns.append(use)\n\t\t\t\tseries.append({\n\t\t\t\t\t\"name\": pen[\"penName\"] or pen[\"alias\"],\n\t\t\t\t\t\"color\": pen[\"penColor\"],\n\t\t\t\t\t\"data\": system.dataset.filterColumns(dataset, filterColumns)\n\t\t\t\t})\n\t\t\t\tfilterColumns.remove(use)\n\t\t\texcept:\n\t\t\t\tpass\n\treturn series\n",
+                          "code": "\tinstances = []\n\tplots = shared.AdhocTrend.plain_plots(value)\n\tn = len(plots)\n\tfor p in plots:\n\t\tinstances.append({\n\t\t\t\"instanceStyle\": {\"classes\": \"\"},\n\t\t\t\"instancePosition\": {\"grow\": 1, \"shrink\": 1, \"basis\": \"0px\"},\n\t\t\t\"plotId\": p[\"id\"],\n\t\t\t\"plotTitle\": p[\"title\"],\n\t\t\t\"plotKind\": p[\"kind\"],\n\t\t\t\"plotCount\": n,\n\t\t})\n\treturn instances\n",
                           "type": "script"
                         }
                       ],
-                      "type": "expr-struct"
-                    }
-                  },
-                  "props.type": {
-                    "binding": {
-                      "config": {
-                        "path": "session.custom.AdhocTrend.chartType"
-                      },
                       "type": "property"
                     }
                   },
@@ -6277,151 +6277,8 @@
                       ],
                       "type": "property"
                     }
-                  },
-                  "props.options.chart.offsetY": {
-                    "binding": {
-                      "config": {
-                        "path": "view.params.faceplateMode"
-                      },
-                      "transforms": [
-                        {
-                          "expression": "if(coalesce({value}, false), 0, -4)",
-                          "type": "expression"
-                        }
-                      ],
-                      "type": "property"
-                    }
                   }
-                },
-                "props": {
-                  "options": {
-                    "chart": {
-                      "events": {
-                        "animationEnd": false,
-                        "beforeMount": false,
-                        "beforeResetZoom": false,
-                        "beforeZoom": false,
-                        "brushScrolled": false,
-                        "click": false,
-                        "dataPointMouseEnter": false,
-                        "dataPointMouseLeave": false,
-                        "dataPointSelection": true,
-                        "legendClick": false,
-                        "markerClick": true,
-                        "mounted": false,
-                        "mouseLeave": false,
-                        "mouseMove": false,
-                        "scrolled": false,
-                        "selection": false,
-                        "updated": false,
-                        "xAxisLabelClick": false,
-                        "zoomed": false
-                      },
-                      "fontFamily": "sans-serif",
-                      "height": 350,
-                      "stacked": false,
-                      "toolbar": {
-                        "export": {
-                          "csv": {
-                            "categoryFormatter": "function (x) {return new Date(x)}",
-                            "filename": "export"
-                          }
-                        },
-                        "show": true
-                      },
-                      "type": "line",
-                      "zoom": {
-                        "autoScaleYaxis": false,
-                        "enabled": true,
-                        "type": "x"
-                      },
-                      "offsetY": -4
-                    },
-                    "dataLabels": {
-                      "enabled": false
-                    },
-                    "fill": {
-                      "opacity": 1
-                    },
-                    "grid": {
-                      "show": false,
-                      "padding": {
-                        "bottom": 56,
-                        "top": 10,
-                        "left": 10,
-                        "right": 10
-                      }
-                    },
-                    "legend": {
-                      "labels": {
-                        "colors": "#808080",
-                        "useSeriesColors": false
-                      },
-                      "position": "top",
-                      "show": false
-                    },
-                    "markers": {
-                      "size": 0
-                    },
-                    "stroke": {
-                      "curve": "straight",
-                      "width": 1.2
-                    },
-                    "tooltip": {
-                      "enabled": true,
-                      "style": {
-                        "fontFamily": "sans-serif",
-                        "fontSize": "12px"
-                      },
-                      "x": {
-                        "format": "dd MMM yyyy HH:mm:ss",
-                        "show": true
-                      }
-                    },
-                    "xaxis": {
-                      "axisBorder": {
-                        "offsetY": 5,
-                        "show": true
-                      },
-                      "labels": {
-                        "datetimeFormatter": {
-                          "day": "dd MMM",
-                          "hour": "HH:mm",
-                          "month": "MMM yy",
-                          "year": "yyyy"
-                        },
-                        "datetimeUTC": false,
-                        "style": {
-                          "colors": "var(--neutral-90)",
-                          "fontFamily": "sans-serif",
-                          "fontSize": "12px"
-                        }
-                      },
-                      "type": "datetime"
-                    },
-                    "yaxis": {
-                      "axisBorder": {
-                        "show": false
-                      },
-                      "labels": {
-                        "formatter": "function(val) { return val.toLocaleString(); }",
-                        "style": {
-                          "colors": "var(--neutral-90)",
-                          "fontFamily": "sans-serif",
-                          "fontSize": "12px"
-                        }
-                      },
-                      "title": {
-                        "text": ""
-                      }
-                    }
-                  },
-                  "style": {
-                    "overflow": "visible",
-                    "classes": "adhoc-trend-apex"
-                  }
-                },
-                "type": "kyvislabs.display.apexchart"
+                }
               },
               {
                 "children": [
@@ -6800,7 +6657,8 @@
                     "alignItems": "center",
                     "paddingLeft": "8px",
                     "paddingRight": "8px",
-                    "overflow": "visible"
+                    "overflow": "visible",
+                    "minHeight": "40px"
                   },
                   "wrap": "wrap",
                   "direction": "row"
@@ -6825,6 +6683,50 @@
               },
               {
                 "children": [
+                  {
+                    "type": "ia.input.button",
+                    "meta": {
+                      "name": "AddPlot"
+                    },
+                    "position": {
+                      "basis": "36px",
+                      "shrink": 0,
+                      "grow": 0
+                    },
+                    "props": {
+                      "text": "",
+                      "align": "center",
+                      "image": {
+                        "icon": {
+                          "color": "--neutral-10",
+                          "path": "material/add"
+                        }
+                      },
+                      "style": {
+                        "classes": "container-button font-button adhoc-trend-action-btn adhoc-trend-add-plot-btn",
+                        "marginRight": "0px",
+                        "marginTop": "0px",
+                        "minHeight": 32,
+                        "minWidth": 36,
+                        "width": 36,
+                        "paddingTop": "4px",
+                        "paddingLeft": "4px",
+                        "paddingRight": "4px",
+                        "paddingBottom": "4px"
+                      }
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "config": {
+                            "script": "\t# Append empty plot and reassign plain list so Perspective bindings refresh.\n\tself.session.custom.AdhocTrend.plots = shared.AdhocTrend.apply_add_plot(self.session.custom.AdhocTrend)\n"
+                          },
+                          "scope": "G",
+                          "type": "script"
+                        }
+                      }
+                    }
+                  },
                   {
                     "events": {
                       "component": {
@@ -7010,7 +6912,7 @@
                       "component": {
                         "onActionPerformed": {
                           "config": {
-                            "script": "\t# Default Adhoc Trend Config\n\t# Create the default Adhoc Trend configuration in a single dictionary\n\tdefault_config = {\n\t    \"tags\": [],\n\t    \"colors\": [\n\t        \"#008FFB\",\n\t        \"#34C759\",\n\t        \"#FFA726\",\n\t        \"#FF4560\",\n\t        \"#775DD0\",\n\t        \"#1C4E80\",\n\t        \"#008080\",\n\t        \"#26C6DA\",\n\t        \"#4F4F4F\",\n\t        \"#6C757D\"\n\t    ],\n\t    \"realtime\": True,\n\t    \"timeRange\": 1,\n\t    \"pointCount\": 120,\n\t    \"chartType\": \"line\",\n\t    \"aggregate\": \"Average\",\n\t    \"trendId\": \"\",\n\t    \"trendName\": \"\",\n\t    \"username\": \"\",\n\t    \"isShared\": True,\n\t    \n\t    # Historical defaults\n\t    \"startDate\": system.date.addHours(system.date.now(), -8),\n\t    \"endDate\": system.date.now()\n\t}\n\t\n\t# Assign the entire block to the global session property in one ultra-fast update!\n\tself.session.custom.AdhocTrend = default_config\n\tself.view.custom.trendId = \"\""
+                            "script": "\t# Default Adhoc Trend Config\n\tdefault_config = {\n\t\t\"tags\": [],\n\t\t\"colors\": [\n\t\t\t\"#008FFB\",\n\t\t\t\"#34C759\",\n\t\t\t\"#FFA726\",\n\t\t\t\"#FF4560\",\n\t\t\t\"#775DD0\",\n\t\t\t\"#1C4E80\",\n\t\t\t\"#008080\",\n\t\t\t\"#26C6DA\",\n\t\t\t\"#4F4F4F\",\n\t\t\t\"#6C757D\"\n\t\t],\n\t\t\"realtime\": True,\n\t\t\"timeRange\": 1,\n\t\t\"pointCount\": 120,\n\t\t\"chartType\": \"line\",\n\t\t\"aggregate\": \"Average\",\n\t\t\"trendId\": \"\",\n\t\t\"trendName\": \"\",\n\t\t\"username\": \"\",\n\t\t\"isShared\": True,\n\t\t\"plots\": shared.AdhocTrend.default_plots(),\n\t\t\"penPlots\": {},\n\t\t\"startDate\": system.date.addHours(system.date.now(), -8),\n\t\t\"endDate\": system.date.now()\n\t}\n\tself.session.custom.AdhocTrend = default_config\n\tself.view.custom.trendId = \"\"\n"
                           },
                           "scope": "G",
                           "type": "script"
@@ -7090,7 +6992,8 @@
                     "gap": "10px",
                     "paddingRight": "12px",
                     "paddingTop": "4px",
-                    "overflow": "visible"
+                    "overflow": "visible",
+                    "minHeight": "40px"
                   }
                 },
                 "type": "ia.container.flex",
@@ -7192,7 +7095,9 @@
                 "overflow": "hidden",
                 "classes": "adhoc-trend-chart-host",
                 "minHeight": 0,
-                "minWidth": 0
+                "minWidth": 0,
+                "height": "100%",
+                "width": "100%"
               }
             },
             "type": "ia.container.coord",
@@ -7309,7 +7214,7 @@
                           },
                           "transforms": [
                             {
-                              "code": "\tinstances = []\n\tif value is None:\n\t\treturn instances\n\ttry:\n\t\tif value.getRowCount() <= 0:\n\t\t\treturn instances\n\texcept:\n\t\treturn instances\n\tpens = system.dataset.toPyDataSet(value)\n\tfor pen in pens:\n\t\tif pen[\"penEnabled\"]:\n\t\t\tinstances.append({\n\t\t\t\t\"instanceStyle\": {\"classes\": \"\"},\n\t\t\t\t\"instancePosition\": {},\n\t\t\t\t\"color\": pen[\"penColor\"],\n\t\t\t\t\"penName\": pen[\"penName\"],\n\t\t\t\t\"justify\": \"flex-start\",\n\t\t\t})\n\treturn instances\n",
+                              "code": "\tinstances = []\n\tif value is None:\n\t\treturn instances\n\ttry:\n\t\tif value.getRowCount() <= 0:\n\t\t\treturn instances\n\texcept:\n\t\treturn instances\n\tpens = system.dataset.toPyDataSet(value)\n\tfor pen in pens:\n\t\tif pen[\"penEnabled\"]:\n\t\t\tinstances.append({\n\t\t\t\t\"instanceStyle\": {\"classes\": \"\"},\n\t\t\t\t\"instancePosition\": {},\n\t\t\t\t\"color\": pen[\"penColor\"],\n\t\t\t\t\"penName\": pen[\"penName\"],\n\t\t\t\t\"plotId\": pen[\"plotId\"] if \"plotId\" in pen else \"p0\",\n\t\t\t\t\"tagPath\": pen[\"tagPath\"],\n\t\t\t\t\"justify\": \"flex-start\",\n\t\t\t})\n\treturn instances\n",
                               "type": "script"
                             }
                           ],
@@ -7878,6 +7783,22 @@
                       "viewPath": "98_Configuration/AdhocTrend/_Assets/PenColor",
                       "visible": true,
                       "width": ""
+                    },
+                    {
+                      "field": "plotId",
+                      "editable": false,
+                      "header": {
+                        "title": "Plot",
+                        "justify": "left"
+                      },
+                      "justify": "center",
+                      "progressBar": {
+                        "enabled": false
+                      },
+                      "render": "view",
+                      "viewPath": "98_Configuration/AdhocTrend/_Assets/PenPlot",
+                      "viewParams": {},
+                      "width": "110px"
                     },
                     {
                       "align": "center",

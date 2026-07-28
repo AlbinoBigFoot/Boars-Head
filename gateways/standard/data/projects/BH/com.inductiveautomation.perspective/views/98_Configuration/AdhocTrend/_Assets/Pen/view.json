@@ -3,7 +3,9 @@
   "params": {
     "color": "",
     "justify": "flex-start",
-    "penName": ""
+    "penName": "",
+    "plotId": "p0",
+    "tagPath": ""
   },
   "propConfig": {
     "params.color": {
@@ -15,6 +17,14 @@
       "persistent": true
     },
     "params.penName": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.plotId": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tagPath": {
       "paramDirection": "input",
       "persistent": true
     }
@@ -76,6 +86,59 @@
           }
         },
         "type": "ia.display.label"
+      },
+      {
+        "type": "ia.input.dropdown",
+        "meta": {
+          "name": "PlotSelect"
+        },
+        "position": {
+          "basis": "90px",
+          "shrink": 0
+        },
+        "props": {
+          "allowCustomOptions": false,
+          "style": {
+            "classes": "font-value adhoc-trend-pen-plot-select",
+            "marginLeft": "4px",
+            "minWidth": 80
+          },
+          "options": []
+        },
+        "propConfig": {
+          "props.options": {
+            "binding": {
+              "config": {
+                "path": "session.custom.AdhocTrend.plots"
+              },
+              "transforms": [
+                {
+                  "code": "\treturn shared.AdhocTrend.plot_dropdown_options(value)\n",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          },
+          "props.value": {
+            "binding": {
+              "config": {
+                "path": "view.params.plotId"
+              },
+              "transforms": [
+                {
+                  "code": "\treturn str(value) if value not in (None, '') else 'p0'\n",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            },
+            "onChange": {
+              "enabled": null,
+              "script": "\tif currentValue.value in (None, ''):\n\t\treturn\n\tkey = self.view.params.tagPath\n\tif key in (None, ''):\n\t\tkey = self.view.params.penName\n\tpenPlots = shared.AdhocTrend.move_pen(self.session.custom.AdhocTrend, key, currentValue.value)\n\tself.session.custom.AdhocTrend.penPlots = penPlots\n"
+            }
+          }
+        }
       }
     ],
     "meta": {
