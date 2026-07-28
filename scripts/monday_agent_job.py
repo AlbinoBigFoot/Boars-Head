@@ -47,6 +47,10 @@ DEFAULT_BOARD_ID = "18423731526"
 PENDING_REVIEW_TITLE = "Pending Review"
 # Created 2026-07-28 on board 18423731526 — override via MONDAY_PENDING_REVIEW_GROUP_ID
 DEFAULT_PENDING_REVIEW_GROUP_ID = "group_mm5p3hpn"
+# Files column on board 18423731526 ("Attached Files") — override via MONDAY_FILES_COLUMN_ID
+DEFAULT_FILES_COLUMN_ID = "files"
+# Monday /v2/file accepts .md (verified); keep original handoff name when attaching
+MONDAY_FILE_ENDPOINT = "https://api.monday.com/v2/file"
 
 # Dylan Jones — Monday account (Service Agent Workspace)
 DEFAULT_USER_IDS = ("111292620",)
@@ -263,8 +267,119 @@ def create_monday_update(item_id: str, body: str) -> dict:
 	return data.get("create_update") or {}
 
 
+def monday_multipart_file(
+	query: str,
+	file_path: Path,
+	*,
+	filename: str | None = None,
+	content_type: str = "text/plain",
+) -> dict:
+	"""Upload a file via Monday's multipart /v2/file endpoint.
+
+	Used by add_file_to_update / add_file_to_column (JSON /v2 cannot carry File!).
+	"""
+	token = monday_api_token()
+	if not token:
+		raise RuntimeError("MONDAY_API_TOKEN not available")
+	path = Path(file_path)
+	if not path.is_file():
+		raise FileNotFoundError(str(path))
+	name = filename or path.name
+	data = path.read_bytes()
+	boundary = "----MondayBoundary%s" % os.urandom(8).hex()
+	parts: list[bytes] = []
+	parts.append(
+		(
+			"--%s\r\n"
+			'Content-Disposition: form-data; name="query"\r\n\r\n'
+			"%s\r\n" % (boundary, query)
+		).encode("utf-8")
+	)
+	parts.append(
+		(
+			"--%s\r\n"
+			'Content-Disposition: form-data; name="variables[file]"; filename="%s"\r\n'
+			"Content-Type: %s\r\n\r\n" % (boundary, name, content_type)
+		).encode("utf-8")
+		+ data
+		+ b"\r\n"
+	)
+	parts.append(("--%s--\r\n" % boundary).encode("utf-8"))
+	req = urllib.request.Request(
+		MONDAY_FILE_ENDPOINT,
+		data=b"".join(parts),
+		method="POST",
+		headers={
+			"Authorization": token,
+			"API-Version": env("MONDAY_API_VERSION", "2026-07"),
+			"Content-Type": "multipart/form-data; boundary=%s" % boundary,
+		},
+	)
+	with urllib.request.urlopen(req, timeout=60) as resp:
+		payload = json.loads(resp.read().decode("utf-8"))
+	if payload.get("errors"):
+		raise RuntimeError("Monday file upload errors: %s" % payload["errors"])
+	return payload.get("data") or {}
+
+
+def add_file_to_update(update_id: str, file_path: Path, filename: str | None = None) -> dict:
+	"""Attach a file to an existing Monday update (multipart /v2/file)."""
+	name = filename or Path(file_path).name
+	# Prefer text/plain for broad compatibility; .md extension still works on Monday.
+	ctype = "text/markdown" if name.lower().endswith(".md") else "text/plain"
+	query = (
+		"mutation ($file: File!) {"
+		" add_file_to_update(update_id: %s, file: $file) { id name url file_extension }"
+		" }" % str(update_id)
+	)
+	data = monday_multipart_file(query, file_path, filename=name, content_type=ctype)
+	return data.get("add_file_to_update") or {}
+
+
+def add_file_to_column(
+	item_id: str,
+	file_path: Path,
+	*,
+	column_id: str | None = None,
+	filename: str | None = None,
+) -> dict:
+	"""Attach a file to an item's Files column (multipart /v2/file)."""
+	col = (column_id or env("MONDAY_FILES_COLUMN_ID") or DEFAULT_FILES_COLUMN_ID).strip()
+	name = filename or Path(file_path).name
+	ctype = "text/markdown" if name.lower().endswith(".md") else "text/plain"
+	query = (
+		"mutation ($file: File!) {"
+		' add_file_to_column(item_id: %s, column_id: "%s", file: $file)'
+		" { id name url file_extension }"
+		" }" % (str(item_id), col)
+	)
+	data = monday_multipart_file(query, file_path, filename=name, content_type=ctype)
+	return data.get("add_file_to_column") or {}
+
+
 def handoff_path_for_item(item_id: str) -> Path:
 	return HANDOFF_DIR / ("ticket-%s.md" % item_id)
+
+
+def resolve_handoff_file(item_id: str, artifacts: dict | None = None) -> Path | None:
+	"""Return on-disk handoff Path if present (repo-relative artifacts.handoff or default)."""
+	candidates: list[Path] = []
+	rel = ""
+	if artifacts:
+		rel = str(artifacts.get("handoff") or "").replace("\\", "/").strip()
+	if rel:
+		candidates.append(REPO_ROOT / rel)
+	candidates.append(handoff_path_for_item(item_id))
+	candidates.append(REPO_ROOT / ("docs/handoff/tickets/%s.md" % item_id))
+	seen: set[str] = set()
+	for p in candidates:
+		key = str(p.resolve()) if p.exists() else str(p)
+		if key in seen:
+			continue
+		seen.add(key)
+		if p.is_file():
+			return p
+	return None
 
 
 def parse_agent_artifacts(log_text: str, item_id: str) -> dict:
@@ -335,7 +450,13 @@ def parse_agent_artifacts(log_text: str, item_id: str) -> dict:
 	}
 
 
-def build_review_update_body(ticket: dict, artifacts: dict) -> str:
+def build_review_update_body(
+	ticket: dict,
+	artifacts: dict,
+	*,
+	handoff_markdown: str | None = None,
+	file_attached: bool = False,
+) -> str:
 	item_id = ticket.get("item_id") or ""
 	title = ticket.get("title") or ticket.get("name") or ""
 	branch = artifacts.get("branch") or "(see handoff / local git)"
@@ -352,6 +473,8 @@ def build_review_update_body(ticket: dict, artifacts: dict) -> str:
 		parts.append("Draft PR: %s" % pr_url)
 	else:
 		parts.append("Draft PR: (none — checkout branch locally)")
+	if file_attached:
+		parts.append("Handoff file: attached to this update (+ Attached Files column when available).")
 	parts.extend(
 		[
 			"",
@@ -359,11 +482,28 @@ def build_review_update_body(ticket: dict, artifacts: dict) -> str:
 			"Do not merge to main until Dylan confirms.",
 		]
 	)
+	# Fallback: embed full handoff markdown when file attach is unavailable/failed
+	if handoff_markdown and not file_attached:
+		parts.extend(
+			[
+				"",
+				"---",
+				"Handoff (inline — file attach failed or unavailable):",
+				"",
+				handoff_markdown.strip(),
+			]
+		)
 	return "\n".join(parts)
 
 
 def post_success_review(ticket: dict, log_path: Path) -> dict:
-	"""Move Monday item to Pending Review + post update. Returns status dict."""
+	"""Move Monday item to Pending Review + post update (+ handoff file attach).
+
+	File attach uses multipart /v2/file:
+	  - add_file_to_update (preferred)
+	  - add_file_to_column on Files column (board default: files)
+	If attach fails, the update body includes the full handoff markdown.
+	"""
 	item_id = str(ticket.get("item_id") or "")
 	board_id = str(ticket.get("board_id") or env("MONDAY_BOARD_ID") or DEFAULT_BOARD_ID)
 	log_text = ""
@@ -374,12 +514,24 @@ def post_success_review(ticket: dict, log_path: Path) -> dict:
 		pass
 
 	artifacts = parse_agent_artifacts(log_text, item_id)
+	handoff_file = resolve_handoff_file(item_id, artifacts)
+	handoff_md = ""
+	if handoff_file is not None:
+		try:
+			handoff_md = handoff_file.read_text(encoding="utf-8", errors="replace")
+			rel = str(handoff_file.relative_to(REPO_ROOT)).replace("\\", "/")
+			artifacts["handoff"] = rel
+		except OSError as exc:
+			sys.stderr.write("handoff read failed item=%s err=%s\n" % (item_id, exc))
+
 	result: dict[str, Any] = {
 		"item_id": item_id,
 		"artifacts": artifacts,
 		"group_id": "",
 		"moved": False,
 		"update_id": "",
+		"file_update_asset_id": "",
+		"file_column_asset_id": "",
 		"errors": [],
 	}
 
@@ -399,8 +551,10 @@ def post_success_review(ticket: dict, log_path: Path) -> dict:
 		result["errors"].append("move failed: %s" % exc)
 		sys.stderr.write("monday move failed item=%s err=%s\n" % (item_id, exc))
 
+	# Post summary update first (without inline handoff); attach file; fallback if needed
+	file_attached = False
 	try:
-		body = build_review_update_body(ticket, artifacts)
+		body = build_review_update_body(ticket, artifacts, file_attached=False)
 		upd = create_monday_update(item_id, body)
 		result["update_id"] = _norm(upd.get("id"))
 		sys.stderr.write(
@@ -410,6 +564,70 @@ def post_success_review(ticket: dict, log_path: Path) -> dict:
 	except Exception as exc:  # noqa: BLE001
 		result["errors"].append("update failed: %s" % exc)
 		sys.stderr.write("monday update failed item=%s err=%s\n" % (item_id, exc))
+
+	if result["update_id"] and handoff_file is not None:
+		try:
+			asset = add_file_to_update(result["update_id"], handoff_file)
+			result["file_update_asset_id"] = _norm(asset.get("id"))
+			file_attached = bool(result["file_update_asset_id"])
+			sys.stderr.write(
+				"monday handoff attached to update item=%s update_id=%s asset=%s name=%s\n"
+				% (
+					item_id,
+					result["update_id"],
+					result["file_update_asset_id"],
+					asset.get("name") or handoff_file.name,
+				)
+			)
+		except Exception as exc:  # noqa: BLE001
+			result["errors"].append("file→update failed: %s" % exc)
+			sys.stderr.write(
+				"monday handoff→update failed item=%s err=%s\n" % (item_id, exc)
+			)
+
+	if handoff_file is not None:
+		try:
+			asset = add_file_to_column(item_id, handoff_file)
+			result["file_column_asset_id"] = _norm(asset.get("id"))
+			if result["file_column_asset_id"]:
+				file_attached = True
+			sys.stderr.write(
+				"monday handoff attached to Files column item=%s asset=%s name=%s\n"
+				% (
+					item_id,
+					result["file_column_asset_id"],
+					asset.get("name") or handoff_file.name,
+				)
+			)
+		except Exception as exc:  # noqa: BLE001
+			result["errors"].append("file→column failed: %s" % exc)
+			sys.stderr.write(
+				"monday handoff→column failed item=%s err=%s\n" % (item_id, exc)
+			)
+
+	# Reliable fallback: full handoff markdown in a second update when attach failed
+	if handoff_md and not file_attached:
+		try:
+			fallback = build_review_update_body(
+				ticket,
+				artifacts,
+				handoff_markdown=handoff_md,
+				file_attached=False,
+			)
+			upd2 = create_monday_update(item_id, fallback)
+			fallback_id = _norm(upd2.get("id"))
+			if fallback_id:
+				result["update_id"] = result["update_id"] or fallback_id
+			sys.stderr.write(
+				"monday handoff inline fallback posted item=%s update_id=%s\n"
+				% (item_id, fallback_id)
+			)
+		except Exception as exc:  # noqa: BLE001
+			result["errors"].append("inline handoff fallback failed: %s" % exc)
+			sys.stderr.write(
+				"monday handoff inline fallback failed item=%s err=%s\n"
+				% (item_id, exc)
+			)
 
 	return result
 
@@ -860,11 +1078,14 @@ def spawn_agent_job(ticket: dict, *, dry_run: bool = False) -> dict:
 						artifacts = {**artifacts, **review["artifacts"]}
 					with log_path.open("a", encoding="utf-8") as logf:
 						logf.write(
-							"\nREVIEW_HOOKS: moved=%s group=%s update_id=%s errors=%s\n"
+							"\nREVIEW_HOOKS: moved=%s group=%s update_id=%s "
+							"file_update=%s file_column=%s errors=%s\n"
 							% (
 								review.get("moved"),
 								review.get("group_id"),
 								review.get("update_id"),
+								review.get("file_update_asset_id"),
+								review.get("file_column_asset_id"),
 								review.get("errors"),
 							)
 						)
@@ -1182,6 +1403,30 @@ def self_test() -> int:
 		bool(gid),
 		"resolve pending review group id",
 		"group_id=%s" % gid,
+	)
+
+	# 13) Review update body embeds handoff when file not attached
+	inline_body = build_review_update_body(
+		{"item_id": "999777", "title": "Demo"},
+		arts,
+		handoff_markdown="# Hello handoff\n\nDetails here.",
+		file_attached=False,
+	)
+	_check(
+		"Hello handoff" in inline_body and "file attach failed" in inline_body.lower(),
+		"inline handoff fallback in update body",
+		inline_body[-120:],
+	)
+	attached_body = build_review_update_body(
+		{"item_id": "999777", "title": "Demo"},
+		arts,
+		handoff_markdown="# Hello handoff\n\nDetails here.",
+		file_attached=True,
+	)
+	_check(
+		"Hello handoff" not in attached_body and "attached to this update" in attached_body,
+		"attached flag skips inline handoff",
+		attached_body[:240],
 	)
 
 	sys.stderr.write("self_test failures=%s token_present=%s\n" % (failures, bool(monday_api_token())))

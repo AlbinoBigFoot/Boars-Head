@@ -19,7 +19,7 @@ Monday create_item (board 18423731526, webhook 614195738)
        │    └─ reject → Pushover “Monday ticket added by {filer}: {name}” + link (no agent)
             → ticket/<id>-slug branch + fix + scan + commit + push ticket branch
             → docs/handoff/ticket-<id>.md + draft PR into main (do not merge)
-            → on exit 0: Monday → Pending Review + update (branch/handoff/PR)
+            → on exit 0: Monday → Pending Review + update + handoff file attach (branch/handoff/PR)
             → Pushover FINISH (branch + handoff + “not on main”)
 ```
 
@@ -34,7 +34,7 @@ HMI ticket work **never lands on `main` automatically**. Dylan reviews locally (
 | 3 | Agent | Commit **on ticket branch only**; push `origin ticket/…` |
 | 4 | Agent | Write `docs/handoff/ticket-<id>.md` (intent, files, verify, risks, continue-from-here) |
 | 5 | Agent | Open **draft** PR into `main` if `gh` works (do not merge) |
-| 6 | Job script | On agent exit 0: `move_item_to_group` → **Pending Review** + Monday update |
+| 6 | Job script | On agent exit 0: `move_item_to_group` → **Pending Review** + Monday update **with handoff file attach** (`add_file_to_update` + Files column) |
 | 7 | Dylan | Checkout branch in Cursor Desktop, read handoff, continue or merge when ready |
 
 ### Forbidden (agent + job)
@@ -71,6 +71,16 @@ On **agent failure**: leave the Monday item in its current group; Pushover ERROR
 Path: `docs/handoff/ticket-<monday_item_id>.md` (committed on the ticket branch).
 
 Should include: Monday URL/id, branch name, summary of intent, files changed, how to verify, known risks, and **continue from here** instructions for the next Cursor agent.
+
+After a successful agent run the job script:
+
+1. Posts a Monday update (branch / handoff path / draft PR).
+2. Attaches the handoff via multipart `POST https://api.monday.com/v2/file`:
+   - `add_file_to_update` on that update
+   - `add_file_to_column` on board column **Attached Files** (`files`, override `MONDAY_FILES_COLUMN_ID`)
+3. If file attach fails, posts a second update with the **full handoff markdown inline**.
+
+`.md` uploads work on this account (verified); no rename to `.txt` required.
 
 ### Pushover FINISH
 
