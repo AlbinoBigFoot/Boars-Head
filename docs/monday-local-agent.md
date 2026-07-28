@@ -34,7 +34,7 @@ HMI ticket work **never lands on `main` automatically**. Dylan reviews locally (
 | 3 | Agent | Commit **on ticket branch only**; push `origin ticket/…` |
 | 4 | Agent | Write `docs/handoff/ticket-<id>.md` (intent, files, verify, risks, continue-from-here) |
 | 5 | Agent | Open **draft** PR into `main` if `gh` works (do not merge) |
-| 6 | Job script | On agent exit 0: `move_item_to_group` → **Pending Review** + Monday update **with handoff file attach** (`add_file_to_update` + Files column) |
+| 6 | Job script | On agent exit 0: `move_item_to_group` → **Pending Review** + Monday update + handoff once on Files column |
 | 7 | Dylan | Checkout branch in Cursor Desktop, read handoff, continue or merge when ready |
 
 ### Forbidden (agent + job)
@@ -74,11 +74,9 @@ Should include: Monday URL/id, branch name, summary of intent, files changed, ho
 
 After a successful agent run the job script:
 
-1. Posts a Monday update (branch / handoff path / draft PR).
-2. Attaches the handoff via multipart `POST https://api.monday.com/v2/file`:
-   - `add_file_to_update` on that update
-   - `add_file_to_column` on board column **Attached Files** (`files`, override `MONDAY_FILES_COLUMN_ID`)
-3. If file attach fails, posts a second update with the **full handoff markdown inline**.
+1. Attaches the handoff **once** via multipart `POST https://api.monday.com/v2/file` → `add_file_to_column` on **Attached Files** (`files`, override `MONDAY_FILES_COLUMN_ID`).
+2. Posts a short Monday update (branch / handoff path / draft PR). Does **not** also `add_file_to_update` (that duplicated files in Attached Files).
+3. If column attach fails, posts a follow-up update with the **full handoff markdown inline**.
 
 `.md` uploads work on this account (verified); no rename to `.txt` required.
 

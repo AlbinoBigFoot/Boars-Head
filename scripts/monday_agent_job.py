@@ -474,7 +474,7 @@ def build_review_update_body(
 	else:
 		parts.append("Draft PR: (none — checkout branch locally)")
 	if file_attached:
-		parts.append("Handoff file: attached to this update (+ Attached Files column when available).")
+		parts.append("Handoff file: attached once to Attached Files (files column).")
 	parts.extend(
 		[
 			"",
@@ -499,10 +499,10 @@ def build_review_update_body(
 def post_success_review(ticket: dict, log_path: Path) -> dict:
 	"""Move Monday item to Pending Review + post update (+ handoff file attach).
 
-	File attach uses multipart /v2/file:
-	  - add_file_to_update (preferred)
-	  - add_file_to_column on Files column (board default: files)
-	If attach fails, the update body includes the full handoff markdown.
+	File attach uses multipart /v2/file once only:
+	  - add_file_to_column on Files / Attached Files (board default: files)
+	Do not also add_file_to_update — that duplicates entries in Attached Files.
+	If column attach fails, the update body includes the full handoff markdown.
 	"""
 	item_id = str(ticket.get("item_id") or "")
 	board_id = str(ticket.get("board_id") or env("MONDAY_BOARD_ID") or DEFAULT_BOARD_ID)
@@ -551,40 +551,8 @@ def post_success_review(ticket: dict, log_path: Path) -> dict:
 		result["errors"].append("move failed: %s" % exc)
 		sys.stderr.write("monday move failed item=%s err=%s\n" % (item_id, exc))
 
-	# Post summary update first (without inline handoff); attach file; fallback if needed
+	# Attach handoff once to Files column (Attached Files), then post short text update
 	file_attached = False
-	try:
-		body = build_review_update_body(ticket, artifacts, file_attached=False)
-		upd = create_monday_update(item_id, body)
-		result["update_id"] = _norm(upd.get("id"))
-		sys.stderr.write(
-			"monday update posted item=%s update_id=%s\n"
-			% (item_id, result["update_id"])
-		)
-	except Exception as exc:  # noqa: BLE001
-		result["errors"].append("update failed: %s" % exc)
-		sys.stderr.write("monday update failed item=%s err=%s\n" % (item_id, exc))
-
-	if result["update_id"] and handoff_file is not None:
-		try:
-			asset = add_file_to_update(result["update_id"], handoff_file)
-			result["file_update_asset_id"] = _norm(asset.get("id"))
-			file_attached = bool(result["file_update_asset_id"])
-			sys.stderr.write(
-				"monday handoff attached to update item=%s update_id=%s asset=%s name=%s\n"
-				% (
-					item_id,
-					result["update_id"],
-					result["file_update_asset_id"],
-					asset.get("name") or handoff_file.name,
-				)
-			)
-		except Exception as exc:  # noqa: BLE001
-			result["errors"].append("file→update failed: %s" % exc)
-			sys.stderr.write(
-				"monday handoff→update failed item=%s err=%s\n" % (item_id, exc)
-			)
-
 	if handoff_file is not None:
 		try:
 			asset = add_file_to_column(item_id, handoff_file)
@@ -604,6 +572,20 @@ def post_success_review(ticket: dict, log_path: Path) -> dict:
 			sys.stderr.write(
 				"monday handoff→column failed item=%s err=%s\n" % (item_id, exc)
 			)
+
+	try:
+		body = build_review_update_body(
+			ticket, artifacts, file_attached=file_attached
+		)
+		upd = create_monday_update(item_id, body)
+		result["update_id"] = _norm(upd.get("id"))
+		sys.stderr.write(
+			"monday update posted item=%s update_id=%s file_attached=%s\n"
+			% (item_id, result["update_id"], file_attached)
+		)
+	except Exception as exc:  # noqa: BLE001
+		result["errors"].append("update failed: %s" % exc)
+		sys.stderr.write("monday update failed item=%s err=%s\n" % (item_id, exc))
 
 	# Reliable fallback: full handoff markdown in a second update when attach failed
 	if handoff_md and not file_attached:
@@ -1424,7 +1406,8 @@ def self_test() -> int:
 		file_attached=True,
 	)
 	_check(
-		"Hello handoff" not in attached_body and "attached to this update" in attached_body,
+		"Hello handoff" not in attached_body
+		and "Attached Files" in attached_body,
 		"attached flag skips inline handoff",
 		attached_body[:240],
 	)
