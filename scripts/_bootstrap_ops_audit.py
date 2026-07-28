@@ -804,73 +804,122 @@ def audit_log_view():
 							"position": {"shrink": 0},
 							"props": {
 								"alignItems": "flex-end",
-								"style": {"gap": "12px", "flexWrap": "wrap"},
+								"justify": "space-between",
+								"style": {
+									"gap": "12px",
+									"flexWrap": "wrap",
+									"width": "100%",
+								},
 							},
 							"children": [
 								{
 									"type": "ia.container.flex",
-									"meta": {"name": "Start"},
-									"position": {"basis": "220px", "shrink": 0},
-									"props": {"direction": "column"},
+									"meta": {"name": "Left"},
+									"position": {"grow": 1, "shrink": 1},
+									"props": {
+										"alignItems": "flex-end",
+										"style": {"gap": "12px", "flexWrap": "wrap"},
+									},
 									"children": [
 										{
-											"type": "ia.display.label",
-											"meta": {"name": "Lbl"},
-											"props": {
-												"style": {"classes": "font-label"},
-												"text": "Start",
-											},
+											"type": "ia.container.flex",
+											"meta": {"name": "Start"},
+											"position": {"basis": "200px", "shrink": 0},
+											"props": {"direction": "column"},
+											"children": [
+												{
+													"type": "ia.display.label",
+													"meta": {"name": "Lbl"},
+													"props": {
+														"style": {"classes": "font-label"},
+														"text": "Start",
+													},
+												},
+												{
+													"type": "ia.input.date-time-input",
+													"meta": {"name": "Date"},
+													"propConfig": {
+														"props.value": {
+															"binding": {
+																"config": {
+																	"expression": "dateArithmetic(now(0), -1, 'day')"
+																},
+																"type": "expr",
+															}
+														}
+													},
+													"props": {
+														"format": "YYYY-MM-DD HH:mm:ss",
+														"style": {"height": "32px"},
+													},
+												},
+											],
 										},
 										{
-											"type": "ia.input.date-time-input",
-											"meta": {"name": "Date"},
-											"propConfig": {
-												"props.value": {
-													"binding": {
+											"type": "ia.container.flex",
+											"meta": {"name": "End"},
+											"position": {"basis": "200px", "shrink": 0},
+											"props": {"direction": "column"},
+											"children": [
+												{
+													"type": "ia.display.label",
+													"meta": {"name": "Lbl"},
+													"props": {
+														"style": {"classes": "font-label"},
+														"text": "End",
+													},
+												},
+												{
+													"type": "ia.input.date-time-input",
+													"meta": {"name": "Date"},
+													"propConfig": {
+														"props.value": {
+															"binding": {
+																"config": {
+																	"expression": "dateArithmetic(now(0), 1, 'day')"
+																},
+																"type": "expr",
+															}
+														}
+													},
+													"props": {
+														"format": "YYYY-MM-DD HH:mm:ss",
+														"style": {"height": "32px"},
+													},
+												},
+											],
+										},
+										{
+											"type": "ia.input.button",
+											"meta": {"name": "Refresh"},
+											"position": {"basis": "110px", "shrink": 0},
+											"events": {
+												"component": {
+													"onActionPerformed": {
 														"config": {
-															"expression": "dateArithmetic(now(0), -1, 'day')"
+															"script": (
+																"\t# Bump End into the future so new writes are in-range, then requery.\n"
+																"\tend = self.parent.getChild('End').getChild('Date')\n"
+																"\tend.props.value = system.date.addDays(system.date.now(), 1)\n"
+																"\tself.parent.parent.parent.getChild('Table').refreshBinding('props.data')\n"
+															)
 														},
-														"type": "expr",
+														"scope": "G",
+														"type": "script",
 													}
 												}
 											},
 											"props": {
-												"format": "YYYY-MM-DD HH:mm:ss",
-												"style": {"height": "32px"},
-											},
-										},
-									],
-								},
-								{
-									"type": "ia.container.flex",
-									"meta": {"name": "End"},
-									"position": {"basis": "220px", "shrink": 0},
-									"props": {"direction": "column"},
-									"children": [
-										{
-											"type": "ia.display.label",
-											"meta": {"name": "Lbl"},
-											"props": {
-												"style": {"classes": "font-label"},
-												"text": "End",
-											},
-										},
-										{
-											"type": "ia.input.date-time-input",
-											"meta": {"name": "Date"},
-											"propConfig": {
-												"props.value": {
-													"binding": {
-														"config": {
-															"expression": "dateArithmetic(now(0), 1, 'day')"
-														},
-														"type": "expr",
-													}
-												}
-											},
-											"props": {
-												"format": "YYYY-MM-DD HH:mm:ss",
-												"style": {"height": "32px"},
+												"text": "Refresh",
+												"image": {
+													"icon": {"path": "material/refresh"},
+													"width": 18,
+													"height": 18,
+												},
+												"style": {
+													"classes": "container-button font-button",
+													"height": "32px",
+												},
 											},
 										},
 									],
@@ -878,14 +927,28 @@ def audit_log_view():
 								{
 									"type": "ia.container.flex",
 									"meta": {"name": "Search"},
-									"position": {"basis": "240px", "grow": 1},
-									"props": {"direction": "column"},
+									"position": {
+										"basis": "180px",
+										"grow": 0,
+										"shrink": 0,
+									},
+									"props": {
+										"direction": "column",
+										"style": {
+											"marginLeft": "auto",
+											"maxWidth": "180px",
+											"width": "180px",
+										},
+									},
 									"children": [
 										{
 											"type": "ia.display.label",
 											"meta": {"name": "Lbl"},
 											"props": {
-												"style": {"classes": "font-label"},
+												"style": {
+													"classes": "font-label",
+													"textAlign": "right",
+												},
 												"text": "Search",
 											},
 										},
@@ -903,48 +966,16 @@ def audit_log_view():
 												}
 											},
 											"props": {
-												"placeholder": "actor, tag, value…",
+												"placeholder": "filter…",
 												"style": {
 													"classes": "bg-component font-value",
 													"height": "32px",
+													"width": "180px",
 												},
 												"text": "",
 											},
 										},
 									],
-								},
-								{
-									"type": "ia.input.button",
-									"meta": {"name": "Refresh"},
-									"position": {"basis": "110px", "shrink": 0},
-									"events": {
-										"component": {
-											"onActionPerformed": {
-												"config": {
-													"script": (
-														"\t# Bump End into the future so new writes are in-range, then requery.\n"
-														"\tend = self.parent.getChild('End').getChild('Date')\n"
-														"\tend.props.value = system.date.addDays(system.date.now(), 1)\n"
-														"\tself.parent.parent.getChild('Table').refreshBinding('props.data')\n"
-													)
-												},
-												"scope": "G",
-												"type": "script",
-											}
-										}
-									},
-									"props": {
-										"text": "Refresh",
-										"image": {
-											"icon": {"path": "material/refresh"},
-											"width": 18,
-											"height": 18,
-										},
-										"style": {
-											"classes": "container-button font-button",
-											"height": "32px",
-										},
-									},
 								},
 							],
 						},
@@ -957,9 +988,9 @@ def audit_log_view():
 									"binding": {
 										"config": {
 											"parameters": {
-												"endDate": "{../Filters/End/Date.props.value}",
+												"endDate": "{../Filters/Left/End/Date.props.value}",
 												"search": "{../Filters/Search/Text.custom.searchStr}",
-												"startDate": "{../Filters/Start/Date.props.value}",
+												"startDate": "{../Filters/Left/Start/Date.props.value}",
 											},
 											"queryPath": "OpsAudit/AuditLog",
 											"returnFormat": "dataset",
