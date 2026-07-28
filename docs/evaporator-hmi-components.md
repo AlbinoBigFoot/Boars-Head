@@ -129,14 +129,13 @@ Path: `views/03_Elements/`
 
 | Value | Code | Color (approx) |
 |------:|------|----------------|
-| 0 | STOP | gray |
-| 1 | CLG | cyan `#039BE5` |
-| 2 | DFT | amber |
-| 3 | FLT | red |
-| 4 | MAN | magenta |
-| 5 | IDLE | gray |
+| 0 | STOP | gray `#9E9E9E` |
+| 1 | CLG | blue `#1E88E5` |
+| 2 | DFT | pink `#EC407A` |
+| 3 | FLT | red `#C62828` |
+| 5 | IDLE | green `#228B22` |
 
-**Important:** status `1` is **CLG** (cooling), not green RUN. Fan spin is separate.
+**Important:** status `1` is **CLG** (cooling), not green RUN. Fan spin is separate. Enum value `4` (Manual) is **not displayed** as a status code.
 
 ### AnalogValue — `01_Status/AnalogValue`
 
@@ -221,9 +220,9 @@ Former Designer Style Classes (`Fonts/Label`, `Colors/Header`, `Container/Card`,
 
 No dedicated `CommFail` PLC bit required — Ignition tag quality covers OPC disconnect / Bad / Uncertain. Optional future: AND a CommFail bit if plant tags add one.
 
-**Priority:** Comm Loss > Fault > Manual > Defrost > Running/Idle/Off. Bad quality means Status enum bits cannot be trusted, so Comm Loss overrides FLT.
+**Priority:** Comm Loss (Bad quality) wins over any Status enum. Manual is not shown as a status code.
 
-**UI:** StatusIndicator text = `Comm Loss` (red); device Graphic class `device-comm-loss` fills the component red via `--deviceFill-commLoss` / `sts-COMMLOSS`.
+**UI:** StatusIndicator text = `Comm Loss` (red); device Graphic class `device-comm-loss` fills the component red via `--deviceFill-commLoss` / `sts-COMMLOSS`. Device bodies are otherwise grayscale — status colors apply to StatusIndicator text only.
 
 ---
 
@@ -301,7 +300,7 @@ Gateway tags and plant sim are slimmed to **16 single-fan** instances `EV-01`…
 | 03–06 | CLG | true | colder + spinning |
 | 07–08 | DFT | false | rising temp |
 | 09–10 | FLT | false | Fault true; `_Alarms` active |
-| 11–12 | MAN | true | mid temps |
+| 11–12 | enum 4 (Manual — not shown on StatusIndicator) | true | mid temps |
 | 13–16 | mixed cycle | staggered | unique realistic / list sims |
 
 Sim profiles live in `sim/build_plant_sim.py` (`EV_PROFILES`) → `sim/bh-plant-sim.csv` and gateway `opcua/device/Sim/instructions.csv`.

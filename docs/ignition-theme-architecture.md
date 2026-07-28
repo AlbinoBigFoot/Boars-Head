@@ -233,8 +233,8 @@ Build aliases once; they recompute when the theme’s `--neutral-*` change:
 
 ### Status chips (`Refridgeration_STS` / `sts-*`)
 
-- **Normal** states (COOLING / IDLE / OFF / UNKNOWN): prefer grayscale via **`var(--neutral-*)`** so chips track light/dark/warm/cool.
-- **Attention** states (FAULT / DEFROST / MANUAL): may use saturated accents for ISA-101; optional left-border accents. These are separate from `--alarm-*` table tokens.
+- **Normal** states (COOLING / IDLE / OFF / UNKNOWN): StatusIndicator uses Figma text colors; device bodies stay grayscale (`var(--neutral-*)` / `--deviceFill-running`).
+- **Attention** states (FAULT / DEFROST): saturated accents on StatusIndicator / STS chips only. Manual is not a displayed status code. Device body fill color is reserved for **Comm Loss** only.
 - Always keep a **text status code** on the control — never encode state with color alone.
 
 ---

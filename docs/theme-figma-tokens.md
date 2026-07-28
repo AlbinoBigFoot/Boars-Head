@@ -199,9 +199,8 @@ Also keep fixed (attention / not ambient chrome):
 
 | Token | Hex | Notes |
 |---|---|---|
-| `--sts-fault` | `#C62828` | Fault attention |
-| `--sts-defrost` | `#EF6C00` | Defrost notice |
-| `--sts-manual` | `#9C27B0` | Manual |
+| `--sts-fault` | `#C62828` | Fault attention (StatusIndicator / STS chip) |
+| `--sts-defrost` | `#EF6C00` | Defrost notice (STS chip; StatusIndicator uses Figma pink) |
 | `deviceFill-faulted` | `#161616` | Hoffman / labels (`89:1546`) — fault encoding, not theme wash |
 | `Breaker - Closed` / `breakerClosed` | `#F94449` | Electrical alarm-like cue in Hoffman catalog |
 

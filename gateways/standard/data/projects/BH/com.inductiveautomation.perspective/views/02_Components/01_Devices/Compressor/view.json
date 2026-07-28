@@ -425,14 +425,8 @@
           "props.style.classes": {
             "binding": {
               "config": {
-                "expression": "if({view.custom.values.commLoss},\n\t'device-comm-loss',\n\tif({view.custom.values.status} = '' || isBad(tag({view.custom.values.status})),\n\t\t'',\n\t\ttag({view.custom.values.status})))"
+                "expression": "if({view.custom.values.commLoss},\n\t'device-comm-loss',\n\t'')"
               },
-              "transforms": [
-                {
-                  "code": "\tif value == 'device-comm-loss':\n\t\treturn 'device-comm-loss'\n\tif value is None or value == '':\n\t\treturn ''\n\ttry:\n\t\tv = int(value)\n\texcept:\n\t\treturn ''\n\tlabel = ''\n\ttry:\n\t\tstatus_path = ''\n\t\ttry:\n\t\t\tstatus_path = self.view.custom.values.status or ''\n\t\texcept:\n\t\t\tpass\n\t\tif status_path:\n\t\t\tqv = system.tag.readBlocking([str(status_path) + '.Metadata'])[0]\n\t\t\tmd = qv.value if qv.quality.isGood() else None\n\t\t\tif md:\n\t\t\t\tstates = None\n\t\t\t\ttry:\n\t\t\t\t\tstates = md['states']\n\t\t\t\texcept:\n\t\t\t\t\ttry:\n\t\t\t\t\t\tstates = md.get('states')\n\t\t\t\t\texcept:\n\t\t\t\t\t\tstates = None\n\t\t\t\tif states:\n\t\t\t\t\tfor s in states:\n\t\t\t\t\t\tsv = s['value'] if hasattr(s, '__getitem__') else getattr(s, 'value', None)\n\t\t\t\t\t\tsl = s['label'] if hasattr(s, '__getitem__') else getattr(s, 'label', None)\n\t\t\t\t\t\tif sv is not None and int(sv) == v and sl not in (None, ''):\n\t\t\t\t\t\t\tlabel = str(sl).strip().upper()\n\t\t\t\t\t\t\tbreak\n\texcept:\n\t\tpass\n\tif not label:\n\t\tfallback = {0: 'OFF', 1: 'COOLING', 2: 'DEFROST', 5: 'IDLE'}\n\t\tlabel = fallback.get(v, '')\n\tclasses = {\n\t\t'OFF': 'device-sts-off', 'STOP': 'device-sts-off', 'STOPPED': 'device-sts-off',\n\t\t'COOLING': 'device-sts-cooling', 'CLG': 'device-sts-cooling',\n\t\t'RUN': 'device-sts-cooling', 'RUNNING': 'device-sts-cooling', 'ON': 'device-sts-cooling',\n\t\t'DEFROST': 'device-sts-defrost', 'DFT': 'device-sts-defrost',\n\t\t'IDLE': 'device-sts-idle', 'STANDBY': 'device-sts-idle', 'IDL': 'device-sts-idle',\n\t}\n\treturn classes.get(label, '')\n",
-                  "type": "script"
-                }
-              ],
               "type": "expr"
             }
           }

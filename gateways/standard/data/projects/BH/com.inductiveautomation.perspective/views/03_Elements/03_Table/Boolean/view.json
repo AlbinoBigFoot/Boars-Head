@@ -107,7 +107,7 @@
               },
               "transforms": [
                 {
-                  "code": "\tfrom shared import Utilities\n\tresult = Utilities.getLabelValue(value.value, value.multistates)\n\tif result in (None, '') and value.value not in (None, ''):\n\t\ttry:\n\t\t\tv = int(value.value)\n\t\t\tfallback = {0: 'Off', 1: 'Cooling', 2: 'Defrost', 3: 'Fault', 4: 'Manual', 5: 'Idle'}\n\t\t\tresult = fallback.get(v, str(value.value))\n\t\texcept:\n\t\t\tresult = str(value.value)\n\treturn (result if result is not None else '') + \"&nbsp;\"",
+                  "code": "\tfrom shared import Utilities\n\tresult = Utilities.getLabelValue(value.value, value.multistates)\n\tif result in (None, '') and value.value not in (None, ''):\n\t\ttry:\n\t\t\tv = int(value.value)\n\t\t\tfallback = {0: 'Off', 1: 'Cooling', 2: 'Defrost', 3: 'Fault', 5: 'Idle'}\n\t\t\tresult = fallback.get(v, str(value.value))\n\t\texcept:\n\t\t\tresult = str(value.value)\n\treturn (result if result is not None else '') + \"&nbsp;\"",
                   "type": "script"
                 }
               ],
