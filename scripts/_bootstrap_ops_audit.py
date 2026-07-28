@@ -913,6 +913,39 @@ def audit_log_view():
 										},
 									],
 								},
+								{
+									"type": "ia.input.button",
+									"meta": {"name": "Refresh"},
+									"position": {"basis": "110px", "shrink": 0},
+									"events": {
+										"component": {
+											"onActionPerformed": {
+												"config": {
+													"script": (
+														"\t# Bump End into the future so new writes are in-range, then requery.\n"
+														"\tend = self.parent.getChild('End').getChild('Date')\n"
+														"\tend.props.value = system.date.addDays(system.date.now(), 1)\n"
+														"\tself.parent.parent.getChild('Table').refreshBinding('props.data')\n"
+													)
+												},
+												"scope": "G",
+												"type": "script",
+											}
+										}
+									},
+									"props": {
+										"text": "Refresh",
+										"image": {
+											"icon": {"path": "material/refresh"},
+											"width": 18,
+											"height": 18,
+										},
+										"style": {
+											"classes": "container-button font-button",
+											"height": "32px",
+										},
+									},
+								},
 							],
 						},
 						{
