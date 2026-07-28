@@ -25,9 +25,9 @@ Page: Evaporators/Overview  (URLs: /  and  /evaporators)
   └─ Embedded device view  (Evaporator — single fan)
        params: tagPath, faceplate
        │
-       ├─ DeviceAlarmIndicator     ← _Alarms/_Active, _Unack, _ActiveHighPriority
+       ├─ IconHeader               ← former alarm-icon slot (symbols TBD)
        ├─ Label + faceplate icon   ← metadata / material/fullscreen
-       ├─ SVG fan graphic          ← Fan 1/CMD/Value + CSS class fan-spin
+       ├─ Graphic + AlarmHeader    ← overlay badge + priority border
        ├─ AnalogValue              ← Temp/Value
        ├─ StatusIndicator          ← Status/Value (+ states metadata)
        └─ onClick                  → popup Faceplates/Evaporator (same tagPath)
@@ -95,12 +95,13 @@ Top → bottom:
 
 | Piece | Type | Behavior |
 |-------|------|----------|
-| `DeviceAlarmIndicator` | Embedded view | Alarm badge (left of label) |
+| `IconHeader` | Embedded view | Left of label (Scout-style header slot; symbols TBD) |
 | Device name label | `ia.display.label` | `tagPath` metadata `shortDescription`, else last path segment |
 | Faceplate affordance | `ia.display.icon` `material/fullscreen` | Right side; only meaningful when `faceplate` is set |
 | Fan SVG(s) | Drawing / icon group | Spin when that fan’s `CMD/Value` is true |
+| `AlarmHeader` | Embedded view | Alarm badge overlays Graphic (top-left) + priority border |
 | `AnalogValue` | Embedded view | Temperature |
-| `StatusIndicator` | Embedded view | CLG / STOP / DFT / … |
+| `StatusIndicator` | Embedded view | COOL / OFF / DEF (+ stage under) / Operator + tooltips |
 
 ### Key bindings (pattern)
 
@@ -110,10 +111,11 @@ Top → bottom:
 | Temp | `{tagPath}/Temp/Value` → AnalogValue |
 | Fan running | `{tagPath}/Fan N/CMD/Value` (Boolean) |
 | Fan spin CSS | Script transform on blades: return `'fan-spin'` if CMD is true, else `''` |
-| Alarm | DeviceAlarmIndicator `params.tagPath` = device `tagPath` |
+| Alarm overlay | AlarmHeader `params.tagPath` = device `tagPath`; Graphic classes `alarm-border alarm-priority-*` |
+| Icon header | IconHeader `params.tagPath` = device `tagPath` (slot only until symbol ticket) |
 | Click | `system.perspective.openPopup(...)` → `01_Popups/00_Faceplates/{faceplate}` with `{ tagPath }`, popup id like `ev-fp-{tagPath}` |
 
-Cooling (**CLG**) is a **status**, not “running.” Running is communicated only by **spinning fans** (CMD on).
+Cooling (**COOL**) is a **status**, not “running.” Running is communicated only by **spinning fans** (CMD on).
 
 ---
 
@@ -129,13 +131,26 @@ Path: `views/03_Elements/`
 
 | Value | Code | Color (approx) |
 |------:|------|----------------|
-| 0 | STOP | gray `#9E9E9E` |
-| 1 | CLG | blue `#1E88E5` |
-| 2 | DFT | pink `#EC407A` |
+| 0 | OFF | gray `#9E9E9E` |
+| 1 | COOL | blue `#1E88E5` |
+| 2 | DEF | pink `#EC407A` |
 | 3 | FLT | red `#C62828` |
+| 4 | Operator | amber `#FF8F00` |
 | 5 | IDLE | green `#228B22` |
+| 6 | 1.PD | pink `#EC407A` |
+| 7 | 2.HG | pink `#EC407A` |
+| 8 | 3.BLD | pink `#EC407A` |
+| 9 | 3.FD | pink `#EC407A` |
 
-**Important:** status `1` is **CLG** (cooling), not green RUN. Fan spin is separate. Enum value `4` (Manual) is **not displayed** as a status code.
+**Important:** status `1` is **COOL** (cooling), not green RUN. Fan spin is separate. Enum value `4` (Manual) displays as **Operator**. Defrost steps show **DEF** on the primary line with the stage code (`1.PD` / `2.HG` / `3.BLD` / `3.FD`) under it. Tooltips use the parenthetical descriptions from the ticket (Cooling, Pump Down, Achieved Temp Setpoint, …).
+
+### AlarmHeader — `01_Status/AlarmHeader`
+
+Scout-style overlay alarm badge (same tag bindings as the former label-row `DeviceAlarmIndicator`). Sits on the device Graphic with CSS `alarm-header` + priority-colored `alarm-border`.
+
+### IconHeader — `01_Status/IconHeader`
+
+Occupies the former alarm-icon slot beside the device label. `custom.icons.{fault,operator,disabled,oos}` stubs are ready; Figma/Ignition symbols land in a follow-up ticket.
 
 ### AnalogValue — `01_Status/AnalogValue`
 
@@ -300,19 +315,24 @@ To **ack** in the demo: set `_Alarms/_Unack` to `false` (leave `_Active` true) �
 
 Gateway tags and plant sim are slimmed to **16 single-fan** instances `EV-01`…`EV-16` (Fan 1 only; no Fan 2/3). Legacy `EV-17`–`EV-33` and `EV-001`–`EV-003` placeholders were removed.
 
-**Status enum (Evaporator):** `0` Off · `1` Cooling · `2` Defrost · `3` Fault · `4` Manual (not shown) · `5` Idle. Comm Loss = Bad quality on `Status/Value`, not an enum int.
+**Status enum (Evaporator):** `0` Off(OFF) · `1` Cooling(COOL) · `2` Defrost(DEF) · `3` Fault(FLT) · `4` Manual(Operator) · `5` Idle · `6` Pump Down(1.PD) · `7` Hot Gas(2.HG) · `8` Bleed(3.BLD) · `9` Fan Delay(3.FD). Comm Loss = Bad quality on `Status/Value`, not an enum int.
 
 | EV | Demo | Status int | Fan CMD | Notes |
 |----|------|------------|---------|-------|
 | 01 | Comm Loss | *(ignored)* | false | `Status/Value` `enabled: false` |
 | 02 | Cooling + over-SP | 1 | true | Temp **40** fixed; SP **35** → AnalogValue red |
 | 03 / 08 / 13 | Idle | 5 | false | Temp under SP |
-| 04 / 09 / 14 | Defrost | 2 | false | Temp under SP |
-| 05 / 10 / 15 | Off | 0 | false | |
+| 04 | Defrost | 2 | false | DEF |
+| 05 | Off | 0 | false | |
 | 06 / 11 / 16 | Fault | 3 | false | Fault true |
-| 07 / 12 | Cooling | 1 | true | Temp under SP (contrast vs EV-02) |
+| 07 | Cooling | 1 | true | Temp under SP (contrast vs EV-02) |
+| 09 | Pump Down | 6 | false | 1.PD |
+| 10 | Bleed | 8 | false | 3.BLD |
+| 12 | Operator | 4 | false | Manual / Operator |
+| 14 | Hot Gas | 7 | false | 2.HG |
+| 15 | Fan Delay | 9 | false | 3.FD |
 
-**Non-EV Overview (CT / Pump / Fan / Comp):** four instances each — `*-01` Run(`1`) · `*-02` Idle(`4`) · `*-03` Fault(`2`) · `*-04` Off(`0`). Enum: `0` Off · `1` Run · `2` Fault · `3` Manual (hidden) · `4` Idle. Over-SP AnalogValue red on **CT-01** (90>85), **PMP-01** (60>50), **EFAN-01** (1200>1000), **COMP-01** (35>25).
+**Non-EV Overview (CT / Pump / Fan / Comp):** four instances each — `*-01` Run(`1`) · `*-02` Idle(`4`) · `*-03` Fault(`2`) · `*-04` Off(`0`). Enum: `0` Off(OFF) · `1` Run · `2` Fault(FLT) · `3` Manual(Operator) · `4` Idle. Over-SP AnalogValue red on **CT-01** (90>85), **PMP-01** (60>50), **EFAN-01** (1200>1000), **COMP-01** (35>25).
 
 Sim profiles live in `sim/build_plant_sim.py` → `sim/bh-plant-sim.csv` and gateway `opcua/device/Sim/instructions.csv`. Rebuild: `python sim/build_plant_sim.py` then POST scan/config (or restart Sim device) so OPC picks up the CSV.
 
@@ -371,7 +391,7 @@ Changing a child view updates every parent that embeds it — that is why Status
 
 | Symptom | Check |
 |---------|--------|
-| No CLG / wrong green “RUN” | StatusIndicator mapping; status value should be `1` for cooling |
+| No COOL / wrong green “RUN” | StatusIndicator mapping; status value should be `1` for cooling |
 | Fans not spinning | `Fan N/CMD/Value` true? Advanced stylesheet loaded? Class name `fan-spin`? |
 | Alarm badge missing | `_Alarms/_Active` memory true? Priority 1–4? Equipment icons registered + gateway restarted? |
 | Badge solid, never blinks | `_Unack` must be true for CSS flash; for table icons, `_Flash` / `_Config/Flash` |

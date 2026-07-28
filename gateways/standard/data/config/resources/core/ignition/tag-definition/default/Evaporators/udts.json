@@ -18,7 +18,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-04/Fan 1/CMD/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-04/Fan 1/CMD/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -38,7 +38,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-04/Fan 1/Fault/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-04/Fan 1/Fault/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -58,7 +58,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-04/Fan 1/SPD_FBK/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-04/Fan 1/SPD_FBK/Value",
                 "dataType": "Float4",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -80,7 +80,7 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-04/Pressure/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-04/Pressure/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -128,10 +128,26 @@
                 {
                   "label": "Idle",
                   "value": 5
+                },
+                {
+                  "label": "Pump Down",
+                  "value": 6
+                },
+                {
+                  "label": "Hot Gas",
+                  "value": 7
+                },
+                {
+                  "label": "Bleed",
+                  "value": 8
+                },
+                {
+                  "label": "Fan Delay",
+                  "value": 9
                 }
               ]
             },
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-04/Status/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-04/Status/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -151,11 +167,11 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-04/Temp/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-04/Temp/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
-            "engUnit": "°F",
+            "engUnit": "\u00b0F",
             "dataType": "Float4",
             "historyProvider": "historian",
             "historyEnabled": true,
@@ -206,7 +222,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-14/Fan 1/SPD_FBK/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-14/Fan 1/SPD_FBK/Value",
                 "dataType": "Float4",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -226,7 +242,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-14/Fan 1/Fault/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-14/Fan 1/Fault/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -246,7 +262,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-14/Fan 1/CMD/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-14/Fan 1/CMD/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -268,7 +284,7 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-14/Pressure/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-14/Pressure/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -316,10 +332,26 @@
                 {
                   "label": "Idle",
                   "value": 5
+                },
+                {
+                  "label": "Pump Down",
+                  "value": 6
+                },
+                {
+                  "label": "Hot Gas",
+                  "value": 7
+                },
+                {
+                  "label": "Bleed",
+                  "value": 8
+                },
+                {
+                  "label": "Fan Delay",
+                  "value": 9
                 }
               ]
             },
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-14/Status/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-14/Status/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -339,11 +371,11 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-14/Temp/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-14/Temp/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
-            "engUnit": "°F",
+            "engUnit": "\u00b0F",
             "dataType": "Float4",
             "historyProvider": "historian",
             "historyEnabled": true,
@@ -394,7 +426,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-09/Fan 1/SPD_FBK/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-09/Fan 1/SPD_FBK/Value",
                 "dataType": "Float4",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -414,7 +446,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-09/Fan 1/Fault/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-09/Fan 1/Fault/Value",
                 "historicalDeadband": 0.01,
                 "historicalDeadbandMode": "Absolute",
                 "historicalDeadbandStyle": "Discrete",
@@ -445,7 +477,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-09/Fan 1/CMD/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-09/Fan 1/CMD/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -467,7 +499,7 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-09/Pressure/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-09/Pressure/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -515,10 +547,26 @@
                 {
                   "label": "Idle",
                   "value": 5
+                },
+                {
+                  "label": "Pump Down",
+                  "value": 6
+                },
+                {
+                  "label": "Hot Gas",
+                  "value": 7
+                },
+                {
+                  "label": "Bleed",
+                  "value": 8
+                },
+                {
+                  "label": "Fan Delay",
+                  "value": 9
                 }
               ]
             },
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-09/Status/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-09/Status/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -538,11 +586,11 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-09/Temp/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-09/Temp/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
-            "engUnit": "°F",
+            "engUnit": "\u00b0F",
             "dataType": "Float4",
             "historyProvider": "historian",
             "historyEnabled": true,
@@ -593,7 +641,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-15/Fan 1/SPD_FBK/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-15/Fan 1/SPD_FBK/Value",
                 "dataType": "Float4",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -613,7 +661,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-15/Fan 1/Fault/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-15/Fan 1/Fault/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -633,7 +681,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-15/Fan 1/CMD/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-15/Fan 1/CMD/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -655,7 +703,7 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-15/Pressure/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-15/Pressure/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -703,10 +751,26 @@
                 {
                   "label": "Idle",
                   "value": 5
+                },
+                {
+                  "label": "Pump Down",
+                  "value": 6
+                },
+                {
+                  "label": "Hot Gas",
+                  "value": 7
+                },
+                {
+                  "label": "Bleed",
+                  "value": 8
+                },
+                {
+                  "label": "Fan Delay",
+                  "value": 9
                 }
               ]
             },
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-15/Status/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-15/Status/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -726,11 +790,11 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-15/Temp/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-15/Temp/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
-            "engUnit": "°F",
+            "engUnit": "\u00b0F",
             "dataType": "Float4",
             "historyProvider": "historian",
             "historyEnabled": true,
@@ -781,7 +845,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-02/Fan 1/CMD/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-02/Fan 1/CMD/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -801,7 +865,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-02/Fan 1/SPD_FBK/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-02/Fan 1/SPD_FBK/Value",
                 "dataType": "Float4",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -821,7 +885,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-02/Fan 1/Fault/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-02/Fan 1/Fault/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -843,7 +907,7 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-02/Pressure/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-02/Pressure/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -891,10 +955,26 @@
                 {
                   "label": "Idle",
                   "value": 5
+                },
+                {
+                  "label": "Pump Down",
+                  "value": 6
+                },
+                {
+                  "label": "Hot Gas",
+                  "value": 7
+                },
+                {
+                  "label": "Bleed",
+                  "value": 8
+                },
+                {
+                  "label": "Fan Delay",
+                  "value": 9
                 }
               ]
             },
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-02/Status/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-02/Status/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -914,11 +994,11 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-02/Temp/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-02/Temp/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
-            "engUnit": "°F",
+            "engUnit": "\u00b0F",
             "dataType": "Float4",
             "historyProvider": "historian",
             "historyEnabled": true,
@@ -969,7 +1049,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-13/Fan 1/Fault/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-13/Fan 1/Fault/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -989,7 +1069,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-13/Fan 1/SPD_FBK/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-13/Fan 1/SPD_FBK/Value",
                 "dataType": "Float4",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -1009,7 +1089,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-13/Fan 1/CMD/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-13/Fan 1/CMD/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -1031,7 +1111,7 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-13/Pressure/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-13/Pressure/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -1079,10 +1159,26 @@
                 {
                   "label": "Idle",
                   "value": 5
+                },
+                {
+                  "label": "Pump Down",
+                  "value": 6
+                },
+                {
+                  "label": "Hot Gas",
+                  "value": 7
+                },
+                {
+                  "label": "Bleed",
+                  "value": 8
+                },
+                {
+                  "label": "Fan Delay",
+                  "value": 9
                 }
               ]
             },
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-13/Status/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-13/Status/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -1102,11 +1198,11 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-13/Temp/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-13/Temp/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
-            "engUnit": "°F",
+            "engUnit": "\u00b0F",
             "dataType": "Float4",
             "historyProvider": "historian",
             "historyEnabled": true,
@@ -1157,7 +1253,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-05/Fan 1/SPD_FBK/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-05/Fan 1/SPD_FBK/Value",
                 "dataType": "Float4",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -1177,7 +1273,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-05/Fan 1/Fault/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-05/Fan 1/Fault/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -1197,7 +1293,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-05/Fan 1/CMD/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-05/Fan 1/CMD/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -1219,7 +1315,7 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-05/Pressure/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-05/Pressure/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -1267,10 +1363,26 @@
                 {
                   "label": "Idle",
                   "value": 5
+                },
+                {
+                  "label": "Pump Down",
+                  "value": 6
+                },
+                {
+                  "label": "Hot Gas",
+                  "value": 7
+                },
+                {
+                  "label": "Bleed",
+                  "value": 8
+                },
+                {
+                  "label": "Fan Delay",
+                  "value": 9
                 }
               ]
             },
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-05/Status/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-05/Status/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -1290,11 +1402,11 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-05/Temp/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-05/Temp/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
-            "engUnit": "°F",
+            "engUnit": "\u00b0F",
             "dataType": "Float4",
             "historyProvider": "historian",
             "historyEnabled": true,
@@ -1345,7 +1457,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-03/Fan 1/SPD_FBK/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-03/Fan 1/SPD_FBK/Value",
                 "dataType": "Float4",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -1365,7 +1477,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-03/Fan 1/Fault/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-03/Fan 1/Fault/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -1385,7 +1497,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-03/Fan 1/CMD/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-03/Fan 1/CMD/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -1407,7 +1519,7 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-03/Pressure/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-03/Pressure/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -1455,10 +1567,26 @@
                 {
                   "label": "Idle",
                   "value": 5
+                },
+                {
+                  "label": "Pump Down",
+                  "value": 6
+                },
+                {
+                  "label": "Hot Gas",
+                  "value": 7
+                },
+                {
+                  "label": "Bleed",
+                  "value": 8
+                },
+                {
+                  "label": "Fan Delay",
+                  "value": 9
                 }
               ]
             },
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-03/Status/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-03/Status/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -1478,11 +1606,11 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-03/Temp/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-03/Temp/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
-            "engUnit": "°F",
+            "engUnit": "\u00b0F",
             "dataType": "Float4",
             "historyProvider": "historian",
             "historyEnabled": true,
@@ -1533,7 +1661,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-08/Fan 1/SPD_FBK/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-08/Fan 1/SPD_FBK/Value",
                 "dataType": "Float4",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -1553,7 +1681,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-08/Fan 1/Fault/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-08/Fan 1/Fault/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -1573,7 +1701,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-08/Fan 1/CMD/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-08/Fan 1/CMD/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -1595,7 +1723,7 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-08/Pressure/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-08/Pressure/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -1643,10 +1771,26 @@
                 {
                   "label": "Idle",
                   "value": 5
+                },
+                {
+                  "label": "Pump Down",
+                  "value": 6
+                },
+                {
+                  "label": "Hot Gas",
+                  "value": 7
+                },
+                {
+                  "label": "Bleed",
+                  "value": 8
+                },
+                {
+                  "label": "Fan Delay",
+                  "value": 9
                 }
               ]
             },
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-08/Status/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-08/Status/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -1666,11 +1810,11 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-08/Temp/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-08/Temp/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
-            "engUnit": "°F",
+            "engUnit": "\u00b0F",
             "dataType": "Float4",
             "historyProvider": "historian",
             "historyEnabled": true,
@@ -1721,7 +1865,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-06/Fan 1/SPD_FBK/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-06/Fan 1/SPD_FBK/Value",
                 "dataType": "Float4",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -1741,7 +1885,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-06/Fan 1/Fault/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-06/Fan 1/Fault/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -1761,7 +1905,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-06/Fan 1/CMD/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-06/Fan 1/CMD/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -1783,7 +1927,7 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-06/Pressure/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-06/Pressure/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -1831,10 +1975,26 @@
                 {
                   "label": "Idle",
                   "value": 5
+                },
+                {
+                  "label": "Pump Down",
+                  "value": 6
+                },
+                {
+                  "label": "Hot Gas",
+                  "value": 7
+                },
+                {
+                  "label": "Bleed",
+                  "value": 8
+                },
+                {
+                  "label": "Fan Delay",
+                  "value": 9
                 }
               ]
             },
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-06/Status/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-06/Status/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -1854,11 +2014,11 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-06/Temp/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-06/Temp/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
-            "engUnit": "°F",
+            "engUnit": "\u00b0F",
             "dataType": "Float4",
             "historyProvider": "historian",
             "historyEnabled": true,
@@ -1930,7 +2090,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-10/Fan 1/SPD_FBK/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-10/Fan 1/SPD_FBK/Value",
                 "dataType": "Float4",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -1950,7 +2110,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-10/Fan 1/Fault/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-10/Fan 1/Fault/Value",
                 "historicalDeadband": 0.01,
                 "historicalDeadbandMode": "Absolute",
                 "historicalDeadbandStyle": "Discrete",
@@ -1981,7 +2141,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-10/Fan 1/CMD/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-10/Fan 1/CMD/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -2003,7 +2163,7 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-10/Pressure/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-10/Pressure/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -2051,10 +2211,26 @@
                 {
                   "label": "Idle",
                   "value": 5
+                },
+                {
+                  "label": "Pump Down",
+                  "value": 6
+                },
+                {
+                  "label": "Hot Gas",
+                  "value": 7
+                },
+                {
+                  "label": "Bleed",
+                  "value": 8
+                },
+                {
+                  "label": "Fan Delay",
+                  "value": 9
                 }
               ]
             },
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-10/Status/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-10/Status/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -2074,11 +2250,11 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-10/Temp/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-10/Temp/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
-            "engUnit": "°F",
+            "engUnit": "\u00b0F",
             "dataType": "Float4",
             "historyProvider": "historian",
             "historyEnabled": true,
@@ -2129,7 +2305,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-11/Fan 1/CMD/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-11/Fan 1/CMD/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -2149,7 +2325,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-11/Fan 1/SPD_FBK/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-11/Fan 1/SPD_FBK/Value",
                 "dataType": "Float4",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -2169,7 +2345,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-11/Fan 1/Fault/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-11/Fan 1/Fault/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -2191,7 +2367,7 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-11/Pressure/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-11/Pressure/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -2239,10 +2415,26 @@
                 {
                   "label": "Idle",
                   "value": 5
+                },
+                {
+                  "label": "Pump Down",
+                  "value": 6
+                },
+                {
+                  "label": "Hot Gas",
+                  "value": 7
+                },
+                {
+                  "label": "Bleed",
+                  "value": 8
+                },
+                {
+                  "label": "Fan Delay",
+                  "value": 9
                 }
               ]
             },
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-11/Status/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-11/Status/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -2262,11 +2454,11 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-11/Temp/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-11/Temp/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
-            "engUnit": "°F",
+            "engUnit": "\u00b0F",
             "dataType": "Float4",
             "historyProvider": "historian",
             "historyEnabled": true,
@@ -2317,7 +2509,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-12/Fan 1/SPD_FBK/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-12/Fan 1/SPD_FBK/Value",
                 "dataType": "Float4",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -2337,7 +2529,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-12/Fan 1/Fault/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-12/Fan 1/Fault/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -2357,7 +2549,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-12/Fan 1/CMD/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-12/Fan 1/CMD/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -2379,7 +2571,7 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-12/Pressure/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-12/Pressure/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -2427,10 +2619,26 @@
                 {
                   "label": "Idle",
                   "value": 5
+                },
+                {
+                  "label": "Pump Down",
+                  "value": 6
+                },
+                {
+                  "label": "Hot Gas",
+                  "value": 7
+                },
+                {
+                  "label": "Bleed",
+                  "value": 8
+                },
+                {
+                  "label": "Fan Delay",
+                  "value": 9
                 }
               ]
             },
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-12/Status/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-12/Status/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -2450,11 +2658,11 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-12/Temp/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-12/Temp/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
-            "engUnit": "°F",
+            "engUnit": "\u00b0F",
             "dataType": "Float4",
             "historyProvider": "historian",
             "historyEnabled": true,
@@ -2505,7 +2713,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-01/Fan 1/CMD/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-01/Fan 1/CMD/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -2525,7 +2733,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-01/Fan 1/SPD_FBK/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-01/Fan 1/SPD_FBK/Value",
                 "dataType": "Float4",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -2545,7 +2753,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-01/Fan 1/Fault/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-01/Fan 1/Fault/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -2567,7 +2775,7 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-01/Pressure/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-01/Pressure/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -2590,7 +2798,7 @@
             "valueSource": "opc",
             "metadata": {
               "shortDescription": "status",
-              "longDescription": "DEMO Comm Loss: enabled\u003dfalse forces Bad quality. Restore: set enabled\u003dtrue (or remove key), then POST scan/config.",
+              "longDescription": "DEMO Comm Loss: enabled=false forces Bad quality. Restore: set enabled=true (or remove key), then POST scan/config.",
               "states": [
                 {
                   "label": "Off",
@@ -2615,10 +2823,26 @@
                 {
                   "label": "Idle",
                   "value": 5
+                },
+                {
+                  "label": "Pump Down",
+                  "value": 6
+                },
+                {
+                  "label": "Hot Gas",
+                  "value": 7
+                },
+                {
+                  "label": "Bleed",
+                  "value": 8
+                },
+                {
+                  "label": "Fan Delay",
+                  "value": 9
                 }
               ]
             },
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-01/Status/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-01/Status/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -2639,11 +2863,11 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-01/Temp/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-01/Temp/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
-            "engUnit": "°F",
+            "engUnit": "\u00b0F",
             "dataType": "Float4",
             "historyProvider": "historian",
             "historyEnabled": true,
@@ -2694,7 +2918,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-07/Fan 1/SPD_FBK/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-07/Fan 1/SPD_FBK/Value",
                 "dataType": "Float4",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -2714,7 +2938,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-07/Fan 1/Fault/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-07/Fan 1/Fault/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -2734,7 +2958,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-07/Fan 1/CMD/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-07/Fan 1/CMD/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -2756,7 +2980,7 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-07/Pressure/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-07/Pressure/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -2804,10 +3028,26 @@
                 {
                   "label": "Idle",
                   "value": 5
+                },
+                {
+                  "label": "Pump Down",
+                  "value": 6
+                },
+                {
+                  "label": "Hot Gas",
+                  "value": 7
+                },
+                {
+                  "label": "Bleed",
+                  "value": 8
+                },
+                {
+                  "label": "Fan Delay",
+                  "value": 9
                 }
               ]
             },
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-07/Status/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-07/Status/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -2827,11 +3067,11 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-07/Temp/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-07/Temp/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
-            "engUnit": "°F",
+            "engUnit": "\u00b0F",
             "dataType": "Float4",
             "historyProvider": "historian",
             "historyEnabled": true,
@@ -2882,7 +3122,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-16/Fan 1/SPD_FBK/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-16/Fan 1/SPD_FBK/Value",
                 "dataType": "Float4",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -2902,7 +3142,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-16/Fan 1/Fault/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-16/Fan 1/Fault/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -2922,7 +3162,7 @@
             "tags": [
               {
                 "valueSource": "opc",
-                "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-16/Fan 1/CMD/Value",
+                "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-16/Fan 1/CMD/Value",
                 "dataType": "Boolean",
                 "historyProvider": "historian",
                 "historicalDeadband": 0.01,
@@ -2944,7 +3184,7 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-16/Pressure/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-16/Pressure/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -2992,10 +3232,26 @@
                 {
                   "label": "Idle",
                   "value": 5
+                },
+                {
+                  "label": "Pump Down",
+                  "value": 6
+                },
+                {
+                  "label": "Hot Gas",
+                  "value": 7
+                },
+                {
+                  "label": "Bleed",
+                  "value": 8
+                },
+                {
+                  "label": "Fan Delay",
+                  "value": 9
                 }
               ]
             },
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-16/Status/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-16/Status/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -3015,11 +3271,11 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns\u003d1;s\u003d[Sim]Evaporators/EV-16/Temp/Value",
+            "opcItemPath": "ns=1;s=[Sim]Evaporators/EV-16/Temp/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
-            "engUnit": "°F",
+            "engUnit": "\u00b0F",
             "dataType": "Float4",
             "historyProvider": "historian",
             "historyEnabled": true,

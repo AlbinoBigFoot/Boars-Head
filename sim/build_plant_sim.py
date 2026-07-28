@@ -38,7 +38,8 @@ def infer_dtype(path: str, dt: str | None) -> tuple[str, str]:
 
 
 # Per-EV plant profiles — status wall for Overview demo.
-# Evaporator Status enum: 0 Off, 1 Cooling, 2 Defrost, 3 Fault, 4 Manual (not shown), 5 Idle.
+# Evaporator Status enum: 0 Off(OFF), 1 Cooling(COOL), 2 Defrost(DEF), 3 Fault(FLT),
+# 4 Manual(Operator), 5 Idle, 6 Pump Down(1.PD), 7 Hot Gas(2.HG), 8 Bleed(3.BLD), 9 Fan Delay(3.FD).
 # Comm Loss is NOT a Status int — EV-01 Status/Value has enabled=false (Bad quality) in
 # tag-definition Evaporators/udts.json. Do not set enabled=false on the UDT type.
 # Temp/SP lives only on device Temp (not _Root/Analog). Defaults: Evap 35°F, CT 85°F,
@@ -113,7 +114,7 @@ EV_PROFILES: dict[str, dict[str, str]] = {
         "Fault": "false",
     },
     "EV-09": {
-        "Status": "2",
+        "Status": "6",
         "Temp": "realistic(33.0, 0.8, 0.05, 0.2, true)",
         "Pressure": "ramp(28.0, 38.0, 78, true)",
         "SPD_FBK": "0.0",
@@ -121,7 +122,7 @@ EV_PROFILES: dict[str, dict[str, str]] = {
         "Fault": "false",
     },
     "EV-10": {
-        "Status": "0",
+        "Status": "8",
         "Temp": "realistic(30.0, 0.5, 0.03, 0.15, true)",
         "Pressure": "ramp(20.0, 30.0, 90, true)",
         "SPD_FBK": "0.0",
@@ -138,11 +139,11 @@ EV_PROFILES: dict[str, dict[str, str]] = {
     },
     # Repeat wall EV-12..16
     "EV-12": {
-        "Status": "1",
+        "Status": "4",
         "Temp": "realistic(18.0, 1.0, 0.05, 0.24, true)",
         "Pressure": "ramp(44.0, 60.0, 72, true)",
-        "SPD_FBK": "ramp(50.0, 65.0, 45, true)",
-        "CMD": "true",
+        "SPD_FBK": "0.0",
+        "CMD": "false",
         "Fault": "false",
     },
     "EV-13": {
@@ -154,7 +155,7 @@ EV_PROFILES: dict[str, dict[str, str]] = {
         "Fault": "false",
     },
     "EV-14": {
-        "Status": "2",
+        "Status": "7",
         "Temp": "realistic(34.0, 0.8, 0.05, 0.2, true)",
         "Pressure": "ramp(30.0, 40.0, 80, true)",
         "SPD_FBK": "0.0",
@@ -162,7 +163,7 @@ EV_PROFILES: dict[str, dict[str, str]] = {
         "Fault": "false",
     },
     "EV-15": {
-        "Status": "0",
+        "Status": "9",
         "Temp": "realistic(28.0, 0.5, 0.03, 0.15, true)",
         "Pressure": "ramp(22.0, 32.0, 90, true)",
         "SPD_FBK": "0.0",
@@ -180,8 +181,8 @@ EV_PROFILES: dict[str, dict[str, str]] = {
 }
 
 
-# Non-EV Status enum: 0 Off, 1 Run, 2 Fault, 3 Manual (not shown), 4 Idle.
-# Four Overview slots → Run / Idle / Fault / Off (no Manual; Comm Loss only on EV-01).
+# Non-EV Status enum: 0 Off(OFF), 1 Run, 2 Fault(FLT), 3 Manual(Operator), 4 Idle.
+# Four Overview slots → Run / Idle / Fault / Off (Operator also valid when Status=3).
 # Fan/pump spin graphics use Status==1 (Run).
 CT_PROFILES: dict[str, dict[str, str]] = {
     # CT-01: Run + PV > SP (90 > 85) → AnalogValue red
