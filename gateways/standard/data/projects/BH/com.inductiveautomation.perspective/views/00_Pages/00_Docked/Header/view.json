@@ -25,6 +25,122 @@
         "type": "ia.container.flex"
       },
       {
+        "children": [
+          {
+            "meta": {
+              "name": "Icon"
+            },
+            "position": {
+              "basis": "20px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.path": {
+                "binding": {
+                  "config": {
+                    "path": "session.custom.ReadOnly"
+                  },
+                  "transforms": [
+                    {
+                      "expression": "if({value}, 'material/lock', 'material/lock_open')",
+                      "type": "expression"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "color": "var(--icon)",
+              "path": "material/lock_open",
+              "style": {
+                "classes": "color-icon",
+                "height": "20px",
+                "width": "20px"
+              }
+            },
+            "type": "ia.display.icon"
+          }
+        ],
+        "meta": {
+          "name": "PermBadge",
+          "tooltip": {
+            "enabled": true,
+            "location": "bottom",
+            "style": {
+              "classes": "font-value",
+              "fontSize": "12px",
+              "padding": "6px 10px"
+            },
+            "text": "Roles: (none)",
+            "width": "220px"
+          }
+        },
+        "position": {
+          "basis": "36px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "meta.visible": {
+            "binding": {
+              "config": {
+                "path": "session.props.auth.authenticated"
+              },
+              "type": "property"
+            }
+          },
+          "meta.tooltip.enabled": {
+            "binding": {
+              "config": {
+                "path": "session.props.auth.authenticated"
+              },
+              "type": "property"
+            }
+          },
+          "meta.tooltip.text": {
+            "binding": {
+              "config": {
+                "path": "session.props.auth.user.roles"
+              },
+              "transforms": [
+                {
+                  "code": "\tif value is None or len(value) == 0:\n\t\treturn 'Roles: (none)'\n\treturn 'Roles: ' + ', '.join([str(r) for r in value])",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          },
+          "props.style.classes": {
+            "binding": {
+              "config": {
+                "path": "session.custom.ReadOnly"
+              },
+              "transforms": [
+                {
+                  "expression": "if({value}, 'perm-badge perm-badge-read', 'perm-badge perm-badge-write')",
+                  "type": "expression"
+                }
+              ],
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "alignItems": "center",
+          "justify": "center",
+          "style": {
+            "classes": "perm-badge perm-badge-write",
+            "cursor": "help",
+            "height": "36px",
+            "marginRight": "8px",
+            "overflow": "hidden",
+            "width": "36px"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
         "meta": {
           "name": "User"
         },
