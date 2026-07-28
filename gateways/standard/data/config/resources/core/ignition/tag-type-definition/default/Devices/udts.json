@@ -809,6 +809,22 @@
         ]
       },
       {
+        "metadata": {
+          "shortDescription": "Speed Feedback",
+          "longDescription": "Cooling Tower Fan Speed Feedback"
+        },
+        "name": "SPD_FBK",
+        "typeId": "_Root/Analog",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "engUnit": "Hz",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
         "name": "SummaryInstances",
         "typeId": "_Root/Expression",
         "tagType": "UdtInstance",
@@ -852,7 +868,7 @@
               "tagsForDeviceDetails": {
                 "parameters": [
                   {
-                    "tagPath": "/Temp",
+                    "tagPath": "/SPD_FBK",
                     "viewPath": "03_Elements/01_Status/AnalogValue"
                   }
                 ],
