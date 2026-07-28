@@ -1,11 +1,11 @@
 [
   {
     "metadata": {
-      "shortDescription": "CT-02",
-      "longDescription": "CT-02"
+      "shortDescription": "PMP-02",
+      "longDescription": "PMP-02"
     },
-    "name": "CT-02",
-    "typeId": "Devices/CoolingTower",
+    "name": "PMP-02",
+    "typeId": "Devices/Pump",
     "tagType": "UdtInstance",
     "tags": [
       {
@@ -16,7 +16,7 @@
             "valueSource": "opc",
             "metadata": {
               "shortDescription": "status",
-              "longDescription": "cooling tower status",
+              "longDescription": "pump status",
               "states": [
                 {
                   "label": "Off",
@@ -40,7 +40,7 @@
                 }
               ]
             },
-            "opcItemPath": "ns=1;s=[Sim]CoolingTowers/CT-02/Status/Value",
+            "opcItemPath": "ns=1;s=[Sim]Pumps/PMP-02/Status/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -60,11 +60,11 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns=1;s=[Sim]CoolingTowers/CT-02/Temp/Value",
+            "opcItemPath": "ns=1;s=[Sim]Pumps/PMP-02/Temp/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
-            "engUnit": "\u00b0F",
+            "engUnit": "gpm",
             "dataType": "Float4",
             "historyProvider": "historian",
             "historyEnabled": true,
@@ -78,96 +78,27 @@
       {
         "typeId": "Config/_Alarms",
         "name": "_Alarms",
-        "tagType": "AtomicTag"
-      }
-    ]
-  },
-  {
-    "metadata": {
-      "shortDescription": "CT-03",
-      "longDescription": "CT-03"
-    },
-    "name": "CT-03",
-    "typeId": "Devices/CoolingTower",
-    "tagType": "UdtInstance",
-    "tags": [
-      {
-        "name": "Status",
-        "tagType": "UdtInstance",
+        "tagType": "AtomicTag",
         "tags": [
           {
-            "valueSource": "opc",
-            "metadata": {
-              "shortDescription": "status",
-              "longDescription": "cooling tower status",
-              "states": [
-                {
-                  "label": "Off",
-                  "value": 0
-                },
-                {
-                  "label": "Run",
-                  "value": 1
-                },
-                {
-                  "label": "Fault",
-                  "value": 2
-                },
-                {
-                  "label": "Manual",
-                  "value": 3
-                },
-                {
-                  "label": "Idle",
-                  "value": 4
-                }
-              ]
-            },
-            "opcItemPath": "ns=1;s=[Sim]CoolingTowers/CT-03/Status/Value",
-            "historicalDeadband": 0.01,
-            "historicalDeadbandMode": "Absolute",
-            "historicalDeadbandStyle": "Discrete",
+            "valueSource": "memory",
             "dataType": "Int4",
-            "historyProvider": "historian",
-            "historyEnabled": true,
-            "sampleMode": "OnChange",
-            "opcServer": "Ignition OPC UA Server",
-            "name": "Value",
+            "name": "_ActiveHighPriority",
             "tagType": "AtomicTag"
-          }
-        ]
-      },
-      {
-        "name": "Temp",
-        "tagType": "UdtInstance",
-        "tags": [
+          },
           {
-            "valueSource": "opc",
-            "opcItemPath": "ns=1;s=[Sim]CoolingTowers/CT-03/Temp/Value",
-            "historicalDeadband": 0.01,
-            "historicalDeadbandMode": "Absolute",
-            "historicalDeadbandStyle": "Discrete",
-            "engUnit": "\u00b0F",
-            "dataType": "Float4",
-            "historyProvider": "historian",
-            "historyEnabled": true,
-            "sampleMode": "OnChange",
-            "opcServer": "Ignition OPC UA Server",
-            "name": "Value",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "_Active",
             "tagType": "AtomicTag"
           }
         ]
-      },
-      {
-        "typeId": "Config/_Alarms",
-        "name": "_Alarms",
-        "tagType": "AtomicTag"
       }
     ]
   },
   {
     "name": "Overview",
-    "typeId": "Overview/Cooling Tower Overview",
+    "typeId": "Overview/Pump Overview",
     "tagType": "UdtInstance",
     "tags": [
       {
@@ -176,7 +107,7 @@
         "tags": [
           {
             "valueSource": "expr",
-            "expression": "sum({[default]CoolingTowers/CT-01/_Alarms/_Active},\n{[default]CoolingTowers/CT-02/_Alarms/_Active},\n{[default]CoolingTowers/CT-03/_Alarms/_Active})",
+            "expression": "sum({[default]Pumps/PMP-01/_Alarms/_Active},\n{[default]Pumps/PMP-02/_Alarms/_Active},\n{[default]Pumps/PMP-03/_Alarms/_Active})",
             "dataType": "Int4",
             "formatString": "0",
             "name": "Value",
@@ -188,11 +119,11 @@
   },
   {
     "metadata": {
-      "shortDescription": "CT-01",
-      "longDescription": "CT-01"
+      "shortDescription": "PMP-01",
+      "longDescription": "PMP-01"
     },
-    "name": "CT-01",
-    "typeId": "Devices/CoolingTower",
+    "name": "PMP-01",
+    "typeId": "Devices/Pump",
     "tagType": "UdtInstance",
     "tags": [
       {
@@ -203,7 +134,7 @@
             "valueSource": "opc",
             "metadata": {
               "shortDescription": "status",
-              "longDescription": "cooling tower status",
+              "longDescription": "pump status",
               "states": [
                 {
                   "label": "Off",
@@ -227,7 +158,7 @@
                 }
               ]
             },
-            "opcItemPath": "ns=1;s=[Sim]CoolingTowers/CT-01/Status/Value",
+            "opcItemPath": "ns=1;s=[Sim]Pumps/PMP-01/Status/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -247,11 +178,11 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns=1;s=[Sim]CoolingTowers/CT-01/Temp/Value",
+            "opcItemPath": "ns=1;s=[Sim]Pumps/PMP-01/Temp/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
-            "engUnit": "\u00b0F",
+            "engUnit": "gpm",
             "dataType": "Float4",
             "historyProvider": "historian",
             "historyEnabled": true,
@@ -265,17 +196,31 @@
       {
         "typeId": "Config/_Alarms",
         "name": "_Alarms",
-        "tagType": "AtomicTag"
+        "tagType": "AtomicTag",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Int4",
+            "name": "_ActiveHighPriority",
+            "tagType": "AtomicTag"
+          },
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "_Active",
+            "tagType": "AtomicTag"
+          }
+        ]
       }
     ]
   },
   {
     "metadata": {
-      "shortDescription": "CT-04",
-      "longDescription": "Cooling Tower 4"
+      "shortDescription": "PMP-03",
+      "longDescription": "PMP-03"
     },
-    "name": "CT-04",
-    "typeId": "Devices/CoolingTower",
+    "name": "PMP-03",
+    "typeId": "Devices/Pump",
     "tagType": "UdtInstance",
     "tags": [
       {
@@ -286,7 +231,7 @@
             "valueSource": "opc",
             "metadata": {
               "shortDescription": "status",
-              "longDescription": "cooling tower status",
+              "longDescription": "pump status",
               "states": [
                 {
                   "label": "Off",
@@ -310,7 +255,7 @@
                 }
               ]
             },
-            "opcItemPath": "ns=1;s=[Sim]CoolingTowers/CT-04/Status/Value",
+            "opcItemPath": "ns=1;s=[Sim]Pumps/PMP-03/Status/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -330,11 +275,11 @@
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns=1;s=[Sim]CoolingTowers/CT-04/Temp/Value",
+            "opcItemPath": "ns=1;s=[Sim]Pumps/PMP-03/Temp/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
-            "engUnit": "\u00b0F",
+            "engUnit": "gpm",
             "dataType": "Float4",
             "historyProvider": "historian",
             "historyEnabled": true,
@@ -348,7 +293,118 @@
       {
         "typeId": "Config/_Alarms",
         "name": "_Alarms",
-        "tagType": "AtomicTag"
+        "tagType": "AtomicTag",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "_Active",
+            "tagType": "AtomicTag"
+          },
+          {
+            "valueSource": "memory",
+            "dataType": "Int4",
+            "name": "_ActiveHighPriority",
+            "tagType": "AtomicTag"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "PMP-04",
+      "longDescription": "Pump 4"
+    },
+    "name": "PMP-04",
+    "typeId": "Devices/Pump",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Status",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "opc",
+            "metadata": {
+              "shortDescription": "status",
+              "longDescription": "pump status",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "Run",
+                  "value": 1
+                },
+                {
+                  "label": "Fault",
+                  "value": 2
+                },
+                {
+                  "label": "Manual",
+                  "value": 3
+                },
+                {
+                  "label": "Idle",
+                  "value": 4
+                }
+              ]
+            },
+            "opcItemPath": "ns=1;s=[Sim]Pumps/PMP-04/Status/Value",
+            "historicalDeadband": 0.01,
+            "historicalDeadbandMode": "Absolute",
+            "historicalDeadbandStyle": "Discrete",
+            "dataType": "Int4",
+            "historyProvider": "historian",
+            "historyEnabled": true,
+            "sampleMode": "OnChange",
+            "opcServer": "Ignition OPC UA Server",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Temp",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "opc",
+            "opcItemPath": "ns=1;s=[Sim]Pumps/PMP-04/Temp/Value",
+            "historicalDeadband": 0.01,
+            "historicalDeadbandMode": "Absolute",
+            "historicalDeadbandStyle": "Discrete",
+            "engUnit": "gpm",
+            "dataType": "Float4",
+            "historyProvider": "historian",
+            "historyEnabled": true,
+            "sampleMode": "OnChange",
+            "opcServer": "Ignition OPC UA Server",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "typeId": "Config/_Alarms",
+        "name": "_Alarms",
+        "tagType": "AtomicTag",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Int4",
+            "name": "_ActiveHighPriority",
+            "tagType": "AtomicTag"
+          },
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "_Active",
+            "tagType": "AtomicTag"
+          }
+        ]
       }
     ]
   }

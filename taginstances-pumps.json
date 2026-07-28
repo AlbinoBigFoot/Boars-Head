@@ -614,6 +614,102 @@
           ]
         }
       ]
+    },
+    {
+      "name": "PMP-04",
+      "typeId": "Devices/Pump",
+      "tagType": "UdtInstance",
+      "metadata": {
+        "shortDescription": "PMP-04",
+        "longDescription": "Pump 4"
+      },
+      "tags": [
+        {
+          "name": "Status",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "metadata": {
+                "shortDescription": "status",
+                "longDescription": "pump status",
+                "states": [
+                  {
+                    "label": "Off",
+                    "value": 0
+                  },
+                  {
+                    "label": "Run",
+                    "value": 1
+                  },
+                  {
+                    "label": "Fault",
+                    "value": 2
+                  },
+                  {
+                    "label": "Manual",
+                    "value": 3
+                  },
+                  {
+                    "label": "Idle",
+                    "value": 4
+                  }
+                ]
+              },
+              "dataType": "Int4",
+              "name": "Value",
+              "value": 2,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "Temp",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "value": 12.0,
+              "engUnit": "gpm",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "_Alarms",
+          "typeId": "Config/_Alarms",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Active",
+              "value": true,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_ActiveHighPriority",
+              "value": 1,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_UnackHighPriority",
+              "value": 1,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Unack",
+              "value": true,
+              "tagType": "AtomicTag"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

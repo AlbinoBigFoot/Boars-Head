@@ -224,6 +224,8 @@ No dedicated `CommFail` PLC bit required — Ignition tag quality covers OPC dis
 
 **UI:** StatusIndicator text = `Comm Loss` (red); device Graphic class `device-comm-loss` fills the component red via `--deviceFill-commLoss` / `sts-COMMLOSS`. Device bodies are otherwise grayscale — status colors apply to StatusIndicator text only.
 
+**Demo (single instance only):** `[default]Evaporators/EV-01/Status/Value` has `"enabled": false` in `tag-definition/default/Evaporators/udts.json`. That forces Bad quality on **EV-01 only**. Do **not** put `enabled: false` on the Evaporator UDT type (that broke every EV previously). To restore: set `enabled: true` (or remove the key) on that one leaf, then POST scan/config.
+
 ---
 
 ## Scripts (project library `shared`)
@@ -294,16 +296,21 @@ To **ack** in the demo: set `_Alarms/_Unack` to `false` (leave `_Active` true) �
 
 Gateway tags and plant sim are slimmed to **16 single-fan** instances `EV-01`…`EV-16` (Fan 1 only; no Fan 2/3). Legacy `EV-17`–`EV-33` and `EV-001`–`EV-003` placeholders were removed.
 
-| EV | Status | Fan CMD | Notes |
-|----|--------|---------|-------|
-| 01–02 | STOP / IDLE | false | cool room temps |
-| 03–06 | CLG | true | colder + spinning |
-| 07–08 | DFT | false | rising temp |
-| 09–10 | FLT | false | Fault true; `_Alarms` active |
-| 11–12 | enum 4 (Manual — not shown on StatusIndicator) | true | mid temps |
-| 13–16 | mixed cycle | staggered | unique realistic / list sims |
+**Status enum (Evaporator):** `0` Off · `1` Cooling · `2` Defrost · `3` Fault · `4` Manual (not shown) · `5` Idle. Comm Loss = Bad quality on `Status/Value`, not an enum int.
 
-Sim profiles live in `sim/build_plant_sim.py` (`EV_PROFILES`) → `sim/bh-plant-sim.csv` and gateway `opcua/device/Sim/instructions.csv`.
+| EV | Demo | Status int | Fan CMD | Notes |
+|----|------|------------|---------|-------|
+| 01 | Comm Loss | *(ignored)* | false | `Status/Value` `enabled: false` |
+| 02 | Cooling + over-SP | 1 | true | Temp **40** fixed; SP **35** → AnalogValue red |
+| 03 / 08 / 13 | Idle | 5 | false | Temp under SP |
+| 04 / 09 / 14 | Defrost | 2 | false | Temp under SP |
+| 05 / 10 / 15 | Off | 0 | false | |
+| 06 / 11 / 16 | Fault | 3 | false | Fault true |
+| 07 / 12 | Cooling | 1 | true | Temp under SP (contrast vs EV-02) |
+
+**Non-EV Overview (CT / Pump / Fan / Comp):** four instances each — `*-01` Run(`1`) · `*-02` Idle(`4`) · `*-03` Fault(`2`) · `*-04` Off(`0`). Enum: `0` Off · `1` Run · `2` Fault · `3` Manual (hidden) · `4` Idle.
+
+Sim profiles live in `sim/build_plant_sim.py` → `sim/bh-plant-sim.csv` and gateway `opcua/device/Sim/instructions.csv`. Rebuild: `python sim/build_plant_sim.py` then POST scan/config (or restart Sim device) so OPC picks up the CSV.
 
 **Note:** Adhoc Trend’s saved tag tree may still list old `EV-001` / `EV-17+` paths until refreshed in Designer; live Overview / tags use `EV-01`…`EV-16` only.
 

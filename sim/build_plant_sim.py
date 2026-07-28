@@ -37,44 +37,106 @@ def infer_dtype(path: str, dt: str | None) -> tuple[str, str]:
     return "Float", "Float4"
 
 
-# Per-EV plant profiles so Overview units look distinct (Status 0–5:
-# STOP / CLG / DFT / FLT / MAN / IDLE).
+# Per-EV plant profiles — status wall for Overview demo.
+# Evaporator Status enum: 0 Off, 1 Cooling, 2 Defrost, 3 Fault, 4 Manual (not shown), 5 Idle.
+# Comm Loss is NOT a Status int — EV-01 Status/Value has enabled=false (Bad quality) in
+# tag-definition Evaporators/udts.json. Do not set enabled=false on the UDT type.
+# Temp SP defaults to 35 °F (UDT). EV-02 PV fixed at 40 for AnalogValue over-SP red demo;
+# other PV stay under SP for contrast.
 EV_PROFILES: dict[str, dict[str, str]] = {
-    # 01–02 STOP/IDLE, fans off, cool room temps
+    # EV-01: Comm Loss via tag enabled=false (sim value unused while disabled)
     "EV-01": {
         "Status": "0",
-        "Temp": "realistic(38.0, 0.8, 0.04, 0.2, true)",
+        "Temp": "realistic(30.0, 0.5, 0.03, 0.15, true)",
         "Pressure": "ramp(22.0, 32.0, 90, true)",
         "SPD_FBK": "0.0",
         "CMD": "false",
         "Fault": "false",
     },
+    # EV-02: Cooling + PV > SP (40 > 35) → AnalogValue red
     "EV-02": {
-        "Status": "5",
-        "Temp": "realistic(36.0, 0.9, 0.05, 0.22, true)",
-        "Pressure": "ramp(24.0, 34.0, 85, true)",
-        "SPD_FBK": "0.0",
-        "CMD": "false",
-        "Fault": "false",
-    },
-    # 03–06 CLG, fans spinning, colder
-    "EV-03": {
         "Status": "1",
-        "Temp": "realistic(22.0, 1.0, 0.06, 0.25, true)",
+        "Temp": "40.0",
         "Pressure": "ramp(40.0, 55.0, 70, true)",
         "SPD_FBK": "ramp(45.0, 60.0, 50, true)",
         "CMD": "true",
         "Fault": "false",
     },
+    "EV-03": {
+        "Status": "5",
+        "Temp": "realistic(28.0, 0.6, 0.04, 0.18, true)",
+        "Pressure": "ramp(24.0, 34.0, 85, true)",
+        "SPD_FBK": "0.0",
+        "CMD": "false",
+        "Fault": "false",
+    },
     "EV-04": {
+        "Status": "2",
+        "Temp": "realistic(32.0, 0.8, 0.05, 0.2, true)",
+        "Pressure": "ramp(30.0, 40.0, 80, true)",
+        "SPD_FBK": "0.0",
+        "CMD": "false",
+        "Fault": "false",
+    },
+    "EV-05": {
+        "Status": "0",
+        "Temp": "realistic(29.0, 0.5, 0.03, 0.16, true)",
+        "Pressure": "ramp(20.0, 30.0, 92, true)",
+        "SPD_FBK": "0.0",
+        "CMD": "false",
+        "Fault": "false",
+    },
+    "EV-06": {
+        "Status": "3",
+        "Temp": "realistic(31.0, 0.7, 0.04, 0.18, true)",
+        "Pressure": "ramp(18.0, 28.0, 95, true)",
+        "SPD_FBK": "0.0",
+        "CMD": "false",
+        "Fault": "true",
+    },
+    # Repeat wall EV-07..11
+    "EV-07": {
         "Status": "1",
-        "Temp": "realistic(20.0, 1.1, 0.06, 0.25, true)",
+        "Temp": "realistic(22.0, 1.0, 0.06, 0.25, true)",
         "Pressure": "ramp(42.0, 58.0, 65, true)",
         "SPD_FBK": "ramp(48.0, 62.0, 48, true)",
         "CMD": "true",
         "Fault": "false",
     },
-    "EV-05": {
+    "EV-08": {
+        "Status": "5",
+        "Temp": "realistic(27.0, 0.6, 0.04, 0.18, true)",
+        "Pressure": "ramp(26.0, 36.0, 88, true)",
+        "SPD_FBK": "0.0",
+        "CMD": "false",
+        "Fault": "false",
+    },
+    "EV-09": {
+        "Status": "2",
+        "Temp": "realistic(33.0, 0.8, 0.05, 0.2, true)",
+        "Pressure": "ramp(28.0, 38.0, 78, true)",
+        "SPD_FBK": "0.0",
+        "CMD": "false",
+        "Fault": "false",
+    },
+    "EV-10": {
+        "Status": "0",
+        "Temp": "realistic(30.0, 0.5, 0.03, 0.15, true)",
+        "Pressure": "ramp(20.0, 30.0, 90, true)",
+        "SPD_FBK": "0.0",
+        "CMD": "false",
+        "Fault": "false",
+    },
+    "EV-11": {
+        "Status": "3",
+        "Temp": "realistic(32.0, 0.7, 0.04, 0.18, true)",
+        "Pressure": "ramp(16.0, 26.0, 100, true)",
+        "SPD_FBK": "0.0",
+        "CMD": "false",
+        "Fault": "true",
+    },
+    # Repeat wall EV-12..16
+    "EV-12": {
         "Status": "1",
         "Temp": "realistic(18.0, 1.0, 0.05, 0.24, true)",
         "Pressure": "ramp(44.0, 60.0, 72, true)",
@@ -82,116 +144,82 @@ EV_PROFILES: dict[str, dict[str, str]] = {
         "CMD": "true",
         "Fault": "false",
     },
-    "EV-06": {
-        "Status": "1",
-        "Temp": "realistic(16.0, 0.9, 0.05, 0.23, true)",
-        "Pressure": "ramp(46.0, 62.0, 68, true)",
-        "SPD_FBK": "ramp(52.0, 68.0, 42, true)",
-        "CMD": "true",
+    "EV-13": {
+        "Status": "5",
+        "Temp": "realistic(26.0, 0.6, 0.04, 0.18, true)",
+        "Pressure": "ramp(24.0, 34.0, 85, true)",
+        "SPD_FBK": "0.0",
+        "CMD": "false",
         "Fault": "false",
     },
-    # 07–08 DFT, fans off, rising temp
-    "EV-07": {
+    "EV-14": {
         "Status": "2",
-        "Temp": "realistic(42.0, 1.5, 0.08, 0.3, true)",
+        "Temp": "realistic(34.0, 0.8, 0.05, 0.2, true)",
         "Pressure": "ramp(30.0, 40.0, 80, true)",
         "SPD_FBK": "0.0",
         "CMD": "false",
         "Fault": "false",
     },
-    "EV-08": {
-        "Status": "2",
-        "Temp": "realistic(45.0, 1.6, 0.09, 0.32, true)",
-        "Pressure": "ramp(28.0, 38.0, 78, true)",
-        "SPD_FBK": "0.0",
-        "CMD": "false",
-        "Fault": "false",
-    },
-    # 09–10 FLT
-    "EV-09": {
-        "Status": "3",
-        "Temp": "realistic(40.0, 1.2, 0.07, 0.28, true)",
-        "Pressure": "ramp(18.0, 28.0, 95, true)",
-        "SPD_FBK": "0.0",
-        "CMD": "false",
-        "Fault": "true",
-    },
-    "EV-10": {
-        "Status": "3",
-        "Temp": "realistic(41.0, 1.3, 0.07, 0.28, true)",
-        "Pressure": "ramp(16.0, 26.0, 100, true)",
-        "SPD_FBK": "0.0",
-        "CMD": "false",
-        "Fault": "true",
-    },
-    # 11–12 MAN, fans on, mid temps
-    "EV-11": {
-        "Status": "4",
-        "Temp": "realistic(28.0, 1.0, 0.06, 0.25, true)",
-        "Pressure": "ramp(35.0, 48.0, 75, true)",
-        "SPD_FBK": "ramp(30.0, 50.0, 55, true)",
-        "CMD": "true",
-        "Fault": "false",
-    },
-    "EV-12": {
-        "Status": "4",
-        "Temp": "realistic(30.0, 1.1, 0.06, 0.26, true)",
-        "Pressure": "ramp(36.0, 50.0, 73, true)",
-        "SPD_FBK": "ramp(35.0, 55.0, 52, true)",
-        "CMD": "true",
-        "Fault": "false",
-    },
-    # 13–16 mixed / staggered cycles
-    "EV-13": {
-        "Status": "list(1, 1, 5, 1, true)",
-        "Temp": "realistic(24.0, 1.2, 0.06, 0.25, true)",
-        "Pressure": "ramp(38.0, 56.0, 60, true)",
-        "SPD_FBK": "ramp(40.0, 58.0, 47, true)",
-        "CMD": "true",
-        "Fault": "false",
-    },
-    "EV-14": {
-        "Status": "list(5, 0, 5, 1, true)",
-        "Temp": "realistic(34.0, 1.0, 0.05, 0.22, true)",
-        "Pressure": "ramp(26.0, 36.0, 88, true)",
-        "SPD_FBK": "list(0.0, 0.0, 20.0, 0.0, true)",
-        "CMD": "false",
-        "Fault": "false",
-    },
     "EV-15": {
-        "Status": "list(0, 5, 0, 1, true)",
-        "Temp": "realistic(37.0, 0.9, 0.04, 0.2, true)",
-        "Pressure": "ramp(20.0, 30.0, 92, true)",
+        "Status": "0",
+        "Temp": "realistic(28.0, 0.5, 0.03, 0.15, true)",
+        "Pressure": "ramp(22.0, 32.0, 90, true)",
         "SPD_FBK": "0.0",
         "CMD": "false",
         "Fault": "false",
     },
     "EV-16": {
-        "Status": "list(1, 2, 1, 1, true)",
-        "Temp": "realistic(19.0, 1.4, 0.07, 0.27, true)",
-        "Pressure": "ramp(48.0, 68.0, 58, true)",
-        "SPD_FBK": "ramp(55.0, 72.0, 40, true)",
-        "CMD": "true",
-        "Fault": "false",
+        "Status": "3",
+        "Temp": "realistic(31.0, 0.7, 0.04, 0.18, true)",
+        "Pressure": "ramp(18.0, 28.0, 95, true)",
+        "SPD_FBK": "0.0",
+        "CMD": "false",
+        "Fault": "true",
     },
 }
 
 
-# Per-CT profiles matching Overview copy: CT-01 Run · CT-02 Off · CT-03 Fault.
-# Status 0–4: Off / Run / Fault / Manual / Idle. Fan spin on graphic uses Status==1.
+# Non-EV Status enum: 0 Off, 1 Run, 2 Fault, 3 Manual (not shown), 4 Idle.
+# Four Overview slots → Run / Idle / Fault / Off (no Manual; Comm Loss only on EV-01).
+# Fan/pump spin graphics use Status==1 (Run).
 CT_PROFILES: dict[str, dict[str, str]] = {
     "CT-01": {
         "Status": "1",
         "Temp": "realistic(78.5, 1.0, 0.05, 0.22, true)",
     },
     "CT-02": {
-        "Status": "0",
-        "Temp": "realistic(70.0, 0.6, 0.03, 0.15, true)",
+        "Status": "4",
+        "Temp": "realistic(72.0, 0.6, 0.03, 0.15, true)",
     },
     "CT-03": {
         "Status": "2",
         "Temp": "realistic(92.0, 1.4, 0.08, 0.3, true)",
     },
+    "CT-04": {
+        "Status": "0",
+        "Temp": "realistic(68.0, 0.5, 0.03, 0.14, true)",
+    },
+}
+
+PMP_PROFILES: dict[str, dict[str, str]] = {
+    "PMP-01": {"Status": "1"},
+    "PMP-02": {"Status": "4"},
+    "PMP-03": {"Status": "2"},
+    "PMP-04": {"Status": "0"},
+}
+
+EFAN_PROFILES: dict[str, dict[str, str]] = {
+    "EFAN-01": {"Status": "1"},
+    "EFAN-02": {"Status": "4"},
+    "EFAN-03": {"Status": "2"},
+    "EFAN-04": {"Status": "0"},
+}
+
+COMP_PROFILES: dict[str, dict[str, str]] = {
+    "COMP-01": {"Status": "1"},
+    "COMP-02": {"Status": "4"},
+    "COMP-03": {"Status": "2"},
+    "COMP-04": {"Status": "0"},
 }
 
 
@@ -211,23 +239,46 @@ def _ct_id(path: str) -> str | None:
     return None
 
 
+def _pmp_id(path: str) -> str | None:
+    parts = path.split("/")
+    if len(parts) >= 2 and parts[0] == "Pumps" and parts[1].startswith("PMP-"):
+        return parts[1]
+    return None
+
+
+def _efan_id(path: str) -> str | None:
+    parts = path.split("/")
+    if len(parts) >= 2 and parts[0] == "ExhaustFans" and parts[1].startswith("EFAN-"):
+        return parts[1]
+    return None
+
+
+def _comp_id(path: str) -> str | None:
+    parts = path.split("/")
+    if len(parts) >= 2 and parts[0] == "Compressors" and parts[1].startswith("COMP-"):
+        return parts[1]
+    return None
+
+
 def value_source(path: str, sim_dtype: str) -> str:
     leaf_parent = path.split("/")[-2]
-    ev = _ev_id(path)
-    if ev and ev in EV_PROFILES:
-        profile = EV_PROFILES[ev]
-        if leaf_parent in profile:
-            return profile[leaf_parent]
-    ct = _ct_id(path)
-    if ct and ct in CT_PROFILES:
-        profile = CT_PROFILES[ct]
-        if leaf_parent in profile:
-            return profile[leaf_parent]
+    for getter, profiles in (
+        (_ev_id, EV_PROFILES),
+        (_ct_id, CT_PROFILES),
+        (_pmp_id, PMP_PROFILES),
+        (_efan_id, EFAN_PROFILES),
+        (_comp_id, COMP_PROFILES),
+    ):
+        device_id = getter(path)
+        if device_id and device_id in profiles:
+            profile = profiles[device_id]
+            if leaf_parent in profile:
+                return profile[leaf_parent]
 
     if leaf_parent == "Status":
         if path.startswith("Evaporators/"):
-            return "list(0, 1, 2, 3, 4, 5, true)"
-        return "list(0, 1, 2, true)"
+            return "list(0, 1, 2, 3, 5, true)"
+        return "list(0, 1, 2, 4, true)"
     if leaf_parent == "Temp":
         return "realistic(20.0, 1.2, 0.06, 0.25, true)"
     if leaf_parent == "Pressure":
