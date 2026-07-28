@@ -41,8 +41,9 @@ def infer_dtype(path: str, dt: str | None) -> tuple[str, str]:
 # Evaporator Status enum: 0 Off, 1 Cooling, 2 Defrost, 3 Fault, 4 Manual (not shown), 5 Idle.
 # Comm Loss is NOT a Status int — EV-01 Status/Value has enabled=false (Bad quality) in
 # tag-definition Evaporators/udts.json. Do not set enabled=false on the UDT type.
-# Temp SP defaults to 35 °F (UDT). EV-02 PV fixed at 40 for AnalogValue over-SP red demo;
-# other PV stay under SP for contrast.
+# Temp/SP lives only on device Temp (not _Root/Analog). Defaults: Evap 35°F, CT 85°F,
+# Pump 50 gpm, ExhaustFan 1000 cfm, Compressor 25 psi.
+# Over-SP AnalogValue red demos: EV-02, CT-01, PMP-01, EFAN-01, COMP-01.
 EV_PROFILES: dict[str, dict[str, str]] = {
     # EV-01: Comm Loss via tag enabled=false (sim value unused while disabled)
     "EV-01": {
@@ -183,9 +184,10 @@ EV_PROFILES: dict[str, dict[str, str]] = {
 # Four Overview slots → Run / Idle / Fault / Off (no Manual; Comm Loss only on EV-01).
 # Fan/pump spin graphics use Status==1 (Run).
 CT_PROFILES: dict[str, dict[str, str]] = {
+    # CT-01: Run + PV > SP (90 > 85) → AnalogValue red
     "CT-01": {
         "Status": "1",
-        "Temp": "realistic(78.5, 1.0, 0.05, 0.22, true)",
+        "Temp": "90.0",
     },
     "CT-02": {
         "Status": "4",
@@ -193,7 +195,7 @@ CT_PROFILES: dict[str, dict[str, str]] = {
     },
     "CT-03": {
         "Status": "2",
-        "Temp": "realistic(92.0, 1.4, 0.08, 0.3, true)",
+        "Temp": "realistic(80.0, 1.0, 0.05, 0.2, true)",
     },
     "CT-04": {
         "Status": "0",
@@ -202,24 +204,27 @@ CT_PROFILES: dict[str, dict[str, str]] = {
 }
 
 PMP_PROFILES: dict[str, dict[str, str]] = {
-    "PMP-01": {"Status": "1"},
-    "PMP-02": {"Status": "4"},
-    "PMP-03": {"Status": "2"},
-    "PMP-04": {"Status": "0"},
+    # PMP-01: Run + flow > SP (60 > 50) → AnalogValue red
+    "PMP-01": {"Status": "1", "Temp": "60.0"},
+    "PMP-02": {"Status": "4", "Temp": "realistic(40.0, 1.0, 0.05, 0.2, true)"},
+    "PMP-03": {"Status": "2", "Temp": "realistic(35.0, 1.2, 0.06, 0.22, true)"},
+    "PMP-04": {"Status": "0", "Temp": "realistic(20.0, 0.8, 0.04, 0.18, true)"},
 }
 
 EFAN_PROFILES: dict[str, dict[str, str]] = {
-    "EFAN-01": {"Status": "1"},
-    "EFAN-02": {"Status": "4"},
-    "EFAN-03": {"Status": "2"},
-    "EFAN-04": {"Status": "0"},
+    # EFAN-01: Run + airflow > SP (1200 > 1000) → AnalogValue red
+    "EFAN-01": {"Status": "1", "Temp": "1200.0"},
+    "EFAN-02": {"Status": "4", "Temp": "realistic(800.0, 20.0, 0.05, 0.2, true)"},
+    "EFAN-03": {"Status": "2", "Temp": "realistic(750.0, 25.0, 0.06, 0.22, true)"},
+    "EFAN-04": {"Status": "0", "Temp": "realistic(100.0, 10.0, 0.04, 0.18, true)"},
 }
 
 COMP_PROFILES: dict[str, dict[str, str]] = {
-    "COMP-01": {"Status": "1"},
-    "COMP-02": {"Status": "4"},
-    "COMP-03": {"Status": "2"},
-    "COMP-04": {"Status": "0"},
+    # COMP-01: Run + discharge > SP (35 > 25) → AnalogValue red
+    "COMP-01": {"Status": "1", "Temp": "35.0"},
+    "COMP-02": {"Status": "4", "Temp": "realistic(18.0, 1.0, 0.05, 0.2, true)"},
+    "COMP-03": {"Status": "2", "Temp": "realistic(20.0, 1.2, 0.06, 0.22, true)"},
+    "COMP-04": {"Status": "0", "Temp": "realistic(15.0, 0.8, 0.04, 0.18, true)"},
 }
 
 

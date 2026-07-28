@@ -139,8 +139,11 @@ Path: `views/03_Elements/`
 
 ### AnalogValue — `01_Status/AnalogValue`
 
-- **Params:** `tagPath`, spacing helpers (`center` / `data` / `engUnit`)
-- Embeds `_Assets/Numeric`, which formats `tag(tagPath)`, engineering unit, and format string from tag properties
+- **Params:** `tagPath` (…`/Temp/Value`), optional `spTagPath`, spacing helpers (`center` / `data` / `engUnit`)
+- If `spTagPath` is empty, derives sibling `…/Temp/SP` from `tagPath` ending in `/Value`
+- Embeds `_Assets/Numeric`; value text turns theme-invariant red when `Value > SP`
+- **SP lives only on device `Temp/SP`** (not on `_Root/Analog`). Defaults: Evap **35°F**, CT **85°F**, Pump **50 gpm**, ExhaustFan **1000 cfm**, Compressor **25 psi**
+- Over-SP demos: **EV-02** (40), **CT-01** (90), **PMP-01** (60), **EFAN-01** (1200), **COMP-01** (35)
 
 ### DeviceAlarmIndicator — `01_Status/NotificationIcons/DeviceAlarmIndicator`
 
@@ -308,7 +311,7 @@ Gateway tags and plant sim are slimmed to **16 single-fan** instances `EV-01`…
 | 06 / 11 / 16 | Fault | 3 | false | Fault true |
 | 07 / 12 | Cooling | 1 | true | Temp under SP (contrast vs EV-02) |
 
-**Non-EV Overview (CT / Pump / Fan / Comp):** four instances each — `*-01` Run(`1`) · `*-02` Idle(`4`) · `*-03` Fault(`2`) · `*-04` Off(`0`). Enum: `0` Off · `1` Run · `2` Fault · `3` Manual (hidden) · `4` Idle.
+**Non-EV Overview (CT / Pump / Fan / Comp):** four instances each — `*-01` Run(`1`) · `*-02` Idle(`4`) · `*-03` Fault(`2`) · `*-04` Off(`0`). Enum: `0` Off · `1` Run · `2` Fault · `3` Manual (hidden) · `4` Idle. Over-SP AnalogValue red on **CT-01** (90>85), **PMP-01** (60>50), **EFAN-01** (1200>1000), **COMP-01** (35>25).
 
 Sim profiles live in `sim/build_plant_sim.py` → `sim/bh-plant-sim.csv` and gateway `opcua/device/Sim/instructions.csv`. Rebuild: `python sim/build_plant_sim.py` then POST scan/config (or restart Sim device) so OPC picks up the CSV.
 
