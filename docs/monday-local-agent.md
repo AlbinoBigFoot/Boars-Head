@@ -17,8 +17,64 @@ Monday create_item (board 18423731526, webhook 614195738)
        ├─ filter Dylan Jones filer only
        │    ├─ accept → spawn: agent -p --force --trust --workspace <repo> <prompt>
        │    └─ reject → Pushover “Monday ticket added by {filer}: {name}” + link (no agent)
-            → branch + fix + scan + commit + draft PR (gh)
+            → ticket/<id>-slug branch + fix + scan + commit + push ticket branch
+            → docs/handoff/ticket-<id>.md + draft PR into main (do not merge)
+            → on exit 0: Monday → Pending Review + update (branch/handoff/PR)
+            → Pushover FINISH (branch + handoff + “not on main”)
 ```
+
+## Review workflow (ticket branch only)
+
+HMI ticket work **never lands on `main` automatically**. Dylan reviews locally (or hands off to Cursor Desktop with the handoff doc).
+
+| Step | Who | What |
+|------|-----|------|
+| 1 | Agent | Create `ticket/<monday_item_id>-<short-slug>` from `main` |
+| 2 | Agent | Implement fix, signature repair, Ignition scan |
+| 3 | Agent | Commit **on ticket branch only**; push `origin ticket/…` |
+| 4 | Agent | Write `docs/handoff/ticket-<id>.md` (intent, files, verify, risks, continue-from-here) |
+| 5 | Agent | Open **draft** PR into `main` if `gh` works (do not merge) |
+| 6 | Job script | On agent exit 0: `move_item_to_group` → **Pending Review** + Monday update |
+| 7 | Dylan | Checkout branch in Cursor Desktop, read handoff, continue or merge when ready |
+
+### Forbidden (agent + job)
+
+- Merge / push / force-push to `main`
+- Checkout `main` as the landing place for the fix
+- Auto-merge the draft PR
+
+### Allowed
+
+- Push `origin ticket/…`
+- Draft PR into `main` as a review aid
+- Monday move to Pending Review + update after success
+
+### Pending Review group
+
+| | |
+|--|--|
+| Board | Tickets `18423731526` |
+| Group title | **Pending Review** |
+| Group id (created 2026-07-28) | `group_mm5p3hpn` |
+| Env override | `MONDAY_PENDING_REVIEW_GROUP_ID` |
+
+Resolution order in `monday_agent_job.resolve_pending_review_group_id`:
+
+1. `MONDAY_PENDING_REVIEW_GROUP_ID` if set
+2. Live GraphQL title match (`Pending Review` / `pending review`, or title containing both words)
+3. Fallback default `group_mm5p3hpn`
+
+On **agent failure**: leave the Monday item in its current group; Pushover ERROR only (no move).
+
+### Handoff file
+
+Path: `docs/handoff/ticket-<monday_item_id>.md` (committed on the ticket branch).
+
+Should include: Monday URL/id, branch name, summary of intent, files changed, how to verify, known risks, and **continue from here** instructions for the next Cursor agent.
+
+### Pushover FINISH
+
+Success FINISH includes branch name, handoff path, draft PR URL (if any), **“NOT on main”**, and whether the item was moved to Pending Review.
 
 ## Why filer ≠ Monday creator
 
@@ -51,6 +107,7 @@ Accept if Monday `creator.id` / webhook `userId` is `111292620`, or creator name
 
 - Match against ticket **title**, description body, or update **text** (too loose).
 - Spawn an agent when enrich fails and filer columns are unknown (avoids false accepts if Monday API is down). Still Pushover-notifies.
+- Weaken this filter for the review workflow — Pending Review applies only after a Dylan-accepted agent run succeeds.
 
 ### Match substrings / ids
 
@@ -64,6 +121,7 @@ Configure via `.env`:
 ```bash
 MONDAY_AGENT_USER_IDS=111292620
 MONDAY_AGENT_MATCH_SUBSTRINGS=dylan.jones,dylan jones,djones@oneshotautomation
+MONDAY_PENDING_REVIEW_GROUP_ID=group_mm5p3hpn
 ```
 
 Accept/reject decisions are logged to `logs/monday-agent/proxy-stderr.log` with `source=filer_columns|monday_creator|enrich_failed`.
@@ -103,13 +161,13 @@ Funnel path `/monday-webhook` → `127.0.0.1:9876` is verified/repaired by the s
 | Source | Use |
 |--------|-----|
 | `.env` `PUSHOVER_TOKEN` / `PUSHOVER_USER` | non-Dylan ticket alerts + Dylan job start/finish |
-| `.env` `MONDAY_API_TOKEN` (optional) | item enrich; else read Ignition tag default from gitignored `…/_Config/Monday/tags.json` |
+| `.env` `MONDAY_API_TOKEN` (optional) | item enrich + Pending Review move/update; else Ignition tag default from gitignored `…/_Config/Monday/tags.json` |
 | Cursor agent login / `CURSOR_API_KEY` | headless agent auth |
 
 ## Verify
 
 ```powershell
-# Filter unit tests (no agent spawn, no Pushover)
+# Filter + review-hook unit tests (no agent spawn, no Pushover)
 python scripts/monday_webhook_proxy.py --self-test
 
 # Challenge echo (local)
@@ -134,13 +192,13 @@ $body = @{
 Invoke-RestMethod -Method POST -Uri http://127.0.0.1:9876/ -Body $body -ContentType application/json
 ```
 
-Self-test covers: Tylor-style Ticket Logger (reject despite Dylan `userId`), Dylan Employee Name (accept), email column (accept), title-substring trap (reject).
+Self-test covers: Tylor-style Ticket Logger (reject despite Dylan `userId`), Dylan Employee Name (accept), email column (accept), title-substring trap (reject), artifact parse (branch/PR/handoff), FINISH “not on main”, Pending Review env override.
 
-**Live test:** submit a Ticket Logger ticket as Dylan → agent + START/FINISH Pushover. Submit as anyone else → Pushover only, no `logs/monday-agent/*` agent spawn.
+**Live test:** submit a Ticket Logger ticket as Dylan → agent + START/FINISH Pushover → item in **Pending Review** with update (branch + handoff path). Submit as anyone else → Pushover only, no `logs/monday-agent/*` agent spawn. Confirm the fix branch is **not** merged to `main`.
 
 ## Draft PR note
 
-Install GitHub CLI if needed: `winget install --id GitHub.cli -e`. Authenticate with `gh auth login`. The agent prompt asks for a **draft** PR and never merges.
+Install GitHub CLI if needed: `winget install --id GitHub.cli -e`. Authenticate with `gh auth login`. The agent prompt asks for a **draft** PR and never merges. Dylan merges only after local review.
 
 ## Related
 
@@ -148,3 +206,4 @@ Install GitHub CLI if needed: `winget install --id GitHub.cli -e`. Authenticate 
 - `docs/cloud-agent/SUMMARY.md` — agent conventions + scan API
 - `docs/ignition-resource-signatures.md` — mandatory signature + CAS repair after project edits
 - `docs/tailscale-funnel.md` — Funnel for Perspective (gateway `/`); webhook uses `/monday-webhook`
+- `docs/handoff/` — per-ticket handoff files written by the local agent

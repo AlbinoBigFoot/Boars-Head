@@ -18,6 +18,7 @@ from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 LOG_DIR = REPO_ROOT / "logs" / "monday-agent"
+HANDOFF_DIR = REPO_ROOT / "docs" / "handoff"
 PROMPT_FILE = REPO_ROOT / "scripts" / "prompts" / "monday-hmi-fix.md"
 DEFAULT_AGENT = Path(
 	os.environ.get(
@@ -40,6 +41,12 @@ MONDAY_TAG_TOKEN_PATH = (
 	/ "Monday"
 	/ "tags.json"
 )
+
+# Tickets board (Service Agent Workspace)
+DEFAULT_BOARD_ID = "18423731526"
+PENDING_REVIEW_TITLE = "Pending Review"
+# Created 2026-07-28 on board 18423731526 — override via MONDAY_PENDING_REVIEW_GROUP_ID
+DEFAULT_PENDING_REVIEW_GROUP_ID = "group_mm5p3hpn"
 
 # Dylan Jones — Monday account (Service Agent Workspace)
 DEFAULT_USER_IDS = ("111292620",)
@@ -180,6 +187,261 @@ def fetch_item(item_id: str) -> dict:
 	)
 	items = data.get("items") or []
 	return items[0] if items else {}
+
+
+def fetch_board_groups(board_id: str) -> list[dict]:
+	data = monday_graphql(
+		"""
+		query ($ids: [ID!]) {
+			boards(ids: $ids) {
+				groups { id title }
+			}
+		}
+		""",
+		{"ids": [str(board_id)]},
+	)
+	boards = data.get("boards") or []
+	if not boards:
+		return []
+	return list(boards[0].get("groups") or [])
+
+
+def resolve_pending_review_group_id(board_id: str | None = None) -> str:
+	"""Resolve Pending Review group id: env override → title match → default."""
+	override = env("MONDAY_PENDING_REVIEW_GROUP_ID")
+	if override:
+		return override
+
+	bid = (board_id or env("MONDAY_BOARD_ID") or DEFAULT_BOARD_ID).strip()
+	try:
+		groups = fetch_board_groups(bid)
+		for g in groups:
+			title = _norm(g.get("title")).lower()
+			if title in ("pending review", "pending-review"):
+				gid = _norm(g.get("id"))
+				if gid:
+					return gid
+		# Fuzzy: title contains both words
+		for g in groups:
+			title = _norm(g.get("title")).lower()
+			if "pending" in title and "review" in title:
+				gid = _norm(g.get("id"))
+				if gid:
+					return gid
+	except Exception as exc:  # noqa: BLE001
+		sys.stderr.write(
+			"pending-review group lookup failed board=%s err=%s; using default\n"
+			% (bid, exc)
+		)
+
+	return DEFAULT_PENDING_REVIEW_GROUP_ID
+
+
+def move_item_to_group(item_id: str, group_id: str) -> dict:
+	data = monday_graphql(
+		"""
+		mutation ($itemId: ID!, $groupId: String!) {
+			move_item_to_group(item_id: $itemId, group_id: $groupId) {
+				id
+			}
+		}
+		""",
+		{"itemId": str(item_id), "groupId": str(group_id)},
+	)
+	return data.get("move_item_to_group") or {}
+
+
+def create_monday_update(item_id: str, body: str) -> dict:
+	data = monday_graphql(
+		"""
+		mutation ($itemId: ID!, $body: String!) {
+			create_update(item_id: $itemId, body: $body) { id }
+		}
+		""",
+		{"itemId": str(item_id), "body": body},
+	)
+	return data.get("create_update") or {}
+
+
+def handoff_path_for_item(item_id: str) -> Path:
+	return HANDOFF_DIR / ("ticket-%s.md" % item_id)
+
+
+def parse_agent_artifacts(log_text: str, item_id: str) -> dict:
+	"""Best-effort extract branch / handoff / draft PR from agent log + disk."""
+	branch = ""
+	pr_url = ""
+	handoff = ""
+
+	# Branch: ticket/<id>-slug or any ticket/... mentioned
+	m = re.search(
+		r"(?im)\b(ticket/%s-[a-zA-Z0-9._/-]+)\b" % re.escape(str(item_id)),
+		log_text or "",
+	)
+	if m:
+		branch = m.group(1).rstrip("/.")
+	if not branch:
+		m = re.search(r"(?im)\b(ticket/[a-zA-Z0-9._/-]+)\b", log_text or "")
+		if m:
+			branch = m.group(1).rstrip("/.")
+
+	# Draft PR URL (github.com/.../pull/N)
+	m = re.search(
+		r"https://github\.com/[^\s)\]\"']+/pull/\d+",
+		log_text or "",
+	)
+	if m:
+		pr_url = m.group(0).rstrip(".,;")
+
+	# Handoff path in log or on disk
+	expected = handoff_path_for_item(item_id)
+	rel = "docs/handoff/ticket-%s.md" % item_id
+	alt = "docs/handoff/tickets/%s.md" % item_id
+	if expected.is_file():
+		handoff = rel
+	elif (REPO_ROOT / alt).is_file():
+		handoff = alt
+	else:
+		m = re.search(
+			r"(?im)\b(docs/handoff/(?:tickets/)?ticket-?%s\.md)\b" % re.escape(str(item_id)),
+			log_text or "",
+		)
+		if m:
+			handoff = m.group(1).replace("\\", "/")
+		elif re.search(r"(?im)\bdocs/handoff/[^\s)\]\"']+\.md\b", log_text or ""):
+			m2 = re.search(r"(?im)\b(docs/handoff/[^\s)\]\"']+\.md)\b", log_text or "")
+			if m2:
+				handoff = m2.group(1).replace("\\", "/")
+
+	# Prefer live git branch if it looks like this ticket
+	try:
+		proc = subprocess.run(
+			["git", "branch", "--show-current"],
+			cwd=str(REPO_ROOT),
+			capture_output=True,
+			text=True,
+			timeout=10,
+		)
+		cur = (proc.stdout or "").strip()
+		if cur.startswith("ticket/") and str(item_id) in cur:
+			branch = cur
+	except Exception:  # noqa: BLE001
+		pass
+
+	return {
+		"branch": branch,
+		"handoff": handoff or (rel if expected.is_file() else ""),
+		"pr_url": pr_url,
+	}
+
+
+def build_review_update_body(ticket: dict, artifacts: dict) -> str:
+	item_id = ticket.get("item_id") or ""
+	title = ticket.get("title") or ticket.get("name") or ""
+	branch = artifacts.get("branch") or "(see handoff / local git)"
+	handoff = artifacts.get("handoff") or ("docs/handoff/ticket-%s.md" % item_id)
+	pr_url = artifacts.get("pr_url") or ""
+	parts = [
+		"Local agent finished — ready for Dylan review (NOT on main).",
+		"",
+		"Ticket: %s" % title,
+		"Branch: %s" % branch,
+		"Handoff: %s" % handoff,
+	]
+	if pr_url:
+		parts.append("Draft PR: %s" % pr_url)
+	else:
+		parts.append("Draft PR: (none — checkout branch locally)")
+	parts.extend(
+		[
+			"",
+			"Next: open Cursor Desktop → checkout the branch → read the handoff → continue or merge when ready.",
+			"Do not merge to main until Dylan confirms.",
+		]
+	)
+	return "\n".join(parts)
+
+
+def post_success_review(ticket: dict, log_path: Path) -> dict:
+	"""Move Monday item to Pending Review + post update. Returns status dict."""
+	item_id = str(ticket.get("item_id") or "")
+	board_id = str(ticket.get("board_id") or env("MONDAY_BOARD_ID") or DEFAULT_BOARD_ID)
+	log_text = ""
+	try:
+		if log_path.is_file():
+			log_text = log_path.read_text(encoding="utf-8", errors="replace")
+	except OSError:
+		pass
+
+	artifacts = parse_agent_artifacts(log_text, item_id)
+	result: dict[str, Any] = {
+		"item_id": item_id,
+		"artifacts": artifacts,
+		"group_id": "",
+		"moved": False,
+		"update_id": "",
+		"errors": [],
+	}
+
+	if not monday_api_token():
+		result["errors"].append("no MONDAY_API_TOKEN — skip move/update")
+		return result
+
+	try:
+		group_id = resolve_pending_review_group_id(board_id)
+		result["group_id"] = group_id
+		move_item_to_group(item_id, group_id)
+		result["moved"] = True
+		sys.stderr.write(
+			"monday moved item=%s → group=%s (Pending Review)\n" % (item_id, group_id)
+		)
+	except Exception as exc:  # noqa: BLE001
+		result["errors"].append("move failed: %s" % exc)
+		sys.stderr.write("monday move failed item=%s err=%s\n" % (item_id, exc))
+
+	try:
+		body = build_review_update_body(ticket, artifacts)
+		upd = create_monday_update(item_id, body)
+		result["update_id"] = _norm(upd.get("id"))
+		sys.stderr.write(
+			"monday update posted item=%s update_id=%s\n"
+			% (item_id, result["update_id"])
+		)
+	except Exception as exc:  # noqa: BLE001
+		result["errors"].append("update failed: %s" % exc)
+		sys.stderr.write("monday update failed item=%s err=%s\n" % (item_id, exc))
+
+	return result
+
+
+def format_finish_pushover(
+	*,
+	status: str,
+	ticket: dict,
+	elapsed: int,
+	artifacts: dict | None = None,
+	review: dict | None = None,
+) -> str:
+	item_id = ticket.get("item_id") or ""
+	title = ticket.get("title") or ""
+	arts = artifacts or {}
+	branch = arts.get("branch") or "(unknown branch)"
+	handoff = arts.get("handoff") or ("docs/handoff/ticket-%s.md" % item_id)
+	pr_url = arts.get("pr_url") or ""
+	lines = [
+		"Local agent %s for Monday ticket %s (%ss)" % (status, item_id, elapsed),
+		title,
+		"branch: %s" % branch,
+		"handoff: %s" % handoff,
+		"NOT on main — review locally before merge",
+	]
+	if pr_url:
+		lines.append("draft PR: %s" % pr_url)
+	if review and review.get("moved"):
+		lines.append("Monday → Pending Review (%s)" % (review.get("group_id") or ""))
+	elif review and review.get("errors"):
+		lines.append("Monday review hooks: %s" % "; ".join(review["errors"][:2]))
+	return "\n".join(lines)
 
 
 def _norm(value: Any) -> str:
@@ -456,8 +718,9 @@ def build_agent_prompt(ticket: dict) -> str:
 	else:
 		template = (
 			"Fix the Boars Head Ignition HMI issue described below. "
-			"Read docs/cloud-agent/SUMMARY.md first. Create a branch, implement, "
-			"scan, commit, open a draft PR (do not merge).\n\n"
+			"Read docs/cloud-agent/SUMMARY.md first. Create branch ticket/<id>-slug, "
+			"implement, scan, commit on that branch only, push origin ticket/…, "
+			"write docs/handoff/ticket-<id>.md, open a draft PR (do not merge to main).\n\n"
 		)
 	body = {
 		"monday_item_id": ticket.get("item_id"),
@@ -467,7 +730,12 @@ def build_agent_prompt(ticket: dict) -> str:
 		"creator_name": ticket.get("creator_name"),
 		"creator_email": ticket.get("creator_email"),
 		"description": ticket.get("description"),
-		"board_id": ticket.get("board_id"),
+		"board_id": ticket.get("board_id") or DEFAULT_BOARD_ID,
+		"handoff_path": "docs/handoff/ticket-%s.md" % (ticket.get("item_id") or "ID"),
+		"review_note": (
+			"After exit 0 the job moves this item to Monday group Pending Review "
+			"and posts a handoff update. Never merge to main."
+		),
 	}
 	return (
 		template.strip()
@@ -572,10 +840,48 @@ def spawn_agent_job(ticket: dict, *, dry_run: bool = False) -> dict:
 				)
 				elapsed = int(time.time() - t0)
 				logf.write("\n\nEXIT=%s ELAPSED_SEC=%s\n" % (proc.returncode, elapsed))
-			status = "OK" if proc.returncode == 0 else "FAIL(%s)" % proc.returncode
+
+			ok = proc.returncode == 0
+			status = "OK" if ok else "FAIL(%s)" % proc.returncode
+			log_text = ""
+			try:
+				log_text = log_path.read_text(encoding="utf-8", errors="replace")
+			except OSError:
+				pass
+			artifacts = parse_agent_artifacts(log_text, str(item_id))
+			review: dict | None = None
+
+			if ok:
+				# Move to Pending Review + Monday update (leave item on failure)
+				try:
+					review = post_success_review(ticket, log_path)
+					# Refresh artifacts from review (disk may have handoff after agent)
+					if review.get("artifacts"):
+						artifacts = {**artifacts, **review["artifacts"]}
+					with log_path.open("a", encoding="utf-8") as logf:
+						logf.write(
+							"\nREVIEW_HOOKS: moved=%s group=%s update_id=%s errors=%s\n"
+							% (
+								review.get("moved"),
+								review.get("group_id"),
+								review.get("update_id"),
+								review.get("errors"),
+							)
+						)
+				except Exception as rev_exc:  # noqa: BLE001
+					sys.stderr.write(
+						"post_success_review error item=%s err=%s\n" % (item_id, rev_exc)
+					)
+					review = {"errors": [str(rev_exc)], "moved": False}
+
 			pushover(
-				"Local agent %s for Monday ticket %s (%ss)\n%s"
-				% (status, item_id, elapsed, ticket.get("title") or ""),
+				format_finish_pushover(
+					status=status,
+					ticket=ticket,
+					elapsed=elapsed,
+					artifacts=artifacts,
+					review=review if ok else None,
+				),
 				title="Monday→Agent FINISH",
 			)
 		except Exception as exc:  # noqa: BLE001
@@ -585,8 +891,10 @@ def spawn_agent_job(ticket: dict, *, dry_run: bool = False) -> dict:
 					logf.write("\nEXCEPTION: %s\n" % exc)
 			except OSError:
 				pass
+			# Failure: leave Monday item where it is; Pushover only
 			pushover(
-				"Local agent ERROR for Monday ticket %s: %s" % (item_id, exc),
+				"Local agent ERROR for Monday ticket %s: %s\n(left on current Monday group; not on main)"
+				% (item_id, exc),
 				title="Monday→Agent ERROR",
 			)
 
@@ -822,6 +1130,58 @@ def self_test() -> int:
 		parse_created_by("Created By: \nExpected Result:\nok") == "",
 		"parse_created_by empty same-line",
 		repr(parse_created_by("Created By: \nExpected Result:\nok")),
+	)
+
+	# 9) parse_agent_artifacts extracts branch + PR + handoff path
+	sample_log = (
+		"Created branch ticket/999777-demo-fix\n"
+		"Wrote docs/handoff/ticket-999777.md\n"
+		"Draft PR: https://github.com/example/Bors/pull/42\n"
+	)
+	arts = parse_agent_artifacts(sample_log, "999777")
+	_check(
+		arts.get("branch") == "ticket/999777-demo-fix",
+		"parse branch from log",
+		str(arts.get("branch")),
+	)
+	_check(
+		"pull/42" in (arts.get("pr_url") or ""),
+		"parse draft PR from log",
+		str(arts.get("pr_url")),
+	)
+	_check(
+		arts.get("handoff") == "docs/handoff/ticket-999777.md",
+		"parse handoff path from log",
+		str(arts.get("handoff")),
+	)
+
+	# 10) FINISH message mentions not on main
+	finish = format_finish_pushover(
+		status="OK",
+		ticket={"item_id": "999777", "title": "Demo"},
+		elapsed=12,
+		artifacts=arts,
+		review={"moved": True, "group_id": DEFAULT_PENDING_REVIEW_GROUP_ID},
+	)
+	_check("NOT on main" in finish, "finish pushover says not on main", finish[:200])
+	_check("ticket/999777-demo-fix" in finish, "finish pushover has branch", finish[:200])
+
+	# 11) Pending Review group id: env override wins
+	os.environ["MONDAY_PENDING_REVIEW_GROUP_ID"] = "group_from_env"
+	_check(
+		resolve_pending_review_group_id(DEFAULT_BOARD_ID) == "group_from_env",
+		"env overrides pending review group",
+		resolve_pending_review_group_id(DEFAULT_BOARD_ID),
+	)
+	del os.environ["MONDAY_PENDING_REVIEW_GROUP_ID"]
+
+	# 12) Default fallback when API unavailable / no match
+	# (resolve without override should return default or live title match)
+	gid = resolve_pending_review_group_id(DEFAULT_BOARD_ID)
+	_check(
+		bool(gid),
+		"resolve pending review group id",
+		"group_id=%s" % gid,
 	)
 
 	sys.stderr.write("self_test failures=%s token_present=%s\n" % (failures, bool(monday_api_token())))

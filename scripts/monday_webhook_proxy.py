@@ -5,6 +5,8 @@
 - On create_item / create_pulse: enrich via Monday API when possible, filter for
   Dylan Jones as the *filer* (Employee Name / Email / Created By — not the API
   token owner), then spawn local `agent` CLI headlessly. Non-Dylan → Pushover only.
+- On agent exit 0: job moves item to Monday **Pending Review** + posts handoff
+  update (branch / docs/handoff/ticket-<id>.md / draft PR). Never merges to main.
 - No Cursor Cloud Automations forward.
 
 Usage:
