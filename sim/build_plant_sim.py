@@ -38,7 +38,9 @@ def infer_dtype(path: str, dt: str | None) -> tuple[str, str]:
 
 
 # Per-EV plant profiles — status wall for Overview demo.
-# Evaporator Status enum: 0 Off, 1 Cooling, 2 Defrost, 3 Fault, 4 Manual (not shown), 5 Idle.
+# Evaporator Status enum: 0 Off, 1 Cooling, 2 Defrost, 3 Fault, 4 Manual (not shown), 5 Idle,
+# 6 1.PD (Pump Down), 7 2.HG (Hot Gas), 8 3.BLD (Bleed), 9 3.FD (Fan Delay).
+# Stages 6-9 display as DFT + stage line on StatusIndicator.
 # Comm Loss is NOT a Status int — EV-01 Status/Value has enabled=false (Bad quality) in
 # tag-definition Evaporators/udts.json. Do not set enabled=false on the UDT type.
 # Temp/SP lives only on device Temp (not _Root/Analog). Defaults: Evap 35°F, CT 85°F,
@@ -71,8 +73,9 @@ EV_PROFILES: dict[str, dict[str, str]] = {
         "CMD": "false",
         "Fault": "false",
     },
+    # EV-04: Defrost stage 1.PD (Pump Down)
     "EV-04": {
-        "Status": "2",
+        "Status": "6",
         "Temp": "realistic(32.0, 0.8, 0.05, 0.2, true)",
         "Pressure": "ramp(30.0, 40.0, 80, true)",
         "SPD_FBK": "0.0",
@@ -112,8 +115,9 @@ EV_PROFILES: dict[str, dict[str, str]] = {
         "CMD": "false",
         "Fault": "false",
     },
+    # EV-09: Defrost stage 2.HG (Hot Gas)
     "EV-09": {
-        "Status": "2",
+        "Status": "7",
         "Temp": "realistic(33.0, 0.8, 0.05, 0.2, true)",
         "Pressure": "ramp(28.0, 38.0, 78, true)",
         "SPD_FBK": "0.0",
@@ -153,8 +157,9 @@ EV_PROFILES: dict[str, dict[str, str]] = {
         "CMD": "false",
         "Fault": "false",
     },
+    # EV-14: Defrost stage 3.BLD (Bleed) — EV-16 uses 3.FD
     "EV-14": {
-        "Status": "2",
+        "Status": "8",
         "Temp": "realistic(34.0, 0.8, 0.05, 0.2, true)",
         "Pressure": "ramp(30.0, 40.0, 80, true)",
         "SPD_FBK": "0.0",
@@ -169,13 +174,14 @@ EV_PROFILES: dict[str, dict[str, str]] = {
         "CMD": "false",
         "Fault": "false",
     },
+    # EV-16: Defrost stage 3.FD (Fan Delay) — fault demo stays on EV-06/EV-11
     "EV-16": {
-        "Status": "3",
+        "Status": "9",
         "Temp": "realistic(31.0, 0.7, 0.04, 0.18, true)",
         "Pressure": "ramp(18.0, 28.0, 95, true)",
         "SPD_FBK": "0.0",
         "CMD": "false",
-        "Fault": "true",
+        "Fault": "false",
     },
 }
 
