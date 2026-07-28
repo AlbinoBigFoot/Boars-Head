@@ -200,7 +200,7 @@ def is_dylan_match(
 	reporter: Any = None,
 	extra: Any = None,
 ) -> tuple[bool, str]:
-	"""Return (matched, reason). Robust match for Dylan Jones / dylan.jones."""
+	"""Return (matched, reason). Match Dylan on identity fields only (not ticket body)."""
 	uid = _norm(user_id)
 	if uid and uid in allowed_user_ids():
 		return True, "user_id=%s" % uid
@@ -210,6 +210,18 @@ def is_dylan_match(
 		if needle and needle in blob:
 			return True, "substring=%r in %r" % (needle, blob[:200])
 	return False, "no match in %r" % (blob[:240] or "(empty)")
+
+
+def parse_created_by(description: str) -> str:
+	"""Extract Ticket Logger 'Created By: …' line from Description column.
+
+	Only the remainder of the same line counts — do not let whitespace span
+	newlines (that would steal 'Expected Result:' as the filer name).
+	"""
+	if not description:
+		return ""
+	m = re.search(r"(?im)^Created By:[ \t]*(.*)$", description)
+	return (m.group(1) or "").strip() if m else ""
 
 
 def extract_event(payload: dict) -> dict:
@@ -264,10 +276,20 @@ def column_text(item: dict, *column_ids: str) -> str:
 	return "\n".join(p for p in parts if p)
 
 
-def evaluate_ticket(payload: dict, *, enrich: bool = True) -> dict:
+def evaluate_ticket(
+	payload: dict,
+	*,
+	enrich: bool = True,
+	item_override: dict | None = None,
+) -> dict:
 	"""Parse webhook, optionally enrich via Monday API, apply Dylan filter.
 
-	Returns dict with keys: ok, skip, reason, ticket, item.
+	Ticket Logger creates items with Dylan's Monday API token, so webhook userId
+	and items.creator are always Dylan. Prefer Employee Name / Email / Created By
+	as the real filer; only fall back to Monday creator/userId when those are empty
+	(manual Monday UI creates).
+
+	Returns dict with keys: ok, skip, reason, ticket, item, notify.
 	"""
 	parsed = parse_create_item(payload)
 	if not parsed:
@@ -277,62 +299,154 @@ def evaluate_ticket(payload: dict, *, enrich: bool = True) -> dict:
 			"reason": "not a create_item/create_pulse event (or missing item id)",
 			"ticket": None,
 			"item": None,
+			"notify": False,
 		}
 
 	item: dict = {}
-	if enrich and monday_api_token():
+	enrich_failed = False
+	if item_override is not None:
+		item = item_override
+	elif enrich and monday_api_token():
 		try:
 			item = fetch_item(parsed["item_id"])
+			if not item:
+				enrich_failed = True
+				sys.stderr.write("monday enrich empty item=%s\n" % parsed["item_id"])
 		except Exception as exc:  # noqa: BLE001
+			enrich_failed = True
 			sys.stderr.write("monday enrich failed item=%s err=%s\n" % (parsed["item_id"], exc))
+	elif enrich and not monday_api_token():
+		enrich_failed = True
+		sys.stderr.write("monday enrich skipped: no API token item=%s\n" % parsed["item_id"])
 
 	creator = item.get("creator") if isinstance(item.get("creator"), dict) else {}
-	reporter = column_text(item, "text")  # Employee Name
+	reporter = column_text(item, "text")  # Employee Name (Ticket Logger filer)
 	email_col = column_text(item, "email")
 	description = column_text(item, "long_text7")
+	created_by = parse_created_by(description)
+
+	# Optional: first update creator (identity only — never body text)
+	update_creator: dict = {}
 	updates = item.get("updates") or []
-	update_blob = " ".join(
-		_norm(u.get("text_body") or u.get("body")) for u in updates if isinstance(u, dict)
-	)
+	for u in updates:
+		if isinstance(u, dict) and isinstance(u.get("creator"), dict):
+			update_creator = u["creator"]
+			break
 
-	user_id = parsed["user_id"] or _norm(creator.get("id"))
-	email = _norm(creator.get("email")) or email_col
-	name = parsed["user_name"] or _norm(creator.get("name"))
+	api_creator_id = _norm(creator.get("id")) or parsed["user_id"]
+	api_creator_email = _norm(creator.get("email"))
+	api_creator_name = _norm(creator.get("name")) or parsed["user_name"]
 
-	matched, reason = is_dylan_match(
-		user_id=user_id,
-		email=email,
-		name=name,
-		reporter=reporter,
-		extra=" ".join([description, update_blob, email_col, parsed["name"]]),
-	)
+	# Real filer signals (Ticket Logger). When any is set, ignore API creator id —
+	# that id is the token owner (Dylan), not the HMI reporter.
+	filer_name = reporter or created_by
+	filer_email = email_col
+	has_filer_signal = bool(filer_name or filer_email)
 
 	ticket = {
 		**parsed,
-		"creator_email": email,
-		"creator_name": name,
+		"creator_email": filer_email or api_creator_email,
+		"creator_name": filer_name or api_creator_name,
+		"api_creator_id": api_creator_id,
+		"api_creator_name": api_creator_name,
+		"api_creator_email": api_creator_email,
 		"reporter": reporter,
+		"created_by": created_by,
 		"description": description,
 		"url": _norm(item.get("url")),
 		"title": _norm(item.get("name")) or parsed["name"],
+		"filter_source": "",
 	}
+
+	# Cannot verify Ticket Logger filer without enrich — refuse agent (avoid false accept)
+	if enrich_failed and not has_filer_signal and item_override is None:
+		ticket["filter_source"] = "enrich_failed"
+		return {
+			"ok": True,
+			"skip": True,
+			"reason": "skip: enrich failed; cannot verify filer (API creator may be token owner)",
+			"ticket": ticket,
+			"item": item,
+			"notify": True,
+		}
+
+	if has_filer_signal:
+		ticket["filter_source"] = "filer_columns"
+		matched, reason = is_dylan_match(
+			user_id=None,  # never trust token-owner userId when filer columns exist
+			email=filer_email,
+			name=filer_name,
+			reporter=filer_name,
+			extra=None,
+		)
+	else:
+		# Manual Monday UI create (no Employee Name / Created By / Email)
+		ticket["filter_source"] = "monday_creator"
+		uc_id = _norm(update_creator.get("id"))
+		uc_email = _norm(update_creator.get("email"))
+		uc_name = _norm(update_creator.get("name"))
+		matched, reason = is_dylan_match(
+			user_id=api_creator_id or uc_id,
+			email=api_creator_email or uc_email,
+			name=api_creator_name or uc_name,
+			reporter=None,
+			extra=None,
+		)
+
+	sys.stderr.write(
+		"monday filter decision item=%s source=%s filer=%r email=%r api_creator=%s matched=%s detail=%s\n"
+		% (
+			parsed["item_id"],
+			ticket["filter_source"],
+			filer_name or "",
+			filer_email or "",
+			api_creator_id or "",
+			matched,
+			reason,
+		)
+	)
 
 	if not matched:
 		return {
 			"ok": True,
 			"skip": True,
-			"reason": "skip non-dylan creator: %s" % reason,
+			"reason": "skip non-dylan filer: %s" % reason,
 			"ticket": ticket,
 			"item": item,
+			"notify": True,
 		}
 
 	return {
 		"ok": True,
 		"skip": False,
-		"reason": "accept: %s" % reason,
+		"reason": "accept: %s (via %s)" % (reason, ticket["filter_source"]),
 		"ticket": ticket,
 		"item": item,
+		"notify": False,
 	}
+
+
+def notify_non_dylan_ticket(ticket: dict, reason: str = "") -> bool:
+	"""Pushover when a non-Dylan ticket is added (no agent spawn)."""
+	creator = (
+		ticket.get("reporter")
+		or ticket.get("created_by")
+		or ticket.get("creator_name")
+		or ticket.get("user_name")
+		or "unknown"
+	)
+	title = ticket.get("title") or ticket.get("name") or "(untitled)"
+	item_id = ticket.get("item_id") or ""
+	url = ticket.get("url") or ""
+	parts = [
+		"Monday ticket added by %s: %s" % (creator, title),
+		"id=%s" % item_id if item_id else "",
+		url,
+	]
+	if reason:
+		parts.append("(%s)" % reason)
+	msg = "\n".join(p for p in parts if p)
+	return pushover(msg, title="Monday ticket (no agent)")
 
 
 def build_agent_prompt(ticket: dict) -> str:
@@ -494,6 +608,8 @@ def handle_webhook_payload(payload: dict, *, dry_run: bool = False) -> dict:
 		)
 	)
 	if result.get("skip") or not result.get("ticket"):
+		if result.get("notify") and result.get("ticket"):
+			notify_non_dylan_ticket(result["ticket"], reason=str(result.get("reason") or ""))
 		return {
 			"ok": True,
 			"skipped": True,
@@ -511,57 +627,170 @@ def handle_webhook_payload(payload: dict, *, dry_run: bool = False) -> dict:
 	}
 
 
+def _synthetic_item(
+	*,
+	name: str,
+	reporter: str = "",
+	email: str = "",
+	description: str = "",
+	creator_id: str = "111292620",
+	creator_name: str = "Dylan Jones",
+	creator_email: str = "djones@oneshotautomation.net",
+	url: str = "",
+) -> dict:
+	cols = [
+		{"id": "text", "text": reporter, "type": "text"},
+	]
+	if email:
+		cols.append({"id": "email", "text": email, "type": "email"})
+	if description:
+		cols.append({"id": "long_text7", "text": description, "type": "long_text"})
+	return {
+		"id": "synthetic",
+		"name": name,
+		"url": url or "https://monday.com/boards/1/pulses/1",
+		"creator": {"id": creator_id, "name": creator_name, "email": creator_email},
+		"column_values": cols,
+		"updates": [],
+	}
+
+
 def self_test() -> int:
 	"""Dry-run filter checks without spawning the agent."""
 	load_dotenv()
 	failures = 0
 
-	# Accept Dylan by user id
+	def _check( Cond: bool, label: str, detail: str = "") -> None:
+		nonlocal failures
+		if Cond:
+			sys.stderr.write("PASS: %s — %s\n" % (label, detail))
+		else:
+			sys.stderr.write("FAIL: %s — %s\n" % (label, detail))
+			failures += 1
+
+	# 1) Manual Monday create by Dylan (no Employee Name) → accept via userId
 	r1 = evaluate_ticket(
 		{
 			"event": {
 				"type": "create_pulse",
 				"pulseId": "999001",
-				"pulseName": "Test EV-01 fan",
+				"pulseName": "Manual Dylan ticket",
 				"userId": 111292620,
 				"userName": "Dylan Jones",
 				"boardId": 18423731526,
 			}
 		},
 		enrich=False,
+		item_override=_synthetic_item(name="Manual Dylan ticket", reporter=""),
 	)
-	if r1["skip"]:
-		sys.stderr.write("FAIL: expected accept for userId 111292620\n")
-		failures += 1
-	else:
-		sys.stderr.write("PASS: accept userId — %s\n" % r1["reason"])
+	_check(not r1["skip"], "accept manual Dylan userId", r1["reason"])
 
-	# Accept by dylan.jones reporter-like name in pulse (no enrich)
+	# 2) Ticket Logger: Tylor Slack but API creator = Dylan token → REJECT
+	tylor_desc = (
+		"Tag Path: Evaporators/EV-01\n"
+		"Created By: Tylor Slack\n\n"
+		"Expected Result:\nmodes"
+	)
 	r2 = evaluate_ticket(
 		{
 			"event": {
 				"type": "create_pulse",
-				"pulseId": "999002",
-				"pulseName": "Created By: dylan.jones — CT water color",
-				"userId": 1,
-				"userName": "Someone Else",
+				"pulseId": "12652699666",
+				"pulseName": "Evaporators/EV-01/Status/Value",
+				"userId": 111292620,
+				"userName": "Dylan Jones",
 				"boardId": 18423731526,
 			}
 		},
 		enrich=False,
+		item_override=_synthetic_item(
+			name="Evaporators/EV-01/Status/Value",
+			reporter="Tylor Slack",
+			description=tylor_desc,
+			creator_id="111292620",
+			creator_name="Dylan Jones",
+			creator_email="djones@oneshotautomation.net",
+		),
 	)
-	if r2["skip"]:
-		sys.stderr.write("FAIL: expected accept for dylan.jones in pulseName\n")
-		failures += 1
-	else:
-		sys.stderr.write("PASS: accept dylan.jones substring — %s\n" % r2["reason"])
+	_check(
+		r2["skip"] and r2.get("notify"),
+		"reject Tylor despite Dylan API creator",
+		r2["reason"],
+	)
 
-	# Reject other user
+	# 3) Ticket Logger: Dylan Jones reporter → accept (ignore that userId also Dylan)
 	r3 = evaluate_ticket(
 		{
 			"event": {
 				"type": "create_pulse",
 				"pulseId": "999003",
+				"pulseName": "Dylan HMI ticket",
+				"userId": 111292620,
+				"userName": "Dylan Jones",
+				"boardId": 18423731526,
+			}
+		},
+		enrich=False,
+		item_override=_synthetic_item(
+			name="Dylan HMI ticket",
+			reporter="Dylan Jones",
+			email="djones@oneshotautomation.net",
+			description="Created By: Dylan Jones\nExpected Result:\nok",
+		),
+	)
+	_check(not r3["skip"], "accept Dylan Employee Name", r3["reason"])
+
+	# 4) Ticket Logger: dylan.jones email only → accept
+	r4 = evaluate_ticket(
+		{
+			"event": {
+				"type": "create_pulse",
+				"pulseId": "999004",
+				"pulseName": "Email-only Dylan",
+				"userId": 111292620,
+				"userName": "Dylan Jones",
+				"boardId": 18423731526,
+			}
+		},
+		enrich=False,
+		item_override=_synthetic_item(
+			name="Email-only Dylan",
+			reporter="",
+			email="dylan.jones@hbtech.com",
+			description="Created By: \nExpected Result:\nok",
+		),
+	)
+	_check(not r4["skip"], "accept Dylan email column", r4["reason"])
+
+	# 5) Title containing dylan.jones must NOT accept when filer is someone else
+	r5 = evaluate_ticket(
+		{
+			"event": {
+				"type": "create_pulse",
+				"pulseId": "999005",
+				"pulseName": "Created By: dylan.jones — fake",
+				"userId": 42,
+				"userName": "Alice Example",
+				"boardId": 18423731526,
+			}
+		},
+		enrich=False,
+		item_override=_synthetic_item(
+			name="Created By: dylan.jones — fake",
+			reporter="Alice Example",
+			creator_id="42",
+			creator_name="Alice Example",
+			creator_email="alice@example.com",
+		),
+	)
+	_check(r5["skip"], "reject title substring trap", r5["reason"])
+
+	# 6) Plain other user manual create → reject
+	r6 = evaluate_ticket(
+		{
+			"event": {
+				"type": "create_pulse",
+				"pulseId": "999006",
 				"pulseName": "Unrelated ticket",
 				"userId": 42,
 				"userName": "Alice Example",
@@ -569,20 +798,31 @@ def self_test() -> int:
 			}
 		},
 		enrich=False,
+		item_override=_synthetic_item(
+			name="Unrelated ticket",
+			reporter="",
+			creator_id="42",
+			creator_name="Alice Example",
+			creator_email="alice@example.com",
+		),
 	)
-	if not r3["skip"]:
-		sys.stderr.write("FAIL: expected skip for Alice\n")
-		failures += 1
-	else:
-		sys.stderr.write("PASS: skip other user — %s\n" % r3["reason"])
+	_check(r6["skip"], "reject other manual user", r6["reason"])
 
-	# Challenge-shape should not parse as create
-	r4 = parse_create_item({"challenge": "abc"})
-	if r4 is not None:
-		sys.stderr.write("FAIL: challenge should not parse as create\n")
-		failures += 1
-	else:
-		sys.stderr.write("PASS: challenge not treated as create\n")
+	# 7) Challenge-shape should not parse as create
+	r7 = parse_create_item({"challenge": "abc"})
+	_check(r7 is None, "challenge not treated as create", "")
+
+	# 8) parse_created_by — same-line only (not next heading)
+	_check(
+		parse_created_by(tylor_desc) == "Tylor Slack",
+		"parse_created_by Tylor",
+		parse_created_by(tylor_desc),
+	)
+	_check(
+		parse_created_by("Created By: \nExpected Result:\nok") == "",
+		"parse_created_by empty same-line",
+		repr(parse_created_by("Created By: \nExpected Result:\nok")),
+	)
 
 	sys.stderr.write("self_test failures=%s token_present=%s\n" % (failures, bool(monday_api_token())))
 	return 1 if failures else 0
