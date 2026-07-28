@@ -207,12 +207,23 @@ Perspective prefixes advanced stylesheet classes with `psc-`. When a binding set
 |----------------------------|--------|--------------|
 | `fan-spin` | Counter-clockwise rotate, 1.25s linear infinite | Fan blades when `Fan N/CMD/Value` is true |
 | `alarm-flash` | Opacity blink, 1s steps | DeviceAlarmIndicator when active **and** unacked |
-| `Refridgeration_STS` + `sts-COOLING` / `sts-IDLE` / … | ISA-101-ish status chip palette | Prefer when wiring StatusIndicator |
+| `device-comm-loss` | SVG fills → `--deviceFill-commLoss` (theme-invariant red) | Device `Graphic` when `Status/Value` quality ≠ Good |
+| `Refridgeration_STS` + `sts-COOLING` / `sts-IDLE` / `sts-COMMLOSS` / … | ISA-101-ish status chip palette | Prefer when wiring StatusIndicator |
 | `font-label` / `font-value` / `font-title` / `font-livedata` / … | Typography | Labels, values, live data, buttons |
 | `bg-header` / `bg-component` / `bg-container` / … | Background colors | Headers, cards, surfaces |
 | `container-card` / `container-button` / … | Borders, shadows, hover | Cards, buttons, chrome |
 
 Former Designer Style Classes (`Fonts/Label`, `Colors/Header`, `Container/Card`, …) were migrated into these CSS names; the Style Class folders were removed.
+
+### Comm Loss (quality-driven)
+
+**Signal:** `qualityOf(tag({tagPath} + '/Status/Value')) != 'Good'` (empty `tagPath` → not Comm Loss on graphics; StatusIndicator shows blank).
+
+No dedicated `CommFail` PLC bit required — Ignition tag quality covers OPC disconnect / Bad / Uncertain. Optional future: AND a CommFail bit if plant tags add one.
+
+**Priority:** Comm Loss > Fault > Manual > Defrost > Running/Idle/Off. Bad quality means Status enum bits cannot be trusted, so Comm Loss overrides FLT.
+
+**UI:** StatusIndicator text = `Comm Loss` (red); device Graphic class `device-comm-loss` fills the component red via `--deviceFill-commLoss` / `sts-COMMLOSS`.
 
 ---
 
