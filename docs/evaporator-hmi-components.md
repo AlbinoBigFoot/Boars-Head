@@ -142,7 +142,8 @@ Path: `views/03_Elements/`
 - **Params:** `tagPath` (…`/Temp/Value`), optional `spTagPath`, spacing helpers (`center` / `data` / `engUnit`)
 - If `spTagPath` is empty, derives sibling `…/Temp/SP` from `tagPath` ending in `/Value`
 - Embeds `_Assets/Numeric`; value text turns theme-invariant red when `Value > SP`
-- **SP lives only on device `Temp/SP`** (not on `_Root/Analog`). Defaults: Evap **35°F**, CT **85°F**, Pump **50 gpm**, ExhaustFan **1000 cfm**, Compressor **25 psi**
+- **SP lives only on device `Temp/SP`** (member name literally `SP`, sibling of `Temp/Value`). Do **not** also add `SP` on `_Root/Analog` — Ignition renames the device member to `SP_duplicate_1` and AnalogValue’s `…/Value` → `…/SP` derivation breaks.
+- Defaults: Evap **35°F**, CT **85°F**, Pump **50 gpm**, ExhaustFan **1000 cfm**, Compressor **25 psi**
 - Over-SP demos: **EV-02** (40), **CT-01** (90), **PMP-01** (60), **EFAN-01** (1200), **COMP-01** (35)
 
 ### DeviceAlarmIndicator — `01_Status/NotificationIcons/DeviceAlarmIndicator`
