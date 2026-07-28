@@ -3,7 +3,7 @@
   "params": {},
   "props": {
     "defaultSize": {
-      "height": 200,
+      "height": 240,
       "width": 220
     }
   },
@@ -126,6 +126,155 @@
         },
         "props": {
           "alignItems": "flex-start",
+          "style": {
+            "marginTop": "10px"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "Label"
+            },
+            "position": {
+              "basis": "52px",
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "classes": "font-label"
+              },
+              "text": "Access:"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "AccessIcon"
+            },
+            "position": {
+              "basis": "20px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "meta.visible": {
+                "binding": {
+                  "config": {
+                    "path": "session.props.auth.authenticated"
+                  },
+                  "type": "property"
+                }
+              },
+              "props.path": {
+                "binding": {
+                  "config": {
+                    "path": "session.custom.ReadOnly"
+                  },
+                  "transforms": [
+                    {
+                      "expression": "if({value}, 'material/lock', 'material/lock_open')",
+                      "type": "expression"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "color": "var(--icon)",
+              "path": "material/lock_open",
+              "style": {
+                "classes": "color-icon",
+                "height": "18px",
+                "marginLeft": "2%",
+                "width": "18px"
+              }
+            },
+            "type": "ia.display.icon"
+          },
+          {
+            "meta": {
+              "name": "AccessValue"
+            },
+            "position": {
+              "grow": 1
+            },
+            "propConfig": {
+              "meta.visible": {
+                "binding": {
+                  "config": {
+                    "path": "session.props.auth.authenticated"
+                  },
+                  "type": "property"
+                }
+              },
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "path": "session.custom.ReadOnly"
+                  },
+                  "transforms": [
+                    {
+                      "expression": "if({value}, 'Read', 'Write')",
+                      "type": "expression"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "classes": "font-value",
+                "marginLeft": "6px"
+              },
+              "text": "Write"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "AccessGuest"
+            },
+            "position": {
+              "grow": 1
+            },
+            "propConfig": {
+              "meta.visible": {
+                "binding": {
+                  "config": {
+                    "path": "session.props.auth.authenticated"
+                  },
+                  "transforms": [
+                    {
+                      "expression": "!{value}",
+                      "type": "expression"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "classes": "font-value",
+                "marginLeft": "2%"
+              },
+              "text": "(not logged in)"
+            },
+            "type": "ia.display.label"
+          }
+        ],
+        "meta": {
+          "name": "Access"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "alignItems": "center",
           "style": {
             "marginTop": "10px"
           }

@@ -1,5 +1,6 @@
 {
   "custom": {
+    "ReadOnly": false,
     "AdhocTrend": {
       "aggregate": "Average",
       "chartType": "line",
@@ -42,6 +43,14 @@
     }
   },
   "propConfig": {
+    "custom.ReadOnly": {
+      "binding": {
+        "config": {
+          "expression": "try(hasRole('ReadOnly',{session.props.auth.user.userName},{session.props.auth.idp}), false)"
+        },
+        "type": "expr"
+      }
+    },
     "custom.TicketLogAccess": {
       "binding": {
         "config": {
@@ -51,7 +60,7 @@
         },
         "transforms": [
           {
-            "expression": "try(hasRole(\u0027OneShot\u0027,{session.props.auth.user.userName},{session.props.auth.idp}), false) \u0026\u0026 coalesce({value}, false)",
+            "expression": "try(hasRole('OneShot',{session.props.auth.user.userName},{session.props.auth.idp}), false) && coalesce({value}, false)",
             "type": "expression"
           }
         ],

@@ -25,6 +25,148 @@
         "type": "ia.container.flex"
       },
       {
+        "children": [
+          {
+            "meta": {
+              "name": "Icon"
+            },
+            "position": {
+              "basis": "20px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.path": {
+                "binding": {
+                  "config": {
+                    "path": "session.custom.ReadOnly"
+                  },
+                  "transforms": [
+                    {
+                      "expression": "if({value}, 'material/lock', 'material/lock_open')",
+                      "type": "expression"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "color": "var(--icon)",
+              "path": "material/lock_open",
+              "style": {
+                "classes": "color-icon",
+                "height": "20px",
+                "width": "20px"
+              }
+            },
+            "type": "ia.display.icon"
+          }
+        ],
+        "meta": {
+          "name": "PermBadge",
+          "tooltip": {
+            "delay": 0,
+            "enabled": true,
+            "location": "bottom",
+            "style": {
+              "backgroundColor": "var(--surface-card)",
+              "borderColor": "var(--border)",
+              "borderRadius": 4,
+              "borderStyle": "solid",
+              "borderWidth": 1,
+              "color": "var(--text)",
+              "fontSize": "12px",
+              "padding": "6px 10px"
+            },
+            "sustain": 8000,
+            "tail": true,
+            "text": "Roles: (none)",
+            "width": "240px"
+          }
+        },
+        "events": {
+          "dom": {
+            "onClick": {
+              "config": {
+                "script": "\t# Touch / click: show roles without hover (phones/tablets)\n\tself.requestTooltip()"
+              },
+              "scope": "G",
+              "type": "script"
+            },
+            "onTouchStart": {
+              "config": {
+                "script": "\tself.requestTooltip()"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "position": {
+          "basis": "36px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "meta.visible": {
+            "binding": {
+              "config": {
+                "path": "session.props.auth.authenticated"
+              },
+              "type": "property"
+            }
+          },
+          "meta.tooltip.enabled": {
+            "binding": {
+              "config": {
+                "path": "session.props.auth.authenticated"
+              },
+              "type": "property"
+            }
+          },
+          "meta.tooltip.text": {
+            "binding": {
+              "config": {
+                "path": "session.props.auth.user.roles"
+              },
+              "transforms": [
+                {
+                  "code": "\troles = []\n\tif value is not None:\n\t\ttry:\n\t\t\troles = [str(r) for r in value]\n\t\texcept:\n\t\t\troles = [str(value)]\n\tif not roles:\n\t\treturn 'Roles: (none)'\n\treturn 'Roles: ' + ', '.join(roles)",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          },
+          "props.style.classes": {
+            "binding": {
+              "config": {
+                "path": "session.custom.ReadOnly"
+              },
+              "transforms": [
+                {
+                  "expression": "if({value}, 'perm-badge perm-badge-read', 'perm-badge perm-badge-write')",
+                  "type": "expression"
+                }
+              ],
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "alignItems": "center",
+          "justify": "center",
+          "style": {
+            "classes": "perm-badge perm-badge-write",
+            "cursor": "pointer",
+            "height": "36px",
+            "marginRight": "8px",
+            "overflow": "visible",
+            "width": "36px"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
         "meta": {
           "name": "User"
         },
