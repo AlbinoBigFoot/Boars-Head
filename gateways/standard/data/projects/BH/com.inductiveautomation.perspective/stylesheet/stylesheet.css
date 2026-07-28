@@ -720,6 +720,68 @@ body:has(.psc-animations-off) .container-fade-in {
 	white-space: pre-line;
 }
 
+/* Multi-plot stack: 1 plot fills area; 2+ share equal flex height */
+.psc-adhoc-trend-plots {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 0;
+	gap: 6px;
+	height: 100%;
+	min-height: 0;
+}
+
+.psc-adhoc-trend-plots > *,
+.psc-adhoc-trend-plots .ia_embeddedView,
+.psc-adhoc-trend-plots .view-parent {
+	flex: 1 1 0 !important;
+	min-height: 0 !important;
+	height: auto !important;
+}
+
+.psc-adhoc-trend-plot-slot {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 0;
+	min-height: 0;
+	height: 100%;
+	border-top: 1px solid var(--neutral-40, #c8c8c8);
+}
+
+.psc-adhoc-trend-plot-slot .psc-adhoc-trend-apex,
+.psc-adhoc-trend-plot-slot .ia_component {
+	flex: 1 1 0;
+	min-height: 0;
+}
+
+.psc-adhoc-trend-plot-header {
+	flex: 0 0 auto;
+	min-height: 28px;
+}
+
+.psc-adhoc-trend-plot-title {
+	font-weight: 600;
+}
+
+.psc-adhoc-trend-plot-toolbar {
+	flex: 0 0 auto;
+	min-height: 48px;
+	height: 48px;
+	overflow: visible;
+	gap: 8px;
+}
+
+.psc-adhoc-trend-add-plot-btn {
+	min-width: 36px !important;
+	width: 36px;
+	padding-left: 4px !important;
+	padding-right: 4px !important;
+}
+
+.psc-adhoc-trend-pen-plot-select {
+	min-width: 80px;
+	font-size: 12px;
+}
+
 /* Saved trends Load/Delete embedded view — avoid clipped labels */
 .psc-adhoc-trend-load-delete-row {
 	overflow: visible !important;
@@ -830,6 +892,20 @@ body:has(.psc-animations-off) .container-fade-in {
 .psc-adhoc-trend-toolbar-actions {
 	gap: 10px !important;
 	flex-wrap: nowrap !important;
+	overflow: visible !important;
+	min-height: 40px !important;
+	align-items: center !important;
+}
+
+.psc-adhoc-trend-toolbar-label {
+	overflow: visible !important;
+	white-space: nowrap !important;
+}
+
+.psc-adhoc-trend-chart-host {
+	display: flex;
+	flex-direction: column;
+	min-height: 0 !important;
 	overflow: visible !important;
 }
 
