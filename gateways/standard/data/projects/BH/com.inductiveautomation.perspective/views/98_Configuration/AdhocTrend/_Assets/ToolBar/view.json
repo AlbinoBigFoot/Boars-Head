@@ -5,7 +5,7 @@
   },
   "props": {
     "defaultSize": {
-      "height": 400,
+      "height": 320,
       "width": 300
     }
   },
@@ -758,13 +758,15 @@
     },
     "props": {
       "direction": "column",
-      "justify": "space-between",
+      "justify": "flex-start",
       "style": {
         "classes": "bg-container container-card adhoc-trend-config-toolbar",
         "padding": "2%",
-        "height": "100%",
-        "minHeight": 0
-      }
+        "height": "auto",
+        "minHeight": 0,
+        "overflow": "visible"
+      },
+      "gap": 8
     },
     "type": "ia.container.flex",
     "propConfig": {

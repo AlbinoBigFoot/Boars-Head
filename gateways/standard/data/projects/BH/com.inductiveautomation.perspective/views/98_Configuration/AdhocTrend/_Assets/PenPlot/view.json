@@ -16,8 +16,8 @@
   },
   "props": {
     "defaultSize": {
-      "height": 30,
-      "width": 140
+      "height": 28,
+      "width": 96
     }
   },
   "root": {
@@ -29,8 +29,19 @@
     "props": {
       "alignItems": "center",
       "style": {
-        "width": "100%"
-      }
+        "width": "100%",
+        "maxWidth": "96px",
+        "minWidth": 0,
+        "height": "28px",
+        "maxHeight": "28px",
+        "minHeight": "28px",
+        "overflow": "hidden",
+        "backgroundColor": "transparent",
+        "padding": "0px",
+        "margin": "0px",
+        "classes": "adhoc-trend-pen-plot-wrap"
+      },
+      "justify": "center"
     },
     "propConfig": {
       "meta.contextMenu.items": {
@@ -89,15 +100,32 @@
           "name": "Plot"
         },
         "position": {
-          "grow": 1
+          "grow": 0,
+          "shrink": 1,
+          "basis": "96px"
         },
         "props": {
           "allowCustomOptions": false,
           "style": {
-            "classes": "font-value",
-            "minWidth": 100
+            "classes": "font-value adhoc-trend-pen-plot-select",
+            "minWidth": 0,
+            "maxWidth": "96px",
+            "width": "96px",
+            "height": "28px",
+            "maxHeight": "28px",
+            "minHeight": "28px",
+            "overflow": "hidden",
+            "backgroundColor": "transparent",
+            "margin": "0px",
+            "padding": "0px"
           },
-          "options": []
+          "options": [],
+          "dropdownOptionStyle": {
+            "classes": "font-value",
+            "fontSize": "12px",
+            "padding": "4px 6px",
+            "minHeight": "24px"
+          }
         },
         "propConfig": {
           "props.options": {

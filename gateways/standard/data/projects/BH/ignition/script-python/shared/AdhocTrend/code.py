@@ -29,24 +29,112 @@ _ANALOG_DATATYPES = set(["float4", "float8", "double"])
 
 
 def default_plots():
-	"""A fresh session/config starts with a single analog plot."""
-	return [{"id": "p0", "title": "Plot 1", "kind": "analog"}]
+	"""A fresh session/config starts with a single analog plot titled Default."""
+	return [{"id": "p0", "title": "Default", "kind": "analog"}]
+
+
+def _default_plot_title(index):
+	"""Fallback title when a plot entry has no title. First plot is Default."""
+	if index == 0:
+		return "Default"
+	return "Plot %d" % (index + 1)
+
+
+try:
+	_STRING_TYPES = (basestring,)  # Jython 2.7
+except NameError:
+	_STRING_TYPES = (str, bytes)
+
+
+def _is_string(value):
+	return isinstance(value, _STRING_TYPES)
 
 
 def _as_list(value):
-	"""Best-effort coercion to a plain python list (tolerates Perspective wrappers)."""
+	"""Best-effort coercion to a plain python list (tolerates Perspective wrappers).
+
+	Never call list() on a plain string — list(\"#008FFB\") yields characters and
+	collapses every pen onto junk / the same Apex default color.
+	Prefer index access for Perspective ArrayWrappers when available.
+	"""
 	if value is None:
 		return []
+	if _is_string(value):
+		return [value] if value != "" else []
 	if isinstance(value, list):
 		return list(value)
 	if isinstance(value, tuple):
 		return list(value)
 	if isinstance(value, dict):
 		return []
+	# Perspective ArrayWrapper / Java List: prefer indexed reads
+	try:
+		n = len(value)
+		if n == 0:
+			return []
+		out = []
+		for i in range(n):
+			try:
+				out.append(value[i])
+			except Exception:
+				break
+		if len(out) == n:
+			return out
+	except Exception:
+		pass
 	try:
 		return list(value)
 	except Exception:
 		return [value]
+
+
+def palette_colors(colors):
+	"""Plain list of usable pen hex/rgb colors; never a single shared color.
+
+	Falls back to DEFAULT_COLORS when the input is missing, a lone hex string,
+	character-sploded junk from list(string), or otherwise unusable.
+	"""
+	# JSON-encoded array accidentally stored as a string
+	if _is_string(colors):
+		s = str(colors).strip()
+		if s.startswith("["):
+			try:
+				decoded = system.util.jsonDecode(s)
+				return palette_colors(decoded)
+			except Exception:
+				pass
+		# A single hex is not a palette — keep cycling the defaults
+		return list(DEFAULT_COLORS)
+
+	raw = _as_list(colors)
+	out = []
+	for c in raw:
+		if c in (None, ""):
+			continue
+		s = str(c).strip()
+		if s.startswith("#") and len(s) >= 4:
+			out.append(s)
+		elif s.lower().startswith("rgb"):
+			out.append(s)
+		elif s.startswith("var("):
+			out.append(s)
+	# list(\"#008FFB\") style junk → many 1-char tokens
+	if out and len(out) > 3 and all(len(c) <= 2 for c in out):
+		return list(DEFAULT_COLORS)
+	if len(out) < 1:
+		return list(DEFAULT_COLORS)
+	return out
+
+
+def color_for_index(colors, index):
+	"""Palette color for pen index (cycles; never collapses to one color)."""
+	palette = palette_colors(colors)
+	if not palette:
+		palette = list(DEFAULT_COLORS)
+	i = int(index) if index is not None else 0
+	if i < 0:
+		i = 0
+	return palette[i % len(palette)]
 
 
 def _cfg_get(cfg, key, default=None):
@@ -125,9 +213,12 @@ def plain_plots(cfg_or_plots):
 		pid = _plot_field(p, "id")
 		title = _plot_field(p, "title")
 		kind = _plot_field(p, "kind")
+		# Migrate legacy primary title "Plot 1" / "Analog" → Default
+		if i == 0 and title in ("Plot 1", "Analog"):
+			title = "Default"
 		out.append({
 			"id": str(pid) if pid not in (None, "") else ("p%d" % i),
-			"title": str(title) if title not in (None, "") else ("Plot %d" % (i + 1)),
+			"title": str(title) if title not in (None, "") else _default_plot_title(i),
 			"kind": str(kind) if kind not in (None, "") else "analog",
 		})
 	return out or default_plots()
@@ -149,26 +240,108 @@ def plain_pen_plots(cfg):
 	return out
 
 
+def plain_disabled_pens(cfg):
+	"""Plain dict[alias -> True] for pens the operator unchecked (On = off).
+
+	Accepts a full cfg, a bare dict of aliases, or a list of aliases.
+	"""
+	raw = _cfg_get(cfg, "disabledPens", None)
+	if raw is None and isinstance(cfg, (dict, list, tuple)):
+		# Caller passed the disabled map/list directly
+		if isinstance(cfg, (list, tuple)) or (hasattr(cfg, "items") and "disabledPens" not in cfg and "plots" not in cfg and "tags" not in cfg):
+			raw = cfg
+	out = {}
+	if raw is None:
+		return out
+	if isinstance(raw, (list, tuple)):
+		for k in raw:
+			if k not in (None, ""):
+				out[str(k)] = True
+		return out
+	try:
+		items = list(raw.items()) if hasattr(raw, "items") else []
+	except Exception:
+		items = []
+	for k, v in items:
+		if k in (None, ""):
+			continue
+		# Treat missing/falsey as enabled (omit); truthy = disabled
+		if v in (False, 0, "0", "false", "False", None, ""):
+			continue
+		out[str(k)] = True
+	return out
+
+
+def is_pen_enabled(disabled_pens, alias, tag_path=None):
+	"""True unless alias (or tag_path) is listed in disabledPens."""
+	if disabled_pens is None:
+		return True
+	# Prefer plain map when caller already normalized
+	if isinstance(disabled_pens, dict) and "disabledPens" not in disabled_pens and "plots" not in disabled_pens and "tags" not in disabled_pens:
+		dp = {}
+		for k, v in disabled_pens.items():
+			if k in (None, ""):
+				continue
+			if v not in (False, 0, "0", "false", "False", None, ""):
+				dp[str(k)] = True
+	else:
+		dp = plain_disabled_pens(disabled_pens)
+	if alias not in (None, "") and str(alias) in dp:
+		return False
+	if tag_path not in (None, "") and str(tag_path) in dp:
+		return False
+	return True
+
+
+def toggle_pen_enabled(cfg, alias_or_path):
+	"""Flip On/off for a pen. Returns plain disabledPens for session reassignment."""
+	normalize_config(cfg)
+	key = str(alias_or_path or "")
+	if "/" in key or "]" in key:
+		al = alias_for(key)
+		if al not in (None, ""):
+			key = al
+	dp = plain_disabled_pens(cfg)
+	if key in dp:
+		del dp[key]
+	elif key:
+		dp[key] = True
+	_cfg_set(cfg, "disabledPens", dp)
+	return dp
+
+
 def normalize_config(cfg):
-	"""Ensure cfg has a non-empty plots list and a penPlots dict. Safe to call repeatedly."""
+	"""Ensure cfg has plots, penPlots, disabledPens, and a usable colors palette."""
 	if cfg is None:
 		return cfg
 	_cfg_set(cfg, "plots", plain_plots(cfg))
 	_cfg_set(cfg, "penPlots", plain_pen_plots(cfg))
+	_cfg_set(cfg, "disabledPens", plain_disabled_pens(cfg))
+	# Repair a corrupted / single-color palette so pens stay distinct
+	_cfg_set(cfg, "colors", palette_colors(_cfg_get(cfg, "colors", None)))
 	return cfg
 
 
+# Trailing path leaves that are generic PLC/UDT property names, not the member.
+_GENERIC_LEAF_NAMES = set(["value", "cmd", "status"])
+
+
 def _path_segments(tag_path):
-	"""[provider]Folder/Instance/Member/Value -> ["Folder", "Instance", "Member"]."""
+	"""[provider]Folder/Instance/Member/Value -> ["Folder", "Instance", "Member"].
+
+	Strips the provider bracket and any trailing generic leaves
+	(Value / CMD / status, case-insensitive).
+	"""
 	if tag_path in (None, ""):
 		return []
 	path = str(tag_path)
 	if "]" in path:
 		path = path.split("]", 1)[1]
-	if path.endswith("/Value"):
-		path = path[: -len("/Value")]
 	path = path.strip("/")
-	return [s for s in path.split("/") if s != ""]
+	segments = [s for s in path.split("/") if s != ""]
+	while segments and segments[-1].lower() in _GENERIC_LEAF_NAMES:
+		segments.pop()
+	return segments
 
 
 def alias_for(tag_path):
@@ -184,43 +357,23 @@ def alias_for(tag_path):
 
 
 def pen_label(tag_path):
-	"""UDT-instance pen name.
+	"""Parent UDT instance + child member pen name.
 
-	.../<Type>/<Instance>/<Member>/Value -> <Instance> (three or more path
-	segments once the provider prefix and trailing /Value are stripped).
-	Shallower paths (a plain tag, or a tag with no Type folder above it)
-	have no separate instance folder, so the tag's own leaf name is used.
+	.../<Folder>/<Instance>/<Member>/<Value> -> "<Instance> <Member>"
+	Uses the two segments immediately above any stripped generic leaf
+	(Value/CMD/status). Shallower paths fall back to the remaining leaf.
 	"""
 	segments = _path_segments(tag_path)
 	if not segments:
 		return str(tag_path) if tag_path is not None else ""
-	if len(segments) >= 3:
-		return segments[-2]
-	return segments[-1]
-
-
-def _member_segment(tag_path):
-	segments = _path_segments(tag_path)
-	if not segments:
-		return ""
+	if len(segments) >= 2:
+		return "%s %s" % (segments[-2], segments[-1])
 	return segments[-1]
 
 
 def pen_labels(tag_paths):
-	"""pen_label() for each path, disambiguating duplicates with the member name."""
-	paths = list(tag_paths or [])
-	labels = [pen_label(p) for p in paths]
-	counts = {}
-	for label in labels:
-		counts[label] = counts.get(label, 0) + 1
-	out = []
-	for path, label in zip(paths, labels):
-		if counts.get(label, 0) > 1:
-			member = _member_segment(path)
-			out.append(("%s %s" % (label, member)) if member else label)
-		else:
-			out.append(label)
-	return out
+	"""pen_label() for each path (instance + member already included)."""
+	return [pen_label(p) for p in (tag_paths or [])]
 
 
 def tag_kind(tag_path):
@@ -239,15 +392,16 @@ def tag_kind(tag_path):
 	return "analog"
 
 
-def build_pens(tags, colors, pen_plots=None, plots=None):
+def build_pens(tags, colors, pen_plots=None, plots=None, disabled_pens=None):
 	"""Pens Dataset for the trend legend/table.
 
 	Optional pen_plots/plots fill the plotId column for the table dropdown.
 	pens_for_plot() still resolves membership live from penPlots.
+	disabled_pens (alias -> True) drives the On checkbox / chart visibility.
 	"""
 	rows = []
 	tags = _as_list(tags)
-	colors = _as_list(colors) or list(DEFAULT_COLORS)
+	palette = palette_colors(colors)
 	if not tags:
 		return system.dataset.toDataSet(PEN_HEADERS, rows)
 
@@ -259,12 +413,18 @@ def build_pens(tags, colors, pen_plots=None, plots=None):
 	elif plots is not None:
 		# allow callers to pass a full cfg as pen_plots mistakenly — ignore
 		pp = {}
+	dp = {}
+	if disabled_pens is not None:
+		if isinstance(disabled_pens, dict) and (
+			"disabledPens" in disabled_pens or "plots" in disabled_pens or "tags" in disabled_pens or "penPlots" in disabled_pens
+		):
+			dp = plain_disabled_pens(disabled_pens)
+		else:
+			dp = plain_disabled_pens({"disabledPens": disabled_pens})
 
-	paths = [str(t) for t in tags if t not in (None, "")]
-	labels = pen_labels(paths)
-	label_by_path = dict(zip(paths, labels))
-
-	for i, tag in enumerate(tags):
+	# Stable pen index among non-empty tags (skip blanks without shifting colors)
+	pen_index = 0
+	for tag in tags:
 		if tag in (None, ""):
 			continue
 		tag = str(tag)
@@ -275,9 +435,10 @@ def build_pens(tags, colors, pen_plots=None, plots=None):
 			eng_unit = qv.value if qv.value not in (None, "") else ""
 		except Exception:
 			eng_unit = ""
-		pen_name = label_by_path.get(tag, pen_label(tag))
+		# Always derive display name from path so Clear+re-add and live rebuild match
+		pen_name = pen_label(tag)
 		alias = alias_for(tag)
-		pen_color = colors[i] if i < len(colors) else colors[0]
+		pen_color = color_for_index(palette, pen_index)
 		assigned = first_id
 		if pp:
 			if alias in pp:
@@ -286,7 +447,9 @@ def build_pens(tags, colors, pen_plots=None, plots=None):
 				assigned = pp[tag]
 			elif hist_path in pp:
 				assigned = pp[hist_path]
-		rows.append([True, hist_path, pen_name, alias, eng_unit, pen_color, assigned, ""])
+		enabled = is_pen_enabled(dp, alias, hist_path)
+		rows.append([enabled, hist_path, pen_name, alias, eng_unit, pen_color, assigned, ""])
+		pen_index += 1
 	return system.dataset.toDataSet(PEN_HEADERS, rows)
 
 
@@ -371,6 +534,34 @@ def resolve_column(dataset, alias):
 	return None
 
 
+def series_color_list(pens):
+	"""Hex list for ApexCharts options.colors (parallel to enabled series order)."""
+	out = []
+	if pens is None:
+		return out
+	try:
+		if pens.getRowCount() <= 0:
+			return out
+	except Exception:
+		return out
+	for pen in system.dataset.toPyDataSet(pens):
+		try:
+			if not pen["penEnabled"]:
+				continue
+		except Exception:
+			continue
+		try:
+			color = pen["penColor"]
+		except Exception:
+			color = None
+		if color in (None, ""):
+			color = color_for_index(DEFAULT_COLORS, len(out))
+		else:
+			color = str(color)
+		out.append(color)
+	return out
+
+
 def build_series(dataset, pens):
 	"""Kyvis ApexCharts series list for a single plot's enabled pens."""
 	series = []
@@ -382,6 +573,7 @@ def build_series(dataset, pens):
 	except Exception:
 		return series
 
+	series_i = 0
 	for pen in system.dataset.toPyDataSet(pens):
 		try:
 			if not pen["penEnabled"]:
@@ -399,18 +591,30 @@ def build_series(dataset, pens):
 			continue
 		cols = ["t_stamp", col]
 		try:
-			name = pen["penName"] or pen["alias"]
+			name = pen["penName"]
 		except Exception:
+			name = None
+		if name in (None, ""):
+			try:
+				name = pen_label(pen["tagPath"])
+			except Exception:
+				name = None
+		if name in (None, ""):
 			name = alias
 		try:
 			color = pen["penColor"]
 		except Exception:
 			color = None
+		if color in (None, ""):
+			color = color_for_index(DEFAULT_COLORS, series_i)
+		else:
+			color = str(color)
 		try:
 			data = system.dataset.filterColumns(dataset, cols)
 		except Exception:
 			continue
-		series.append({"name": name, "color": color, "data": data})
+		series.append({"name": str(name), "color": color, "data": data})
+		series_i += 1
 	return series
 
 
@@ -454,9 +658,10 @@ def add_plot(cfg, title=None, kind="analog"):
 	plots = plain_plots(cfg)
 	pid = _new_plot_id(plots)
 	n = len(plots) + 1
+	name = str(title).strip() if title not in (None, "") else ""
 	plots.append({
 		"id": pid,
-		"title": title or ("Plot %d" % n),
+		"title": name or ("Plot %d" % n),
 		"kind": kind or "analog",
 	})
 	_cfg_set(cfg, "plots", plots)
@@ -469,21 +674,140 @@ def apply_add_plot(cfg, title=None, kind="analog"):
 	return plain_plots(cfg)
 
 
+POPUP_NAME_PLOT = "AdhocTrendNamePlot"
+VIEW_NAME_PLOT = "98_Configuration/AdhocTrend/_Assets/NamePlot"
+POPUP_REMOVE_PLOT = "AdhocTrendRemovePlot"
+VIEW_REMOVE_PLOT = "98_Configuration/AdhocTrend/_Assets/RemovePlot"
+DEFAULT_PLOT_ID = "p0"
+
+
+def prompt_add_plot():
+	"""Open the NamePlot popup; Confirm creates the plot, Cancel does nothing."""
+	system.perspective.openPopup(
+		id=POPUP_NAME_PLOT,
+		view=VIEW_NAME_PLOT,
+		params={},
+		size={"width": 360, "height": 200},
+		draggable=True,
+		resizable=False,
+		showCloseIcon=False,
+		modal=True,
+		overlayDismiss=False,
+		viewportBound=True,
+	)
+
+
+def confirm_add_plot(cfg, title):
+	"""Create an empty named plot after NamePlot Confirm.
+
+	Returns (ok, message, plots). On failure plots is the current plain list
+	(unchanged). On success plots is the updated plain list for session reassignment.
+	"""
+	name = str(title).strip() if title not in (None, "") else ""
+	if not name:
+		return False, "Enter a plot name.", plain_plots(cfg)
+	plots = apply_add_plot(cfg, title=name)
+	return True, "", plots
+
+
+def close_name_plot_popup():
+	"""Close the NamePlot popup if open."""
+	try:
+		system.perspective.closePopup(POPUP_NAME_PLOT)
+	except Exception:
+		pass
+
+
+def removable_plots(cfg):
+	"""Non-Default plots (everything except id p0). Default is never removable."""
+	out = []
+	for p in plain_plots(cfg):
+		if str(p.get("id")) == DEFAULT_PLOT_ID:
+			continue
+		out.append(p)
+	return out
+
+
 def remove_plot(cfg, plot_id):
-	"""Remove an empty plot. Returns (ok, message)."""
+	"""Remove a non-Default plot; move its pens to Default.
+
+	Returns (ok, message, plots, penPlots). Never removes p0/Default.
+	"""
 	normalize_config(cfg)
+	plot_id = str(plot_id or "")
 	plots = plain_plots(cfg)
-	if len(plots) <= 1:
-		return False, "Keep at least one plot."
-	plot_id = str(plot_id)
 	pen_plots = plain_pen_plots(cfg)
-	if plot_id in pen_plots.values():
-		return False, "Move or remove pens from this plot before deleting it."
+	if plot_id == DEFAULT_PLOT_ID:
+		return False, "Cannot remove the Default plot.", plots, pen_plots
+	if not any(str(p.get("id")) == plot_id for p in plots):
+		return False, "Plot not found.", plots, pen_plots
+	# Reassign pens that lived on the removed plot to Default
+	for k, v in list(pen_plots.items()):
+		if str(v) == plot_id:
+			pen_plots[k] = DEFAULT_PLOT_ID
 	plots = [p for p in plots if str(p.get("id")) != plot_id]
 	if not plots:
 		plots = default_plots()
+	# Ensure Default still exists
+	if not any(str(p.get("id")) == DEFAULT_PLOT_ID for p in plots):
+		plots = default_plots() + plots
 	_cfg_set(cfg, "plots", plots)
-	return True, ""
+	_cfg_set(cfg, "penPlots", pen_plots)
+	return True, "", plots, pen_plots
+
+
+def prompt_remove_plot(cfg):
+	"""Toolbar minus: auto-remove sole non-Default plot, or open picker.
+
+	Returns (action, message, plots, penPlots) where action is one of:
+	  'none'    — only Default exists (soft no-op)
+	  'removed' — auto-removed the only removable plot
+	  'prompt'  — opened RemovePlot popup for the operator to choose
+	  'error'   — remove failed
+	"""
+	normalize_config(cfg)
+	removable = removable_plots(cfg)
+	plots = plain_plots(cfg)
+	pen_plots = plain_pen_plots(cfg)
+	if len(removable) == 0:
+		return "none", "No removable plots. Default cannot be removed.", plots, pen_plots
+	if len(removable) == 1:
+		ok, msg, plots, pen_plots = remove_plot(cfg, removable[0]["id"])
+		return ("removed" if ok else "error"), msg, plots, pen_plots
+	system.perspective.openPopup(
+		id=POPUP_REMOVE_PLOT,
+		view=VIEW_REMOVE_PLOT,
+		params={},
+		size={"width": 360, "height": 220},
+		draggable=True,
+		resizable=False,
+		showCloseIcon=False,
+		modal=True,
+		overlayDismiss=False,
+		viewportBound=True,
+	)
+	return "prompt", "", plots, pen_plots
+
+
+def confirm_remove_plot(cfg, plot_id):
+	"""Remove the chosen plot after RemovePlot Confirm.
+
+	Returns (ok, message, plots, penPlots).
+	"""
+	return remove_plot(cfg, plot_id)
+
+
+def close_remove_plot_popup():
+	"""Close the RemovePlot popup if open."""
+	try:
+		system.perspective.closePopup(POPUP_REMOVE_PLOT)
+	except Exception:
+		pass
+
+
+def remove_plot_dropdown_options(cfg):
+	"""Dropdown options for RemovePlot popup (non-Default only)."""
+	return plot_dropdown_options(removable_plots(cfg))
 
 
 def move_pen(cfg, tag_or_alias, plot_id):
@@ -569,3 +893,43 @@ def plot_options_overrides(kind):
 	if kind == "discrete":
 		return {"stroke": {"curve": "stepline"}, "yaxis": {"decimalsInFloat": 0}}
 	return {}
+
+
+# Layout chrome used to compute ApexCharts pixel height when Pens collapses.
+# CSS flex alone fails: Plot defaultSize (480) caps the embed max-height, and
+# ApexCharts keeps a fixed canvas px height until chart.height is a new number.
+_FACEPLATE_TOTAL = 780
+_FACEPLATE_HEADER = 40
+_FACEPLATE_PAD = 8
+_PAGE_HEADER = 48
+_TREND_TOOLBAR = 58
+_PENS_COLLAPSED = 32
+_PENS_EXPANDED_FACEPLATE = 200
+_PENS_EXPANDED_PAGE = 188
+_PLOT_TITLE_ROW = 22
+
+
+def plot_chart_height(faceplate_mode=False, pens_collapsed=False, plot_count=1, viewport_height=None):
+	"""Pixel height for one plot's ApexCharts canvas.
+
+	Pens collapse frees ~156–168px above the docked header; without an explicit
+	pixel chart.height ApexCharts stays at its initial canvas size and leaves a
+	gray band. Returns an int so Perspective/ApexCharts remounts on toggle.
+	"""
+	n = max(1, int(plot_count or 1))
+	collapsed = bool(pens_collapsed)
+	if faceplate_mode:
+		body = _FACEPLATE_TOTAL - _FACEPLATE_HEADER - _FACEPLATE_PAD
+		pens = _PENS_COLLAPSED if collapsed else _PENS_EXPANDED_FACEPLATE
+	else:
+		try:
+			vh = int(viewport_height) if viewport_height not in (None, "") else 900
+		except Exception:
+			vh = 900
+		if vh < 400:
+			vh = 900
+		body = vh - _PAGE_HEADER
+		pens = _PENS_COLLAPSED if collapsed else _PENS_EXPANDED_PAGE
+	plots_area = max(120, body - _TREND_TOOLBAR - pens)
+	per = plots_area // n
+	return max(120, int(per - _PLOT_TITLE_ROW))
