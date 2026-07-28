@@ -49,7 +49,7 @@
     "custom.values.running": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '' || qualityOf(tag({view.params.tagPath} + '/Status/Value')) != 'Good',\n\tfalse,\n\ttag({view.params.tagPath} + '/Status/Value') = 1)"
+          "expression": "if({view.params.tagPath} = '' || isBad(tag({view.params.tagPath} + '/Status/Value')),\n\tfalse,\n\ttag({view.params.tagPath} + '/Status/Value') = 1)"
         },
         "type": "expr"
       }
@@ -65,7 +65,7 @@
     "custom.values.commLoss": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '',\n\tfalse,\n\tqualityOf(tag({view.params.tagPath} + '/Status/Value')) != 'Good')"
+          "expression": "if({view.params.tagPath} = '',\n\tfalse,\n\tisBad(tag({view.params.tagPath} + '/Status/Value')))"
         },
         "type": "expr"
       }

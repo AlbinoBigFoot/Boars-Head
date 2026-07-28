@@ -33,7 +33,7 @@
     "custom.values.running": {
       "binding": {
         "config": {
-          "expression": "if(qualityOf(tag({view.params.tagPath} + '/Fan 1/CMD/Value')) = 'Good',\n\ttag({view.params.tagPath} + '/Fan 1/CMD/Value'),\n\tnull)"
+          "expression": "if(isGood(tag({view.params.tagPath} + '/Fan 1/CMD/Value')),\n\ttag({view.params.tagPath} + '/Fan 1/CMD/Value'),\n\tnull)"
         },
         "type": "expr"
       }
@@ -65,7 +65,7 @@
     "custom.values.commLoss": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '',\n\tfalse,\n\tqualityOf(tag({view.params.tagPath} + '/Status/Value')) != 'Good')"
+          "expression": "if({view.params.tagPath} = '',\n\tfalse,\n\tisBad(tag({view.params.tagPath} + '/Status/Value')))"
         },
         "type": "expr"
       }

@@ -61,7 +61,7 @@
     "value": 3
   },
   "params": {
-    "tagPath": "[default]Evaporators/EV-001/Status/Value"
+    "tagPath": "[default]Evaporators/EV-01/Status/Value"
   },
   "propConfig": {
     "custom.label": {
@@ -71,7 +71,7 @@
         },
         "transforms": [
           {
-            "code": "\tif value is None:\n\t\t# Priority: Comm Loss (quality not Good) wins over Fault/other Status enum\n\t\t# Bad quality means PLC bits cannot be trusted.\n\t\ttag_path = ''\n\t\ttry:\n\t\t\ttag_path = self.view.params.tagPath or ''\n\t\texcept:\n\t\t\tpass\n\t\tif str(tag_path).strip() == '':\n\t\t\treturn ''\n\t\tq = ''\n\t\ttry:\n\t\t\tq = str(self.custom.quality or '')\n\t\texcept:\n\t\t\tpass\n\t\tif not q.startswith('Good'):\n\t\t\treturn 'Comm Loss'\n\t\treturn ''\n\ttry:\n\t\tv = int(value)\n\texcept:\n\t\treturn ''\n\t# Prefer short display codes (Cooling = CLG, never RUN)\n\tcodes = {0: 'STOP', 1: 'CLG', 2: 'DFT', 3: 'FLT', 4: 'MAN', 5: 'IDLE'}\n\tstates = self.custom.states\n\tif states:\n\t\ttry:\n\t\t\tfor s in states:\n\t\t\t\tsv = s['value'] if hasattr(s, '__getitem__') else getattr(s, 'value', None)\n\t\t\t\tsl = s['label'] if hasattr(s, '__getitem__') else getattr(s, 'label', None)\n\t\t\t\tif sv is not None and int(sv) == v and sl not in (None, ''):\n\t\t\t\t\tkey = str(sl).strip().upper()\n\t\t\t\t\talias = {\n\t\t\t\t\t\t'OFF': 'STOP', 'STOP': 'STOP', 'STOPPED': 'STOP',\n\t\t\t\t\t\t'COOLING': 'CLG', 'CLG': 'CLG',\n\t\t\t\t\t\t'DEFROST': 'DFT', 'DFT': 'DFT',\n\t\t\t\t\t\t'FAULT': 'FLT', 'ALARM': 'FLT', 'FLT': 'FLT',\n\t\t\t\t\t\t'MANUAL': 'MAN', 'MAN': 'MAN',\n\t\t\t\t\t\t'IDLE': 'IDLE', 'STANDBY': 'IDLE', 'IDL': 'IDLE',\n\t\t\t\t\t\t'RUN': 'RUN', 'RUNNING': 'RUN', 'ON': 'RUN',\n\t\t\t\t\t\t'COMM LOSS': 'Comm Loss', 'COMMLOSS': 'Comm Loss', 'COMM': 'Comm Loss'\n\t\t\t\t\t}\n\t\t\t\t\t# If tag metadata still says Run for cooling value, force CLG for value 1\n\t\t\t\t\tif v == 1:\n\t\t\t\t\t\treturn 'CLG'\n\t\t\t\t\treturn alias.get(key, key)\n\t\texcept:\n\t\t\tpass\n\treturn codes.get(v, '')\n",
+            "code": "\tif value is None:\n\t\t# Priority: Comm Loss (Bad quality) wins over Fault/other Status enum\n\t\t# Bad quality means PLC bits cannot be trusted.\n\t\ttag_path = ''\n\t\ttry:\n\t\t\ttag_path = self.view.params.tagPath or ''\n\t\texcept:\n\t\t\tpass\n\t\tif str(tag_path).strip() == '':\n\t\t\treturn ''\n\t\tq = ''\n\t\ttry:\n\t\t\tq = str(self.custom.quality or '')\n\t\texcept:\n\t\t\tpass\n\t\tif q.startswith('Bad'):\n\t\t\treturn 'Comm Loss'\n\t\treturn ''\n\ttry:\n\t\tv = int(value)\n\texcept:\n\t\treturn ''\n\t# Prefer short display codes (Cooling = CLG, never RUN)\n\tcodes = {0: 'STOP', 1: 'CLG', 2: 'DFT', 3: 'FLT', 4: 'MAN', 5: 'IDLE'}\n\tstates = self.custom.states\n\tif states:\n\t\ttry:\n\t\t\tfor s in states:\n\t\t\t\tsv = s['value'] if hasattr(s, '__getitem__') else getattr(s, 'value', None)\n\t\t\t\tsl = s['label'] if hasattr(s, '__getitem__') else getattr(s, 'label', None)\n\t\t\t\tif sv is not None and int(sv) == v and sl not in (None, ''):\n\t\t\t\t\tkey = str(sl).strip().upper()\n\t\t\t\t\talias = {\n\t\t\t\t\t\t'OFF': 'STOP', 'STOP': 'STOP', 'STOPPED': 'STOP',\n\t\t\t\t\t\t'COOLING': 'CLG', 'CLG': 'CLG',\n\t\t\t\t\t\t'DEFROST': 'DFT', 'DFT': 'DFT',\n\t\t\t\t\t\t'FAULT': 'FLT', 'ALARM': 'FLT', 'FLT': 'FLT',\n\t\t\t\t\t\t'MANUAL': 'MAN', 'MAN': 'MAN',\n\t\t\t\t\t\t'IDLE': 'IDLE', 'STANDBY': 'IDLE', 'IDL': 'IDLE',\n\t\t\t\t\t\t'RUN': 'RUN', 'RUNNING': 'RUN', 'ON': 'RUN',\n\t\t\t\t\t\t'COMM LOSS': 'Comm Loss', 'COMMLOSS': 'Comm Loss', 'COMM': 'Comm Loss'\n\t\t\t\t\t}\n\t\t\t\t\t# If tag metadata still says Run for cooling value, force CLG for value 1\n\t\t\t\t\tif v == 1:\n\t\t\t\t\t\treturn 'CLG'\n\t\t\t\t\treturn alias.get(key, key)\n\t\texcept:\n\t\t\tpass\n\treturn codes.get(v, '')\n",
             "type": "script"
           }
         ],
@@ -111,7 +111,7 @@
     "custom.states": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '' || qualityOf(tag({view.params.tagPath})) != 'Good',\n\tnull,\n\tif(isBad(tag({view.params.tagPath} + '.Metadata')),\n\t\tnull,\n\t\ttag({view.params.tagPath} + '.Metadata')['states']))"
+          "expression": "if({view.params.tagPath} = '' || isBad(tag({view.params.tagPath})),\n\tnull,\n\tif(isBad(tag({view.params.tagPath} + '.Metadata')),\n\t\tnull,\n\t\ttag({view.params.tagPath} + '.Metadata')['states']))"
         },
         "type": "expr"
       },
@@ -120,7 +120,7 @@
     "custom.value": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '' || qualityOf(tag({view.params.tagPath})) != 'Good',\n\tnull,\n\ttag({view.params.tagPath}))"
+          "expression": "if({view.params.tagPath} = '' || isBad(tag({view.params.tagPath})),\n\tnull,\n\ttag({view.params.tagPath}))"
         },
         "type": "expr"
       },
