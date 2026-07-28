@@ -100,7 +100,7 @@ Top → bottom:
 | Faceplate affordance | `ia.display.icon` `material/fullscreen` | Right side; only meaningful when `faceplate` is set |
 | Fan SVG(s) | Drawing / icon group | Spin when that fan’s `CMD/Value` is true |
 | `AnalogValue` | Embedded view | Temperature |
-| `StatusIndicator` | Embedded view | COOL / OFF / DEF / FLT / IDLE / Comm Loss |
+| `StatusIndicator` | Embedded view | Cooling / Off / Defrost / Fault / Idle / Comm Loss |
 
 ### Key bindings (pattern)
 
@@ -113,7 +113,7 @@ Top → bottom:
 | Alarm | DeviceAlarmIndicator `params.tagPath` = device `tagPath` |
 | Click | `system.perspective.openPopup(...)` → `01_Popups/00_Faceplates/{faceplate}` with `{ tagPath }`, popup id like `ev-fp-{tagPath}` |
 
-Cooling (**COOL**) is a **status**, not “running.” Running is communicated only by **spinning fans** (CMD on).
+Cooling is a **status**, not “running.” Running is communicated only by **spinning fans** (CMD on).
 
 ---
 
@@ -125,17 +125,18 @@ Path: `views/03_Elements/`
 
 - **Param:** `tagPath` → full path to `.../Status/Value`
 - Reads the value and optional `.Metadata.states`
-- Maps demo integers to codes and colors (inline style, not the STS CSS classes):
+- Maps demo integers to full-word labels and colors (inline style, not the STS CSS classes):
 
-| Value | Code | Color (approx) |
-|------:|------|----------------|
-| 0 | OFF | gray `#9E9E9E` |
-| 1 | COOL | blue `#1E88E5` |
-| 2 | DEF | pink `#EC407A` |
-| 3 | FLT | red `#C62828` |
-| 5 | IDLE | green `#228B22` |
+| Value | Label | Color (approx) |
+|------:|-------|----------------|
+| 0 | Off | gray `#9E9E9E` |
+| 1 | Cooling | blue `#1E88E5` |
+| 2 | Defrost | pink `#EC407A` |
+| 3 | Fault | red `#C62828` |
+| 5 | Idle | green `#228B22` |
+| *(Bad quality)* | Comm Loss | red `#C62828` |
 
-**Important:** status `1` is **COOL** (cooling), not green RUN. Fan spin is separate. Enum value `4` (Manual) is **not displayed** as a status code (never Operator). Defrost phase codes (`1.PD` / `2.HG` / `3.BLD` / `3.FD`) are not shown — collapse to **DEF**.
+**Important:** status `1` is **Cooling**, not green RUN. Fan spin is separate. Enum value `4` (Manual) is **not displayed** as a status label (never Operator). Defrost phase codes (`1.PD` / `2.HG` / `3.BLD` / `3.FD`) are not shown — collapse to **Defrost**.
 
 ### AnalogValue — `01_Status/AnalogValue`
 
@@ -371,7 +372,7 @@ Changing a child view updates every parent that embeds it — that is why Status
 
 | Symptom | Check |
 |---------|--------|
-| No COOL / wrong green “RUN” | StatusIndicator mapping; status value should be `1` for cooling |
+| No Cooling / wrong green “RUN” | StatusIndicator mapping; status value should be `1` for cooling |
 | Fans not spinning | `Fan N/CMD/Value` true? Advanced stylesheet loaded? Class name `fan-spin`? |
 | Alarm badge missing | `_Alarms/_Active` memory true? Priority 1–4? Equipment icons registered + gateway restarted? |
 | Badge solid, never blinks | `_Unack` must be true for CSS flash; for table icons, `_Flash` / `_Config/Flash` |
