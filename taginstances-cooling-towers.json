@@ -361,6 +361,119 @@
           ]
         }
       ]
+    },
+    {
+      "name": "CT-04",
+      "typeId": "Devices/CoolingTower",
+      "tagType": "UdtInstance",
+      "metadata": {
+        "shortDescription": "CT-04",
+        "longDescription": "Cooling Tower 4"
+      },
+      "tags": [
+        {
+          "name": "Status",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "metadata": {
+                "shortDescription": "status",
+                "longDescription": "cooling tower status",
+                "states": [
+                  {
+                    "label": "Off",
+                    "value": 0
+                  },
+                  {
+                    "label": "Run",
+                    "value": 1
+                  },
+                  {
+                    "label": "Fault",
+                    "value": 2
+                  },
+                  {
+                    "label": "Manual",
+                    "value": 3
+                  },
+                  {
+                    "label": "Idle",
+                    "value": 4
+                  }
+                ]
+              },
+              "dataType": "Int4",
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "valueSource": "opc",
+              "opcServer": "Ignition OPC UA Server",
+              "opcItemPath": "ns=1;s=[Sim]CoolingTowers/CT-04/Status/Value",
+              "historyEnabled": true,
+              "historyProvider": "historian",
+              "sampleMode": "OnChange",
+              "historicalDeadband": 0.01,
+              "historicalDeadbandMode": "Absolute",
+              "historicalDeadbandStyle": "Discrete"
+            }
+          ]
+        },
+        {
+          "name": "Temp",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "engUnit": "\u00b0F",
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "valueSource": "opc",
+              "dataType": "Float4",
+              "opcServer": "Ignition OPC UA Server",
+              "opcItemPath": "ns=1;s=[Sim]CoolingTowers/CT-04/Temp/Value",
+              "historyEnabled": true,
+              "historyProvider": "historian",
+              "sampleMode": "OnChange",
+              "historicalDeadband": 0.01,
+              "historicalDeadbandMode": "Absolute",
+              "historicalDeadbandStyle": "Discrete"
+            }
+          ]
+        },
+        {
+          "name": "_Alarms",
+          "typeId": "Config/_Alarms",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Active",
+              "value": true,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_ActiveHighPriority",
+              "value": 1,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Unack",
+              "value": true,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_UnackHighPriority",
+              "value": 1,
+              "tagType": "AtomicTag"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
