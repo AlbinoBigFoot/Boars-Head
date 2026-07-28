@@ -65,6 +65,7 @@
         "meta": {
           "name": "PermBadge",
           "tooltip": {
+            "delay": 0,
             "enabled": true,
             "location": "bottom",
             "style": {
@@ -77,8 +78,28 @@
               "fontSize": "12px",
               "padding": "6px 10px"
             },
+            "sustain": 8000,
+            "tail": true,
             "text": "Roles: (none)",
             "width": "240px"
+          }
+        },
+        "events": {
+          "dom": {
+            "onClick": {
+              "config": {
+                "script": "\t# Touch / click: show roles without hover (phones/tablets)\n\tself.requestTooltip()"
+              },
+              "scope": "G",
+              "type": "script"
+            },
+            "onTouchStart": {
+              "config": {
+                "script": "\tself.requestTooltip()"
+              },
+              "scope": "G",
+              "type": "script"
+            }
           }
         },
         "position": {
@@ -136,7 +157,7 @@
           "justify": "center",
           "style": {
             "classes": "perm-badge perm-badge-write",
-            "cursor": "help",
+            "cursor": "pointer",
             "height": "36px",
             "marginRight": "8px",
             "overflow": "visible",
