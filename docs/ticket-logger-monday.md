@@ -105,7 +105,10 @@ mutation ($itemId: ID!, $body: String!) {
 
 ### Optional file
 
-Multipart to `/v2/file` with `add_file_to_column` / `add_file_to_update`. Phase 1: skip files (Jython multipart is painful). Phase 2: only if Ticket Logger gains screenshots.
+Multipart `POST https://api.monday.com/v2/file` with `add_file_to_update` / `add_file_to_column`.
+
+- Ticket Logger Phase 1: skip files (Jython multipart is painful). Phase 2: only if screenshots.
+- **Local agent job** (`scripts/monday_agent_job.py`): on success, attaches `docs/handoff/ticket-<id>.md` to the review update **and** the board **Attached Files** column (`files`). `.md` is accepted; if attach fails, the full markdown is posted inline in a follow-up update.
 
 ---
 
