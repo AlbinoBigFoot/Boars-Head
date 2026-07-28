@@ -925,57 +925,34 @@ def audit_log_view():
 									],
 								},
 								{
-									"type": "ia.container.flex",
+									"type": "ia.input.text-field",
 									"meta": {"name": "Search"},
 									"position": {
 										"basis": "180px",
 										"grow": 0,
 										"shrink": 0,
 									},
+									"propConfig": {
+										"custom.searchStr": {
+											"binding": {
+												"config": {
+													"expression": "if(coalesce({this.props.text}, '') = '', '', '%' + {this.props.text} + '%')"
+												},
+												"type": "expr",
+											}
+										}
+									},
 									"props": {
-										"direction": "column",
+										"placeholder": "Search",
 										"style": {
+											"classes": "bg-component font-value",
+											"height": "32px",
 											"marginLeft": "auto",
 											"maxWidth": "180px",
 											"width": "180px",
 										},
+										"text": "",
 									},
-									"children": [
-										{
-											"type": "ia.display.label",
-											"meta": {"name": "Lbl"},
-											"props": {
-												"style": {
-													"classes": "font-label",
-													"textAlign": "right",
-												},
-												"text": "Search",
-											},
-										},
-										{
-											"type": "ia.input.text-field",
-											"meta": {"name": "Text"},
-											"propConfig": {
-												"custom.searchStr": {
-													"binding": {
-														"config": {
-															"expression": "if(coalesce({this.props.text}, '') = '', '', '%' + {this.props.text} + '%')"
-														},
-														"type": "expr",
-													}
-												}
-											},
-											"props": {
-												"placeholder": "filter…",
-												"style": {
-													"classes": "bg-component font-value",
-													"height": "32px",
-													"width": "180px",
-												},
-												"text": "",
-											},
-										},
-									],
 								},
 							],
 						},
@@ -989,7 +966,7 @@ def audit_log_view():
 										"config": {
 											"parameters": {
 												"endDate": "{../Filters/Left/End/Date.props.value}",
-												"search": "{../Filters/Search/Text.custom.searchStr}",
+												"search": "{../Filters/Search.custom.searchStr}",
 												"startDate": "{../Filters/Left/Start/Date.props.value}",
 											},
 											"queryPath": "OpsAudit/AuditLog",
