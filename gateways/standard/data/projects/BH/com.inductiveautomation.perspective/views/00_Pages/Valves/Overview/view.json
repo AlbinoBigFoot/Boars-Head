@@ -1,0 +1,207 @@
+{
+  "custom": {},
+  "params": {},
+  "props": {
+    "defaultSize": {
+      "height": 520,
+      "width": 900
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Title"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "style": {
+            "classes": "font-title",
+            "fontSize": "20px",
+            "fontWeight": "700",
+            "marginBottom": "4px"
+          },
+          "text": "Valves Overview"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Subtitle2Way"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "style": {
+            "classes": "font-label",
+            "fontSize": "13px",
+            "marginBottom": "8px",
+            "marginTop": "8px"
+          },
+          "text": "Solenoid Valve \u2014 HPRL-ISO Open \u00b7 LTR-SV Closed \u00b7 MAIN-LIQ-SV Fault"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "HPRL-ISO"
+            },
+            "position": {
+              "basis": "132px",
+              "shrink": 0
+            },
+            "props": {
+              "params": {
+                "faceplate": "SolenoidValve",
+                "tagPath": "[default]Valves/HPRL-ISO"
+              },
+              "path": "02_Components/01_Devices/SolenoidValve",
+              "style": {
+                "height": "188px",
+                "width": "132px"
+              }
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "LTR-SV"
+            },
+            "position": {
+              "basis": "132px",
+              "shrink": 0
+            },
+            "props": {
+              "params": {
+                "faceplate": "SolenoidValve",
+                "tagPath": "[default]Valves/LTR-SV"
+              },
+              "path": "02_Components/01_Devices/SolenoidValve",
+              "style": {
+                "height": "188px",
+                "width": "132px"
+              }
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "MAIN-LIQ-SV"
+            },
+            "position": {
+              "basis": "132px",
+              "shrink": 0
+            },
+            "props": {
+              "params": {
+                "faceplate": "SolenoidValve",
+                "tagPath": "[default]Valves/MAIN-LIQ-SV"
+              },
+              "path": "02_Components/01_Devices/SolenoidValve",
+              "style": {
+                "height": "188px",
+                "width": "132px"
+              }
+            },
+            "type": "ia.display.view"
+          }
+        ],
+        "meta": {
+          "name": "Row2Way"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "alignItems": "flex-start",
+          "style": {
+            "classes": "bg-component",
+            "borderRadius": "8px",
+            "gap": "24px",
+            "padding": "16px",
+            "width": "100%",
+            "marginBottom": "16px"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "meta": {
+          "name": "Subtitle3Way"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "style": {
+            "classes": "font-label",
+            "fontSize": "13px",
+            "marginBottom": "8px"
+          },
+          "text": "Solenoid Valve 3-Way \u2014 HTR-SV Opening"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "HTR-SV"
+            },
+            "position": {
+              "basis": "132px",
+              "shrink": 0
+            },
+            "props": {
+              "params": {
+                "faceplate": "SolenoidValve3Way",
+                "tagPath": "[default]Valves/HTR-SV"
+              },
+              "path": "02_Components/01_Devices/SolenoidValve3Way",
+              "style": {
+                "height": "188px",
+                "width": "132px"
+              }
+            },
+            "type": "ia.display.view"
+          }
+        ],
+        "meta": {
+          "name": "Row3Way"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "alignItems": "flex-start",
+          "style": {
+            "classes": "bg-component",
+            "borderRadius": "8px",
+            "gap": "24px",
+            "padding": "16px",
+            "width": "100%"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "bg-page",
+        "height": "100%",
+        "padding": "16px",
+        "width": "100%"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}
