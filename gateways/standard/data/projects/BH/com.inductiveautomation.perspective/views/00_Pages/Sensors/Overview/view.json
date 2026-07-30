@@ -1,0 +1,191 @@
+{
+  "custom": {},
+  "params": {},
+  "props": {
+    "defaultSize": {
+      "height": 480,
+      "width": 900
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Title"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "style": {
+            "classes": "font-title",
+            "fontSize": "20px",
+            "fontWeight": "700",
+            "marginBottom": "8px"
+          },
+          "text": "Sensors Overview"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Subtitle"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "style": {
+            "classes": "font-label",
+            "fontSize": "13px",
+            "marginBottom": "12px"
+          },
+          "text": "Plant transmitters \u2014 LSS-PT OK \u00b7 HSS-PT HI \u00b7 HPR-PT LO \u00b7 OIL-TT FAIL"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "LSS-PT"
+            },
+            "position": {
+              "basis": "140px",
+              "shrink": 0
+            },
+            "props": {
+              "params": {
+                "faceplate": "Sensor",
+                "tagPath": "[default]Sensors/LSS-PT",
+                "orientation": {
+                  "horizontal": false,
+                  "horizontalReverse": false,
+                  "vertical": true,
+                  "verticalReverse": false
+                }
+              },
+              "path": "02_Components/01_Devices/Sensor",
+              "style": {
+                "minHeight": "180px",
+                "minWidth": "120px"
+              }
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "HSS-PT"
+            },
+            "position": {
+              "basis": "140px",
+              "shrink": 0
+            },
+            "props": {
+              "params": {
+                "faceplate": "Sensor",
+                "tagPath": "[default]Sensors/HSS-PT",
+                "orientation": {
+                  "horizontal": false,
+                  "horizontalReverse": false,
+                  "vertical": false,
+                  "verticalReverse": true
+                }
+              },
+              "path": "02_Components/01_Devices/Sensor",
+              "style": {
+                "minHeight": "180px",
+                "minWidth": "120px"
+              }
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "HPR-PT"
+            },
+            "position": {
+              "basis": "140px",
+              "shrink": 0
+            },
+            "props": {
+              "params": {
+                "faceplate": "Sensor",
+                "tagPath": "[default]Sensors/HPR-PT",
+                "orientation": {
+                  "horizontal": true,
+                  "horizontalReverse": false,
+                  "vertical": false,
+                  "verticalReverse": false
+                }
+              },
+              "path": "02_Components/01_Devices/Sensor",
+              "style": {
+                "minHeight": "180px",
+                "minWidth": "120px"
+              }
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "OIL-TT"
+            },
+            "position": {
+              "basis": "140px",
+              "shrink": 0
+            },
+            "props": {
+              "params": {
+                "faceplate": "Sensor",
+                "tagPath": "[default]Sensors/OIL-TT",
+                "orientation": {
+                  "horizontal": false,
+                  "horizontalReverse": true,
+                  "vertical": false,
+                  "verticalReverse": false
+                }
+              },
+              "path": "02_Components/01_Devices/Sensor",
+              "style": {
+                "minHeight": "180px",
+                "minWidth": "120px"
+              }
+            },
+            "type": "ia.display.view"
+          }
+        ],
+        "meta": {
+          "name": "Row"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "alignItems": "flex-start",
+          "style": {
+            "classes": "bg-component",
+            "borderRadius": "8px",
+            "gap": "32px",
+            "padding": "16px",
+            "width": "100%"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "bg-page",
+        "height": "100%",
+        "padding": "16px",
+        "width": "100%"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}
