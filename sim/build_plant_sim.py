@@ -37,13 +37,13 @@ def infer_dtype(path: str, dt: str | None) -> tuple[str, str]:
     return "Float", "Float4"
 
 
-# Per-EV plant profiles — status wall for Overview demo.
+# Per-EV plant profiles â€” status wall for Overview demo.
 # Evaporator Status enum: 0 Off, 1 Cooling, 2 Defrost, 3 Fault, 4 Manual (not shown), 5 Idle,
 # 6 1.PD (Pump Down), 7 2.HG (Hot Gas), 8 3.BLD (Bleed), 9 3.FD (Fan Delay).
 # Stages 6-9 display as DFT + stage line on StatusIndicator.
-# Comm Loss is NOT a Status int — EV-01 Status/Value has enabled=false (Bad quality) in
+# Comm Loss is NOT a Status int â€” EV-01 Status/Value has enabled=false (Bad quality) in
 # tag-definition Evaporators/udts.json. Do not set enabled=false on the UDT type.
-# Temp/SP lives only on device Temp (not _Root/Analog). Defaults: Evap 35°F, CT 85°F,
+# Temp/SP lives only on device Temp (not _Root/Analog). Defaults: Evap 35Â°F, CT 85Â°F,
 # Pump 50 gpm, ExhaustFan 1000 cfm, Compressor DisP 25 psi.
 # Over-SP AnalogValue red demos: EV-02, CT-01, PMP-01, EFAN-01.
 # Compressors demo Status/FLA%/SVP%/CP/SV + DisP/Amps/Rung/Color/bools (PLC-aligned).
@@ -58,7 +58,7 @@ EV_PROFILES: dict[str, dict[str, str]] = {
         "CMD": "false",
         "Fault": "false",
     },
-    # EV-02: Cooling + PV > SP (40 > 35) → AnalogValue red
+    # EV-02: Cooling + PV > SP (40 > 35) â†’ AnalogValue red
     "EV-02": {
         "Status": "1",
         "Temp": "40.0",
@@ -159,7 +159,7 @@ EV_PROFILES: dict[str, dict[str, str]] = {
         "CMD": "false",
         "Fault": "false",
     },
-    # EV-14: Defrost stage 3.BLD (Bleed) — EV-16 uses 3.FD
+    # EV-14: Defrost stage 3.BLD (Bleed) â€” EV-16 uses 3.FD
     "EV-14": {
         "Status": "8",
         "Temp": "realistic(34.0, 0.8, 0.05, 0.2, true)",
@@ -176,7 +176,7 @@ EV_PROFILES: dict[str, dict[str, str]] = {
         "CMD": "false",
         "Fault": "false",
     },
-    # EV-16: Defrost stage 3.FD (Fan Delay) — fault demo stays on EV-06/EV-11
+    # EV-16: Defrost stage 3.FD (Fan Delay) â€” fault demo stays on EV-06/EV-11
     "EV-16": {
         "Status": "9",
         "Temp": "realistic(31.0, 0.7, 0.04, 0.18, true)",
@@ -188,31 +188,77 @@ EV_PROFILES: dict[str, dict[str, str]] = {
 }
 
 
+# --- COOLINGTOWER ---
 # Non-EV Status enum: 0 Off, 1 Run, 2 Fault, 3 Manual (not shown), 4 Idle.
 # Four Overview slots → Run / Idle / Fault / Off (no Manual; Comm Loss only on EV-01).
 # Fan/pump spin graphics use Status==1 (Run).
+# Controls-grade defaults (Devices/CoolingTower flat + Interlock/) — A-merge wires CSV.
+CT_FACEPLATE_DEFAULTS: dict[str, tuple[str, str]] = {
+    "OPER": ("true", "Boolean"),
+    "MAINT": ("false", "Boolean"),
+    "PROG": ("false", "Boolean"),
+    "Cmd_Start": ("false", "Boolean"),
+    "Cmd_Stop": ("false", "Boolean"),
+    "Cmd_Auto": ("false", "Boolean"),
+    "Cmd_Manual": ("false", "Boolean"),
+    "RuntimeHours": ("2145.0", "Float"),
+    "MotorStarts": ("512", "Int32"),
+    "Failed": ("false", "Boolean"),
+    "Alm": ("false", "Boolean"),
+    "Comm": ("false", "Boolean"),
+    "Interlock/Sts_IntlkOK": ("false", "Boolean"),
+    "Interlock/Sts_NBIntlkOK": ("true", "Boolean"),
+    "Interlock/Sts_BypActive": ("false", "Boolean"),
+    "Interlock/Sts_FirstOut": ("false", "Boolean"),
+    "Interlock/Sts_Intlk": ("6", "Int32"),
+    "Interlock/Cfg_Bypassable": ("7", "Int32"),
+    "Interlock/OCmd_Reset": ("false", "Boolean"),
+    "Interlock/Rdy_Reset": ("true", "Boolean"),
+    "Interlock/Cfg_CondTxt00": ("Basin Level Low", "String"),
+    "Interlock/Cfg_CondTxt01": ("Fan VFD Fault", "String"),
+    "Interlock/Cfg_CondTxt02": ("Vibration High", "String"),
+    "Interlock/Cfg_CondTxt03": ("Emergency Stop", "String"),
+}
+for _i in range(4, 16):
+    CT_FACEPLATE_DEFAULTS[f"Interlock/Cfg_CondTxt{_i:02d}"] = ("", "String")
+for _i in range(16):
+    CT_FACEPLATE_DEFAULTS[f"Interlock/MSet_Bypass{_i:02d}"] = ("false", "Boolean")
+
 CT_PROFILES: dict[str, dict[str, str]] = {
-    # CT-01: Run + PV > SP (90 > 85) → AnalogValue red
+    # CT-01: Run + PV > SP (90 > 85) → AnalogValue red; Controls demo seed
     "CT-01": {
         "Status": "1",
         "Temp": "90.0",
+        "SPD_FBK": "48.0",
+        "Failed": "false",
+        "Alm": "false",
+        "Comm": "false",
+        "OPER": "true",
+        "MAINT": "false",
+        "PROG": "false",
     },
     "CT-02": {
         "Status": "4",
         "Temp": "realistic(72.0, 0.6, 0.03, 0.15, true)",
+        "SPD_FBK": "realistic(30.0, 1.5, 0.04, 0.18, true)",
     },
     "CT-03": {
         "Status": "2",
         "Temp": "realistic(80.0, 1.0, 0.05, 0.2, true)",
+        "SPD_FBK": "realistic(12.0, 1.0, 0.05, 0.2, true)",
+        "Failed": "true",
+        "Alm": "true",
     },
     "CT-04": {
         "Status": "0",
         "Temp": "realistic(68.0, 0.5, 0.03, 0.14, true)",
+        "SPD_FBK": "realistic(0.5, 0.2, 0.03, 0.14, true)",
     },
 }
+# --- END COOLINGTOWER ---
 
 PMP_PROFILES: dict[str, dict[str, str]] = {
-    # PMP-01: Run + flow > SP (60 > 50) → AnalogValue red
+    # PMP-01: Run + flow > SP (60 > 50) â†’ AnalogValue red
     "PMP-01": {"Status": "1", "Temp": "60.0"},
     "PMP-02": {"Status": "4", "Temp": "realistic(40.0, 1.0, 0.05, 0.2, true)"},
     "PMP-03": {"Status": "2", "Temp": "realistic(35.0, 1.2, 0.06, 0.22, true)"},
@@ -220,7 +266,7 @@ PMP_PROFILES: dict[str, dict[str, str]] = {
 }
 
 EFAN_PROFILES: dict[str, dict[str, str]] = {
-    # EFAN-01: Run + airflow > SP (1200 > 1000) → AnalogValue red
+    # EFAN-01: Run + airflow > SP (1200 > 1000) â†’ AnalogValue red
     "EFAN-01": {"Status": "1", "Temp": "1200.0"},
     "EFAN-02": {"Status": "4", "Temp": "realistic(800.0, 20.0, 0.05, 0.2, true)"},
     "EFAN-03": {"Status": "2", "Temp": "realistic(750.0, 25.0, 0.06, 0.22, true)"},
@@ -263,7 +309,7 @@ for _i in range(16):
     COMP_FACEPLATE_DEFAULTS[f"Interlock/MSet_Bypass{_i:02d}"] = ("false", "Boolean")
 
 COMP_PROFILES: dict[str, dict[str, str]] = {
-    # COMP-01: Run; CP Auto / SV Manual — FLA > SP (70)
+    # COMP-01: Run; CP Auto / SV Manual â€” FLA > SP (70)
     "COMP-01": {
         "Status": "1",
         "DisP": "35.0",
@@ -280,7 +326,7 @@ COMP_PROFILES: dict[str, dict[str, str]] = {
         "Started": "true",
         "Comm": "false",
     },
-    # COMP-02: Idle; CP Manual / SV Auto — SVP stays under SP; mild Amps
+    # COMP-02: Idle; CP Manual / SV Auto â€” SVP stays under SP; mild Amps
     "COMP-02": {
         "Status": "4",
         "DisP": "realistic(18.0, 1.0, 0.05, 0.2, true)",
@@ -297,7 +343,7 @@ COMP_PROFILES: dict[str, dict[str, str]] = {
         "Started": "false",
         "Comm": "false",
     },
-    # COMP-03: Fault; CP/SV Remote — Alm + Failed; Cutout color
+    # COMP-03: Fault; CP/SV Remote â€” Alm + Failed; Cutout color
     "COMP-03": {
         "Status": "2",
         "DisP": "realistic(20.0, 1.2, 0.06, 0.22, true)",
@@ -314,7 +360,7 @@ COMP_PROFILES: dict[str, dict[str, str]] = {
         "Started": "false",
         "Comm": "false",
     },
-    # COMP-04: Off; CP Auto / SV Manual — low but nonzero FLA/SVP
+    # COMP-04: Off; CP Auto / SV Manual â€” low but nonzero FLA/SVP
     "COMP-04": {
         "Status": "0",
         "DisP": "realistic(15.0, 0.8, 0.04, 0.18, true)",
@@ -331,7 +377,7 @@ COMP_PROFILES: dict[str, dict[str, str]] = {
         "Started": "false",
         "Comm": "false",
     },
-    # COMP-05: Manual; CP Remote / SV Manual — AntiRec / Starting demo
+    # COMP-05: Manual; CP Remote / SV Manual â€” AntiRec / Starting demo
     "COMP-05": {
         "Status": "3",
         "DisP": "realistic(28.0, 1.0, 0.05, 0.2, true)",
@@ -517,7 +563,7 @@ def main() -> None:
         )
 
     # Flat faceplate demo tags live on Devices/Compressor type (memory) and are
-    # not present as Value leaves on Compressors instances — emit Sim rows so
+    # not present as Value leaves on Compressors instances â€” emit Sim rows so
     # lab CSV covers Controls/Config/Interlocks paths.
     for comp_id in sorted(COMP_PROFILES):
         for rel, (val, dtype) in COMP_FACEPLATE_DEFAULTS.items():
@@ -609,7 +655,7 @@ def main() -> None:
     )
     print(f"Wrote _Sim_/udts.json top folders: {[x['name'] for x in sim_udts]}")
 
-    # Plant tags stay OPC → ns=1;s=[Sim]<path> (live wiring). _Sim_ mirror
+    # Plant tags stay OPC â†’ ns=1;s=[Sim]<path> (live wiring). _Sim_ mirror
     # above is for optional reference browse; do not rewrite plant Value leaves.
     print("Skipped plant tag reference patch (preserving OPC wiring)")
     print("Sample CSV:")
