@@ -14,60 +14,45 @@
         "tags": [
           {
             "valueSource": "memory",
-            "metadata": {
-              "shortDescription": "status",
-              "states": [
-                {
-                  "label": "Closed",
-                  "value": 0
-                },
-                {
-                  "label": "Open",
-                  "value": 1
-                },
-                {
-                  "label": "Fault",
-                  "value": 2
-                }
-              ]
-            },
             "dataType": "Int4",
             "name": "Value",
+            "value": 2,
             "tagType": "AtomicTag"
           }
         ]
       },
       {
-        "name": "Temp",
+        "name": "OpenLS",
         "tagType": "UdtInstance",
         "tags": [
           {
             "valueSource": "memory",
-            "dataType": "Float4",
-            "engUnit": "°F",
+            "dataType": "Boolean",
             "name": "Value",
+            "value": true,
             "tagType": "AtomicTag"
           }
         ]
       },
       {
-        "typeId": "Config/_Alarms",
-        "name": "_Alarms",
-        "tagType": "AtomicTag",
+        "name": "ClosedLS",
+        "tagType": "UdtInstance",
         "tags": [
           {
             "valueSource": "memory",
             "dataType": "Boolean",
-            "name": "_Active",
-            "tagType": "AtomicTag"
-          },
-          {
-            "valueSource": "memory",
-            "dataType": "Int4",
-            "name": "_ActiveHighPriority",
+            "name": "Value",
+            "value": false,
             "tagType": "AtomicTag"
           }
         ]
+      },
+      {
+        "name": "OPER",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": true
       }
     ]
   },
@@ -86,57 +71,35 @@
         "tags": [
           {
             "valueSource": "memory",
-            "metadata": {
-              "shortDescription": "status",
-              "states": [
-                {
-                  "label": "Closed",
-                  "value": 0
-                },
-                {
-                  "label": "Open",
-                  "value": 1
-                },
-                {
-                  "label": "Fault",
-                  "value": 2
-                }
-              ]
-            },
             "dataType": "Int4",
             "name": "Value",
+            "value": 1,
             "tagType": "AtomicTag"
           }
         ]
       },
       {
-        "name": "Temp",
+        "name": "OpenLS",
         "tagType": "UdtInstance",
         "tags": [
           {
             "valueSource": "memory",
-            "dataType": "Float4",
-            "engUnit": "°F",
+            "dataType": "Boolean",
             "name": "Value",
+            "value": false,
             "tagType": "AtomicTag"
           }
         ]
       },
       {
-        "typeId": "Config/_Alarms",
-        "name": "_Alarms",
-        "tagType": "AtomicTag",
+        "name": "ClosedLS",
+        "tagType": "UdtInstance",
         "tags": [
           {
             "valueSource": "memory",
-            "dataType": "Int4",
-            "name": "_ActiveHighPriority",
-            "tagType": "AtomicTag"
-          },
-          {
-            "valueSource": "memory",
             "dataType": "Boolean",
-            "name": "_Active",
+            "name": "Value",
+            "value": true,
             "tagType": "AtomicTag"
           }
         ]
@@ -158,58 +121,43 @@
         "tags": [
           {
             "valueSource": "memory",
-            "metadata": {
-              "shortDescription": "status",
-              "states": [
-                {
-                  "label": "Closed",
-                  "value": 0
-                },
-                {
-                  "label": "Open",
-                  "value": 1
-                },
-                {
-                  "label": "Fault",
-                  "value": 2
-                }
-              ]
-            },
             "dataType": "Int4",
             "name": "Value",
+            "value": 1,
             "tagType": "AtomicTag"
           }
         ]
       },
       {
-        "name": "Temp",
+        "name": "Failed",
         "tagType": "UdtInstance",
         "tags": [
           {
             "valueSource": "memory",
-            "dataType": "Float4",
-            "engUnit": "°F",
+            "dataType": "Boolean",
             "name": "Value",
+            "value": true,
             "tagType": "AtomicTag"
           }
         ]
       },
       {
-        "typeId": "Config/_Alarms",
-        "name": "_Alarms",
-        "tagType": "AtomicTag",
+        "name": "Interlock",
+        "tagType": "Folder",
         "tags": [
           {
-            "valueSource": "memory",
-            "dataType": "Int4",
-            "name": "_ActiveHighPriority",
-            "tagType": "AtomicTag"
-          },
-          {
+            "name": "Sts_IntlkOK",
+            "tagType": "AtomicTag",
             "valueSource": "memory",
             "dataType": "Boolean",
-            "name": "_Active",
-            "tagType": "AtomicTag"
+            "value": false
+          },
+          {
+            "name": "Cfg_CondTxt00",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "Main Liquid Permissive"
           }
         ]
       }
@@ -230,57 +178,35 @@
         "tags": [
           {
             "valueSource": "memory",
-            "metadata": {
-              "shortDescription": "status",
-              "states": [
-                {
-                  "label": "Closed",
-                  "value": 0
-                },
-                {
-                  "label": "Open",
-                  "value": 1
-                },
-                {
-                  "label": "Fault",
-                  "value": 2
-                }
-              ]
-            },
             "dataType": "Int4",
             "name": "Value",
+            "value": 6,
             "tagType": "AtomicTag"
           }
         ]
       },
       {
-        "name": "Temp",
+        "name": "OpenLS",
         "tagType": "UdtInstance",
         "tags": [
           {
             "valueSource": "memory",
-            "dataType": "Float4",
-            "engUnit": "°F",
+            "dataType": "Boolean",
             "name": "Value",
+            "value": false,
             "tagType": "AtomicTag"
           }
         ]
       },
       {
-        "typeId": "Config/_Alarms",
-        "name": "_Alarms",
-        "tagType": "AtomicTag",
+        "name": "ClosedLS",
+        "tagType": "UdtInstance",
         "tags": [
           {
             "valueSource": "memory",
-            "dataType": "Int4",
-            "name": "_ActiveHighPriority",
-            "tagType": "AtomicTag"
-          },
-          {
-            "valueSource": "memory",
             "dataType": "Boolean",
-            "name": "_Active",
+            "name": "Value",
+            "value": false,
             "tagType": "AtomicTag"
           }
         ]
