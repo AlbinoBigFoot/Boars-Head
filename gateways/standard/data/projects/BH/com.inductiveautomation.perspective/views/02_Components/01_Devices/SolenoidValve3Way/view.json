@@ -11,13 +11,15 @@
   },
   "params": {
     "faceplate": null,
-    "tagPath": ""
+    "tagPath": "",
+    "feedback": true,
+    "label": ""
   },
   "propConfig": {
     "custom.label": {
       "binding": {
         "config": {
-          "expression": "try(\n    if(\n        isNull({view.custom.metadata.shortDescription}) ||\n        {view.custom.metadata.shortDescription} = '',\n        if({view.params.tagPath} = '',\n           '',\n           subString({view.params.tagPath}, lastIndexOf({view.params.tagPath}, '/') + 1)),\n        {view.custom.metadata.shortDescription}\n    ),\n'')"
+          "expression": "coalesce({view.params.label}, '')"
         },
         "type": "expr"
       },
@@ -46,15 +48,15 @@
     "custom.values.analog": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '',\n\t'',\n\t{view.params.tagPath} + '/Flow/Value')"
+          "expression": "if({view.params.tagPath} = '',\n\t'',\n\t{view.params.tagPath} + '/TravelTime/Value')"
         },
         "type": "expr"
       }
     },
-    "custom.values.running": {
+    "custom.values.commLoss": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '' || isBad(tag({view.params.tagPath} + '/Status/Value')),\n\tfalse,\n\ttag({view.params.tagPath} + '/Status/Value') = 1)"
+          "expression": "if({view.params.tagPath} = '',\n\tfalse,\n\tisBad(tag({view.params.tagPath} + '/Status/Value')))"
         },
         "type": "expr"
       }
@@ -66,14 +68,6 @@
     "params.tagPath": {
       "paramDirection": "input",
       "persistent": true
-    },
-    "custom.values.commLoss": {
-      "binding": {
-        "config": {
-          "expression": "if({view.params.tagPath} = '',\n\tfalse,\n\tisBad(tag({view.params.tagPath} + '/Status/Value')))"
-        },
-        "type": "expr"
-      }
     },
     "custom.alarm": {
       "persistent": true
@@ -137,12 +131,20 @@
         "type": "tag"
       },
       "persistent": true
+    },
+    "params.feedback": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.label": {
+      "paramDirection": "input",
+      "persistent": true
     }
   },
   "props": {
     "defaultSize": {
-      "height": 166,
-      "width": 130
+      "height": 133,
+      "width": 71
     }
   },
   "root": {
@@ -225,7 +227,15 @@
               "props.style.opacity": {
                 "binding": {
                   "config": {
-                    "expression": "if(isNull({view.params.faceplate}),\n   0,\n   1)"
+                    "expression": "if(isNull({view.params.faceplate}) || {view.params.faceplate} = '',\n   0,\n   1)"
+                  },
+                  "type": "expr"
+                }
+              },
+              "meta.visible": {
+                "binding": {
+                  "config": {
+                    "expression": "!(isNull({view.params.faceplate}) || {view.params.faceplate} = '')"
                   },
                   "type": "expr"
                 }
@@ -264,22 +274,85 @@
         "children": [
           {
             "meta": {
-              "name": "Housing"
+              "name": "Body"
             },
             "position": {
-              "x": 4.0,
+              "x": 10.74,
               "y": 4.0,
-              "width": 106.0,
-              "height": 92.0
+              "width": 36.82,
+              "height": 44.91
             },
             "props": {
               "elements": [
                 {
                   "type": "path",
-                  "name": "scroll-housing",
-                  "d": "M24.9316 0.5H56.5V24.5H49.3633V25C49.3633 38.5322 38.4235 49.5 24.9316 49.5C11.4398 49.5 0.5 38.5323 0.5 25C0.500001 11.4677 11.4398 0.5 24.9316 0.5Z",
+                  "name": "down",
+                  "d": "M10.8293 49.5L20.0383 31.1162L29.2483 49.5L10.8293 49.5Z",
                   "fill": {
                     "paint": "var(--neutral-30)"
+                  },
+                  "stroke": {
+                    "paint": "var(--neutral-100)",
+                    "width": "1",
+                    "linecap": "butt",
+                    "linejoin": "miter"
+                  },
+                  "style": {}
+                },
+                {
+                  "type": "path",
+                  "name": "left",
+                  "d": "M0.500489 20.8086L18.9194 30L0.500488 39.1924L0.500489 20.8086Z",
+                  "fill": {
+                    "paint": "var(--neutral-30)"
+                  },
+                  "stroke": {
+                    "paint": "var(--neutral-100)",
+                    "width": "1",
+                    "linecap": "butt",
+                    "linejoin": "miter"
+                  },
+                  "style": {}
+                },
+                {
+                  "type": "path",
+                  "name": "right",
+                  "d": "M39.5767 39.1914L21.1577 30L39.5767 20.8076L39.5767 39.1914Z",
+                  "fill": {
+                    "paint": "var(--neutral-30)"
+                  },
+                  "stroke": {
+                    "paint": "var(--neutral-100)",
+                    "width": "1",
+                    "linecap": "butt",
+                    "linejoin": "miter"
+                  },
+                  "style": {}
+                },
+                {
+                  "type": "path",
+                  "name": "stem",
+                  "d": "M20.0386 30V11",
+                  "fill": {
+                    "paint": "none"
+                  },
+                  "stroke": {
+                    "paint": "var(--neutral-100)",
+                    "width": "2",
+                    "linecap": "butt",
+                    "linejoin": "miter"
+                  },
+                  "style": {}
+                },
+                {
+                  "type": "rect",
+                  "name": "coil",
+                  "x": 7.51343,
+                  "y": 0.5,
+                  "width": 25.0501,
+                  "height": 11,
+                  "fill": {
+                    "paint": "var(--neutral-60)"
                   },
                   "stroke": {
                     "paint": "var(--neutral-100)",
@@ -294,76 +367,7 @@
                 "cursor": "pointer",
                 "overflow": "hidden"
               },
-              "viewBox": "0 0 57 50"
-            },
-            "type": "ia.shapes.svg"
-          },
-          {
-            "meta": {
-              "name": "Impeller"
-            },
-            "position": {
-              "x": 22.75,
-              "y": 22.4,
-              "width": 55.79,
-              "height": 55.2
-            },
-            "propConfig": {
-              "props.style.classes": {
-                "binding": {
-                  "config": {
-                    "expression": "{view.custom.values.running}"
-                  },
-                  "transforms": [
-                    {
-                      "code": "\treturn 'fan-spin' if value in (True, 1, '1', 'true', 'True') else ''\n",
-                      "type": "script"
-                    }
-                  ],
-                  "type": "expr"
-                }
-              }
-            },
-            "props": {
-              "elements": [
-                {
-                  "type": "circle",
-                  "name": "fan-ring",
-                  "cx": 15,
-                  "cy": 15,
-                  "r": 14.625,
-                  "fill": {
-                    "paint": "var(--neutral-30)"
-                  },
-                  "stroke": {
-                    "paint": "var(--neutral-100)",
-                    "width": "0.75",
-                    "linecap": "butt",
-                    "linejoin": "miter"
-                  },
-                  "style": {}
-                },
-                {
-                  "type": "path",
-                  "name": "blades",
-                  "d": "M15 11.3145C12.9646 11.3145 11.3145 12.9646 11.3145 15C11.3145 17.0354 12.9646 18.6855 15 18.6855C17.0354 18.6855 18.6855 17.0354 18.6855 15C18.6855 12.9646 17.0354 11.3145 15 11.3145ZM10.8525 14.9082L10.7646 14.8809C6.64697 13.6109 4.50872 11.6062 4.25098 8.89551C4.22054 8.57526 4.28206 8.32631 4.45898 8.05762C5.24447 6.86508 6.16476 5.87355 7.2959 5.00195C7.72012 4.67508 8.32558 5.04068 8.2334 5.56836C7.84445 7.79491 8.86709 10.2372 11.2432 12.8857L11.3564 13.0117L11.4434 12.8662C11.6199 12.5721 11.8249 12.3099 12.0674 12.0674L12.1328 12.002L12.0889 11.9209C10.0752 8.1111 9.98117 5.18101 11.7158 3.08203C11.9206 2.83423 12.1402 2.70253 12.4551 2.6377C13.8538 2.34973 15.2058 2.2989 16.6221 2.48242C17.1532 2.55133 17.3229 3.23798 16.8848 3.5459C15.0352 4.84529 14.0315 7.29566 13.8389 10.8486L13.8301 11.0176L13.9941 10.9766C14.3269 10.8934 14.657 10.8525 15 10.8525H15.0918L15.1191 10.7646C16.3891 6.64693 18.3938 4.50871 21.1045 4.25098C21.4247 4.22054 21.6737 4.28205 21.9424 4.45898C23.1349 5.24447 24.1265 6.16476 24.998 7.2959C25.325 7.72012 24.9593 8.32558 24.4316 8.2334C22.2052 7.84447 19.7636 8.86726 17.1152 11.2432L16.9883 11.3564L17.1338 11.4434C17.4279 11.6199 17.6901 11.8249 17.9326 12.0674L17.998 12.1328L18.0801 12.0889C21.8896 10.0754 24.8191 9.98125 26.918 11.7158C27.1658 11.9206 27.2975 12.1402 27.3623 12.4551C27.6503 13.8539 27.7011 15.2059 27.5176 16.6221C27.4487 17.1532 26.762 17.3228 26.4541 16.8848C25.1548 15.0352 22.705 14.0316 19.1523 13.8389L18.9824 13.8301L19.0234 13.9941C19.1066 14.3269 19.1475 14.657 19.1475 15V15.0918L19.2354 15.1191C23.3531 16.3891 25.4913 18.3938 25.749 21.1045C25.7795 21.4247 25.7179 21.6737 25.541 21.9424C24.7555 23.1349 23.8352 24.1265 22.7041 24.998C22.2799 25.325 21.6744 24.9593 21.7666 24.4316C22.1555 22.2051 21.1329 19.7628 18.7568 17.1143L18.6436 16.9883L18.5566 17.1338C18.3801 17.4279 18.1751 17.6901 17.9326 17.9326L17.8672 17.998L17.9111 18.0791C19.862 21.77 20.0112 24.635 18.4414 26.7188L18.2842 26.918C18.0794 27.1658 17.8598 27.2975 17.5449 27.3623C16.1462 27.6503 14.7942 27.7011 13.3779 27.5176C12.8468 27.4487 12.6771 26.762 13.1152 26.4541C14.9648 25.1547 15.9685 22.7043 16.1611 19.1514L16.1699 18.9824L16.0059 19.0234C15.6731 19.1067 15.343 19.1475 15 19.1475H14.9082L14.8809 19.2354C13.6109 23.3531 11.6062 25.4913 8.89551 25.749C8.57526 25.7795 8.32631 25.7179 8.05762 25.541C6.86509 24.7555 5.87354 23.8353 5.00195 22.7041C4.67503 22.2799 5.04069 21.6744 5.56836 21.7666C7.79483 22.1555 10.2364 21.1328 12.8848 18.7568L13.0117 18.6436L12.8662 18.5566C12.5721 18.3801 12.3099 18.1751 12.0674 17.9326L12.002 17.8672L11.9199 17.9111C8.1104 19.9246 5.18091 20.0188 3.08203 18.2842C2.83424 18.0794 2.70253 17.8598 2.6377 17.5449C2.34974 16.1462 2.2989 14.7942 2.48242 13.3779C2.55133 12.8468 3.23798 12.6771 3.5459 13.1152C4.84523 14.9648 7.29495 15.9684 10.8477 16.1611L11.0176 16.1699L10.9766 16.0059C10.8934 15.6731 10.8525 15.343 10.8525 15V14.9082Z",
-                  "fill": {
-                    "paint": "var(--neutral-60)"
-                  },
-                  "stroke": {
-                    "paint": "var(--neutral-100)",
-                    "width": "0.25",
-                    "linecap": "butt",
-                    "linejoin": "miter"
-                  },
-                  "style": {}
-                }
-              ],
-              "style": {
-                "cursor": "pointer",
-                "overflow": "hidden"
-              },
-              "viewBox": "0 0 30 30"
+              "viewBox": "0 0 41 50"
             },
             "type": "ia.shapes.svg"
           },
@@ -372,10 +376,10 @@
               "name": "AlarmFrame"
             },
             "position": {
-              "height": 100,
-              "width": 114,
               "x": 0,
-              "y": 0
+              "y": 0,
+              "width": 59,
+              "height": 53
             },
             "propConfig": {
               "props.style.classes": {
@@ -398,10 +402,10 @@
             "props": {
               "style": {
                 "classes": "alarm-frame",
-                "height": "100px",
+                "height": "53px",
                 "overflow": "visible",
                 "pointerEvents": "none",
-                "width": "114px",
+                "width": "59px",
                 "zIndex": 40
               }
             },
@@ -453,18 +457,9 @@
           "name": "Graphic"
         },
         "position": {
-          "basis": "100px",
+          "basis": "53px",
           "shrink": 0
         },
-        "props": {
-          "style": {
-            "height": "100px",
-            "overflow": "visible",
-            "position": "relative",
-            "width": "114px"
-          }
-        },
-        "type": "ia.container.coord",
         "propConfig": {
           "props.style.classes": {
             "binding": {
@@ -474,11 +469,21 @@
               "type": "expr"
             }
           }
-        }
+        },
+        "props": {
+          "style": {
+            "height": "53px",
+            "overflow": "visible",
+            "position": "relative",
+            "width": "59px"
+          }
+        },
+        "type": "ia.container.coord"
       },
       {
         "meta": {
-          "name": "AnalogValue"
+          "name": "AnalogValue",
+          "visible": true
         },
         "position": {
           "basis": "18px",
@@ -489,6 +494,14 @@
             "binding": {
               "config": {
                 "expression": "{view.custom.values.analog}"
+              },
+              "type": "expr"
+            }
+          },
+          "meta.visible": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({view.params.feedback}, true)"
               },
               "type": "expr"
             }
@@ -516,7 +529,8 @@
       },
       {
         "meta": {
-          "name": "Status"
+          "name": "Status",
+          "visible": true
         },
         "position": {
           "basis": "18px",
@@ -527,6 +541,14 @@
             "binding": {
               "config": {
                 "expression": "{view.custom.values.status}"
+              },
+              "type": "expr"
+            }
+          },
+          "meta.visible": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({view.params.feedback}, true)"
               },
               "type": "expr"
             }
@@ -550,7 +572,7 @@
       "dom": {
         "onClick": {
           "config": {
-            "script": "\tfaceplate = self.view.params.faceplate\n\tif faceplate is None:\n\t\treturn\n\ttagPath = str(self.view.params.tagPath or '')\n\ttitle = str(self.view.custom.label or '')\n\tif title in (None, '', 'nn'):\n\t\ttitle = tagPath.split('/')[-1] if tagPath else self.view.name\n\tif faceplate == '':\n\t\tview = '01_Popups/00_Faceplates/' + self.view.name\n\telse:\n\t\tview = '01_Popups/00_Faceplates/' + str(faceplate)\n\tsystem.perspective.openPopup(\n\t\t'pump-fp-%s' % (tagPath or title),\n\t\tview,\n\t\tparams={'tagPath': tagPath},\n\t\ttitle=title,\n\t\tshowCloseIcon=True,\n\t\tdraggable=True,\n\t\tresizable=True,\n\t\tmodal=False,\n\t\tviewportBound=True,\n\t\tposition={'width': 420, 'height': 520}\n\t)\n"
+            "script": "\tfaceplate = self.view.params.faceplate\n\tif faceplate is None or str(faceplate).strip() == '':\n\t\treturn\n\ttagPath = str(self.view.params.tagPath or '')\n\ttitle = str(self.view.custom.label or '')\n\tif title in (None, '', 'nn'):\n\t\ttitle = tagPath.split('/')[-1] if tagPath else self.view.name\n\tif faceplate == '':\n\t\tview = '01_Popups/00_Faceplates/' + self.view.name\n\telse:\n\t\tview = '01_Popups/00_Faceplates/' + str(faceplate)\n\tsystem.perspective.openPopup(\n\t\t'sv-fp-%s' % (tagPath or title),\n\t\tview,\n\t\tparams={'tagPath': tagPath},\n\t\ttitle=title,\n\t\tshowCloseIcon=True,\n\t\tdraggable=True,\n\t\tresizable=True,\n\t\tmodal=False,\n\t\tviewportBound=True,\n\t\tposition={'width': 420, 'height': 520}\n\t)\n"
           },
           "scope": "G",
           "type": "script"
@@ -571,56 +593,6 @@
         "width": "100%"
       }
     },
-    "type": "ia.container.flex",
-    "propConfig": {
-      "meta.contextMenu.items": {
-        "binding": {
-          "config": {
-            "struct": {
-              "tagPath": "\"No TagPath: \""
-            },
-            "waitOnAll": true
-          },
-          "transforms": [
-            {
-              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = self.view.params.tagPath\n\texcept:\n\t\tpass\n\tif tagPath is None or str(tagPath).strip() == '':\n\t\ttagPath = value.tagPath + self.view.id.split('@')[0].split('/')[-1]\n\titems = [\n\t\t\t  {\n\t\t\t    \"text\": \"Ticket Logger\",\n\t\t\t    \"icon\": {\n\t\t\t      \"path\": \"material/info\",\n\t\t\t      \"color\": \"--neutral-80\",\n\t\t\t      \"style\": {}\n\t\t\t    },\n\t\t\t    \"style\": {\n\t\t\t      \"classes\": \"bg-component font-value\",\n\t\t\t      \"height\": 24,\n\t\t\t      \"width\": 120\n\t\t\t    },\n\t\t\t    \"type\": \"message\",\n\t\t\t    \"children\": [],\n\t\t\t    \"link\": {\n\t\t\t      \"url\": \"\",\n\t\t\t      \"target\": \"self\"\n\t\t\t    },\n\t\t\t    \"method\": {\n\t\t\t      \"name\": \"\",\n\t\t\t      \"params\": {}\n\t\t\t    },\n\t\t\t    \"message\": {\n\t\t\t      \"type\": \"ticketLog\",\n\t\t\t      \"payload\": {\n\t\t\t        \"tagPath\": tagPath,\n\t\t\t        \"viewName\": self.view.id.split('@')[0]\n\t\t\t      },\n\t\t\t      \"scope\": \"page\"\n\t\t\t    }\n\t\t\t  }\n\t\t\t]\n\treturn items",
-              "type": "script"
-            }
-          ],
-          "type": "expr-struct"
-        }
-      },
-      "meta.contextMenu.enabled": {
-        "binding": {
-          "config": {
-            "struct": {
-              "items": "{this.meta.contextMenu.items}",
-              "permission": "{session.custom.TicketLogAccess}"
-            },
-            "waitOnAll": true
-          },
-          "transforms": [
-            {
-              "expression": "len({value}['items']) > 0 && {value}['permission']",
-              "type": "expression"
-            }
-          ],
-          "type": "expr-struct"
-        }
-      }
-    },
-    "scripts": {
-      "customMethods": [],
-      "extensionFunctions": null,
-      "messageHandlers": [
-        {
-          "messageType": "ticketLog",
-          "pageScope": true,
-          "script": "\t# Ticket Logger context-menu opener\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
-          "sessionScope": false,
-          "viewScope": false
-        }
-      ]
-    }
+    "type": "ia.container.flex"
   }
 }

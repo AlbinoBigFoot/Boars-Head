@@ -14,7 +14,16 @@ DEVICE_SIM = (
 )
 OUT_CSV = ROOT / "sim/bh-plant-sim.csv"
 
-FOLDERS = ["Evaporators", "Compressors", "Pumps", "ExhaustFans", "CoolingTowers"]
+FOLDERS = [
+    "Evaporators",
+    "Compressors",
+    "Pumps",
+    "ExhaustFans",
+    "CoolingTowers",
+    "Valves",
+    "Tanks",
+    "Sensors",
+]
 
 DTYPE_MAP = {
     "Boolean": "Boolean",
@@ -193,17 +202,18 @@ EV_PROFILES: dict[str, dict[str, str]] = {
 # Controls-grade defaults for Devices/Evaporator (CG_RL_Evap enable/defrost/ZAT/Interlock).
 # Status wall remains EV_PROFILES above. A-merge wires FOLDERS + CSV emission for these leaves.
 # HMI Status stays simplified; PLC Sts_State 0-10 maps in Devices/Evaporator Status metadata.
+# Analog/Digital Controls leaves use Member/Value browse paths (OPC Sim style).
 EV_FACEPLATE_DEFAULTS: dict[str, tuple[str, str]] = {
     "HMIEnable": ("true", "Boolean"),
     "Cmd_StartDefrost": ("false", "Boolean"),
     "Cmd_StopDefrost": ("false", "Boolean"),
     "Cleanup": ("false", "Boolean"),
-    "TooHot": ("false", "Boolean"),
-    "TooCold": ("false", "Boolean"),
-    "IntlkOK": ("true", "Boolean"),
-    "PermOK": ("true", "Boolean"),
-    "Off": ("false", "Boolean"),
-    "TimeLeft": ("12.0", "Float"),
+    "TooHot/Value": ("false", "Boolean"),
+    "TooCold/Value": ("false", "Boolean"),
+    "IntlkOK/Value": ("true", "Boolean"),
+    "PermOK/Value": ("true", "Boolean"),
+    "Off/Value": ("false", "Boolean"),
+    "TimeLeft/Value": ("12.0", "Float"),
     "Cfg_PumpOut": ("3.0", "Float"),
     "Cfg_SoftHotGas": ("2.0", "Float"),
     "Cfg_MainHotGas": ("8.0", "Float"),
@@ -229,26 +239,27 @@ for _i in range(4, 16):
 for _i in range(16):
     EV_FACEPLATE_DEFAULTS[f"Interlock/MSet_Bypass{_i:02d}"] = ("false", "Boolean")
 
-# EV-02 Controls demo seed (beyond Status/Temp/Pressure/Fans wall profile).
+# EV Controls demo seed (beyond Status/Temp/Pressure/Fans wall profile).
+# Keys match FACEPLATE_DEFAULTS relative paths (Value-wrapped for Analog/Digital).
 EV_CONTROLS_PROFILES: dict[str, dict[str, str]] = {
     "EV-02": {
         "HMIEnable": "true",
-        "TimeLeft": "8.5",
-        "TooHot": "true",
-        "IntlkOK": "true",
-        "PermOK": "true",
+        "TimeLeft/Value": "8.5",
+        "TooHot/Value": "true",
+        "IntlkOK/Value": "true",
+        "PermOK/Value": "true",
         "Cmd_StartDefrost": "false",
         "Cmd_StopDefrost": "false",
     },
     "EV-04": {
         "HMIEnable": "true",
-        "TimeLeft": "4.0",
+        "TimeLeft/Value": "4.0",
         "Cmd_StartDefrost": "true",
     },
     "EV-06": {
         "HMIEnable": "true",
-        "IntlkOK": "false",
-        "TimeLeft": "0.0",
+        "IntlkOK/Value": "false",
+        "TimeLeft/Value": "0.0",
     },
 }
 # --- END EVAPORATOR ---
@@ -594,7 +605,7 @@ SENSOR_PROFILES: dict[str, dict[str, str]] = {
 # Controls-grade sim profiles for Devices/Tank (A-merge wires FOLDERS + CSV).
 TANK_FACEPLATE_DEFAULTS: dict[str, tuple[str, str]] = {
     "Level/SP": ("50.0", "Float"),
-    "Pressure": ("18.0", "Float"),
+    "Pressure/Value": ("18.0", "Float"),
     "Interlock/Sts_IntlkOK": ("true", "Boolean"),
     "Interlock/OCmd_Reset": ("false", "Boolean"),
     "Interlock/Rdy_Reset": ("true", "Boolean"),
@@ -837,24 +848,80 @@ def _comp_id(path: str) -> str | None:
     return None
 
 
+def _valve_id(path: str) -> str | None:
+    parts = path.split("/")
+    if len(parts) >= 2 and parts[0] == "Valves":
+        return parts[1]
+    return None
+
+
+def _tank_id(path: str) -> str | None:
+    parts = path.split("/")
+    if len(parts) >= 2 and parts[0] == "Tanks":
+        return parts[1]
+    return None
+
+
+def _sensor_id(path: str) -> str | None:
+    parts = path.split("/")
+    if len(parts) >= 2 and parts[0] == "Sensors":
+        return parts[1]
+    return None
+
+
+def _profile_lookup(path: str, profiles: dict[str, dict[str, str]], device_id: str) -> str | None:
+    """Match Value-leaf browse path against profile keys (leaf parent or relative path)."""
+    profile = profiles.get(device_id) or {}
+    # Strip folder/device prefix → relative under device
+    parts = path.split("/")
+    if len(parts) < 3:
+        return None
+    rel = "/".join(parts[2:])  # e.g. Status/Value, Interlock/Sts_IntlkOK, Value/Value
+    if rel in profile:
+        return profile[rel]
+    # FACEPLATE-style Value wrap: TooHot/Value ← profile TooHot/Value or TooHot
+    if rel.endswith("/Value"):
+        parent = rel[: -len("/Value")]
+        if parent in profile:
+            return profile[parent]
+        if f"{parent}/Value" in profile:
+            return profile[f"{parent}/Value"]
+    leaf_parent = parts[-2]
+    if leaf_parent in profile:
+        return profile[leaf_parent]
+    return None
+
+
 def value_source(path: str, sim_dtype: str) -> str:
-    leaf_parent = path.split("/")[-2]
     for getter, profiles in (
         (_ev_id, EV_PROFILES),
         (_ct_id, CT_PROFILES),
         (_pmp_id, PMP_PROFILES),
         (_efan_id, EFAN_PROFILES),
         (_comp_id, COMP_PROFILES),
+        (_valve_id, VALVE_PROFILES),
+        (_tank_id, TANK_PROFILES),
+        (_sensor_id, SENSOR_PROFILES),
     ):
         device_id = getter(path)
-        if device_id and device_id in profiles:
-            profile = profiles[device_id]
-            if leaf_parent in profile:
-                return profile[leaf_parent]
+        if device_id:
+            hit = _profile_lookup(path, profiles, device_id)
+            if hit is not None:
+                return hit
+            # Evaporator Controls overlays (TimeLeft/TooHot/…) when present on leaves
+            if getter is _ev_id:
+                hit = _profile_lookup(path, EV_CONTROLS_PROFILES, device_id)
+                if hit is not None:
+                    return hit
 
+    leaf_parent = path.split("/")[-2]
     if leaf_parent == "Status":
         if path.startswith("Evaporators/"):
             return "list(0, 1, 2, 3, 5, true)"
+        if path.startswith("Valves/"):
+            return "list(1, 2, 5, 6, true)"
+        if path.startswith("Tanks/") or path.startswith("Sensors/"):
+            return "0"
         return "list(0, 1, 2, 4, true)"
     if leaf_parent in ("CP_Mode", "SV_Mode"):
         return "2"
@@ -868,6 +935,12 @@ def value_source(path: str, sim_dtype: str) -> str:
         return "realistic(35.0, 1.2, 0.06, 0.25, true)"
     if leaf_parent == "Airflow":
         return "realistic(800.0, 20.0, 0.05, 0.2, true)"
+    if leaf_parent == "Level":
+        return "realistic(50.0, 2.0, 0.05, 0.2, true)"
+    if leaf_parent == "TravelTime":
+        return "2.5"
+    if leaf_parent == "TimeLeft":
+        return "12.0"
     if leaf_parent == "DisP":
         return "realistic(22.0, 1.2, 0.06, 0.25, true)"
     if leaf_parent == "Amps":
@@ -880,7 +953,36 @@ def value_source(path: str, sim_dtype: str) -> str:
         return "ramp(20.0, 80.0, 60, true)"
     if leaf_parent == "SPD_FBK":
         return "ramp(0.0, 60.0, 40, true)"
-    if leaf_parent in ("CMD", "Fault", "Alm", "Cutout", "Failed", "Started", "Comm"):
+    # Sensor PV is Sensors/<id>/Value/Value — leaf_parent is the Analog member name "Value"
+    if leaf_parent == "Value" and path.startswith("Sensors/"):
+        return "realistic(30.0, 1.0, 0.05, 0.2, true)"
+    if leaf_parent in (
+        "CMD",
+        "Fault",
+        "Alm",
+        "Cutout",
+        "Failed",
+        "Started",
+        "Comm",
+        "OpenLS",
+        "ClosedLS",
+        "HiHi",
+        "Hi",
+        "Lo",
+        "LoLo",
+        "Fail",
+        "LSH",
+        "LSL",
+        "HH",
+        "H",
+        "L",
+        "LL",
+        "TooHot",
+        "TooCold",
+        "IntlkOK",
+        "PermOK",
+        "Off",
+    ):
         return "false"
     if sim_dtype == "Boolean":
         return "false"
@@ -947,6 +1049,73 @@ def patch_tags(tags, prefix: str) -> int:
     return changed
 
 
+def _faceplate_emit_specs() -> list[tuple[str, dict[str, dict[str, str]], dict[str, tuple[str, str]], dict[str, dict[str, str]] | None]]:
+    """(folder, device_profiles, faceplate_defaults, optional_overlay_profiles)."""
+    return [
+        ("Compressors", COMP_PROFILES, COMP_FACEPLATE_DEFAULTS, None),
+        ("Pumps", PMP_PROFILES, PUMP_FACEPLATE_DEFAULTS, None),
+        ("ExhaustFans", EFAN_PROFILES, EXHAUSTFAN_FACEPLATE_DEFAULTS, None),
+        ("CoolingTowers", CT_PROFILES, CT_FACEPLATE_DEFAULTS, None),
+        ("Evaporators", EV_PROFILES, EV_FACEPLATE_DEFAULTS, EV_CONTROLS_PROFILES),
+        ("Valves", VALVE_PROFILES, VALVE_FACEPLATE_DEFAULTS, None),
+        ("Tanks", TANK_PROFILES, TANK_FACEPLATE_DEFAULTS, None),
+        ("Sensors", SENSOR_PROFILES, SENSOR_FACEPLATE_DEFAULTS, None),
+    ]
+
+
+def _faceplate_source(
+    rel: str,
+    default_val: str,
+    profile: dict[str, str],
+    overlay: dict[str, str] | None,
+) -> str:
+    for src in (overlay or {}, profile):
+        if rel in src:
+            return src[rel]
+        # Allow profile leaf keys (Failed) to override Failed/Value faceplate rows
+        if rel.endswith("/Value"):
+            parent = rel[: -len("/Value")]
+            if parent in src:
+                return src[parent]
+    return default_val
+
+
+def emit_faceplate_rows(rows: list[dict]) -> None:
+    """Emit Controls/Config/Interlock demo tags (memory AtomicTags + Value-wrapped Analogs)."""
+    for folder, profiles, defaults, overlay_profiles in _faceplate_emit_specs():
+        for device_id in sorted(profiles):
+            profile = profiles.get(device_id) or {}
+            overlay = (overlay_profiles or {}).get(device_id) if overlay_profiles else None
+            for rel, (val, dtype) in defaults.items():
+                rows.append(
+                    {
+                        "Time Interval": "0",
+                        "Browse Path": f"{folder}/{device_id}/{rel}",
+                        "Value Source": _faceplate_source(rel, val, profile, overlay),
+                        "Data Type": dtype,
+                    }
+                )
+
+
+def emit_faceplate_sim_tags(tree: dict, sim_dtype_map: dict[str, str]) -> None:
+    for folder, profiles, defaults, _overlay in _faceplate_emit_specs():
+        for device_id in sorted(profiles):
+            for rel, (_val, dtype) in defaults.items():
+                path = f"{folder}/{device_id}/{rel}"
+                parts = path.split("/")
+                parent = ensure_folder(tree, parts[:-1])
+                parent["tags"].append(
+                    {
+                        "name": parts[-1],
+                        "tagType": "AtomicTag",
+                        "valueSource": "opc",
+                        "opcServer": "Ignition OPC UA Server",
+                        "opcItemPath": "ns=1;s=[Sim]" + "/".join(parts),
+                        "dataType": sim_dtype_map.get(dtype, "Float4"),
+                    }
+                )
+
+
 def main() -> None:
     leaves: list[tuple[str, dict]] = []
     folder_data: dict[str, list] = {}
@@ -969,21 +1138,21 @@ def main() -> None:
             }
         )
 
-    # Flat faceplate demo tags live on Devices/Compressor type (memory) and are
-    # not present as Value leaves on Compressors instances â€” emit Sim rows so
-    # lab CSV covers Controls/Config/Interlocks paths.
-    for comp_id in sorted(COMP_PROFILES):
-        for rel, (val, dtype) in COMP_FACEPLATE_DEFAULTS.items():
-            rows.append(
-                {
-                    "Time Interval": "0",
-                    "Browse Path": f"Compressors/{comp_id}/{rel}",
-                    "Value Source": val,
-                    "Data Type": dtype,
-                }
-            )
+    # Flat faceplate demo tags live on Devices/* types (memory) and are often
+    # not present as Value leaves on instances — emit Sim rows so lab CSV covers
+    # Controls/Config/Interlocks paths for every family.
+    emit_faceplate_rows(rows)
 
-    rows.sort(key=lambda r: r["Browse Path"])
+    # Deduplicate browse paths (instance Value leaf wins over faceplate emit).
+    seen: set[str] = set()
+    deduped: list[dict] = []
+    for r in sorted(rows, key=lambda x: x["Browse Path"]):
+        bp = r["Browse Path"]
+        if bp in seen:
+            continue
+        seen.add(bp)
+        deduped.append(r)
+    rows = deduped
 
     fieldnames = ["Time Interval", "Browse Path", "Value Source", "Data Type"]
     # Gateway Sim device historically uses spaced unquoted headers.
@@ -1023,21 +1192,7 @@ def main() -> None:
         "Int16": "Int2",
         "String": "String",
     }
-    for comp_id in sorted(COMP_PROFILES):
-        for rel, (_val, dtype) in COMP_FACEPLATE_DEFAULTS.items():
-            path = f"Compressors/{comp_id}/{rel}"
-            parts = path.split("/")
-            parent = ensure_folder(tree, parts[:-1])
-            parent["tags"].append(
-                {
-                    "name": parts[-1],
-                    "tagType": "AtomicTag",
-                    "valueSource": "opc",
-                    "opcServer": "Ignition OPC UA Server",
-                    "opcItemPath": "ns=1;s=[Sim]" + "/".join(parts),
-                    "dataType": SIM_DTYPE.get(dtype, "Float4"),
-                }
-            )
+    emit_faceplate_sim_tags(tree, SIM_DTYPE)
 
     sim_udts = folder_to_json(tree)
     sim_dir = TAG_DEF / "_Sim_"
@@ -1062,7 +1217,7 @@ def main() -> None:
     )
     print(f"Wrote _Sim_/udts.json top folders: {[x['name'] for x in sim_udts]}")
 
-    # Plant tags stay OPC â†’ ns=1;s=[Sim]<path> (live wiring). _Sim_ mirror
+    # Plant tags stay OPC → ns=1;s=[Sim]<path> (live wiring). _Sim_ mirror
     # above is for optional reference browse; do not rewrite plant Value leaves.
     print("Skipped plant tag reference patch (preserving OPC wiring)")
     print("Sample CSV:")
