@@ -120,7 +120,7 @@ coverage:
 2. **Task 2: Controls + Config + Interlocks views + CSS** - `f6be7b1` (feat)
 3. **Task 3: Faceplate tagFlags + Interlocks tab + webGuiUrl + signatures** - `e24b8ac` (feat)
 
-**Plan metadata:** (pending docs commit)
+**Plan metadata:** `a6b5469` (docs: complete plan)
 
 ## Files Created/Modified
 
