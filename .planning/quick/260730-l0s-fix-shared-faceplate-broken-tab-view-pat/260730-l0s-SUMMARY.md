@@ -124,7 +124,7 @@ coverage:
 1. **Task 1: CAS + Alarms + tab contrast + Trend params** — `d808179` + `cff5e15` (view.json follow-up)
 2. **Task 2: Scout ApexChart Trend** — `5e10e51`
 3. **Task 3: History + Alarm Config + signatures/scan** — `2b4bd34`
-4. **Plan metadata** — (this SUMMARY + STATE docs commit)
+4. **Plan metadata** — `19ea00d` (docs: SUMMARY + STATE Quick Tasks)
 
 ## Files Created/Modified
 
