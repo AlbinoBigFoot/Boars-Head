@@ -322,21 +322,142 @@ CT_PROFILES: dict[str, dict[str, str]] = {
 }
 # --- END COOLINGTOWER ---
 
-PMP_PROFILES: dict[str, dict[str, str]] = {
-    # PMP-01: Run + flow > SP (60 > 50) â†’ AnalogValue red
-    "PMP-01": {"Status": "1", "Temp": "60.0"},
-    "PMP-02": {"Status": "4", "Temp": "realistic(40.0, 1.0, 0.05, 0.2, true)"},
-    "PMP-03": {"Status": "2", "Temp": "realistic(35.0, 1.2, 0.06, 0.22, true)"},
-    "PMP-04": {"Status": "0", "Temp": "realistic(20.0, 0.8, 0.04, 0.18, true)"},
+# --- PUMP ---
+# P_Motor Val_Sts: 0=UNK, 1=STOPPED, 2=RUNNING, 7=STOPPING, 8=STARTING, 33=DISABLED.
+PUMP_FACEPLATE_DEFAULTS: dict[str, tuple[str, str]] = {
+    "OPER": ("true", "Boolean"),
+    "MAINT": ("false", "Boolean"),
+    "PROG": ("false", "Boolean"),
+    "Cmd_Start": ("false", "Boolean"),
+    "Cmd_Stop": ("false", "Boolean"),
+    "Cmd_Auto": ("false", "Boolean"),
+    "Cmd_Manual": ("false", "Boolean"),
+    "Cmd_Reset": ("false", "Boolean"),
+    "RuntimeHours": ("412.5", "Float"),
+    "MotorStarts": ("96", "Int32"),
+    "AutoEN": ("true", "Boolean"),
+    "Fail_Timer_PRE": ("30.0", "Float"),
+    "Failed": ("false", "Boolean"),
+    "Alm": ("false", "Boolean"),
+    "Started": ("true", "Boolean"),
+    "Comm": ("false", "Boolean"),
+    "Interlock/Sts_IntlkOK": ("false", "Boolean"),
+    "Interlock/Sts_NBIntlkOK": ("true", "Boolean"),
+    "Interlock/Sts_BypActive": ("false", "Boolean"),
+    "Interlock/Sts_FirstOut": ("false", "Boolean"),
+    "Interlock/Sts_Intlk": ("6", "Int32"),
+    "Interlock/Cfg_Bypassable": ("7", "Int32"),
+    "Interlock/OCmd_Reset": ("false", "Boolean"),
+    "Interlock/Rdy_Reset": ("true", "Boolean"),
+    "Interlock/Cfg_CondTxt00": ("Seal Water", "String"),
+    "Interlock/Cfg_CondTxt01": ("Discharge Pressure", "String"),
+    "Interlock/Cfg_CondTxt02": ("Motor OL", "String"),
+    "Interlock/Cfg_CondTxt03": ("Emergency Stop", "String"),
 }
+for _i in range(4, 16):
+    PUMP_FACEPLATE_DEFAULTS[f"Interlock/Cfg_CondTxt{_i:02d}"] = ("", "String")
+for _i in range(16):
+    PUMP_FACEPLATE_DEFAULTS[f"Interlock/MSet_Bypass{_i:02d}"] = ("false", "Boolean")
+
+PMP_PROFILES: dict[str, dict[str, str]] = {
+    "PMP-01": {
+        "Status": "2",
+        "Flow": "60.0",
+        "Failed": "false",
+        "Alm": "false",
+        "Started": "true",
+        "Comm": "false",
+        "OPER": "true",
+        "MAINT": "false",
+        "PROG": "false",
+    },
+    "PMP-02": {
+        "Status": "1",
+        "Flow": "realistic(40.0, 1.0, 0.05, 0.2, true)",
+        "Started": "false",
+    },
+    "PMP-03": {
+        "Status": "1",
+        "Flow": "realistic(35.0, 1.2, 0.06, 0.22, true)",
+        "Failed": "true",
+        "Alm": "true",
+        "Started": "false",
+    },
+    "PMP-04": {
+        "Status": "0",
+        "Flow": "realistic(20.0, 0.8, 0.04, 0.18, true)",
+        "Started": "false",
+    },
+}
+# --- END PUMP ---
+
+# --- EXHAUSTFAN ---
+EXHAUSTFAN_FACEPLATE_DEFAULTS: dict[str, tuple[str, str]] = {
+    "OPER": ("true", "Boolean"),
+    "MAINT": ("false", "Boolean"),
+    "PROG": ("false", "Boolean"),
+    "Cmd_Start": ("false", "Boolean"),
+    "Cmd_Stop": ("false", "Boolean"),
+    "Cmd_Auto": ("false", "Boolean"),
+    "Cmd_Manual": ("false", "Boolean"),
+    "Cmd_Reset": ("false", "Boolean"),
+    "RuntimeHours": ("865.0", "Float"),
+    "MotorStarts": ("210", "Int32"),
+    "AutoEN": ("true", "Boolean"),
+    "Fail_Timer_PRE": ("30.0", "Float"),
+    "Failed": ("false", "Boolean"),
+    "Alm": ("false", "Boolean"),
+    "Started": ("true", "Boolean"),
+    "Comm": ("false", "Boolean"),
+    "Interlock/Sts_IntlkOK": ("false", "Boolean"),
+    "Interlock/Sts_NBIntlkOK": ("true", "Boolean"),
+    "Interlock/Sts_BypActive": ("false", "Boolean"),
+    "Interlock/Sts_FirstOut": ("false", "Boolean"),
+    "Interlock/Sts_Intlk": ("6", "Int32"),
+    "Interlock/Cfg_Bypassable": ("7", "Int32"),
+    "Interlock/OCmd_Reset": ("false", "Boolean"),
+    "Interlock/Rdy_Reset": ("true", "Boolean"),
+    "Interlock/Cfg_CondTxt00": ("Damper Closed", "String"),
+    "Interlock/Cfg_CondTxt01": ("High Temp", "String"),
+    "Interlock/Cfg_CondTxt02": ("Motor OL", "String"),
+    "Interlock/Cfg_CondTxt03": ("Emergency Stop", "String"),
+}
+for _i in range(4, 16):
+    EXHAUSTFAN_FACEPLATE_DEFAULTS[f"Interlock/Cfg_CondTxt{_i:02d}"] = ("", "String")
+for _i in range(16):
+    EXHAUSTFAN_FACEPLATE_DEFAULTS[f"Interlock/MSet_Bypass{_i:02d}"] = ("false", "Boolean")
 
 EFAN_PROFILES: dict[str, dict[str, str]] = {
-    # EFAN-01: Run + airflow > SP (1200 > 1000) â†’ AnalogValue red
-    "EFAN-01": {"Status": "1", "Temp": "1200.0"},
-    "EFAN-02": {"Status": "4", "Temp": "realistic(800.0, 20.0, 0.05, 0.2, true)"},
-    "EFAN-03": {"Status": "2", "Temp": "realistic(750.0, 25.0, 0.06, 0.22, true)"},
-    "EFAN-04": {"Status": "0", "Temp": "realistic(100.0, 10.0, 0.04, 0.18, true)"},
+    "EFAN-01": {
+        "Status": "2",
+        "Airflow": "1200.0",
+        "Failed": "false",
+        "Alm": "false",
+        "Started": "true",
+        "Comm": "false",
+        "OPER": "true",
+        "MAINT": "false",
+        "PROG": "false",
+    },
+    "EFAN-02": {
+        "Status": "1",
+        "Airflow": "realistic(800.0, 20.0, 0.05, 0.2, true)",
+        "Started": "false",
+    },
+    "EFAN-03": {
+        "Status": "1",
+        "Airflow": "realistic(750.0, 25.0, 0.06, 0.22, true)",
+        "Failed": "true",
+        "Alm": "true",
+        "Started": "false",
+    },
+    "EFAN-04": {
+        "Status": "0",
+        "Airflow": "realistic(100.0, 10.0, 0.04, 0.18, true)",
+        "Started": "false",
+    },
 }
+# --- END EXHAUSTFAN ---
 
 # --- VALVE ---
 # P_ValveSO Status wall + Controls/Interlock defaults (A-merge wires FOLDERS + CSV).

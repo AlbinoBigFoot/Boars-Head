@@ -2,7 +2,7 @@
   {
     "metadata": {
       "shortDescription": "pump",
-      "longDescription": "pump"
+      "longDescription": "pump (Devices HMI layer; PLC source P_Motor)"
     },
     "name": "Pump",
     "tagType": "UdtType",
@@ -10,7 +10,7 @@
       {
         "metadata": {
           "shortDescription": "status",
-          "longDescription": "pump status"
+          "longDescription": "Pump status (P_Motor Val_Sts: 0=UNK, 1=STOPPED, 2=RUNNING, 7=STOPPING, 8=STARTING, 33=DISABLED)"
         },
         "name": "Status",
         "typeId": "_Root/Multistate",
@@ -20,27 +20,31 @@
             "valueSource": "memory",
             "metadata": {
               "shortDescription": "status",
-              "longDescription": "pump status",
+              "longDescription": "P_Motor Val_Sts: 0=UNK, 1=STOPPED, 2=RUNNING, 7=STOPPING, 8=STARTING, 33=DISABLED",
               "states": [
                 {
-                  "label": "Off",
+                  "label": "UNK",
                   "value": 0
                 },
                 {
-                  "label": "Run",
+                  "label": "STOPPED",
                   "value": 1
                 },
                 {
-                  "label": "Fault",
+                  "label": "RUNNING",
                   "value": 2
                 },
                 {
-                  "label": "Manual",
-                  "value": 3
+                  "label": "STOPPING",
+                  "value": 7
                 },
                 {
-                  "label": "Idle",
-                  "value": 4
+                  "label": "STARTING",
+                  "value": 8
+                },
+                {
+                  "label": "DISABLED",
+                  "value": 33
                 }
               ]
             },
@@ -54,16 +58,42 @@
       {
         "metadata": {
           "shortDescription": "Flow",
-          "longDescription": "Pump Flow"
+          "longDescription": "Pump flow (PLC process flow KPI)"
         },
-        "name": "Temp",
+        "name": "Flow",
         "typeId": "_Root/Analog",
         "tagType": "UdtInstance",
         "tags": [
           {
             "name": "Value",
             "engUnit": "gpm",
-            "tagType": "AtomicTag"
+            "dataType": "Float4",
+            "value": 0.0,
+            "valueSource": "memory",
+            "tagType": "AtomicTag",
+            "formatString": "#0.0",
+            "historyEnabled": true,
+            "historyProvider": "historian",
+            "historicalDeadband": 0.01,
+            "historicalDeadbandMode": "Absolute",
+            "historicalDeadbandStyle": "Discrete",
+            "sampleMode": "OnChange",
+            "alarms": [
+              {
+                "name": "Hi",
+                "mode": "AboveSetpoint",
+                "setpointA": 0.0,
+                "priority": "Medium",
+                "enabled": true
+              },
+              {
+                "name": "Lo",
+                "mode": "BelowSetpoint",
+                "setpointA": 0.0,
+                "priority": "Medium",
+                "enabled": true
+              }
+            ]
           },
           {
             "name": "SP",
@@ -75,6 +105,746 @@
             "value": 50.0,
             "valueSource": "memory",
             "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Alarm",
+          "longDescription": "Pump alarm bit"
+        },
+        "name": "Alm",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "Alarm",
+              "longDescription": "Pump alarm bit",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag",
+            "alarms": [
+              {
+                "name": "Alarm",
+                "mode": "Equality",
+                "setpointA": 1.0,
+                "priority": "Medium",
+                "enabled": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Failed",
+          "longDescription": "Pump failed bit (fail-to-start/stop)"
+        },
+        "name": "Failed",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "Failed",
+              "longDescription": "Pump failed bit (fail-to-start/stop)",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag",
+            "alarms": [
+              {
+                "name": "Alarm",
+                "mode": "Equality",
+                "setpointA": 1.0,
+                "priority": "High",
+                "enabled": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Started",
+          "longDescription": "Pump started / run feedback"
+        },
+        "name": "Started",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "Started",
+              "longDescription": "Pump started / run feedback",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Comm",
+          "longDescription": "Pump communication fault"
+        },
+        "name": "Comm",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "Comm",
+              "longDescription": "Pump communication fault",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag",
+            "alarms": [
+              {
+                "name": "Alarm",
+                "mode": "Equality",
+                "setpointA": 1.0,
+                "priority": "Medium",
+                "enabled": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "OPER",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": true,
+        "metadata": {
+          "shortDescription": "Operator",
+          "longDescription": "Operator mode ownership"
+        }
+      },
+      {
+        "name": "MAINT",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false,
+        "metadata": {
+          "shortDescription": "Maintenance",
+          "longDescription": "Maintenance mode ownership"
+        }
+      },
+      {
+        "name": "PROG",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false,
+        "metadata": {
+          "shortDescription": "Program",
+          "longDescription": "Program mode ownership"
+        }
+      },
+      {
+        "name": "Cmd_Start",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false,
+        "metadata": {
+          "shortDescription": "Start",
+          "longDescription": "Operator start command"
+        }
+      },
+      {
+        "name": "Cmd_Stop",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false,
+        "metadata": {
+          "shortDescription": "Stop",
+          "longDescription": "Operator stop command"
+        }
+      },
+      {
+        "name": "Cmd_Auto",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false,
+        "metadata": {
+          "shortDescription": "Auto",
+          "longDescription": "Auto mode command"
+        }
+      },
+      {
+        "name": "Cmd_Manual",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false,
+        "metadata": {
+          "shortDescription": "Manual",
+          "longDescription": "Manual mode command"
+        }
+      },
+      {
+        "name": "Cmd_Reset",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false,
+        "metadata": {
+          "shortDescription": "Reset",
+          "longDescription": "Reset faults / interlocks"
+        }
+      },
+      {
+        "name": "RuntimeHours",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Float4",
+        "value": 1247.5,
+        "metadata": {
+          "shortDescription": "Runtime hours",
+          "longDescription": "Total runtime hours"
+        },
+        "formatString": "#0.0",
+        "engUnit": "h"
+      },
+      {
+        "name": "MotorStarts",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Int4",
+        "value": 382,
+        "metadata": {
+          "shortDescription": "Motor starts",
+          "longDescription": "Motor start count"
+        },
+        "formatString": "#0"
+      },
+      {
+        "name": "AutoEN",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": true,
+        "metadata": {
+          "shortDescription": "Auto enable",
+          "longDescription": "Auto enable"
+        }
+      },
+      {
+        "name": "Fail_Timer_PRE",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Float4",
+        "value": 30.0,
+        "metadata": {
+          "shortDescription": "Fail timer preset",
+          "longDescription": "Fail-to-start/stop timer preset"
+        },
+        "formatString": "#0.0",
+        "engUnit": "s"
+      },
+      {
+        "name": "Interlock",
+        "tagType": "Folder",
+        "tags": [
+          {
+            "name": "Sts_IntlkOK",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Interlocks OK",
+              "longDescription": "Interlocks OK"
+            }
+          },
+          {
+            "name": "Sts_NBIntlkOK",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": true,
+            "metadata": {
+              "shortDescription": "Non-bypassable OK",
+              "longDescription": "Non-bypassable OK"
+            }
+          },
+          {
+            "name": "Sts_BypActive",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass active",
+              "longDescription": "Bypass active"
+            }
+          },
+          {
+            "name": "Sts_FirstOut",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "First out",
+              "longDescription": "First out"
+            }
+          },
+          {
+            "name": "Sts_Intlk",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Int4",
+            "value": 6,
+            "metadata": {
+              "shortDescription": "Interlock status bits",
+              "longDescription": "Interlock status bits"
+            },
+            "formatString": "#0"
+          },
+          {
+            "name": "Cfg_Bypassable",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Int4",
+            "value": 7,
+            "metadata": {
+              "shortDescription": "Bypassable channel bits",
+              "longDescription": "Bypassable channel bits"
+            },
+            "formatString": "#0"
+          },
+          {
+            "name": "OCmd_Reset",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Reset interlocks",
+              "longDescription": "Reset interlocks"
+            }
+          },
+          {
+            "name": "Rdy_Reset",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": true,
+            "metadata": {
+              "shortDescription": "Reset ready",
+              "longDescription": "Reset ready"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt00",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "Seal Water",
+            "metadata": {
+              "shortDescription": "Condition 00",
+              "longDescription": "Condition 00"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt01",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "Discharge Pressure",
+            "metadata": {
+              "shortDescription": "Condition 01",
+              "longDescription": "Condition 01"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt02",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "Motor OL",
+            "metadata": {
+              "shortDescription": "Condition 02",
+              "longDescription": "Condition 02"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt03",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "Emergency Stop",
+            "metadata": {
+              "shortDescription": "Condition 03",
+              "longDescription": "Condition 03"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt04",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 04",
+              "longDescription": "Condition 04"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt05",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 05",
+              "longDescription": "Condition 05"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt06",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 06",
+              "longDescription": "Condition 06"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt07",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 07",
+              "longDescription": "Condition 07"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt08",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 08",
+              "longDescription": "Condition 08"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt09",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 09",
+              "longDescription": "Condition 09"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt10",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 10",
+              "longDescription": "Condition 10"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt11",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 11",
+              "longDescription": "Condition 11"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt12",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 12",
+              "longDescription": "Condition 12"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt13",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 13",
+              "longDescription": "Condition 13"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt14",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 14",
+              "longDescription": "Condition 14"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt15",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 15",
+              "longDescription": "Condition 15"
+            }
+          },
+          {
+            "name": "MSet_Bypass00",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 00",
+              "longDescription": "Bypass 00"
+            }
+          },
+          {
+            "name": "MSet_Bypass01",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 01",
+              "longDescription": "Bypass 01"
+            }
+          },
+          {
+            "name": "MSet_Bypass02",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 02",
+              "longDescription": "Bypass 02"
+            }
+          },
+          {
+            "name": "MSet_Bypass03",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 03",
+              "longDescription": "Bypass 03"
+            }
+          },
+          {
+            "name": "MSet_Bypass04",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 04",
+              "longDescription": "Bypass 04"
+            }
+          },
+          {
+            "name": "MSet_Bypass05",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 05",
+              "longDescription": "Bypass 05"
+            }
+          },
+          {
+            "name": "MSet_Bypass06",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 06",
+              "longDescription": "Bypass 06"
+            }
+          },
+          {
+            "name": "MSet_Bypass07",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 07",
+              "longDescription": "Bypass 07"
+            }
+          },
+          {
+            "name": "MSet_Bypass08",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 08",
+              "longDescription": "Bypass 08"
+            }
+          },
+          {
+            "name": "MSet_Bypass09",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 09",
+              "longDescription": "Bypass 09"
+            }
+          },
+          {
+            "name": "MSet_Bypass10",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 10",
+              "longDescription": "Bypass 10"
+            }
+          },
+          {
+            "name": "MSet_Bypass11",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 11",
+              "longDescription": "Bypass 11"
+            }
+          },
+          {
+            "name": "MSet_Bypass12",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 12",
+              "longDescription": "Bypass 12"
+            }
+          },
+          {
+            "name": "MSet_Bypass13",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 13",
+              "longDescription": "Bypass 13"
+            }
+          },
+          {
+            "name": "MSet_Bypass14",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 14",
+              "longDescription": "Bypass 14"
+            }
+          },
+          {
+            "name": "MSet_Bypass15",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 15",
+              "longDescription": "Bypass 15"
+            }
           }
         ]
       },
@@ -122,7 +892,7 @@
               "tagsForDeviceDetails": {
                 "parameters": [
                   {
-                    "tagPath": "/Temp",
+                    "tagPath": "/Flow",
                     "viewPath": "03_Elements/01_Status/AnalogValue"
                   }
                 ],
@@ -2528,7 +3298,7 @@
   {
     "metadata": {
       "shortDescription": "exhaust fan",
-      "longDescription": "exhaust fan"
+      "longDescription": "exhaust fan (Devices HMI layer; PLC source P_Motor)"
     },
     "name": "ExhaustFan",
     "tagType": "UdtType",
@@ -2536,7 +3306,7 @@
       {
         "metadata": {
           "shortDescription": "status",
-          "longDescription": "exhaust fan status"
+          "longDescription": "ExhaustFan status (P_Motor Val_Sts: 0=UNK, 1=STOPPED, 2=RUNNING, 7=STOPPING, 8=STARTING, 33=DISABLED)"
         },
         "name": "Status",
         "typeId": "_Root/Multistate",
@@ -2546,27 +3316,31 @@
             "valueSource": "memory",
             "metadata": {
               "shortDescription": "status",
-              "longDescription": "exhaust fan status",
+              "longDescription": "P_Motor Val_Sts: 0=UNK, 1=STOPPED, 2=RUNNING, 7=STOPPING, 8=STARTING, 33=DISABLED",
               "states": [
                 {
-                  "label": "Off",
+                  "label": "UNK",
                   "value": 0
                 },
                 {
-                  "label": "Run",
+                  "label": "STOPPED",
                   "value": 1
                 },
                 {
-                  "label": "Fault",
+                  "label": "RUNNING",
                   "value": 2
                 },
                 {
-                  "label": "Manual",
-                  "value": 3
+                  "label": "STOPPING",
+                  "value": 7
                 },
                 {
-                  "label": "Idle",
-                  "value": 4
+                  "label": "STARTING",
+                  "value": 8
+                },
+                {
+                  "label": "DISABLED",
+                  "value": 33
                 }
               ]
             },
@@ -2580,16 +3354,42 @@
       {
         "metadata": {
           "shortDescription": "Airflow",
-          "longDescription": "Exhaust Fan Airflow"
+          "longDescription": "Exhaust fan airflow"
         },
-        "name": "Temp",
+        "name": "Airflow",
         "typeId": "_Root/Analog",
         "tagType": "UdtInstance",
         "tags": [
           {
             "name": "Value",
             "engUnit": "cfm",
-            "tagType": "AtomicTag"
+            "dataType": "Float4",
+            "value": 0.0,
+            "valueSource": "memory",
+            "tagType": "AtomicTag",
+            "formatString": "#0.0",
+            "historyEnabled": true,
+            "historyProvider": "historian",
+            "historicalDeadband": 0.01,
+            "historicalDeadbandMode": "Absolute",
+            "historicalDeadbandStyle": "Discrete",
+            "sampleMode": "OnChange",
+            "alarms": [
+              {
+                "name": "Hi",
+                "mode": "AboveSetpoint",
+                "setpointA": 0.0,
+                "priority": "Medium",
+                "enabled": true
+              },
+              {
+                "name": "Lo",
+                "mode": "BelowSetpoint",
+                "setpointA": 0.0,
+                "priority": "Medium",
+                "enabled": true
+              }
+            ]
           },
           {
             "name": "SP",
@@ -2601,6 +3401,746 @@
             "value": 1000.0,
             "valueSource": "memory",
             "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Alarm",
+          "longDescription": "ExhaustFan alarm bit"
+        },
+        "name": "Alm",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "Alarm",
+              "longDescription": "ExhaustFan alarm bit",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag",
+            "alarms": [
+              {
+                "name": "Alarm",
+                "mode": "Equality",
+                "setpointA": 1.0,
+                "priority": "Medium",
+                "enabled": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Failed",
+          "longDescription": "ExhaustFan failed bit (fail-to-start/stop)"
+        },
+        "name": "Failed",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "Failed",
+              "longDescription": "ExhaustFan failed bit (fail-to-start/stop)",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag",
+            "alarms": [
+              {
+                "name": "Alarm",
+                "mode": "Equality",
+                "setpointA": 1.0,
+                "priority": "High",
+                "enabled": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Started",
+          "longDescription": "ExhaustFan started / run feedback"
+        },
+        "name": "Started",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "Started",
+              "longDescription": "ExhaustFan started / run feedback",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Comm",
+          "longDescription": "ExhaustFan communication fault"
+        },
+        "name": "Comm",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "Comm",
+              "longDescription": "ExhaustFan communication fault",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag",
+            "alarms": [
+              {
+                "name": "Alarm",
+                "mode": "Equality",
+                "setpointA": 1.0,
+                "priority": "Medium",
+                "enabled": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "OPER",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": true,
+        "metadata": {
+          "shortDescription": "Operator",
+          "longDescription": "Operator mode ownership"
+        }
+      },
+      {
+        "name": "MAINT",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false,
+        "metadata": {
+          "shortDescription": "Maintenance",
+          "longDescription": "Maintenance mode ownership"
+        }
+      },
+      {
+        "name": "PROG",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false,
+        "metadata": {
+          "shortDescription": "Program",
+          "longDescription": "Program mode ownership"
+        }
+      },
+      {
+        "name": "Cmd_Start",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false,
+        "metadata": {
+          "shortDescription": "Start",
+          "longDescription": "Operator start command"
+        }
+      },
+      {
+        "name": "Cmd_Stop",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false,
+        "metadata": {
+          "shortDescription": "Stop",
+          "longDescription": "Operator stop command"
+        }
+      },
+      {
+        "name": "Cmd_Auto",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false,
+        "metadata": {
+          "shortDescription": "Auto",
+          "longDescription": "Auto mode command"
+        }
+      },
+      {
+        "name": "Cmd_Manual",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false,
+        "metadata": {
+          "shortDescription": "Manual",
+          "longDescription": "Manual mode command"
+        }
+      },
+      {
+        "name": "Cmd_Reset",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false,
+        "metadata": {
+          "shortDescription": "Reset",
+          "longDescription": "Reset faults / interlocks"
+        }
+      },
+      {
+        "name": "RuntimeHours",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Float4",
+        "value": 1247.5,
+        "metadata": {
+          "shortDescription": "Runtime hours",
+          "longDescription": "Total runtime hours"
+        },
+        "formatString": "#0.0",
+        "engUnit": "h"
+      },
+      {
+        "name": "MotorStarts",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Int4",
+        "value": 382,
+        "metadata": {
+          "shortDescription": "Motor starts",
+          "longDescription": "Motor start count"
+        },
+        "formatString": "#0"
+      },
+      {
+        "name": "AutoEN",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": true,
+        "metadata": {
+          "shortDescription": "Auto enable",
+          "longDescription": "Auto enable"
+        }
+      },
+      {
+        "name": "Fail_Timer_PRE",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Float4",
+        "value": 30.0,
+        "metadata": {
+          "shortDescription": "Fail timer preset",
+          "longDescription": "Fail-to-start/stop timer preset"
+        },
+        "formatString": "#0.0",
+        "engUnit": "s"
+      },
+      {
+        "name": "Interlock",
+        "tagType": "Folder",
+        "tags": [
+          {
+            "name": "Sts_IntlkOK",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Interlocks OK",
+              "longDescription": "Interlocks OK"
+            }
+          },
+          {
+            "name": "Sts_NBIntlkOK",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": true,
+            "metadata": {
+              "shortDescription": "Non-bypassable OK",
+              "longDescription": "Non-bypassable OK"
+            }
+          },
+          {
+            "name": "Sts_BypActive",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass active",
+              "longDescription": "Bypass active"
+            }
+          },
+          {
+            "name": "Sts_FirstOut",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "First out",
+              "longDescription": "First out"
+            }
+          },
+          {
+            "name": "Sts_Intlk",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Int4",
+            "value": 6,
+            "metadata": {
+              "shortDescription": "Interlock status bits",
+              "longDescription": "Interlock status bits"
+            },
+            "formatString": "#0"
+          },
+          {
+            "name": "Cfg_Bypassable",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Int4",
+            "value": 7,
+            "metadata": {
+              "shortDescription": "Bypassable channel bits",
+              "longDescription": "Bypassable channel bits"
+            },
+            "formatString": "#0"
+          },
+          {
+            "name": "OCmd_Reset",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Reset interlocks",
+              "longDescription": "Reset interlocks"
+            }
+          },
+          {
+            "name": "Rdy_Reset",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": true,
+            "metadata": {
+              "shortDescription": "Reset ready",
+              "longDescription": "Reset ready"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt00",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "Damper Closed",
+            "metadata": {
+              "shortDescription": "Condition 00",
+              "longDescription": "Condition 00"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt01",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "High Temp",
+            "metadata": {
+              "shortDescription": "Condition 01",
+              "longDescription": "Condition 01"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt02",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "Motor OL",
+            "metadata": {
+              "shortDescription": "Condition 02",
+              "longDescription": "Condition 02"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt03",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "Emergency Stop",
+            "metadata": {
+              "shortDescription": "Condition 03",
+              "longDescription": "Condition 03"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt04",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 04",
+              "longDescription": "Condition 04"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt05",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 05",
+              "longDescription": "Condition 05"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt06",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 06",
+              "longDescription": "Condition 06"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt07",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 07",
+              "longDescription": "Condition 07"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt08",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 08",
+              "longDescription": "Condition 08"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt09",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 09",
+              "longDescription": "Condition 09"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt10",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 10",
+              "longDescription": "Condition 10"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt11",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 11",
+              "longDescription": "Condition 11"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt12",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 12",
+              "longDescription": "Condition 12"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt13",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 13",
+              "longDescription": "Condition 13"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt14",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 14",
+              "longDescription": "Condition 14"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt15",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 15",
+              "longDescription": "Condition 15"
+            }
+          },
+          {
+            "name": "MSet_Bypass00",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 00",
+              "longDescription": "Bypass 00"
+            }
+          },
+          {
+            "name": "MSet_Bypass01",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 01",
+              "longDescription": "Bypass 01"
+            }
+          },
+          {
+            "name": "MSet_Bypass02",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 02",
+              "longDescription": "Bypass 02"
+            }
+          },
+          {
+            "name": "MSet_Bypass03",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 03",
+              "longDescription": "Bypass 03"
+            }
+          },
+          {
+            "name": "MSet_Bypass04",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 04",
+              "longDescription": "Bypass 04"
+            }
+          },
+          {
+            "name": "MSet_Bypass05",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 05",
+              "longDescription": "Bypass 05"
+            }
+          },
+          {
+            "name": "MSet_Bypass06",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 06",
+              "longDescription": "Bypass 06"
+            }
+          },
+          {
+            "name": "MSet_Bypass07",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 07",
+              "longDescription": "Bypass 07"
+            }
+          },
+          {
+            "name": "MSet_Bypass08",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 08",
+              "longDescription": "Bypass 08"
+            }
+          },
+          {
+            "name": "MSet_Bypass09",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 09",
+              "longDescription": "Bypass 09"
+            }
+          },
+          {
+            "name": "MSet_Bypass10",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 10",
+              "longDescription": "Bypass 10"
+            }
+          },
+          {
+            "name": "MSet_Bypass11",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 11",
+              "longDescription": "Bypass 11"
+            }
+          },
+          {
+            "name": "MSet_Bypass12",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 12",
+              "longDescription": "Bypass 12"
+            }
+          },
+          {
+            "name": "MSet_Bypass13",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 13",
+              "longDescription": "Bypass 13"
+            }
+          },
+          {
+            "name": "MSet_Bypass14",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 14",
+              "longDescription": "Bypass 14"
+            }
+          },
+          {
+            "name": "MSet_Bypass15",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 15",
+              "longDescription": "Bypass 15"
+            }
           }
         ]
       },
@@ -2648,7 +4188,7 @@
               "tagsForDeviceDetails": {
                 "parameters": [
                   {
-                    "tagPath": "/Temp",
+                    "tagPath": "/Airflow",
                     "viewPath": "03_Elements/01_Status/AnalogValue"
                   }
                 ],
@@ -3504,7 +5044,7 @@
       }
     ]
   },
-  {
+    {
     "metadata": {
       "shortDescription": "tank / vessel",
       "longDescription": "Recirculator/Accumulator-style vessel: Level %, HH/H/L/LL marks, LSH/LSL, optional Pressure, lightweight Interlock"
