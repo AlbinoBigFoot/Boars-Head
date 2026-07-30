@@ -1,0 +1,282 @@
+[
+  {
+    "metadata": {
+      "shortDescription": "LSS-PT",
+      "longDescription": "Low-side suction pressure"
+    },
+    "name": "LSS-PT",
+    "typeId": "Devices/Sensor",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Status",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "status",
+              "states": [
+                {
+                  "label": "Stop",
+                  "value": 0
+                },
+                {
+                  "label": "Ok",
+                  "value": 1
+                },
+                {
+                  "label": "Fault",
+                  "value": 2
+                },
+                {
+                  "label": "Comm",
+                  "value": 3
+                }
+              ]
+            },
+            "dataType": "Int4",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "Float4",
+        "engUnit": "psig",
+        "name": "Value",
+        "tagType": "AtomicTag"
+      },
+      {
+        "typeId": "Config/_Alarms",
+        "name": "_Alarms",
+        "tagType": "AtomicTag",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Int4",
+            "name": "_ActiveHighPriority",
+            "tagType": "AtomicTag"
+          },
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "_Active",
+            "tagType": "AtomicTag"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "HSS-PT",
+      "longDescription": "High-side suction pressure"
+    },
+    "name": "HSS-PT",
+    "typeId": "Devices/Sensor",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Status",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "status",
+              "states": [
+                {
+                  "label": "Stop",
+                  "value": 0
+                },
+                {
+                  "label": "Ok",
+                  "value": 1
+                },
+                {
+                  "label": "Fault",
+                  "value": 2
+                },
+                {
+                  "label": "Comm",
+                  "value": 3
+                }
+              ]
+            },
+            "dataType": "Int4",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "Float4",
+        "engUnit": "psig",
+        "name": "Value",
+        "tagType": "AtomicTag"
+      },
+      {
+        "typeId": "Config/_Alarms",
+        "name": "_Alarms",
+        "tagType": "AtomicTag",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Int4",
+            "name": "_ActiveHighPriority",
+            "tagType": "AtomicTag"
+          },
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "_Active",
+            "tagType": "AtomicTag"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "HPR-PT",
+      "longDescription": "HPR pressure"
+    },
+    "name": "HPR-PT",
+    "typeId": "Devices/Sensor",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Status",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "status",
+              "states": [
+                {
+                  "label": "Stop",
+                  "value": 0
+                },
+                {
+                  "label": "Ok",
+                  "value": 1
+                },
+                {
+                  "label": "Fault",
+                  "value": 2
+                },
+                {
+                  "label": "Comm",
+                  "value": 3
+                }
+              ]
+            },
+            "dataType": "Int4",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "Float4",
+        "engUnit": "psig",
+        "name": "Value",
+        "tagType": "AtomicTag"
+      },
+      {
+        "typeId": "Config/_Alarms",
+        "name": "_Alarms",
+        "tagType": "AtomicTag",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "_Active",
+            "tagType": "AtomicTag"
+          },
+          {
+            "valueSource": "memory",
+            "dataType": "Int4",
+            "name": "_ActiveHighPriority",
+            "tagType": "AtomicTag"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "OIL-TT",
+      "longDescription": "Oil temp — Comm fault demo"
+    },
+    "name": "OIL-TT",
+    "typeId": "Devices/Sensor",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Status",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "status",
+              "states": [
+                {
+                  "label": "Stop",
+                  "value": 0
+                },
+                {
+                  "label": "Ok",
+                  "value": 1
+                },
+                {
+                  "label": "Fault",
+                  "value": 2
+                },
+                {
+                  "label": "Comm",
+                  "value": 3
+                }
+              ]
+            },
+            "dataType": "Int4",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "Float4",
+        "engUnit": "°F",
+        "name": "Value",
+        "tagType": "AtomicTag"
+      },
+      {
+        "typeId": "Config/_Alarms",
+        "name": "_Alarms",
+        "tagType": "AtomicTag",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Int4",
+            "name": "_ActiveHighPriority",
+            "tagType": "AtomicTag"
+          },
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "_Active",
+            "tagType": "AtomicTag"
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -889,5 +889,352 @@
         "tagType": "UdtInstance"
       }
     ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "tank",
+      "longDescription": "tank / receiver"
+    },
+    "name": "Tank",
+    "tagType": "UdtType",
+    "tags": [
+      {
+        "metadata": {
+          "shortDescription": "tank status",
+          "longDescription": "tank status"
+        },
+        "name": "Status",
+        "typeId": "_Root/Multistate",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "tank status",
+              "longDescription": "tank status",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "Run",
+                  "value": 1
+                },
+                {
+                  "label": "Fault",
+                  "value": 2
+                },
+                {
+                  "label": "Manual",
+                  "value": 3
+                },
+                {
+                  "label": "Idle",
+                  "value": 4
+                }
+              ]
+            },
+            "dataType": "Int4",
+            "name": "Value",
+            "value": 4,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Tank Level",
+          "longDescription": "Tank Level"
+        },
+        "name": "Level",
+        "typeId": "_Root/Analog",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "engUnit": "%",
+            "value": 50.0,
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "High level switch",
+          "longDescription": "High level switch"
+        },
+        "name": "LSH",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Low level switch",
+          "longDescription": "Low level switch"
+        },
+        "name": "LSL",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "High-high level mark",
+          "longDescription": "High-high level mark"
+        },
+        "name": "HH",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          },
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "name": "SP",
+            "value": 95.0,
+            "engUnit": "%",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "High level mark",
+          "longDescription": "High level mark"
+        },
+        "name": "H",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          },
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "name": "SP",
+            "value": 80.0,
+            "engUnit": "%",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Low level mark",
+          "longDescription": "Low level mark"
+        },
+        "name": "L",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          },
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "name": "SP",
+            "value": 20.0,
+            "engUnit": "%",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Low-low level mark",
+          "longDescription": "Low-low level mark"
+        },
+        "name": "LL",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          },
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "name": "SP",
+            "value": 5.0,
+            "engUnit": "%",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "_Alarms",
+        "typeId": "Config/_Alarms",
+        "tagType": "UdtInstance"
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "valve",
+      "longDescription": "solenoid valve"
+    },
+    "name": "Valve",
+    "tagType": "UdtType",
+    "tags": [
+      {
+        "metadata": {
+          "shortDescription": "valve status",
+          "longDescription": "valve status"
+        },
+        "name": "Status",
+        "typeId": "_Root/Multistate",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "valve status",
+              "longDescription": "valve status",
+              "states": [
+                {
+                  "label": "Closed",
+                  "value": 0
+                },
+                {
+                  "label": "Open",
+                  "value": 1
+                },
+                {
+                  "label": "Fault",
+                  "value": 2
+                }
+              ]
+            },
+            "dataType": "Int4",
+            "name": "Value",
+            "value": 0,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Valve temperature",
+          "longDescription": "Valve temperature"
+        },
+        "name": "Temp",
+        "typeId": "_Root/Analog",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "engUnit": "\u00b0F",
+            "value": 32.0,
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "_Alarms",
+        "typeId": "Config/_Alarms",
+        "tagType": "UdtInstance"
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "sensor",
+      "longDescription": "process sensor"
+    },
+    "name": "Sensor",
+    "tagType": "UdtType",
+    "tags": [
+      {
+        "valueSource": "memory",
+        "metadata": {
+          "shortDescription": "PV",
+          "longDescription": "Process value"
+        },
+        "dataType": "Float4",
+        "engUnit": "psig",
+        "name": "Value",
+        "value": 0.0,
+        "tagType": "AtomicTag"
+      },
+      {
+        "metadata": {
+          "shortDescription": "sensor status",
+          "longDescription": "sensor status"
+        },
+        "name": "Status",
+        "typeId": "_Root/Multistate",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "sensor status",
+              "longDescription": "sensor status",
+              "states": [
+                {
+                  "label": "Stop",
+                  "value": 0
+                },
+                {
+                  "label": "Ok",
+                  "value": 1
+                },
+                {
+                  "label": "Fault",
+                  "value": 2
+                },
+                {
+                  "label": "Comm",
+                  "value": 3
+                }
+              ]
+            },
+            "dataType": "Int4",
+            "name": "Value",
+            "value": 1,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "_Alarms",
+        "typeId": "Config/_Alarms",
+        "tagType": "UdtInstance"
+      }
+    ]
   }
 ]

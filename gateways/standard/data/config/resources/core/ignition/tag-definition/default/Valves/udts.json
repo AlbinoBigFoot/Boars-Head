@@ -1,0 +1,290 @@
+[
+  {
+    "metadata": {
+      "shortDescription": "HPRL-ISO",
+      "longDescription": "HPR liquid isolation"
+    },
+    "name": "HPRL-ISO",
+    "typeId": "Devices/Valve",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Status",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "status",
+              "states": [
+                {
+                  "label": "Closed",
+                  "value": 0
+                },
+                {
+                  "label": "Open",
+                  "value": 1
+                },
+                {
+                  "label": "Fault",
+                  "value": 2
+                }
+              ]
+            },
+            "dataType": "Int4",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Temp",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "engUnit": "°F",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "typeId": "Config/_Alarms",
+        "name": "_Alarms",
+        "tagType": "AtomicTag",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "_Active",
+            "tagType": "AtomicTag"
+          },
+          {
+            "valueSource": "memory",
+            "dataType": "Int4",
+            "name": "_ActiveHighPriority",
+            "tagType": "AtomicTag"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "LTR-SV",
+      "longDescription": "LTR solenoid valve"
+    },
+    "name": "LTR-SV",
+    "typeId": "Devices/Valve",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Status",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "status",
+              "states": [
+                {
+                  "label": "Closed",
+                  "value": 0
+                },
+                {
+                  "label": "Open",
+                  "value": 1
+                },
+                {
+                  "label": "Fault",
+                  "value": 2
+                }
+              ]
+            },
+            "dataType": "Int4",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Temp",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "engUnit": "°F",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "typeId": "Config/_Alarms",
+        "name": "_Alarms",
+        "tagType": "AtomicTag",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Int4",
+            "name": "_ActiveHighPriority",
+            "tagType": "AtomicTag"
+          },
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "_Active",
+            "tagType": "AtomicTag"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "MAIN-LIQ-SV",
+      "longDescription": "Main liquid solenoid valve"
+    },
+    "name": "MAIN-LIQ-SV",
+    "typeId": "Devices/Valve",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Status",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "status",
+              "states": [
+                {
+                  "label": "Closed",
+                  "value": 0
+                },
+                {
+                  "label": "Open",
+                  "value": 1
+                },
+                {
+                  "label": "Fault",
+                  "value": 2
+                }
+              ]
+            },
+            "dataType": "Int4",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Temp",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "engUnit": "°F",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "typeId": "Config/_Alarms",
+        "name": "_Alarms",
+        "tagType": "AtomicTag",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Int4",
+            "name": "_ActiveHighPriority",
+            "tagType": "AtomicTag"
+          },
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "_Active",
+            "tagType": "AtomicTag"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "HTR-SV",
+      "longDescription": "HTR solenoid valve"
+    },
+    "name": "HTR-SV",
+    "typeId": "Devices/Valve",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Status",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "status",
+              "states": [
+                {
+                  "label": "Closed",
+                  "value": 0
+                },
+                {
+                  "label": "Open",
+                  "value": 1
+                },
+                {
+                  "label": "Fault",
+                  "value": 2
+                }
+              ]
+            },
+            "dataType": "Int4",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Temp",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "engUnit": "°F",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "typeId": "Config/_Alarms",
+        "name": "_Alarms",
+        "tagType": "AtomicTag",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Int4",
+            "name": "_ActiveHighPriority",
+            "tagType": "AtomicTag"
+          },
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "_Active",
+            "tagType": "AtomicTag"
+          }
+        ]
+      }
+    ]
+  }
+]

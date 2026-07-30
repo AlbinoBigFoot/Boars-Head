@@ -1,0 +1,314 @@
+[
+  {
+    "metadata": {
+      "shortDescription": "LTR",
+      "longDescription": "Low Temperature Receiver — low level"
+    },
+    "name": "LTR",
+    "typeId": "Devices/Tank",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "LSH",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "LSL",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Level",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "engUnit": "%",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Status",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "status",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "Run",
+                  "value": 1
+                },
+                {
+                  "label": "Fault",
+                  "value": 2
+                },
+                {
+                  "label": "Manual",
+                  "value": 3
+                },
+                {
+                  "label": "Idle",
+                  "value": 4
+                }
+              ]
+            },
+            "dataType": "Int4",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "typeId": "Config/_Alarms",
+        "name": "_Alarms",
+        "tagType": "AtomicTag",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Int4",
+            "name": "_ActiveHighPriority",
+            "tagType": "AtomicTag"
+          },
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "_Active",
+            "tagType": "AtomicTag"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "HPR",
+      "longDescription": "High Pressure Receiver — elevated level"
+    },
+    "name": "HPR",
+    "typeId": "Devices/Tank",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "LSH",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "LSL",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Level",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "engUnit": "%",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Status",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "status",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "Run",
+                  "value": 1
+                },
+                {
+                  "label": "Fault",
+                  "value": 2
+                },
+                {
+                  "label": "Manual",
+                  "value": 3
+                },
+                {
+                  "label": "Idle",
+                  "value": 4
+                }
+              ]
+            },
+            "dataType": "Int4",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "typeId": "Config/_Alarms",
+        "name": "_Alarms",
+        "tagType": "AtomicTag",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Int4",
+            "name": "_ActiveHighPriority",
+            "tagType": "AtomicTag"
+          },
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "_Active",
+            "tagType": "AtomicTag"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "HTR",
+      "longDescription": "High Temperature Receiver"
+    },
+    "name": "HTR",
+    "typeId": "Devices/Tank",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "LSH",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "LSL",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Level",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "engUnit": "%",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Status",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "status",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "Run",
+                  "value": 1
+                },
+                {
+                  "label": "Fault",
+                  "value": 2
+                },
+                {
+                  "label": "Manual",
+                  "value": 3
+                },
+                {
+                  "label": "Idle",
+                  "value": 4
+                }
+              ]
+            },
+            "dataType": "Int4",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "typeId": "Config/_Alarms",
+        "name": "_Alarms",
+        "tagType": "AtomicTag",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Int4",
+            "name": "_ActiveHighPriority",
+            "tagType": "AtomicTag"
+          },
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "_Active",
+            "tagType": "AtomicTag"
+          }
+        ]
+      }
+    ]
+  }
+]
