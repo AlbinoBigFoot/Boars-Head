@@ -2,7 +2,7 @@
   {
     "metadata": {
       "shortDescription": "LTR",
-      "longDescription": "Low Temperature Receiver — low level"
+      "longDescription": "Low Temperature Receiver — LL active (demo)"
     },
     "name": "LTR",
     "typeId": "Devices/Tank",
@@ -41,6 +41,15 @@
             "dataType": "Float4",
             "engUnit": "%",
             "name": "Value",
+            "value": 12.0,
+            "tagType": "AtomicTag"
+          },
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "engUnit": "%",
+            "name": "SP",
+            "value": 50.0,
             "tagType": "AtomicTag"
           }
         ]
@@ -52,32 +61,38 @@
           {
             "valueSource": "memory",
             "metadata": {
-              "shortDescription": "status",
+              "shortDescription": "tank status",
+              "longDescription": "0=OK, 1=LOW, 2=HIGH, 3=LOLO, 4=HIHI, 5=FAULT",
               "states": [
                 {
-                  "label": "Off",
+                  "label": "OK",
                   "value": 0
                 },
                 {
-                  "label": "Run",
+                  "label": "LOW",
                   "value": 1
                 },
                 {
-                  "label": "Fault",
+                  "label": "HIGH",
                   "value": 2
                 },
                 {
-                  "label": "Manual",
+                  "label": "LOLO",
                   "value": 3
                 },
                 {
-                  "label": "Idle",
+                  "label": "HIHI",
                   "value": 4
+                },
+                {
+                  "label": "FAULT",
+                  "value": 5
                 }
               ]
             },
             "dataType": "Int4",
             "name": "Value",
+            "value": 3,
             "tagType": "AtomicTag"
           }
         ]
@@ -100,13 +115,233 @@
             "tagType": "AtomicTag"
           }
         ]
+      },
+      {
+        "name": "LL",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": true,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "L",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": true,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "H",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "HH",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Pressure",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "engUnit": "psig",
+            "name": "Value",
+            "value": 16.0,
+            "tagType": "AtomicTag"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "LTR-03",
+      "longDescription": "LTR-03 low — LSL true, L mark"
+    },
+    "name": "LTR-03",
+    "typeId": "Devices/Tank",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Status",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "tank status",
+              "longDescription": "0=OK, 1=LOW, 2=HIGH, 3=LOLO, 4=HIHI, 5=FAULT",
+              "states": [
+                {
+                  "label": "OK",
+                  "value": 0
+                },
+                {
+                  "label": "LOW",
+                  "value": 1
+                },
+                {
+                  "label": "HIGH",
+                  "value": 2
+                },
+                {
+                  "label": "LOLO",
+                  "value": 3
+                },
+                {
+                  "label": "HIHI",
+                  "value": 4
+                },
+                {
+                  "label": "FAULT",
+                  "value": 5
+                }
+              ]
+            },
+            "dataType": "Int4",
+            "name": "Value",
+            "value": 1,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Level",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "engUnit": "%",
+            "name": "Value",
+            "value": 18.0,
+            "tagType": "AtomicTag"
+          },
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "engUnit": "%",
+            "name": "SP",
+            "value": 50.0,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "LSH",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "LSL",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": true,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "L",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": true,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "LL",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "H",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "HH",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
       }
     ]
   },
   {
     "metadata": {
       "shortDescription": "HPR",
-      "longDescription": "High Pressure Receiver — elevated level"
+      "longDescription": "High Pressure Receiver — H mark active (demo)"
     },
     "name": "HPR",
     "typeId": "Devices/Tank",
@@ -145,6 +380,15 @@
             "dataType": "Float4",
             "engUnit": "%",
             "name": "Value",
+            "value": 50.0,
+            "tagType": "AtomicTag"
+          },
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "engUnit": "%",
+            "name": "SP",
+            "value": 50.0,
             "tagType": "AtomicTag"
           }
         ]
@@ -156,32 +400,38 @@
           {
             "valueSource": "memory",
             "metadata": {
-              "shortDescription": "status",
+              "shortDescription": "tank status",
+              "longDescription": "0=OK, 1=LOW, 2=HIGH, 3=LOLO, 4=HIHI, 5=FAULT",
               "states": [
                 {
-                  "label": "Off",
+                  "label": "OK",
                   "value": 0
                 },
                 {
-                  "label": "Run",
+                  "label": "LOW",
                   "value": 1
                 },
                 {
-                  "label": "Fault",
+                  "label": "HIGH",
                   "value": 2
                 },
                 {
-                  "label": "Manual",
+                  "label": "LOLO",
                   "value": 3
                 },
                 {
-                  "label": "Idle",
+                  "label": "HIHI",
                   "value": 4
+                },
+                {
+                  "label": "FAULT",
+                  "value": 5
                 }
               ]
             },
             "dataType": "Int4",
             "name": "Value",
+            "value": 2,
             "tagType": "AtomicTag"
           }
         ]
@@ -204,13 +454,260 @@
             "tagType": "AtomicTag"
           }
         ]
+      },
+      {
+        "name": "H",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": true,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "HH",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "L",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "LL",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Pressure",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "engUnit": "psig",
+            "name": "Value",
+            "value": 145.0,
+            "tagType": "AtomicTag"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "LTR-01",
+      "longDescription": "LTR-01 normal mid-level (demo OK)"
+    },
+    "name": "LTR-01",
+    "typeId": "Devices/Tank",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Status",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "tank status",
+              "longDescription": "0=OK, 1=LOW, 2=HIGH, 3=LOLO, 4=HIHI, 5=FAULT",
+              "states": [
+                {
+                  "label": "OK",
+                  "value": 0
+                },
+                {
+                  "label": "LOW",
+                  "value": 1
+                },
+                {
+                  "label": "HIGH",
+                  "value": 2
+                },
+                {
+                  "label": "LOLO",
+                  "value": 3
+                },
+                {
+                  "label": "HIHI",
+                  "value": 4
+                },
+                {
+                  "label": "FAULT",
+                  "value": 5
+                }
+              ]
+            },
+            "dataType": "Int4",
+            "name": "Value",
+            "value": 0,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Level",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "engUnit": "%",
+            "name": "Value",
+            "value": 55.0,
+            "tagType": "AtomicTag"
+          },
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "engUnit": "%",
+            "name": "SP",
+            "value": 50.0,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Pressure",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "engUnit": "psig",
+            "name": "Value",
+            "value": 18.5,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "LSH",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "LSL",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "HH",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "H",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "L",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "LL",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Interlock",
+        "tagType": "Folder",
+        "tags": [
+          {
+            "name": "Sts_IntlkOK",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": true
+          }
+        ]
       }
     ]
   },
   {
     "metadata": {
       "shortDescription": "HTR",
-      "longDescription": "High Temperature Receiver"
+      "longDescription": "High Temperature Receiver (HTRS) — HH active (demo)"
     },
     "name": "HTR",
     "typeId": "Devices/Tank",
@@ -249,6 +746,15 @@
             "dataType": "Float4",
             "engUnit": "%",
             "name": "Value",
+            "value": 50.0,
+            "tagType": "AtomicTag"
+          },
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "engUnit": "%",
+            "name": "SP",
+            "value": 50.0,
             "tagType": "AtomicTag"
           }
         ]
@@ -260,32 +766,38 @@
           {
             "valueSource": "memory",
             "metadata": {
-              "shortDescription": "status",
+              "shortDescription": "tank status",
+              "longDescription": "0=OK, 1=LOW, 2=HIGH, 3=LOLO, 4=HIHI, 5=FAULT",
               "states": [
                 {
-                  "label": "Off",
+                  "label": "OK",
                   "value": 0
                 },
                 {
-                  "label": "Run",
+                  "label": "LOW",
                   "value": 1
                 },
                 {
-                  "label": "Fault",
+                  "label": "HIGH",
                   "value": 2
                 },
                 {
-                  "label": "Manual",
+                  "label": "LOLO",
                   "value": 3
                 },
                 {
-                  "label": "Idle",
+                  "label": "HIHI",
                   "value": 4
+                },
+                {
+                  "label": "FAULT",
+                  "value": 5
                 }
               ]
             },
             "dataType": "Int4",
             "name": "Value",
+            "value": 4,
             "tagType": "AtomicTag"
           }
         ]
@@ -305,6 +817,380 @@
             "valueSource": "memory",
             "dataType": "Boolean",
             "name": "_Active",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "HH",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": true,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "H",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": true,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "L",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "LL",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Pressure",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "engUnit": "psig",
+            "name": "Value",
+            "value": 95.0,
+            "tagType": "AtomicTag"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "LTR-04",
+      "longDescription": "LTR-04 critical — HH and LL marks"
+    },
+    "name": "LTR-04",
+    "typeId": "Devices/Tank",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Status",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "tank status",
+              "longDescription": "0=OK, 1=LOW, 2=HIGH, 3=LOLO, 4=HIHI, 5=FAULT",
+              "states": [
+                {
+                  "label": "OK",
+                  "value": 0
+                },
+                {
+                  "label": "LOW",
+                  "value": 1
+                },
+                {
+                  "label": "HIGH",
+                  "value": 2
+                },
+                {
+                  "label": "LOLO",
+                  "value": 3
+                },
+                {
+                  "label": "HIHI",
+                  "value": 4
+                },
+                {
+                  "label": "FAULT",
+                  "value": 5
+                }
+              ]
+            },
+            "dataType": "Int4",
+            "name": "Value",
+            "value": 4,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Level",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "engUnit": "%",
+            "name": "Value",
+            "value": 96.0,
+            "tagType": "AtomicTag"
+          },
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "engUnit": "%",
+            "name": "SP",
+            "value": 50.0,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "LSH",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": true,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "LSL",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": true,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "HH",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": true,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "LL",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": true,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "H",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": true,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "L",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": true,
+            "tagType": "AtomicTag"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "LTR-02",
+      "longDescription": "LTR-02 high — LSH true, H mark"
+    },
+    "name": "LTR-02",
+    "typeId": "Devices/Tank",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Status",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "tank status",
+              "longDescription": "0=OK, 1=LOW, 2=HIGH, 3=LOLO, 4=HIHI, 5=FAULT",
+              "states": [
+                {
+                  "label": "OK",
+                  "value": 0
+                },
+                {
+                  "label": "LOW",
+                  "value": 1
+                },
+                {
+                  "label": "HIGH",
+                  "value": 2
+                },
+                {
+                  "label": "LOLO",
+                  "value": 3
+                },
+                {
+                  "label": "HIHI",
+                  "value": 4
+                },
+                {
+                  "label": "FAULT",
+                  "value": 5
+                }
+              ]
+            },
+            "dataType": "Int4",
+            "name": "Value",
+            "value": 2,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Level",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "engUnit": "%",
+            "name": "Value",
+            "value": 82.0,
+            "tagType": "AtomicTag"
+          },
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "engUnit": "%",
+            "name": "SP",
+            "value": 50.0,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "LSH",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": true,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "LSL",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "H",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": true,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "HH",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "L",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "LL",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
             "tagType": "AtomicTag"
           }
         ]
