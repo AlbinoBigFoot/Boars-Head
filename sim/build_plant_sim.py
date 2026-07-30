@@ -30,9 +30,9 @@ def infer_dtype(path: str, dt: str | None) -> tuple[str, str]:
     if dt and dt in DTYPE_MAP:
         return DTYPE_MAP[dt], dt
     parent = path.split("/")[-2] if "/" in path else ""
-    if parent in ("CMD", "Fault"):
+    if parent in ("CMD", "Fault", "Alm", "Cutout", "Failed", "Started", "Comm"):
         return "Boolean", "Boolean"
-    if parent == "Status":
+    if parent in ("Status", "CP_Mode", "SV_Mode", "Rung", "Color"):
         return "Int32", "Int4"
     return "Float", "Float4"
 
@@ -44,8 +44,10 @@ def infer_dtype(path: str, dt: str | None) -> tuple[str, str]:
 # Comm Loss is NOT a Status int — EV-01 Status/Value has enabled=false (Bad quality) in
 # tag-definition Evaporators/udts.json. Do not set enabled=false on the UDT type.
 # Temp/SP lives only on device Temp (not _Root/Analog). Defaults: Evap 35°F, CT 85°F,
-# Pump 50 gpm, ExhaustFan 1000 cfm, Compressor 25 psi.
-# Over-SP AnalogValue red demos: EV-02, CT-01, PMP-01, EFAN-01, COMP-01.
+# Pump 50 gpm, ExhaustFan 1000 cfm, Compressor DisP 25 psi.
+# Over-SP AnalogValue red demos: EV-02, CT-01, PMP-01, EFAN-01.
+# Compressors demo Status/FLA%/SVP%/CP/SV + DisP/Amps/Rung/Color/bools (PLC-aligned).
+# Over-SP AnalogValue red demos: COMP-01 FLA (>70 SP), COMP-02 SVP (>50 SP).
 EV_PROFILES: dict[str, dict[str, str]] = {
     # EV-01: Comm Loss via tag enabled=false (sim value unused while disabled)
     "EV-01": {
@@ -225,12 +227,127 @@ EFAN_PROFILES: dict[str, dict[str, str]] = {
     "EFAN-04": {"Status": "0", "Temp": "realistic(100.0, 10.0, 0.04, 0.18, true)"},
 }
 
+# Faceplate Controls/Config/Interlocks demo leaves (Devices/Compressor flat + Interlock/).
+# Keys are relative paths under Compressors/COMP-##/ (not Value-parent names).
+COMP_FACEPLATE_DEFAULTS: dict[str, tuple[str, str]] = {
+    "OPER": ("true", "Boolean"),
+    "MAINT": ("false", "Boolean"),
+    "PROG": ("false", "Boolean"),
+    "Cmd_Start": ("false", "Boolean"),
+    "Cmd_Stop": ("false", "Boolean"),
+    "Cmd_Auto": ("false", "Boolean"),
+    "Cmd_Manual": ("false", "Boolean"),
+    "Cmd_Remote": ("false", "Boolean"),
+    "RuntimeHours": ("1247.5", "Float"),
+    "MotorStarts": ("382", "Int32"),
+    "MaxRunTimePerStart": ("18.5", "Float"),
+    "AutoEN": ("true", "Boolean"),
+    "Min_Runtime_Set": ("120.0", "Float"),
+    "Fail_Timer_PRE": ("30.0", "Float"),
+    "Interlock/Sts_IntlkOK": ("false", "Boolean"),
+    "Interlock/Sts_NBIntlkOK": ("true", "Boolean"),
+    "Interlock/Sts_BypActive": ("false", "Boolean"),
+    "Interlock/Sts_FirstOut": ("false", "Boolean"),
+    "Interlock/Sts_Intlk": ("6", "Int32"),
+    "Interlock/Cfg_Bypassable": ("7", "Int32"),
+    "Interlock/OCmd_Reset": ("false", "Boolean"),
+    "Interlock/Rdy_Reset": ("true", "Boolean"),
+    "Interlock/Cfg_CondTxt00": ("Oil Pressure", "String"),
+    "Interlock/Cfg_CondTxt01": ("Discharge Temp", "String"),
+    "Interlock/Cfg_CondTxt02": ("Motor OL", "String"),
+    "Interlock/Cfg_CondTxt03": ("Emergency Stop", "String"),
+}
+for _i in range(4, 16):
+    COMP_FACEPLATE_DEFAULTS[f"Interlock/Cfg_CondTxt{_i:02d}"] = ("", "String")
+for _i in range(16):
+    COMP_FACEPLATE_DEFAULTS[f"Interlock/MSet_Bypass{_i:02d}"] = ("false", "Boolean")
+
 COMP_PROFILES: dict[str, dict[str, str]] = {
-    # COMP-01: Run + discharge > SP (35 > 25) → AnalogValue red
-    "COMP-01": {"Status": "1", "Temp": "35.0"},
-    "COMP-02": {"Status": "4", "Temp": "realistic(18.0, 1.0, 0.05, 0.2, true)"},
-    "COMP-03": {"Status": "2", "Temp": "realistic(20.0, 1.2, 0.06, 0.22, true)"},
-    "COMP-04": {"Status": "0", "Temp": "realistic(15.0, 0.8, 0.04, 0.18, true)"},
+    # COMP-01: Run; CP Auto / SV Manual — FLA > SP (70)
+    "COMP-01": {
+        "Status": "1",
+        "DisP": "35.0",
+        "Amps": "realistic(185.0, 5.0, 0.04, 0.18, true)",
+        "FLA": "realistic(78.0, 3.0, 0.05, 0.2, true)",
+        "SVP": "realistic(62.0, 4.0, 0.06, 0.22, true)",
+        "CP_Mode": "2",
+        "SV_Mode": "3",
+        "Rung": "1",
+        "Color": "1",
+        "Alm": "false",
+        "Cutout": "false",
+        "Failed": "false",
+        "Started": "true",
+        "Comm": "false",
+    },
+    # COMP-02: Idle; CP Manual / SV Auto — SVP stays under SP; mild Amps
+    "COMP-02": {
+        "Status": "4",
+        "DisP": "realistic(18.0, 1.0, 0.05, 0.2, true)",
+        "Amps": "realistic(42.0, 3.0, 0.04, 0.18, true)",
+        "FLA": "realistic(42.0, 3.0, 0.04, 0.18, true)",
+        "SVP": "realistic(55.0, 2.0, 0.04, 0.18, true)",
+        "CP_Mode": "3",
+        "SV_Mode": "2",
+        "Rung": "0",
+        "Color": "0",
+        "Alm": "false",
+        "Cutout": "false",
+        "Failed": "false",
+        "Started": "false",
+        "Comm": "false",
+    },
+    # COMP-03: Fault; CP/SV Remote — Alm + Failed; Cutout color
+    "COMP-03": {
+        "Status": "2",
+        "DisP": "realistic(20.0, 1.2, 0.06, 0.22, true)",
+        "Amps": "realistic(12.0, 2.0, 0.05, 0.2, true)",
+        "FLA": "realistic(28.0, 2.5, 0.04, 0.18, true)",
+        "SVP": "realistic(18.0, 2.0, 0.05, 0.2, true)",
+        "CP_Mode": "1",
+        "SV_Mode": "1",
+        "Rung": "0",
+        "Color": "3",
+        "Alm": "true",
+        "Cutout": "true",
+        "Failed": "true",
+        "Started": "false",
+        "Comm": "false",
+    },
+    # COMP-04: Off; CP Auto / SV Manual — low but nonzero FLA/SVP
+    "COMP-04": {
+        "Status": "0",
+        "DisP": "realistic(15.0, 0.8, 0.04, 0.18, true)",
+        "Amps": "realistic(5.0, 1.0, 0.04, 0.18, true)",
+        "FLA": "realistic(8.0, 1.5, 0.04, 0.18, true)",
+        "SVP": "realistic(12.0, 2.0, 0.05, 0.2, true)",
+        "CP_Mode": "2",
+        "SV_Mode": "3",
+        "Rung": "0",
+        "Color": "0",
+        "Alm": "false",
+        "Cutout": "false",
+        "Failed": "false",
+        "Started": "false",
+        "Comm": "false",
+    },
+    # COMP-05: Manual; CP Remote / SV Manual — AntiRec / Starting demo
+    "COMP-05": {
+        "Status": "3",
+        "DisP": "realistic(28.0, 1.0, 0.05, 0.2, true)",
+        "Amps": "realistic(95.0, 4.0, 0.05, 0.2, true)",
+        "FLA": "realistic(55.0, 3.0, 0.05, 0.2, true)",
+        "SVP": "realistic(40.0, 3.0, 0.05, 0.2, true)",
+        "CP_Mode": "1",
+        "SV_Mode": "3",
+        "Rung": "2",
+        "Color": "2",
+        "Alm": "false",
+        "Cutout": "false",
+        "Failed": "false",
+        "Started": "true",
+        "Comm": "false",
+    },
 }
 
 
@@ -290,13 +407,27 @@ def value_source(path: str, sim_dtype: str) -> str:
         if path.startswith("Evaporators/"):
             return "list(0, 1, 2, 3, 5, true)"
         return "list(0, 1, 2, 4, true)"
+    if leaf_parent in ("CP_Mode", "SV_Mode"):
+        return "2"
+    if leaf_parent == "Rung":
+        return "0"
+    if leaf_parent == "Color":
+        return "0"
     if leaf_parent == "Temp":
         return "realistic(20.0, 1.2, 0.06, 0.25, true)"
+    if leaf_parent == "DisP":
+        return "realistic(22.0, 1.2, 0.06, 0.25, true)"
+    if leaf_parent == "Amps":
+        return "realistic(80.0, 5.0, 0.05, 0.2, true)"
+    if leaf_parent == "FLA":
+        return "realistic(55.0, 5.0, 0.05, 0.2, true)"
+    if leaf_parent == "SVP":
+        return "realistic(40.0, 5.0, 0.05, 0.2, true)"
     if leaf_parent == "Pressure":
         return "ramp(20.0, 80.0, 60, true)"
     if leaf_parent == "SPD_FBK":
         return "ramp(0.0, 60.0, 40, true)"
-    if leaf_parent in ("CMD", "Fault"):
+    if leaf_parent in ("CMD", "Fault", "Alm", "Cutout", "Failed", "Started", "Comm"):
         return "false"
     if sim_dtype == "Boolean":
         return "false"
@@ -384,6 +515,21 @@ def main() -> None:
                 "Data Type": sim_dt,
             }
         )
+
+    # Flat faceplate demo tags live on Devices/Compressor type (memory) and are
+    # not present as Value leaves on Compressors instances — emit Sim rows so
+    # lab CSV covers Controls/Config/Interlocks paths.
+    for comp_id in sorted(COMP_PROFILES):
+        for rel, (val, dtype) in COMP_FACEPLATE_DEFAULTS.items():
+            rows.append(
+                {
+                    "Time Interval": "0",
+                    "Browse Path": f"Compressors/{comp_id}/{rel}",
+                    "Value Source": val,
+                    "Data Type": dtype,
+                }
+            )
+
     rows.sort(key=lambda r: r["Browse Path"])
 
     fieldnames = ["Time Interval", "Browse Path", "Value Source", "Data Type"]
@@ -416,6 +562,29 @@ def main() -> None:
                 "dataType": ign_dt,
             }
         )
+
+    SIM_DTYPE = {
+        "Boolean": "Boolean",
+        "Float": "Float4",
+        "Int32": "Int4",
+        "Int16": "Int2",
+        "String": "String",
+    }
+    for comp_id in sorted(COMP_PROFILES):
+        for rel, (_val, dtype) in COMP_FACEPLATE_DEFAULTS.items():
+            path = f"Compressors/{comp_id}/{rel}"
+            parts = path.split("/")
+            parent = ensure_folder(tree, parts[:-1])
+            parent["tags"].append(
+                {
+                    "name": parts[-1],
+                    "tagType": "AtomicTag",
+                    "valueSource": "opc",
+                    "opcServer": "Ignition OPC UA Server",
+                    "opcItemPath": "ns=1;s=[Sim]" + "/".join(parts),
+                    "dataType": SIM_DTYPE.get(dtype, "Float4"),
+                }
+            )
 
     sim_udts = folder_to_json(tree)
     sim_dir = TAG_DEF / "_Sim_"

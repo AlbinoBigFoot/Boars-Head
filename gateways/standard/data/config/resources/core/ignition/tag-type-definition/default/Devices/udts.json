@@ -218,7 +218,23 @@
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
-            "sampleMode": "OnChange"
+            "sampleMode": "OnChange",
+            "alarms": [
+              {
+                "name": "Hi",
+                "mode": "AboveSetpoint",
+                "setpointA": 0.0,
+                "priority": "Medium",
+                "enabled": true
+              },
+              {
+                "name": "Lo",
+                "mode": "BelowSetpoint",
+                "setpointA": 0.0,
+                "priority": "Medium",
+                "enabled": true
+              }
+            ]
           },
           {
             "name": "SP",
@@ -255,7 +271,23 @@
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
-            "sampleMode": "OnChange"
+            "sampleMode": "OnChange",
+            "alarms": [
+              {
+                "name": "Hi",
+                "mode": "AboveSetpoint",
+                "setpointA": 0.0,
+                "priority": "Medium",
+                "enabled": true
+              },
+              {
+                "name": "Lo",
+                "mode": "BelowSetpoint",
+                "setpointA": 0.0,
+                "priority": "Medium",
+                "enabled": true
+              }
+            ]
           }
         ]
       },
@@ -281,7 +313,23 @@
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
-            "sampleMode": "OnChange"
+            "sampleMode": "OnChange",
+            "alarms": [
+              {
+                "name": "Hi",
+                "mode": "AboveSetpoint",
+                "setpointA": 0.0,
+                "priority": "Medium",
+                "enabled": true
+              },
+              {
+                "name": "Lo",
+                "mode": "BelowSetpoint",
+                "setpointA": 0.0,
+                "priority": "Medium",
+                "enabled": true
+              }
+            ]
           },
           {
             "name": "SP",
@@ -318,7 +366,23 @@
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
-            "sampleMode": "OnChange"
+            "sampleMode": "OnChange",
+            "alarms": [
+              {
+                "name": "Hi",
+                "mode": "AboveSetpoint",
+                "setpointA": 0.0,
+                "priority": "Medium",
+                "enabled": true
+              },
+              {
+                "name": "Lo",
+                "mode": "BelowSetpoint",
+                "setpointA": 0.0,
+                "priority": "Medium",
+                "enabled": true
+              }
+            ]
           },
           {
             "name": "SP",
@@ -517,7 +581,16 @@
             "dataType": "Boolean",
             "name": "Value",
             "value": false,
-            "tagType": "AtomicTag"
+            "tagType": "AtomicTag",
+            "alarms": [
+              {
+                "name": "Alarm",
+                "mode": "Equality",
+                "setpointA": 1.0,
+                "priority": "Medium",
+                "enabled": true
+              }
+            ]
           }
         ]
       },
@@ -549,7 +622,16 @@
             "dataType": "Boolean",
             "name": "Value",
             "value": false,
-            "tagType": "AtomicTag"
+            "tagType": "AtomicTag",
+            "alarms": [
+              {
+                "name": "Alarm",
+                "mode": "Equality",
+                "setpointA": 1.0,
+                "priority": "High",
+                "enabled": true
+              }
+            ]
           }
         ]
       },
@@ -581,7 +663,16 @@
             "dataType": "Boolean",
             "name": "Value",
             "value": false,
-            "tagType": "AtomicTag"
+            "tagType": "AtomicTag",
+            "alarms": [
+              {
+                "name": "Alarm",
+                "mode": "Equality",
+                "setpointA": 1.0,
+                "priority": "High",
+                "enabled": true
+              }
+            ]
           }
         ]
       },
@@ -645,7 +736,627 @@
             "dataType": "Boolean",
             "name": "Value",
             "value": false,
-            "tagType": "AtomicTag"
+            "tagType": "AtomicTag",
+            "alarms": [
+              {
+                "name": "Alarm",
+                "mode": "Equality",
+                "setpointA": 1.0,
+                "priority": "High",
+                "enabled": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "OPER",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": true,
+        "metadata": {
+          "shortDescription": "Operator",
+          "longDescription": "Operator"
+        }
+      },
+      {
+        "name": "MAINT",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false,
+        "metadata": {
+          "shortDescription": "Maintenance",
+          "longDescription": "Maintenance"
+        }
+      },
+      {
+        "name": "PROG",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false,
+        "metadata": {
+          "shortDescription": "Program",
+          "longDescription": "Program"
+        }
+      },
+      {
+        "name": "Cmd_Start",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false,
+        "metadata": {
+          "shortDescription": "Start",
+          "longDescription": "Start"
+        }
+      },
+      {
+        "name": "Cmd_Stop",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false,
+        "metadata": {
+          "shortDescription": "Stop",
+          "longDescription": "Stop"
+        }
+      },
+      {
+        "name": "Cmd_Auto",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false,
+        "metadata": {
+          "shortDescription": "Auto",
+          "longDescription": "Auto"
+        }
+      },
+      {
+        "name": "Cmd_Manual",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false,
+        "metadata": {
+          "shortDescription": "Manual",
+          "longDescription": "Manual"
+        }
+      },
+      {
+        "name": "Cmd_Remote",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false,
+        "metadata": {
+          "shortDescription": "Remote",
+          "longDescription": "Remote"
+        }
+      },
+      {
+        "name": "RuntimeHours",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Float4",
+        "value": 1247.5,
+        "metadata": {
+          "shortDescription": "Runtime hours",
+          "longDescription": "Runtime hours"
+        },
+        "formatString": "#0.0",
+        "engUnit": "h"
+      },
+      {
+        "name": "MotorStarts",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Int4",
+        "value": 382,
+        "metadata": {
+          "shortDescription": "Motor starts",
+          "longDescription": "Motor starts"
+        },
+        "formatString": "#0"
+      },
+      {
+        "name": "MaxRunTimePerStart",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Float4",
+        "value": 18.5,
+        "metadata": {
+          "shortDescription": "Max run time per start",
+          "longDescription": "Max run time per start"
+        },
+        "formatString": "#0.0",
+        "engUnit": "h"
+      },
+      {
+        "name": "AutoEN",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": true,
+        "metadata": {
+          "shortDescription": "Auto enable",
+          "longDescription": "Auto enable"
+        }
+      },
+      {
+        "name": "Min_Runtime_Set",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Float4",
+        "value": 120.0,
+        "metadata": {
+          "shortDescription": "Min runtime set",
+          "longDescription": "Min runtime set"
+        },
+        "formatString": "#0",
+        "engUnit": "s"
+      },
+      {
+        "name": "Fail_Timer_PRE",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Float4",
+        "value": 30.0,
+        "metadata": {
+          "shortDescription": "Fail timer preset",
+          "longDescription": "Fail timer preset"
+        },
+        "formatString": "#0.0",
+        "engUnit": "s"
+      },
+      {
+        "name": "Interlock",
+        "tagType": "Folder",
+        "tags": [
+          {
+            "name": "Sts_IntlkOK",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Interlocks OK",
+              "longDescription": "Interlocks OK"
+            }
+          },
+          {
+            "name": "Sts_NBIntlkOK",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": true,
+            "metadata": {
+              "shortDescription": "Non-bypassable OK",
+              "longDescription": "Non-bypassable OK"
+            }
+          },
+          {
+            "name": "Sts_BypActive",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass active",
+              "longDescription": "Bypass active"
+            }
+          },
+          {
+            "name": "Sts_FirstOut",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "First out",
+              "longDescription": "First out"
+            }
+          },
+          {
+            "name": "Sts_Intlk",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Int4",
+            "value": 6,
+            "metadata": {
+              "shortDescription": "Interlock status bits",
+              "longDescription": "Interlock status bits"
+            },
+            "formatString": "#0"
+          },
+          {
+            "name": "Cfg_Bypassable",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Int4",
+            "value": 7,
+            "metadata": {
+              "shortDescription": "Bypassable channel bits",
+              "longDescription": "Bypassable channel bits"
+            },
+            "formatString": "#0"
+          },
+          {
+            "name": "OCmd_Reset",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Reset interlocks",
+              "longDescription": "Reset interlocks"
+            }
+          },
+          {
+            "name": "Rdy_Reset",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": true,
+            "metadata": {
+              "shortDescription": "Reset ready",
+              "longDescription": "Reset ready"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt00",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "Oil Pressure",
+            "metadata": {
+              "shortDescription": "Condition 00",
+              "longDescription": "Condition 00"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt01",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "Discharge Temp",
+            "metadata": {
+              "shortDescription": "Condition 01",
+              "longDescription": "Condition 01"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt02",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "Motor OL",
+            "metadata": {
+              "shortDescription": "Condition 02",
+              "longDescription": "Condition 02"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt03",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "Emergency Stop",
+            "metadata": {
+              "shortDescription": "Condition 03",
+              "longDescription": "Condition 03"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt04",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 04",
+              "longDescription": "Condition 04"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt05",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 05",
+              "longDescription": "Condition 05"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt06",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 06",
+              "longDescription": "Condition 06"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt07",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 07",
+              "longDescription": "Condition 07"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt08",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 08",
+              "longDescription": "Condition 08"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt09",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 09",
+              "longDescription": "Condition 09"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt10",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 10",
+              "longDescription": "Condition 10"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt11",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 11",
+              "longDescription": "Condition 11"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt12",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 12",
+              "longDescription": "Condition 12"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt13",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 13",
+              "longDescription": "Condition 13"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt14",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 14",
+              "longDescription": "Condition 14"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt15",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "",
+            "metadata": {
+              "shortDescription": "Condition 15",
+              "longDescription": "Condition 15"
+            }
+          },
+          {
+            "name": "MSet_Bypass00",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 00",
+              "longDescription": "Bypass 00"
+            }
+          },
+          {
+            "name": "MSet_Bypass01",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 01",
+              "longDescription": "Bypass 01"
+            }
+          },
+          {
+            "name": "MSet_Bypass02",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 02",
+              "longDescription": "Bypass 02"
+            }
+          },
+          {
+            "name": "MSet_Bypass03",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 03",
+              "longDescription": "Bypass 03"
+            }
+          },
+          {
+            "name": "MSet_Bypass04",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 04",
+              "longDescription": "Bypass 04"
+            }
+          },
+          {
+            "name": "MSet_Bypass05",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 05",
+              "longDescription": "Bypass 05"
+            }
+          },
+          {
+            "name": "MSet_Bypass06",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 06",
+              "longDescription": "Bypass 06"
+            }
+          },
+          {
+            "name": "MSet_Bypass07",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 07",
+              "longDescription": "Bypass 07"
+            }
+          },
+          {
+            "name": "MSet_Bypass08",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 08",
+              "longDescription": "Bypass 08"
+            }
+          },
+          {
+            "name": "MSet_Bypass09",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 09",
+              "longDescription": "Bypass 09"
+            }
+          },
+          {
+            "name": "MSet_Bypass10",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 10",
+              "longDescription": "Bypass 10"
+            }
+          },
+          {
+            "name": "MSet_Bypass11",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 11",
+              "longDescription": "Bypass 11"
+            }
+          },
+          {
+            "name": "MSet_Bypass12",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 12",
+              "longDescription": "Bypass 12"
+            }
+          },
+          {
+            "name": "MSet_Bypass13",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 13",
+              "longDescription": "Bypass 13"
+            }
+          },
+          {
+            "name": "MSet_Bypass14",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 14",
+              "longDescription": "Bypass 14"
+            }
+          },
+          {
+            "name": "MSet_Bypass15",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Bypass 15",
+              "longDescription": "Bypass 15"
+            }
           }
         ]
       },
