@@ -51,7 +51,7 @@ Dylan reviews Machine Room P&ID in Figma → approve → then Ignition import/bu
 |---|-------------|------|--------|-----------|
 | 260730-l0s | Fix shared Faceplate broken tabs (CAS, Alarms, Scout Trend, contrast) | 2026-07-30 | 2b4bd34 | [260730-l0s-fix-shared-faceplate-broken-tab-view-pat](./quick/260730-l0s-fix-shared-faceplate-broken-tab-view-pat/) |
 | 260730-m0m | Faceplate Controls/Config/Interlocks redesign | 2026-07-30 | e24b8ac | [260730-m0m-faceplate-controls-config-interlocks-red](./quick/260730-m0m-faceplate-controls-config-interlocks-red/) |
-| 260730-mun | Device UDT + Faceplate Controls sweep (Pump…CT) + Pushover | 2026-07-30 | pending | [260730-mun-device-udt-faceplate-controls-sweep-pump](./quick/260730-mun-device-udt-faceplate-controls-sweep-pump/) |
+| 260730-mun | Device UDT + Faceplate Controls sweep (Pump…CT) + Pushover | 2026-07-30 | 5fde7e2 | [260730-mun-device-udt-faceplate-controls-sweep-pump](./quick/260730-mun-device-udt-faceplate-controls-sweep-pump/) |
 
 Last activity: 2026-07-30 - Completed quick task 260730-mun: Device UDT + Faceplate Controls sweep + Pushover
 
