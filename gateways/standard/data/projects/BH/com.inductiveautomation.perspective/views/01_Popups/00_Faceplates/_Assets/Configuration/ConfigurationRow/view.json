@@ -1,0 +1,166 @@
+{
+  "custom": {
+    "dataType": "",
+    "isBoolean": false,
+    "isMultistate": false
+  },
+  "params": {
+    "highlightRow": false,
+    "tagPath": "[Blythe]00500/HW/TIT03A_SUP/SP"
+  },
+  "propConfig": {
+    "custom.dataType": {
+      "binding": {
+        "config": {
+          "expression": "if(qualityOf(tag({view.params.tagPath} + '.DataType')) = 'Good',\n   toStr(tag({view.params.tagPath} + '.DataType')),\n   '')"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "custom.isBoolean": {
+      "binding": {
+        "config": {
+          "expression": "{view.custom.dataType} = 'Boolean'"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "custom.isMultistate": {
+      "binding": {
+        "config": {
+          "expression": "{view.custom.dataType} = 'Int4'"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "params.highlightRow": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 36,
+      "width": 704
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "AnalogView"
+        },
+        "position": {
+          "basis": "320px",
+          "grow": 1
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "!{view.custom.isBoolean} && !{view.custom.isMultistate}"
+              },
+              "type": "expr"
+            }
+          },
+          "props.params.tagPath": {
+            "binding": {
+              "config": {
+                "path": "view.params.tagPath"
+              },
+              "type": "property"
+            }
+          },
+          "props.params.permission": {
+            "binding": {
+              "config": {
+                "expression": "!{session.custom.ReadOnly}"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "params": {
+            "permission": true
+          },
+          "path": "03_Elements/00_Control/AnalogInput"
+        },
+        "type": "ia.display.view"
+      },
+      {
+        "meta": {
+          "name": "MultiStateView"
+        },
+        "position": {
+          "basis": "320px",
+          "grow": 1
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "{view.custom.isMultistate} || {view.custom.isBoolean}"
+              },
+              "type": "expr"
+            }
+          },
+          "props.params.tagPath": {
+            "binding": {
+              "config": {
+                "path": "view.params.tagPath"
+              },
+              "type": "property"
+            }
+          },
+          "props.params.permission": {
+            "binding": {
+              "config": {
+                "expression": "!{session.custom.ReadOnly}"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "params": {
+            "permission": true
+          },
+          "path": "03_Elements/00_Control/MultiStateInput"
+        },
+        "type": "ia.display.view"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "propConfig": {
+      "props.style.background": {
+        "binding": {
+          "config": {
+            "expression": "if ({view.params.highlightRow},\n\t'var(--neutral-50)',\n\t'var(--neutral-40)')  "
+          },
+          "type": "expr"
+        }
+      }
+    },
+    "props": {
+      "alignContent": "center",
+      "alignItems": "center",
+      "style": {
+        "gap": "8px",
+        "overflow": "visible",
+        "paddingLeft": "5px",
+        "paddingRight": "5px"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}
