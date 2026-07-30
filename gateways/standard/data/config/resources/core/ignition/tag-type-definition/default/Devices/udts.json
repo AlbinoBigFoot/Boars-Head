@@ -147,7 +147,7 @@
   {
     "metadata": {
       "shortDescription": "compressor",
-      "longDescription": "compressor"
+      "longDescription": "screw compressor (Devices HMI layer; PLC source PLC/Screw_Compressor)"
     },
     "name": "Compressor",
     "tagType": "UdtType",
@@ -199,26 +199,452 @@
       {
         "metadata": {
           "shortDescription": "Discharge Press",
-          "longDescription": "Compressor Discharge Pressure"
+          "longDescription": "Compressor discharge pressure (PLC DisP)"
         },
-        "name": "Temp",
+        "name": "DisP",
         "typeId": "_Root/Analog",
         "tagType": "UdtInstance",
         "tags": [
           {
             "name": "Value",
             "engUnit": "psi",
-            "tagType": "AtomicTag"
+            "dataType": "Float4",
+            "value": 0.0,
+            "valueSource": "memory",
+            "tagType": "AtomicTag",
+            "formatString": "#0.0",
+            "historyEnabled": true,
+            "historyProvider": "historian",
+            "historicalDeadband": 0.01,
+            "historicalDeadbandMode": "Absolute",
+            "historicalDeadbandStyle": "Discrete",
+            "sampleMode": "OnChange"
           },
           {
             "name": "SP",
             "metadata": {
               "shortDescription": "setpoint",
-              "longDescription": "Compressor discharge setpoint"
+              "longDescription": "Compressor discharge pressure setpoint"
             },
             "dataType": "Float4",
             "value": 25.0,
             "valueSource": "memory",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Amps",
+          "longDescription": "Motor current amps (PLC Amps)"
+        },
+        "name": "Amps",
+        "typeId": "_Root/Analog",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "engUnit": "A",
+            "dataType": "Float4",
+            "value": 0.0,
+            "valueSource": "memory",
+            "tagType": "AtomicTag",
+            "formatString": "#0.0",
+            "historyEnabled": true,
+            "historyProvider": "historian",
+            "historicalDeadband": 0.01,
+            "historicalDeadbandMode": "Absolute",
+            "historicalDeadbandStyle": "Discrete",
+            "sampleMode": "OnChange"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "FLA",
+          "longDescription": "Motor load percent FLA"
+        },
+        "name": "FLA",
+        "typeId": "_Root/Analog",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "engUnit": "%",
+            "dataType": "Float4",
+            "value": 0.0,
+            "valueSource": "memory",
+            "tagType": "AtomicTag",
+            "formatString": "#0",
+            "historyEnabled": true,
+            "historyProvider": "historian",
+            "historicalDeadband": 0.01,
+            "historicalDeadbandMode": "Absolute",
+            "historicalDeadbandStyle": "Discrete",
+            "sampleMode": "OnChange"
+          },
+          {
+            "name": "SP",
+            "metadata": {
+              "shortDescription": "FLA SP",
+              "longDescription": "FLA high threshold for AnalogValue over-SP styling"
+            },
+            "dataType": "Float4",
+            "value": 70.0,
+            "valueSource": "memory",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "SVP",
+          "longDescription": "Slide valve position percent"
+        },
+        "name": "SVP",
+        "typeId": "_Root/Analog",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "engUnit": "%",
+            "dataType": "Float4",
+            "value": 0.0,
+            "valueSource": "memory",
+            "tagType": "AtomicTag",
+            "formatString": "#0",
+            "historyEnabled": true,
+            "historyProvider": "historian",
+            "historicalDeadband": 0.01,
+            "historicalDeadbandMode": "Absolute",
+            "historicalDeadbandStyle": "Discrete",
+            "sampleMode": "OnChange"
+          },
+          {
+            "name": "SP",
+            "metadata": {
+              "shortDescription": "SVP SP",
+              "longDescription": "SVP high threshold for AnalogValue over-SP styling"
+            },
+            "dataType": "Float4",
+            "value": 50.0,
+            "valueSource": "memory",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "CP Mode",
+          "longDescription": "Capacity / compressor mode (1 Remote, 2 Auto, 3 Manual)"
+        },
+        "name": "CP_Mode",
+        "typeId": "_Root/Multistate",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "CP Mode",
+              "longDescription": "Capacity / compressor mode (1 Remote, 2 Auto, 3 Manual)",
+              "states": [
+                {
+                  "label": "Remote",
+                  "value": 1
+                },
+                {
+                  "label": "Auto",
+                  "value": 2
+                },
+                {
+                  "label": "Manual",
+                  "value": 3
+                }
+              ]
+            },
+            "dataType": "Int4",
+            "name": "Value",
+            "value": 2,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "SV Mode",
+          "longDescription": "Slide valve mode (1 Remote, 2 Auto, 3 Manual)"
+        },
+        "name": "SV_Mode",
+        "typeId": "_Root/Multistate",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "SV Mode",
+              "longDescription": "Slide valve mode (1 Remote, 2 Auto, 3 Manual)",
+              "states": [
+                {
+                  "label": "Remote",
+                  "value": 1
+                },
+                {
+                  "label": "Auto",
+                  "value": 2
+                },
+                {
+                  "label": "Manual",
+                  "value": 3
+                }
+              ]
+            },
+            "dataType": "Int4",
+            "name": "Value",
+            "value": 2,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Rung",
+          "longDescription": "PLC Rung state (_Off=0, _Running=1, _AntiRec=2, _Starting=3)"
+        },
+        "name": "Rung",
+        "typeId": "_Root/Multistate",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "Rung",
+              "longDescription": "PLC Rung state (_Off=0, _Running=1, _AntiRec=2, _Starting=3)",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "Running",
+                  "value": 1
+                },
+                {
+                  "label": "AntiRec",
+                  "value": 2
+                },
+                {
+                  "label": "Starting",
+                  "value": 3
+                }
+              ]
+            },
+            "dataType": "Int4",
+            "name": "Value",
+            "value": 0,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Color",
+          "longDescription": "PLC Color / graphic state (_Off=0, _Running=1, _AntiRec=2, _Cutout=3, _CommError=4)"
+        },
+        "name": "Color",
+        "typeId": "_Root/Multistate",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "Color",
+              "longDescription": "PLC Color / graphic state (_Off=0, _Running=1, _AntiRec=2, _Cutout=3, _CommError=4)",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "Running",
+                  "value": 1
+                },
+                {
+                  "label": "AntiRec",
+                  "value": 2
+                },
+                {
+                  "label": "Cutout",
+                  "value": 3
+                },
+                {
+                  "label": "CommError",
+                  "value": 4
+                }
+              ]
+            },
+            "dataType": "Int4",
+            "name": "Value",
+            "value": 0,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Alarm",
+          "longDescription": "Compressor alarm bit (PLC Alm)"
+        },
+        "name": "Alm",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "Alarm",
+              "longDescription": "Compressor alarm bit (PLC Alm)",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Cutout",
+          "longDescription": "Compressor cutout bit (PLC Cutout)"
+        },
+        "name": "Cutout",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "Cutout",
+              "longDescription": "Compressor cutout bit (PLC Cutout)",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Failed",
+          "longDescription": "Compressor failed bit (PLC Failed)"
+        },
+        "name": "Failed",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "Failed",
+              "longDescription": "Compressor failed bit (PLC Failed)",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Started",
+          "longDescription": "Compressor started latch (PLC Started)"
+        },
+        "name": "Started",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "Started",
+              "longDescription": "Compressor started latch (PLC Started)",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Comm Error",
+          "longDescription": "Compressor communications fault bit (PLC Comm)"
+        },
+        "name": "Comm",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "Comm Error",
+              "longDescription": "Compressor communications fault bit (PLC Comm)",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": false,
             "tagType": "AtomicTag"
           }
         ]
@@ -267,7 +693,19 @@
               "tagsForDeviceDetails": {
                 "parameters": [
                   {
-                    "tagPath": "/Temp",
+                    "tagPath": "/FLA",
+                    "viewPath": "03_Elements/01_Status/AnalogValue"
+                  },
+                  {
+                    "tagPath": "/SVP",
+                    "viewPath": "03_Elements/01_Status/AnalogValue"
+                  },
+                  {
+                    "tagPath": "/DisP",
+                    "viewPath": "03_Elements/01_Status/AnalogValue"
+                  },
+                  {
+                    "tagPath": "/Amps",
                     "viewPath": "03_Elements/01_Status/AnalogValue"
                   }
                 ],
