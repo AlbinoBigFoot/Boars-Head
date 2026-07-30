@@ -7,6 +7,7 @@ The following functions are available
     * showAlert - Opens the alert popup
     * showAdhocTrend - Opens the AdhocTrend faceplate popup (in-page trending)
     * showAdhocTrendConfig - Opens Trend Configuration beside the AdhocTrend faceplate
+    * showFaceplate - Opens the shared tabbed Faceplate shell (deviceType + tabs)
 
 """
 POPUP_ADHOC_TREND = "AdhocTrend"
@@ -161,4 +162,36 @@ def contextMenuTicketLog(tagPath="", viewName=None):
 		showCloseIcon=False,
 		modal=False,
 		overlayDismiss=True
+	)
+
+def showFaceplate(tagPath="", deviceType="Compressor", webGuiUrl="", title=None,
+		showControls=True, showConfiguration=True, showInterlocks=True, showTrend=True,
+		showAlarmConfiguration=True, showAlarms=True, width=560, height=640):
+	"""Open the shared tabbed Faceplate shell (Scout-style).
+
+	Caller show* flags are hints ANDed with Faceplate tagFlags (empty tabs hide).
+	deviceType selects Controls embeds under 01_Popups/00_Faceplates/_Assets/...
+	"""
+	params = {
+		"tagPath": tagPath,
+		"deviceType": deviceType or "Compressor",
+		"webGuiUrl": webGuiUrl or "",
+		"showControls": bool(showControls),
+		"showConfiguration": bool(showConfiguration),
+		"showInterlocks": bool(showInterlocks),
+		"showTrend": bool(showTrend),
+		"showAlarmConfiguration": bool(showAlarmConfiguration),
+		"showAlarms": bool(showAlarms)
+	}
+	if not title:
+		title = tagPath.split("/")[-1] if tagPath else "Faceplate"
+	Navigation.Faceplate.openFaceplate(
+		"comp-fp-%s" % (tagPath or title),
+		tagPath,
+		"01_Popups/00_Faceplates/Faceplate",
+		False,
+		title,
+		width,
+		height,
+		params
 	)
