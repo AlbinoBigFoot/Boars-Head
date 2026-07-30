@@ -268,15 +268,15 @@
 }
 
 .psc-comp-mode-auto {
-	color: var(--comp-mode-auto) !important;
+	color: var(--text) !important;
 }
 
 .psc-comp-mode-manual {
-	color: var(--comp-mode-manual) !important;
+	color: var(--text-muted) !important;
 }
 
 .psc-comp-mode-remote {
-	color: var(--comp-mode-remote) !important;
+	color: var(--text) !important;
 }
 
 /*
@@ -2875,4 +2875,128 @@ body:has(.psc-animations-off) .container-fade-in {
 	border: 1px dashed var(--border);
 	border-radius: 6px;
 	background: var(--surface-container);
+}
+
+.psc-faceplate-alarm-list {
+	background: var(--neutral-40, var(--surface-container));
+	min-height: 0;
+}
+
+.psc-faceplate-alarm-row {
+	background: var(--neutral-40, var(--surface));
+	border-bottom: 1px solid var(--border);
+}
+
+.psc-faceplate-alarm-row-alt {
+	background: var(--neutral-50, var(--surface-container));
+}
+
+.psc-faceplate-alarm-name {
+	font-size: 12px;
+	font-weight: 600;
+	text-align: center;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.psc-faceplate-alarm-fields {
+	align-items: flex-end;
+	justify-content: center;
+}
+
+.psc-faceplate-alarm-field-label {
+	font-size: 11px;
+	text-align: center;
+	color: var(--text-muted);
+}
+
+
+/* --- Faceplate Controls / Interlocks polish (260730-m0m) --- */
+.psc-faceplate-buttons-6 { grid-template-columns: repeat(6, 1fr); }
+
+.psc-faceplate-section-card {
+	background: var(--surface-card);
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	padding: 8px 10px;
+	margin-bottom: 8px;
+}
+
+.psc-faceplate-mode-chip {
+	cursor: pointer;
+	user-select: none;
+}
+
+.psc-faceplate-mode-code {
+	font-size: 12px;
+	color: var(--text);
+	font-weight: 600;
+}
+
+.psc-faceplate-cmd-row {
+	align-items: center;
+}
+
+.psc-faceplate-cmd-btn {
+	min-height: 28px;
+	padding: 4px 10px;
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	background: var(--surface-container);
+	color: var(--text);
+	font-size: 11px;
+	font-weight: 600;
+}
+
+.psc-faceplate-cmd-btn:hover {
+	border-color: var(--text-muted);
+}
+
+.psc-faceplate-config-empty {
+	color: var(--text-muted);
+	font-size: 12px;
+}
+
+.psc-faceplate-interlock-header {
+	margin-bottom: 4px;
+}
+
+.psc-faceplate-interlock-colhdr {
+	border-bottom: 1px solid var(--border);
+	padding-bottom: 4px;
+	margin-bottom: 2px;
+	color: var(--text-muted);
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.psc-faceplate-interlock-row {
+	min-height: 28px;
+	border-bottom: 1px solid var(--border);
+	background: var(--surface-card);
+}
+
+.psc-faceplate-interlock-ok .psc-faceplate-interlock-sts {
+	color: var(--text-muted);
+}
+
+.psc-faceplate-interlock-fault {
+	background: color-mix(in srgb, var(--alarm-hi, #c62828) 12%, var(--surface-card));
+}
+
+.psc-faceplate-interlock-fault .psc-faceplate-interlock-sts {
+	color: var(--alarm-hi, #c62828);
+	font-weight: 700;
+}
+
+.psc-faceplate-interlock-bypass {
+	margin: 0;
+}
+
+.psc-faceplate-interlock-sts {
+	font-family: monospace;
+	font-size: 11px;
+	text-align: center;
 }
