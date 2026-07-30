@@ -33,6 +33,8 @@ Granularity: **standard** (5–8 phases). See `.planning/PRIORITIES.md` for Need
 
 **Primary tracker IDs:** 2, 11
 
+**Pilot — Machine Room:** Figma-first overview (Dev Jam new page; black piping; BH Tank/Valve/Pump/Compressor + Sensor/piping). Ignition only after Dylan approves Figma. Locked decisions + inventory: `.planning/phases/3-hmi-machine-room/CONTEXT.md`.
+
 ## Phase 4 — Alarming, security, trending
 
 **Goal:** Alarm migration path + IdP/AD roles + usable trending; coordinate PSM rationalization.
