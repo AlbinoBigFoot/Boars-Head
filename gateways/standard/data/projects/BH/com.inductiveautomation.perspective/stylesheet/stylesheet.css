@@ -154,6 +154,18 @@
 	--status-off: #9e9e9e;
 	--sts-defrost: var(--status-defrost);
 
+	/* Compressor CP/SV mode text (operator cues — may change later) */
+	--comp-mode-auto: #2e7d32;
+	--comp-mode-manual: #FF9800;
+	--comp-mode-remote: #00bcd4;
+
+	/* Tank level marks + float switches (Figma Dev Jam — theme-invariant) */
+	--status-level-critical: #c62828;
+	--status-level-warning: #fbc02d;
+	--tank-float: #767676;
+	--tank-float-active: var(--status-idle);
+	--tank-float-stroke: #161616;
+
 	/* Alarm Status Table / icon priority palette */
 	--alarm-critical: #e22028;
 	--alarm-high: #ec8629;
@@ -244,6 +256,29 @@
 	border-style: dashed !important;
 }
 
+/* Compressor CP/SV mode labels (overview bottom strip) */
+.psc-comp-mode {
+	font-size: 11px;
+	font-weight: 700;
+	line-height: 1.1;
+	margin: 0;
+	padding: 0;
+	text-align: left;
+	color: var(--neutral-60);
+}
+
+.psc-comp-mode-auto {
+	color: var(--comp-mode-auto) !important;
+}
+
+.psc-comp-mode-manual {
+	color: var(--comp-mode-manual) !important;
+}
+
+.psc-comp-mode-remote {
+	color: var(--comp-mode-remote) !important;
+}
+
 /*
  * Device graphic Comm Loss fill — the ONLY colored device body fill.
  * Apply style.classes = device-comm-loss on Graphic when Status/Value quality
@@ -261,6 +296,34 @@
 /* AnalogValue text when PV > SP — theme-invariant (text only, not device fill) */
 .psc-analog-over-sp {
 	color: var(--analog-over-sp) !important;
+}
+
+.psc-analog-level-warning {
+	color: var(--status-level-warning) !important;
+}
+
+/* Accent text matching AnalogValue Numeric value color (optional helpers) */
+.psc-analog-label {
+	color: var(--accent);
+}
+
+/* Compressor FLA/SVP strip — same 11px metrics as CP:/SV: mode labels; normal weight (not bold) */
+.psc-comp-analog {
+	font-size: 11px;
+	font-weight: 400;
+	line-height: 1.1;
+	margin: 0;
+	padding: 0;
+	color: var(--accent);
+}
+
+.psc-comp-analog-eu {
+	font-size: 11px;
+	font-weight: 400;
+	line-height: 1.1;
+	margin: 0;
+	padding: 0;
+	color: var(--neutral-60);
 }
 
 /* --- Evaporator overview fan: counter-clockwise spin when Cooling/Running --- */
@@ -2139,4 +2202,677 @@ body:has(.psc-animations-off) .container-fade-in {
 /* Scout unack flash on priority letter badge */
 .psc-alarm-icon-unack {
 	animation: alarm-flash 1s steps(1, end) infinite;
+}
+
+/* ---- Tank (LTR) device graphic ---- */
+.psc-tank-vessel {
+	background-color: var(--neutral-30) !important;
+	border: 2px solid var(--neutral-100) !important;
+	border-radius: 20px !important;
+	box-sizing: border-box !important;
+	overflow: hidden !important;
+}
+
+.psc-tank-sight {
+	background-color: var(--neutral-20) !important;
+	border: 1px solid var(--neutral-100) !important;
+	border-radius: 6px !important;
+	box-sizing: border-box !important;
+	overflow: hidden !important;
+}
+
+.psc-tank-liquid {
+	background-color: var(--ct-water) !important;
+	width: 100% !important;
+	min-height: 0 !important;
+}
+
+.psc-tank-stem {
+	background-color: var(--neutral-60) !important;
+}
+
+.psc-tank-float {
+	background-color: var(--tank-float) !important;
+	border: 1px solid var(--tank-float-stroke) !important;
+	border-radius: 50% !important;
+	box-sizing: border-box !important;
+}
+
+.psc-tank-float-active {
+	background-color: var(--tank-float-active) !important;
+	border-color: #005000 !important;
+}
+
+.psc-tank-sw-label {
+	color: var(--neutral-60) !important;
+}
+
+/* Tick bars only — solid level color */
+.psc-tank-level-critical {
+	background-color: var(--status-level-critical) !important;
+}
+
+.psc-tank-level-warning {
+	background-color: var(--status-level-warning) !important;
+}
+
+/* HH / H / L / LL text beside ticks — color only, no fill */
+.psc-tank-level-text-critical {
+	background: transparent !important;
+	color: var(--status-level-critical) !important;
+}
+
+.psc-tank-level-text-warning {
+	background: transparent !important;
+	color: var(--status-level-warning) !important;
+}
+
+.psc-tank-level-mark {
+	cursor: pointer !important;
+}
+
+/* Device label + analog centered over vessel (width matches vessel; marginLeft bound by orientation) */
+.psc-tank-over-vessel {
+	width: 72px !important;
+	min-width: 72px !important;
+	max-width: 72px !important;
+	align-self: flex-start !important;
+}
+
+/* --- Device / Sensor orientation (Scout-style) --- */
+
+/* Device layout — match ScoutMotors grid areas */
+.psc-device-vertical {
+	display: grid !important;
+	grid-template-areas:
+		"icon-header"
+		"label"
+		"component"
+		"value"
+		"status";
+	justify-items: center;
+	align-content: start;
+	gap: 2px;
+}
+
+.psc-device-horizontal {
+	display: grid !important;
+	grid-template-areas:
+		"icon-header component"
+		"label       component"
+		"value       component"
+		"status      component";
+	grid-template-columns: max-content max-content;
+	align-items: center;
+	column-gap: 4px;
+	row-gap: 2px;
+}
+
+.psc-device-horizontal-reverse {
+	display: grid !important;
+	grid-template-areas:
+		"component icon-header"
+		"component label"
+		"component value"
+		"component status";
+	grid-template-columns: max-content max-content;
+	align-items: center;
+	column-gap: 4px;
+	row-gap: 2px;
+}
+
+[class*="psc-device-"] .psc-icon-header {
+	grid-area: icon-header;
+	height: 20px;
+}
+
+[class*="psc-device-"] .psc-label {
+	grid-area: label;
+	text-align: center;
+	min-height: 16px;
+}
+
+[class*="psc-device-"] .psc-component {
+	grid-area: component;
+	justify-self: center;
+	position: relative;
+}
+
+[class*="psc-device-"] .psc-value {
+	grid-area: value;
+	height: 18px;
+}
+
+[class*="psc-device-"] .psc-status {
+	grid-area: status;
+	height: 22px;
+}
+
+/* Sensor layout — Scout orientation; name in expanding badge; stem flush in assembly */
+[class*="psc-sensor"] {
+	display: grid !important;
+	position: relative;
+	justify-items: center;
+	align-content: start !important;
+	gap: 0 !important;
+	row-gap: 0 !important;
+	column-gap: 0 !important;
+	overflow: visible !important;
+}
+
+[class*="psc-sensor"] .psc-notification-wrapper {
+	grid-area: notification-wrapper;
+	height: 20px;
+	overflow: visible !important;
+}
+
+[class*="psc-sensor"] .psc-value {
+	grid-area: value;
+	height: 18px;
+	overflow: visible !important;
+}
+
+/* Device name badge — expands with text; Figma double-border via outline */
+.psc-sensor-badge,
+.psc-tag-label.psc-sensor-badge,
+[class*="psc-sensor"] .psc-sensor-badge,
+[class*="psc-sensor"] .psc-tag-label.psc-sensor-badge {
+	box-sizing: border-box;
+	width: max-content !important;
+	min-width: 28px;
+	margin: 0 !important;
+	padding: 2px 6px !important;
+	border: 1px solid var(--neutral-100) !important;
+	outline: 1px solid var(--neutral-100);
+	outline-offset: 3px;
+	background: var(--neutral-30) !important;
+	color: var(--neutral-100) !important;
+	text-align: center;
+	white-space: nowrap !important;
+	line-height: 1.25;
+	border-radius: 0;
+}
+
+/* Badge + stem share one grid cell so stem always touches.
+ * Padding reserves space for badge outline-offset so it isn't clipped / doesn't force scrollbars. */
+[class*="psc-sensor"] .psc-stem {
+	grid-area: stem;
+	justify-self: center;
+	align-self: start;
+	width: max-content;
+	height: max-content;
+	margin: 0 !important;
+	padding: 5px !important;
+	gap: 0 !important;
+	overflow: visible !important;
+	box-sizing: content-box !important;
+}
+
+[class*="psc-sensor"] .psc-stem-line {
+	margin: 0 !important;
+	padding: 0 !important;
+	display: block;
+}
+
+[class*="psc-sensor"] .psc-status,
+[class*="psc-sensor"] .psc-nut {
+	grid-area: nut;
+	justify-self: center;
+	overflow: visible !important;
+}
+
+/* AnalogValue always nearest the stem/badge; Status further out. Small gap so value doesn't kiss the graphic. */
+.psc-sensor-vertical {
+	grid-template:
+		"notification-wrapper"
+		"nut"
+		"value"
+		"stem";
+	grid-template-rows: 20px 22px max-content max-content;
+}
+
+.psc-sensor-vertical .psc-value {
+	margin-bottom: 8px !important;
+}
+
+.psc-sensor-vertical-reverse {
+	grid-template:
+		"stem"
+		"value"
+		"nut"
+		"notification-wrapper";
+	grid-template-rows: max-content max-content 22px 20px;
+	grid-template-columns: max-content;
+}
+
+.psc-sensor-vertical-reverse .psc-value {
+	margin-top: 8px !important;
+}
+
+.psc-sensor-horizontal {
+	grid-template:
+		"notification-wrapper ."
+		"value                stem"
+		"nut                  .";
+	grid-template-rows: 20px max-content 22px;
+	grid-template-columns: max-content max-content;
+}
+
+.psc-sensor-horizontal-reverse {
+	grid-template:
+		". notification-wrapper"
+		"stem value"
+		". nut";
+	grid-template-rows: 20px max-content 22px;
+	grid-template-columns: max-content max-content;
+}
+
+.psc-sensor-component.psc-sensor-horizontal {
+	grid-template:
+		"notification-wrapper ."
+		"value stem"
+		"nut .";
+	grid-template-rows: 20px max-content 22px;
+	grid-template-columns: max-content max-content;
+}
+
+.psc-sensor-component.psc-sensor-horizontal .psc-notification-wrapper,
+.psc-sensor-component.psc-sensor-horizontal .psc-value,
+.psc-sensor-component.psc-sensor-horizontal .psc-nut {
+	justify-self: end;
+	margin-right: 4px;
+}
+
+.psc-sensor-component.psc-sensor-horizontal .psc-value {
+	margin-right: 6px !important;
+}
+
+.psc-sensor-component.psc-sensor-horizontal-reverse {
+	grid-template:
+		". notification-wrapper"
+		"stem value"
+		". nut";
+	grid-template-rows: 20px max-content 22px;
+	grid-template-columns: max-content max-content;
+}
+
+.psc-sensor-component.psc-sensor-horizontal-reverse .psc-notification-wrapper,
+.psc-sensor-component.psc-sensor-horizontal-reverse .psc-value,
+.psc-sensor-component.psc-sensor-horizontal-reverse .psc-nut {
+	justify-self: start;
+	margin-left: 4px;
+}
+
+.psc-sensor-component.psc-sensor-horizontal-reverse .psc-value {
+	margin-left: 6px !important;
+}
+
+/* =============================================================================
+ * Nav Button — Figma Components / Nav Button (259:2242)
+ * FactoryTalk-style bar + right chevron tip. Width hugs the label; tip stays 18px.
+ *
+ * Full silhouette stroke: clip-path cannot use CSS border, and drop-shadow was
+ * incomplete in Perspective. Paint a dark outer chevron, then an inset fill
+ * chevron on top so a continuous 1.5px outline remains on every edge.
+ * ============================================================================= */
+.psc-nav-button {
+	box-sizing: border-box !important;
+	display: inline-flex !important;
+	align-items: stretch !important;
+	justify-content: flex-start !important;
+	width: max-content !important;
+	min-width: 72px;
+	height: 36px !important;
+	min-height: 36px !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	background: transparent !important;
+	color: var(--text) !important;
+	cursor: pointer;
+	overflow: visible !important;
+}
+
+.psc-nav-button-shape {
+	box-sizing: border-box !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	position: relative !important;
+	width: max-content !important;
+	min-width: 72px;
+	height: 36px !important;
+	min-height: 36px !important;
+	padding: 0 28px 0 14px !important;
+	margin: 0 !important;
+	background: transparent !important;
+	color: var(--text) !important;
+	overflow: visible !important;
+}
+
+/* Dark chevron underlay = stroke */
+.psc-nav-button-stroke {
+	position: absolute !important;
+	inset: 0 !important;
+	width: auto !important;
+	height: auto !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	pointer-events: none !important;
+	z-index: 0 !important;
+	background-color: var(--neutral-100) !important;
+	clip-path: polygon(
+		0 0,
+		calc(100% - 18px) 0,
+		100% 50%,
+		calc(100% - 18px) 100%,
+		0 100%
+	);
+}
+
+/* Inset fill — leaves a continuous outline of the underlay */
+.psc-nav-button-fill {
+	position: absolute !important;
+	top: 1.5px !important;
+	right: 1.5px !important;
+	bottom: 1.5px !important;
+	left: 1.5px !important;
+	width: auto !important;
+	height: auto !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	pointer-events: none !important;
+	z-index: 1 !important;
+	background-color: var(--surface-component) !important;
+	clip-path: polygon(
+		0 0,
+		calc(100% - 16.5px) 0,
+		100% 50%,
+		calc(100% - 16.5px) 100%,
+		0 100%
+	);
+}
+
+.psc-nav-button:hover .psc-nav-button-fill {
+	filter: brightness(0.96);
+}
+
+.psc-nav-button-label,
+.psc-nav-button .ia_labelComponent,
+.psc-nav-button .psc-nav-button-label {
+	box-sizing: border-box !important;
+	position: relative !important;
+	z-index: 2 !important;
+	width: max-content !important;
+	max-width: none !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	background: transparent !important;
+	border: none !important;
+	color: var(--text) !important;
+	font-family: Inter, 'Segoe UI', sans-serif !important;
+	font-size: 12px !important;
+	font-weight: 700 !important;
+	letter-spacing: 0.6px !important;
+	line-height: 1 !important;
+	text-align: center !important;
+	text-transform: uppercase !important;
+	white-space: nowrap !important;
+}
+
+/* --- StatusDot (binary safety LED: green OK / red alarm) --- */
+.psc-status-dot-root {
+	overflow: visible;
+	align-items: center !important;
+}
+
+/*
+ * Perspective flex hosts stretch cross-axis by default → width ≠ height → oval.
+ * Lock equal box + no shrink so border-radius:50% stays a circle.
+ */
+.psc-status-dot {
+	width: 28px !important;
+	height: 28px !important;
+	min-width: 28px !important;
+	min-height: 28px !important;
+	max-width: 28px !important;
+	max-height: 28px !important;
+	flex-grow: 0 !important;
+	flex-shrink: 0 !important;
+	aspect-ratio: 1 / 1 !important;
+	align-self: center !important;
+	box-sizing: border-box !important;
+	border-radius: 50% !important;
+	border: 2px solid var(--tank-float-stroke, #161616);
+	box-shadow:
+		inset 0 3px 4px rgba(255, 255, 255, 0.45),
+		inset 0 -2px 3px rgba(0, 0, 0, 0.22);
+}
+
+.psc-status-dot-ok {
+	background-color: var(--status-idle);
+}
+
+.psc-status-dot-alarm {
+	background-color: var(--status-level-critical);
+}
+
+.psc-status-dot-unknown {
+	background-color: var(--status-off);
+}
+
+/* --- Safetys widget --- */
+.psc-safetys-widget {
+	box-sizing: border-box;
+	margin: 0;
+	background-color: var(--surface-card);
+	border: 1px solid var(--border);
+	border-radius: 0.5rem;
+	box-shadow: var(--boxShadow1);
+	outline-style: none;
+}
+
+.psc-safetys-title {
+	text-transform: uppercase;
+}
+
+.psc-safetys-body {
+	min-height: 0;
+}
+
+/*
+ * Embedded views scroll when their host box is smaller than content /
+ * when useDefaultViewHeight|Width keeps defaultSize larger than the host.
+ * Prefer correct host sizes + useDefault*=false in view.json.
+ * overflow:visible avoids scrollbar chrome without clipping (never overflow:hidden).
+ */
+.psc-safetys-widget .psc-safetys-embed,
+.psc-safetys-widget .psc-safetys-embed.view-parent,
+.psc-safetys-widget .psc-safetys-embed.ia_embeddedView,
+.psc-safetys-widget .psc-safetys-embed > .view-parent,
+.psc-safetys-widget .psc-safetys-embed > .ia_embeddedView,
+.psc-safetys-widget .psc-safetys-embed .view-parent,
+.psc-safetys-widget .psc-safetys-embed .ia_embeddedView {
+	overflow: visible !important;
+	overflow-x: visible !important;
+	overflow-y: visible !important;
+}
+
+.psc-safetys-widget .psc-safetys-embed > .view-parent > [data-component],
+.psc-safetys-widget .psc-safetys-embed .psc-status-dot-root,
+.psc-safetys-widget .psc-safetys-fan .flex-container {
+	overflow: visible !important;
+}
+
+.psc-safetys-widget .psc-status-dot {
+	width: 22px !important;
+	height: 22px !important;
+	min-width: 22px !important;
+	min-height: 22px !important;
+	max-width: 22px !important;
+	max-height: 22px !important;
+	flex-grow: 0 !important;
+	flex-shrink: 0 !important;
+	aspect-ratio: 1 / 1 !important;
+	align-self: center !important;
+}
+
+.psc-safetys-widget .psc-status-dot-root {
+	gap: 2px;
+	height: auto;
+	align-items: center !important;
+}
+
+/* Match indicator column height to stacked fans; space MR AD…FIRE top-to-bottom */
+.psc-safetys-widget .psc-safetys-indicators {
+	justify-content: space-between !important;
+	align-self: stretch !important;
+	gap: 0 !important;
+}
+
+/* ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+ * Unified Faceplate (Scout-style tabbed shell)
+ * ---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+.psc-faceplate {
+	background: var(--surface-card);
+	z-index: 990;
+	min-height: 0;
+	overflow: hidden;
+}
+
+.psc-faceplate-header {
+	align-items: center;
+	gap: 8px;
+	min-height: 40px;
+	padding: 4px 8px;
+	border-bottom: 1px solid var(--border);
+}
+
+.psc-faceplate-title {
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 1.2;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.psc-faceplate-button {
+	border-radius: 6px 6px 0 0;
+	border: 1px solid var(--border);
+	background: var(--surface-container);
+	color: var(--text);
+	font-family: monospace;
+	font-weight: 400;
+	font-size: 11px;
+	height: 40px;
+	width: 100%;
+	padding: 4px 6px;
+	white-space: normal;
+	line-height: 1.15;
+}
+
+.psc-faceplate-button-selected {
+	border-radius: 6px 6px 0 0;
+	border: 1px solid var(--border);
+	border-bottom: none;
+	background: var(--surface-card);
+	box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.12);
+	height: 48px;
+	width: 100%;
+	z-index: 2;
+	font-family: monospace;
+	font-weight: 600;
+	font-size: 11px;
+	padding: 4px 6px;
+	white-space: normal;
+	line-height: 1.15;
+}
+
+/* Tab label text on light chrome — not inverse (--text-inverse / font-button) */
+.psc-faceplate-tab-text {
+	color: var(--text);
+	font-family: monospace;
+	font-weight: 400;
+	font-size: 11px;
+}
+
+[class*="psc-faceplate-buttons"] {
+	background: var(--surface-container);
+	display: grid;
+	height: 56px;
+	padding-top: 4px;
+	padding-left: 4px;
+	padding-right: 4px;
+	gap: 2px;
+	align-items: end;
+	justify-items: stretch;
+}
+
+.psc-faceplate-buttons-1 { grid-template-columns: 1fr; }
+.psc-faceplate-buttons-2 { grid-template-columns: repeat(2, 1fr); }
+.psc-faceplate-buttons-3 { grid-template-columns: repeat(3, 1fr); }
+.psc-faceplate-buttons-4 { grid-template-columns: repeat(4, 1fr); }
+.psc-faceplate-buttons-5 { grid-template-columns: repeat(5, 1fr); }
+
+.psc-faceplate-body {
+	background: var(--surface-card);
+	border: 1px solid var(--border);
+	border-top: none;
+	min-height: 0;
+	overflow: auto;
+	padding: 8px;
+	flex: 1 1 auto;
+}
+
+.psc-faceplate-kpi-row {
+	gap: 8px;
+	align-items: center;
+	min-height: 22px;
+}
+
+.psc-faceplate-kpi-label {
+	font-size: 12px;
+	font-weight: 700;
+	min-width: 52px;
+	white-space: nowrap;
+}
+
+.psc-faceplate-mode-chip {
+	font-size: 11px;
+	font-weight: 600;
+	padding: 2px 8px;
+	border-radius: 4px;
+	border: 1px solid var(--border);
+	background: var(--surface-container);
+	color: var(--text-muted);
+}
+
+.psc-faceplate-mode-active {
+	border-color: var(--text);
+	color: var(--text);
+	background: var(--surface-card);
+}
+
+.psc-faceplate-section {
+	gap: 6px;
+	margin-bottom: 12px;
+}
+
+.psc-faceplate-section-title {
+	font-size: 12px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: var(--text-muted);
+	margin-bottom: 4px;
+}
+
+.psc-faceplate-stub {
+	font-size: 12px;
+	color: var(--text-muted);
+	padding: 8px;
+	border: 1px dashed var(--border);
+	border-radius: 6px;
+	background: var(--surface-container);
 }
