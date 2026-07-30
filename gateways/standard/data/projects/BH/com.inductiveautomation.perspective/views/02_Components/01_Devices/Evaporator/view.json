@@ -225,7 +225,15 @@
               "props.style.opacity": {
                 "binding": {
                   "config": {
-                    "expression": "if(isNull({view.params.faceplate}),\n   0,\n   1)"
+                    "expression": "if(isNull({view.params.faceplate}) || {view.params.faceplate} = '',\n   0,\n   1)"
+                  },
+                  "type": "expr"
+                }
+              },
+              "meta.visible": {
+                "binding": {
+                  "config": {
+                    "expression": "!(isNull({view.params.faceplate}) || {view.params.faceplate} = '')"
                   },
                   "type": "expr"
                 }
@@ -719,7 +727,7 @@
       "dom": {
         "onClick": {
           "config": {
-            "script": "\tfaceplate = self.view.params.faceplate\n\tif faceplate is None:\n\t\treturn\n\ttagPath = str(self.view.params.tagPath or '')\n\ttitle = str(self.view.custom.label or '')\n\tif title in (None, '', 'nn'):\n\t\ttitle = tagPath.split('/')[-1] if tagPath else self.view.name\n\tif faceplate == '':\n\t\tview = '01_Popups/00_Faceplates/' + self.view.name\n\telse:\n\t\tview = '01_Popups/00_Faceplates/' + str(faceplate)\n\tsystem.perspective.openPopup(\n\t\t'ev-fp-%s' % (tagPath or title),\n\t\tview,\n\t\tparams={'tagPath': tagPath},\n\t\ttitle=title,\n\t\tshowCloseIcon=True,\n\t\tdraggable=True,\n\t\tresizable=True,\n\t\tmodal=False,\n\t\tviewportBound=True,\n\t\tposition={'width': 420, 'height': 520}\n\t)\n"
+            "script": "\tfaceplate = self.view.params.faceplate\n\tif faceplate is None or str(faceplate).strip() == '':\n\t\treturn\n\ttagPath = str(self.view.params.tagPath or '')\n\ttitle = str(self.view.custom.label or '')\n\tif title in (None, '', 'nn'):\n\t\ttitle = tagPath.split('/')[-1] if tagPath else self.view.name\n\t# Unified tabbed Faceplate. show* are hints; tagFlags hide empty tabs.\n\tparams = {\n\t\t'tagPath': tagPath,\n\t\t'deviceType': 'Evaporator',\n\t\t'webGuiUrl': '',\n\t\t'showControls': True,\n\t\t'showConfiguration': True,\n\t\t'showInterlocks': True,\n\t\t'showTrend': True,\n\t\t'showAlarmConfiguration': True,\n\t\t'showAlarms': True\n\t}\n\tNavigation.Faceplate.openFaceplate(\n\t\t'ev-fp-%s' % (tagPath or title),\n\t\ttagPath,\n\t\t'01_Popups/00_Faceplates/Faceplate',\n\t\tFalse,\n\t\ttitle,\n\t\t560,\n\t\t640,\n\t\tparams\n\t)\n"
           },
           "scope": "G",
           "type": "script"
@@ -734,7 +742,7 @@
       "props.style.cursor": {
         "binding": {
           "config": {
-            "expression": "if({view.params.faceplate} = null,\n   '',\n   'pointer')"
+            "expression": "if(isNull({view.params.faceplate}) || {view.params.faceplate} = '',\n   '',\n   'pointer')"
           },
           "type": "expr"
         }
