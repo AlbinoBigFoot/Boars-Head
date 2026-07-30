@@ -188,6 +188,71 @@ EV_PROFILES: dict[str, dict[str, str]] = {
 }
 
 
+
+# --- EVAPORATOR ---
+# Controls-grade defaults for Devices/Evaporator (CG_RL_Evap enable/defrost/ZAT/Interlock).
+# Status wall remains EV_PROFILES above. A-merge wires FOLDERS + CSV emission for these leaves.
+# HMI Status stays simplified; PLC Sts_State 0-10 maps in Devices/Evaporator Status metadata.
+EV_FACEPLATE_DEFAULTS: dict[str, tuple[str, str]] = {
+    "HMIEnable": ("true", "Boolean"),
+    "Cmd_StartDefrost": ("false", "Boolean"),
+    "Cmd_StopDefrost": ("false", "Boolean"),
+    "Cleanup": ("false", "Boolean"),
+    "TooHot": ("false", "Boolean"),
+    "TooCold": ("false", "Boolean"),
+    "IntlkOK": ("true", "Boolean"),
+    "PermOK": ("true", "Boolean"),
+    "Off": ("false", "Boolean"),
+    "TimeLeft": ("12.0", "Float"),
+    "Cfg_PumpOut": ("3.0", "Float"),
+    "Cfg_SoftHotGas": ("2.0", "Float"),
+    "Cfg_MainHotGas": ("8.0", "Float"),
+    "Cfg_Bleed": ("2.0", "Float"),
+    "Cfg_FanDelay": ("1.0", "Float"),
+    "Cfg_CoolingTime": ("45.0", "Float"),
+    "Cfg_ZoneAirTempDB": ("2.0", "Float"),
+    "Interlock/Sts_IntlkOK": ("true", "Boolean"),
+    "Interlock/Sts_NBIntlkOK": ("true", "Boolean"),
+    "Interlock/Sts_BypActive": ("false", "Boolean"),
+    "Interlock/Sts_FirstOut": ("false", "Boolean"),
+    "Interlock/Sts_Intlk": ("0", "Int32"),
+    "Interlock/Cfg_Bypassable": ("7", "Int32"),
+    "Interlock/OCmd_Reset": ("false", "Boolean"),
+    "Interlock/Rdy_Reset": ("true", "Boolean"),
+    "Interlock/Cfg_CondTxt00": ("Zone Air Temp HiHi", "String"),
+    "Interlock/Cfg_CondTxt01": ("Defrost Timeout", "String"),
+    "Interlock/Cfg_CondTxt02": ("Fan Fault", "String"),
+    "Interlock/Cfg_CondTxt03": ("Permissive Not OK", "String"),
+}
+for _i in range(4, 16):
+    EV_FACEPLATE_DEFAULTS[f"Interlock/Cfg_CondTxt{_i:02d}"] = ("", "String")
+for _i in range(16):
+    EV_FACEPLATE_DEFAULTS[f"Interlock/MSet_Bypass{_i:02d}"] = ("false", "Boolean")
+
+# EV-02 Controls demo seed (beyond Status/Temp/Pressure/Fans wall profile).
+EV_CONTROLS_PROFILES: dict[str, dict[str, str]] = {
+    "EV-02": {
+        "HMIEnable": "true",
+        "TimeLeft": "8.5",
+        "TooHot": "true",
+        "IntlkOK": "true",
+        "PermOK": "true",
+        "Cmd_StartDefrost": "false",
+        "Cmd_StopDefrost": "false",
+    },
+    "EV-04": {
+        "HMIEnable": "true",
+        "TimeLeft": "4.0",
+        "Cmd_StartDefrost": "true",
+    },
+    "EV-06": {
+        "HMIEnable": "true",
+        "IntlkOK": "false",
+        "TimeLeft": "0.0",
+    },
+}
+# --- END EVAPORATOR ---
+
 # --- COOLINGTOWER ---
 # Non-EV Status enum: 0 Off, 1 Run, 2 Fault, 3 Manual (not shown), 4 Idle.
 # Four Overview slots → Run / Idle / Fault / Off (no Manual; Comm Loss only on EV-01).
@@ -344,6 +409,65 @@ VALVE_PROFILES: dict[str, dict[str, str]] = {
 }
 # --- END VALVE ---
 
+
+
+# --- SENSOR ---
+# Status: 0=OK, 1=HI, 2=LO, 3=HIHI, 4=LOLO, 5=FAIL, 6=BAD (P_AIn aggregate)
+# A-merge: add Sensors to FOLDERS and wire these defaults into CSV regen.
+SENSOR_FACEPLATE_DEFAULTS: dict[str, tuple[str, str]] = {
+    "Cmd_Reset": ("false", "Boolean"),
+    "HiHiLim": ("100.0", "Float"),
+    "HiLim": ("80.0", "Float"),
+    "LoLim": ("20.0", "Float"),
+    "LoLoLim": ("5.0", "Float"),
+    "HiHi": ("false", "Boolean"),
+    "Hi": ("false", "Boolean"),
+    "Lo": ("false", "Boolean"),
+    "LoLo": ("false", "Boolean"),
+    "Fail": ("false", "Boolean"),
+}
+
+SENSOR_PROFILES: dict[str, dict[str, str]] = {
+    "LSS-PT": {
+        "Status": "0",
+        "Value": "realistic(28.5, 0.8, 0.04, 0.18, true)",
+        "Hi": "false",
+        "Lo": "false",
+        "Fail": "false",
+        "HiLim": "45.0",
+        "LoLim": "15.0",
+    },
+    "HSS-PT": {
+        "Status": "1",
+        "Value": "52.0",
+        "Hi": "true",
+        "Lo": "false",
+        "Fail": "false",
+        "HiLim": "50.0",
+        "LoLim": "20.0",
+    },
+    "HPR-PT": {
+        "Status": "2",
+        "Value": "12.0",
+        "Hi": "false",
+        "Lo": "true",
+        "Fail": "false",
+        "HiLim": "150.0",
+        "LoLim": "25.0",
+    },
+    "OIL-TT": {
+        "Status": "5",
+        "Value": "0.0",
+        "Hi": "false",
+        "Lo": "false",
+        "Fail": "true",
+        "HiLim": "140.0",
+        "LoLim": "60.0",
+        "HiHiLim": "180.0",
+        "LoLoLim": "40.0",
+    },
+}
+# --- END SENSOR ---
 
 # Faceplate Controls/Config/Interlocks demo leaves (Devices/Compressor flat + Interlock/).
 # Keys are relative paths under Compressors/COMP-##/ (not Value-parent names).

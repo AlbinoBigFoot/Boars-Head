@@ -9,34 +9,28 @@
     "tagType": "UdtInstance",
     "tags": [
       {
+        "name": "Value",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "engUnit": "psig",
+            "name": "Value",
+            "value": 28.5,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
         "name": "Status",
         "tagType": "UdtInstance",
         "tags": [
           {
             "valueSource": "memory",
-            "metadata": {
-              "shortDescription": "status",
-              "states": [
-                {
-                  "label": "Stop",
-                  "value": 0
-                },
-                {
-                  "label": "Ok",
-                  "value": 1
-                },
-                {
-                  "label": "Fault",
-                  "value": 2
-                },
-                {
-                  "label": "Comm",
-                  "value": 3
-                }
-              ]
-            },
             "dataType": "Int4",
             "name": "Value",
+            "value": 0,
             "tagType": "AtomicTag"
           }
         ]
@@ -45,68 +39,81 @@
         "valueSource": "memory",
         "dataType": "Float4",
         "engUnit": "psig",
-        "name": "Value",
+        "name": "HiHiLim",
+        "value": 60.0,
         "tagType": "AtomicTag"
       },
       {
-        "typeId": "Config/_Alarms",
-        "name": "_Alarms",
-        "tagType": "AtomicTag",
-        "tags": [
-          {
-            "valueSource": "memory",
-            "dataType": "Int4",
-            "name": "_ActiveHighPriority",
-            "tagType": "AtomicTag"
-          },
-          {
-            "valueSource": "memory",
-            "dataType": "Boolean",
-            "name": "_Active",
-            "tagType": "AtomicTag"
-          }
-        ]
+        "valueSource": "memory",
+        "dataType": "Float4",
+        "engUnit": "psig",
+        "name": "HiLim",
+        "value": 45.0,
+        "tagType": "AtomicTag"
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "Float4",
+        "engUnit": "psig",
+        "name": "LoLim",
+        "value": 15.0,
+        "tagType": "AtomicTag"
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "Float4",
+        "engUnit": "psig",
+        "name": "LoLoLim",
+        "value": 5.0,
+        "tagType": "AtomicTag"
       }
     ]
   },
   {
     "metadata": {
       "shortDescription": "HSS-PT",
-      "longDescription": "High-side suction pressure"
+      "longDescription": "High-side suction pressure — Hi demo"
     },
     "name": "HSS-PT",
     "typeId": "Devices/Sensor",
     "tagType": "UdtInstance",
     "tags": [
       {
+        "name": "Value",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "engUnit": "psig",
+            "name": "Value",
+            "value": 52.0,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
         "name": "Status",
         "tagType": "UdtInstance",
         "tags": [
           {
             "valueSource": "memory",
-            "metadata": {
-              "shortDescription": "status",
-              "states": [
-                {
-                  "label": "Stop",
-                  "value": 0
-                },
-                {
-                  "label": "Ok",
-                  "value": 1
-                },
-                {
-                  "label": "Fault",
-                  "value": 2
-                },
-                {
-                  "label": "Comm",
-                  "value": 3
-                }
-              ]
-            },
             "dataType": "Int4",
             "name": "Value",
+            "value": 1,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Hi",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": true,
             "tagType": "AtomicTag"
           }
         ]
@@ -115,68 +122,81 @@
         "valueSource": "memory",
         "dataType": "Float4",
         "engUnit": "psig",
-        "name": "Value",
+        "name": "HiHiLim",
+        "value": 80.0,
         "tagType": "AtomicTag"
       },
       {
-        "typeId": "Config/_Alarms",
-        "name": "_Alarms",
-        "tagType": "AtomicTag",
-        "tags": [
-          {
-            "valueSource": "memory",
-            "dataType": "Int4",
-            "name": "_ActiveHighPriority",
-            "tagType": "AtomicTag"
-          },
-          {
-            "valueSource": "memory",
-            "dataType": "Boolean",
-            "name": "_Active",
-            "tagType": "AtomicTag"
-          }
-        ]
+        "valueSource": "memory",
+        "dataType": "Float4",
+        "engUnit": "psig",
+        "name": "HiLim",
+        "value": 50.0,
+        "tagType": "AtomicTag"
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "Float4",
+        "engUnit": "psig",
+        "name": "LoLim",
+        "value": 20.0,
+        "tagType": "AtomicTag"
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "Float4",
+        "engUnit": "psig",
+        "name": "LoLoLim",
+        "value": 5.0,
+        "tagType": "AtomicTag"
       }
     ]
   },
   {
     "metadata": {
       "shortDescription": "HPR-PT",
-      "longDescription": "HPR pressure"
+      "longDescription": "HPR pressure — Lo demo"
     },
     "name": "HPR-PT",
     "typeId": "Devices/Sensor",
     "tagType": "UdtInstance",
     "tags": [
       {
+        "name": "Value",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "engUnit": "psig",
+            "name": "Value",
+            "value": 12.0,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
         "name": "Status",
         "tagType": "UdtInstance",
         "tags": [
           {
             "valueSource": "memory",
-            "metadata": {
-              "shortDescription": "status",
-              "states": [
-                {
-                  "label": "Stop",
-                  "value": 0
-                },
-                {
-                  "label": "Ok",
-                  "value": 1
-                },
-                {
-                  "label": "Fault",
-                  "value": 2
-                },
-                {
-                  "label": "Comm",
-                  "value": 3
-                }
-              ]
-            },
             "dataType": "Int4",
             "name": "Value",
+            "value": 2,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Lo",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": true,
             "tagType": "AtomicTag"
           }
         ]
@@ -185,68 +205,81 @@
         "valueSource": "memory",
         "dataType": "Float4",
         "engUnit": "psig",
-        "name": "Value",
+        "name": "HiHiLim",
+        "value": 200.0,
         "tagType": "AtomicTag"
       },
       {
-        "typeId": "Config/_Alarms",
-        "name": "_Alarms",
-        "tagType": "AtomicTag",
-        "tags": [
-          {
-            "valueSource": "memory",
-            "dataType": "Boolean",
-            "name": "_Active",
-            "tagType": "AtomicTag"
-          },
-          {
-            "valueSource": "memory",
-            "dataType": "Int4",
-            "name": "_ActiveHighPriority",
-            "tagType": "AtomicTag"
-          }
-        ]
+        "valueSource": "memory",
+        "dataType": "Float4",
+        "engUnit": "psig",
+        "name": "HiLim",
+        "value": 150.0,
+        "tagType": "AtomicTag"
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "Float4",
+        "engUnit": "psig",
+        "name": "LoLim",
+        "value": 25.0,
+        "tagType": "AtomicTag"
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "Float4",
+        "engUnit": "psig",
+        "name": "LoLoLim",
+        "value": 10.0,
+        "tagType": "AtomicTag"
       }
     ]
   },
   {
     "metadata": {
       "shortDescription": "OIL-TT",
-      "longDescription": "Oil temp — Comm fault demo"
+      "longDescription": "Oil temp — Fail / BAD demo"
     },
     "name": "OIL-TT",
     "typeId": "Devices/Sensor",
     "tagType": "UdtInstance",
     "tags": [
       {
+        "name": "Value",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "engUnit": "°F",
+            "name": "Value",
+            "value": 0.0,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
         "name": "Status",
         "tagType": "UdtInstance",
         "tags": [
           {
             "valueSource": "memory",
-            "metadata": {
-              "shortDescription": "status",
-              "states": [
-                {
-                  "label": "Stop",
-                  "value": 0
-                },
-                {
-                  "label": "Ok",
-                  "value": 1
-                },
-                {
-                  "label": "Fault",
-                  "value": 2
-                },
-                {
-                  "label": "Comm",
-                  "value": 3
-                }
-              ]
-            },
             "dataType": "Int4",
             "name": "Value",
+            "value": 5,
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Fail",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "name": "Value",
+            "value": true,
             "tagType": "AtomicTag"
           }
         ]
@@ -255,27 +288,33 @@
         "valueSource": "memory",
         "dataType": "Float4",
         "engUnit": "°F",
-        "name": "Value",
+        "name": "HiHiLim",
+        "value": 180.0,
         "tagType": "AtomicTag"
       },
       {
-        "typeId": "Config/_Alarms",
-        "name": "_Alarms",
-        "tagType": "AtomicTag",
-        "tags": [
-          {
-            "valueSource": "memory",
-            "dataType": "Int4",
-            "name": "_ActiveHighPriority",
-            "tagType": "AtomicTag"
-          },
-          {
-            "valueSource": "memory",
-            "dataType": "Boolean",
-            "name": "_Active",
-            "tagType": "AtomicTag"
-          }
-        ]
+        "valueSource": "memory",
+        "dataType": "Float4",
+        "engUnit": "°F",
+        "name": "HiLim",
+        "value": 140.0,
+        "tagType": "AtomicTag"
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "Float4",
+        "engUnit": "°F",
+        "name": "LoLim",
+        "value": 60.0,
+        "tagType": "AtomicTag"
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "Float4",
+        "engUnit": "°F",
+        "name": "LoLoLim",
+        "value": 40.0,
+        "tagType": "AtomicTag"
       }
     ]
   }
