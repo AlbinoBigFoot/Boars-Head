@@ -11,7 +11,8 @@
   },
   "params": {
     "faceplate": null,
-    "tagPath": ""
+    "tagPath": "",
+    "webGuiUrl": ""
   },
   "propConfig": {
     "custom.label": {
@@ -35,10 +36,34 @@
     "custom.values": {
       "persistent": true
     },
-    "custom.values.analog": {
+    "custom.values.fla": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '',\n\t'',\n\t{view.params.tagPath} + '/Temp/Value')"
+          "expression": "if({view.params.tagPath} = '',\n\t'',\n\t{view.params.tagPath} + '/FLA/Value')"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.values.svp": {
+      "binding": {
+        "config": {
+          "expression": "if({view.params.tagPath} = '',\n\t'',\n\t{view.params.tagPath} + '/SVP/Value')"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.values.cpMode": {
+      "binding": {
+        "config": {
+          "expression": "if({view.params.tagPath} = '',\n\t'',\n\t{view.params.tagPath} + '/CP_Mode/Value')"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.values.svMode": {
+      "binding": {
+        "config": {
+          "expression": "if({view.params.tagPath} = '',\n\t'',\n\t{view.params.tagPath} + '/SV_Mode/Value')"
         },
         "type": "expr"
       }
@@ -56,6 +81,10 @@
       "persistent": true
     },
     "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.webGuiUrl": {
       "paramDirection": "input",
       "persistent": true
     },
@@ -133,7 +162,7 @@
   },
   "props": {
     "defaultSize": {
-      "height": 176,
+      "height": 168,
       "width": 156
     }
   },
@@ -217,7 +246,15 @@
               "props.style.opacity": {
                 "binding": {
                   "config": {
-                    "expression": "if(isNull({view.params.faceplate}),\n   0,\n   1)"
+                    "expression": "if(isNull({view.params.faceplate}) || {view.params.faceplate} = '',\n   0,\n   1)"
+                  },
+                  "type": "expr"
+                }
+              },
+              "meta.visible": {
+                "binding": {
+                  "config": {
+                    "expression": "!(isNull({view.params.faceplate}) || {view.params.faceplate} = '')"
                   },
                   "type": "expr"
                 }
@@ -247,6 +284,7 @@
           "justify": "center",
           "style": {
             "minHeight": "20px",
+            "overflow": "visible",
             "width": "100%"
           }
         },
@@ -260,9 +298,9 @@
             },
             "position": {
               "x": 4.0,
-              "y": 4.0,
+              "y": 1.0,
               "width": 132.0,
-              "height": 102.0
+              "height": 81.1
             },
             "props": {
               "elements": [
@@ -283,7 +321,7 @@
                   "type": "rect",
                   "width": 64.75,
                   "x": 2.625,
-                  "y": 34.625
+                  "y": 22.375
                 },
                 {
                   "fill": {
@@ -301,7 +339,7 @@
                   "type": "rect",
                   "width": 2.5,
                   "x": 10.25,
-                  "y": 49.25
+                  "y": 37.0
                 },
                 {
                   "fill": {
@@ -319,7 +357,7 @@
                   "type": "rect",
                   "width": 2.5,
                   "x": 56.25,
-                  "y": 49.25
+                  "y": 37.0
                 },
                 {
                   "fill": {
@@ -338,7 +376,7 @@
                   "type": "rect",
                   "width": 26.75,
                   "x": 37.625,
-                  "y": 19.625
+                  "y": 7.375
                 },
                 {
                   "name": "Line",
@@ -352,8 +390,8 @@
                   "type": "line",
                   "x1": 40,
                   "x2": 62,
-                  "y1": 22.35,
-                  "y2": 22.35
+                  "y1": 10.1,
+                  "y2": 10.1
                 },
                 {
                   "name": "Line_2",
@@ -367,8 +405,8 @@
                   "type": "line",
                   "x1": 40,
                   "x2": 62,
-                  "y1": 25.95,
-                  "y2": 25.95
+                  "y1": 13.7,
+                  "y2": 13.7
                 },
                 {
                   "name": "Line_3",
@@ -382,8 +420,8 @@
                   "type": "line",
                   "x1": 40,
                   "x2": 62,
-                  "y1": 29.55,
-                  "y2": 29.55
+                  "y1": 17.3,
+                  "y2": 17.3
                 },
                 {
                   "name": "Line_4",
@@ -397,12 +435,12 @@
                   "type": "line",
                   "x1": 40,
                   "x2": 62,
-                  "y1": 33.15,
-                  "y2": 33.15
+                  "y1": 20.9,
+                  "y2": 20.9
                 },
                 {
                   "cx": 37,
-                  "cy": 28,
+                  "cy": 15.75,
                   "fill": {
                     "paint": "var(--neutral-30)"
                   },
@@ -434,7 +472,7 @@
                   "type": "rect",
                   "width": 11.25,
                   "x": 25.375,
-                  "y": 25.375
+                  "y": 13.125
                 },
                 {
                   "fill": {
@@ -453,7 +491,7 @@
                   "type": "rect",
                   "width": 8.25,
                   "x": 4.375,
-                  "y": 17.375
+                  "y": 5.125
                 },
                 {
                   "fill": {
@@ -471,7 +509,7 @@
                   "type": "rect",
                   "width": 3.5,
                   "x": 6.75,
-                  "y": 12.25
+                  "y": 0.0
                 },
                 {
                   "name": "Line_5",
@@ -485,17 +523,17 @@
                   "type": "line",
                   "x1": 13,
                   "x2": 25,
-                  "y1": 31.5,
-                  "y2": 31.5
+                  "y1": 19.25,
+                  "y2": 19.25
                 }
               ],
               "style": {
                 "cursor": "pointer",
-                "height": "102.0px",
+                "height": "81.1px",
                 "overflow": "hidden",
                 "width": "132.0px"
               },
-              "viewBox": "0 0 70 55"
+              "viewBox": "0 0 70 43"
             },
             "type": "ia.shapes.svg"
           },
@@ -504,10 +542,10 @@
               "name": "AlarmFrame"
             },
             "position": {
-              "height": 110,
-              "width": 140,
               "x": 0,
-              "y": 0
+              "y": 0,
+              "width": 140.0,
+              "height": 83.1
             },
             "propConfig": {
               "props.style.classes": {
@@ -530,10 +568,10 @@
             "props": {
               "style": {
                 "classes": "alarm-frame",
-                "height": "110px",
+                "height": "83.1px",
                 "overflow": "visible",
                 "pointerEvents": "none",
-                "width": "140px",
+                "width": "140.0px",
                 "zIndex": 40
               }
             },
@@ -585,15 +623,15 @@
           "name": "Graphic"
         },
         "position": {
-          "basis": "110px",
+          "basis": "83.1px",
           "shrink": 0
         },
         "props": {
           "style": {
-            "height": "110px",
+            "height": "83.1px",
             "overflow": "visible",
             "position": "relative",
-            "width": "140px"
+            "width": "140.0px"
           }
         },
         "type": "ia.container.coord",
@@ -609,42 +647,516 @@
         }
       },
       {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "meta": {
+                      "name": "CPPrefix"
+                    },
+                    "position": {
+                      "basis": "24px",
+                      "grow": 0,
+                      "shrink": 0
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "",
+                        "cursor": "pointer",
+                        "fontSize": "11px",
+                        "fontWeight": "700",
+                        "lineHeight": "1.1",
+                        "margin": "0px",
+                        "padding": "0px",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "width": "24px"
+                      },
+                      "text": "CP:"
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "CPMode"
+                    },
+                    "position": {
+                      "basis": "44px",
+                      "grow": 0,
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.custom.values.cpMode} = '',\n\t'',\n\tcase(tag({view.custom.values.cpMode}),\n\t\t1, 'Remote',\n\t\t2, 'Auto',\n\t\t3, 'Manual',\n\t\t''))"
+                          },
+                          "type": "expr"
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.custom.values.cpMode} = '',\n\t'comp-mode',\n\tcase(tag({view.custom.values.cpMode}),\n\t\t1, 'comp-mode comp-mode-remote',\n\t\t2, 'comp-mode comp-mode-auto',\n\t\t3, 'comp-mode comp-mode-manual',\n\t\t'comp-mode'))"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "comp-mode",
+                        "cursor": "pointer",
+                        "fontSize": "11px",
+                        "fontWeight": "700",
+                        "lineHeight": "1.1",
+                        "margin": "0px",
+                        "minWidth": "44px",
+                        "padding": "0px",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.display.label"
+                  }
+                ],
+                "meta": {
+                  "name": "CPRow"
+                },
+                "position": {
+                  "basis": "16px",
+                  "grow": 0,
+                  "shrink": 0
+                },
+                "props": {
+                  "alignItems": "center",
+                  "direction": "row",
+                  "justify": "flex-start",
+                  "style": {
+                    "gap": "0px",
+                    "height": "16px",
+                    "minHeight": "16px",
+                    "overflow": "visible"
+                  }
+                },
+                "type": "ia.container.flex"
+              },
+              {
+                "children": [
+                  {
+                    "meta": {
+                      "name": "SVPrefix"
+                    },
+                    "position": {
+                      "basis": "24px",
+                      "grow": 0,
+                      "shrink": 0
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "",
+                        "cursor": "pointer",
+                        "fontSize": "11px",
+                        "fontWeight": "700",
+                        "lineHeight": "1.1",
+                        "margin": "0px",
+                        "padding": "0px",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "width": "24px"
+                      },
+                      "text": "SV:"
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "SVMode"
+                    },
+                    "position": {
+                      "basis": "44px",
+                      "grow": 0,
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.custom.values.svMode} = '',\n\t'',\n\tcase(tag({view.custom.values.svMode}),\n\t\t1, 'Remote',\n\t\t2, 'Auto',\n\t\t3, 'Manual',\n\t\t''))"
+                          },
+                          "type": "expr"
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.custom.values.svMode} = '',\n\t'comp-mode',\n\tcase(tag({view.custom.values.svMode}),\n\t\t1, 'comp-mode comp-mode-remote',\n\t\t2, 'comp-mode comp-mode-auto',\n\t\t3, 'comp-mode comp-mode-manual',\n\t\t'comp-mode'))"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "comp-mode",
+                        "cursor": "pointer",
+                        "fontSize": "11px",
+                        "fontWeight": "700",
+                        "lineHeight": "1.1",
+                        "margin": "0px",
+                        "minWidth": "44px",
+                        "padding": "0px",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.display.label"
+                  }
+                ],
+                "meta": {
+                  "name": "SVRow"
+                },
+                "position": {
+                  "basis": "16px",
+                  "grow": 0,
+                  "shrink": 0
+                },
+                "props": {
+                  "alignItems": "center",
+                  "direction": "row",
+                  "justify": "flex-start",
+                  "style": {
+                    "gap": "0px",
+                    "height": "16px",
+                    "minHeight": "16px",
+                    "overflow": "visible"
+                  }
+                },
+                "type": "ia.container.flex"
+              }
+            ],
+            "meta": {
+              "name": "LeftCol"
+            },
+            "position": {
+              "grow": 0,
+              "shrink": 0
+            },
+            "props": {
+              "alignItems": "flex-start",
+              "direction": "column",
+              "justify": "flex-start",
+              "style": {
+                "gap": "0px",
+                "overflow": "visible"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "meta": {
+                      "name": "FLAPrefix"
+                    },
+                    "position": {
+                      "basis": "auto",
+                      "grow": 0,
+                      "shrink": 0
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "",
+                        "cursor": "pointer",
+                        "fontSize": "11px",
+                        "fontWeight": "700",
+                        "lineHeight": "1.1",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "margin": "0px",
+                        "padding": "0px"
+                      },
+                      "text": "FLA:"
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "FLAValue"
+                    },
+                    "position": {
+                      "basis": "auto",
+                      "grow": 0,
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.custom.values.fla} = '',\n\t'',\n\tif(qualityOf(tag({view.custom.values.fla})) = 'Good',\n\t\tnumberFormat(tag({view.custom.values.fla}), if(typeOf(tag({view.custom.values.fla})) = 'Integer', '#', if(isNull(tag({view.custom.values.fla} + '.FormatString')) || tag({view.custom.values.fla} + '.FormatString') = '', '#0.0', tag({view.custom.values.fla} + '.FormatString')))),\n\t\t''))"
+                          },
+                          "type": "expr"
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.custom.values.fla} = '' || qualityOf(tag({view.custom.values.fla})) != 'Good',\n\t'comp-analog',\n\tif(isBad(tag(left({view.custom.values.fla}, len({view.custom.values.fla}) - 6) + '/SP')),\n\t\t'comp-analog analog-label',\n\t\tif(tag({view.custom.values.fla}) > tag(left({view.custom.values.fla}, len({view.custom.values.fla}) - 6) + '/SP'),\n\t\t\t'comp-analog analog-over-sp',\n\t\t\t'comp-analog analog-label')))"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "comp-analog analog-label",
+                        "cursor": "pointer",
+                        "fontSize": "11px",
+                        "fontWeight": "400",
+                        "lineHeight": "1.1",
+                        "margin": "0px",
+                        "padding": "0px",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "FLAEU"
+                    },
+                    "position": {
+                      "basis": "auto",
+                      "grow": 0,
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.custom.values.fla} = '' || qualityOf(tag({view.custom.values.fla})) != 'Good',\n\t'',\n\ttag({view.custom.values.fla} + '.EngUnit'))"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "comp-analog-eu",
+                        "color": "var(--neutral-60)",
+                        "cursor": "pointer",
+                        "fontSize": "11px",
+                        "fontWeight": "400",
+                        "lineHeight": "1.1",
+                        "margin": "0px",
+                        "marginLeft": "1px",
+                        "padding": "0px",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.display.label"
+                  }
+                ],
+                "meta": {
+                  "name": "FLARow"
+                },
+                "position": {
+                  "basis": "16px",
+                  "grow": 0,
+                  "shrink": 0
+                },
+                "props": {
+                  "alignItems": "center",
+                  "direction": "row",
+                  "justify": "flex-start",
+                  "style": {
+                    "gap": "2px",
+                    "height": "16px",
+                    "minHeight": "16px",
+                    "overflow": "visible"
+                  }
+                },
+                "type": "ia.container.flex"
+              },
+              {
+                "children": [
+                  {
+                    "meta": {
+                      "name": "SVPPrefix"
+                    },
+                    "position": {
+                      "basis": "auto",
+                      "grow": 0,
+                      "shrink": 0
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "",
+                        "cursor": "pointer",
+                        "fontSize": "11px",
+                        "fontWeight": "700",
+                        "lineHeight": "1.1",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "margin": "0px",
+                        "padding": "0px"
+                      },
+                      "text": "SVP:"
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "SVPValue"
+                    },
+                    "position": {
+                      "basis": "auto",
+                      "grow": 0,
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.custom.values.svp} = '',\n\t'',\n\tif(qualityOf(tag({view.custom.values.svp})) = 'Good',\n\t\tnumberFormat(tag({view.custom.values.svp}), if(typeOf(tag({view.custom.values.svp})) = 'Integer', '#', if(isNull(tag({view.custom.values.svp} + '.FormatString')) || tag({view.custom.values.svp} + '.FormatString') = '', '#0.0', tag({view.custom.values.svp} + '.FormatString')))),\n\t\t''))"
+                          },
+                          "type": "expr"
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.custom.values.svp} = '' || qualityOf(tag({view.custom.values.svp})) != 'Good',\n\t'comp-analog',\n\tif(isBad(tag(left({view.custom.values.svp}, len({view.custom.values.svp}) - 6) + '/SP')),\n\t\t'comp-analog analog-label',\n\t\tif(tag({view.custom.values.svp}) > tag(left({view.custom.values.svp}, len({view.custom.values.svp}) - 6) + '/SP'),\n\t\t\t'comp-analog analog-over-sp',\n\t\t\t'comp-analog analog-label')))"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "comp-analog analog-label",
+                        "cursor": "pointer",
+                        "fontSize": "11px",
+                        "fontWeight": "400",
+                        "lineHeight": "1.1",
+                        "margin": "0px",
+                        "padding": "0px",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "SVPEU"
+                    },
+                    "position": {
+                      "basis": "auto",
+                      "grow": 0,
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.custom.values.svp} = '' || qualityOf(tag({view.custom.values.svp})) != 'Good',\n\t'',\n\ttag({view.custom.values.svp} + '.EngUnit'))"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "comp-analog-eu",
+                        "color": "var(--neutral-60)",
+                        "cursor": "pointer",
+                        "fontSize": "11px",
+                        "fontWeight": "400",
+                        "lineHeight": "1.1",
+                        "margin": "0px",
+                        "marginLeft": "1px",
+                        "padding": "0px",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.display.label"
+                  }
+                ],
+                "meta": {
+                  "name": "SVPRow"
+                },
+                "position": {
+                  "basis": "16px",
+                  "grow": 0,
+                  "shrink": 0
+                },
+                "props": {
+                  "alignItems": "center",
+                  "direction": "row",
+                  "justify": "flex-start",
+                  "style": {
+                    "gap": "2px",
+                    "height": "16px",
+                    "minHeight": "16px",
+                    "overflow": "visible"
+                  }
+                },
+                "type": "ia.container.flex"
+              }
+            ],
+            "meta": {
+              "name": "RightCol"
+            },
+            "position": {
+              "grow": 0,
+              "shrink": 0
+            },
+            "props": {
+              "alignItems": "flex-start",
+              "direction": "column",
+              "justify": "flex-start",
+              "style": {
+                "gap": "0px",
+                "overflow": "visible"
+              }
+            },
+            "type": "ia.container.flex"
+          }
+        ],
         "meta": {
-          "name": "AnalogValue"
+          "name": "BottomStrip"
         },
         "position": {
-          "basis": "18px",
+          "basis": "32px",
+          "grow": 0,
           "shrink": 0
         },
-        "propConfig": {
-          "props.params.tagPath": {
-            "binding": {
-              "config": {
-                "expression": "{view.custom.values.analog}"
-              },
-              "type": "expr"
-            }
+        "props": {
+          "alignItems": "flex-start",
+          "direction": "row",
+          "justify": "center",
+          "style": {
+            "gap": "10px",
+            "marginTop": "0px",
+            "minHeight": "32px",
+            "overflow": "visible"
           }
         },
-        "props": {
-          "params": {
-            "spacing": {
-              "center": true,
-              "data": 0,
-              "engUnit": 30
-            }
-          },
-          "path": "03_Elements/01_Status/AnalogValue",
-          "style": {
-            "cursor": "pointer",
-            "height": "18px",
-            "minHeight": "18px",
-            "overflow": "visible",
-            "width": "100%"
-          },
-          "useDefaultViewHeight": true
-        },
-        "type": "ia.display.view"
+        "type": "ia.container.flex"
       },
       {
         "meta": {
@@ -682,7 +1194,7 @@
       "dom": {
         "onClick": {
           "config": {
-            "script": "\tfaceplate = self.view.params.faceplate\n\tif faceplate is None:\n\t\treturn\n\ttagPath = str(self.view.params.tagPath or '')\n\ttitle = str(self.view.custom.label or '')\n\tif title in (None, '', 'nn'):\n\t\ttitle = tagPath.split('/')[-1] if tagPath else self.view.name\n\tif faceplate == '':\n\t\tview = '01_Popups/00_Faceplates/' + self.view.name\n\telse:\n\t\tview = '01_Popups/00_Faceplates/' + str(faceplate)\n\tsystem.perspective.openPopup(\n\t\t'comp-fp-%s' % (tagPath or title),\n\t\tview,\n\t\tparams={'tagPath': tagPath},\n\t\ttitle=title,\n\t\tshowCloseIcon=True,\n\t\tdraggable=True,\n\t\tresizable=True,\n\t\tmodal=False,\n\t\tviewportBound=True,\n\t\tposition={'width': 420, 'height': 520}\n\t)\n"
+            "script": "\tfaceplate = self.view.params.faceplate\n\tif faceplate is None or str(faceplate).strip() == '':\n\t\treturn\n\ttagPath = str(self.view.params.tagPath or '')\n\ttitle = str(self.view.custom.label or '')\n\tif title in (None, '', 'nn'):\n\t\ttitle = tagPath.split('/')[-1] if tagPath else self.view.name\n\tfp = str(faceplate).strip()\n\twebGuiUrl = ''\n\ttry:\n\t\twebGuiUrl = str(self.view.params.webGuiUrl or '').strip()\n\texcept:\n\t\twebGuiUrl = ''\n\tif not webGuiUrl:\n\t\twebGuiUrl = 'https://127.0.0.1/'\n\t# Unified tabbed Faceplate. show* are hints; tagFlags hide empty tabs.\n\tif fp in ('Compressor', 'Faceplate'):\n\t\tview = '01_Popups/00_Faceplates/Faceplate'\n\t\tparams = {\n\t\t\t'tagPath': tagPath,\n\t\t\t'deviceType': 'Compressor',\n\t\t\t'webGuiUrl': webGuiUrl,\n\t\t\t'showControls': True,\n\t\t\t'showConfiguration': True,\n\t\t\t'showInterlocks': True,\n\t\t\t'showTrend': True,\n\t\t\t'showAlarmConfiguration': True,\n\t\t\t'showAlarms': True\n\t\t}\n\t\tNavigation.Faceplate.openFaceplate(\n\t\t\t'comp-fp-%s' % (tagPath or title),\n\t\t\ttagPath,\n\t\t\tview,\n\t\t\tFalse,\n\t\t\ttitle,\n\t\t\t560,\n\t\t\t640,\n\t\t\tparams\n\t\t)\n\t\treturn\n\t# Legacy path for other faceplate names\n\tNavigation.Faceplate.openFaceplate(\n\t\t'comp-fp-%s' % (tagPath or title),\n\t\ttagPath,\n\t\t'01_Popups/00_Faceplates/' + fp,\n\t\tFalse,\n\t\ttitle,\n\t\t560,\n\t\t640,\n\t\t{'tagPath': tagPath, 'webGuiUrl': webGuiUrl}\n\t)"
           },
           "scope": "G",
           "type": "script"
@@ -696,8 +1208,9 @@
     "props": {
       "alignItems": "center",
       "direction": "column",
+      "justify": "flex-start",
       "style": {
-        "gap": "2px",
+        "gap": "0px",
         "overflow": "visible",
         "width": "100%"
       }

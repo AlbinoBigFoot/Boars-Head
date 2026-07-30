@@ -3,7 +3,16 @@
     "label": "",
     "metadata": "",
     "selected": "Controls",
-    "visibleTabCount": 0
+    "visibleTabCount": 0,
+    "tagFlags": {
+      "showControls": true,
+      "showConfiguration": true,
+      "showInterlocks": false,
+      "showTrend": true,
+      "showAlarmConfiguration": true,
+      "showAlarms": true,
+      "defaultTab": "Controls"
+    }
   },
   "params": {
     "tagPath": "",
@@ -14,7 +23,11 @@
     "showConfiguration": true,
     "showTrend": true,
     "showAlarmConfiguration": true,
-    "showAlarms": true
+    "showAlarms": true,
+    "showInterlocks": true,
+    "hiddenFromConfiguration": "",
+    "hiddenFromAlarmConfiguration": "",
+    "hiddenFromAlarms": ""
   },
   "propConfig": {
     "custom.label": {
@@ -41,7 +54,7 @@
     "custom.visibleTabCount": {
       "binding": {
         "config": {
-          "expression": "(if({view.params.showControls}, 1, 0) + if({view.params.showConfiguration}, 1, 0) + if({view.params.showTrend}, 1, 0) + if({view.params.showAlarmConfiguration}, 1, 0) + if({view.params.showAlarms}, 1, 0))"
+          "expression": "(if({view.params.showControls} && {view.custom.tagFlags.showControls}, 1, 0) + if({view.params.showConfiguration} && {view.custom.tagFlags.showConfiguration}, 1, 0) + if({view.params.showInterlocks} && {view.custom.tagFlags.showInterlocks}, 1, 0) + if({view.params.showTrend} && {view.custom.tagFlags.showTrend}, 1, 0) + if({view.params.showAlarmConfiguration} && {view.custom.tagFlags.showAlarmConfiguration}, 1, 0) + if({view.params.showAlarms} && {view.custom.tagFlags.showAlarms}, 1, 0))"
         },
         "type": "expr"
       },
@@ -80,6 +93,55 @@
       "persistent": true
     },
     "params.showAlarms": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.tagFlags": {
+      "binding": {
+        "config": {
+          "struct": {
+            "tagPath": "{view.params.tagPath}",
+            "deviceType": "{view.params.deviceType}",
+            "showControls": "{view.params.showControls}",
+            "showConfiguration": "{view.params.showConfiguration}",
+            "showInterlocks": "{view.params.showInterlocks}",
+            "showTrend": "{view.params.showTrend}",
+            "showAlarmConfiguration": "{view.params.showAlarmConfiguration}",
+            "showAlarms": "{view.params.showAlarms}",
+            "hiddenFromTrend": "{view.params.hiddenFromTrend}",
+            "hiddenFromConfiguration": "{view.params.hiddenFromConfiguration}",
+            "hiddenFromAlarmConfiguration": "{view.params.hiddenFromAlarmConfiguration}",
+            "hiddenFromAlarms": "{view.params.hiddenFromAlarms}"
+          },
+          "waitOnAll": true
+        },
+        "transforms": [
+          {
+            "code": "\timport system\n\n\tresult = {\n\t\t'showControls': False,\n\t\t'showConfiguration': False,\n\t\t'showInterlocks': False,\n\t\t'showTrend': False,\n\t\t'showAlarmConfiguration': False,\n\t\t'showAlarms': False,\n\t\t'defaultTab': 'Controls'\n\t}\n\n\tdef parseHidden(text):\n\t\ts = set()\n\t\ttry:\n\t\t\tt = str(text or '')\n\t\t\tif t:\n\t\t\t\tt = t.replace(';', ',')\n\t\t\t\tfor item in t.split(','):\n\t\t\t\t\titem = item.strip()\n\t\t\t\t\tif item:\n\t\t\t\t\t\ts.add(item)\n\t\texcept Exception:\n\t\t\tpass\n\t\treturn s\n\n\tdef isHidden(fullPath, hidden_set):\n\t\tif not hidden_set:\n\t\t\treturn False\n\t\tif fullPath in hidden_set:\n\t\t\treturn True\n\t\tstripped = fullPath.split(']', 1)[-1] if ']' in fullPath else fullPath\n\t\tif stripped in hidden_set:\n\t\t\treturn True\n\t\treturn False\n\n\ttagPath = value.get('tagPath', '') if hasattr(value, 'get') else ''\n\tdeviceType = value.get('deviceType', '') if hasattr(value, 'get') else ''\n\tcallerControls = value.get('showControls', True) if hasattr(value, 'get') else True\n\tcallerConfiguration = value.get('showConfiguration', True) if hasattr(value, 'get') else True\n\tcallerInterlocks = value.get('showInterlocks', True) if hasattr(value, 'get') else True\n\tcallerTrend = value.get('showTrend', True) if hasattr(value, 'get') else True\n\tcallerAlarmCfg = value.get('showAlarmConfiguration', True) if hasattr(value, 'get') else True\n\tcallerAlarms = value.get('showAlarms', True) if hasattr(value, 'get') else True\n\thidTrend = parseHidden(value.get('hiddenFromTrend', '') if hasattr(value, 'get') else '')\n\thidCfg = parseHidden(value.get('hiddenFromConfiguration', '') if hasattr(value, 'get') else '')\n\thidAlarmCfg = parseHidden(value.get('hiddenFromAlarmConfiguration', '') if hasattr(value, 'get') else '')\n\thidAlarms = parseHidden(value.get('hiddenFromAlarms', '') if hasattr(value, 'get') else '')\n\n\t# Controls: device types that have a Controls asset\n\thasControlsAsset = str(deviceType or '') in ('Compressor', '')\n\tresult['showControls'] = bool(callerControls) and hasControlsAsset\n\n\t# Interlocks: Interlock folder usable\n\tshowIlk = False\n\tif tagPath and callerInterlocks:\n\t\ttry:\n\t\t\tq = system.tag.readBlocking([tagPath + '/Interlock/Sts_IntlkOK'])[0]\n\t\t\tif str(q.quality) == 'Good' or (hasattr(q.quality, 'isGood') and q.quality.isGood()):\n\t\t\t\tshowIlk = True\n\t\texcept Exception:\n\t\t\tpass\n\t\tif not showIlk:\n\t\t\ttry:\n\t\t\t\ttxt = system.tag.readBlocking([tagPath + '/Interlock/Cfg_CondTxt00'])[0]\n\t\t\t\tif str(txt.quality) == 'Good' or (hasattr(txt.quality, 'isGood') and txt.quality.isGood()):\n\t\t\t\t\tif txt.value and str(txt.value).strip():\n\t\t\t\t\t\tshowIlk = True\n\t\t\texcept Exception:\n\t\t\t\tpass\n\t\tif not showIlk:\n\t\t\ttry:\n\t\t\t\tsts = system.tag.readBlocking([tagPath + '/Interlock/Sts_Intlk'])[0]\n\t\t\t\tif str(sts.quality) == 'Good' or (hasattr(sts.quality, 'isGood') and sts.quality.isGood()):\n\t\t\t\t\tshowIlk = True\n\t\t\texcept Exception:\n\t\t\t\tpass\n\tresult['showInterlocks'] = showIlk\n\n\t# Browse leaves for Trend / Configuration / Alarm flags\n\tshowTrend = False\n\tshowCfg = False\n\tshowAlarmCfg = False\n\tshowAlarms = False\n\tif tagPath:\n\t\ttry:\n\t\t\tresults = system.tag.browse(path=tagPath, filter={'recursive': True}).getResults()\n\t\texcept Exception:\n\t\t\tresults = []\n\t\tleaves = []\n\t\tfor t in results or []:\n\t\t\ttry:\n\t\t\t\tif str(t['tagType']) != 'AtomicTag':\n\t\t\t\t\tcontinue\n\t\t\t\tfp = str(t['fullPath'])\n\t\t\t\tleaves.append(fp)\n\t\t\texcept Exception:\n\t\t\t\tpass\n\t\tfor leaf in leaves:\n\t\t\ttry:\n\t\t\t\tcfgs = system.tag.getConfiguration(leaf, False)\n\t\t\t\tif not cfgs:\n\t\t\t\t\tcontinue\n\t\t\t\tcfg = cfgs[0]\n\t\t\t\talarms = cfg.get('alarms') or []\n\t\t\t\thasAlarms = len(alarms) > 0\n\t\t\t\treadOnly = cfg.get('readOnly', False)\n\t\t\t\thist = cfg.get('historyEnabled', False)\n\t\t\t\tdt = str(cfg.get('dataType') or '')\n\t\t\t\tanalog = dt in ('Float4', 'Float8', 'Int1', 'Int2', 'Int4', 'Int8', 'Double')\n\t\t\t\tif hist and analog and not isHidden(leaf, hidTrend):\n\t\t\t\t\tshowTrend = True\n\t\t\t\tif (not readOnly) and (not hasAlarms) and dt and not isHidden(leaf, hidCfg):\n\t\t\t\t\tshowCfg = True\n\t\t\t\tif hasAlarms and not isHidden(leaf, hidAlarmCfg):\n\t\t\t\t\tshowAlarmCfg = True\n\t\t\t\tif hasAlarms and not isHidden(leaf, hidAlarms):\n\t\t\t\t\tshowAlarms = True\n\t\t\texcept Exception:\n\t\t\t\tpass\n\n\tresult['showTrend'] = bool(callerTrend) and showTrend\n\tresult['showConfiguration'] = bool(callerConfiguration) and showCfg\n\tresult['showAlarmConfiguration'] = bool(callerAlarmCfg) and showAlarmCfg\n\tresult['showAlarms'] = bool(callerAlarms) and showAlarms\n\n\t# BH Controls-first default tab order\n\torder = [\n\t\t('showControls', 'Controls'),\n\t\t('showConfiguration', 'Configuration'),\n\t\t('showInterlocks', 'Interlocks'),\n\t\t('showTrend', 'Trend'),\n\t\t('showAlarmConfiguration', 'Alarm Configuration'),\n\t\t('showAlarms', 'Alarms'),\n\t]\n\tresult['defaultTab'] = 'Controls'\n\tfor key, name in order:\n\t\tif result.get(key):\n\t\t\tresult['defaultTab'] = name\n\t\t\tbreak\n\treturn result\n",
+            "type": "script"
+          }
+        ],
+        "type": "expr-struct"
+      },
+      "persistent": true,
+      "onChange": {
+        "enabled": null,
+        "script": "\tflags = currentValue.value\n\tif not flags:\n\t\treturn\n\tsel = self.custom.selected\n\tvisible = {\n\t\t'Controls': flags.get('showControls'),\n\t\t'Configuration': flags.get('showConfiguration'),\n\t\t'Interlocks': flags.get('showInterlocks'),\n\t\t'Trend': flags.get('showTrend'),\n\t\t'Alarm Configuration': flags.get('showAlarmConfiguration'),\n\t\t'Alarms': flags.get('showAlarms'),\n\t}\n\tif not visible.get(sel, False):\n\t\tself.custom.selected = flags.get('defaultTab') or 'Controls'"
+      }
+    },
+    "params.showInterlocks": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.hiddenFromConfiguration": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.hiddenFromAlarmConfiguration": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.hiddenFromAlarms": {
       "paramDirection": "input",
       "persistent": true
     }
@@ -265,7 +327,7 @@
               "position.basis": {
                 "binding": {
                   "config": {
-                    "expression": "if({view.params.showControls}, '72px', '0px')"
+                    "expression": "if({view.params.showControls} && {view.custom.tagFlags.showControls}, '72px', '0px')"
                   },
                   "type": "expr"
                 }
@@ -273,7 +335,15 @@
               "position.grow": {
                 "binding": {
                   "config": {
-                    "expression": "if({view.params.showControls}, 1, 0)"
+                    "expression": "if({view.params.showControls} && {view.custom.tagFlags.showControls}, 1, 0)"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.display": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.showControls} && {view.custom.tagFlags.showControls}, 'flex', 'none')"
                   },
                   "type": "expr"
                 }
@@ -282,14 +352,6 @@
                 "binding": {
                   "config": {
                     "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
-                  },
-                  "type": "expr"
-                }
-              },
-              "props.style.display": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.params.showControls}, 'flex', 'none')"
                   },
                   "type": "expr"
                 }
@@ -330,7 +392,7 @@
               "position.basis": {
                 "binding": {
                   "config": {
-                    "expression": "if({view.params.showConfiguration}, '96px', '0px')"
+                    "expression": "if({view.params.showConfiguration} && {view.custom.tagFlags.showConfiguration}, '96px', '0px')"
                   },
                   "type": "expr"
                 }
@@ -338,7 +400,15 @@
               "position.grow": {
                 "binding": {
                   "config": {
-                    "expression": "if({view.params.showConfiguration}, 1, 0)"
+                    "expression": "if({view.params.showConfiguration} && {view.custom.tagFlags.showConfiguration}, 1, 0)"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.display": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.showConfiguration} && {view.custom.tagFlags.showConfiguration}, 'flex', 'none')"
                   },
                   "type": "expr"
                 }
@@ -351,10 +421,67 @@
                   "type": "expr"
                 }
               },
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "path": "this.meta.name"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "style": {},
+              "textStyle": {
+                "classes": "faceplate-tab-text"
+              }
+            }
+          },
+          {
+            "type": "ia.input.button",
+            "meta": {
+              "name": "Interlocks"
+            },
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tself.view.custom.selected = self.meta.name"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "propConfig": {
+              "position.basis": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.showInterlocks} && {view.custom.tagFlags.showInterlocks}, '80px', '0px')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "position.grow": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.showInterlocks} && {view.custom.tagFlags.showInterlocks}, 1, 0)"
+                  },
+                  "type": "expr"
+                }
+              },
               "props.style.display": {
                 "binding": {
                   "config": {
-                    "expression": "if({view.params.showConfiguration}, 'flex', 'none')"
+                    "expression": "if({view.params.showInterlocks} && {view.custom.tagFlags.showInterlocks}, 'flex', 'none')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.classes": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
                   },
                   "type": "expr"
                 }
@@ -395,7 +522,7 @@
               "position.basis": {
                 "binding": {
                   "config": {
-                    "expression": "if({view.params.showTrend}, '64px', '0px')"
+                    "expression": "if({view.params.showTrend} && {view.custom.tagFlags.showTrend}, '64px', '0px')"
                   },
                   "type": "expr"
                 }
@@ -403,7 +530,15 @@
               "position.grow": {
                 "binding": {
                   "config": {
-                    "expression": "if({view.params.showTrend}, 1, 0)"
+                    "expression": "if({view.params.showTrend} && {view.custom.tagFlags.showTrend}, 1, 0)"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.display": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.showTrend} && {view.custom.tagFlags.showTrend}, 'flex', 'none')"
                   },
                   "type": "expr"
                 }
@@ -412,14 +547,6 @@
                 "binding": {
                   "config": {
                     "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
-                  },
-                  "type": "expr"
-                }
-              },
-              "props.style.display": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.params.showTrend}, 'flex', 'none')"
                   },
                   "type": "expr"
                 }
@@ -460,7 +587,7 @@
               "position.basis": {
                 "binding": {
                   "config": {
-                    "expression": "if({view.params.showAlarmConfiguration}, '120px', '0px')"
+                    "expression": "if({view.params.showAlarmConfiguration} && {view.custom.tagFlags.showAlarmConfiguration}, '120px', '0px')"
                   },
                   "type": "expr"
                 }
@@ -468,7 +595,15 @@
               "position.grow": {
                 "binding": {
                   "config": {
-                    "expression": "if({view.params.showAlarmConfiguration}, 1, 0)"
+                    "expression": "if({view.params.showAlarmConfiguration} && {view.custom.tagFlags.showAlarmConfiguration}, 1, 0)"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.display": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.showAlarmConfiguration} && {view.custom.tagFlags.showAlarmConfiguration}, 'flex', 'none')"
                   },
                   "type": "expr"
                 }
@@ -477,14 +612,6 @@
                 "binding": {
                   "config": {
                     "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
-                  },
-                  "type": "expr"
-                }
-              },
-              "props.style.display": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.params.showAlarmConfiguration}, 'flex', 'none')"
                   },
                   "type": "expr"
                 }
@@ -525,7 +652,7 @@
               "position.basis": {
                 "binding": {
                   "config": {
-                    "expression": "if({view.params.showAlarms}, '64px', '0px')"
+                    "expression": "if({view.params.showAlarms} && {view.custom.tagFlags.showAlarms}, '64px', '0px')"
                   },
                   "type": "expr"
                 }
@@ -533,7 +660,15 @@
               "position.grow": {
                 "binding": {
                   "config": {
-                    "expression": "if({view.params.showAlarms}, 1, 0)"
+                    "expression": "if({view.params.showAlarms} && {view.custom.tagFlags.showAlarms}, 1, 0)"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.display": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.showAlarms} && {view.custom.tagFlags.showAlarms}, 'flex', 'none')"
                   },
                   "type": "expr"
                 }
@@ -542,14 +677,6 @@
                 "binding": {
                   "config": {
                     "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
-                  },
-                  "type": "expr"
-                }
-              },
-              "props.style.display": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.params.showAlarms}, 'flex', 'none')"
                   },
                   "type": "expr"
                 }
@@ -613,24 +740,33 @@
               "props.params.hiddenTags": {
                 "binding": {
                   "config": {
-                    "path": "view.params.hiddenFromTrend"
+                    "expression": "case(\n  {view.custom.selected},\n  \"Trend\", {view.params.hiddenFromTrend},\n  \"Configuration\", {view.params.hiddenFromConfiguration},\n  \"Alarm Configuration\", {view.params.hiddenFromAlarmConfiguration},\n  \"Alarms\", {view.params.hiddenFromAlarms},\n  ''\n)"
                   },
-                  "type": "property"
+                  "type": "expr"
                 }
               },
               "props.path": {
                 "binding": {
                   "config": {
-                    "expression": "case(\n  {view.custom.selected},\n  \"Controls\",\n    case({view.params.deviceType},\n      \"Compressor\", \"01_Popups/00_Faceplates/Compressor/Controls\",\n      \"01_Popups/00_Faceplates/Compressor/Controls\"),\n  \"Configuration\",\n    case({view.params.deviceType},\n      \"Compressor\", \"01_Popups/00_Faceplates/Compressor/Configuration\",\n      \"01_Popups/00_Faceplates/Compressor/Configuration\"),\n  \"Trend\", \"01_Popups/00_Faceplates/_Assets/Trend\",\n  \"Alarm Configuration\", \"01_Popups/00_Faceplates/_Assets/AlarmConfiguration\",\n  \"Alarms\", \"01_Popups/00_Faceplates/_Assets/Alarms\",\n  \"01_Popups/00_Faceplates/Compressor/Controls\"\n)"
+                    "expression": "case(\n  {view.custom.selected},\n  \"Controls\",\n    case({view.params.deviceType},\n      \"Compressor\", \"01_Popups/00_Faceplates/_Assets/Compressor/Controls\",\n      \"01_Popups/00_Faceplates/_Assets/Compressor/Controls\"),\n  \"Configuration\", \"01_Popups/00_Faceplates/_Assets/Configuration/Configuration\",\n  \"Interlocks\", \"01_Popups/00_Faceplates/_Assets/Interlocks\",\n  \"Trend\", \"01_Popups/00_Faceplates/_Assets/Trend\",\n  \"Alarm Configuration\", \"01_Popups/00_Faceplates/_Assets/AlarmConfiguration\",\n  \"Alarms\", \"01_Popups/00_Faceplates/_Assets/Alarms\",\n  \"01_Popups/00_Faceplates/_Assets/Compressor/Controls\"\n)"
                   },
                   "type": "expr"
+                }
+              },
+              "props.params.webGuiUrl": {
+                "binding": {
+                  "config": {
+                    "path": "view.params.webGuiUrl"
+                  },
+                  "type": "property"
                 }
               }
             },
             "props": {
               "params": {
                 "tagPath": "",
-                "hiddenTags": ""
+                "hiddenTags": "",
+                "webGuiUrl": ""
               },
               "style": {
                 "overflow": "auto",

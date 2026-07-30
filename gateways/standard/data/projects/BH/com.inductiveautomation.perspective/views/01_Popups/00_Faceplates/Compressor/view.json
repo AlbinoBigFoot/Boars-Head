@@ -1,62 +1,28 @@
 {
-  "custom": {
-    "label": "",
-    "metadata": "",
-    "values": {
-      "temp": "",
-      "status": ""
-    }
-  },
+  "custom": {},
   "params": {
-    "tagPath": ""
+    "tagPath": "",
+    "webGuiUrl": "https://127.0.0.1/",
+    "showInterlocks": true
   },
   "propConfig": {
-    "custom.label": {
-      "binding": {
-        "config": {
-          "expression": "try(\n    if(\n        isNull({view.custom.metadata.shortDescription}) ||\n        {view.custom.metadata.shortDescription} = '',\n        if({view.params.tagPath} = '',\n           '',\n           subString({view.params.tagPath}, lastIndexOf({view.params.tagPath}, '/') + 1)),\n        {view.custom.metadata.shortDescription}\n    ),\n'')"
-        },
-        "type": "expr"
-      },
-      "persistent": true
-    },
-    "custom.metadata": {
-      "binding": {
-        "config": {
-          "expression": "if(\n\t{view.params.tagPath}!='' && isGood(tag({view.params.tagPath} + '.Metadata')),\n\ttag({view.params.tagPath} + '.Metadata'),\n\t'')"
-        },
-        "type": "expr"
-      },
-      "persistent": true
-    },
-    "custom.values": {
-      "persistent": true
-    },
     "params.tagPath": {
       "paramDirection": "input",
       "persistent": true
     },
-    "custom.values.temp": {
-      "binding": {
-        "config": {
-          "expression": "if({view.params.tagPath} = '',\n\t'',\n\t{view.params.tagPath} + '/Temp/Value')"
-        },
-        "type": "expr"
-      }
+    "params.webGuiUrl": {
+      "paramDirection": "input",
+      "persistent": true
     },
-    "custom.values.status": {
-      "binding": {
-        "config": {
-          "expression": "if({view.params.tagPath} = '',\n\t'',\n\t{view.params.tagPath} + '/Status/Value')"
-        },
-        "type": "expr"
-      }
+    "params.showInterlocks": {
+      "paramDirection": "input",
+      "persistent": true
     }
   },
   "props": {
     "defaultSize": {
-      "height": 480,
-      "width": 400
+      "height": 640,
+      "width": 560
     }
   },
   "root": {
@@ -68,152 +34,70 @@
     "props": {
       "direction": "column",
       "style": {
-        "classes": "bg-component container-card container-card-border",
-        "padding": "16px"
+        "height": "100%",
+        "width": "100%",
+        "minHeight": 0,
+        "overflow": "hidden",
+        "padding": "0px"
       }
     },
     "children": [
       {
-        "type": "ia.display.label",
+        "type": "ia.display.view",
         "meta": {
-          "name": "Header"
+          "name": "FaceplateShell"
         },
         "position": {
-          "shrink": 0
+          "grow": 1,
+          "shrink": 1,
+          "basis": "0px"
         },
         "propConfig": {
-          "props.text": {
+          "props.params.tagPath": {
             "binding": {
               "config": {
-                "path": "view.custom.label"
+                "path": "view.params.tagPath"
               },
               "type": "property"
             }
           },
-          "meta.visible": {
+          "props.params.webGuiUrl": {
             "binding": {
               "config": {
-                "expression": "{view.custom.label} != ''"
+                "path": "view.params.webGuiUrl"
               },
-              "type": "expr"
+              "type": "property"
             }
-          }
-        },
-        "props": {
-          "style": {
-            "classes": "font-title",
-            "fontSize": "22px",
-            "fontWeight": "700",
-            "marginBottom": "4px"
           },
-          "text": ""
-        }
-      },
-      {
-        "type": "ia.display.view",
-        "meta": {
-          "name": "Status"
-        },
-        "position": {
-          "shrink": 0
-        },
-        "propConfig": {
-          "props.params.tagPath": {
+          "props.params.showInterlocks": {
             "binding": {
               "config": {
-                "expression": "{view.custom.values.status}"
+                "path": "view.params.showInterlocks"
               },
-              "type": "expr"
+              "type": "property"
             }
           }
         },
         "props": {
           "params": {
-            "tagPath": ""
+            "tagPath": "",
+            "deviceType": "Compressor",
+            "webGuiUrl": "",
+            "showControls": true,
+            "showConfiguration": true,
+            "showTrend": true,
+            "showAlarmConfiguration": true,
+            "showAlarms": true,
+            "showInterlocks": true
           },
-          "path": "03_Elements/01_Status/StatusIndicator",
+          "path": "01_Popups/00_Faceplates/Faceplate",
           "style": {
-            "marginBottom": "12px"
-          }
-        }
-      },
-      {
-        "type": "ia.display.view",
-        "meta": {
-          "name": "AnalogValue"
-        },
-        "position": {
-          "shrink": 0
-        },
-        "propConfig": {
-          "props.params.tagPath": {
-            "binding": {
-              "config": {
-                "expression": "{view.custom.values.temp}"
-              },
-              "type": "expr"
-            }
-          }
-        },
-        "props": {
-          "params": {
-            "spacing": {
-              "center": true,
-              "data": 0,
-              "engUnit": 30
-            },
-            "tagPath": ""
+            "height": "100%",
+            "width": "100%",
+            "minHeight": 0
           },
-          "path": "03_Elements/01_Status/AnalogValue",
-          "style": {
-            "marginBottom": "16px"
-          }
-        }
-      },
-      {
-        "type": "ia.display.label",
-        "meta": {
-          "name": "BodyNote"
-        },
-        "position": {
-          "grow": 1
-        },
-        "props": {
-          "style": {
-            "classes": "bg-container container-card font-label",
-            "borderRadius": "6px",
-            "fontSize": "13px",
-            "padding": "12px"
-          },
-          "text": "Faceplate stub \u2014 add fan, defrost controls here. Bindings use tagPath + custom.*"
-        }
-      },
-      {
-        "type": "ia.input.button",
-        "meta": {
-          "name": "CloseButton"
-        },
-        "position": {
-          "basis": "40px",
-          "shrink": 0
-        },
-        "events": {
-          "component": {
-            "onActionPerformed": {
-              "config": {
-                "script": "\ttagPath = str(self.view.params.tagPath)\\n\tlabel = str(self.view.custom.label)\\n\tsystem.perspective.closePopup('ev-fp-%s' % (tagPath or label))\\n"
-              },
-              "scope": "G",
-              "type": "script"
-            }
-          }
-        },
-        "props": {
-          "style": {
-            "classes": "container-button font-button",
-            "marginTop": "12px"
-          },
-          "text": "Close"
+          "useDefaultViewHeight": false,
+          "useDefaultViewWidth": false
         }
       }
     ],
