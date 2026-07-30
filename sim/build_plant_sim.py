@@ -469,6 +469,92 @@ SENSOR_PROFILES: dict[str, dict[str, str]] = {
 }
 # --- END SENSOR ---
 
+# --- TANK ---
+# Controls-grade sim profiles for Devices/Tank (A-merge wires FOLDERS + CSV).
+TANK_FACEPLATE_DEFAULTS: dict[str, tuple[str, str]] = {
+    "Level/SP": ("50.0", "Float"),
+    "Pressure": ("18.0", "Float"),
+    "Interlock/Sts_IntlkOK": ("true", "Boolean"),
+    "Interlock/OCmd_Reset": ("false", "Boolean"),
+    "Interlock/Rdy_Reset": ("true", "Boolean"),
+    "Interlock/Cfg_CondTxt00": ("Low Level Cutout", "String"),
+    "Interlock/Cfg_CondTxt01": ("High Level Cutout", "String"),
+    "Interlock/Cfg_CondTxt02": ("Level Transmitter", "String"),
+    "Interlock/Cfg_CondTxt03": ("Vessel Pressure", "String"),
+}
+
+TANK_PROFILES: dict[str, dict[str, str]] = {
+    # LTR-01: OK mid-level — Overview normal
+    "LTR-01": {
+        "Status": "0",
+        "Level": "55.0",
+        "Pressure": "18.5",
+        "LSH": "false",
+        "LSL": "false",
+        "HH": "false",
+        "H": "false",
+        "L": "false",
+        "LL": "false",
+    },
+    # LTR-02: HIGH — LSH + H
+    "LTR-02": {
+        "Status": "2",
+        "Level": "82.0",
+        "Pressure": "19.0",
+        "LSH": "true",
+        "LSL": "false",
+        "H": "true",
+        "HH": "false",
+        "L": "false",
+        "LL": "false",
+    },
+    # LTR-03: LOW — LSL + L
+    "LTR-03": {
+        "Status": "1",
+        "Level": "18.0",
+        "Pressure": "17.0",
+        "LSH": "false",
+        "LSL": "true",
+        "L": "true",
+        "LL": "false",
+        "H": "false",
+        "HH": "false",
+    },
+    # LTR-04: HIHI critical — HH + LL
+    "LTR-04": {
+        "Status": "4",
+        "Level": "96.0",
+        "Pressure": "20.0",
+        "LSH": "true",
+        "LSL": "true",
+        "HH": "true",
+        "LL": "true",
+        "H": "true",
+        "L": "true",
+    },
+    "LTR": {
+        "Status": "3",
+        "Level": "12.0",
+        "Pressure": "16.0",
+        "LL": "true",
+        "L": "true",
+    },
+    "HPR": {
+        "Status": "2",
+        "Level": "78.0",
+        "Pressure": "145.0",
+        "H": "true",
+    },
+    "HTR": {
+        "Status": "4",
+        "Level": "96.0",
+        "Pressure": "95.0",
+        "HH": "true",
+        "H": "true",
+    },
+}
+# --- END TANK ---
+
 # Faceplate Controls/Config/Interlocks demo leaves (Devices/Compressor flat + Interlock/).
 # Keys are relative paths under Compressors/COMP-##/ (not Value-parent names).
 COMP_FACEPLATE_DEFAULTS: dict[str, tuple[str, str]] = {
