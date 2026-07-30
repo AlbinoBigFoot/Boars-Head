@@ -2712,10 +2712,10 @@
       }
     ]
   },
-  {
+    {
     "metadata": {
-      "shortDescription": "tank",
-      "longDescription": "tank / receiver"
+      "shortDescription": "tank / vessel",
+      "longDescription": "Recirculator/Accumulator-style vessel: Level %, HH/H/L/LL marks, LSH/LSL, optional Pressure, lightweight Interlock"
     },
     "name": "Tank",
     "tagType": "UdtType",
@@ -2723,7 +2723,7 @@
       {
         "metadata": {
           "shortDescription": "tank status",
-          "longDescription": "tank status"
+          "longDescription": "Vessel level status: 0=OK, 1=LOW, 2=HIGH, 3=LOLO, 4=HIHI, 5=FAULT"
         },
         "name": "Status",
         "typeId": "_Root/Multistate",
@@ -2733,33 +2733,37 @@
             "valueSource": "memory",
             "metadata": {
               "shortDescription": "tank status",
-              "longDescription": "tank status",
+              "longDescription": "0=OK, 1=LOW, 2=HIGH, 3=LOLO, 4=HIHI, 5=FAULT",
               "states": [
                 {
-                  "label": "Off",
+                  "label": "OK",
                   "value": 0
                 },
                 {
-                  "label": "Run",
+                  "label": "LOW",
                   "value": 1
                 },
                 {
-                  "label": "Fault",
+                  "label": "HIGH",
                   "value": 2
                 },
                 {
-                  "label": "Manual",
+                  "label": "LOLO",
                   "value": 3
                 },
                 {
-                  "label": "Idle",
+                  "label": "HIHI",
                   "value": 4
+                },
+                {
+                  "label": "FAULT",
+                  "value": 5
                 }
               ]
             },
             "dataType": "Int4",
             "name": "Value",
-            "value": 4,
+            "value": 0,
             "tagType": "AtomicTag"
           }
         ]
@@ -2767,7 +2771,7 @@
       {
         "metadata": {
           "shortDescription": "Tank Level",
-          "longDescription": "Tank Level"
+          "longDescription": "Tank Level PV (%); SP child = LEVEL_SP (instance override pattern)"
         },
         "name": "Level",
         "typeId": "_Root/Analog",
@@ -2779,14 +2783,48 @@
             "value": 50.0,
             "valueSource": "memory",
             "dataType": "Float4",
-            "tagType": "AtomicTag"
+            "tagType": "AtomicTag",
+            "formatString": "#0.0"
+          },
+          {
+            "name": "SP",
+            "metadata": {
+              "shortDescription": "level setpoint",
+              "longDescription": "Level setpoint (PLC LEVEL_SP / Level_SP)"
+            },
+            "dataType": "Float4",
+            "value": 50.0,
+            "engUnit": "%",
+            "valueSource": "memory",
+            "tagType": "AtomicTag",
+            "formatString": "#0.0"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Vessel pressure",
+          "longDescription": "Optional recirculator PT (psig)"
+        },
+        "name": "Pressure",
+        "typeId": "_Root/Analog",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "engUnit": "psig",
+            "value": 18.0,
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "tagType": "AtomicTag",
+            "formatString": "#0.0"
           }
         ]
       },
       {
         "metadata": {
           "shortDescription": "High level switch",
-          "longDescription": "High level switch"
+          "longDescription": "High level switch (HLS / HLCO)"
         },
         "name": "LSH",
         "typeId": "_Root/Digital",
@@ -2804,7 +2842,7 @@
       {
         "metadata": {
           "shortDescription": "Low level switch",
-          "longDescription": "Low level switch"
+          "longDescription": "Low level switch (LLCO)"
         },
         "name": "LSL",
         "typeId": "_Root/Digital",
@@ -2822,9 +2860,11 @@
       {
         "metadata": {
           "shortDescription": "High-high level mark",
-          "longDescription": "High-high level mark"
+          "longDescription": "High-high level alarm bit + SP (%)"
         },
         "name": "HH",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
         "tags": [
           {
             "valueSource": "memory",
@@ -2835,6 +2875,10 @@
           },
           {
             "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "HH setpoint",
+              "longDescription": "High-high level alarm bit + SP (%) setpoint"
+            },
             "dataType": "Float4",
             "name": "SP",
             "value": 95.0,
@@ -2846,9 +2890,11 @@
       {
         "metadata": {
           "shortDescription": "High level mark",
-          "longDescription": "High level mark"
+          "longDescription": "High level alarm bit + SP (%)"
         },
         "name": "H",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
         "tags": [
           {
             "valueSource": "memory",
@@ -2859,6 +2905,10 @@
           },
           {
             "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "H setpoint",
+              "longDescription": "High level alarm bit + SP (%) setpoint"
+            },
             "dataType": "Float4",
             "name": "SP",
             "value": 80.0,
@@ -2870,9 +2920,11 @@
       {
         "metadata": {
           "shortDescription": "Low level mark",
-          "longDescription": "Low level mark"
+          "longDescription": "Low level alarm bit + SP (%)"
         },
         "name": "L",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
         "tags": [
           {
             "valueSource": "memory",
@@ -2883,6 +2935,10 @@
           },
           {
             "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "L setpoint",
+              "longDescription": "Low level alarm bit + SP (%) setpoint"
+            },
             "dataType": "Float4",
             "name": "SP",
             "value": 20.0,
@@ -2894,9 +2950,11 @@
       {
         "metadata": {
           "shortDescription": "Low-low level mark",
-          "longDescription": "Low-low level mark"
+          "longDescription": "Low-low level alarm bit + SP (%)"
         },
         "name": "LL",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
         "tags": [
           {
             "valueSource": "memory",
@@ -2907,11 +2965,157 @@
           },
           {
             "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "LL setpoint",
+              "longDescription": "Low-low level alarm bit + SP (%) setpoint"
+            },
             "dataType": "Float4",
             "name": "SP",
             "value": 5.0,
             "engUnit": "%",
             "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Interlock",
+        "tagType": "Folder",
+        "tags": [
+          {
+            "name": "Sts_IntlkOK",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": true,
+            "metadata": {
+              "shortDescription": "Interlocks OK",
+              "longDescription": "Vessel interlocks OK"
+            }
+          },
+          {
+            "name": "OCmd_Reset",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": false,
+            "metadata": {
+              "shortDescription": "Reset interlocks",
+              "longDescription": "Reset vessel interlocks"
+            }
+          },
+          {
+            "name": "Rdy_Reset",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Boolean",
+            "value": true,
+            "metadata": {
+              "shortDescription": "Reset ready",
+              "longDescription": "Reset ready"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt00",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "Low Level Cutout",
+            "metadata": {
+              "shortDescription": "Condition 00",
+              "longDescription": "Condition 00"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt01",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "High Level Cutout",
+            "metadata": {
+              "shortDescription": "Condition 01",
+              "longDescription": "Condition 01"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt02",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "Level Transmitter",
+            "metadata": {
+              "shortDescription": "Condition 02",
+              "longDescription": "Condition 02"
+            }
+          },
+          {
+            "name": "Cfg_CondTxt03",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "String",
+            "value": "Vessel Pressure",
+            "metadata": {
+              "shortDescription": "Condition 03",
+              "longDescription": "Condition 03"
+            }
+          }
+        ]
+      },
+      {
+        "name": "SummaryInstances",
+        "typeId": "_Root/Expression",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "dataType": "Document",
+            "historyEnabled": false,
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": {
+              "overviewInstances": [],
+              "deviceDetails": {}
+            }
+          },
+          {
+            "name": "Metadata",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Document",
+            "value": {
+              "instanceTemplate": {
+                "bottom": "auto",
+                "height": "24px",
+                "left": "0px",
+                "position": "relative",
+                "right": "auto",
+                "style": {
+                  "classes": ""
+                },
+                "top": "0px",
+                "viewParams": {
+                  "tagPath": ""
+                },
+                "viewPath": "",
+                "width": "auto",
+                "zIndex": "auto"
+              },
+              "longDescription": "Overview Container Instances",
+              "shortDescription": "SummaryInstances",
+              "tagsForDeviceDetails": {
+                "parameters": [
+                  {
+                    "tagPath": "/Level",
+                    "viewPath": "03_Elements/01_Status/AnalogValue"
+                  }
+                ],
+                "status": [
+                  {
+                    "tagPath": "/Status",
+                    "viewPath": "03_Elements/01_Status/StatusIndicator"
+                  }
+                ]
+              }
+            }
           }
         ]
       },

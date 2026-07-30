@@ -16,27 +16,31 @@
             "valueSource": "opc",
             "metadata": {
               "shortDescription": "status",
-              "longDescription": "exhaust fan status",
+              "longDescription": "P_Motor Val_Sts: 0=UNK, 1=STOPPED, 2=RUNNING, 7=STOPPING, 8=STARTING, 33=DISABLED",
               "states": [
                 {
-                  "label": "Off",
+                  "label": "UNK",
                   "value": 0
                 },
                 {
-                  "label": "Run",
+                  "label": "STOPPED",
                   "value": 1
                 },
                 {
-                  "label": "Fault",
+                  "label": "RUNNING",
                   "value": 2
                 },
                 {
-                  "label": "Manual",
-                  "value": 3
+                  "label": "STOPPING",
+                  "value": 7
                 },
                 {
-                  "label": "Idle",
-                  "value": 4
+                  "label": "STARTING",
+                  "value": 8
+                },
+                {
+                  "label": "DISABLED",
+                  "value": 33
                 }
               ]
             },
@@ -55,12 +59,12 @@
         ]
       },
       {
-        "name": "Temp",
+        "name": "Airflow",
         "tagType": "UdtInstance",
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns=1;s=[Sim]ExhaustFans/EFAN-03/Temp/Value",
+            "opcItemPath": "ns=1;s=[Sim]ExhaustFans/EFAN-03/Airflow/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -134,27 +138,31 @@
             "valueSource": "opc",
             "metadata": {
               "shortDescription": "status",
-              "longDescription": "exhaust fan status",
+              "longDescription": "P_Motor Val_Sts: 0=UNK, 1=STOPPED, 2=RUNNING, 7=STOPPING, 8=STARTING, 33=DISABLED",
               "states": [
                 {
-                  "label": "Off",
+                  "label": "UNK",
                   "value": 0
                 },
                 {
-                  "label": "Run",
+                  "label": "STOPPED",
                   "value": 1
                 },
                 {
-                  "label": "Fault",
+                  "label": "RUNNING",
                   "value": 2
                 },
                 {
-                  "label": "Manual",
-                  "value": 3
+                  "label": "STOPPING",
+                  "value": 7
                 },
                 {
-                  "label": "Idle",
-                  "value": 4
+                  "label": "STARTING",
+                  "value": 8
+                },
+                {
+                  "label": "DISABLED",
+                  "value": 33
                 }
               ]
             },
@@ -173,12 +181,12 @@
         ]
       },
       {
-        "name": "Temp",
+        "name": "Airflow",
         "tagType": "UdtInstance",
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns=1;s=[Sim]ExhaustFans/EFAN-02/Temp/Value",
+            "opcItemPath": "ns=1;s=[Sim]ExhaustFans/EFAN-02/Airflow/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -231,27 +239,31 @@
             "valueSource": "opc",
             "metadata": {
               "shortDescription": "status",
-              "longDescription": "exhaust fan status",
+              "longDescription": "P_Motor Val_Sts: 0=UNK, 1=STOPPED, 2=RUNNING, 7=STOPPING, 8=STARTING, 33=DISABLED",
               "states": [
                 {
-                  "label": "Off",
+                  "label": "UNK",
                   "value": 0
                 },
                 {
-                  "label": "Run",
+                  "label": "STOPPED",
                   "value": 1
                 },
                 {
-                  "label": "Fault",
+                  "label": "RUNNING",
                   "value": 2
                 },
                 {
-                  "label": "Manual",
-                  "value": 3
+                  "label": "STOPPING",
+                  "value": 7
                 },
                 {
-                  "label": "Idle",
-                  "value": 4
+                  "label": "STARTING",
+                  "value": 8
+                },
+                {
+                  "label": "DISABLED",
+                  "value": 33
                 }
               ]
             },
@@ -270,12 +282,12 @@
         ]
       },
       {
-        "name": "Temp",
+        "name": "Airflow",
         "tagType": "UdtInstance",
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns=1;s=[Sim]ExhaustFans/EFAN-01/Temp/Value",
+            "opcItemPath": "ns=1;s=[Sim]ExhaustFans/EFAN-01/Airflow/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
@@ -289,6 +301,86 @@
             "tagType": "AtomicTag"
           }
         ]
+      },
+      {
+        "name": "OPER",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": true,
+        "metadata": {
+          "shortDescription": "Operator",
+          "longDescription": "Operator mode ownership"
+        }
+      },
+      {
+        "name": "MAINT",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false,
+        "metadata": {
+          "shortDescription": "Maintenance",
+          "longDescription": "Maintenance mode ownership"
+        }
+      },
+      {
+        "name": "PROG",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false,
+        "metadata": {
+          "shortDescription": "Program",
+          "longDescription": "Program mode ownership"
+        }
+      },
+      {
+        "name": "Cmd_Start",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false,
+        "metadata": {
+          "shortDescription": "Start",
+          "longDescription": "Operator start command"
+        }
+      },
+      {
+        "name": "Cmd_Stop",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false,
+        "metadata": {
+          "shortDescription": "Stop",
+          "longDescription": "Operator stop command"
+        }
+      },
+      {
+        "name": "RuntimeHours",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Float4",
+        "value": 412.5,
+        "metadata": {
+          "shortDescription": "Runtime hours",
+          "longDescription": "Total runtime hours"
+        },
+        "formatString": "#0.0",
+        "engUnit": "h"
+      },
+      {
+        "name": "MotorStarts",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Int4",
+        "value": 96,
+        "metadata": {
+          "shortDescription": "Motor starts",
+          "longDescription": "Motor start count"
+        },
+        "formatString": "#0"
       },
       {
         "typeId": "Config/_Alarms",
@@ -328,27 +420,31 @@
             "valueSource": "opc",
             "metadata": {
               "shortDescription": "status",
-              "longDescription": "exhaust fan status",
+              "longDescription": "P_Motor Val_Sts: 0=UNK, 1=STOPPED, 2=RUNNING, 7=STOPPING, 8=STARTING, 33=DISABLED",
               "states": [
                 {
-                  "label": "Off",
+                  "label": "UNK",
                   "value": 0
                 },
                 {
-                  "label": "Run",
+                  "label": "STOPPED",
                   "value": 1
                 },
                 {
-                  "label": "Fault",
+                  "label": "RUNNING",
                   "value": 2
                 },
                 {
-                  "label": "Manual",
-                  "value": 3
+                  "label": "STOPPING",
+                  "value": 7
                 },
                 {
-                  "label": "Idle",
-                  "value": 4
+                  "label": "STARTING",
+                  "value": 8
+                },
+                {
+                  "label": "DISABLED",
+                  "value": 33
                 }
               ]
             },
@@ -367,12 +463,12 @@
         ]
       },
       {
-        "name": "Temp",
+        "name": "Airflow",
         "tagType": "UdtInstance",
         "tags": [
           {
             "valueSource": "opc",
-            "opcItemPath": "ns=1;s=[Sim]ExhaustFans/EFAN-04/Temp/Value",
+            "opcItemPath": "ns=1;s=[Sim]ExhaustFans/EFAN-04/Airflow/Value",
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",

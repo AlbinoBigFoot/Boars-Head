@@ -273,6 +273,78 @@ EFAN_PROFILES: dict[str, dict[str, str]] = {
     "EFAN-04": {"Status": "0", "Temp": "realistic(100.0, 10.0, 0.04, 0.18, true)"},
 }
 
+# --- VALVE ---
+# P_ValveSO Status wall + Controls/Interlock defaults (A-merge wires FOLDERS + CSV).
+# Val_Sts: 1=CLOSED, 2=OPEN, 5=CLOSING, 6=OPENING, 33=DISABLED.
+VALVE_FACEPLATE_DEFAULTS: dict[str, tuple[str, str]] = {
+    "OPER": ("true", "Boolean"),
+    "MAINT": ("false", "Boolean"),
+    "PROG": ("false", "Boolean"),
+    "Cmd_Open": ("false", "Boolean"),
+    "Cmd_Close": ("false", "Boolean"),
+    "Cmd_Reset": ("false", "Boolean"),
+    "OpenLS": ("false", "Boolean"),
+    "ClosedLS": ("true", "Boolean"),
+    "Failed": ("false", "Boolean"),
+    "Comm": ("false", "Boolean"),
+    "TravelTime": ("2.5", "Float"),
+    "Interlock/Sts_IntlkOK": ("true", "Boolean"),
+    "Interlock/Sts_NBIntlkOK": ("true", "Boolean"),
+    "Interlock/Sts_BypActive": ("false", "Boolean"),
+    "Interlock/Sts_FirstOut": ("false", "Boolean"),
+    "Interlock/Sts_Intlk": ("0", "Int32"),
+    "Interlock/Cfg_Bypassable": ("3", "Int32"),
+    "Interlock/OCmd_Reset": ("false", "Boolean"),
+    "Interlock/Rdy_Reset": ("true", "Boolean"),
+    "Interlock/Cfg_CondTxt00": ("Open Limit Switch", "String"),
+    "Interlock/Cfg_CondTxt01": ("Closed Limit Switch", "String"),
+    "Interlock/Cfg_CondTxt02": ("Transit Stall", "String"),
+    "Interlock/Cfg_CondTxt03": ("IO Fault", "String"),
+}
+for _i in range(4, 16):
+    VALVE_FACEPLATE_DEFAULTS[f"Interlock/Cfg_CondTxt{_i:02d}"] = ("", "String")
+for _i in range(16):
+    VALVE_FACEPLATE_DEFAULTS[f"Interlock/MSet_Bypass{_i:02d}"] = ("false", "Boolean")
+
+VALVE_PROFILES: dict[str, dict[str, str]] = {
+    # HPRL-ISO: Open + OpenLS
+    "HPRL-ISO": {
+        "Status": "2",
+        "OpenLS": "true",
+        "ClosedLS": "false",
+        "Failed": "false",
+        "TravelTime": "2.5",
+    },
+    # LTR-SV: Closed + ClosedLS
+    "LTR-SV": {
+        "Status": "1",
+        "OpenLS": "false",
+        "ClosedLS": "true",
+        "Failed": "false",
+        "TravelTime": "2.0",
+    },
+    # MAIN-LIQ-SV: Fault demo (Failed + intlk not OK)
+    "MAIN-LIQ-SV": {
+        "Status": "1",
+        "OpenLS": "false",
+        "ClosedLS": "false",
+        "Failed": "true",
+        "TravelTime": "3.0",
+        "Interlock/Sts_IntlkOK": "false",
+        "Interlock/Cfg_CondTxt00": "Main Liquid Permissive",
+    },
+    # HTR-SV: Opening transit
+    "HTR-SV": {
+        "Status": "6",
+        "OpenLS": "false",
+        "ClosedLS": "false",
+        "Failed": "false",
+        "TravelTime": "2.8",
+    },
+}
+# --- END VALVE ---
+
+
 # Faceplate Controls/Config/Interlocks demo leaves (Devices/Compressor flat + Interlock/).
 # Keys are relative paths under Compressors/COMP-##/ (not Value-parent names).
 COMP_FACEPLATE_DEFAULTS: dict[str, tuple[str, str]] = {
@@ -461,6 +533,10 @@ def value_source(path: str, sim_dtype: str) -> str:
         return "0"
     if leaf_parent == "Temp":
         return "realistic(20.0, 1.2, 0.06, 0.25, true)"
+    if leaf_parent == "Flow":
+        return "realistic(35.0, 1.2, 0.06, 0.25, true)"
+    if leaf_parent == "Airflow":
+        return "realistic(800.0, 20.0, 0.05, 0.2, true)"
     if leaf_parent == "DisP":
         return "realistic(22.0, 1.2, 0.06, 0.25, true)"
     if leaf_parent == "Amps":
