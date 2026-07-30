@@ -1,0 +1,692 @@
+{
+  "custom": {
+    "stsStateMap": "PLC Sts_State → HMI Status (Option B): 0 Off→STOP(0); 1 PumpOut/2 SoftHG/3 MainHG/4 Bleed/5 FanDelay→DFT(2); 6 Cooling→CLG(1); 7 Idle→IDLE(5); 8 Cleanup→DFT(2); 9 Permissive→IDLE(5); 10 Interlock→FLT(3). HMI enum kept: 0=STOP,1=CLG,2=DFT,3=FLT,5=IDLE."
+  },
+  "params": {
+    "tagPath": ""
+  },
+  "propConfig": {
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 560,
+      "width": 520
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root",
+      "contextMenu": {}
+    },
+    "propConfig": {
+      "meta.contextMenu.items": {
+        "binding": {
+          "config": {
+            "struct": {
+              "tagPath": "{view.params.tagPath}"
+            },
+            "waitOnAll": false
+          },
+          "transforms": [
+            {
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = self.view.params.tagPath\n\texcept:\n\t\tpass\n\tif tagPath is None or str(tagPath).strip() == '':\n\t\ttagPath = 'No TagPath: ' + self.view.id.split('@')[0].split('/')[-1]\n\titems = [\n\t\t{\n\t\t\t\"text\": \"Ticket Logger\",\n\t\t\t\"icon\": {\n\t\t\t\t\"path\": \"material/info\",\n\t\t\t\t\"color\": \"--neutral-80\",\n\t\t\t\t\"style\": {}\n\t\t\t},\n\t\t\t\"style\": {\n\t\t\t\t\"classes\": \"bg-component font-value\",\n\t\t\t\t\"height\": 24,\n\t\t\t\t\"width\": 120\n\t\t\t},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\n\t\t\t\t\"type\": \"ticketLog\",\n\t\t\t\t\"payload\": {\n\t\t\t\t\t\"tagPath\": tagPath,\n\t\t\t\t\t\"viewName\": self.view.id.split('@')[0]\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t]\n\treturn items",
+              "type": "script"
+            }
+          ],
+          "type": "expr-struct"
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "config": {
+            "struct": {
+              "items": "{this.meta.contextMenu.items}",
+              "permission": "{session.custom.TicketLogAccess}"
+            },
+            "waitOnAll": true
+          },
+          "transforms": [
+            {
+              "expression": "len({value}['items']) > 0 && {value}['permission']",
+              "type": "expression"
+            }
+          ],
+          "type": "expr-struct"
+        }
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "",
+        "overflow": "auto",
+        "padding": "4px",
+        "gap": "8px"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "CmdSection"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "classes": "faceplate-section faceplate-section-card"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "CmdTitle"
+            },
+            "props": {
+              "text": "Commands",
+              "style": {
+                "classes": "faceplate-section-title font-label"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "CmdRow"
+            },
+            "props": {
+              "direction": "row",
+              "style": {
+                "classes": "faceplate-cmd-row",
+                "gap": "6px",
+                "flexWrap": "wrap"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.input.button",
+                "meta": {
+                  "name": "BtnEnable"
+                },
+                "position": {
+                  "basis": "100px",
+                  "shrink": 0
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpath = base + '/HMIEnable'\n\tcur = system.tag.readBlocking([path])[0].value\n\tsystem.tag.writeBlocking([path], [not bool(cur)])"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "propConfig": {
+                  "props.enabled": {
+                    "binding": {
+                      "config": {
+                        "expression": "!{session.custom.ReadOnly}"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "if(tag({view.params.tagPath} + '/HMIEnable'), 'Enable ON', 'Enable OFF')"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "text": "Enable",
+                  "style": {
+                    "classes": "faceplate-cmd-btn font-label"
+                  },
+                  "primary": false
+                }
+              },
+              {
+                "type": "ia.input.button",
+                "meta": {
+                  "name": "BtnStartDefrost"
+                },
+                "position": {
+                  "basis": "110px",
+                  "shrink": 0
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd_StartDefrost']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "propConfig": {
+                  "props.enabled": {
+                    "binding": {
+                      "config": {
+                        "expression": "!{session.custom.ReadOnly}"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "text": "Start Defrost",
+                  "style": {
+                    "classes": "faceplate-cmd-btn font-label"
+                  },
+                  "primary": false
+                }
+              },
+              {
+                "type": "ia.input.button",
+                "meta": {
+                  "name": "BtnStopDefrost"
+                },
+                "position": {
+                  "basis": "110px",
+                  "shrink": 0
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd_StopDefrost']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "propConfig": {
+                  "props.enabled": {
+                    "binding": {
+                      "config": {
+                        "expression": "!{session.custom.ReadOnly}"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "text": "Stop Defrost",
+                  "style": {
+                    "classes": "faceplate-cmd-btn font-label"
+                  },
+                  "primary": false
+                }
+              },
+              {
+                "type": "ia.input.button",
+                "meta": {
+                  "name": "BtnCleanup"
+                },
+                "position": {
+                  "basis": "88px",
+                  "shrink": 0
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cleanup']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "propConfig": {
+                  "props.enabled": {
+                    "binding": {
+                      "config": {
+                        "expression": "!{session.custom.ReadOnly}"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "text": "Cleanup",
+                  "style": {
+                    "classes": "faceplate-cmd-btn font-label"
+                  },
+                  "primary": false
+                }
+              }
+            ]
+          }
+        ],
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "qualityOf(tag({view.params.tagPath} + '/HMIEnable')) = 'Good' || qualityOf(tag({view.params.tagPath} + '/Cmd_StartDefrost')) = 'Good'"
+              },
+              "type": "expr"
+            }
+          }
+        }
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "StatusSection"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "classes": "faceplate-section faceplate-section-card"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "StatusTitle"
+            },
+            "props": {
+              "text": "Status",
+              "style": {
+                "classes": "faceplate-section-title font-label"
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "StatusInd"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "path": "03_Elements/01_Status/StatusIndicator",
+              "params": {
+                "tagPath": ""
+              }
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.tagPath} = '', '', {view.params.tagPath} + '/Status')"
+                  },
+                  "type": "expr"
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "StatusCodes"
+            },
+            "props": {
+              "direction": "row",
+              "style": {
+                "gap": "16px",
+                "marginTop": "4px",
+                "flexWrap": "wrap"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "TooHotCode"
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "'HOT: ' + if(tag({view.params.tagPath} + '/TooHot/Value'), 'ACT', 'ok')"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "font-label faceplate-mode-code"
+                  },
+                  "text": "HOT: —"
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "TooColdCode"
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "'COLD: ' + if(tag({view.params.tagPath} + '/TooCold/Value'), 'ACT', 'ok')"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "font-label faceplate-mode-code"
+                  },
+                  "text": "COLD: —"
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "IntlkCode"
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "'INTLK: ' + if(tag({view.params.tagPath} + '/IntlkOK/Value'), 'OK', 'TRIP')"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "font-label faceplate-mode-code"
+                  },
+                  "text": "INTLK: —"
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "PermCode"
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "'PERM: ' + if(tag({view.params.tagPath} + '/PermOK/Value'), 'OK', 'NO')"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "font-label faceplate-mode-code"
+                  },
+                  "text": "PERM: —"
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "OffCode"
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "'OFF: ' + if(tag({view.params.tagPath} + '/Off/Value'), 'YES', 'NO')"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "font-label faceplate-mode-code"
+                  },
+                  "text": "OFF: —"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "KpiSection"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "classes": "faceplate-section faceplate-section-card"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "KpiTitle"
+            },
+            "props": {
+              "text": "KPI",
+              "style": {
+                "classes": "faceplate-section-title font-label"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Temp"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "alignItems": "center",
+              "style": {
+                "classes": "faceplate-kpi-row"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "TempLbl"
+                },
+                "position": {
+                  "basis": "140px",
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Temp (ZAT)",
+                  "style": {
+                    "classes": "faceplate-kpi-label font-label"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "TempVal"
+                },
+                "position": {
+                  "grow": 1
+                },
+                "props": {
+                  "path": "03_Elements/01_Status/AnalogValue",
+                  "params": {
+                    "tagPath": "",
+                    "setpoint": true
+                  }
+                },
+                "propConfig": {
+                  "props.params.tagPath": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.tagPath} = '', '', {view.params.tagPath} + '/Temp')"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Pressure"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "alignItems": "center",
+              "style": {
+                "classes": "faceplate-kpi-row"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "PressureLbl"
+                },
+                "position": {
+                  "basis": "140px",
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Pressure",
+                  "style": {
+                    "classes": "faceplate-kpi-label font-label"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PressureVal"
+                },
+                "position": {
+                  "grow": 1
+                },
+                "props": {
+                  "path": "03_Elements/01_Status/AnalogValue",
+                  "params": {
+                    "tagPath": "",
+                    "setpoint": true
+                  }
+                },
+                "propConfig": {
+                  "props.params.tagPath": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.tagPath} = '', '', {view.params.tagPath} + '/Pressure')"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "TimeLeft"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "alignItems": "center",
+              "style": {
+                "classes": "faceplate-kpi-row"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "TimeLeftLbl"
+                },
+                "position": {
+                  "basis": "140px",
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Time left",
+                  "style": {
+                    "classes": "faceplate-kpi-label font-label"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "TimeLeftVal"
+                },
+                "position": {
+                  "grow": 1
+                },
+                "props": {
+                  "path": "03_Elements/01_Status/AnalogValue",
+                  "params": {
+                    "tagPath": "",
+                    "setpoint": false
+                  }
+                },
+                "propConfig": {
+                  "props.params.tagPath": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.tagPath} = '', '', {view.params.tagPath} + '/TimeLeft')"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
