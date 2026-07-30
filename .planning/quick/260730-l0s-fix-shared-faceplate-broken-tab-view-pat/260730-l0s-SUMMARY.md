@@ -178,10 +178,10 @@ None — no external service configuration required.
 
 ## Verification notes
 
-- `python scripts/repair-resource-signatures.py --check` → `0 issue(s) of 138`
-- Controls digest `8e9986f21ddad663…` and Configuration `7d969c1579afe498…` present under `projects/.resources/`
+- `python scripts/repair-resource-signatures.py --check` → `0 issue(s) of 138` (run **after** scan if gateway drops CAS digests)
+- Controls digest `8e9986f21ddad663…` and Configuration `7d969c1579afe498…` present under `projects/.resources/` after final repair
 - Task 1–3 automated asserts: `task1-ok`, `task2-ok`, `task3-ok`
-- `POST /data/api/v1/scan/projects` → 200; `POST .../scan/config` → 200
+- `POST /data/api/v1/scan/projects` → 200; `POST .../scan/config` → 200 (re-run repair after scan if `--check` regresses)
 - Manual smoke still recommended: Faceplate on `[default]Compressors/COMP-01` — Controls/Config load, Alarms table, Trend pens, readable tabs
 
 ## Self-Check: PASSED
