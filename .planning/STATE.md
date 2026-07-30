@@ -1,4 +1,20 @@
-﻿# Project State
+---
+gsd_state_version: 1.0
+milestone: v1.0
+milestone_name: milestone
+status: unknown
+stopped_at: Completed 260730-m0m Faceplate Controls/Config/Interlocks
+last_updated: "2026-07-30T20:19:10.193Z"
+last_activity: 2026-07-30
+last_activity_desc: "Completed quick task 260730-m0m: Faceplate Controls/Config/Interlocks redesign"
+progress:
+  total_phases: 1
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+---
+
+# Project State
 
 ## Status
 
@@ -8,7 +24,7 @@
 
 - **Machine Room Figma** done in Dev Jam — page `248:1953`, frame `248:1954` ([link](https://www.figma.com/design/Q8EmmXokQsiX91aPMtLm2w/Dev-Jam?node-id=248-1954)); black piping (provisional); Ignition blocked until Dylan approves
 - Context: `.planning/phases/3-hmi-machine-room/CONTEXT.md`
-- Quick: shared Faceplate tabs fixed (CAS Controls/Config, Alarms type, Scout Trend, tab contrast)
+- Quick: Faceplate Controls/Config/Interlocks redesign complete (Mode/Status/KPI/Web GUI, Scout Config browse, Interlocks tab, tagFlags)
 
 ## Next action
 
@@ -34,8 +50,20 @@ Dylan reviews Machine Room P&ID in Figma → approve → then Ignition import/bu
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
 | 260730-l0s | Fix shared Faceplate broken tabs (CAS, Alarms, Scout Trend, contrast) | 2026-07-30 | 2b4bd34 | [260730-l0s-fix-shared-faceplate-broken-tab-view-pat](./quick/260730-l0s-fix-shared-faceplate-broken-tab-view-pat/) |
+| 260730-m0m | Faceplate Controls/Config/Interlocks redesign | 2026-07-30 | e24b8ac | [260730-m0m-faceplate-controls-config-interlocks-red](./quick/260730-m0m-faceplate-controls-config-interlocks-red/) |
 
-Last activity: 2026-07-30 - Completed quick task 260730-l0s: Fix shared Faceplate broken tabs
+Last activity: 2026-07-30 - Completed quick task 260730-m0m: Faceplate Controls/Config/Interlocks redesign
 
 ---
 *Updated: 2026-07-30*
+
+## Session
+
+**Last session:** 2026-07-30T20:19:09.841Z
+**Stopped at:** Completed 260730-m0m Faceplate Controls/Config/Interlocks
+**Resume file:** None
+
+## Decisions
+
+- [Phase 260730-m0m]: Faceplate Interlocks tab between Configuration and Trend; tagFlags AND caller show*
+- [Phase 260730-m0m]: Cmd_Auto/Manual/Remote also write CP_Mode 2/3/1; webGuiUrl lab default https://127.0.0.1/
