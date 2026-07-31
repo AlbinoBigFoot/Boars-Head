@@ -129,7 +129,7 @@
                   "props.text": {
                     "binding": {
                       "config": {
-                        "expression": "'Intlk OK: ' + if(tag({view.params.tagPath} + '/Interlock/Sts_IntlkOK'), 'Yes', 'No')"
+                        "expression": "'Intlk OK: ' + if(tag({view.params.tagPath} + '/Interlock/Sts_IntlkOK/Value'), 'Yes', 'No')"
                       },
                       "type": "expr"
                     }
@@ -151,7 +151,7 @@
                   "props.text": {
                     "binding": {
                       "config": {
-                        "expression": "'NB OK: ' + if(tag({view.params.tagPath} + '/Interlock/Sts_NBIntlkOK'), 'Yes', 'No')"
+                        "expression": "'NB OK: ' + if(tag({view.params.tagPath} + '/Interlock/Sts_NBIntlkOK/Value'), 'Yes', 'No')"
                       },
                       "type": "expr"
                     }
@@ -173,7 +173,7 @@
                   "props.text": {
                     "binding": {
                       "config": {
-                        "expression": "'Bypass: ' + if(tag({view.params.tagPath} + '/Interlock/Sts_BypActive'), 'Active', 'Off')"
+                        "expression": "'Bypass: ' + if(tag({view.params.tagPath} + '/Interlock/Sts_BypActive/Value'), 'Active', 'Off')"
                       },
                       "type": "expr"
                     }
@@ -195,7 +195,7 @@
                   "props.text": {
                     "binding": {
                       "config": {
-                        "expression": "'FirstOut: ' + if(tag({view.params.tagPath} + '/Interlock/Sts_FirstOut'), 'Yes', 'No')"
+                        "expression": "'FirstOut: ' + if(tag({view.params.tagPath} + '/Interlock/Sts_FirstOut/Value'), 'Yes', 'No')"
                       },
                       "type": "expr"
                     }
@@ -219,7 +219,7 @@
               "component": {
                 "onActionPerformed": {
                   "config": {
-                    "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tp = base + '/Interlock/OCmd_Reset'\n\tsystem.tag.writeBlocking([p], [True])"
+                    "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tp = base + '/Interlock/OCmd_Reset/Value'\n\tsystem.tag.writeBlocking([p], [True])"
                   },
                   "scope": "G",
                   "type": "script"
@@ -230,7 +230,7 @@
               "props.enabled": {
                 "binding": {
                   "config": {
-                    "expression": "!{session.custom.ReadOnly} && tag({view.params.tagPath} + '/Interlock/Rdy_Reset')"
+                    "expression": "!{session.custom.ReadOnly} && tag({view.params.tagPath} + '/Interlock/Rdy_Reset/Value')"
                   },
                   "type": "expr"
                 }

@@ -49,7 +49,7 @@
           },
           "transforms": [
             {
-              "code": "\tpath = value.get('path') or ''\n\tnn = value.get('nn') or '00'\n\tch = int(value.get('ch') or 0)\n\tif not path:\n\t\treturn False\n\ttry:\n\t\ttxt = system.tag.readBlocking([path + '/Cfg_CondTxt' + nn])[0].value\n\t\tsts = int(system.tag.readBlocking([path + '/Sts_Intlk'])[0].value or 0)\n\t\tbit = bool(sts & (1 << ch))\n\t\tlabel_ok = bool(txt) and str(txt).strip() != ''\n\t\treturn bit or label_ok\n\texcept:\n\t\treturn False",
+              "code": "\tpath = value.get('path') or ''\n\tnn = value.get('nn') or '00'\n\tch = int(value.get('ch') or 0)\n\tif not path:\n\t\treturn False\n\ttry:\n\t\ttxt = system.tag.readBlocking([path + '/Cfg_CondTxt' + nn + '/Value'])[0].value\n\t\tsts = int(system.tag.readBlocking([path + '/Sts_Intlk/Value'])[0].value or 0)\n\t\tbit = bool(sts & (1 << ch))\n\t\tlabel_ok = bool(txt) and str(txt).strip() != ''\n\t\treturn bit or label_ok\n\texcept:\n\t\treturn False",
               "type": "script"
             }
           ],
@@ -67,7 +67,7 @@
           },
           "transforms": [
             {
-              "code": "\tpath = value.get('path') or ''\n\tch = int(value.get('ch') or 0)\n\tbase = 'faceplate-interlock-row'\n\ttry:\n\t\tsts = int(system.tag.readBlocking([path + '/Sts_Intlk'])[0].value or 0)\n\t\tif sts & (1 << ch):\n\t\t\treturn base + ' faceplate-interlock-fault'\n\t\treturn base + ' faceplate-interlock-ok'\n\texcept:\n\t\treturn base",
+              "code": "\tpath = value.get('path') or ''\n\tch = int(value.get('ch') or 0)\n\tbase = 'faceplate-interlock-row'\n\ttry:\n\t\tsts = int(system.tag.readBlocking([path + '/Sts_Intlk/Value'])[0].value or 0)\n\t\tif sts & (1 << ch):\n\t\t\treturn base + ' faceplate-interlock-fault'\n\t\treturn base + ' faceplate-interlock-ok'\n\texcept:\n\t\treturn base",
               "type": "script"
             }
           ],
@@ -97,7 +97,7 @@
           "props.text": {
             "binding": {
               "config": {
-                "expression": "coalesce(tag({view.params.interlockPath} + '/Cfg_CondTxt' + {view.custom.nn}), 'Interlock ' + {view.custom.nn})"
+                "expression": "coalesce(tag({view.params.interlockPath} + '/Cfg_CondTxt' + {view.custom.nn} + '/Value'), 'Interlock ' + {view.custom.nn})"
               },
               "type": "expr"
             }
@@ -131,7 +131,7 @@
               },
               "transforms": [
                 {
-                  "code": "\tpath = value.get('path') or ''\n\tch = int(value.get('ch') or 0)\n\ttry:\n\t\tsts = int(system.tag.readBlocking([path + '/Sts_Intlk'])[0].value or 0)\n\t\tif sts & (1 << ch):\n\t\t\treturn 'FLT'\n\t\treturn 'OK'\n\texcept:\n\t\treturn '\u2014'",
+                  "code": "\tpath = value.get('path') or ''\n\tch = int(value.get('ch') or 0)\n\ttry:\n\t\tsts = int(system.tag.readBlocking([path + '/Sts_Intlk/Value'])[0].value or 0)\n\t\tif sts & (1 << ch):\n\t\t\treturn 'FLT'\n\t\treturn 'OK'\n\texcept:\n\t\treturn '\u2014'",
                   "type": "script"
                 }
               ],
@@ -162,7 +162,7 @@
                 "fallbackDelay": 2.5,
                 "mode": "indirect",
                 "references": {
-                  "path": "{view.params.interlockPath} + '/MSet_Bypass' + {view.custom.nn}"
+                  "path": "{view.params.interlockPath} + '/MSet_Bypass' + {view.custom.nn} + '/Value'"
                 },
                 "tagPath": "{path}"
               },
@@ -182,7 +182,7 @@
               },
               "transforms": [
                 {
-                  "code": "\tif value.get('ro'):\n\t\treturn False\n\tpath = value.get('path') or ''\n\tch = int(value.get('ch') or 0)\n\ttry:\n\t\tcfg = int(system.tag.readBlocking([path + '/Cfg_Bypassable'])[0].value or 0)\n\t\treturn bool(cfg & (1 << ch))\n\texcept:\n\t\treturn False",
+                  "code": "\tif value.get('ro'):\n\t\treturn False\n\tpath = value.get('path') or ''\n\tch = int(value.get('ch') or 0)\n\ttry:\n\t\tcfg = int(system.tag.readBlocking([path + '/Cfg_Bypassable/Value'])[0].value or 0)\n\t\treturn bool(cfg & (1 << ch))\n\texcept:\n\t\treturn False",
                   "type": "script"
                 }
               ],

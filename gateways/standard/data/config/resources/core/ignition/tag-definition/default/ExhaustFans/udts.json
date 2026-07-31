@@ -82,21 +82,7 @@
       {
         "typeId": "Config/_Alarms",
         "name": "_Alarms",
-        "tagType": "AtomicTag",
-        "tags": [
-          {
-            "valueSource": "memory",
-            "dataType": "Int4",
-            "name": "_ActiveHighPriority",
-            "tagType": "AtomicTag"
-          },
-          {
-            "valueSource": "memory",
-            "dataType": "Boolean",
-            "name": "_Active",
-            "tagType": "AtomicTag"
-          }
-        ]
+        "tagType": "UdtInstance"
       }
     ]
   },
@@ -204,21 +190,7 @@
       {
         "typeId": "Config/_Alarms",
         "name": "_Alarms",
-        "tagType": "AtomicTag",
-        "tags": [
-          {
-            "valueSource": "memory",
-            "dataType": "Int4",
-            "name": "_ActiveHighPriority",
-            "tagType": "AtomicTag"
-          },
-          {
-            "valueSource": "memory",
-            "dataType": "Boolean",
-            "name": "_Active",
-            "tagType": "AtomicTag"
-          }
-        ]
+        "tagType": "UdtInstance"
       }
     ]
   },
@@ -304,10 +276,31 @@
       },
       {
         "name": "OPER",
-        "tagType": "AtomicTag",
-        "valueSource": "memory",
-        "dataType": "Boolean",
-        "value": true,
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "Operator",
+              "longDescription": "Operator mode ownership",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "dataType": "Boolean",
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": true
+          }
+        ],
         "metadata": {
           "shortDescription": "Operator",
           "longDescription": "Operator mode ownership"
@@ -315,10 +308,31 @@
       },
       {
         "name": "MAINT",
-        "tagType": "AtomicTag",
-        "valueSource": "memory",
-        "dataType": "Boolean",
-        "value": false,
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "Maintenance",
+              "longDescription": "Maintenance mode ownership",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "dataType": "Boolean",
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false
+          }
+        ],
         "metadata": {
           "shortDescription": "Maintenance",
           "longDescription": "Maintenance mode ownership"
@@ -326,10 +340,31 @@
       },
       {
         "name": "PROG",
-        "tagType": "AtomicTag",
-        "valueSource": "memory",
-        "dataType": "Boolean",
-        "value": false,
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "Program",
+              "longDescription": "Program mode ownership",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "dataType": "Boolean",
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false
+          }
+        ],
         "metadata": {
           "shortDescription": "Program",
           "longDescription": "Program mode ownership"
@@ -337,10 +372,31 @@
       },
       {
         "name": "Cmd_Start",
-        "tagType": "AtomicTag",
-        "valueSource": "memory",
-        "dataType": "Boolean",
-        "value": false,
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "Start",
+              "longDescription": "Operator start command",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "dataType": "Boolean",
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false
+          }
+        ],
         "metadata": {
           "shortDescription": "Start",
           "longDescription": "Operator start command"
@@ -348,10 +404,31 @@
       },
       {
         "name": "Cmd_Stop",
-        "tagType": "AtomicTag",
-        "valueSource": "memory",
-        "dataType": "Boolean",
-        "value": false,
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "Stop",
+              "longDescription": "Operator stop command",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "dataType": "Boolean",
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false
+          }
+        ],
         "metadata": {
           "shortDescription": "Stop",
           "longDescription": "Operator stop command"
@@ -359,47 +436,67 @@
       },
       {
         "name": "RuntimeHours",
-        "tagType": "AtomicTag",
-        "valueSource": "memory",
-        "dataType": "Float4",
-        "value": 412.5,
+        "typeId": "_Root/Analog",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "dataType": "Float4",
+            "valueSource": "memory",
+            "tagType": "AtomicTag",
+            "metadata": {
+              "shortDescription": "Runtime hours",
+              "longDescription": "Total runtime hours"
+            },
+            "historyEnabled": true,
+            "historyProvider": "historian",
+            "historicalDeadband": 0.01,
+            "historicalDeadbandMode": "Absolute",
+            "historicalDeadbandStyle": "Discrete",
+            "sampleMode": "OnChange",
+            "value": 412.5,
+            "engUnit": "h",
+            "formatString": "#0.0"
+          }
+        ],
         "metadata": {
           "shortDescription": "Runtime hours",
           "longDescription": "Total runtime hours"
-        },
-        "formatString": "#0.0",
-        "engUnit": "h"
+        }
       },
       {
         "name": "MotorStarts",
-        "tagType": "AtomicTag",
-        "valueSource": "memory",
-        "dataType": "Int4",
-        "value": 96,
+        "typeId": "_Root/Analog",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "dataType": "Int4",
+            "valueSource": "memory",
+            "tagType": "AtomicTag",
+            "metadata": {
+              "shortDescription": "Motor starts",
+              "longDescription": "Motor start count"
+            },
+            "historyEnabled": true,
+            "historyProvider": "historian",
+            "historicalDeadband": 0.0,
+            "historicalDeadbandMode": "Absolute",
+            "historicalDeadbandStyle": "Discrete",
+            "sampleMode": "OnChange",
+            "value": 96,
+            "formatString": "#0"
+          }
+        ],
         "metadata": {
           "shortDescription": "Motor starts",
           "longDescription": "Motor start count"
-        },
-        "formatString": "#0"
+        }
       },
       {
         "typeId": "Config/_Alarms",
         "name": "_Alarms",
-        "tagType": "AtomicTag",
-        "tags": [
-          {
-            "valueSource": "memory",
-            "dataType": "Int4",
-            "name": "_ActiveHighPriority",
-            "tagType": "AtomicTag"
-          },
-          {
-            "valueSource": "memory",
-            "dataType": "Boolean",
-            "name": "_Active",
-            "tagType": "AtomicTag"
-          }
-        ]
+        "tagType": "UdtInstance"
       }
     ]
   },
@@ -486,21 +583,7 @@
       {
         "typeId": "Config/_Alarms",
         "name": "_Alarms",
-        "tagType": "AtomicTag",
-        "tags": [
-          {
-            "valueSource": "memory",
-            "dataType": "Int4",
-            "name": "_ActiveHighPriority",
-            "tagType": "AtomicTag"
-          },
-          {
-            "valueSource": "memory",
-            "dataType": "Boolean",
-            "name": "_Active",
-            "tagType": "AtomicTag"
-          }
-        ]
+        "tagType": "UdtInstance"
       }
     ]
   }

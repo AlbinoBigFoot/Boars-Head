@@ -93,7 +93,7 @@
           "position.display": {
             "binding": {
               "config": {
-                "expression": "qualityOf(tag({view.params.tagPath} + '/OPER')) = 'Good' || qualityOf(tag({view.params.tagPath} + '/MAINT')) = 'Good' || qualityOf(tag({view.params.tagPath} + '/PROG')) = 'Good'"
+                "expression": "qualityOf(tag({view.params.tagPath} + '/OPER/Value')) = 'Good' || qualityOf(tag({view.params.tagPath} + '/MAINT/Value')) = 'Good' || qualityOf(tag({view.params.tagPath} + '/PROG/Value')) = 'Good'"
               },
               "type": "expr"
             }
@@ -151,7 +151,7 @@
                   "props.style.classes": {
                     "binding": {
                       "config": {
-                        "expression": "if(tag({view.params.tagPath} + '/MAINT'), 'faceplate-mode-chip faceplate-mode-active', 'faceplate-mode-chip')"
+                        "expression": "if(tag({view.params.tagPath} + '/MAINT/Value'), 'faceplate-mode-chip faceplate-mode-active', 'faceplate-mode-chip')"
                       },
                       "type": "expr"
                     }
@@ -192,7 +192,7 @@
                   "props.style.classes": {
                     "binding": {
                       "config": {
-                        "expression": "if(tag({view.params.tagPath} + '/PROG'), 'faceplate-mode-chip faceplate-mode-active', 'faceplate-mode-chip')"
+                        "expression": "if(tag({view.params.tagPath} + '/PROG/Value'), 'faceplate-mode-chip faceplate-mode-active', 'faceplate-mode-chip')"
                       },
                       "type": "expr"
                     }
@@ -233,7 +233,7 @@
                   "props.style.classes": {
                     "binding": {
                       "config": {
-                        "expression": "if(tag({view.params.tagPath} + '/OPER'), 'faceplate-mode-chip faceplate-mode-active', 'faceplate-mode-chip')"
+                        "expression": "if(tag({view.params.tagPath} + '/OPER/Value'), 'faceplate-mode-chip faceplate-mode-active', 'faceplate-mode-chip')"
                       },
                       "type": "expr"
                     }
@@ -420,7 +420,7 @@
                   "component": {
                     "onActionPerformed": {
                       "config": {
-                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd_Open']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
+                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd_Open/Value']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
                       },
                       "scope": "G",
                       "type": "script"
@@ -458,7 +458,7 @@
                   "component": {
                     "onActionPerformed": {
                       "config": {
-                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd_Close']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
+                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd_Close/Value']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
                       },
                       "scope": "G",
                       "type": "script"
@@ -496,7 +496,7 @@
                   "component": {
                     "onActionPerformed": {
                       "config": {
-                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd_Reset']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
+                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd_Reset/Value']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
                       },
                       "scope": "G",
                       "type": "script"

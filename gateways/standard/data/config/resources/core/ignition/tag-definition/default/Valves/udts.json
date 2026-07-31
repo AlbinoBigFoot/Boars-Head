@@ -49,10 +49,31 @@
       },
       {
         "name": "OPER",
-        "tagType": "AtomicTag",
-        "valueSource": "memory",
-        "dataType": "Boolean",
-        "value": true
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "metadata": {
+              "shortDescription": "OPER",
+              "longDescription": "OPER",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "dataType": "Boolean",
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": true
+          }
+        ]
       }
     ]
   },
