@@ -365,6 +365,7 @@ CT_PROFILES: dict[str, dict[str, str]] = {
 # --- PUMP ---
 # P_Motor Val_Sts: 0=UNK, 1=STOPPED, 2=RUNNING, 7=STOPPING, 8=STARTING, 33=DISABLED.
 PUMP_FACEPLATE_DEFAULTS: dict[str, tuple[str, str]] = {
+    "Val_Sts": ("1", "Int32"),
     "Sts_Oper": ("true", "Boolean"),
     "Sts_Maint": ("false", "Boolean"),
     "Sts_Prog": ("false", "Boolean"),
@@ -567,10 +568,12 @@ VALVE_PROFILES: dict[str, dict[str, str]] = {
 
 
 # --- SENSOR ---
-# Status: 0=OK, 1=HI, 2=LO, 3=HIHI, 4=LOLO, 5=FAIL, 6=BAD (P_AIn aggregate)
+# Status = P_AIn.Val_Fault: 0=OK, 20=LO, 21=HI, 24=LOLO, 25=HIHI, 32=FAIL, 34=CFGERR
 # A-merge: add Sensors to FOLDERS and wire these defaults into CSV regen.
 SENSOR_FACEPLATE_DEFAULTS: dict[str, tuple[str, str]] = {
     "Cmd_Reset": ("false", "Boolean"),
+    "Status": ("0", "Int32"),
+    "Value": ("30.0", "Float"),
     "HiHiLim": ("100.0", "Float"),
     "HiLim": ("80.0", "Float"),
     "LoLim": ("20.0", "Float"),
@@ -593,7 +596,7 @@ SENSOR_PROFILES: dict[str, dict[str, str]] = {
         "LoLim": "15.0",
     },
     "HSS-PT": {
-        "Status": "1",
+        "Status": "21",
         "Value": "52.0",
         "Hi": "true",
         "Lo": "false",
@@ -602,7 +605,7 @@ SENSOR_PROFILES: dict[str, dict[str, str]] = {
         "LoLim": "20.0",
     },
     "HPR-PT": {
-        "Status": "2",
+        "Status": "20",
         "Value": "12.0",
         "Hi": "false",
         "Lo": "true",
@@ -611,7 +614,7 @@ SENSOR_PROFILES: dict[str, dict[str, str]] = {
         "LoLim": "25.0",
     },
     "OIL-TT": {
-        "Status": "5",
+        "Status": "32",
         "Value": "0.0",
         "Hi": "false",
         "Lo": "false",

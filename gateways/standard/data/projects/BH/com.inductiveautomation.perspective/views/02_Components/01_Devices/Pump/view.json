@@ -39,7 +39,7 @@
     "custom.values.status": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '',\n\t'',\n\t{view.params.tagPath} + '/Status/Value')"
+          "expression": "if({view.params.tagPath} = '',\n\t'',\n\t{view.params.tagPath} + '/Val_Sts/Value')"
         },
         "type": "expr"
       }
@@ -47,7 +47,7 @@
     "custom.values.analog": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '',\n\t'',\n\t{view.params.tagPath} + '/Flow/Value')"
+          "expression": "if({view.params.tagPath} = '',\n\t'',\n\t{view.params.tagPath} + '/Val_TotRunHrs/Value')"
         },
         "type": "expr"
       }
@@ -55,7 +55,7 @@
     "custom.values.running": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '' || isBad(tag({view.params.tagPath} + '/Status/Value')),\n\tfalse,\n\ttag({view.params.tagPath} + '/Status/Value') = 2 || tag({view.params.tagPath} + '/Status/Value') = 8)"
+          "expression": "if({view.params.tagPath} = '' || isBad(tag({view.params.tagPath} + '/Val_Sts/Value')),\n\tfalse,\n\ttag({view.params.tagPath} + '/Val_Sts/Value') = 2 || tag({view.params.tagPath} + '/Val_Sts/Value') = 8)"
         },
         "type": "expr"
       }
@@ -71,7 +71,7 @@
     "custom.values.commLoss": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '',\n\tfalse,\n\tisBad(tag({view.params.tagPath} + '/Status/Value')))"
+          "expression": "if({view.params.tagPath} = '',\n\tfalse,\n\tisBad(tag({view.params.tagPath} + '/Val_Sts/Value')))"
         },
         "type": "expr"
       }
