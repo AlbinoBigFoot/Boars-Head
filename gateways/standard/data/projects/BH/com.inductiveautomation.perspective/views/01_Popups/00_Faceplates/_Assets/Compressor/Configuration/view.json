@@ -1,11 +1,5 @@
 {
-  "custom": {
-    "values": {
-      "flaSp": "",
-      "svpSp": "",
-      "dispSp": ""
-    }
-  },
+  "custom": {},
   "params": {
     "tagPath": ""
   },
@@ -13,35 +7,11 @@
     "params.tagPath": {
       "paramDirection": "input",
       "persistent": true
-    },
-    "custom.values.flaSp": {
-      "binding": {
-        "config": {
-          "expression": "if({view.params.tagPath} = '', '', {view.params.tagPath} + '/FLA/SP/Value')"
-        },
-        "type": "expr"
-      }
-    },
-    "custom.values.svpSp": {
-      "binding": {
-        "config": {
-          "expression": "if({view.params.tagPath} = '', '', {view.params.tagPath} + '/SVP/SP/Value')"
-        },
-        "type": "expr"
-      }
-    },
-    "custom.values.dispSp": {
-      "binding": {
-        "config": {
-          "expression": "if({view.params.tagPath} = '', '', {view.params.tagPath} + '/DisP/SP/Value')"
-        },
-        "type": "expr"
-      }
     }
   },
   "props": {
     "defaultSize": {
-      "height": 360,
+      "height": 280,
       "width": 480
     }
   },
@@ -51,255 +21,6 @@
       "name": "root",
       "contextMenu": {}
     },
-    "props": {
-      "direction": "column",
-      "style": {
-        "overflow": "auto",
-        "padding": "4px"
-      }
-    },
-    "children": [
-      {
-        "type": "ia.display.label",
-        "meta": {
-          "name": "CfgTitle"
-        },
-        "props": {
-          "style": {
-            "classes": "faceplate-section-title font-label"
-          },
-          "text": "Setpoints (writable)"
-        }
-      },
-      {
-        "type": "ia.container.flex",
-        "meta": {
-          "name": "FlaSpBlock"
-        },
-        "position": {
-          "shrink": 0
-        },
-        "props": {
-          "direction": "column",
-          "style": {
-            "marginBottom": "12px",
-            "gap": "2px"
-          }
-        },
-        "children": [
-          {
-            "type": "ia.display.label",
-            "meta": {
-              "name": "FlaSpLbl"
-            },
-            "props": {
-              "style": {
-                "classes": "font-label",
-                "fontSize": "12px",
-                "fontWeight": "600"
-              },
-              "text": "FLA SP — click value to edit"
-            }
-          },
-          {
-            "type": "ia.display.view",
-            "meta": {
-              "name": "FlaSpEdit"
-            },
-            "propConfig": {
-              "props.params.tagPath": {
-                "binding": {
-                  "config": {
-                    "expression": "{view.custom.values.flaSp}"
-                  },
-                  "type": "expr"
-                }
-              },
-              "props.params.permissions": {
-                "binding": {
-                  "config": {
-                    "expression": "!{session.custom.ReadOnly}"
-                  },
-                  "type": "expr"
-                }
-              }
-            },
-            "props": {
-              "params": {
-                "permissions": true,
-                "setpoint": true,
-                "spacing": {
-                  "center": false,
-                  "data": 0,
-                  "engUnit": 30
-                },
-                "tagPath": ""
-              },
-              "path": "03_Elements/00_Control/AnalogValue",
-              "style": {
-                "height": "22px"
-              }
-            }
-          }
-        ]
-      },
-      {
-        "type": "ia.container.flex",
-        "meta": {
-          "name": "SvpSpBlock"
-        },
-        "position": {
-          "shrink": 0
-        },
-        "props": {
-          "direction": "column",
-          "style": {
-            "marginBottom": "12px",
-            "gap": "2px"
-          }
-        },
-        "children": [
-          {
-            "type": "ia.display.label",
-            "meta": {
-              "name": "SvpSpLbl"
-            },
-            "props": {
-              "style": {
-                "classes": "font-label",
-                "fontSize": "12px",
-                "fontWeight": "600"
-              },
-              "text": "SVP SP — click value to edit"
-            }
-          },
-          {
-            "type": "ia.display.view",
-            "meta": {
-              "name": "SvpSpEdit"
-            },
-            "propConfig": {
-              "props.params.tagPath": {
-                "binding": {
-                  "config": {
-                    "expression": "{view.custom.values.svpSp}"
-                  },
-                  "type": "expr"
-                }
-              },
-              "props.params.permissions": {
-                "binding": {
-                  "config": {
-                    "expression": "!{session.custom.ReadOnly}"
-                  },
-                  "type": "expr"
-                }
-              }
-            },
-            "props": {
-              "params": {
-                "permissions": true,
-                "setpoint": true,
-                "spacing": {
-                  "center": false,
-                  "data": 0,
-                  "engUnit": 30
-                },
-                "tagPath": ""
-              },
-              "path": "03_Elements/00_Control/AnalogValue",
-              "style": {
-                "height": "22px"
-              }
-            }
-          }
-        ]
-      },
-      {
-        "type": "ia.container.flex",
-        "meta": {
-          "name": "DispSpBlock"
-        },
-        "position": {
-          "shrink": 0
-        },
-        "props": {
-          "direction": "column",
-          "style": {
-            "marginBottom": "12px",
-            "gap": "2px"
-          }
-        },
-        "children": [
-          {
-            "type": "ia.display.label",
-            "meta": {
-              "name": "DispSpLbl"
-            },
-            "props": {
-              "style": {
-                "classes": "font-label",
-                "fontSize": "12px",
-                "fontWeight": "600"
-              },
-              "text": "DisP SP — click value to edit"
-            }
-          },
-          {
-            "type": "ia.display.view",
-            "meta": {
-              "name": "DispSpEdit"
-            },
-            "propConfig": {
-              "props.params.tagPath": {
-                "binding": {
-                  "config": {
-                    "expression": "{view.custom.values.dispSp}"
-                  },
-                  "type": "expr"
-                }
-              },
-              "props.params.permissions": {
-                "binding": {
-                  "config": {
-                    "expression": "!{session.custom.ReadOnly}"
-                  },
-                  "type": "expr"
-                }
-              }
-            },
-            "props": {
-              "params": {
-                "permissions": true,
-                "setpoint": true,
-                "spacing": {
-                  "center": false,
-                  "data": 0,
-                  "engUnit": 30
-                },
-                "tagPath": ""
-              },
-              "path": "03_Elements/00_Control/AnalogValue",
-              "style": {
-                "height": "22px"
-              }
-            }
-          }
-        ]
-      },
-      {
-        "type": "ia.display.label",
-        "meta": {
-          "name": "CfgNote"
-        },
-        "props": {
-          "style": {
-            "classes": "faceplate-stub font-label"
-          },
-          "text": "Additional UDT writables can be added here. CP_Mode / SV_Mode are shown on Controls (read-only Quantum modes)."
-        }
-      }
-    ],
     "propConfig": {
       "meta.contextMenu.items": {
         "binding": {
@@ -337,6 +58,171 @@
         }
       }
     },
+    "props": {
+      "direction": "column",
+      "style": {
+        "overflow": "auto",
+        "padding": "4px"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "CfgTitle"
+        },
+        "props": {
+          "style": {
+            "classes": "faceplate-section-title font-label"
+          },
+          "text": "PLC setpoints (writable)"
+        }
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "MinRuntime"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "marginBottom": "12px",
+            "gap": "2px"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "MinRuntimeLbl"
+            },
+            "props": {
+              "style": {
+                "classes": "font-label",
+                "fontSize": "12px",
+                "fontWeight": "600"
+              },
+              "text": "Min runtime set \u2014 click value to edit"
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "MinRuntimeEdit"
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.tagPath} = '', '', {view.params.tagPath} + '/Min_Runtime_Set')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.params.permissions": {
+                "binding": {
+                  "config": {
+                    "expression": "!{session.custom.ReadOnly}"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "permissions": true,
+                "setpoint": false,
+                "spacing": {
+                  "center": false,
+                  "data": 0,
+                  "engUnit": 30
+                },
+                "tagPath": ""
+              },
+              "path": "03_Elements/00_Control/AnalogValue",
+              "style": {
+                "height": "22px"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "FailTimer"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "marginBottom": "12px",
+            "gap": "2px"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "FailTimerLbl"
+            },
+            "props": {
+              "style": {
+                "classes": "font-label",
+                "fontSize": "12px",
+                "fontWeight": "600"
+              },
+              "text": "Fail timer PRE \u2014 click value to edit"
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "FailTimerEdit"
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.tagPath} = '', '', {view.params.tagPath} + '/Fail_Timer_PRE')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.params.permissions": {
+                "binding": {
+                  "config": {
+                    "expression": "!{session.custom.ReadOnly}"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "permissions": true,
+                "setpoint": false,
+                "spacing": {
+                  "center": false,
+                  "data": 0,
+                  "engUnit": 30
+                },
+                "tagPath": ""
+              },
+              "path": "03_Elements/00_Control/AnalogValue",
+              "style": {
+                "height": "22px"
+              }
+            }
+          }
+        ]
+      }
+    ],
     "scripts": {
       "customMethods": [],
       "extensionFunctions": null,

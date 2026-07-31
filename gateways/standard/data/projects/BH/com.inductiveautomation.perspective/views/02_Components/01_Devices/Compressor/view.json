@@ -71,7 +71,7 @@
     "custom.values.status": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '',\n\t'',\n\t{view.params.tagPath} + '/Status/Value')"
+          "expression": "if({view.params.tagPath} = '',\n\t'',\n\t{view.params.tagPath} + '/Rung/Value')"
         },
         "type": "expr"
       }
@@ -91,7 +91,7 @@
     "custom.values.commLoss": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '',\n\tfalse,\n\tisBad(tag({view.params.tagPath} + '/Status/Value')))"
+          "expression": "if({view.params.tagPath} = '',\n\tfalse,\n\tisBad(tag({view.params.tagPath} + '/Rung/Value')))"
         },
         "type": "expr"
       }
