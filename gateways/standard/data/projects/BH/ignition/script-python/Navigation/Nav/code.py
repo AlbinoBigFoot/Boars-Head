@@ -60,6 +60,7 @@ def navigate(data=None):
 		"00_Pages/Pumps/Graphic": "/pumps/graphic",
 		"00_Pages/ExhaustFans/Overview": "/exhaust-fans",
 		"00_Pages/ExhaustFans/Graphic": "/exhaust-fans/graphic",
+		"00_Pages/Machine Room/Overview": "/machine-room",
 		"00_Pages/Devices/Overview": "/devices",
 		"00_Pages/Alarms/Summary": "/alarms",
 		"00_Pages/Alarms/Journal": "/alarms/journal",
@@ -188,144 +189,297 @@ def alarmNavigation(source = ''):
 	else:
 		system.util.getLogger("Alarm Double Click Navigation").info("Source is empty")
 	
-def getNavItems():
-	# Read the Navigation Items stored in '[default]_Config/Navigation' tag
+NAV_TAG_PATH = '[default]_Config/Navigation'
+
+def _to_py(obj):
+	"""Coerce Document / Java maps to plain Python via encode/decode."""
+	if obj is None:
+		return None
+	try:
+		return system.util.jsonDecode(system.util.jsonEncode(obj))
+	except:
+		pass
+	try:
+		import json
+		return json.loads(str(obj))
+	except:
+		pass
+	try:
+		return system.util.jsonDecode(str(obj))
+	except:
+		return None
+
+def _as_items(obj):
+	"""Document may be {items:[...]} or a bare list of tree nodes."""
+	decoded = _to_py(obj)
+	if decoded is None:
+		return []
+	if isinstance(decoded, list):
+		return decoded
+	if isinstance(decoded, dict):
+		inner = decoded.get('items')
+		if isinstance(inner, list):
+			return inner
+		if 'label' in decoded or 'data' in decoded:
+			return [decoded]
+	return []
+
+def _deep_decode(node):
+	"""Unwrap nested JSON strings that Document tags sometimes embed."""
+	import json
+	if isinstance(node, list):
+		return [_deep_decode(n) for n in node]
+	if isinstance(node, dict):
+		out = {}
+		for k in node.keys():
+			out[k] = _deep_decode(node[k])
+		return out
+	if isinstance(node, basestring):
+		s = node.strip()
+		if s.startswith('{') or s.startswith('['):
+			try:
+				return _deep_decode(json.loads(s))
+			except:
+				pass
+	return node
+
+def _read_nav_items_from_tag():
+	"""Read live Navigation Document; fall back to tag defaultValue if empty."""
+	logger = system.util.getLogger("TreeDebug")
+	tagPath = NAV_TAG_PATH
+	try:
+		qv = system.tag.readBlocking([tagPath])[0]
+	except Exception, e:
+		logger.error("Failed to read navigation tag: " + str(e))
+		return []
 	items = []
-	tagPath = '[default]_Config/Navigation'
-	read = system.tag.readBlocking([tagPath])[0].value
-	if read is not None:
-		items = read['items']
+	if qv is not None and qv.quality.isGood() and qv.value is not None:
+		items = _as_items(qv.value)
+		items = _deep_decode(items) if items else []
+	if items:
+		return items
+	try:
+		cfg = system.tag.getConfiguration(tagPath, False)
+		if cfg and len(cfg) > 0:
+			dv = cfg[0].get('defaultValue')
+			items = _as_items(dv)
+			if items:
+				items = _deep_decode(items)
+				try:
+					system.tag.writeBlocking([tagPath], [{'items': items}])
+					logger.info("Restored Navigation tag from defaultValue")
+				except:
+					pass
+				return items
+	except Exception, e:
+		logger.warn("Navigation defaultValue fallback failed: " + str(e))
+	return []
+
+def getNavItems():
+	"""Full nav tree from gateway cache or Document tag."""
+	globals_dict = system.util.getGlobals()
+	cached = globals_dict.get("NavMasterTreeCache")
+	if isinstance(cached, list) and cached:
+		return cached
+	items = _read_nav_items_from_tag()
+	if items:
+		globals_dict["NavMasterTreeCache"] = items
 	return items
-    
+
 def findItemData(tagPath):
-    stack = list(Navigation.Nav.getNavItems())
-    matchedItemData = {}
-    matchedPathLength = -1
+	stack = list(Navigation.Nav.getNavItems())
+	matchedItemData = {}
+	matchedPathLength = -1
 
-    while stack:
-        item = stack.pop()
+	while stack:
+		item = stack.pop()
 
-        # Use .get(key, default) to avoid TypeError from Java Maps
-        children = item.get('items', None)
-        if children:
-            stack.extend(children)
+		# Use .get(key, default) to avoid TypeError from Java Maps
+		children = item.get('items', None)
+		if children:
+			stack.extend(children)
 
-        data = item.get('data', None)
-        if not data:
-            continue
+		data = item.get('data', None)
+		if not data:
+			continue
 
-        path = data.get('tagPath', None)
-        if not path:
-            continue
+		path = data.get('tagPath', None)
+		if not path:
+			continue
 
-        # Exact match: return immediately
-        if tagPath == path:
-            return data
+		# Exact match: return immediately
+		if tagPath == path:
+			return data
 
-        # Longest matching prefix logic
-        if tagPath.startswith(path + "/") and len(path) > matchedPathLength:
-            matchedItemData = data
-            matchedPathLength = len(path)
+		# Longest matching prefix logic
+		if tagPath.startswith(path + "/") and len(path) > matchedPathLength:
+			matchedItemData = data
+			matchedPathLength = len(path)
 
-    return matchedItemData
-    
-# Nav Tree Logic
-import json
-import system
+	return matchedItemData
 
-def getChildrenAt(item_path):
-    logger = system.util.getLogger("TreeDebug")
-    globals_dict = system.util.getGlobals()
-    
-    # 1. LOAD CACHE (Only runs once)
-    if "NavMasterTreeCache" not in globals_dict:
-        try:
-            tag_val = str(system.tag.readBlocking(["[default]_Config/Navigation"])[0].value)
-            master_data = json.loads(tag_val)
-        except Exception, e:
-            logger.error("Failed to parse navigation tag: " + str(e))
-            return []
-            
-        if type(master_data) is dict and "items" in master_data:
-            master_data = master_data["items"]
-            
-        def deep_decode(node):
-            if type(node) is list:
-                for i in range(len(node)): node[i] = deep_decode(node[i])
-            elif type(node) is dict:
-                for k in node.keys(): node[k] = deep_decode(node[k])
-            elif isinstance(node, basestring):
-                try:
-                    if node.startswith('{') or node.startswith('['):
-                        return deep_decode(json.loads(node))
-                except: pass
-            return node
-            
-        globals_dict["NavMasterTreeCache"] = deep_decode(master_data)
-        
-    # 2. NAVIGATE FAST CACHE
-    cached_tree = globals_dict["NavMasterTreeCache"]
-    
-    if not item_path: 
-        items_to_process = cached_tree
-    else:
-        target_node = cached_tree
-        for index in item_path:
-            if type(target_node) is list:
-                target_node = target_node[index]
-            elif type(target_node) is dict and "items" in target_node:
-                target_node = target_node["items"][index]
-                
-        if type(target_node) is dict:
-            items_to_process = target_node.get("items", [])
-        else:
-            items_to_process = []
-            
-    # 3. BUILD LIGHTWEIGHT UI
-    real_children = []
-    
-    if type(items_to_process) is list:
-        for child_dict in items_to_process:
-            if not isinstance(child_dict, dict):
-                continue
-            
-            new_child = child_dict.copy()
-            new_child["expanded"] = False
-            
-            items_array = child_dict.get("items")
-            if items_array and len(items_array) > 0:
-                new_child["items"] = [{"label": "Loading...", "data": {"isDummy": True}}]
-            else:
-                new_child["items"] = []
-                
-            real_children.append(new_child)
-            
-    return real_children
+def _resolve_is_admin(is_admin):
+	if is_admin is not None:
+		return bool(is_admin)
+	return False
 
-def findItemPath(viewPath, tagPath):
-    globals_dict = system.util.getGlobals()
-    
-    if "NavMasterTreeCache" not in globals_dict:
-        getChildrenAt([]) 
-        
-    cached_tree = globals_dict.get("NavMasterTreeCache", [])
-    
-    def search_tree(nodes, current_path):
-        for i, node in enumerate(nodes):
-            node_view = node.get("data", {}).get("viewPath")
-            node_tag = node.get("data", {}).get("tagPath")
-            
-            if node_view == viewPath:
-                if tagPath is None or tagPath == "" or node_tag == tagPath:
-                    return current_path + [i]
-                    
-            if "items" in node and len(node["items"]) > 0:
-                result = search_tree(node["items"], current_path + [i])
-                if result:
-                    return result
-        return None
-        
-    return search_tree(cached_tree, [])
+def _node_allowed(node, is_admin):
+	if not isinstance(node, dict):
+		node = _to_py(node)
+	if not isinstance(node, dict):
+		return False
+	data = node.get('data') or {}
+	if not isinstance(data, dict):
+		data = _to_py(data) if data is not None else {}
+	if not isinstance(data, dict):
+		data = {}
+	if data.get('adminOnly') and not is_admin:
+		return False
+	return True
+
+def seedCacheFrom(items):
+	"""Prime NavMasterTreeCache from a Python list (view.custom.items seed)."""
+	globals_dict = system.util.getGlobals()
+	py = _as_items(items)
+	if not py:
+		py = _to_py(items)
+		if isinstance(py, dict):
+			py = py.get("items") if isinstance(py.get("items"), list) else []
+		if not isinstance(py, list):
+			py = []
+	py = _deep_decode(py) if py else []
+	if isinstance(py, dict):
+		py = py.get("items") if isinstance(py.get("items"), list) else []
+	globals_dict["NavMasterTreeCache"] = py if isinstance(py, list) else []
+	return globals_dict["NavMasterTreeCache"]
+
+def getChildrenAt(item_path, is_admin=None):
+	"""Return children at item_path from the full master tree (no Loading stubs).
+
+	Kept for optional callers; the Navigation Tree UI binds the full tree
+	from view.custom.items and does not use this for expand/collapse.
+	"""
+	is_admin = _resolve_is_admin(is_admin)
+	cached_tree = getNavItems()
+	if not cached_tree:
+		return []
+	if isinstance(cached_tree, dict):
+		cached_tree = cached_tree.get("items") or []
+	if not isinstance(cached_tree, list):
+		return []
+
+	if not item_path:
+		items_to_process = cached_tree
+	else:
+		current = cached_tree
+		target = None
+		try:
+			for index in item_path:
+				idx = int(index)
+				if idx < 0 or idx >= len(current):
+					return []
+				target = current[idx]
+				if not isinstance(target, dict):
+					target = _to_py(target)
+				current = (target.get("items") or []) if isinstance(target, dict) else []
+		except:
+			return []
+		items_to_process = (target.get("items") or []) if isinstance(target, dict) else []
+
+	out = []
+	for child in items_to_process or []:
+		if not isinstance(child, dict):
+			child = _to_py(child)
+		if not isinstance(child, dict) or not _node_allowed(child, is_admin):
+			continue
+		try:
+			copy = system.util.jsonDecode(system.util.jsonEncode(child))
+		except:
+			copy = dict(child)
+		kids = copy.get("items") or []
+		# Recurse full subtree (admin-filtered); no Loading... dummies
+		if kids:
+			# Build filtered recursive copy via getMasterTree-style walk on this node
+			pass
+		out.append(copy)
+	# Admin-filter nested items in place
+	def filter_nodes(nodes):
+		filtered = []
+		for n in nodes or []:
+			if not isinstance(n, dict):
+				continue
+			if not _node_allowed(n, is_admin):
+				continue
+			kids = n.get("items") or []
+			if kids:
+				n["items"] = filter_nodes(kids)
+			else:
+				n["items"] = []
+			filtered.append(n)
+		return filtered
+	return filter_nodes(out)
+
+def getMasterTree(is_admin=None):
+	"""Full decoded nav tree (admin-filtered). Used by search helpers if needed."""
+	is_admin = _resolve_is_admin(is_admin)
+	cached = getNavItems()
+	if not cached:
+		return []
+
+	def filter_nodes(nodes):
+		out = []
+		for n in nodes or []:
+			if not isinstance(n, dict):
+				n = _to_py(n)
+			if not isinstance(n, dict):
+				continue
+			if not _node_allowed(n, is_admin):
+				continue
+			try:
+				copy = system.util.jsonDecode(system.util.jsonEncode(n))
+			except:
+				copy = dict(n)
+			kids = n.get("items") or []
+			if isinstance(kids, list) and kids:
+				copy["items"] = filter_nodes(kids)
+			else:
+				copy["items"] = []
+			out.append(copy)
+		return out
+
+	return filter_nodes(cached)
+
+def findItemPath(viewPath=None, tagPath=None, page=None):
+	"""Locate index path in master cache by viewPath / tagPath / page."""
+	cached_tree = getNavItems()
+	if not cached_tree:
+		return None
+
+	def search_tree(nodes, current_path):
+		for i, node in enumerate(nodes or []):
+			if not isinstance(node, dict):
+				node = _to_py(node) or {}
+			data = node.get("data") or {}
+			if not isinstance(data, dict):
+				data = {}
+			node_view = data.get("viewPath") or ""
+			node_tag = data.get("tagPath") or ""
+			node_page = data.get("page") or ""
+			viewOk = (viewPath is None or viewPath == "" or node_view == viewPath)
+			tagOk = (tagPath is None or tagPath == "" or node_tag == tagPath)
+			pageOk = (page is None or page == "" or node_page == page)
+			if (viewPath or page) and viewOk and tagOk and pageOk:
+				if (viewPath and node_view == viewPath) or (page and node_page == page):
+					if tagPath is None or tagPath == "" or node_tag == tagPath:
+						return current_path + [i]
+			kids = node.get("items") or []
+			if kids:
+				result = search_tree(kids, current_path + [i])
+				if result:
+					return result
+		return None
+
+	return search_tree(cached_tree, [])
 
 def flushCache():
-    system.util.getGlobals().pop("NavMasterTreeCache", None)
+	system.util.getGlobals().pop("NavMasterTreeCache", None)

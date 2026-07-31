@@ -1,0 +1,2133 @@
+{
+  "Pump": {
+    "root_ok": [
+      {
+        "path": "Alm",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Comm",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Failed",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Flow",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Started",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Status",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Multistate",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SummaryInstances",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Expression",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      }
+    ],
+    "non_root_instances": [
+      {
+        "path": "_Alarms",
+        "tagType": "UdtInstance",
+        "typeId": "Config/_Alarms",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      }
+    ],
+    "folders": [
+      "Interlock"
+    ],
+    "intentional_atomics": [
+      {
+        "path": "AutoEN",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "Cmd_Auto",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "Cmd_Manual",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "Cmd_Reset",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "Cmd_Start",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "Cmd_Stop",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "MAINT",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "OPER",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "PROG",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      }
+    ],
+    "convert_candidates": [
+      {
+        "path": "Fail_Timer_PRE",
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "s",
+        "states": null
+      },
+      {
+        "path": "MotorStarts",
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "RuntimeHours",
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "h",
+        "states": null
+      }
+    ],
+    "interlock_atomic_count": 40,
+    "interlock_sample": [
+      {
+        "path": "Interlock/Sts_IntlkOK",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Sts_NBIntlkOK",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Sts_BypActive",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Sts_FirstOut",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Sts_Intlk",
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_Bypassable",
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/OCmd_Reset",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Rdy_Reset",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt00",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt01",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt02",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt03",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      }
+    ],
+    "instance_conflicts_by_path": {
+      "_Alarms": {
+        "count": 4,
+        "udt_expects": "UdtInstance Config/_Alarms",
+        "sample": [
+          {
+            "instance": "PMP-02",
+            "shape": "AtomicTag None vs=None"
+          },
+          {
+            "instance": "PMP-01",
+            "shape": "AtomicTag None vs=None"
+          },
+          {
+            "instance": "PMP-03",
+            "shape": "AtomicTag None vs=None"
+          },
+          {
+            "instance": "PMP-04",
+            "shape": "AtomicTag None vs=None"
+          }
+        ]
+      }
+    },
+    "instance_amplify_convert_paths": {
+      "MotorStarts": {
+        "count": 1,
+        "sample": [
+          {
+            "instance": "PMP-01",
+            "shape": "AtomicTag Int4 vs=memory eng=None"
+          }
+        ]
+      },
+      "RuntimeHours": {
+        "count": 1,
+        "sample": [
+          {
+            "instance": "PMP-01",
+            "shape": "AtomicTag Float4 vs=memory eng=h"
+          }
+        ]
+      }
+    },
+    "instance_amplify_intentional_paths": {
+      "Cmd_Start": {
+        "count": 1
+      },
+      "Cmd_Stop": {
+        "count": 1
+      },
+      "MAINT": {
+        "count": 1
+      },
+      "OPER": {
+        "count": 1
+      },
+      "PROG": {
+        "count": 1
+      }
+    },
+    "odd_typeId_overrides": [],
+    "instance_count_checked": 5
+  },
+  "ExhaustFan": {
+    "root_ok": [
+      {
+        "path": "Airflow",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Alm",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Comm",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Failed",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Started",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Status",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Multistate",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SummaryInstances",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Expression",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      }
+    ],
+    "non_root_instances": [
+      {
+        "path": "_Alarms",
+        "tagType": "UdtInstance",
+        "typeId": "Config/_Alarms",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      }
+    ],
+    "folders": [
+      "Interlock"
+    ],
+    "intentional_atomics": [
+      {
+        "path": "AutoEN",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "Cmd_Auto",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "Cmd_Manual",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "Cmd_Reset",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "Cmd_Start",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "Cmd_Stop",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "MAINT",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "OPER",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "PROG",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      }
+    ],
+    "convert_candidates": [
+      {
+        "path": "Fail_Timer_PRE",
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "s",
+        "states": null
+      },
+      {
+        "path": "MotorStarts",
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "RuntimeHours",
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "h",
+        "states": null
+      }
+    ],
+    "interlock_atomic_count": 40,
+    "interlock_sample": [
+      {
+        "path": "Interlock/Sts_IntlkOK",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Sts_NBIntlkOK",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Sts_BypActive",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Sts_FirstOut",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Sts_Intlk",
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_Bypassable",
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/OCmd_Reset",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Rdy_Reset",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt00",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt01",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt02",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt03",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      }
+    ],
+    "instance_conflicts_by_path": {
+      "_Alarms": {
+        "count": 4,
+        "udt_expects": "UdtInstance Config/_Alarms",
+        "sample": [
+          {
+            "instance": "EFAN-03",
+            "shape": "AtomicTag None vs=None"
+          },
+          {
+            "instance": "EFAN-02",
+            "shape": "AtomicTag None vs=None"
+          },
+          {
+            "instance": "EFAN-01",
+            "shape": "AtomicTag None vs=None"
+          },
+          {
+            "instance": "EFAN-04",
+            "shape": "AtomicTag None vs=None"
+          }
+        ]
+      }
+    },
+    "instance_amplify_convert_paths": {
+      "MotorStarts": {
+        "count": 1,
+        "sample": [
+          {
+            "instance": "EFAN-01",
+            "shape": "AtomicTag Int4 vs=memory eng=None"
+          }
+        ]
+      },
+      "RuntimeHours": {
+        "count": 1,
+        "sample": [
+          {
+            "instance": "EFAN-01",
+            "shape": "AtomicTag Float4 vs=memory eng=h"
+          }
+        ]
+      }
+    },
+    "instance_amplify_intentional_paths": {
+      "Cmd_Start": {
+        "count": 1
+      },
+      "Cmd_Stop": {
+        "count": 1
+      },
+      "MAINT": {
+        "count": 1
+      },
+      "OPER": {
+        "count": 1
+      },
+      "PROG": {
+        "count": 1
+      }
+    },
+    "odd_typeId_overrides": [],
+    "instance_count_checked": 5
+  },
+  "Valve": {
+    "root_ok": [
+      {
+        "path": "ClosedLS",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Comm",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Failed",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "OpenLS",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Status",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Multistate",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SummaryInstances",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Expression",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "TravelTime",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      }
+    ],
+    "non_root_instances": [
+      {
+        "path": "_Alarms",
+        "tagType": "UdtInstance",
+        "typeId": "Config/_Alarms",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      }
+    ],
+    "folders": [
+      "Interlock"
+    ],
+    "intentional_atomics": [
+      {
+        "path": "Cmd_Close",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "Cmd_Open",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "Cmd_Reset",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "MAINT",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "OPER",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "PROG",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      }
+    ],
+    "convert_candidates": [],
+    "interlock_atomic_count": 40,
+    "interlock_sample": [
+      {
+        "path": "Interlock/Sts_IntlkOK",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Sts_NBIntlkOK",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Sts_BypActive",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Sts_FirstOut",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Sts_Intlk",
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_Bypassable",
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/OCmd_Reset",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Rdy_Reset",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt00",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt01",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt02",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt03",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      }
+    ],
+    "instance_conflicts_by_path": {},
+    "instance_amplify_convert_paths": {},
+    "instance_amplify_intentional_paths": {
+      "OPER": {
+        "count": 1
+      }
+    },
+    "odd_typeId_overrides": [],
+    "instance_count_checked": 4
+  },
+  "Tank": {
+    "root_ok": [
+      {
+        "path": "H",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "HH",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "L",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "LL",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "LSH",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "LSL",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Level",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Pressure",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Status",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Multistate",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SummaryInstances",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Expression",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      }
+    ],
+    "non_root_instances": [
+      {
+        "path": "_Alarms",
+        "tagType": "UdtInstance",
+        "typeId": "Config/_Alarms",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      }
+    ],
+    "folders": [
+      "Interlock"
+    ],
+    "intentional_atomics": [],
+    "convert_candidates": [],
+    "interlock_atomic_count": 7,
+    "interlock_sample": [
+      {
+        "path": "Interlock/Sts_IntlkOK",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/OCmd_Reset",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Rdy_Reset",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt00",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt01",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt02",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt03",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      }
+    ],
+    "instance_conflicts_by_path": {
+      "_Alarms": {
+        "count": 3,
+        "udt_expects": "UdtInstance Config/_Alarms",
+        "sample": [
+          {
+            "instance": "LTR",
+            "shape": "AtomicTag None vs=None"
+          },
+          {
+            "instance": "HPR",
+            "shape": "AtomicTag None vs=None"
+          },
+          {
+            "instance": "HTR",
+            "shape": "AtomicTag None vs=None"
+          }
+        ]
+      }
+    },
+    "instance_amplify_convert_paths": {},
+    "instance_amplify_intentional_paths": {},
+    "odd_typeId_overrides": [],
+    "instance_count_checked": 7
+  },
+  "Sensor": {
+    "root_ok": [
+      {
+        "path": "Fail",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Hi",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "HiHi",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Lo",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "LoLo",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Status",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Multistate",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SummaryInstances",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Expression",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Value",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      }
+    ],
+    "non_root_instances": [
+      {
+        "path": "_Alarms",
+        "tagType": "UdtInstance",
+        "typeId": "Config/_Alarms",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      }
+    ],
+    "folders": [],
+    "intentional_atomics": [
+      {
+        "path": "Cmd_Reset",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      }
+    ],
+    "convert_candidates": [
+      {
+        "path": "HiHiLim",
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "psig",
+        "states": null
+      },
+      {
+        "path": "HiLim",
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "psig",
+        "states": null
+      },
+      {
+        "path": "LoLim",
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "psig",
+        "states": null
+      },
+      {
+        "path": "LoLoLim",
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "psig",
+        "states": null
+      }
+    ],
+    "interlock_atomic_count": 0,
+    "interlock_sample": [],
+    "instance_conflicts_by_path": {},
+    "instance_amplify_convert_paths": {
+      "HiHiLim": {
+        "count": 4,
+        "sample": [
+          {
+            "instance": "LSS-PT",
+            "shape": "AtomicTag Float4 vs=memory eng=psig"
+          },
+          {
+            "instance": "HSS-PT",
+            "shape": "AtomicTag Float4 vs=memory eng=psig"
+          },
+          {
+            "instance": "HPR-PT",
+            "shape": "AtomicTag Float4 vs=memory eng=psig"
+          },
+          {
+            "instance": "OIL-TT",
+            "shape": "AtomicTag Float4 vs=memory eng=\u00b0F"
+          }
+        ]
+      },
+      "HiLim": {
+        "count": 4,
+        "sample": [
+          {
+            "instance": "LSS-PT",
+            "shape": "AtomicTag Float4 vs=memory eng=psig"
+          },
+          {
+            "instance": "HSS-PT",
+            "shape": "AtomicTag Float4 vs=memory eng=psig"
+          },
+          {
+            "instance": "HPR-PT",
+            "shape": "AtomicTag Float4 vs=memory eng=psig"
+          },
+          {
+            "instance": "OIL-TT",
+            "shape": "AtomicTag Float4 vs=memory eng=\u00b0F"
+          }
+        ]
+      },
+      "LoLim": {
+        "count": 4,
+        "sample": [
+          {
+            "instance": "LSS-PT",
+            "shape": "AtomicTag Float4 vs=memory eng=psig"
+          },
+          {
+            "instance": "HSS-PT",
+            "shape": "AtomicTag Float4 vs=memory eng=psig"
+          },
+          {
+            "instance": "HPR-PT",
+            "shape": "AtomicTag Float4 vs=memory eng=psig"
+          },
+          {
+            "instance": "OIL-TT",
+            "shape": "AtomicTag Float4 vs=memory eng=\u00b0F"
+          }
+        ]
+      },
+      "LoLoLim": {
+        "count": 4,
+        "sample": [
+          {
+            "instance": "LSS-PT",
+            "shape": "AtomicTag Float4 vs=memory eng=psig"
+          },
+          {
+            "instance": "HSS-PT",
+            "shape": "AtomicTag Float4 vs=memory eng=psig"
+          },
+          {
+            "instance": "HPR-PT",
+            "shape": "AtomicTag Float4 vs=memory eng=psig"
+          },
+          {
+            "instance": "OIL-TT",
+            "shape": "AtomicTag Float4 vs=memory eng=\u00b0F"
+          }
+        ]
+      }
+    },
+    "instance_amplify_intentional_paths": {},
+    "odd_typeId_overrides": [],
+    "instance_count_checked": 4
+  },
+  "Evaporator": {
+    "root_ok": [
+      {
+        "path": "IntlkOK",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Off",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "PermOK",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Pressure",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Status",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Multistate",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SummaryInstances",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Expression",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Temp",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "TimeLeft",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "TooCold",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "TooHot",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      }
+    ],
+    "non_root_instances": [
+      {
+        "path": "Fan 1",
+        "tagType": "UdtInstance",
+        "typeId": "Devices/VFD",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Fan 2",
+        "tagType": "UdtInstance",
+        "typeId": "Devices/VFD",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Fan 3",
+        "tagType": "UdtInstance",
+        "typeId": "Devices/VFD",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "_Alarms",
+        "tagType": "UdtInstance",
+        "typeId": "Config/_Alarms",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      }
+    ],
+    "folders": [
+      "Interlock"
+    ],
+    "intentional_atomics": [
+      {
+        "path": "Cleanup",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "Cmd_StartDefrost",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "Cmd_StopDefrost",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "HMIEnable",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      }
+    ],
+    "convert_candidates": [
+      {
+        "path": "Cfg_Bleed",
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "min",
+        "states": null
+      },
+      {
+        "path": "Cfg_CoolingTime",
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "min",
+        "states": null
+      },
+      {
+        "path": "Cfg_FanDelay",
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "min",
+        "states": null
+      },
+      {
+        "path": "Cfg_MainHotGas",
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "min",
+        "states": null
+      },
+      {
+        "path": "Cfg_PumpOut",
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "min",
+        "states": null
+      },
+      {
+        "path": "Cfg_SoftHotGas",
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "min",
+        "states": null
+      },
+      {
+        "path": "Cfg_ZoneAirTempDB",
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "\u00b0F",
+        "states": null
+      }
+    ],
+    "interlock_atomic_count": 40,
+    "interlock_sample": [
+      {
+        "path": "Interlock/Sts_IntlkOK",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Sts_NBIntlkOK",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Sts_BypActive",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Sts_FirstOut",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Sts_Intlk",
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_Bypassable",
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/OCmd_Reset",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Rdy_Reset",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt00",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt01",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt02",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt03",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      }
+    ],
+    "instance_conflicts_by_path": {
+      "_Alarms": {
+        "count": 17,
+        "udt_expects": "UdtInstance Config/_Alarms",
+        "sample": [
+          {
+            "instance": "EV-04",
+            "shape": "AtomicTag None vs=None"
+          },
+          {
+            "instance": "EV-14",
+            "shape": "AtomicTag None vs=None"
+          },
+          {
+            "instance": "EV-09",
+            "shape": "AtomicTag None vs=None"
+          },
+          {
+            "instance": "EV-02",
+            "shape": "AtomicTag None vs=None"
+          },
+          {
+            "instance": "EV-15",
+            "shape": "AtomicTag None vs=None"
+          }
+        ]
+      }
+    },
+    "instance_amplify_convert_paths": {},
+    "instance_amplify_intentional_paths": {},
+    "odd_typeId_overrides": [],
+    "instance_count_checked": 18
+  },
+  "CoolingTower": {
+    "root_ok": [
+      {
+        "path": "Alm",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Comm",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Failed",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SPD_FBK",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Status",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Multistate",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SummaryInstances",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Expression",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Temp",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      }
+    ],
+    "non_root_instances": [
+      {
+        "path": "_Alarms",
+        "tagType": "UdtInstance",
+        "typeId": "Config/_Alarms",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      }
+    ],
+    "folders": [
+      "Interlock"
+    ],
+    "intentional_atomics": [
+      {
+        "path": "Cmd_Auto",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "Cmd_Manual",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "Cmd_Start",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "Cmd_Stop",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "MAINT",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "OPER",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "PROG",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      }
+    ],
+    "convert_candidates": [
+      {
+        "path": "MotorStarts",
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "RuntimeHours",
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "h",
+        "states": null
+      }
+    ],
+    "interlock_atomic_count": 40,
+    "interlock_sample": [
+      {
+        "path": "Interlock/Sts_IntlkOK",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Sts_NBIntlkOK",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Sts_BypActive",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Sts_FirstOut",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Sts_Intlk",
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_Bypassable",
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/OCmd_Reset",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Rdy_Reset",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt00",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt01",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt02",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt03",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      }
+    ],
+    "instance_conflicts_by_path": {
+      "_Alarms": {
+        "count": 4,
+        "udt_expects": "UdtInstance Config/_Alarms",
+        "sample": [
+          {
+            "instance": "CT-02",
+            "shape": "AtomicTag None vs=None"
+          },
+          {
+            "instance": "CT-03",
+            "shape": "AtomicTag None vs=None"
+          },
+          {
+            "instance": "CT-01",
+            "shape": "AtomicTag None vs=None"
+          },
+          {
+            "instance": "CT-04",
+            "shape": "AtomicTag None vs=None"
+          }
+        ]
+      }
+    },
+    "instance_amplify_convert_paths": {},
+    "instance_amplify_intentional_paths": {},
+    "odd_typeId_overrides": [],
+    "instance_count_checked": 5
+  },
+  "Compressor": {
+    "root_ok": [
+      {
+        "path": "Alm",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Amps",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "CP_Mode",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Multistate",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Color",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Multistate",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Comm",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Cutout",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "DisP",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "FLA",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Failed",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Rung",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Multistate",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SVP",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SV_Mode",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Multistate",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Started",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Status",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Multistate",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SummaryInstances",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Expression",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      }
+    ],
+    "non_root_instances": [
+      {
+        "path": "_Alarms",
+        "tagType": "UdtInstance",
+        "typeId": "Config/_Alarms",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      }
+    ],
+    "folders": [
+      "Interlock"
+    ],
+    "intentional_atomics": [
+      {
+        "path": "AutoEN",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "Cmd_Auto",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "Cmd_Manual",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "Cmd_Remote",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "Cmd_Start",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "Cmd_Stop",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "MAINT",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "OPER",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      },
+      {
+        "path": "PROG",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "reason": "Compressor golden: raw bool cmd/mode"
+      }
+    ],
+    "convert_candidates": [
+      {
+        "path": "Fail_Timer_PRE",
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "s",
+        "states": null
+      },
+      {
+        "path": "MaxRunTimePerStart",
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "h",
+        "states": null
+      },
+      {
+        "path": "Min_Runtime_Set",
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "s",
+        "states": null
+      },
+      {
+        "path": "MotorStarts",
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "RuntimeHours",
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "h",
+        "states": null
+      }
+    ],
+    "interlock_atomic_count": 40,
+    "interlock_sample": [
+      {
+        "path": "Interlock/Sts_IntlkOK",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Sts_NBIntlkOK",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Sts_BypActive",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Sts_FirstOut",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Sts_Intlk",
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_Bypassable",
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/OCmd_Reset",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Rdy_Reset",
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt00",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt01",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt02",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt03",
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null
+      }
+    ],
+    "instance_conflicts_by_path": {},
+    "instance_amplify_convert_paths": {},
+    "instance_amplify_intentional_paths": {},
+    "odd_typeId_overrides": [],
+    "instance_count_checked": 6
+  }
+}

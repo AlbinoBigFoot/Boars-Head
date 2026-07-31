@@ -1,0 +1,363 @@
+{
+  "custom": {},
+  "params": {
+    "brEfTagPath": "",
+    "fireTagPath": "",
+    "mrAdTagPath": "",
+    "mrEfTagPath": "",
+    "rdisksTagPath": "",
+    "title": "SAFETYS",
+    "vlAdTagPath": ""
+  },
+  "propConfig": {
+    "params.brEfTagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.fireTagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.mrAdTagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.mrEfTagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.rdisksTagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.title": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.vlAdTagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 361,
+      "width": 233
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Title"
+        },
+        "position": {
+          "basis": "18px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.params.title"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "align": "center",
+          "style": {
+            "classes": "font-value safetys-title",
+            "fontSize": "12px",
+            "fontWeight": "700",
+            "height": "18px",
+            "letterSpacing": "0.04em",
+            "textAlign": "center",
+            "textDecoration": "underline",
+            "width": "100%"
+          }
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "MrAd"
+                },
+                "position": {
+                  "basis": "48px",
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.params.tagPath": {
+                    "binding": {
+                      "config": {
+                        "path": "view.params.mrAdTagPath"
+                      },
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "params": {
+                    "label": "MR AD",
+                    "okValue": true
+                  },
+                  "path": "03_Elements/01_Status/StatusDot",
+                  "style": {
+                    "classes": "safetys-embed",
+                    "height": "48px",
+                    "overflow": "visible",
+                    "width": "72px"
+                  }
+                },
+                "type": "ia.display.view"
+              },
+              {
+                "meta": {
+                  "name": "VlAd"
+                },
+                "position": {
+                  "basis": "48px",
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.params.tagPath": {
+                    "binding": {
+                      "config": {
+                        "path": "view.params.vlAdTagPath"
+                      },
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "params": {
+                    "label": "VL AD",
+                    "okValue": true
+                  },
+                  "path": "03_Elements/01_Status/StatusDot",
+                  "style": {
+                    "classes": "safetys-embed",
+                    "height": "48px",
+                    "overflow": "visible",
+                    "width": "72px"
+                  }
+                },
+                "type": "ia.display.view"
+              },
+              {
+                "meta": {
+                  "name": "Rdisks"
+                },
+                "position": {
+                  "basis": "48px",
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.params.tagPath": {
+                    "binding": {
+                      "config": {
+                        "path": "view.params.rdisksTagPath"
+                      },
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "params": {
+                    "label": "RDISKS",
+                    "okValue": true
+                  },
+                  "path": "03_Elements/01_Status/StatusDot",
+                  "style": {
+                    "classes": "safetys-embed",
+                    "height": "48px",
+                    "overflow": "visible",
+                    "width": "72px"
+                  }
+                },
+                "type": "ia.display.view"
+              },
+              {
+                "meta": {
+                  "name": "Fire"
+                },
+                "position": {
+                  "basis": "48px",
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.params.tagPath": {
+                    "binding": {
+                      "config": {
+                        "path": "view.params.fireTagPath"
+                      },
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "params": {
+                    "label": "FIRE",
+                    "okValue": true
+                  },
+                  "path": "03_Elements/01_Status/StatusDot",
+                  "style": {
+                    "classes": "safetys-embed",
+                    "height": "48px",
+                    "overflow": "visible",
+                    "width": "72px"
+                  }
+                },
+                "type": "ia.display.view"
+              }
+            ],
+            "meta": {
+              "name": "Indicators"
+            },
+            "position": {
+              "basis": "73px",
+              "shrink": 0
+            },
+            "props": {
+              "alignItems": "center",
+              "direction": "column",
+              "justify": "space-between",
+              "style": {
+                "classes": "safetys-indicators",
+                "width": "72px"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "MrEf"
+                },
+                "position": {
+                  "basis": "180px",
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.params.tagPath": {
+                    "binding": {
+                      "config": {
+                        "path": "view.params.mrEfTagPath"
+                      },
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "params": {
+                    "faceplate": "",
+                    "feedback": false,
+                    "label": "MR EF"
+                  },
+                  "path": "02_Components/01_Devices/ExhaustFan",
+                  "style": {
+                    "classes": "safetys-embed safetys-fan",
+                    "height": "116px",
+                    "overflow": "visible",
+                    "width": "130px"
+                  }
+                },
+                "type": "ia.display.view"
+              },
+              {
+                "meta": {
+                  "name": "BrEf"
+                },
+                "position": {
+                  "basis": "138px",
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.params.tagPath": {
+                    "binding": {
+                      "config": {
+                        "path": "view.params.brEfTagPath"
+                      },
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "params": {
+                    "faceplate": "",
+                    "feedback": false,
+                    "label": "BR EF"
+                  },
+                  "path": "02_Components/01_Devices/ExhaustFan",
+                  "style": {
+                    "classes": "safetys-embed safetys-fan",
+                    "height": "116px",
+                    "overflow": "visible",
+                    "width": "130px"
+                  }
+                },
+                "type": "ia.display.view"
+              }
+            ],
+            "meta": {
+              "name": "Fans"
+            },
+            "position": {
+              "basis": "104px",
+              "shrink": 0
+            },
+            "props": {
+              "alignItems": "center",
+              "direction": "column",
+              "style": {
+                "classes": "safetys-fans",
+                "gap": "4px",
+                "overflow": "visible",
+                "width": "130px"
+              }
+            },
+            "type": "ia.container.flex"
+          }
+        ],
+        "meta": {
+          "name": "Body"
+        },
+        "position": {
+          "basis": "328px",
+          "shrink": 0
+        },
+        "props": {
+          "justify": "center",
+          "style": {
+            "classes": "safetys-body",
+            "gap": "8px",
+            "overflow": "visible",
+            "width": "100%"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "safetys-widget",
+        "gap": "4px",
+        "height": "100%",
+        "padding": "6px 8px 8px",
+        "width": "100%"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

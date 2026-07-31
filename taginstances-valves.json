@@ -1,0 +1,522 @@
+{
+  "name": "Valves",
+  "tagType": "Folder",
+  "tags": [
+    {
+      "name": "SV-01",
+      "tagType": "Folder",
+      "metadata": {
+        "shortDescription": "SV-01",
+        "longDescription": "SV-01"
+      },
+      "tags": [
+        {
+          "name": "Status",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "metadata": {
+                "shortDescription": "status",
+                "states": [
+                  {
+                    "label": "Closed",
+                    "value": 0
+                  },
+                  {
+                    "label": "Open",
+                    "value": 1
+                  },
+                  {
+                    "label": "Fault",
+                    "value": 2
+                  }
+                ]
+              },
+              "dataType": "Int4",
+              "name": "Value",
+              "value": 1,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "Temp",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "value": 34.2,
+              "engUnit": "\u00b0F",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "_Alarms",
+          "typeId": "Config/_Alarms",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Active",
+              "value": false,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_ActiveHighPriority",
+              "value": 10,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_UnackHighPriority",
+              "value": 10,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Unack",
+              "value": false,
+              "tagType": "AtomicTag"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SV-02",
+      "tagType": "Folder",
+      "metadata": {
+        "shortDescription": "SV-02",
+        "longDescription": "SV-02"
+      },
+      "tags": [
+        {
+          "name": "Status",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "metadata": {
+                "shortDescription": "status",
+                "states": [
+                  {
+                    "label": "Closed",
+                    "value": 0
+                  },
+                  {
+                    "label": "Open",
+                    "value": 1
+                  },
+                  {
+                    "label": "Fault",
+                    "value": 2
+                  }
+                ]
+              },
+              "dataType": "Int4",
+              "name": "Value",
+              "value": 0,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "Temp",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "value": 28.5,
+              "engUnit": "\u00b0F",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "_Alarms",
+          "typeId": "Config/_Alarms",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Active",
+              "value": false,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_ActiveHighPriority",
+              "value": 10,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_UnackHighPriority",
+              "value": 10,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Unack",
+              "value": false,
+              "tagType": "AtomicTag"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SV-03",
+      "tagType": "Folder",
+      "metadata": {
+        "shortDescription": "SV-03",
+        "longDescription": "SV-03"
+      },
+      "tags": [
+        {
+          "name": "Status",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "metadata": {
+                "shortDescription": "status",
+                "states": [
+                  {
+                    "label": "Closed",
+                    "value": 0
+                  },
+                  {
+                    "label": "Open",
+                    "value": 1
+                  },
+                  {
+                    "label": "Fault",
+                    "value": 2
+                  }
+                ]
+              },
+              "dataType": "Int4",
+              "name": "Value",
+              "value": 2,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "Temp",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "value": 41.0,
+              "engUnit": "\u00b0F",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "_Alarms",
+          "typeId": "Config/_Alarms",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Active",
+              "value": true,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_ActiveHighPriority",
+              "value": 1,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_UnackHighPriority",
+              "value": 10,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Unack",
+              "value": true,
+              "tagType": "AtomicTag"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SV3-01",
+      "tagType": "Folder",
+      "metadata": {
+        "shortDescription": "SV3-01",
+        "longDescription": "SV3-01"
+      },
+      "tags": [
+        {
+          "name": "Status",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "metadata": {
+                "shortDescription": "status",
+                "states": [
+                  {
+                    "label": "Closed",
+                    "value": 0
+                  },
+                  {
+                    "label": "Open",
+                    "value": 1
+                  },
+                  {
+                    "label": "Fault",
+                    "value": 2
+                  }
+                ]
+              },
+              "dataType": "Int4",
+              "name": "Value",
+              "value": 1,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "Temp",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "value": 36.1,
+              "engUnit": "\u00b0F",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "_Alarms",
+          "typeId": "Config/_Alarms",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Active",
+              "value": false,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_ActiveHighPriority",
+              "value": 10,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_UnackHighPriority",
+              "value": 10,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Unack",
+              "value": false,
+              "tagType": "AtomicTag"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SV3-02",
+      "tagType": "Folder",
+      "metadata": {
+        "shortDescription": "SV3-02",
+        "longDescription": "SV3-02"
+      },
+      "tags": [
+        {
+          "name": "Status",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "metadata": {
+                "shortDescription": "status",
+                "states": [
+                  {
+                    "label": "Closed",
+                    "value": 0
+                  },
+                  {
+                    "label": "Open",
+                    "value": 1
+                  },
+                  {
+                    "label": "Fault",
+                    "value": 2
+                  }
+                ]
+              },
+              "dataType": "Int4",
+              "name": "Value",
+              "value": 0,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "Temp",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "value": 30.0,
+              "engUnit": "\u00b0F",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "_Alarms",
+          "typeId": "Config/_Alarms",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Active",
+              "value": false,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_ActiveHighPriority",
+              "value": 10,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_UnackHighPriority",
+              "value": 10,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Unack",
+              "value": false,
+              "tagType": "AtomicTag"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SV3-03",
+      "tagType": "Folder",
+      "metadata": {
+        "shortDescription": "SV3-03",
+        "longDescription": "SV3-03"
+      },
+      "tags": [
+        {
+          "name": "Status",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "metadata": {
+                "shortDescription": "status",
+                "states": [
+                  {
+                    "label": "Closed",
+                    "value": 0
+                  },
+                  {
+                    "label": "Open",
+                    "value": 1
+                  },
+                  {
+                    "label": "Fault",
+                    "value": 2
+                  }
+                ]
+              },
+              "dataType": "Int4",
+              "name": "Value",
+              "value": 2,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "Temp",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "value": 39.4,
+              "engUnit": "\u00b0F",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "_Alarms",
+          "typeId": "Config/_Alarms",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Active",
+              "value": true,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_ActiveHighPriority",
+              "value": 2,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_UnackHighPriority",
+              "value": 10,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Unack",
+              "value": true,
+              "tagType": "AtomicTag"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

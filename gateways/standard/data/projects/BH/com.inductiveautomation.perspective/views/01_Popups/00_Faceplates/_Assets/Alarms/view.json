@@ -11,8 +11,8 @@
   },
   "props": {
     "defaultSize": {
-      "height": 360,
-      "width": 500
+      "height": 300,
+      "width": 400
     }
   },
   "root": {
@@ -30,22 +30,6 @@
       }
     },
     "children": [
-      {
-        "type": "ia.display.label",
-        "meta": {
-          "name": "AlarmsTitle"
-        },
-        "position": {
-          "shrink": 0
-        },
-        "props": {
-          "style": {
-            "classes": "faceplate-section-title font-label",
-            "marginBottom": "4px"
-          },
-          "text": "Active / unacked alarms"
-        }
-      },
       {
         "type": "ia.display.alarmstatustable",
         "meta": {
@@ -113,7 +97,14 @@
             "enabled": true
           },
           "style": {
-            "classes": "font-label"
+            "classes": "font-label",
+            "marginBottom": "2px",
+            "width": "100%"
+          },
+          "toolbar": {
+            "enableConfiguration": false,
+            "enablePreFilters": false,
+            "enabled": false
           }
         }
       }

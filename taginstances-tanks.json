@@ -1,0 +1,1330 @@
+{
+  "name": "Tanks",
+  "tagType": "Folder",
+  "tags": [
+    {
+      "name": "HTR",
+      "tagType": "Folder",
+      "metadata": {
+        "shortDescription": "HTR",
+        "longDescription": "HTRS \u2014 HH active (demo)"
+      },
+      "tags": [
+        {
+          "name": "Status",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "metadata": {
+                "states": [
+                  {
+                    "label": "Off",
+                    "value": 0
+                  },
+                  {
+                    "label": "Run",
+                    "value": 1
+                  },
+                  {
+                    "label": "Fault",
+                    "value": 2
+                  },
+                  {
+                    "label": "Manual",
+                    "value": 3
+                  },
+                  {
+                    "label": "Idle",
+                    "value": 4
+                  }
+                ]
+              },
+              "dataType": "Int4",
+              "name": "Value",
+              "value": 1,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "Level",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "value": 97.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "LSH",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": true,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "LSL",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": false,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "HH",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": true,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 95.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "H",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": true,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 80.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "L",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": false,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 20.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "LL",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": false,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 5.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "_Alarms",
+          "typeId": "Config/_Alarms",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Active",
+              "value": true,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_ActiveHighPriority",
+              "value": 1,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_UnackHighPriority",
+              "value": 1,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Unack",
+              "value": true,
+              "tagType": "AtomicTag"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "HPR",
+      "tagType": "Folder",
+      "metadata": {
+        "shortDescription": "HPR",
+        "longDescription": "HPR \u2014 H mark active (demo)"
+      },
+      "tags": [
+        {
+          "name": "Status",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "metadata": {
+                "states": [
+                  {
+                    "label": "Off",
+                    "value": 0
+                  },
+                  {
+                    "label": "Run",
+                    "value": 1
+                  },
+                  {
+                    "label": "Fault",
+                    "value": 2
+                  },
+                  {
+                    "label": "Manual",
+                    "value": 3
+                  },
+                  {
+                    "label": "Idle",
+                    "value": 4
+                  }
+                ]
+              },
+              "dataType": "Int4",
+              "name": "Value",
+              "value": 4,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "Level",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "value": 82.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "LSH",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": true,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "LSL",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": false,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "HH",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": false,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 95.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "H",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": true,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 80.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "L",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": false,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 20.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "LL",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": false,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 5.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "_Alarms",
+          "typeId": "Config/_Alarms",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Active",
+              "value": false,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_ActiveHighPriority",
+              "value": 10,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_UnackHighPriority",
+              "value": 10,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Unack",
+              "value": false,
+              "tagType": "AtomicTag"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "LTR",
+      "tagType": "Folder",
+      "metadata": {
+        "shortDescription": "LTR",
+        "longDescription": "LTR \u2014 LL active (demo)"
+      },
+      "tags": [
+        {
+          "name": "Status",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "metadata": {
+                "states": [
+                  {
+                    "label": "Off",
+                    "value": 0
+                  },
+                  {
+                    "label": "Run",
+                    "value": 1
+                  },
+                  {
+                    "label": "Fault",
+                    "value": 2
+                  },
+                  {
+                    "label": "Manual",
+                    "value": 3
+                  },
+                  {
+                    "label": "Idle",
+                    "value": 4
+                  }
+                ]
+              },
+              "dataType": "Int4",
+              "name": "Value",
+              "value": 4,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "Level",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "value": 8.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "LSH",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": false,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "LSL",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": true,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "HH",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": false,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 95.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "H",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": false,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 80.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "L",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": true,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 20.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "LL",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": true,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 5.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "_Alarms",
+          "typeId": "Config/_Alarms",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Active",
+              "value": true,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_ActiveHighPriority",
+              "value": 1,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_UnackHighPriority",
+              "value": 1,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Unack",
+              "value": true,
+              "tagType": "AtomicTag"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "LTR-01",
+      "tagType": "Folder",
+      "metadata": {
+        "shortDescription": "LTR-01",
+        "longDescription": "LTR-01 normal mid-level"
+      },
+      "tags": [
+        {
+          "name": "Status",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "metadata": {
+                "shortDescription": "status",
+                "states": [
+                  {
+                    "label": "Off",
+                    "value": 0
+                  },
+                  {
+                    "label": "Run",
+                    "value": 1
+                  },
+                  {
+                    "label": "Fault",
+                    "value": 2
+                  },
+                  {
+                    "label": "Manual",
+                    "value": 3
+                  },
+                  {
+                    "label": "Idle",
+                    "value": 4
+                  }
+                ]
+              },
+              "dataType": "Int4",
+              "name": "Value",
+              "value": 4,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "Level",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "value": 45.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "LSH",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": false,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "LSL",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": false,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "HH",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": false,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 95.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "H",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": false,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 80.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "L",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": false,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 20.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "LL",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": false,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 5.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "_Alarms",
+          "typeId": "Config/_Alarms",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Active",
+              "value": false,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_ActiveHighPriority",
+              "value": 10,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_UnackHighPriority",
+              "value": 10,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Unack",
+              "value": false,
+              "tagType": "AtomicTag"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "LTR-02",
+      "tagType": "Folder",
+      "metadata": {
+        "shortDescription": "LTR-02",
+        "longDescription": "LTR-02 high \u2014 LSH true, H mark"
+      },
+      "tags": [
+        {
+          "name": "Status",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "metadata": {
+                "states": [
+                  {
+                    "label": "Off",
+                    "value": 0
+                  },
+                  {
+                    "label": "Run",
+                    "value": 1
+                  },
+                  {
+                    "label": "Fault",
+                    "value": 2
+                  },
+                  {
+                    "label": "Manual",
+                    "value": 3
+                  },
+                  {
+                    "label": "Idle",
+                    "value": 4
+                  }
+                ]
+              },
+              "dataType": "Int4",
+              "name": "Value",
+              "value": 4,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "Level",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "value": 88.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "LSH",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": true,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "LSL",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": false,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "HH",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": false,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 95.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "H",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": true,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 80.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "L",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": false,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 20.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "LL",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": false,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 5.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "_Alarms",
+          "typeId": "Config/_Alarms",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Active",
+              "value": false,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_ActiveHighPriority",
+              "value": 10,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_UnackHighPriority",
+              "value": 10,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Unack",
+              "value": false,
+              "tagType": "AtomicTag"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "LTR-03",
+      "tagType": "Folder",
+      "metadata": {
+        "shortDescription": "LTR-03",
+        "longDescription": "LTR-03 low \u2014 LSL true, L mark"
+      },
+      "tags": [
+        {
+          "name": "Status",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "metadata": {
+                "states": [
+                  {
+                    "label": "Off",
+                    "value": 0
+                  },
+                  {
+                    "label": "Run",
+                    "value": 1
+                  },
+                  {
+                    "label": "Fault",
+                    "value": 2
+                  },
+                  {
+                    "label": "Manual",
+                    "value": 3
+                  },
+                  {
+                    "label": "Idle",
+                    "value": 4
+                  }
+                ]
+              },
+              "dataType": "Int4",
+              "name": "Value",
+              "value": 4,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "Level",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "value": 12.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "LSH",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": false,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "LSL",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": true,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "HH",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": false,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 95.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "H",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": false,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 80.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "L",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": true,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 20.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "LL",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": false,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 5.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "_Alarms",
+          "typeId": "Config/_Alarms",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Active",
+              "value": false,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_ActiveHighPriority",
+              "value": 10,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_UnackHighPriority",
+              "value": 10,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Unack",
+              "value": false,
+              "tagType": "AtomicTag"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "LTR-04",
+      "tagType": "Folder",
+      "metadata": {
+        "shortDescription": "LTR-04",
+        "longDescription": "LTR-04 critical \u2014 HH and LL marks"
+      },
+      "tags": [
+        {
+          "name": "Status",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "metadata": {
+                "states": [
+                  {
+                    "label": "Off",
+                    "value": 0
+                  },
+                  {
+                    "label": "Run",
+                    "value": 1
+                  },
+                  {
+                    "label": "Fault",
+                    "value": 2
+                  },
+                  {
+                    "label": "Manual",
+                    "value": 3
+                  },
+                  {
+                    "label": "Idle",
+                    "value": 4
+                  }
+                ]
+              },
+              "dataType": "Int4",
+              "name": "Value",
+              "value": 2,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "Level",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "value": 98.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "LSH",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": true,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "LSL",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": false,
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "HH",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": true,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 95.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "H",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": true,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 80.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "L",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": false,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 20.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "LL",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Value",
+              "dataType": "Boolean",
+              "value": true,
+              "tagType": "AtomicTag"
+            },
+            {
+              "name": "SP",
+              "value": 5.0,
+              "engUnit": "%",
+              "tagType": "AtomicTag"
+            }
+          ]
+        },
+        {
+          "name": "_Alarms",
+          "typeId": "Config/_Alarms",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Active",
+              "value": true,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_ActiveHighPriority",
+              "value": 1,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Int4",
+              "name": "_UnackHighPriority",
+              "value": 1,
+              "tagType": "AtomicTag"
+            },
+            {
+              "valueSource": "memory",
+              "dataType": "Boolean",
+              "name": "_Unack",
+              "value": true,
+              "tagType": "AtomicTag"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

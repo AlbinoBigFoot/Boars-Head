@@ -59,6 +59,10 @@ Invoke-RestMethod -Method POST -Uri $cfg.scanConfigUrl -Headers $h
 
 Local Cursor also has a hook that POSTs these automatically; **cloud agents must call scan themselves**.
 
+### Trial reset (local hook)
+
+The Cursor/Claude `ignition-scan` filesystem hook calls **`GET /data/api/v1/trial`** before each scan. If `expired` is true (or `trialSecondsLeft` is 0), it **`POST`s the same path** with a Trial reset body (`trialSecondsLeft: 7200`, `expired: false`). A non-expired trial returns **403** on POST — the hook only resets when expired, and trial-check failures never block the scan. API token auth (`X-Ignition-API-Token`) is sufficient; no gateway login cookies required. Prefer `127.0.0.1` over `localhost` on Windows.
+
 If scan returns 401/403: the API key needs **Gateway Write Permissions** (Platform → Security → General Settings) and must exist under Platform → Security → API Keys.
 
 Also usable: repo-root `.env` keys `IGNITION_API_TOKEN` / `IGNITION_API_BASE` (gitignored) — prefer the committed `docs/cloud-agent/ignition-scan.json` when `.env` is absent in the cloud VM.

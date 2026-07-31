@@ -1,6 +1,5 @@
 {
   "custom": {
-    "ReadOnly": false,
     "AdhocTrend": {
       "aggregate": "Average",
       "chartType": "line",
@@ -16,6 +15,7 @@
         "#4F4F4F",
         "#6C757D"
       ],
+      "disabledPens": {},
       "endDate": {
         "$": [
           "ts",
@@ -25,7 +25,6 @@
         "$ts": 1784931765499
       },
       "isShared": true,
-      "disabledPens": {},
       "penPlots": {},
       "plots": [
         {
@@ -49,14 +48,21 @@
       "trendId": "",
       "trendName": "",
       "username": ""
-    },
-    "Administrator": false
+    }
   },
   "propConfig": {
+    "custom.Administrator": {
+      "binding": {
+        "config": {
+          "expression": "try(\n\thasRole(\u0027Administrator\u0027,{session.props.auth.user.userName},{session.props.auth.idp})\n\t|| hasRole(\u0027Admin\u0027,{session.props.auth.user.userName},{session.props.auth.idp})\n\t|| hasRole(\u0027Admins\u0027,{session.props.auth.user.userName},{session.props.auth.idp}),\n\tfalse)"
+        },
+        "type": "expr"
+      }
+    },
     "custom.ReadOnly": {
       "binding": {
         "config": {
-          "expression": "try(hasRole('ReadOnly',{session.props.auth.user.userName},{session.props.auth.idp}), false)"
+          "expression": "try(hasRole(\u0027ReadOnly\u0027,{session.props.auth.user.userName},{session.props.auth.idp}), false)"
         },
         "type": "expr"
       }
@@ -70,7 +76,7 @@
         },
         "transforms": [
           {
-            "expression": "try(hasRole('OneShot',{session.props.auth.user.userName},{session.props.auth.idp}), false) && coalesce({value}, false)",
+            "expression": "try(hasRole(\u0027OneShot\u0027,{session.props.auth.user.userName},{session.props.auth.idp}), false) \u0026\u0026 coalesce({value}, false)",
             "type": "expression"
           }
         ],
@@ -136,14 +142,6 @@
     "props.offline.lastSynced": {
       "access": "SYSTEM",
       "persistent": false
-    },
-    "custom.Administrator": {
-      "binding": {
-        "config": {
-          "expression": "try(\n\thasRole('Administrator',{session.props.auth.user.userName},{session.props.auth.idp})\n\t|| hasRole('Admin',{session.props.auth.user.userName},{session.props.auth.idp})\n\t|| hasRole('Admins',{session.props.auth.user.userName},{session.props.auth.idp}),\n\tfalse)"
-        },
-        "type": "expr"
-      }
     }
   },
   "props": {
