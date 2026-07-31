@@ -43,6 +43,8 @@ def infer_dtype(path: str, dt: str | None) -> tuple[str, str]:
         "CMD",
         "Fault",
         "Alm",
+        "Alm_FailToStart",
+        "Alm_IOFault",
         "Cutout",
         "Failed",
         "Started",
@@ -50,8 +52,15 @@ def infer_dtype(path: str, dt: str | None) -> tuple[str, str]:
         "AutoEN",
         "Start_Req",
         "Stop_Req",
+        "OCmd_Start",
+        "OCmd_Stop",
         "OCmd_Reset",
         "Rdy_Reset",
+        "Sts_FailToStart",
+        "Sts_Maint",
+        "Sts_Oper",
+        "Sts_Prog",
+        "Sts_Running",
         "Sts_BypActive",
         "Sts_FirstOut",
         "Sts_IntlkOK",
@@ -632,13 +641,6 @@ TANK_FACEPLATE_DEFAULTS: dict[str, tuple[str, str]] = {
     "L/SP": ("20.0", "Float"),
     "LL/SP": ("5.0", "Float"),
     "Pressure/Value": ("18.0", "Float"),
-    "Interlock/Sts_IntlkOK": ("true", "Boolean"),
-    "Interlock/OCmd_Reset": ("false", "Boolean"),
-    "Interlock/Rdy_Reset": ("true", "Boolean"),
-    "Interlock/Cfg_CondTxt00": ("Low Level Cutout", "String"),
-    "Interlock/Cfg_CondTxt01": ("High Level Cutout", "String"),
-    "Interlock/Cfg_CondTxt02": ("Level Transmitter", "String"),
-    "Interlock/Cfg_CondTxt03": ("Vessel Pressure", "String"),
 }
 
 TANK_PROFILES: dict[str, dict[str, str]] = {
@@ -945,6 +947,8 @@ def value_source(path: str, sim_dtype: str) -> str:
                     return hit
 
     leaf_parent = path.split("/")[-2]
+    if leaf_parent == "Val_Sts":
+        return "list(0, 1, 2, 7, 8, true)"
     if leaf_parent == "Status":
         if path.startswith("Evaporators/"):
             return "list(0, 1, 2, 3, 5, true)"

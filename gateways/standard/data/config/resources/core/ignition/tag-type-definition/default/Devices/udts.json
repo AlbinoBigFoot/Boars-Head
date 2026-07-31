@@ -2,7 +2,7 @@
   {
     "metadata": {
       "shortDescription": "valve",
-      "longDescription": "solenoid / single-output valve (Devices HMI layer; PLC source PLC/P_ValveSO)"
+      "longDescription": "solenoid / single-output valve (Devices HMI layer; PLC source P_ValveSO / MAIN_LIQ_CV5)"
     },
     "name": "Valve",
     "tagType": "UdtType",
@@ -207,1045 +207,8 @@
       },
       {
         "name": "Interlock",
-        "tagType": "Folder",
-        "tags": [
-          {
-            "metadata": {
-              "shortDescription": "Condition 01",
-              "longDescription": "Condition 01"
-            },
-            "name": "Cfg_CondTxt01",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 01",
-                  "longDescription": "Condition 01"
-                },
-                "name": "Value",
-                "value": "Closed Limit Switch",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 01",
-              "longDescription": "Bypass 01"
-            },
-            "name": "MSet_Bypass01",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 01",
-                  "longDescription": "Bypass 01",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 02",
-              "longDescription": "Bypass 02"
-            },
-            "name": "MSet_Bypass02",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 02",
-                  "longDescription": "Bypass 02",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "First out",
-              "longDescription": "First out"
-            },
-            "name": "Sts_FirstOut",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "First out",
-                  "longDescription": "First out",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 04",
-              "longDescription": "Bypass 04"
-            },
-            "name": "MSet_Bypass04",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 04",
-                  "longDescription": "Bypass 04",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 14",
-              "longDescription": "Bypass 14"
-            },
-            "name": "MSet_Bypass14",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 14",
-                  "longDescription": "Bypass 14",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 13",
-              "longDescription": "Bypass 13"
-            },
-            "name": "MSet_Bypass13",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 13",
-                  "longDescription": "Bypass 13",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 12",
-              "longDescription": "Bypass 12"
-            },
-            "name": "MSet_Bypass12",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 12",
-                  "longDescription": "Bypass 12",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 12",
-              "longDescription": "Condition 12"
-            },
-            "name": "Cfg_CondTxt12",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 12",
-                  "longDescription": "Condition 12"
-                },
-                "name": "Value",
-                "value": "",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 10",
-              "longDescription": "Bypass 10"
-            },
-            "name": "MSet_Bypass10",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 10",
-                  "longDescription": "Bypass 10",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 10",
-              "longDescription": "Condition 10"
-            },
-            "name": "Cfg_CondTxt10",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 10",
-                  "longDescription": "Condition 10"
-                },
-                "name": "Value",
-                "value": "",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 05",
-              "longDescription": "Condition 05"
-            },
-            "name": "Cfg_CondTxt05",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 05",
-                  "longDescription": "Condition 05"
-                },
-                "name": "Value",
-                "value": "",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Reset ready",
-              "longDescription": "Reset ready"
-            },
-            "name": "Rdy_Reset",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Reset ready",
-                  "longDescription": "Reset ready",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": true,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypassable channel bits",
-              "longDescription": "Bypassable channel bits"
-            },
-            "name": "Cfg_Bypassable",
-            "typeId": "_Root/Analog",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypassable channel bits",
-                  "longDescription": "Bypassable channel bits"
-                },
-                "historicalDeadband": 0.0,
-                "historicalDeadbandMode": "Absolute",
-                "historicalDeadbandStyle": "Discrete",
-                "formatString": "#0",
-                "tagType": "AtomicTag",
-                "dataType": "Int4",
-                "historyProvider": "historian",
-                "name": "Value",
-                "historyEnabled": true,
-                "value": 7,
-                "sampleMode": "OnChange"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 09",
-              "longDescription": "Condition 09"
-            },
-            "name": "Cfg_CondTxt09",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 09",
-                  "longDescription": "Condition 09"
-                },
-                "name": "Value",
-                "value": "",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 07",
-              "longDescription": "Bypass 07"
-            },
-            "name": "MSet_Bypass07",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 07",
-                  "longDescription": "Bypass 07",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 08",
-              "longDescription": "Condition 08"
-            },
-            "name": "Cfg_CondTxt08",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 08",
-                  "longDescription": "Condition 08"
-                },
-                "name": "Value",
-                "value": "",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 15",
-              "longDescription": "Condition 15"
-            },
-            "name": "Cfg_CondTxt15",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 15",
-                  "longDescription": "Condition 15"
-                },
-                "name": "Value",
-                "value": "",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 08",
-              "longDescription": "Bypass 08"
-            },
-            "name": "MSet_Bypass08",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 08",
-                  "longDescription": "Bypass 08",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 15",
-              "longDescription": "Bypass 15"
-            },
-            "name": "MSet_Bypass15",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 15",
-                  "longDescription": "Bypass 15",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 14",
-              "longDescription": "Condition 14"
-            },
-            "name": "Cfg_CondTxt14",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 14",
-                  "longDescription": "Condition 14"
-                },
-                "name": "Value",
-                "value": "",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 11",
-              "longDescription": "Bypass 11"
-            },
-            "name": "MSet_Bypass11",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 11",
-                  "longDescription": "Bypass 11",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass active",
-              "longDescription": "Bypass active"
-            },
-            "name": "Sts_BypActive",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass active",
-                  "longDescription": "Bypass active",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 02",
-              "longDescription": "Condition 02"
-            },
-            "name": "Cfg_CondTxt02",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 02",
-                  "longDescription": "Condition 02"
-                },
-                "name": "Value",
-                "value": "Transit Stall",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 00",
-              "longDescription": "Condition 00"
-            },
-            "name": "Cfg_CondTxt00",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 00",
-                  "longDescription": "Condition 00"
-                },
-                "name": "Value",
-                "value": "Open Limit Switch",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 03",
-              "longDescription": "Condition 03"
-            },
-            "name": "Cfg_CondTxt03",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 03",
-                  "longDescription": "Condition 03"
-                },
-                "name": "Value",
-                "value": "IO Fault",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Non-bypassable OK",
-              "longDescription": "Non-bypassable OK"
-            },
-            "name": "Sts_NBIntlkOK",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Non-bypassable OK",
-                  "longDescription": "Non-bypassable OK",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": true,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Interlock status bits",
-              "longDescription": "Interlock status bits"
-            },
-            "name": "Sts_Intlk",
-            "typeId": "_Root/Analog",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Interlock status bits",
-                  "longDescription": "Interlock status bits"
-                },
-                "historicalDeadband": 0.0,
-                "historicalDeadbandMode": "Absolute",
-                "historicalDeadbandStyle": "Discrete",
-                "formatString": "#0",
-                "tagType": "AtomicTag",
-                "dataType": "Int4",
-                "historyProvider": "historian",
-                "name": "Value",
-                "historyEnabled": true,
-                "value": 6,
-                "sampleMode": "OnChange"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 07",
-              "longDescription": "Condition 07"
-            },
-            "name": "Cfg_CondTxt07",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 07",
-                  "longDescription": "Condition 07"
-                },
-                "name": "Value",
-                "value": "",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 13",
-              "longDescription": "Condition 13"
-            },
-            "name": "Cfg_CondTxt13",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 13",
-                  "longDescription": "Condition 13"
-                },
-                "name": "Value",
-                "value": "",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 00",
-              "longDescription": "Bypass 00"
-            },
-            "name": "MSet_Bypass00",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 00",
-                  "longDescription": "Bypass 00",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 11",
-              "longDescription": "Condition 11"
-            },
-            "name": "Cfg_CondTxt11",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 11",
-                  "longDescription": "Condition 11"
-                },
-                "name": "Value",
-                "value": "",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Interlocks OK",
-              "longDescription": "Interlocks OK"
-            },
-            "name": "Sts_IntlkOK",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Interlocks OK",
-                  "longDescription": "Interlocks OK",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Reset interlocks",
-              "longDescription": "Reset interlocks"
-            },
-            "name": "OCmd_Reset",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Reset interlocks",
-                  "longDescription": "Reset interlocks",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 06",
-              "longDescription": "Condition 06"
-            },
-            "name": "Cfg_CondTxt06",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 06",
-                  "longDescription": "Condition 06"
-                },
-                "name": "Value",
-                "value": "",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 09",
-              "longDescription": "Bypass 09"
-            },
-            "name": "MSet_Bypass09",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 09",
-                  "longDescription": "Bypass 09",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 06",
-              "longDescription": "Bypass 06"
-            },
-            "name": "MSet_Bypass06",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 06",
-                  "longDescription": "Bypass 06",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 05",
-              "longDescription": "Bypass 05"
-            },
-            "name": "MSet_Bypass05",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 05",
-                  "longDescription": "Bypass 05",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 04",
-              "longDescription": "Condition 04"
-            },
-            "name": "Cfg_CondTxt04",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 04",
-                  "longDescription": "Condition 04"
-                },
-                "name": "Value",
-                "value": "",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 03",
-              "longDescription": "Bypass 03"
-            },
-            "name": "MSet_Bypass03",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 03",
-                  "longDescription": "Bypass 03",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          }
-        ]
+        "typeId": "Config/Interlock",
+        "tagType": "UdtInstance"
       },
       {
         "metadata": {
@@ -1408,65 +371,6 @@
               ]
             },
             "value": 1,
-            "name": "Value",
-            "tagType": "AtomicTag"
-          }
-        ]
-      },
-      {
-        "name": "SummaryInstances",
-        "typeId": "_Root/Expression",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "value": {
-              "instanceTemplate": {
-                "bottom": "auto",
-                "height": "24px",
-                "left": "0px",
-                "position": "relative",
-                "right": "auto",
-                "style": {
-                  "classes": ""
-                },
-                "top": "0px",
-                "viewParams": {
-                  "tagPath": ""
-                },
-                "viewPath": "",
-                "width": "auto",
-                "zIndex": "auto"
-              },
-              "longDescription": "Overview Container Instances",
-              "shortDescription": "SummaryInstances",
-              "tagsForDeviceDetails": {
-                "parameters": [
-                  {
-                    "tagPath": "/TravelTime",
-                    "viewPath": "03_Elements/01_Status/AnalogValue"
-                  },
-                  {
-                    "tagPath": "/OpenLS",
-                    "viewPath": "03_Elements/01_Status/DigitalValue"
-                  },
-                  {
-                    "tagPath": "/ClosedLS",
-                    "viewPath": "03_Elements/01_Status/DigitalValue"
-                  }
-                ]
-              }
-            },
-            "name": "Metadata",
-            "tagType": "AtomicTag"
-          },
-          {
-            "valueSource": "memory",
-            "dataType": "Document",
-            "historyEnabled": false,
-            "value": {
-              "overviewInstances": [],
-              "deviceDetails": {}
-            },
             "name": "Value",
             "tagType": "AtomicTag"
           }
@@ -3743,7 +2647,7 @@
             }
           },
           {
-            "engUnit": "°F",
+            "engUnit": "\u00b0F",
             "name": "Value",
             "tagType": "AtomicTag"
           }
@@ -3759,24 +2663,63 @@
   {
     "metadata": {
       "shortDescription": "pump",
-      "longDescription": "pump (Devices HMI layer; PLC source P_Motor)"
+      "longDescription": "pump (Devices HMI layer; PLC source P_Motor + P_RunTime + P_Intlk)"
     },
     "name": "Pump",
     "tagType": "UdtType",
     "tags": [
       {
         "metadata": {
-          "shortDescription": "Alarm",
-          "longDescription": "Pump alarm bit"
+          "shortDescription": "Fail to Start alarm",
+          "longDescription": "P_Motor Alm_FailToStart"
         },
-        "name": "Alm",
+        "name": "Alm_FailToStart",
         "typeId": "_Root/Digital",
         "tagType": "UdtInstance",
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Alarm",
-              "longDescription": "Pump alarm bit",
+              "shortDescription": "Fail to Start alarm",
+              "longDescription": "P_Motor Alm_FailToStart",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "alarms": [
+              {
+                "mode": "Equality",
+                "setpointA": 1.0,
+                "name": "Alarm",
+                "priority": "Medium",
+                "enabled": true
+              }
+            ],
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "I/O Fault alarm",
+          "longDescription": "P_Motor Alm_IOFault"
+        },
+        "name": "Alm_IOFault",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "I/O Fault alarm",
+              "longDescription": "P_Motor Alm_IOFault",
               "states": [
                 {
                   "label": "Off",
@@ -3835,17 +2778,17 @@
       },
       {
         "metadata": {
-          "shortDescription": "Auto",
-          "longDescription": "Auto mode command"
+          "shortDescription": "Operator Start",
+          "longDescription": "P_Motor OCmd_Start"
         },
-        "name": "Cmd_Auto",
+        "name": "OCmd_Start",
         "typeId": "_Root/Digital",
         "tagType": "UdtInstance",
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Auto",
-              "longDescription": "Auto mode command",
+              "shortDescription": "Operator Start",
+              "longDescription": "P_Motor OCmd_Start",
               "states": [
                 {
                   "label": "Off",
@@ -3865,17 +2808,17 @@
       },
       {
         "metadata": {
-          "shortDescription": "Manual",
-          "longDescription": "Manual mode command"
+          "shortDescription": "Operator Stop",
+          "longDescription": "P_Motor OCmd_Stop"
         },
-        "name": "Cmd_Manual",
+        "name": "OCmd_Stop",
         "typeId": "_Root/Digital",
         "tagType": "UdtInstance",
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Manual",
-              "longDescription": "Manual mode command",
+              "shortDescription": "Operator Stop",
+              "longDescription": "P_Motor OCmd_Stop",
               "states": [
                 {
                   "label": "Off",
@@ -3895,17 +2838,17 @@
       },
       {
         "metadata": {
-          "shortDescription": "Reset",
-          "longDescription": "Reset faults / interlocks"
+          "shortDescription": "Operator Reset",
+          "longDescription": "P_Motor OCmd_Reset"
         },
-        "name": "Cmd_Reset",
+        "name": "OCmd_Reset",
         "typeId": "_Root/Digital",
         "tagType": "UdtInstance",
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Reset",
-              "longDescription": "Reset faults / interlocks",
+              "shortDescription": "Operator Reset",
+              "longDescription": "P_Motor OCmd_Reset",
               "states": [
                 {
                   "label": "Off",
@@ -3925,107 +2868,8 @@
       },
       {
         "metadata": {
-          "shortDescription": "Start",
-          "longDescription": "Operator start command"
-        },
-        "name": "Cmd_Start",
-        "typeId": "_Root/Digital",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "metadata": {
-              "shortDescription": "Start",
-              "longDescription": "Operator start command",
-              "states": [
-                {
-                  "label": "Off",
-                  "value": 0
-                },
-                {
-                  "label": "On",
-                  "value": 1
-                }
-              ]
-            },
-            "name": "Value",
-            "value": false,
-            "tagType": "AtomicTag"
-          }
-        ]
-      },
-      {
-        "metadata": {
-          "shortDescription": "Stop",
-          "longDescription": "Operator stop command"
-        },
-        "name": "Cmd_Stop",
-        "typeId": "_Root/Digital",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "metadata": {
-              "shortDescription": "Stop",
-              "longDescription": "Operator stop command",
-              "states": [
-                {
-                  "label": "Off",
-                  "value": 0
-                },
-                {
-                  "label": "On",
-                  "value": 1
-                }
-              ]
-            },
-            "name": "Value",
-            "value": false,
-            "tagType": "AtomicTag"
-          }
-        ]
-      },
-      {
-        "metadata": {
-          "shortDescription": "Comm",
-          "longDescription": "Pump communication fault"
-        },
-        "name": "Comm",
-        "typeId": "_Root/Digital",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "metadata": {
-              "shortDescription": "Comm",
-              "longDescription": "Pump communication fault",
-              "states": [
-                {
-                  "label": "Off",
-                  "value": 0
-                },
-                {
-                  "label": "On",
-                  "value": 1
-                }
-              ]
-            },
-            "alarms": [
-              {
-                "mode": "Equality",
-                "setpointA": 1.0,
-                "name": "Alarm",
-                "priority": "Medium",
-                "enabled": true
-              }
-            ],
-            "value": false,
-            "name": "Value",
-            "tagType": "AtomicTag"
-          }
-        ]
-      },
-      {
-        "metadata": {
-          "shortDescription": "Fail timer preset",
-          "longDescription": "Fail-to-start/stop timer preset"
+          "shortDescription": "Fail to start timer PRE",
+          "longDescription": "Maps to P_Motor Cfg_FailToStartT"
         },
         "name": "Fail_Timer_PRE",
         "typeId": "_Root/Analog",
@@ -4033,8 +2877,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Fail timer preset",
-              "longDescription": "Fail-to-start/stop timer preset"
+              "shortDescription": "Fail to start timer PRE",
+              "longDescription": "Maps to P_Motor Cfg_FailToStartT"
             },
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
@@ -4052,17 +2896,17 @@
       },
       {
         "metadata": {
-          "shortDescription": "Failed",
-          "longDescription": "Pump failed bit (fail-to-start/stop)"
+          "shortDescription": "Fail to Start status",
+          "longDescription": "P_Motor Sts_FailToStart"
         },
-        "name": "Failed",
+        "name": "Sts_FailToStart",
         "typeId": "_Root/Digital",
         "tagType": "UdtInstance",
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Failed",
-              "longDescription": "Pump failed bit (fail-to-start/stop)",
+              "shortDescription": "Fail to Start status",
+              "longDescription": "P_Motor Sts_FailToStart",
               "states": [
                 {
                   "label": "Off",
@@ -4091,1119 +2935,17 @@
       },
       {
         "metadata": {
-          "shortDescription": "Flow",
-          "longDescription": "Pump flow (PLC process flow KPI)"
+          "shortDescription": "Maintenance mode",
+          "longDescription": "P_Motor Sts_Maint"
         },
-        "name": "Flow",
-        "typeId": "_Root/Analog",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "SP",
-            "typeId": "_Root/Analog",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "name": "Value",
-                "tagType": "AtomicTag",
-                "metadata": {
-                  "shortDescription": "setpoint",
-                  "longDescription": "Pump flow setpoint"
-                },
-                "value": 50.0
-              }
-            ],
-            "metadata": {
-              "shortDescription": "setpoint",
-              "longDescription": "Pump flow setpoint"
-            }
-          },
-          {
-            "historicalDeadband": 0.01,
-            "historicalDeadbandMode": "Absolute",
-            "historicalDeadbandStyle": "Discrete",
-            "alarms": [
-              {
-                "mode": null,
-                "setpointA": 0.0,
-                "name": "Hi",
-                "priority": "Medium",
-                "enabled": true
-              },
-              {
-                "mode": null,
-                "setpointA": 0.0,
-                "name": "Lo",
-                "priority": "Medium",
-                "enabled": true
-              }
-            ],
-            "formatString": "#0.0",
-            "engUnit": "gpm",
-            "historyProvider": "historian",
-            "historyEnabled": true,
-            "value": 0.0,
-            "sampleMode": "OnChange",
-            "name": "Value",
-            "tagType": "AtomicTag"
-          }
-        ]
-      },
-      {
-        "name": "Interlock",
-        "tagType": "Folder",
-        "tags": [
-          {
-            "metadata": {
-              "shortDescription": "Condition 05",
-              "longDescription": "Condition 05"
-            },
-            "name": "Cfg_CondTxt05",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 05",
-                  "longDescription": "Condition 05"
-                },
-                "name": "Value",
-                "value": "",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 06",
-              "longDescription": "Condition 06"
-            },
-            "name": "Cfg_CondTxt06",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 06",
-                  "longDescription": "Condition 06"
-                },
-                "name": "Value",
-                "value": "",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypassable channel bits",
-              "longDescription": "Bypassable channel bits"
-            },
-            "name": "Cfg_Bypassable",
-            "typeId": "_Root/Analog",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypassable channel bits",
-                  "longDescription": "Bypassable channel bits"
-                },
-                "historicalDeadband": 0.0,
-                "historicalDeadbandMode": "Absolute",
-                "historicalDeadbandStyle": "Discrete",
-                "formatString": "#0",
-                "tagType": "AtomicTag",
-                "dataType": "Int4",
-                "historyProvider": "historian",
-                "name": "Value",
-                "historyEnabled": true,
-                "value": 7,
-                "sampleMode": "OnChange"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 05",
-              "longDescription": "Bypass 05"
-            },
-            "name": "MSet_Bypass05",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 05",
-                  "longDescription": "Bypass 05",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 04",
-              "longDescription": "Condition 04"
-            },
-            "name": "Cfg_CondTxt04",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 04",
-                  "longDescription": "Condition 04"
-                },
-                "name": "Value",
-                "value": "",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 11",
-              "longDescription": "Bypass 11"
-            },
-            "name": "MSet_Bypass11",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 11",
-                  "longDescription": "Bypass 11",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 03",
-              "longDescription": "Condition 03"
-            },
-            "name": "Cfg_CondTxt03",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 03",
-                  "longDescription": "Condition 03"
-                },
-                "name": "Value",
-                "value": "Emergency Stop",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 15",
-              "longDescription": "Condition 15"
-            },
-            "name": "Cfg_CondTxt15",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 15",
-                  "longDescription": "Condition 15"
-                },
-                "name": "Value",
-                "value": "",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "First out",
-              "longDescription": "First out"
-            },
-            "name": "Sts_FirstOut",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "First out",
-                  "longDescription": "First out",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 10",
-              "longDescription": "Condition 10"
-            },
-            "name": "Cfg_CondTxt10",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 10",
-                  "longDescription": "Condition 10"
-                },
-                "name": "Value",
-                "value": "",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Reset ready",
-              "longDescription": "Reset ready"
-            },
-            "name": "Rdy_Reset",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Reset ready",
-                  "longDescription": "Reset ready",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": true,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 15",
-              "longDescription": "Bypass 15"
-            },
-            "name": "MSet_Bypass15",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 15",
-                  "longDescription": "Bypass 15",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass active",
-              "longDescription": "Bypass active"
-            },
-            "name": "Sts_BypActive",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass active",
-                  "longDescription": "Bypass active",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 02",
-              "longDescription": "Condition 02"
-            },
-            "name": "Cfg_CondTxt02",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 02",
-                  "longDescription": "Condition 02"
-                },
-                "name": "Value",
-                "value": "Motor OL",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 13",
-              "longDescription": "Bypass 13"
-            },
-            "name": "MSet_Bypass13",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 13",
-                  "longDescription": "Bypass 13",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 10",
-              "longDescription": "Bypass 10"
-            },
-            "name": "MSet_Bypass10",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 10",
-                  "longDescription": "Bypass 10",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 09",
-              "longDescription": "Bypass 09"
-            },
-            "name": "MSet_Bypass09",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 09",
-                  "longDescription": "Bypass 09",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 04",
-              "longDescription": "Bypass 04"
-            },
-            "name": "MSet_Bypass04",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 04",
-                  "longDescription": "Bypass 04",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 09",
-              "longDescription": "Condition 09"
-            },
-            "name": "Cfg_CondTxt09",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 09",
-                  "longDescription": "Condition 09"
-                },
-                "name": "Value",
-                "value": "",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 14",
-              "longDescription": "Bypass 14"
-            },
-            "name": "MSet_Bypass14",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 14",
-                  "longDescription": "Bypass 14",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 01",
-              "longDescription": "Condition 01"
-            },
-            "name": "Cfg_CondTxt01",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 01",
-                  "longDescription": "Condition 01"
-                },
-                "name": "Value",
-                "value": "Discharge Pressure",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 12",
-              "longDescription": "Bypass 12"
-            },
-            "name": "MSet_Bypass12",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 12",
-                  "longDescription": "Bypass 12",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 01",
-              "longDescription": "Bypass 01"
-            },
-            "name": "MSet_Bypass01",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 01",
-                  "longDescription": "Bypass 01",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 12",
-              "longDescription": "Condition 12"
-            },
-            "name": "Cfg_CondTxt12",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 12",
-                  "longDescription": "Condition 12"
-                },
-                "name": "Value",
-                "value": "",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 13",
-              "longDescription": "Condition 13"
-            },
-            "name": "Cfg_CondTxt13",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 13",
-                  "longDescription": "Condition 13"
-                },
-                "name": "Value",
-                "value": "",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 11",
-              "longDescription": "Condition 11"
-            },
-            "name": "Cfg_CondTxt11",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 11",
-                  "longDescription": "Condition 11"
-                },
-                "name": "Value",
-                "value": "",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 06",
-              "longDescription": "Bypass 06"
-            },
-            "name": "MSet_Bypass06",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 06",
-                  "longDescription": "Bypass 06",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 14",
-              "longDescription": "Condition 14"
-            },
-            "name": "Cfg_CondTxt14",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 14",
-                  "longDescription": "Condition 14"
-                },
-                "name": "Value",
-                "value": "",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 03",
-              "longDescription": "Bypass 03"
-            },
-            "name": "MSet_Bypass03",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 03",
-                  "longDescription": "Bypass 03",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 00",
-              "longDescription": "Condition 00"
-            },
-            "name": "Cfg_CondTxt00",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 00",
-                  "longDescription": "Condition 00"
-                },
-                "name": "Value",
-                "value": "Seal Water",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 07",
-              "longDescription": "Bypass 07"
-            },
-            "name": "MSet_Bypass07",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 07",
-                  "longDescription": "Bypass 07",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Non-bypassable OK",
-              "longDescription": "Non-bypassable OK"
-            },
-            "name": "Sts_NBIntlkOK",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Non-bypassable OK",
-                  "longDescription": "Non-bypassable OK",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": true,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Interlock status bits",
-              "longDescription": "Interlock status bits"
-            },
-            "name": "Sts_Intlk",
-            "typeId": "_Root/Analog",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Interlock status bits",
-                  "longDescription": "Interlock status bits"
-                },
-                "historicalDeadband": 0.0,
-                "historicalDeadbandMode": "Absolute",
-                "historicalDeadbandStyle": "Discrete",
-                "formatString": "#0",
-                "tagType": "AtomicTag",
-                "dataType": "Int4",
-                "historyProvider": "historian",
-                "name": "Value",
-                "historyEnabled": true,
-                "value": 6,
-                "sampleMode": "OnChange"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 08",
-              "longDescription": "Condition 08"
-            },
-            "name": "Cfg_CondTxt08",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 08",
-                  "longDescription": "Condition 08"
-                },
-                "name": "Value",
-                "value": "",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 02",
-              "longDescription": "Bypass 02"
-            },
-            "name": "MSet_Bypass02",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 02",
-                  "longDescription": "Bypass 02",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 07",
-              "longDescription": "Condition 07"
-            },
-            "name": "Cfg_CondTxt07",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 07",
-                  "longDescription": "Condition 07"
-                },
-                "name": "Value",
-                "value": "",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 00",
-              "longDescription": "Bypass 00"
-            },
-            "name": "MSet_Bypass00",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 00",
-                  "longDescription": "Bypass 00",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Bypass 08",
-              "longDescription": "Bypass 08"
-            },
-            "name": "MSet_Bypass08",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Bypass 08",
-                  "longDescription": "Bypass 08",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Interlocks OK",
-              "longDescription": "Interlocks OK"
-            },
-            "name": "Sts_IntlkOK",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Interlocks OK",
-                  "longDescription": "Interlocks OK",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Reset interlocks",
-              "longDescription": "Reset interlocks"
-            },
-            "name": "OCmd_Reset",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Reset interlocks",
-                  "longDescription": "Reset interlocks",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "metadata": {
-          "shortDescription": "Maintenance",
-          "longDescription": "Maintenance mode ownership"
-        },
-        "name": "MAINT",
+        "name": "Sts_Maint",
         "typeId": "_Root/Digital",
         "tagType": "UdtInstance",
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Maintenance",
-              "longDescription": "Maintenance mode ownership",
+              "shortDescription": "Maintenance mode",
+              "longDescription": "P_Motor Sts_Maint",
               "states": [
                 {
                   "label": "Off",
@@ -5223,45 +2965,17 @@
       },
       {
         "metadata": {
-          "shortDescription": "Motor starts",
-          "longDescription": "Motor start count"
+          "shortDescription": "Operator mode",
+          "longDescription": "P_Motor Sts_Oper"
         },
-        "name": "MotorStarts",
-        "typeId": "_Root/Analog",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "metadata": {
-              "shortDescription": "Motor starts",
-              "longDescription": "Motor start count"
-            },
-            "historicalDeadband": 0.0,
-            "historicalDeadbandMode": "Absolute",
-            "historicalDeadbandStyle": "Discrete",
-            "formatString": "#0",
-            "tagType": "AtomicTag",
-            "dataType": "Int4",
-            "historyProvider": "historian",
-            "name": "Value",
-            "historyEnabled": true,
-            "value": 382,
-            "sampleMode": "OnChange"
-          }
-        ]
-      },
-      {
-        "metadata": {
-          "shortDescription": "Operator",
-          "longDescription": "Operator mode ownership"
-        },
-        "name": "OPER",
+        "name": "Sts_Oper",
         "typeId": "_Root/Digital",
         "tagType": "UdtInstance",
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Operator",
-              "longDescription": "Operator mode ownership",
+              "shortDescription": "Operator mode",
+              "longDescription": "P_Motor Sts_Oper",
               "states": [
                 {
                   "label": "Off",
@@ -5281,17 +2995,17 @@
       },
       {
         "metadata": {
-          "shortDescription": "Program",
-          "longDescription": "Program mode ownership"
+          "shortDescription": "Program mode",
+          "longDescription": "P_Motor Sts_Prog"
         },
-        "name": "PROG",
+        "name": "Sts_Prog",
         "typeId": "_Root/Digital",
         "tagType": "UdtInstance",
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Program",
-              "longDescription": "Program mode ownership",
+              "shortDescription": "Program mode",
+              "longDescription": "P_Motor Sts_Prog",
               "states": [
                 {
                   "label": "Off",
@@ -5311,74 +3025,74 @@
       },
       {
         "metadata": {
-          "shortDescription": "Runtime hours",
-          "longDescription": "Total runtime hours"
+          "shortDescription": "Running",
+          "longDescription": "P_Motor Sts_Running"
         },
-        "name": "RuntimeHours",
+        "name": "Sts_Running",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Running",
+              "longDescription": "P_Motor Sts_Running",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Starts",
+          "longDescription": "P_RunTime Val_Starts"
+        },
+        "name": "Val_Starts",
         "typeId": "_Root/Analog",
         "tagType": "UdtInstance",
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Runtime hours",
-              "longDescription": "Total runtime hours"
+              "shortDescription": "Starts",
+              "longDescription": "P_RunTime Val_Starts"
             },
-            "historicalDeadband": 0.01,
+            "historicalDeadband": 0.0,
             "historicalDeadbandMode": "Absolute",
             "historicalDeadbandStyle": "Discrete",
-            "formatString": "#0.0",
+            "formatString": "#0",
             "tagType": "AtomicTag",
-            "engUnit": "h",
+            "dataType": "Int4",
             "historyProvider": "historian",
             "name": "Value",
             "historyEnabled": true,
-            "value": 1247.5,
+            "value": 382,
             "sampleMode": "OnChange"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Started",
-          "longDescription": "Pump started / run feedback"
+          "shortDescription": "Val_Sts",
+          "longDescription": "P_Motor Val_Sts: 0=UNK, 1=STOPPED, 2=RUNNING, 7=STOPPING, 8=STARTING, 33=DISABLED"
         },
-        "name": "Started",
-        "typeId": "_Root/Digital",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "metadata": {
-              "shortDescription": "Started",
-              "longDescription": "Pump started / run feedback",
-              "states": [
-                {
-                  "label": "Off",
-                  "value": 0
-                },
-                {
-                  "label": "On",
-                  "value": 1
-                }
-              ]
-            },
-            "value": false,
-            "name": "Value",
-            "tagType": "AtomicTag"
-          }
-        ]
-      },
-      {
-        "metadata": {
-          "shortDescription": "status",
-          "longDescription": "Pump status (P_Motor Val_Sts: 0=UNK, 1=STOPPED, 2=RUNNING, 7=STOPPING, 8=STARTING, 33=DISABLED)"
-        },
-        "name": "Status",
+        "name": "Val_Sts",
         "typeId": "_Root/Multistate",
         "tagType": "UdtInstance",
         "tags": [
           {
             "metadata": {
-              "shortDescription": "status",
+              "shortDescription": "Val_Sts",
               "longDescription": "P_Motor Val_Sts: 0=UNK, 1=STOPPED, 2=RUNNING, 7=STOPPING, 8=STARTING, 33=DISABLED",
               "states": [
                 {
@@ -5414,61 +3128,69 @@
         ]
       },
       {
-        "name": "SummaryInstances",
-        "typeId": "_Root/Expression",
+        "metadata": {
+          "shortDescription": "Total run hours",
+          "longDescription": "P_RunTime Val_TotRunHrs"
+        },
+        "name": "Val_TotRunHrs",
+        "typeId": "_Root/Analog",
         "tagType": "UdtInstance",
         "tags": [
           {
-            "valueSource": "memory",
-            "dataType": "Document",
-            "historyEnabled": false,
-            "value": {
-              "overviewInstances": [],
-              "deviceDetails": {}
+            "metadata": {
+              "shortDescription": "Total run hours",
+              "longDescription": "P_RunTime Val_TotRunHrs"
             },
+            "historicalDeadband": 0.01,
+            "historicalDeadbandMode": "Absolute",
+            "historicalDeadbandStyle": "Discrete",
+            "formatString": "#0.0",
+            "tagType": "AtomicTag",
+            "engUnit": "h",
+            "historyProvider": "historian",
             "name": "Value",
-            "tagType": "AtomicTag"
-          },
-          {
-            "value": {
-              "instanceTemplate": {
-                "bottom": "auto",
-                "height": "24px",
-                "left": "0px",
-                "position": "relative",
-                "right": "auto",
-                "style": {
-                  "classes": ""
-                },
-                "top": "0px",
-                "viewParams": {
-                  "tagPath": ""
-                },
-                "viewPath": "",
-                "width": "auto",
-                "zIndex": "auto"
-              },
-              "longDescription": "Overview Container Instances",
-              "shortDescription": "SummaryInstances",
-              "tagsForDeviceDetails": {
-                "parameters": [
-                  {
-                    "tagPath": "/Flow",
-                    "viewPath": "03_Elements/01_Status/AnalogValue"
-                  }
-                ],
-                "status": [
-                  {
-                    "tagPath": "/Status",
-                    "viewPath": "03_Elements/01_Status/StatusIndicator"
-                  }
-                ]
-              }
-            },
-            "name": "Metadata",
-            "tagType": "AtomicTag"
+            "historyEnabled": true,
+            "value": 1247.5,
+            "sampleMode": "OnChange"
           }
         ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Min runtime set",
+          "longDescription": "Min runtime set"
+        },
+        "name": "Min_Runtime_Set",
+        "typeId": "_Root/Analog",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Min runtime set",
+              "longDescription": "Min runtime set"
+            },
+            "historicalDeadband": 0.01,
+            "historicalDeadbandMode": "Absolute",
+            "historicalDeadbandStyle": "Discrete",
+            "formatString": "#0",
+            "tagType": "AtomicTag",
+            "engUnit": "s",
+            "historyProvider": "historian",
+            "name": "Value",
+            "historyEnabled": true,
+            "value": 120.0,
+            "sampleMode": "OnChange"
+          }
+        ]
+      },
+      {
+        "name": "Interlock",
+        "typeId": "Config/Interlock",
+        "tagType": "UdtInstance",
+        "metadata": {
+          "shortDescription": "Interlock",
+          "longDescription": "Config/Interlock (PLC HTR_PUMP1_INTLK / P_Intlk)"
+        }
       },
       {
         "name": "_Alarms",
@@ -7201,16 +4923,12 @@
   {
     "metadata": {
       "shortDescription": "tank / vessel",
-      "longDescription": "Recirculator/Accumulator-style vessel: Level %, HH/H/L/LL marks, LSH/LSL, optional Pressure, lightweight Interlock"
+      "longDescription": "Recirculator/Accumulator-style vessel (PLC-backed): Level % + SP, HH/H/L/LL marks + SP, LSH/LSL, optional Pressure; no Config/Interlock (vessel has no P_Intlk \u2014 pump interlocks live on Devices/Pump)"
     },
     "name": "Tank",
     "tagType": "UdtType",
     "tags": [
       {
-        "metadata": {
-          "shortDescription": "High level mark",
-          "longDescription": "High level alarm bit + SP (%)"
-        },
         "name": "H",
         "typeId": "_Root/Digital",
         "tagType": "UdtInstance",
@@ -7225,7 +4943,7 @@
                 "tagType": "AtomicTag",
                 "metadata": {
                   "shortDescription": "H setpoint",
-                  "longDescription": "High level alarm bit + SP (%) setpoint"
+                  "longDescription": "H level mark SP (%)"
                 },
                 "value": 80.0,
                 "engUnit": "%"
@@ -7233,7 +4951,7 @@
             ],
             "metadata": {
               "shortDescription": "H setpoint",
-              "longDescription": "High level alarm bit + SP (%) setpoint"
+              "longDescription": "H level mark SP (%)"
             }
           },
           {
@@ -7241,13 +4959,13 @@
             "value": false,
             "tagType": "AtomicTag"
           }
-        ]
+        ],
+        "metadata": {
+          "shortDescription": "High level mark",
+          "longDescription": "High level alarm bit + SP (%)"
+        }
       },
       {
-        "metadata": {
-          "shortDescription": "High-high level mark",
-          "longDescription": "High-high level alarm bit + SP (%)"
-        },
         "name": "HH",
         "typeId": "_Root/Digital",
         "tagType": "UdtInstance",
@@ -7262,7 +4980,7 @@
                 "tagType": "AtomicTag",
                 "metadata": {
                   "shortDescription": "HH setpoint",
-                  "longDescription": "High-high level alarm bit + SP (%) setpoint"
+                  "longDescription": "HH level mark SP (%)"
                 },
                 "value": 95.0,
                 "engUnit": "%"
@@ -7270,7 +4988,7 @@
             ],
             "metadata": {
               "shortDescription": "HH setpoint",
-              "longDescription": "High-high level alarm bit + SP (%) setpoint"
+              "longDescription": "HH level mark SP (%)"
             }
           },
           {
@@ -7278,198 +4996,17 @@
             "value": false,
             "tagType": "AtomicTag"
           }
-        ]
-      },
-      {
-        "name": "Interlock",
-        "tagType": "Folder",
-        "tags": [
-          {
-            "metadata": {
-              "shortDescription": "Reset ready",
-              "longDescription": "Reset ready"
-            },
-            "name": "Rdy_Reset",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Reset ready",
-                  "longDescription": "Reset ready",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": true,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Interlocks OK",
-              "longDescription": "Vessel interlocks OK"
-            },
-            "name": "Sts_IntlkOK",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Interlocks OK",
-                  "longDescription": "Vessel interlocks OK",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": true,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Reset interlocks",
-              "longDescription": "Reset vessel interlocks"
-            },
-            "name": "OCmd_Reset",
-            "typeId": "_Root/Digital",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Reset interlocks",
-                  "longDescription": "Reset vessel interlocks",
-                  "states": [
-                    {
-                      "label": "Off",
-                      "value": 0
-                    },
-                    {
-                      "label": "On",
-                      "value": 1
-                    }
-                  ]
-                },
-                "name": "Value",
-                "value": false,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 01",
-              "longDescription": "Condition 01"
-            },
-            "name": "Cfg_CondTxt01",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 01",
-                  "longDescription": "Condition 01"
-                },
-                "name": "Value",
-                "value": "High Level Cutout",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 00",
-              "longDescription": "Condition 00"
-            },
-            "name": "Cfg_CondTxt00",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 00",
-                  "longDescription": "Condition 00"
-                },
-                "name": "Value",
-                "value": "Low Level Cutout",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 03",
-              "longDescription": "Condition 03"
-            },
-            "name": "Cfg_CondTxt03",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 03",
-                  "longDescription": "Condition 03"
-                },
-                "name": "Value",
-                "value": "Vessel Pressure",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 02",
-              "longDescription": "Condition 02"
-            },
-            "name": "Cfg_CondTxt02",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 02",
-                  "longDescription": "Condition 02"
-                },
-                "name": "Value",
-                "value": "Level Transmitter",
-                "tagType": "AtomicTag"
-              }
-            ]
-          }
-        ]
-      },
-      {
+        ],
         "metadata": {
-          "shortDescription": "Low level mark",
-          "longDescription": "Low level alarm bit + SP (%)"
-        },
+          "shortDescription": "High-high level mark",
+          "longDescription": "High-high level alarm bit + SP (%)"
+        }
+      },
+      {
         "name": "L",
         "typeId": "_Root/Digital",
         "tagType": "UdtInstance",
         "tags": [
-          {
-            "name": "Value",
-            "value": false,
-            "tagType": "AtomicTag"
-          },
           {
             "name": "SP",
             "typeId": "_Root/Analog",
@@ -7480,7 +5017,7 @@
                 "tagType": "AtomicTag",
                 "metadata": {
                   "shortDescription": "L setpoint",
-                  "longDescription": "Low level alarm bit + SP (%) setpoint"
+                  "longDescription": "L level mark SP (%)"
                 },
                 "value": 20.0,
                 "engUnit": "%"
@@ -7488,16 +5025,21 @@
             ],
             "metadata": {
               "shortDescription": "L setpoint",
-              "longDescription": "Low level alarm bit + SP (%) setpoint"
+              "longDescription": "L level mark SP (%)"
             }
+          },
+          {
+            "name": "Value",
+            "value": false,
+            "tagType": "AtomicTag"
           }
-        ]
+        ],
+        "metadata": {
+          "shortDescription": "Low level mark",
+          "longDescription": "Low level alarm bit + SP (%)"
+        }
       },
       {
-        "metadata": {
-          "shortDescription": "Low-low level mark",
-          "longDescription": "Low-low level alarm bit + SP (%)"
-        },
         "name": "LL",
         "typeId": "_Root/Digital",
         "tagType": "UdtInstance",
@@ -7512,7 +5054,7 @@
                 "tagType": "AtomicTag",
                 "metadata": {
                   "shortDescription": "LL setpoint",
-                  "longDescription": "Low-low level alarm bit + SP (%) setpoint"
+                  "longDescription": "LL level mark SP (%)"
                 },
                 "value": 5.0,
                 "engUnit": "%"
@@ -7520,7 +5062,7 @@
             ],
             "metadata": {
               "shortDescription": "LL setpoint",
-              "longDescription": "Low-low level alarm bit + SP (%) setpoint"
+              "longDescription": "LL level mark SP (%)"
             }
           },
           {
@@ -7528,7 +5070,11 @@
             "value": false,
             "tagType": "AtomicTag"
           }
-        ]
+        ],
+        "metadata": {
+          "shortDescription": "Low-low level mark",
+          "longDescription": "Low-low level alarm bit + SP (%)"
+        }
       },
       {
         "metadata": {
@@ -7667,63 +5213,6 @@
         ]
       },
       {
-        "name": "SummaryInstances",
-        "typeId": "_Root/Expression",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "valueSource": "memory",
-            "dataType": "Document",
-            "historyEnabled": false,
-            "value": {
-              "overviewInstances": [],
-              "deviceDetails": {}
-            },
-            "name": "Value",
-            "tagType": "AtomicTag"
-          },
-          {
-            "value": {
-              "instanceTemplate": {
-                "bottom": "auto",
-                "height": "24px",
-                "left": "0px",
-                "position": "relative",
-                "right": "auto",
-                "style": {
-                  "classes": ""
-                },
-                "top": "0px",
-                "viewParams": {
-                  "tagPath": ""
-                },
-                "viewPath": "",
-                "width": "auto",
-                "zIndex": "auto"
-              },
-              "longDescription": "Overview Container Instances",
-              "shortDescription": "SummaryInstances",
-              "tagsForDeviceDetails": {
-                "parameters": [
-                  {
-                    "tagPath": "/Level",
-                    "viewPath": "03_Elements/01_Status/AnalogValue"
-                  }
-                ],
-                "status": [
-                  {
-                    "tagPath": "/Status",
-                    "viewPath": "03_Elements/01_Status/StatusIndicator"
-                  }
-                ]
-              }
-            },
-            "name": "Metadata",
-            "tagType": "AtomicTag"
-          }
-        ]
-      },
-      {
         "name": "_Alarms",
         "typeId": "Config/_Alarms",
         "tagType": "UdtInstance"
@@ -7815,7 +5304,7 @@
   {
     "metadata": {
       "shortDescription": "sensor",
-      "longDescription": "process sensor (P_AIn-shaped)"
+      "longDescription": "process sensor (P_AIn-shaped; discrete path would use P_DIn)"
     },
     "name": "Sensor",
     "tagType": "UdtType",
@@ -7845,7 +5334,6 @@
               ]
             },
             "name": "Value",
-            "value": false,
             "tagType": "AtomicTag"
           }
         ]
@@ -7860,7 +5348,20 @@
         "tagType": "UdtInstance",
         "tags": [
           {
-            "value": false,
+            "metadata": {
+              "shortDescription": "Fail",
+              "longDescription": "Sts_Fail / Alm_Fail",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
             "name": "Value",
             "tagType": "AtomicTag"
           }
@@ -7876,7 +5377,20 @@
         "tagType": "UdtInstance",
         "tags": [
           {
-            "value": false,
+            "metadata": {
+              "shortDescription": "Hi",
+              "longDescription": "Sts_Hi / Alm_Hi",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
             "name": "Value",
             "tagType": "AtomicTag"
           }
@@ -7892,7 +5406,20 @@
         "tagType": "UdtInstance",
         "tags": [
           {
-            "value": false,
+            "metadata": {
+              "shortDescription": "HiHi",
+              "longDescription": "Sts_HiHi / Alm_HiHi",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
             "name": "Value",
             "tagType": "AtomicTag"
           }
@@ -7912,17 +5439,10 @@
               "shortDescription": "HiHiLim",
               "longDescription": "Val_HiHiLim / OSet_HiHiLim"
             },
-            "historicalDeadband": 0.01,
-            "historicalDeadbandMode": "Absolute",
-            "historicalDeadbandStyle": "Discrete",
-            "formatString": "#0.0",
-            "tagType": "AtomicTag",
-            "engUnit": "psig",
-            "historyProvider": "historian",
             "name": "Value",
-            "historyEnabled": true,
-            "value": 100.0,
-            "sampleMode": "OnChange"
+            "engUnit": "psig",
+            "formatString": "#0.0",
+            "tagType": "AtomicTag"
           }
         ]
       },
@@ -7940,17 +5460,10 @@
               "shortDescription": "HiLim",
               "longDescription": "Val_HiLim / OSet_HiLim"
             },
-            "historicalDeadband": 0.01,
-            "historicalDeadbandMode": "Absolute",
-            "historicalDeadbandStyle": "Discrete",
-            "formatString": "#0.0",
-            "tagType": "AtomicTag",
-            "engUnit": "psig",
-            "historyProvider": "historian",
             "name": "Value",
-            "historyEnabled": true,
-            "value": 80.0,
-            "sampleMode": "OnChange"
+            "engUnit": "psig",
+            "formatString": "#0.0",
+            "tagType": "AtomicTag"
           }
         ]
       },
@@ -7964,7 +5477,20 @@
         "tagType": "UdtInstance",
         "tags": [
           {
-            "value": false,
+            "metadata": {
+              "shortDescription": "Lo",
+              "longDescription": "Sts_Lo / Alm_Lo",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
             "name": "Value",
             "tagType": "AtomicTag"
           }
@@ -7984,17 +5510,10 @@
               "shortDescription": "LoLim",
               "longDescription": "Val_LoLim / OSet_LoLim"
             },
-            "historicalDeadband": 0.01,
-            "historicalDeadbandMode": "Absolute",
-            "historicalDeadbandStyle": "Discrete",
-            "formatString": "#0.0",
-            "tagType": "AtomicTag",
-            "engUnit": "psig",
-            "historyProvider": "historian",
             "name": "Value",
-            "historyEnabled": true,
-            "value": 20.0,
-            "sampleMode": "OnChange"
+            "engUnit": "psig",
+            "formatString": "#0.0",
+            "tagType": "AtomicTag"
           }
         ]
       },
@@ -8008,7 +5527,20 @@
         "tagType": "UdtInstance",
         "tags": [
           {
-            "value": false,
+            "metadata": {
+              "shortDescription": "LoLo",
+              "longDescription": "Sts_LoLo / Alm_LoLo",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
             "name": "Value",
             "tagType": "AtomicTag"
           }
@@ -8028,24 +5560,17 @@
               "shortDescription": "LoLoLim",
               "longDescription": "Val_LoLoLim / OSet_LoLoLim"
             },
-            "historicalDeadband": 0.01,
-            "historicalDeadbandMode": "Absolute",
-            "historicalDeadbandStyle": "Discrete",
-            "formatString": "#0.0",
-            "tagType": "AtomicTag",
-            "engUnit": "psig",
-            "historyProvider": "historian",
             "name": "Value",
-            "historyEnabled": true,
-            "value": 5.0,
-            "sampleMode": "OnChange"
+            "engUnit": "psig",
+            "formatString": "#0.0",
+            "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
           "shortDescription": "sensor status",
-          "longDescription": "Aggregate from Val_Fault / Hi-Lo-Fail: 0=OK, 1=HI, 2=LO, 3=HIHI, 4=LOLO, 5=FAIL, 6=BAD"
+          "longDescription": "PLC Val_Fault: 0=none/OK, 20=Lo, 21=Hi, 24=LoLo, 25=HiHi, 32=Fail, 34=CfgErr"
         },
         "name": "Status",
         "typeId": "_Root/Multistate",
@@ -8054,97 +5579,39 @@
           {
             "metadata": {
               "shortDescription": "sensor status",
-              "longDescription": "0=OK, 1=HI, 2=LO, 3=HIHI, 4=LOLO, 5=FAIL, 6=BAD",
+              "longDescription": "PLC Val_Fault: 0=none/OK, 20=Lo, 21=Hi, 24=LoLo, 25=HiHi, 32=Fail, 34=CfgErr",
               "states": [
                 {
                   "label": "OK",
                   "value": 0
                 },
                 {
-                  "label": "HI",
-                  "value": 1
-                },
-                {
                   "label": "LO",
-                  "value": 2
+                  "value": 20
                 },
                 {
-                  "label": "HIHI",
-                  "value": 3
+                  "label": "HI",
+                  "value": 21
                 },
                 {
                   "label": "LOLO",
-                  "value": 4
+                  "value": 24
+                },
+                {
+                  "label": "HIHI",
+                  "value": 25
                 },
                 {
                   "label": "FAIL",
-                  "value": 5
+                  "value": 32
                 },
                 {
-                  "label": "BAD",
-                  "value": 6
+                  "label": "CFGERR",
+                  "value": 34
                 }
               ]
             },
-            "value": 0,
             "name": "Value",
-            "tagType": "AtomicTag"
-          }
-        ]
-      },
-      {
-        "name": "SummaryInstances",
-        "typeId": "_Root/Expression",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "valueSource": "memory",
-            "dataType": "Document",
-            "historyEnabled": false,
-            "value": {
-              "overviewInstances": [],
-              "deviceDetails": {}
-            },
-            "name": "Value",
-            "tagType": "AtomicTag"
-          },
-          {
-            "value": {
-              "instanceTemplate": {
-                "bottom": "auto",
-                "height": "24px",
-                "left": "0px",
-                "position": "relative",
-                "right": "auto",
-                "style": {
-                  "classes": ""
-                },
-                "top": "0px",
-                "viewParams": {
-                  "tagPath": ""
-                },
-                "viewPath": "",
-                "width": "auto",
-                "zIndex": "auto"
-              },
-              "longDescription": "Overview Container Instances",
-              "shortDescription": "SummaryInstances",
-              "tagsForDeviceDetails": {
-                "parameters": [
-                  {
-                    "tagPath": "/Value",
-                    "viewPath": "03_Elements/01_Status/AnalogValue"
-                  }
-                ],
-                "status": [
-                  {
-                    "tagPath": "/Status",
-                    "viewPath": "03_Elements/01_Status/StatusIndicator"
-                  }
-                ]
-              }
-            },
-            "name": "Metadata",
             "tagType": "AtomicTag"
           }
         ]
@@ -8160,8 +5627,8 @@
         "tags": [
           {
             "name": "Value",
-            "value": 0.0,
             "engUnit": "psig",
+            "formatString": "#0.0",
             "tagType": "AtomicTag"
           }
         ]
@@ -8368,7 +5835,7 @@
             "historicalDeadbandStyle": "Discrete",
             "formatString": "#0.0",
             "tagType": "AtomicTag",
-            "engUnit": "°F",
+            "engUnit": "\u00b0F",
             "historyProvider": "historian",
             "name": "Value",
             "historyEnabled": true,
@@ -8479,7 +5946,7 @@
       {
         "metadata": {
           "shortDescription": "Fan 2 VFD",
-          "longDescription": "Fan 2 Variable Frequency Drive (disabled — BH plant is single-fan EV-01..16)"
+          "longDescription": "Fan 2 Variable Frequency Drive (disabled \u2014 BH plant is single-fan EV-01..16)"
         },
         "name": "Fan 2",
         "typeId": "Devices/VFD",
@@ -8489,7 +5956,7 @@
       {
         "metadata": {
           "shortDescription": "Fan 3 VFD",
-          "longDescription": "Fan 3 Variable Frequency Drive (disabled — BH plant is single-fan EV-01..16)"
+          "longDescription": "Fan 3 Variable Frequency Drive (disabled \u2014 BH plant is single-fan EV-01..16)"
         },
         "name": "Fan 3",
         "typeId": "Devices/VFD",
@@ -9824,7 +7291,7 @@
         "tagType": "UdtInstance",
         "tags": [
           {
-            "engUnit": "°F",
+            "engUnit": "\u00b0F",
             "name": "Value",
             "tagType": "AtomicTag"
           },
