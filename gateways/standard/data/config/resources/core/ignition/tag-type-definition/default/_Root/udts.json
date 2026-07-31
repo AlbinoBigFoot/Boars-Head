@@ -9,13 +9,7 @@
     "tagType": "UdtType",
     "tags": [
       {
-        "valueSource": "memory",
-        "historyEnabled": true,
-        "historyProvider": "historian",
-        "historicalDeadbandMode": "Absolute",
-        "historicalDeadbandStyle": "Discrete",
-        "historicalDeadband": 0.0,
-        "sampleMode": "OnChange",
+        "valueSource": "reference",
         "metadata": {
           "shortDescription": "",
           "longDescription": "",
@@ -34,56 +28,54 @@
             }
           ]
         },
+        "historyProvider": "historian",
+        "historicalDeadbandMode": "Absolute",
+        "historicalDeadband": 0.0,
         "dataType": "Int4",
+        "historicalDeadbandStyle": "Discrete",
+        "historyEnabled": true,
         "name": "Value",
+        "sampleMode": "OnChange",
         "tagType": "AtomicTag"
       }
     ]
   },
   {
-    "typeColor": -2525440,
-    "metadata": {},
-    "name": "Expression",
+    "typeColor": -16776961,
+    "metadata": {
+      "shortDescription": "digital",
+      "longDescription": "digital"
+    },
+    "name": "Digital",
     "tagType": "UdtType",
     "tags": [
       {
-        "valueSource": "expr",
-        "historicalDeadband": 0.5,
-        "historicalDeadbandMode": "Absolute",
-        "historicalDeadbandStyle": "Discrete",
-        "formatString": "00000.00",
-        "historySampleRateUnits": "MIN",
-        "tagType": "AtomicTag",
-        "dataType": "Float4",
-        "historyProvider": "historian",
-        "historyEnabled": false,
-        "name": "Value",
-        "executionMode": "TagGroupRate",
-        "historySampleRate": 5,
-        "sampleMode": "Periodic",
-        "opcServer": "Ignition OPC UA Server"
-      },
-      {
-        "dataType": "Document",
-        "name": "Metadata",
-        "tagType": "AtomicTag",
-        "value": {
-          "longDescription": "",
-          "shortDescription": ""
+        "valueSource": "reference",
+        "metadata": {
+          "shortDescription": "value",
+          "longDescription": "value",
+          "states": [
+            {
+              "label": "Off",
+              "value": 0
+            },
+            {
+              "label": "On",
+              "value": 1
+            }
+          ]
         },
-        "valueSource": "memory"
+        "historyProvider": "historian",
+        "historicalDeadbandMode": "Absolute",
+        "historicalDeadband": 0.0,
+        "dataType": "Boolean",
+        "historicalDeadbandStyle": "Discrete",
+        "historyEnabled": true,
+        "name": "Value",
+        "sampleMode": "OnChange",
+        "tagType": "AtomicTag"
       }
-    ],
-    "parameters": {
-      "exprFunction": {
-        "dataType": "String",
-        "value": "(OverviewOnly)"
-      },
-      "exprTargetPath": {
-        "dataType": "String",
-        "value": "(OverviewOnly)"
-      }
-    }
+    ]
   },
   {
     "typeColor": -185,
@@ -107,38 +99,48 @@
     ]
   },
   {
-    "typeColor": -16776961,
-    "metadata": {
-      "shortDescription": "digital",
-      "longDescription": "digital"
+    "typeColor": -2525440,
+    "metadata": {},
+    "name": "Expression",
+    "parameters": {
+      "exprTargetPath": {
+        "dataType": "String",
+        "value": "(OverviewOnly)"
+      },
+      "exprFunction": {
+        "dataType": "String",
+        "value": "(OverviewOnly)"
+      }
     },
-    "name": "Digital",
     "tagType": "UdtType",
     "tags": [
       {
         "valueSource": "memory",
-        "historyEnabled": true,
-        "historyProvider": "historian",
+        "dataType": "Document",
+        "name": "Metadata",
+        "value": {
+          "longDescription": "",
+          "shortDescription": ""
+        },
+        "tagType": "AtomicTag"
+      },
+      {
+        "valueSource": "expr",
+        "metadata": {},
+        "historicalDeadband": 0.5,
         "historicalDeadbandMode": "Absolute",
         "historicalDeadbandStyle": "Discrete",
-        "historicalDeadband": 0.0,
-        "sampleMode": "OnChange",
-        "metadata": {
-          "shortDescription": "value",
-          "longDescription": "value",
-          "states": [
-            {
-              "label": "Off",
-              "value": 0
-            },
-            {
-              "label": "On",
-              "value": 1
-            }
-          ]
-        },
+        "formatString": "00000.00",
+        "historySampleRateUnits": "MIN",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "historyProvider": "historian",
+        "historyEnabled": false,
         "name": "Value",
-        "tagType": "AtomicTag"
+        "executionMode": "TagGroupRate",
+        "historySampleRate": 5,
+        "sampleMode": "Periodic",
+        "opcServer": "Ignition OPC UA Server"
       }
     ]
   },
@@ -152,19 +154,46 @@
     "tagType": "UdtType",
     "tags": [
       {
-        "valueSource": "memory",
-        "historyEnabled": true,
-        "historyProvider": "historian",
-        "historicalDeadband": 0.01,
-        "historicalDeadbandMode": "Absolute",
-        "historicalDeadbandStyle": "Discrete",
-        "sampleMode": "OnChange",
+        "valueSource": "reference",
         "metadata": {
           "shortDescription": "value",
           "longDescription": "value"
         },
+        "historyProvider": "historian",
+        "historicalDeadband": 0.01,
+        "historicalDeadbandMode": "Absolute",
         "dataType": "Float4",
+        "historicalDeadbandStyle": "Discrete",
+        "historyEnabled": true,
         "name": "Value",
+        "sampleMode": "OnChange",
+        "tagType": "AtomicTag"
+      }
+    ]
+  },
+  {
+    "typeColor": -16777216,
+    "metadata": {
+      "shortDescription": "string",
+      "longDescription": "string"
+    },
+    "name": "String",
+    "tagType": "UdtType",
+    "tags": [
+      {
+        "valueSource": "memory",
+        "metadata": {
+          "shortDescription": "value",
+          "longDescription": "value"
+        },
+        "historyProvider": "historian",
+        "historicalDeadbandMode": "Absolute",
+        "historicalDeadband": 0.0,
+        "dataType": "String",
+        "historicalDeadbandStyle": "Discrete",
+        "historyEnabled": true,
+        "name": "Value",
+        "sampleMode": "OnChange",
         "tagType": "AtomicTag"
       }
     ]

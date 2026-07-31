@@ -52,7 +52,7 @@ def infer_dtype(path: str, dt: str | None) -> tuple[str, str]:
 # Stages 6-9 display as DFT + stage line on StatusIndicator.
 # Comm Loss is NOT a Status int â€” EV-01 Status/Value has enabled=false (Bad quality) in
 # tag-definition Evaporators/udts.json. Do not set enabled=false on the UDT type.
-# Temp/SP lives only on device Temp (not _Root/Analog). Defaults: Evap 35Â°F, CT 85Â°F,
+# Temp/SP is now _Root/Analog under device Temp (path Temp/SP/Value). Defaults: Evap 35F, CT 85F,
 # Pump 50 gpm, ExhaustFan 1000 cfm, Compressor DisP 25 psi.
 # Over-SP AnalogValue red demos: EV-02, CT-01, PMP-01, EFAN-01.
 # Compressors demo Status/FLA%/SVP%/CP/SV + DisP/Amps/Rung/Color/bools (PLC-aligned).
@@ -221,6 +221,8 @@ EV_FACEPLATE_DEFAULTS: dict[str, tuple[str, str]] = {
     "Cfg_FanDelay": ("1.0", "Float"),
     "Cfg_CoolingTime": ("45.0", "Float"),
     "Cfg_ZoneAirTempDB": ("2.0", "Float"),
+    "Temp/SP": ("35.0", "Float"),
+    "Pressure/SP": ("30.0", "Float"),
     "Interlock/Sts_IntlkOK": ("true", "Boolean"),
     "Interlock/Sts_NBIntlkOK": ("true", "Boolean"),
     "Interlock/Sts_BypActive": ("false", "Boolean"),
@@ -282,6 +284,7 @@ CT_FACEPLATE_DEFAULTS: dict[str, tuple[str, str]] = {
     "Failed": ("false", "Boolean"),
     "Alm": ("false", "Boolean"),
     "Comm": ("false", "Boolean"),
+    "Temp/SP": ("85.0", "Float"),
     "Interlock/Sts_IntlkOK": ("false", "Boolean"),
     "Interlock/Sts_NBIntlkOK": ("true", "Boolean"),
     "Interlock/Sts_BypActive": ("false", "Boolean"),
@@ -352,6 +355,7 @@ PUMP_FACEPLATE_DEFAULTS: dict[str, tuple[str, str]] = {
     "Alm": ("false", "Boolean"),
     "Started": ("true", "Boolean"),
     "Comm": ("false", "Boolean"),
+    "Flow/SP": ("50.0", "Float"),
     "Interlock/Sts_IntlkOK": ("false", "Boolean"),
     "Interlock/Sts_NBIntlkOK": ("true", "Boolean"),
     "Interlock/Sts_BypActive": ("false", "Boolean"),
@@ -420,6 +424,7 @@ EXHAUSTFAN_FACEPLATE_DEFAULTS: dict[str, tuple[str, str]] = {
     "Alm": ("false", "Boolean"),
     "Started": ("true", "Boolean"),
     "Comm": ("false", "Boolean"),
+    "Airflow/SP": ("1000.0", "Float"),
     "Interlock/Sts_IntlkOK": ("false", "Boolean"),
     "Interlock/Sts_NBIntlkOK": ("true", "Boolean"),
     "Interlock/Sts_BypActive": ("false", "Boolean"),
@@ -605,6 +610,10 @@ SENSOR_PROFILES: dict[str, dict[str, str]] = {
 # Controls-grade sim profiles for Devices/Tank (A-merge wires FOLDERS + CSV).
 TANK_FACEPLATE_DEFAULTS: dict[str, tuple[str, str]] = {
     "Level/SP": ("50.0", "Float"),
+    "HH/SP": ("95.0", "Float"),
+    "H/SP": ("80.0", "Float"),
+    "L/SP": ("20.0", "Float"),
+    "LL/SP": ("5.0", "Float"),
     "Pressure/Value": ("18.0", "Float"),
     "Interlock/Sts_IntlkOK": ("true", "Boolean"),
     "Interlock/OCmd_Reset": ("false", "Boolean"),
@@ -704,6 +713,9 @@ COMP_FACEPLATE_DEFAULTS: dict[str, tuple[str, str]] = {
     "AutoEN": ("true", "Boolean"),
     "Min_Runtime_Set": ("120.0", "Float"),
     "Fail_Timer_PRE": ("30.0", "Float"),
+    "DisP/SP": ("25.0", "Float"),
+    "FLA/SP": ("70.0", "Float"),
+    "SVP/SP": ("50.0", "Float"),
     "Interlock/Sts_IntlkOK": ("false", "Boolean"),
     "Interlock/Sts_NBIntlkOK": ("true", "Boolean"),
     "Interlock/Sts_BypActive": ("false", "Boolean"),
@@ -956,6 +968,8 @@ def value_source(path: str, sim_dtype: str) -> str:
     # Sensor PV is Sensors/<id>/Value/Value — leaf_parent is the Analog member name "Value"
     if leaf_parent == "Value" and path.startswith("Sensors/"):
         return "realistic(30.0, 1.0, 0.05, 0.2, true)"
+    if leaf_parent == "SP":
+        return "0.0"
     if leaf_parent in (
         "CMD",
         "Fault",
@@ -1054,7 +1068,7 @@ def _normalize_faceplate_value_keys(d: dict[str, tuple[str, str]]) -> dict[str, 
     """Ensure every faceplate demo leaf path ends with /Value (Devices _Root bases)."""
     out: dict[str, tuple[str, str]] = {}
     for k, v in d.items():
-        if k.endswith("/Value") or k.endswith("/SP"):
+        if k.endswith("/Value"):
             out[k] = v
         else:
             out[f"{k}/Value"] = v
@@ -1132,7 +1146,11 @@ def main() -> None:
     leaves: list[tuple[str, dict]] = []
     folder_data: dict[str, list] = {}
     for f in FOLDERS:
-        data = json.loads((TAG_DEF / f / "udts.json").read_text(encoding="utf-8"))
+        udts_path = TAG_DEF / f / "udts.json"
+        if not udts_path.exists():
+            print(f"Skip missing plant folder {f}/udts.json (faceplate emit still covers demo paths)")
+            continue
+        data = json.loads(udts_path.read_text(encoding="utf-8"))
         folder_data[f] = data
         collect_leaves(data, f, leaves)
 
@@ -1208,6 +1226,19 @@ def main() -> None:
 
     sim_udts = folder_to_json(tree)
     sim_dir = TAG_DEF / "_Sim_"
+    # Prefer an existing unary-resource template before wiping _Sim_
+    for candidate in (
+        TAG_DEF / "Evaporators" / "unary-resource.json",
+        TAG_DEF / "Plant" / "Machine Room" / "unary-resource.json",
+        sim_dir / "unary-resource.json",
+    ):
+        if candidate.exists():
+            ur = json.loads(candidate.read_text(encoding="utf-8"))
+            break
+    else:
+        ur = {"scope": "G", "version": 1, "restricted": False, "overridable": True, "files": ["udts.json"], "attributes": {"config": {}}}
+    ur["files"] = ["udts.json"]
+
     if sim_dir.exists():
         for child in list(sim_dir.iterdir()):
             if child.name == "unary-resource.json":
@@ -1222,8 +1253,6 @@ def main() -> None:
     (sim_dir / "udts.json").write_text(
         json.dumps(sim_udts, indent=2) + "\n", encoding="utf-8", newline="\n"
     )
-    existing_ur = TAG_DEF / "Evaporators" / "unary-resource.json"
-    ur = json.loads(existing_ur.read_text(encoding="utf-8"))
     (sim_dir / "unary-resource.json").write_text(
         json.dumps(ur, indent=2) + "\n", encoding="utf-8", newline="\n"
     )
