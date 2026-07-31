@@ -198,7 +198,7 @@
                   "component": {
                     "onActionPerformed": {
                       "config": {
-                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd_Reset']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
+                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd_Reset/Value']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
                       },
                       "scope": "G",
                       "type": "script"
@@ -358,7 +358,7 @@
                   "props.text": {
                     "binding": {
                       "config": {
-                        "expression": "if({view.params.tagPath} = '', '', numberFormat(toFloat(tag({view.params.tagPath} + '/HiHiLim')), '#0.0'))"
+                        "expression": "if({view.params.tagPath} = '', '', numberFormat(toFloat(tag({view.params.tagPath} + '/HiHiLim/Value')), '#0.0'))"
                       },
                       "type": "expr"
                     }
@@ -417,7 +417,7 @@
                   "props.text": {
                     "binding": {
                       "config": {
-                        "expression": "if({view.params.tagPath} = '', '', numberFormat(toFloat(tag({view.params.tagPath} + '/HiLim')), '#0.0'))"
+                        "expression": "if({view.params.tagPath} = '', '', numberFormat(toFloat(tag({view.params.tagPath} + '/HiLim/Value')), '#0.0'))"
                       },
                       "type": "expr"
                     }
@@ -476,7 +476,7 @@
                   "props.text": {
                     "binding": {
                       "config": {
-                        "expression": "if({view.params.tagPath} = '', '', numberFormat(toFloat(tag({view.params.tagPath} + '/LoLim')), '#0.0'))"
+                        "expression": "if({view.params.tagPath} = '', '', numberFormat(toFloat(tag({view.params.tagPath} + '/LoLim/Value')), '#0.0'))"
                       },
                       "type": "expr"
                     }
@@ -535,7 +535,7 @@
                   "props.text": {
                     "binding": {
                       "config": {
-                        "expression": "if({view.params.tagPath} = '', '', numberFormat(toFloat(tag({view.params.tagPath} + '/LoLoLim')), '#0.0'))"
+                        "expression": "if({view.params.tagPath} = '', '', numberFormat(toFloat(tag({view.params.tagPath} + '/LoLoLim/Value')), '#0.0'))"
                       },
                       "type": "expr"
                     }

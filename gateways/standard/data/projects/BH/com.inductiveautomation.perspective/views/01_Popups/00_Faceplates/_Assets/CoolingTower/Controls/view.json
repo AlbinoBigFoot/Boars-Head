@@ -93,7 +93,7 @@
           "position.display": {
             "binding": {
               "config": {
-                "expression": "qualityOf(tag({view.params.tagPath} + '/OPER')) = 'Good' || qualityOf(tag({view.params.tagPath} + '/MAINT')) = 'Good' || qualityOf(tag({view.params.tagPath} + '/PROG')) = 'Good'"
+                "expression": "qualityOf(tag({view.params.tagPath} + '/OPER/Value')) = 'Good' || qualityOf(tag({view.params.tagPath} + '/MAINT/Value')) = 'Good' || qualityOf(tag({view.params.tagPath} + '/PROG/Value')) = 'Good'"
               },
               "type": "expr"
             }
@@ -151,7 +151,7 @@
                   "props.style.classes": {
                     "binding": {
                       "config": {
-                        "expression": "if(tag({view.params.tagPath} + '/MAINT'), 'faceplate-mode-chip faceplate-mode-active', 'faceplate-mode-chip')"
+                        "expression": "if(tag({view.params.tagPath} + '/MAINT/Value'), 'faceplate-mode-chip faceplate-mode-active', 'faceplate-mode-chip')"
                       },
                       "type": "expr"
                     }
@@ -192,7 +192,7 @@
                   "props.style.classes": {
                     "binding": {
                       "config": {
-                        "expression": "if(tag({view.params.tagPath} + '/PROG'), 'faceplate-mode-chip faceplate-mode-active', 'faceplate-mode-chip')"
+                        "expression": "if(tag({view.params.tagPath} + '/PROG/Value'), 'faceplate-mode-chip faceplate-mode-active', 'faceplate-mode-chip')"
                       },
                       "type": "expr"
                     }
@@ -233,7 +233,7 @@
                   "props.style.classes": {
                     "binding": {
                       "config": {
-                        "expression": "if(tag({view.params.tagPath} + '/OPER'), 'faceplate-mode-chip faceplate-mode-active', 'faceplate-mode-chip')"
+                        "expression": "if(tag({view.params.tagPath} + '/OPER/Value'), 'faceplate-mode-chip faceplate-mode-active', 'faceplate-mode-chip')"
                       },
                       "type": "expr"
                     }
@@ -338,7 +338,7 @@
                   "component": {
                     "onActionPerformed": {
                       "config": {
-                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd_Start']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
+                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd_Start/Value']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
                       },
                       "scope": "G",
                       "type": "script"
@@ -376,7 +376,7 @@
                   "component": {
                     "onActionPerformed": {
                       "config": {
-                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd_Stop']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
+                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd_Stop/Value']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
                       },
                       "scope": "G",
                       "type": "script"
@@ -414,7 +414,7 @@
                   "component": {
                     "onActionPerformed": {
                       "config": {
-                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd_Auto']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
+                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd_Auto/Value']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
                       },
                       "scope": "G",
                       "type": "script"
@@ -452,7 +452,7 @@
                   "component": {
                     "onActionPerformed": {
                       "config": {
-                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd_Manual']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
+                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd_Manual/Value']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
                       },
                       "scope": "G",
                       "type": "script"
@@ -552,7 +552,7 @@
                   "props.text": {
                     "binding": {
                       "config": {
-                        "expression": "if({view.params.tagPath} = '', '', numberFormat(toFloat(tag({view.params.tagPath} + '/RuntimeHours')), '#0.0'))"
+                        "expression": "if({view.params.tagPath} = '', '', numberFormat(toFloat(tag({view.params.tagPath} + '/RuntimeHours/Value')), '#0.0'))"
                       },
                       "type": "expr"
                     }
@@ -611,7 +611,7 @@
                   "props.text": {
                     "binding": {
                       "config": {
-                        "expression": "if({view.params.tagPath} = '', '', numberFormat(toFloat(tag({view.params.tagPath} + '/MotorStarts')), '#0'))"
+                        "expression": "if({view.params.tagPath} = '', '', numberFormat(toFloat(tag({view.params.tagPath} + '/MotorStarts/Value')), '#0'))"
                       },
                       "type": "expr"
                     }

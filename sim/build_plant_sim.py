@@ -1049,17 +1049,29 @@ def patch_tags(tags, prefix: str) -> int:
     return changed
 
 
+
+def _normalize_faceplate_value_keys(d: dict[str, tuple[str, str]]) -> dict[str, tuple[str, str]]:
+    """Ensure every faceplate demo leaf path ends with /Value (Devices _Root bases)."""
+    out: dict[str, tuple[str, str]] = {}
+    for k, v in d.items():
+        if k.endswith("/Value") or k.endswith("/SP"):
+            out[k] = v
+        else:
+            out[f"{k}/Value"] = v
+    return out
+
+
 def _faceplate_emit_specs() -> list[tuple[str, dict[str, dict[str, str]], dict[str, tuple[str, str]], dict[str, dict[str, str]] | None]]:
     """(folder, device_profiles, faceplate_defaults, optional_overlay_profiles)."""
     return [
-        ("Compressors", COMP_PROFILES, COMP_FACEPLATE_DEFAULTS, None),
-        ("Pumps", PMP_PROFILES, PUMP_FACEPLATE_DEFAULTS, None),
-        ("ExhaustFans", EFAN_PROFILES, EXHAUSTFAN_FACEPLATE_DEFAULTS, None),
-        ("CoolingTowers", CT_PROFILES, CT_FACEPLATE_DEFAULTS, None),
-        ("Evaporators", EV_PROFILES, EV_FACEPLATE_DEFAULTS, EV_CONTROLS_PROFILES),
-        ("Valves", VALVE_PROFILES, VALVE_FACEPLATE_DEFAULTS, None),
-        ("Tanks", TANK_PROFILES, TANK_FACEPLATE_DEFAULTS, None),
-        ("Sensors", SENSOR_PROFILES, SENSOR_FACEPLATE_DEFAULTS, None),
+        ("Compressors", COMP_PROFILES, _normalize_faceplate_value_keys(COMP_FACEPLATE_DEFAULTS), None),
+        ("Pumps", PMP_PROFILES, _normalize_faceplate_value_keys(PUMP_FACEPLATE_DEFAULTS), None),
+        ("ExhaustFans", EFAN_PROFILES, _normalize_faceplate_value_keys(EXHAUSTFAN_FACEPLATE_DEFAULTS), None),
+        ("CoolingTowers", CT_PROFILES, _normalize_faceplate_value_keys(CT_FACEPLATE_DEFAULTS), None),
+        ("Evaporators", EV_PROFILES, _normalize_faceplate_value_keys(EV_FACEPLATE_DEFAULTS), EV_CONTROLS_PROFILES),
+        ("Valves", VALVE_PROFILES, _normalize_faceplate_value_keys(VALVE_FACEPLATE_DEFAULTS), None),
+        ("Tanks", TANK_PROFILES, _normalize_faceplate_value_keys(TANK_FACEPLATE_DEFAULTS), None),
+        ("Sensors", SENSOR_PROFILES, _normalize_faceplate_value_keys(SENSOR_FACEPLATE_DEFAULTS), None),
     ]
 
 

@@ -2,7 +2,7 @@
   {
     "metadata": {
       "shortDescription": "LTR",
-      "longDescription": "Low Temperature Receiver — LL active (demo)"
+      "longDescription": "Low Temperature Receiver \u2014 LL active (demo)"
     },
     "name": "LTR",
     "typeId": "Devices/Tank",
@@ -100,21 +100,7 @@
       {
         "typeId": "Config/_Alarms",
         "name": "_Alarms",
-        "tagType": "AtomicTag",
-        "tags": [
-          {
-            "valueSource": "memory",
-            "dataType": "Int4",
-            "name": "_ActiveHighPriority",
-            "tagType": "AtomicTag"
-          },
-          {
-            "valueSource": "memory",
-            "dataType": "Boolean",
-            "name": "_Active",
-            "tagType": "AtomicTag"
-          }
-        ]
+        "tagType": "UdtInstance"
       },
       {
         "name": "LL",
@@ -187,7 +173,7 @@
   {
     "metadata": {
       "shortDescription": "LTR-03",
-      "longDescription": "LTR-03 low — LSL true, L mark"
+      "longDescription": "LTR-03 low \u2014 LSL true, L mark"
     },
     "name": "LTR-03",
     "typeId": "Devices/Tank",
@@ -341,7 +327,7 @@
   {
     "metadata": {
       "shortDescription": "HPR",
-      "longDescription": "High Pressure Receiver — H mark active (demo)"
+      "longDescription": "High Pressure Receiver \u2014 H mark active (demo)"
     },
     "name": "HPR",
     "typeId": "Devices/Tank",
@@ -439,21 +425,7 @@
       {
         "typeId": "Config/_Alarms",
         "name": "_Alarms",
-        "tagType": "AtomicTag",
-        "tags": [
-          {
-            "valueSource": "memory",
-            "dataType": "Int4",
-            "name": "_ActiveHighPriority",
-            "tagType": "AtomicTag"
-          },
-          {
-            "valueSource": "memory",
-            "dataType": "Boolean",
-            "name": "_Active",
-            "tagType": "AtomicTag"
-          }
-        ]
+        "tagType": "UdtInstance"
       },
       {
         "name": "H",
@@ -707,7 +679,7 @@
   {
     "metadata": {
       "shortDescription": "HTR",
-      "longDescription": "High Temperature Receiver (HTRS) — HH active (demo)"
+      "longDescription": "High Temperature Receiver (HTRS) \u2014 HH active (demo)"
     },
     "name": "HTR",
     "typeId": "Devices/Tank",
@@ -805,21 +777,7 @@
       {
         "typeId": "Config/_Alarms",
         "name": "_Alarms",
-        "tagType": "AtomicTag",
-        "tags": [
-          {
-            "valueSource": "memory",
-            "dataType": "Int4",
-            "name": "_ActiveHighPriority",
-            "tagType": "AtomicTag"
-          },
-          {
-            "valueSource": "memory",
-            "dataType": "Boolean",
-            "name": "_Active",
-            "tagType": "AtomicTag"
-          }
-        ]
+        "tagType": "UdtInstance"
       },
       {
         "name": "HH",
@@ -892,7 +850,7 @@
   {
     "metadata": {
       "shortDescription": "LTR-04",
-      "longDescription": "LTR-04 critical — HH and LL marks"
+      "longDescription": "LTR-04 critical \u2014 HH and LL marks"
     },
     "name": "LTR-04",
     "typeId": "Devices/Tank",
@@ -1046,7 +1004,7 @@
   {
     "metadata": {
       "shortDescription": "LTR-02",
-      "longDescription": "LTR-02 high — LSH true, H mark"
+      "longDescription": "LTR-02 high \u2014 LSH true, H mark"
     },
     "name": "LTR-02",
     "typeId": "Devices/Tank",

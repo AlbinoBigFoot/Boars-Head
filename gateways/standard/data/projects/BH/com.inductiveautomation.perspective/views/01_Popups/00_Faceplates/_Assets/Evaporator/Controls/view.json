@@ -137,7 +137,7 @@
                   "component": {
                     "onActionPerformed": {
                       "config": {
-                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpath = base + '/HMIEnable'\n\tcur = system.tag.readBlocking([path])[0].value\n\tsystem.tag.writeBlocking([path], [not bool(cur)])"
+                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpath = base + '/HMIEnable/Value'\n\tcur = system.tag.readBlocking([path])[0].value\n\tsystem.tag.writeBlocking([path], [not bool(cur)])"
                       },
                       "scope": "G",
                       "type": "script"
@@ -156,7 +156,7 @@
                   "props.text": {
                     "binding": {
                       "config": {
-                        "expression": "if(tag({view.params.tagPath} + '/HMIEnable'), 'Enable ON', 'Enable OFF')"
+                        "expression": "if(tag({view.params.tagPath} + '/HMIEnable/Value'), 'Enable ON', 'Enable OFF')"
                       },
                       "type": "expr"
                     }
@@ -183,7 +183,7 @@
                   "component": {
                     "onActionPerformed": {
                       "config": {
-                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd_StartDefrost']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
+                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd_StartDefrost/Value']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
                       },
                       "scope": "G",
                       "type": "script"
@@ -221,7 +221,7 @@
                   "component": {
                     "onActionPerformed": {
                       "config": {
-                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd_StopDefrost']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
+                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd_StopDefrost/Value']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
                       },
                       "scope": "G",
                       "type": "script"
@@ -259,7 +259,7 @@
                   "component": {
                     "onActionPerformed": {
                       "config": {
-                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cleanup']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
+                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cleanup/Value']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
                       },
                       "scope": "G",
                       "type": "script"
@@ -291,7 +291,7 @@
           "position.display": {
             "binding": {
               "config": {
-                "expression": "qualityOf(tag({view.params.tagPath} + '/HMIEnable')) = 'Good' || qualityOf(tag({view.params.tagPath} + '/Cmd_StartDefrost')) = 'Good'"
+                "expression": "qualityOf(tag({view.params.tagPath} + '/HMIEnable/Value')) = 'Good' || qualityOf(tag({view.params.tagPath} + '/Cmd_StartDefrost/Value')) = 'Good'"
               },
               "type": "expr"
             }

@@ -93,7 +93,7 @@
           "position.display": {
             "binding": {
               "config": {
-                "expression": "qualityOf(tag({view.params.tagPath} + '/OPER')) = 'Good' || qualityOf(tag({view.params.tagPath} + '/MAINT')) = 'Good' || qualityOf(tag({view.params.tagPath} + '/PROG')) = 'Good'"
+                "expression": "qualityOf(tag({view.params.tagPath} + '/OPER/Value')) = 'Good' || qualityOf(tag({view.params.tagPath} + '/MAINT/Value')) = 'Good' || qualityOf(tag({view.params.tagPath} + '/PROG/Value')) = 'Good'"
               },
               "type": "expr"
             }
@@ -151,7 +151,7 @@
                   "props.style.classes": {
                     "binding": {
                       "config": {
-                        "expression": "if(tag({view.params.tagPath} + '/MAINT'), 'faceplate-mode-chip faceplate-mode-active', 'faceplate-mode-chip')"
+                        "expression": "if(tag({view.params.tagPath} + '/MAINT/Value'), 'faceplate-mode-chip faceplate-mode-active', 'faceplate-mode-chip')"
                       },
                       "type": "expr"
                     }
@@ -192,7 +192,7 @@
                   "props.style.classes": {
                     "binding": {
                       "config": {
-                        "expression": "if(tag({view.params.tagPath} + '/PROG'), 'faceplate-mode-chip faceplate-mode-active', 'faceplate-mode-chip')"
+                        "expression": "if(tag({view.params.tagPath} + '/PROG/Value'), 'faceplate-mode-chip faceplate-mode-active', 'faceplate-mode-chip')"
                       },
                       "type": "expr"
                     }
@@ -233,7 +233,7 @@
                   "props.style.classes": {
                     "binding": {
                       "config": {
-                        "expression": "if(tag({view.params.tagPath} + '/OPER'), 'faceplate-mode-chip faceplate-mode-active', 'faceplate-mode-chip')"
+                        "expression": "if(tag({view.params.tagPath} + '/OPER/Value'), 'faceplate-mode-chip faceplate-mode-active', 'faceplate-mode-chip')"
                       },
                       "type": "expr"
                     }
