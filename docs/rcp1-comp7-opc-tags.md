@@ -8,7 +8,8 @@ Test OPC source folder for `_Root` **reference** `Value` tags on `Devices/Compre
 - **`_Root/*` / `Config/*`** live on **Devices / Units** plant instances.
 - Units `sourceTagPath`s point at `[default]RCP1/COMP 7/<member>` (the OPC leaf), **not** `…/Value` under RCP1.
 
-See `.planning/quick/260731-5un-config-interlock-udt-rcp1-udt-root-sweep/ROOT-FIX.md`.
+Full Machine Room RCP1 inventory: [`docs/rcp1-opc-tags.md`](rcp1-opc-tags.md).  
+See also `.planning/quick/260731-5un-config-interlock-udt-rcp1-udt-root-sweep/ROOT-FIX.md`.
 
 ## Paths
 
