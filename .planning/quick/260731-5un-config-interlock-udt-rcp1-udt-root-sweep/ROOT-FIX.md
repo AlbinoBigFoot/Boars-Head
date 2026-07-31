@@ -1,71 +1,63 @@
-# ROOT-FIX — `260731-5un` RCP1 / Units `_Root` repair
+# ROOT-FIX — corrected architecture (`260731-5un`)
 
 **Date:** 2026-07-31  
-**Commit message:** `fix(260731-5un): force RCP1 and device leaves onto _Root UDTs`
+**Commit message:** `fix(260731-5un): RCP1 OPC-only; _Root stays on Devices/Units`
 
-## What was wrong
+## Corrected rule (user-confirmed)
 
-Last night’s GSD sweep correctly put **Devices/** members on `_Root/*` / `Config/Interlock`, but **RCP1 OPC source folders** were still wrong:
+| Layer | What belongs there |
+|-------|--------------------|
+| **`[default]RCP1/...`** | **OPC UA tags ONLY** — bare `AtomicTag` + `valueSource: opc` + `opcItemPath` + `dataType`. **No `typeId`, no `_Root`, no fake Folder+Value mimicking `_Root`.** Organizational `Folder`s are OK only to mirror PLC nesting (e.g. `Interlock/…`, `Fail_Timer/PRE`). |
+| **`Devices/*` / `Units/*` plant instances** | **`_Root/*` and `Config/*` UDT instances.** Their `Value` (reference) points at the RCP1 OPC leaf. |
 
-1. **Bare `AtomicTag` + OPC + `dataType`** (COMP 7, HTLR-Pump 1, Main Liq SV, HSS-Pumps Pressure) — no `typeId`, no `Value` child.
-2. **Fake `_Root` via `Folder` + nested `Value`/`SP` AtomicTags** (HTR) — invented the shape without `typeId: "_Root/…"`.
-3. **`Interlock` as Folder of AtomicTags** instead of `Config/Interlock` with `_Root` children.
-4. **Units `sourceTagPath`s** pointed at those bare leaves (e.g. `[default]RCP1/COMP 7/Alm`) instead of `…/Alm/Value`.
+```
+Devices/Units member (_Root/Digital|Analog|…)
+  └── Value  (valueSource: reference)
+        └── sourceTagPath → [default]RCP1/<device>/<leaf>   ← OPC AtomicTag
+```
 
-Agents kept doing this because the COMP 7 doc described RCP1 as “OPC AtomicTags for reference Values,” so subagents treated flat OPC leaves as the pattern — skipping the project rule that process leaves are `_Root` instances with OPC on `Value`.
+**Not:**
+```
+RCP1/<device>/<leaf> as _Root UdtInstance
+  └── Value (opc)   ← WRONG — put _Root on Devices, not RCP1
+```
 
-## Before → after (examples)
+## What went wrong in `76c05d8`
 
-**COMP 7 / Alm**
+Commit `76c05d8` converted **143 RCP1 leaves TO `_Root`** and rewrote Units `sourceTagPath`s to `…/Value` under RCP1. That inverted the architecture: earlier frustration about missing `_Root` was about **device/unit tags**, not about instantiating `_Root` under RCP1.
+
+## What this fix did
+
+1. Restored RCP1 folders from pre-`76c05d8` (`7065981`) for COMP 7, HTLR-Pump 1, Main Liq SV, HSS-Pumps Pressure (flat OPC AtomicTags).
+2. Flattened **HTR** Folder+Value/SP mimic into flat OPC AtomicTags (`HH`, `HH_SP`, …) — no nested Value folders.
+3. Restored Units `sourceTagPath`s to `[default]RCP1/<device>/<leaf>` (not `…/Value`). HTR SP leaves use `…/HH_SP` etc.
+4. Audited **Devices** UDT defs — process members already use `typeId: _Root/…` or `Config/…` (nested `Devices/VFD` under Evaporator is intentional composition).
+
+## Examples
+
+**RCP1 OPC leaf (COMP 7 / Alm):**
 
 ```json
-// BEFORE
-{ "name": "Alm", "tagType": "AtomicTag", "valueSource": "opc", "dataType": "Boolean", ... }
-
-// AFTER
 {
   "name": "Alm",
-  "typeId": "_Root/Digital",
-  "tagType": "UdtInstance",
-  "tags": [{ "name": "Value", "tagType": "AtomicTag", "valueSource": "opc", ... }]
+  "tagType": "AtomicTag",
+  "valueSource": "opc",
+  "opcServer": "Ignition OPC UA Server",
+  "opcItemPath": "ns=1;s=[RCP1]COMP[7].Alm",
+  "dataType": "Boolean"
 }
 ```
 
-Units: `[default]RCP1/COMP 7/Alm` → `[default]RCP1/COMP 7/Alm/Value`
-
-**HTR / HH**
+**Units sourceTagPath:**
 
 ```json
-// BEFORE
-{ "name": "HH", "tagType": "Folder", "tags": [ AtomicTag Value, AtomicTag SP ] }
-
-// AFTER
-{
-  "name": "HH",
-  "typeId": "_Root/Digital",
-  "tagType": "UdtInstance",
-  "tags": [
-    { "name": "Value", "valueSource": "opc", ... },
-    { "name": "SP", "typeId": "_Root/Analog", "tagType": "UdtInstance", "tags": [ OPC Value ] }
-  ]
-}
+"sourceTagPath": "[default]RCP1/COMP 7/Alm"
 ```
 
-## What was fixed
+(Device member remains `_Root/Digital` with reference `Value` → that path.)
 
-| Folder | Converted |
-|--------|-----------|
-| `RCP1/COMP 7` | 43 Atomic → `_Root` (+ Interlock → `Config/Interlock`; Fail_Timer/PRE → `_Root/Analog`) |
-| `RCP1/HTLR-Pump 1` | 38 |
-| `RCP1/Main Liq SV` | 36 |
-| `RCP1/HTR` | 9 Atomic + 5 Folder→`_Root` |
-| `RCP1/HSS-Pumps Pressure` | 12 |
-| **Total leaves** | **143** |
-| Units `sourceTagPath` updates | **138** (5 HTR `…/Value` paths already correct) |
+## Verification
 
-`Devices/*` typeDefs were already `_Root` / `Config/*` — no type change. Faceplate/sim paths unchanged (Devices member names/`…/Value` unchanged).
-
-## Tooling
-
-- Script: `_fix_rcp1_root.py` (this folder)
-- Scan: POST `scan/config` after edit
+- RCP1 under `tag-definition/default/RCP1/`: **zero** `typeId` / `_Root` / `UdtInstance`
+- Units: **zero** mistaken `…/Value` under RCP1 (except legitimate leaf named `HSS-Pumps Pressure/Value`)
+- Devices: process leaves on `_Root/*` / `Config/*`
