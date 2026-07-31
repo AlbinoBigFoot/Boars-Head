@@ -8,15 +8,21 @@
     "overSp": false
   },
   "params": {
+    "compact": false,
     "spacing": {
       "center": false,
       "data": 0,
       "engUnit": 30
     },
     "tagPath": "",
-    "spTagPath": ""
+    "spTagPath": "",
+    "forceColor": ""
   },
   "propConfig": {
+    "params.compact": {
+      "paramDirection": "input",
+      "persistent": true
+    },
     "custom.engUnit": {
       "binding": {
         "config": {
@@ -85,6 +91,10 @@
       "paramDirection": "input",
       "persistent": true
     },
+    "params.forceColor": {
+      "paramDirection": "input",
+      "persistent": true
+    },
     "custom.overSp": {
       "binding": {
         "config": {
@@ -106,12 +116,26 @@
     "meta": {
       "name": "root"
     },
+    "propConfig": {
+      "props.justify": {
+        "binding": {
+          "config": {
+            "expression": "if({view.params.spacing.center},\n\t'center',\n\t'flex-start')"
+          },
+          "type": "expr"
+        }
+      }
+    },
     "props": {
-      "alignContent": "flex-start",
-      "alignItems": "center",
+      "alignContent": "center",
+      "alignItems": "baseline",
+      "justify": "flex-start",
       "style": {
         "cursor": "pointer",
-        "overflow": "visible"
+        "overflow": "visible",
+        "height": "100%",
+        "minHeight": "0px",
+        "width": "100%"
       }
     },
     "children": [
@@ -121,13 +145,30 @@
           "name": "Value"
         },
         "position": {
-          "grow": 1
+          "grow": 1,
+          "shrink": 0
         },
         "propConfig": {
+          "position.grow": {
+            "binding": {
+              "config": {
+                "expression": "if({view.params.spacing.center},\n\t0,\n\t1)"
+              },
+              "type": "expr"
+            }
+          },
           "props.style.color": {
             "binding": {
               "config": {
-                "expression": "if({view.custom.quality} != 'Good',\n\t'#90A4AE',\n\tif({view.custom.overSp},\n\t\t'var(--analog-over-sp)',\n\t\t'var(--accent)'))"
+                "expression": "if({view.custom.quality} != 'Good',\n\t'#90A4AE',\n\tif({view.params.forceColor} = 'critical',\n\t\t'var(--status-level-critical, var(--analog-over-sp))',\n\t\tif({view.params.forceColor} = 'warning',\n\t\t\t'var(--status-level-warning)',\n\t\t\tif({view.custom.overSp},\n\t\t\t\t'var(--analog-over-sp)',\n\t\t\t\t'var(--accent)'))))"
+              },
+              "type": "expr"
+            }
+          },
+          "props.style.fontSize": {
+            "binding": {
+              "config": {
+                "expression": "if({view.params.compact},\n\t'11px',\n\t'14px')"
               },
               "type": "expr"
             }
@@ -135,7 +176,15 @@
           "props.style.paddingRight": {
             "binding": {
               "config": {
-                "expression": "if({view.params.spacing.data} = '',\n   '0em',\n   0.85 * {view.params.spacing.data} + 'em')"
+                "expression": "if({view.params.spacing.data} = '',\n\t'0em',\n\t0.85 * {view.params.spacing.data} + 'em')"
+              },
+              "type": "expr"
+            }
+          },
+          "props.style.textAlign": {
+            "binding": {
+              "config": {
+                "expression": "if({view.params.spacing.center},\n\t'left',\n\t'right')"
               },
               "type": "expr"
             }
@@ -151,7 +200,7 @@
           "props.style.classes": {
             "binding": {
               "config": {
-                "expression": "if({view.custom.overSp},\n\t'analog-over-sp',\n\t'')"
+                "expression": "if({view.params.forceColor} = 'critical',\n\t'analog-over-sp',\n\tif({view.params.forceColor} = 'warning',\n\t\t'analog-level-warning',\n\t\tif({view.custom.overSp},\n\t\t\t'analog-over-sp',\n\t\t\t'')))"
               },
               "type": "expr"
             }
@@ -160,9 +209,13 @@
         "props": {
           "style": {
             "fontSize": "14px",
+            "lineHeight": "1.1",
+            "margin": "0px",
             "overflow": "visible",
+            "padding": "0px",
             "textAlign": "right",
-            "color": "var(--accent)"
+            "color": "var(--accent)",
+            "whiteSpace": "nowrap"
           },
           "text": ""
         }
@@ -173,13 +226,22 @@
           "name": "EngineeringUnit"
         },
         "position": {
-          "grow": 1
+          "grow": 1,
+          "shrink": 0
         },
         "propConfig": {
+          "position.grow": {
+            "binding": {
+              "config": {
+                "expression": "if({view.params.spacing.center},\n\t0,\n\t1)"
+              },
+              "type": "expr"
+            }
+          },
           "position.basis": {
             "binding": {
               "config": {
-                "expression": "if({view.params.spacing.center},\n   'auto',\n   if({view.params.spacing.engUnit} = '',\n      'auto',\n      {view.params.spacing.engUnit} + 'px'))"
+                "expression": "if({view.params.spacing.center},\n\t'auto',\n\tif({view.params.spacing.engUnit} = '',\n\t\t'auto',\n\t\t{view.params.spacing.engUnit} + 'px'))"
               },
               "type": "expr"
             }
@@ -197,7 +259,10 @@
           "style": {
             "color": "var(--neutral-60)",
             "fontSize": "11px",
-            "marginTop": "1%"
+            "lineHeight": "1.1",
+            "margin": "0px",
+            "padding": "0px",
+            "whiteSpace": "nowrap"
           },
           "text": ""
         }

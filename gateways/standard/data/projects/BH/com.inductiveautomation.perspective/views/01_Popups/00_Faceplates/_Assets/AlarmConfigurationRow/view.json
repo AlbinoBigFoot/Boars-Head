@@ -1,0 +1,512 @@
+{
+  "custom": {
+    "priorityPath": "",
+    "setpointPath": "",
+    "priorityValue": "",
+    "triggerValue": 1,
+    "setpointValue": 0
+  },
+  "params": {
+    "alarmName": "Alarm",
+    "hasSetpoint": false,
+    "highlightRow": false,
+    "isDigital": true,
+    "label": "",
+    "tagPath": ""
+  },
+  "propConfig": {
+    "custom.priorityPath": {
+      "binding": {
+        "config": {
+          "expression": "if({view.params.tagPath} = '' || {view.params.alarmName} = '', '', {view.params.tagPath} + '/Alarms/' + {view.params.alarmName} + '.Priority')"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "custom.setpointPath": {
+      "binding": {
+        "config": {
+          "expression": "if({view.params.tagPath} = '' || {view.params.alarmName} = '', '', {view.params.tagPath} + '/Alarms/' + {view.params.alarmName} + '.SetpointA')"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "custom.priorityValue": {
+      "binding": {
+        "config": {
+          "mode": "indirect",
+          "references": {
+            "path": "{view.custom.priorityPath}"
+          },
+          "tagPath": "{path}"
+        },
+        "transforms": [
+          {
+            "code": "\tif value is None:\n\t\treturn 'Medium'\n\ttry:\n\t\tif hasattr(value, 'name'):\n\t\t\treturn str(value.name())\n\texcept:\n\t\tpass\n\ts = str(value)\n\tif s.startswith('AlarmPriority.') or s.startswith('Priority.'):\n\t\ts = s.split('.', 1)[-1]\n\treturn s if s else 'Medium'",
+            "type": "script"
+          }
+        ],
+        "type": "tag"
+      },
+      "persistent": true
+    },
+    "custom.triggerValue": {
+      "binding": {
+        "config": {
+          "mode": "indirect",
+          "references": {
+            "path": "{view.custom.setpointPath}"
+          },
+          "tagPath": "{path}"
+        },
+        "transforms": [
+          {
+            "code": "\ttry:\n\t\tif value is None:\n\t\t\treturn 1\n\t\tv = float(value)\n\t\treturn 1 if v >= 0.5 else 0\n\texcept:\n\t\treturn 1",
+            "type": "script"
+          }
+        ],
+        "type": "tag"
+      },
+      "persistent": true
+    },
+    "custom.setpointValue": {
+      "binding": {
+        "config": {
+          "mode": "indirect",
+          "references": {
+            "path": "{view.custom.setpointPath}"
+          },
+          "tagPath": "{path}"
+        },
+        "transforms": [
+          {
+            "code": "\ttry:\n\t\tif value is None:\n\t\t\treturn 0.0\n\t\treturn float(value)\n\texcept:\n\t\treturn 0.0",
+            "type": "script"
+          }
+        ],
+        "type": "tag"
+      },
+      "persistent": true
+    },
+    "params.alarmName": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.hasSetpoint": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.highlightRow": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.isDigital": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.label": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 88,
+      "width": 480
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root",
+      "contextMenu": {}
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "faceplate-alarm-row",
+        "gap": "4px",
+        "padding": "6px 8px"
+      }
+    },
+    "propConfig": {
+      "props.style.classes": {
+        "binding": {
+          "config": {
+            "expression": "if({view.params.highlightRow}, 'faceplate-alarm-row faceplate-alarm-row-alt', 'faceplate-alarm-row')"
+          },
+          "type": "expr"
+        }
+      },
+      "meta.contextMenu.items": {
+        "binding": {
+          "config": {
+            "struct": {
+              "tagPath": "\"No TagPath: \""
+            },
+            "waitOnAll": true
+          },
+          "transforms": [
+            {
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = self.view.params.tagPath\n\texcept:\n\t\tpass\n\tif tagPath is None or str(tagPath).strip() == '':\n\t\ttagPath = value.tagPath + self.view.id.split('@')[0].split('/')[-1]\n\titems = [\n\t\t\t  {\n\t\t\t    \"text\": \"Ticket Logger\",\n\t\t\t    \"icon\": {\n\t\t\t      \"path\": \"material/info\",\n\t\t\t      \"color\": \"--neutral-80\",\n\t\t\t      \"style\": {}\n\t\t\t    },\n\t\t\t    \"style\": {\n\t\t\t      \"classes\": \"bg-component font-value\",\n\t\t\t      \"height\": 24,\n\t\t\t      \"width\": 120\n\t\t\t    },\n\t\t\t    \"type\": \"message\",\n\t\t\t    \"children\": [],\n\t\t\t    \"link\": {\n\t\t\t      \"url\": \"\",\n\t\t\t      \"target\": \"self\"\n\t\t\t    },\n\t\t\t    \"method\": {\n\t\t\t      \"name\": \"\",\n\t\t\t      \"params\": {}\n\t\t\t    },\n\t\t\t    \"message\": {\n\t\t\t      \"type\": \"ticketLog\",\n\t\t\t      \"payload\": {\n\t\t\t        \"tagPath\": tagPath,\n\t\t\t        \"viewName\": self.view.id.split('@')[0]\n\t\t\t      },\n\t\t\t      \"scope\": \"page\"\n\t\t\t    }\n\t\t\t  }\n\t\t\t]\n\treturn items",
+              "type": "script"
+            }
+          ],
+          "type": "expr-struct"
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "config": {
+            "struct": {
+              "items": "{this.meta.contextMenu.items}",
+              "permission": "{session.custom.TicketLogAccess}"
+            },
+            "waitOnAll": true
+          },
+          "transforms": [
+            {
+              "expression": "len({value}['items']) > 0 && {value}['permission']",
+              "type": "expression"
+            }
+          ],
+          "type": "expr-struct"
+        }
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    },
+    "children": [
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "AlarmName"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "struct": {
+                  "alarmName": "{view.params.alarmName}",
+                  "label": "{view.params.label}",
+                  "tagPath": "{view.params.tagPath}"
+                },
+                "waitOnAll": true
+              },
+              "transforms": [
+                {
+                  "code": "\tlabel = str(value.get('label') or '').strip()\n\tif label:\n\t\treturn label\n\talarm = str(value.get('alarmName') or 'Alarm')\n\tpath = str(value.get('tagPath') or '')\n\tparts = [p for p in path.replace('\\\\', '/').split('/') if p]\n\tif parts and parts[-1] == 'Value' and len(parts) >= 2:\n\t\tbase = parts[-2]\n\telse:\n\t\tbase = parts[-1] if parts else 'Alarm'\n\tif ']' in base:\n\t\tbase = base.split(']', 1)[-1]\n\tif alarm and alarm != 'Alarm':\n\t\treturn '%s / %s' % (base, alarm)\n\treturn base",
+                  "type": "script"
+                }
+              ],
+              "type": "expr-struct"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "classes": "faceplate-alarm-name font-label"
+          },
+          "text": "Alarm"
+        }
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Fields"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "style": {
+            "classes": "faceplate-alarm-fields",
+            "gap": "8px",
+            "overflow": "visible"
+          },
+          "wrap": "wrap"
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "PrioritySection"
+            },
+            "position": {
+              "basis": "140px",
+              "grow": 1,
+              "shrink": 1
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "2px",
+                "overflow": "visible"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "PriorityLabel"
+                },
+                "props": {
+                  "style": {
+                    "classes": "faceplate-alarm-field-label font-label"
+                  },
+                  "text": "Priority"
+                }
+              },
+              {
+                "type": "ia.input.dropdown",
+                "meta": {
+                  "name": "PriorityDropdown"
+                },
+                "propConfig": {
+                  "props.enabled": {
+                    "binding": {
+                      "config": {
+                        "expression": "!{session.custom.ReadOnly} && {view.custom.priorityPath} != ''"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.value": {
+                    "binding": {
+                      "config": {
+                        "path": "view.custom.priorityValue"
+                      },
+                      "type": "property"
+                    },
+                    "onChange": {
+                      "enabled": null,
+                      "script": "\ttry:\n\t\tif origin != 'Browser':\n\t\t\treturn\n\t\tpath = self.view.custom.priorityPath\n\t\tif not path:\n\t\t\treturn\n\t\tnewVal = currentValue.value\n\t\tif newVal is None or str(newVal).strip() == '':\n\t\t\treturn\n\t\tsystem.tag.writeBlocking([path], [str(newVal)])\n\texcept:\n\t\tsystem.util.getLogger('AlarmConfiguration').info('Priority write failed')"
+                    }
+                  }
+                },
+                "props": {
+                  "options": [
+                    {
+                      "label": "Diagnostic",
+                      "value": "Diagnostic"
+                    },
+                    {
+                      "label": "Low",
+                      "value": "Low"
+                    },
+                    {
+                      "label": "Medium",
+                      "value": "Medium"
+                    },
+                    {
+                      "label": "High",
+                      "value": "High"
+                    },
+                    {
+                      "label": "Critical",
+                      "value": "Critical"
+                    }
+                  ],
+                  "style": {
+                    "classes": "font-value",
+                    "height": "26px"
+                  },
+                  "value": "Medium"
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "TriggerSection"
+            },
+            "position": {
+              "basis": "140px",
+              "grow": 1,
+              "shrink": 1
+            },
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.isDigital} && !{view.params.hasSetpoint}"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "2px",
+                "overflow": "visible"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "TriggerLabel"
+                },
+                "props": {
+                  "style": {
+                    "classes": "faceplate-alarm-field-label font-label"
+                  },
+                  "text": "Trigger on"
+                }
+              },
+              {
+                "type": "ia.input.dropdown",
+                "meta": {
+                  "name": "TriggerDropdown"
+                },
+                "propConfig": {
+                  "props.enabled": {
+                    "binding": {
+                      "config": {
+                        "expression": "!{session.custom.ReadOnly} && {view.custom.setpointPath} != ''"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.value": {
+                    "binding": {
+                      "config": {
+                        "path": "view.custom.triggerValue"
+                      },
+                      "type": "property"
+                    },
+                    "onChange": {
+                      "enabled": null,
+                      "script": "\ttry:\n\t\tif origin != 'Browser':\n\t\t\treturn\n\t\tpath = self.view.custom.setpointPath\n\t\tif not path:\n\t\t\treturn\n\t\traw = currentValue.value\n\t\ttry:\n\t\t\tv = 1.0 if float(raw) >= 0.5 else 0.0\n\t\texcept:\n\t\t\tv = 1.0 if raw in (True, 'true', 'True', 1, '1') else 0.0\n\t\tsystem.tag.writeBlocking([path], [v])\n\texcept:\n\t\tsystem.util.getLogger('AlarmConfiguration').info('Trigger write failed')"
+                    }
+                  }
+                },
+                "props": {
+                  "options": [
+                    {
+                      "label": "True",
+                      "value": 1
+                    },
+                    {
+                      "label": "False",
+                      "value": 0
+                    }
+                  ],
+                  "style": {
+                    "classes": "font-value",
+                    "height": "26px"
+                  },
+                  "value": 1
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "SetpointSection"
+            },
+            "position": {
+              "basis": "140px",
+              "grow": 1,
+              "shrink": 1
+            },
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "config": {
+                    "path": "view.params.hasSetpoint"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "2px",
+                "overflow": "visible"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "SetpointLabel"
+                },
+                "props": {
+                  "style": {
+                    "classes": "faceplate-alarm-field-label font-label"
+                  },
+                  "text": "Setpoint"
+                }
+              },
+              {
+                "type": "ia.input.numeric-entry-field",
+                "meta": {
+                  "name": "SetpointEntry"
+                },
+                "propConfig": {
+                  "props.enabled": {
+                    "binding": {
+                      "config": {
+                        "expression": "!{session.custom.ReadOnly} && {view.custom.setpointPath} != ''"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.value": {
+                    "binding": {
+                      "config": {
+                        "path": "view.custom.setpointValue"
+                      },
+                      "type": "property"
+                    },
+                    "onChange": {
+                      "enabled": null,
+                      "script": "\ttry:\n\t\tif origin != 'Browser':\n\t\t\treturn\n\t\tpath = self.view.custom.setpointPath\n\t\tif not path:\n\t\t\treturn\n\t\tnewVal = currentValue.value\n\t\tif newVal is None:\n\t\t\treturn\n\t\tsystem.tag.writeBlocking([path], [float(newVal)])\n\texcept:\n\t\tsystem.util.getLogger('AlarmConfiguration').info('Setpoint write failed')"
+                    }
+                  }
+                },
+                "props": {
+                  "format": "#,##0.###",
+                  "spinner": {
+                    "enabled": false
+                  },
+                  "style": {
+                    "classes": "font-value",
+                    "height": "26px"
+                  },
+                  "value": 0
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

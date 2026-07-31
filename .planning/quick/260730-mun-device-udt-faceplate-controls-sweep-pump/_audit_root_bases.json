@@ -1,0 +1,6577 @@
+{
+  "report": {
+    "types": {
+      "Compressor": {
+        "correct_root_count": 15,
+        "correct_root": [
+          {
+            "path": "Status",
+            "typeId": "_Root/Multistate"
+          },
+          {
+            "path": "DisP",
+            "typeId": "_Root/Analog"
+          },
+          {
+            "path": "Amps",
+            "typeId": "_Root/Analog"
+          },
+          {
+            "path": "FLA",
+            "typeId": "_Root/Analog"
+          },
+          {
+            "path": "SVP",
+            "typeId": "_Root/Analog"
+          },
+          {
+            "path": "CP_Mode",
+            "typeId": "_Root/Multistate"
+          },
+          {
+            "path": "SV_Mode",
+            "typeId": "_Root/Multistate"
+          },
+          {
+            "path": "Rung",
+            "typeId": "_Root/Multistate"
+          },
+          {
+            "path": "Color",
+            "typeId": "_Root/Multistate"
+          },
+          {
+            "path": "Alm",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "Cutout",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "Failed",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "Started",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "Comm",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "SummaryInstances",
+            "typeId": "_Root/Expression"
+          }
+        ],
+        "findings": [
+          {
+            "path": "OPER",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "MAINT",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "PROG",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Cmd_Start",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Cmd_Stop",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Cmd_Auto",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Cmd_Manual",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Cmd_Remote",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "RuntimeHours",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Float4 engUnit=h typeId=none",
+            "required_base": "_Root/Analog",
+            "suggestion": "engUnit: h"
+          },
+          {
+            "path": "MotorStarts",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Int4 engUnit=- typeId=none",
+            "required_base": "_Root/Multistate",
+            "suggestion": "likely discrete enum; define states"
+          },
+          {
+            "path": "MaxRunTimePerStart",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Float4 engUnit=h typeId=none",
+            "required_base": "_Root/Analog",
+            "suggestion": "engUnit: h"
+          },
+          {
+            "path": "AutoEN",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Min_Runtime_Set",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Float4 engUnit=s typeId=none",
+            "required_base": "_Root/Analog",
+            "suggestion": "engUnit: s"
+          },
+          {
+            "path": "Fail_Timer_PRE",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Float4 engUnit=s typeId=none",
+            "required_base": "_Root/Analog",
+            "suggestion": "engUnit: s"
+          },
+          {
+            "path": "_Alarms",
+            "kind": "non_root_udt_instance",
+            "current": "UdtInstance typeId=Config/_Alarms"
+          }
+        ],
+        "finding_count": 15
+      },
+      "CoolingTower": {
+        "correct_root_count": 7,
+        "correct_root": [
+          {
+            "path": "Status",
+            "typeId": "_Root/Multistate"
+          },
+          {
+            "path": "Temp",
+            "typeId": "_Root/Analog"
+          },
+          {
+            "path": "SPD_FBK",
+            "typeId": "_Root/Analog"
+          },
+          {
+            "path": "Failed",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "Alm",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "Comm",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "SummaryInstances",
+            "typeId": "_Root/Expression"
+          }
+        ],
+        "findings": [
+          {
+            "path": "OPER",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "MAINT",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "PROG",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Cmd_Start",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Cmd_Stop",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Cmd_Auto",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Cmd_Manual",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "RuntimeHours",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Float4 engUnit=h typeId=none",
+            "required_base": "_Root/Analog",
+            "suggestion": "engUnit: h"
+          },
+          {
+            "path": "MotorStarts",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Int4 engUnit=- typeId=none",
+            "required_base": "_Root/Multistate",
+            "suggestion": "likely discrete enum; define states"
+          },
+          {
+            "path": "_Alarms",
+            "kind": "non_root_udt_instance",
+            "current": "UdtInstance typeId=Config/_Alarms"
+          }
+        ],
+        "finding_count": 10
+      },
+      "Evaporator": {
+        "correct_root_count": 10,
+        "correct_root": [
+          {
+            "path": "Pressure",
+            "typeId": "_Root/Analog"
+          },
+          {
+            "path": "Status",
+            "typeId": "_Root/Multistate"
+          },
+          {
+            "path": "Temp",
+            "typeId": "_Root/Analog"
+          },
+          {
+            "path": "TooHot",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "TooCold",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "IntlkOK",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "PermOK",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "Off",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "TimeLeft",
+            "typeId": "_Root/Analog"
+          },
+          {
+            "path": "SummaryInstances",
+            "typeId": "_Root/Expression"
+          }
+        ],
+        "findings": [
+          {
+            "path": "Fan 1",
+            "kind": "non_root_udt_instance",
+            "current": "UdtInstance typeId=Devices/VFD"
+          },
+          {
+            "path": "Fan 2",
+            "kind": "non_root_udt_instance",
+            "current": "UdtInstance typeId=Devices/VFD"
+          },
+          {
+            "path": "Fan 3",
+            "kind": "non_root_udt_instance",
+            "current": "UdtInstance typeId=Devices/VFD"
+          },
+          {
+            "path": "HMIEnable",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Cmd_StartDefrost",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Cmd_StopDefrost",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Cleanup",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Cfg_PumpOut",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Float4 engUnit=min typeId=none",
+            "required_base": "_Root/Analog",
+            "suggestion": "engUnit: min"
+          },
+          {
+            "path": "Cfg_SoftHotGas",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Float4 engUnit=min typeId=none",
+            "required_base": "_Root/Analog",
+            "suggestion": "engUnit: min"
+          },
+          {
+            "path": "Cfg_MainHotGas",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Float4 engUnit=min typeId=none",
+            "required_base": "_Root/Analog",
+            "suggestion": "engUnit: min"
+          },
+          {
+            "path": "Cfg_Bleed",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Float4 engUnit=min typeId=none",
+            "required_base": "_Root/Analog",
+            "suggestion": "engUnit: min"
+          },
+          {
+            "path": "Cfg_FanDelay",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Float4 engUnit=min typeId=none",
+            "required_base": "_Root/Analog",
+            "suggestion": "engUnit: min"
+          },
+          {
+            "path": "Cfg_CoolingTime",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Float4 engUnit=min typeId=none",
+            "required_base": "_Root/Analog",
+            "suggestion": "engUnit: min"
+          },
+          {
+            "path": "Cfg_ZoneAirTempDB",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Float4 engUnit=\u00b0F typeId=none",
+            "required_base": "_Root/Analog",
+            "suggestion": "engUnit: \u00b0F"
+          },
+          {
+            "path": "_Alarms",
+            "kind": "non_root_udt_instance",
+            "current": "UdtInstance typeId=Config/_Alarms"
+          }
+        ],
+        "finding_count": 15
+      },
+      "ExhaustFan": {
+        "correct_root_count": 7,
+        "correct_root": [
+          {
+            "path": "Status",
+            "typeId": "_Root/Multistate"
+          },
+          {
+            "path": "Airflow",
+            "typeId": "_Root/Analog"
+          },
+          {
+            "path": "Alm",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "Failed",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "Started",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "Comm",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "SummaryInstances",
+            "typeId": "_Root/Expression"
+          }
+        ],
+        "findings": [
+          {
+            "path": "OPER",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "MAINT",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "PROG",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Cmd_Start",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Cmd_Stop",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Cmd_Auto",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Cmd_Manual",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Cmd_Reset",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "RuntimeHours",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Float4 engUnit=h typeId=none",
+            "required_base": "_Root/Analog",
+            "suggestion": "engUnit: h"
+          },
+          {
+            "path": "MotorStarts",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Int4 engUnit=- typeId=none",
+            "required_base": "_Root/Multistate",
+            "suggestion": "likely discrete enum; define states"
+          },
+          {
+            "path": "AutoEN",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Fail_Timer_PRE",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Float4 engUnit=s typeId=none",
+            "required_base": "_Root/Analog",
+            "suggestion": "engUnit: s"
+          },
+          {
+            "path": "_Alarms",
+            "kind": "non_root_udt_instance",
+            "current": "UdtInstance typeId=Config/_Alarms"
+          }
+        ],
+        "finding_count": 13
+      },
+      "Pump": {
+        "correct_root_count": 7,
+        "correct_root": [
+          {
+            "path": "Status",
+            "typeId": "_Root/Multistate"
+          },
+          {
+            "path": "Flow",
+            "typeId": "_Root/Analog"
+          },
+          {
+            "path": "Alm",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "Failed",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "Started",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "Comm",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "SummaryInstances",
+            "typeId": "_Root/Expression"
+          }
+        ],
+        "findings": [
+          {
+            "path": "OPER",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "MAINT",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "PROG",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Cmd_Start",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Cmd_Stop",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Cmd_Auto",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Cmd_Manual",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Cmd_Reset",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "RuntimeHours",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Float4 engUnit=h typeId=none",
+            "required_base": "_Root/Analog",
+            "suggestion": "engUnit: h"
+          },
+          {
+            "path": "MotorStarts",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Int4 engUnit=- typeId=none",
+            "required_base": "_Root/Multistate",
+            "suggestion": "likely discrete enum; define states"
+          },
+          {
+            "path": "AutoEN",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Fail_Timer_PRE",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Float4 engUnit=s typeId=none",
+            "required_base": "_Root/Analog",
+            "suggestion": "engUnit: s"
+          },
+          {
+            "path": "_Alarms",
+            "kind": "non_root_udt_instance",
+            "current": "UdtInstance typeId=Config/_Alarms"
+          }
+        ],
+        "finding_count": 13
+      },
+      "Sensor": {
+        "correct_root_count": 8,
+        "correct_root": [
+          {
+            "path": "Value",
+            "typeId": "_Root/Analog"
+          },
+          {
+            "path": "Status",
+            "typeId": "_Root/Multistate"
+          },
+          {
+            "path": "HiHi",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "Hi",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "Lo",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "LoLo",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "Fail",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "SummaryInstances",
+            "typeId": "_Root/Expression"
+          }
+        ],
+        "findings": [
+          {
+            "path": "HiHiLim",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Float4 engUnit=psig typeId=none",
+            "required_base": "_Root/Analog",
+            "suggestion": "engUnit: psig"
+          },
+          {
+            "path": "HiLim",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Float4 engUnit=psig typeId=none",
+            "required_base": "_Root/Analog",
+            "suggestion": "engUnit: psig"
+          },
+          {
+            "path": "LoLim",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Float4 engUnit=psig typeId=none",
+            "required_base": "_Root/Analog",
+            "suggestion": "engUnit: psig"
+          },
+          {
+            "path": "LoLoLim",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Float4 engUnit=psig typeId=none",
+            "required_base": "_Root/Analog",
+            "suggestion": "engUnit: psig"
+          },
+          {
+            "path": "Cmd_Reset",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "_Alarms",
+            "kind": "non_root_udt_instance",
+            "current": "UdtInstance typeId=Config/_Alarms"
+          }
+        ],
+        "finding_count": 6
+      },
+      "Tank": {
+        "correct_root_count": 10,
+        "correct_root": [
+          {
+            "path": "Status",
+            "typeId": "_Root/Multistate"
+          },
+          {
+            "path": "Level",
+            "typeId": "_Root/Analog"
+          },
+          {
+            "path": "Pressure",
+            "typeId": "_Root/Analog"
+          },
+          {
+            "path": "LSH",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "LSL",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "HH",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "H",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "L",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "LL",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "SummaryInstances",
+            "typeId": "_Root/Expression"
+          }
+        ],
+        "findings": [
+          {
+            "path": "_Alarms",
+            "kind": "non_root_udt_instance",
+            "current": "UdtInstance typeId=Config/_Alarms"
+          }
+        ],
+        "finding_count": 1
+      },
+      "Valve": {
+        "correct_root_count": 7,
+        "correct_root": [
+          {
+            "path": "Status",
+            "typeId": "_Root/Multistate"
+          },
+          {
+            "path": "OpenLS",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "ClosedLS",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "Failed",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "Comm",
+            "typeId": "_Root/Digital"
+          },
+          {
+            "path": "TravelTime",
+            "typeId": "_Root/Analog"
+          },
+          {
+            "path": "SummaryInstances",
+            "typeId": "_Root/Expression"
+          }
+        ],
+        "findings": [
+          {
+            "path": "OPER",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "MAINT",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "PROG",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Cmd_Open",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Cmd_Close",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "Cmd_Reset",
+            "kind": "standalone_atomic",
+            "current": "AtomicTag valueSource=memory dataType=Boolean engUnit=- typeId=none",
+            "required_base": "_Root/Digital",
+            "suggestion": "states: Off=0, On=1 (default)"
+          },
+          {
+            "path": "_Alarms",
+            "kind": "non_root_udt_instance",
+            "current": "UdtInstance typeId=Config/_Alarms"
+          }
+        ],
+        "finding_count": 7
+      }
+    },
+    "compressor_correct_inventory": [
+      {
+        "path": "Status",
+        "typeId": "_Root/Multistate"
+      },
+      {
+        "path": "DisP",
+        "typeId": "_Root/Analog"
+      },
+      {
+        "path": "Amps",
+        "typeId": "_Root/Analog"
+      },
+      {
+        "path": "FLA",
+        "typeId": "_Root/Analog"
+      },
+      {
+        "path": "SVP",
+        "typeId": "_Root/Analog"
+      },
+      {
+        "path": "CP_Mode",
+        "typeId": "_Root/Multistate"
+      },
+      {
+        "path": "SV_Mode",
+        "typeId": "_Root/Multistate"
+      },
+      {
+        "path": "Rung",
+        "typeId": "_Root/Multistate"
+      },
+      {
+        "path": "Color",
+        "typeId": "_Root/Multistate"
+      },
+      {
+        "path": "Alm",
+        "typeId": "_Root/Digital"
+      },
+      {
+        "path": "Cutout",
+        "typeId": "_Root/Digital"
+      },
+      {
+        "path": "Failed",
+        "typeId": "_Root/Digital"
+      },
+      {
+        "path": "Started",
+        "typeId": "_Root/Digital"
+      },
+      {
+        "path": "Comm",
+        "typeId": "_Root/Digital"
+      },
+      {
+        "path": "SummaryInstances",
+        "typeId": "_Root/Expression"
+      }
+    ],
+    "instance_overrides": [],
+    "instance_conflicts": [
+      {
+        "provider_folder": "CoolingTowers",
+        "instance": "CT-02",
+        "typeId": "Devices/CoolingTower",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "CoolingTowers",
+        "instance": "CT-03",
+        "typeId": "Devices/CoolingTower",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "CoolingTowers",
+        "instance": "CT-01",
+        "typeId": "Devices/CoolingTower",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "CoolingTowers",
+        "instance": "CT-04",
+        "typeId": "Devices/CoolingTower",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "Evaporators",
+        "instance": "EV-04",
+        "typeId": "Devices/Evaporator",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "Evaporators",
+        "instance": "EV-14",
+        "typeId": "Devices/Evaporator",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "Evaporators",
+        "instance": "EV-09",
+        "typeId": "Devices/Evaporator",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "Evaporators",
+        "instance": "EV-02",
+        "typeId": "Devices/Evaporator",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "Evaporators",
+        "instance": "EV-15",
+        "typeId": "Devices/Evaporator",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "Evaporators",
+        "instance": "EV-17",
+        "typeId": "Devices/Evaporator",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "Evaporators",
+        "instance": "EV-05",
+        "typeId": "Devices/Evaporator",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "Evaporators",
+        "instance": "EV-13",
+        "typeId": "Devices/Evaporator",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "Evaporators",
+        "instance": "EV-03",
+        "typeId": "Devices/Evaporator",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "Evaporators",
+        "instance": "EV-08",
+        "typeId": "Devices/Evaporator",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "Evaporators",
+        "instance": "EV-06",
+        "typeId": "Devices/Evaporator",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "Evaporators",
+        "instance": "EV-10",
+        "typeId": "Devices/Evaporator",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "Evaporators",
+        "instance": "EV-11",
+        "typeId": "Devices/Evaporator",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "Evaporators",
+        "instance": "EV-12",
+        "typeId": "Devices/Evaporator",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "Evaporators",
+        "instance": "EV-07",
+        "typeId": "Devices/Evaporator",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "Evaporators",
+        "instance": "EV-01",
+        "typeId": "Devices/Evaporator",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "Evaporators",
+        "instance": "EV-16",
+        "typeId": "Devices/Evaporator",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "ExhaustFans",
+        "instance": "EFAN-03",
+        "typeId": "Devices/ExhaustFan",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "ExhaustFans",
+        "instance": "EFAN-02",
+        "typeId": "Devices/ExhaustFan",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "ExhaustFans",
+        "instance": "EFAN-01",
+        "typeId": "Devices/ExhaustFan",
+        "path": "OPER",
+        "current": "AtomicTag valueSource=memory dataType=Boolean (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "ExhaustFans",
+        "instance": "EFAN-01",
+        "typeId": "Devices/ExhaustFan",
+        "path": "MAINT",
+        "current": "AtomicTag valueSource=memory dataType=Boolean (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "ExhaustFans",
+        "instance": "EFAN-01",
+        "typeId": "Devices/ExhaustFan",
+        "path": "PROG",
+        "current": "AtomicTag valueSource=memory dataType=Boolean (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "ExhaustFans",
+        "instance": "EFAN-01",
+        "typeId": "Devices/ExhaustFan",
+        "path": "Cmd_Start",
+        "current": "AtomicTag valueSource=memory dataType=Boolean (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "ExhaustFans",
+        "instance": "EFAN-01",
+        "typeId": "Devices/ExhaustFan",
+        "path": "Cmd_Stop",
+        "current": "AtomicTag valueSource=memory dataType=Boolean (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "ExhaustFans",
+        "instance": "EFAN-01",
+        "typeId": "Devices/ExhaustFan",
+        "path": "RuntimeHours",
+        "current": "AtomicTag valueSource=memory dataType=Float4 (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "ExhaustFans",
+        "instance": "EFAN-01",
+        "typeId": "Devices/ExhaustFan",
+        "path": "MotorStarts",
+        "current": "AtomicTag valueSource=memory dataType=Int4 (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "ExhaustFans",
+        "instance": "EFAN-01",
+        "typeId": "Devices/ExhaustFan",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "ExhaustFans",
+        "instance": "EFAN-04",
+        "typeId": "Devices/ExhaustFan",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "Pumps",
+        "instance": "PMP-02",
+        "typeId": "Devices/Pump",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "Pumps",
+        "instance": "PMP-01",
+        "typeId": "Devices/Pump",
+        "path": "OPER",
+        "current": "AtomicTag valueSource=memory dataType=Boolean (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "Pumps",
+        "instance": "PMP-01",
+        "typeId": "Devices/Pump",
+        "path": "MAINT",
+        "current": "AtomicTag valueSource=memory dataType=Boolean (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "Pumps",
+        "instance": "PMP-01",
+        "typeId": "Devices/Pump",
+        "path": "PROG",
+        "current": "AtomicTag valueSource=memory dataType=Boolean (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "Pumps",
+        "instance": "PMP-01",
+        "typeId": "Devices/Pump",
+        "path": "Cmd_Start",
+        "current": "AtomicTag valueSource=memory dataType=Boolean (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "Pumps",
+        "instance": "PMP-01",
+        "typeId": "Devices/Pump",
+        "path": "Cmd_Stop",
+        "current": "AtomicTag valueSource=memory dataType=Boolean (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "Pumps",
+        "instance": "PMP-01",
+        "typeId": "Devices/Pump",
+        "path": "RuntimeHours",
+        "current": "AtomicTag valueSource=memory dataType=Float4 (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "Pumps",
+        "instance": "PMP-01",
+        "typeId": "Devices/Pump",
+        "path": "MotorStarts",
+        "current": "AtomicTag valueSource=memory dataType=Int4 (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "Pumps",
+        "instance": "PMP-01",
+        "typeId": "Devices/Pump",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "Pumps",
+        "instance": "PMP-03",
+        "typeId": "Devices/Pump",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "Pumps",
+        "instance": "PMP-04",
+        "typeId": "Devices/Pump",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "Sensors",
+        "instance": "LSS-PT",
+        "typeId": "Devices/Sensor",
+        "path": "HiHiLim",
+        "current": "AtomicTag valueSource=memory dataType=Float4 (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "Sensors",
+        "instance": "LSS-PT",
+        "typeId": "Devices/Sensor",
+        "path": "HiLim",
+        "current": "AtomicTag valueSource=memory dataType=Float4 (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "Sensors",
+        "instance": "LSS-PT",
+        "typeId": "Devices/Sensor",
+        "path": "LoLim",
+        "current": "AtomicTag valueSource=memory dataType=Float4 (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "Sensors",
+        "instance": "LSS-PT",
+        "typeId": "Devices/Sensor",
+        "path": "LoLoLim",
+        "current": "AtomicTag valueSource=memory dataType=Float4 (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "Sensors",
+        "instance": "HSS-PT",
+        "typeId": "Devices/Sensor",
+        "path": "HiHiLim",
+        "current": "AtomicTag valueSource=memory dataType=Float4 (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "Sensors",
+        "instance": "HSS-PT",
+        "typeId": "Devices/Sensor",
+        "path": "HiLim",
+        "current": "AtomicTag valueSource=memory dataType=Float4 (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "Sensors",
+        "instance": "HSS-PT",
+        "typeId": "Devices/Sensor",
+        "path": "LoLim",
+        "current": "AtomicTag valueSource=memory dataType=Float4 (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "Sensors",
+        "instance": "HSS-PT",
+        "typeId": "Devices/Sensor",
+        "path": "LoLoLim",
+        "current": "AtomicTag valueSource=memory dataType=Float4 (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "Sensors",
+        "instance": "HPR-PT",
+        "typeId": "Devices/Sensor",
+        "path": "HiHiLim",
+        "current": "AtomicTag valueSource=memory dataType=Float4 (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "Sensors",
+        "instance": "HPR-PT",
+        "typeId": "Devices/Sensor",
+        "path": "HiLim",
+        "current": "AtomicTag valueSource=memory dataType=Float4 (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "Sensors",
+        "instance": "HPR-PT",
+        "typeId": "Devices/Sensor",
+        "path": "LoLim",
+        "current": "AtomicTag valueSource=memory dataType=Float4 (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "Sensors",
+        "instance": "HPR-PT",
+        "typeId": "Devices/Sensor",
+        "path": "LoLoLim",
+        "current": "AtomicTag valueSource=memory dataType=Float4 (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "Sensors",
+        "instance": "OIL-TT",
+        "typeId": "Devices/Sensor",
+        "path": "HiHiLim",
+        "current": "AtomicTag valueSource=memory dataType=Float4 (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "Sensors",
+        "instance": "OIL-TT",
+        "typeId": "Devices/Sensor",
+        "path": "HiLim",
+        "current": "AtomicTag valueSource=memory dataType=Float4 (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "Sensors",
+        "instance": "OIL-TT",
+        "typeId": "Devices/Sensor",
+        "path": "LoLim",
+        "current": "AtomicTag valueSource=memory dataType=Float4 (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "Sensors",
+        "instance": "OIL-TT",
+        "typeId": "Devices/Sensor",
+        "path": "LoLoLim",
+        "current": "AtomicTag valueSource=memory dataType=Float4 (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      },
+      {
+        "provider_folder": "Tanks",
+        "instance": "LTR",
+        "typeId": "Devices/Tank",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "Tanks",
+        "instance": "HPR",
+        "typeId": "Devices/Tank",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "Tanks",
+        "instance": "HTR",
+        "typeId": "Devices/Tank",
+        "path": "_Alarms",
+        "current": "AtomicTag valueSource=None dataType=None (instance override)",
+        "udt_expects": "UdtInstance Config/_Alarms"
+      },
+      {
+        "provider_folder": "Valves",
+        "instance": "HPRL-ISO",
+        "typeId": "Devices/Valve",
+        "path": "OPER",
+        "current": "AtomicTag valueSource=memory dataType=Boolean (instance override)",
+        "udt_expects": "AtomicTag (UDT also standalone \u2014 fix UDT first)",
+        "note": "amplifies_udt_defect"
+      }
+    ],
+    "instance_override_raw_count": 2494
+  },
+  "inventories": {
+    "Compressor": [
+      {
+        "path": "Status",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Multistate",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Status/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "Run",
+            "value": 1
+          },
+          {
+            "label": "Fault",
+            "value": 2
+          },
+          {
+            "label": "Manual",
+            "value": 3
+          },
+          {
+            "label": "Idle",
+            "value": 4
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "DisP",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "DisP/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "psi",
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "DisP/SP",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Amps",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Amps/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "A",
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "FLA",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "FLA/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "%",
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "FLA/SP",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "SVP",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SVP/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "%",
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "SVP/SP",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "CP_Mode",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Multistate",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "CP_Mode/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Remote",
+            "value": 1
+          },
+          {
+            "label": "Auto",
+            "value": 2
+          },
+          {
+            "label": "Manual",
+            "value": 3
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "SV_Mode",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Multistate",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SV_Mode/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Remote",
+            "value": 1
+          },
+          {
+            "label": "Auto",
+            "value": 2
+          },
+          {
+            "label": "Manual",
+            "value": 3
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Rung",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Multistate",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Rung/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "Running",
+            "value": 1
+          },
+          {
+            "label": "AntiRec",
+            "value": 2
+          },
+          {
+            "label": "Starting",
+            "value": 3
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Color",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Multistate",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Color/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "Running",
+            "value": 1
+          },
+          {
+            "label": "AntiRec",
+            "value": 2
+          },
+          {
+            "label": "Cutout",
+            "value": 3
+          },
+          {
+            "label": "CommError",
+            "value": 4
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Alm",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Alm/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "On",
+            "value": 1
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Cutout",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Cutout/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "On",
+            "value": 1
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Failed",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Failed/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "On",
+            "value": 1
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Started",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Started/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "On",
+            "value": 1
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Comm",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Comm/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "On",
+            "value": 1
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "OPER",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "MAINT",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "PROG",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Cmd_Start",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Cmd_Stop",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Cmd_Auto",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Cmd_Manual",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Cmd_Remote",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "RuntimeHours",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "h",
+        "states": null
+      },
+      {
+        "path": "MotorStarts",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "MaxRunTimePerStart",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "h",
+        "states": null
+      },
+      {
+        "path": "AutoEN",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Min_Runtime_Set",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "s",
+        "states": null
+      },
+      {
+        "path": "Fail_Timer_PRE",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "s",
+        "states": null
+      },
+      {
+        "path": "Interlock",
+        "tagType": "Folder",
+        "typeId": null,
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_IntlkOK",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_NBIntlkOK",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_BypActive",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_FirstOut",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_Intlk",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_Bypassable",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/OCmd_Reset",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Rdy_Reset",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt00",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt01",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt02",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt03",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt04",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt05",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt06",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt07",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt08",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt09",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt10",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt11",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt12",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt13",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt14",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt15",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass00",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass01",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass02",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass03",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass04",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass05",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass06",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass07",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass08",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass09",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass10",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass11",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass12",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass13",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass14",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass15",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SummaryInstances",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Expression",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SummaryInstances/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Document",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "SummaryInstances/Metadata",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Document",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "_Alarms",
+        "tagType": "UdtInstance",
+        "typeId": "Config/_Alarms",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      }
+    ],
+    "CoolingTower": [
+      {
+        "path": "Status",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Multistate",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Status/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "Run",
+            "value": 1
+          },
+          {
+            "label": "Fault",
+            "value": 2
+          },
+          {
+            "label": "Manual",
+            "value": 3
+          },
+          {
+            "label": "Idle",
+            "value": 4
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Temp",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Temp/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": "\u00b0F",
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Temp/SP",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "SPD_FBK",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SPD_FBK/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": "Hz",
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Failed",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Failed/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "On",
+            "value": 1
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Alm",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Alm/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "On",
+            "value": 1
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Comm",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Comm/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "On",
+            "value": 1
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "OPER",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "MAINT",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "PROG",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Cmd_Start",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Cmd_Stop",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Cmd_Auto",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Cmd_Manual",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "RuntimeHours",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "h",
+        "states": null
+      },
+      {
+        "path": "MotorStarts",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock",
+        "tagType": "Folder",
+        "typeId": null,
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_IntlkOK",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_NBIntlkOK",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_BypActive",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_FirstOut",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_Intlk",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_Bypassable",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/OCmd_Reset",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Rdy_Reset",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt00",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt01",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt02",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt03",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt04",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt05",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt06",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt07",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt08",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt09",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt10",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt11",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt12",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt13",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt14",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt15",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass00",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass01",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass02",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass03",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass04",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass05",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass06",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass07",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass08",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass09",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass10",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass11",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass12",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass13",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass14",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass15",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SummaryInstances",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Expression",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SummaryInstances/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Document",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "SummaryInstances/Metadata",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Document",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "_Alarms",
+        "tagType": "UdtInstance",
+        "typeId": "Config/_Alarms",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      }
+    ],
+    "Evaporator": [
+      {
+        "path": "Fan 1",
+        "tagType": "UdtInstance",
+        "typeId": "Devices/VFD",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Fan 2",
+        "tagType": "UdtInstance",
+        "typeId": "Devices/VFD",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Fan 3",
+        "tagType": "UdtInstance",
+        "typeId": "Devices/VFD",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Pressure",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Pressure/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": "psi",
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Pressure/SP",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Status",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Multistate",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Status/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "Cooling",
+            "value": 1
+          },
+          {
+            "label": "Defrost",
+            "value": 2
+          },
+          {
+            "label": "Fault",
+            "value": 3
+          },
+          {
+            "label": "Manual",
+            "value": 4
+          },
+          {
+            "label": "Idle",
+            "value": 5
+          },
+          {
+            "label": "1.PD",
+            "value": 6
+          },
+          {
+            "label": "2.HG",
+            "value": 7
+          },
+          {
+            "label": "3.BLD",
+            "value": 8
+          },
+          {
+            "label": "3.FD",
+            "value": 9
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Temp",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Temp/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": "\u00b0F",
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Temp/SP",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "HMIEnable",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Cmd_StartDefrost",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Cmd_StopDefrost",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Cleanup",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "TooHot",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "TooHot/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "On",
+            "value": 1
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "TooCold",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "TooCold/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "On",
+            "value": 1
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "IntlkOK",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "IntlkOK/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "On",
+            "value": 1
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "PermOK",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "PermOK/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "On",
+            "value": 1
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Off",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Off/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "On",
+            "value": 1
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "TimeLeft",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "TimeLeft/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "min",
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Cfg_PumpOut",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "min",
+        "states": null
+      },
+      {
+        "path": "Cfg_SoftHotGas",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "min",
+        "states": null
+      },
+      {
+        "path": "Cfg_MainHotGas",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "min",
+        "states": null
+      },
+      {
+        "path": "Cfg_Bleed",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "min",
+        "states": null
+      },
+      {
+        "path": "Cfg_FanDelay",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "min",
+        "states": null
+      },
+      {
+        "path": "Cfg_CoolingTime",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "min",
+        "states": null
+      },
+      {
+        "path": "Cfg_ZoneAirTempDB",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "\u00b0F",
+        "states": null
+      },
+      {
+        "path": "Interlock",
+        "tagType": "Folder",
+        "typeId": null,
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_IntlkOK",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_NBIntlkOK",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_BypActive",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_FirstOut",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_Intlk",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_Bypassable",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/OCmd_Reset",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Rdy_Reset",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt00",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt01",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt02",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt03",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt04",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt05",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt06",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt07",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt08",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt09",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt10",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt11",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt12",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt13",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt14",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt15",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass00",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass01",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass02",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass03",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass04",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass05",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass06",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass07",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass08",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass09",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass10",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass11",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass12",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass13",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass14",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass15",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SummaryInstances",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Expression",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SummaryInstances/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Document",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "SummaryInstances/Metadata",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Document",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "_Alarms",
+        "tagType": "UdtInstance",
+        "typeId": "Config/_Alarms",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      }
+    ],
+    "ExhaustFan": [
+      {
+        "path": "Status",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Multistate",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Status/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "UNK",
+            "value": 0
+          },
+          {
+            "label": "STOPPED",
+            "value": 1
+          },
+          {
+            "label": "RUNNING",
+            "value": 2
+          },
+          {
+            "label": "STOPPING",
+            "value": 7
+          },
+          {
+            "label": "STARTING",
+            "value": 8
+          },
+          {
+            "label": "DISABLED",
+            "value": 33
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Airflow",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Airflow/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "cfm",
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Airflow/SP",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Alm",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Alm/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "On",
+            "value": 1
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Failed",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Failed/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "On",
+            "value": 1
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Started",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Started/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "On",
+            "value": 1
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Comm",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Comm/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "On",
+            "value": 1
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "OPER",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "MAINT",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "PROG",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Cmd_Start",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Cmd_Stop",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Cmd_Auto",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Cmd_Manual",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Cmd_Reset",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "RuntimeHours",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "h",
+        "states": null
+      },
+      {
+        "path": "MotorStarts",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "AutoEN",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Fail_Timer_PRE",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "s",
+        "states": null
+      },
+      {
+        "path": "Interlock",
+        "tagType": "Folder",
+        "typeId": null,
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_IntlkOK",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_NBIntlkOK",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_BypActive",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_FirstOut",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_Intlk",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_Bypassable",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/OCmd_Reset",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Rdy_Reset",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt00",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt01",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt02",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt03",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt04",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt05",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt06",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt07",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt08",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt09",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt10",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt11",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt12",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt13",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt14",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt15",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass00",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass01",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass02",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass03",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass04",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass05",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass06",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass07",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass08",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass09",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass10",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass11",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass12",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass13",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass14",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass15",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SummaryInstances",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Expression",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SummaryInstances/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Document",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "SummaryInstances/Metadata",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Document",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "_Alarms",
+        "tagType": "UdtInstance",
+        "typeId": "Config/_Alarms",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      }
+    ],
+    "Pump": [
+      {
+        "path": "Status",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Multistate",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Status/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "UNK",
+            "value": 0
+          },
+          {
+            "label": "STOPPED",
+            "value": 1
+          },
+          {
+            "label": "RUNNING",
+            "value": 2
+          },
+          {
+            "label": "STOPPING",
+            "value": 7
+          },
+          {
+            "label": "STARTING",
+            "value": 8
+          },
+          {
+            "label": "DISABLED",
+            "value": 33
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Flow",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Flow/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "gpm",
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Flow/SP",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Alm",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Alm/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "On",
+            "value": 1
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Failed",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Failed/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "On",
+            "value": 1
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Started",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Started/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "On",
+            "value": 1
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Comm",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Comm/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "On",
+            "value": 1
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "OPER",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "MAINT",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "PROG",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Cmd_Start",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Cmd_Stop",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Cmd_Auto",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Cmd_Manual",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Cmd_Reset",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "RuntimeHours",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "h",
+        "states": null
+      },
+      {
+        "path": "MotorStarts",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "AutoEN",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Fail_Timer_PRE",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "s",
+        "states": null
+      },
+      {
+        "path": "Interlock",
+        "tagType": "Folder",
+        "typeId": null,
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_IntlkOK",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_NBIntlkOK",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_BypActive",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_FirstOut",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_Intlk",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_Bypassable",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/OCmd_Reset",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Rdy_Reset",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt00",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt01",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt02",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt03",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt04",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt05",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt06",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt07",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt08",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt09",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt10",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt11",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt12",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt13",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt14",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt15",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass00",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass01",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass02",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass03",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass04",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass05",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass06",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass07",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass08",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass09",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass10",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass11",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass12",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass13",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass14",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass15",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SummaryInstances",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Expression",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SummaryInstances/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Document",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "SummaryInstances/Metadata",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Document",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "_Alarms",
+        "tagType": "UdtInstance",
+        "typeId": "Config/_Alarms",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      }
+    ],
+    "Sensor": [
+      {
+        "path": "Value",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Value/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "psig",
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Status",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Multistate",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Status/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "OK",
+            "value": 0
+          },
+          {
+            "label": "HI",
+            "value": 1
+          },
+          {
+            "label": "LO",
+            "value": 2
+          },
+          {
+            "label": "HIHI",
+            "value": 3
+          },
+          {
+            "label": "LOLO",
+            "value": 4
+          },
+          {
+            "label": "FAIL",
+            "value": 5
+          },
+          {
+            "label": "BAD",
+            "value": 6
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "HiHi",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "HiHi/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Hi",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Hi/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Lo",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Lo/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "LoLo",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "LoLo/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Fail",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Fail/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "HiHiLim",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "psig",
+        "states": null
+      },
+      {
+        "path": "HiLim",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "psig",
+        "states": null
+      },
+      {
+        "path": "LoLim",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "psig",
+        "states": null
+      },
+      {
+        "path": "LoLoLim",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "psig",
+        "states": null
+      },
+      {
+        "path": "Cmd_Reset",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SummaryInstances",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Expression",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SummaryInstances/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Document",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "SummaryInstances/Metadata",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Document",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "_Alarms",
+        "tagType": "UdtInstance",
+        "typeId": "Config/_Alarms",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      }
+    ],
+    "Tank": [
+      {
+        "path": "Status",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Multistate",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Status/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "OK",
+            "value": 0
+          },
+          {
+            "label": "LOW",
+            "value": 1
+          },
+          {
+            "label": "HIGH",
+            "value": 2
+          },
+          {
+            "label": "LOLO",
+            "value": 3
+          },
+          {
+            "label": "HIHI",
+            "value": 4
+          },
+          {
+            "label": "FAULT",
+            "value": 5
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Level",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Level/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "%",
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Level/SP",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "%",
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Pressure",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Pressure/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "psig",
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "LSH",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "LSH/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "LSL",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "LSL/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "HH",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "HH/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "HH/SP",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "%",
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "H",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "H/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "H/SP",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "%",
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "L",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "L/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "L/SP",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "%",
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "LL",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "LL/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "LL/SP",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "%",
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Interlock",
+        "tagType": "Folder",
+        "typeId": null,
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_IntlkOK",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/OCmd_Reset",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Rdy_Reset",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt00",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt01",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt02",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt03",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SummaryInstances",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Expression",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SummaryInstances/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Document",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "SummaryInstances/Metadata",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Document",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "_Alarms",
+        "tagType": "UdtInstance",
+        "typeId": "Config/_Alarms",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      }
+    ],
+    "Valve": [
+      {
+        "path": "Status",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Multistate",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Status/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "UNK",
+            "value": 0
+          },
+          {
+            "label": "CLOSED",
+            "value": 1
+          },
+          {
+            "label": "OPEN",
+            "value": 2
+          },
+          {
+            "label": "CLOSING",
+            "value": 5
+          },
+          {
+            "label": "OPENING",
+            "value": 6
+          },
+          {
+            "label": "DISABLED",
+            "value": 33
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "OPER",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "MAINT",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "PROG",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Cmd_Open",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Cmd_Close",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Cmd_Reset",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "OpenLS",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "OpenLS/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "On",
+            "value": 1
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "ClosedLS",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "ClosedLS/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "On",
+            "value": 1
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Failed",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Failed/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "On",
+            "value": 1
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Comm",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Digital",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Comm/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": [
+          {
+            "label": "Off",
+            "value": 0
+          },
+          {
+            "label": "On",
+            "value": 1
+          }
+        ],
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "TravelTime",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Analog",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "TravelTime/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Float4",
+        "valueSource": "memory",
+        "engUnit": "s",
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "Interlock",
+        "tagType": "Folder",
+        "typeId": null,
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_IntlkOK",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_NBIntlkOK",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_BypActive",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_FirstOut",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Sts_Intlk",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_Bypassable",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Int4",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/OCmd_Reset",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Rdy_Reset",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt00",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt01",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt02",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt03",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt04",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt05",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt06",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt07",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt08",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt09",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt10",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt11",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt12",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt13",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt14",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/Cfg_CondTxt15",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "String",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass00",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass01",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass02",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass03",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass04",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass05",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass06",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass07",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass08",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass09",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass10",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass11",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass12",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass13",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass14",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "Interlock/MSet_Bypass15",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Boolean",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SummaryInstances",
+        "tagType": "UdtInstance",
+        "typeId": "_Root/Expression",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      },
+      {
+        "path": "SummaryInstances/Value",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Document",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "SummaryInstances/Metadata",
+        "tagType": "AtomicTag",
+        "typeId": null,
+        "dataType": "Document",
+        "valueSource": "memory",
+        "engUnit": null,
+        "states": null,
+        "note": "override_under_root_instance"
+      },
+      {
+        "path": "_Alarms",
+        "tagType": "UdtInstance",
+        "typeId": "Config/_Alarms",
+        "dataType": null,
+        "valueSource": null,
+        "engUnit": null,
+        "states": null
+      }
+    ]
+  }
+}

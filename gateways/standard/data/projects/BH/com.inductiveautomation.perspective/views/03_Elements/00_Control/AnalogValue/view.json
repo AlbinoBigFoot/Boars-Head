@@ -46,7 +46,8 @@
       "style": {
         "overflow": "visible",
         "minHeight": "20px",
-        "height": "20px"
+        "height": "20px",
+        "width": "100%"
       }
     },
     "children": [
@@ -56,9 +57,18 @@
           "name": "Numeric"
         },
         "position": {
-          "grow": 1
+          "grow": 0,
+          "shrink": 0
         },
         "propConfig": {
+          "position.grow": {
+            "binding": {
+              "config": {
+                "expression": "if({view.params.spacing.center},\n\t0,\n\t1)"
+              },
+              "type": "expr"
+            }
+          },
           "props.params.tagPath": {
             "binding": {
               "config": {

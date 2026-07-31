@@ -13,29 +13,22 @@
         "tagType": "UdtInstance"
       },
       {
-        "name": "Temp",
-        "typeId": "_Root/Analog",
-        "tagType": "UdtInstance"
-      },
-      {
         "name": "SummaryInstances",
         "typeId": "_Root/Expression",
         "tagType": "UdtInstance",
         "tags": [
           {
+            "valueSource": "memory",
             "dataType": "Document",
             "historyEnabled": false,
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "memory",
             "value": {
               "overviewInstances": [],
               "deviceDetails": {}
-            }
+            },
+            "name": "Value",
+            "tagType": "AtomicTag"
           },
           {
-            "name": "Metadata",
-            "tagType": "AtomicTag",
             "valueSource": "memory",
             "dataType": "Document",
             "value": {
@@ -72,9 +65,175 @@
                   }
                 ]
               }
-            }
+            },
+            "name": "Metadata",
+            "tagType": "AtomicTag"
           }
         ]
+      },
+      {
+        "name": "Temp",
+        "typeId": "_Root/Analog",
+        "tagType": "UdtInstance"
+      },
+      {
+        "name": "_Alarms",
+        "typeId": "Config/_Alarms",
+        "tagType": "UdtInstance"
+      }
+    ]
+  },
+  {
+    "name": "Machine Room",
+    "typeId": null,
+    "tagType": "UdtType",
+    "tags": [
+      {
+        "metadata": {
+          "shortDescription": "exhaust fan",
+          "longDescription": "exhaust fan (Devices HMI layer; PLC source P_Motor)"
+        },
+        "name": "BR EF",
+        "typeId": "Devices/ExhaustFan",
+        "tagType": "UdtInstance"
+      },
+      {
+        "name": "COMP 1",
+        "typeId": "Devices/Compressor",
+        "tagType": "UdtInstance"
+      },
+      {
+        "metadata": {
+          "shortDescription": "compressor",
+          "longDescription": "screw compressor (Devices HMI layer; PLC source PLC/Screw_Compressor)"
+        },
+        "name": "COMP 4",
+        "typeId": "Devices/Compressor",
+        "tagType": "UdtInstance"
+      },
+      {
+        "metadata": {
+          "shortDescription": "compressor",
+          "longDescription": "screw compressor (Devices HMI layer; PLC source PLC/Screw_Compressor)"
+        },
+        "name": "COMP 5",
+        "typeId": "Devices/Compressor",
+        "tagType": "UdtInstance"
+      },
+      {
+        "metadata": {
+          "shortDescription": "compressor",
+          "longDescription": "screw compressor (Devices HMI layer; PLC source PLC/Screw_Compressor)"
+        },
+        "name": "COMP 6",
+        "typeId": "Devices/Compressor",
+        "tagType": "UdtInstance"
+      },
+      {
+        "metadata": {
+          "shortDescription": "compressor",
+          "longDescription": "screw compressor (Devices HMI layer; PLC source PLC/Screw_Compressor)"
+        },
+        "name": "COMP 7",
+        "typeId": "Devices/Compressor",
+        "tagType": "UdtInstance"
+      },
+      {
+        "metadata": {
+          "shortDescription": "tank / vessel",
+          "longDescription": "Recirculator/Accumulator-style vessel: Level %, HH/H/L/LL marks, LSH/LSL, optional Pressure, lightweight Interlock"
+        },
+        "name": "HPR",
+        "typeId": "Devices/Tank",
+        "tagType": "UdtInstance"
+      },
+      {
+        "name": "HSL-Pumps Pressure",
+        "typeId": "Devices/Sensor",
+        "tagType": "UdtInstance"
+      },
+      {
+        "metadata": {
+          "shortDescription": "sensor",
+          "longDescription": "process sensor (P_AIn-shaped)"
+        },
+        "name": "HSS-Pumps Pressure",
+        "typeId": "Devices/Sensor",
+        "tagType": "UdtInstance"
+      },
+      {
+        "name": "HTLR-Pump 1",
+        "typeId": "Devices/Pump",
+        "tagType": "UdtInstance"
+      },
+      {
+        "metadata": {
+          "shortDescription": "pump",
+          "longDescription": "pump (Devices HMI layer; PLC source P_Motor)"
+        },
+        "name": "HTLR-Pump 2",
+        "typeId": "Devices/Pump",
+        "tagType": "UdtInstance"
+      },
+      {
+        "name": "HTR",
+        "typeId": "Devices/Tank",
+        "tagType": "UdtInstance"
+      },
+      {
+        "metadata": {
+          "shortDescription": "sensor",
+          "longDescription": "process sensor (P_AIn-shaped)"
+        },
+        "name": "LSL-Pumps Pressure",
+        "typeId": "Devices/Sensor",
+        "tagType": "UdtInstance"
+      },
+      {
+        "metadata": {
+          "shortDescription": "sensor",
+          "longDescription": "process sensor (P_AIn-shaped)"
+        },
+        "name": "LSS-Pumps Pressure",
+        "typeId": "Devices/Sensor",
+        "tagType": "UdtInstance"
+      },
+      {
+        "metadata": {
+          "shortDescription": "pump",
+          "longDescription": "pump (Devices HMI layer; PLC source P_Motor)"
+        },
+        "name": "LTLR-Pump 1",
+        "typeId": "Devices/Pump",
+        "tagType": "UdtInstance"
+      },
+      {
+        "metadata": {
+          "shortDescription": "pump",
+          "longDescription": "pump (Devices HMI layer; PLC source P_Motor)"
+        },
+        "name": "LTLR-Pump 2",
+        "typeId": "Devices/Pump",
+        "tagType": "UdtInstance"
+      },
+      {
+        "metadata": {
+          "shortDescription": "tank / vessel",
+          "longDescription": "Recirculator/Accumulator-style vessel: Level %, HH/H/L/LL marks, LSH/LSL, optional Pressure, lightweight Interlock"
+        },
+        "name": "LTR",
+        "typeId": "Devices/Tank",
+        "tagType": "UdtInstance"
+      },
+      {
+        "name": "MR EF",
+        "typeId": "Devices/ExhaustFan",
+        "tagType": "UdtInstance"
+      },
+      {
+        "name": "Main Liq SV",
+        "typeId": "Devices/Valve",
+        "tagType": "UdtInstance"
       },
       {
         "name": "_Alarms",

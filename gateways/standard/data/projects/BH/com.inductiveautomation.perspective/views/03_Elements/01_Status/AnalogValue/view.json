@@ -3,6 +3,7 @@
     "effectiveSpPath": ""
   },
   "params": {
+    "compact": false,
     "spacing": {
       "center": true,
       "data": 0,
@@ -10,9 +11,14 @@
       "textAlign": "center"
     },
     "tagPath": "",
-    "spTagPath": ""
+    "spTagPath": "",
+    "forceColor": ""
   },
   "propConfig": {
+    "params.compact": {
+      "paramDirection": "input",
+      "persistent": true
+    },
     "params.spacing": {
       "paramDirection": "input",
       "persistent": true
@@ -22,6 +28,10 @@
       "persistent": true
     },
     "params.spTagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.forceColor": {
       "paramDirection": "input",
       "persistent": true
     },
@@ -46,13 +56,24 @@
     "meta": {
       "name": "root"
     },
+    "propConfig": {
+      "props.justify": {
+        "binding": {
+          "config": {
+            "expression": "if({view.params.spacing.center},\n\t'center',\n\t'flex-start')"
+          },
+          "type": "expr"
+        }
+      }
+    },
     "props": {
       "alignItems": "center",
       "justify": "center",
       "style": {
         "overflow": "visible",
-        "minHeight": "20px",
-        "height": "20px"
+        "minHeight": "0px",
+        "height": "100%",
+        "width": "100%"
       }
     },
     "children": [
@@ -62,9 +83,27 @@
           "name": "Numeric"
         },
         "position": {
-          "grow": 1
+          "grow": 0,
+          "shrink": 0,
+          "basis": "auto"
         },
         "propConfig": {
+          "position.grow": {
+            "binding": {
+              "config": {
+                "expression": "if({view.params.spacing.center},\n\t0,\n\t1)"
+              },
+              "type": "expr"
+            }
+          },
+          "props.params.compact": {
+            "binding": {
+              "config": {
+                "path": "view.params.compact"
+              },
+              "type": "property"
+            }
+          },
           "props.params.spacing.center": {
             "binding": {
               "config": {
@@ -104,22 +143,36 @@
               },
               "type": "property"
             }
+          },
+          "props.params.forceColor": {
+            "binding": {
+              "config": {
+                "path": "view.params.forceColor"
+              },
+              "type": "property"
+            }
           }
         },
         "props": {
           "params": {
+            "compact": false,
             "spacing": {
               "center": true,
               "data": 0,
               "engUnit": 30
             },
             "tagPath": "",
-            "spTagPath": ""
+            "spTagPath": "",
+            "forceColor": ""
           },
           "path": "03_Elements/01_Status/_Assets/Numeric",
           "style": {
-            "overflow": "visible"
-          }
+            "overflow": "visible",
+            "height": "100%",
+            "width": "auto"
+          },
+          "useDefaultViewWidth": false,
+          "useDefaultViewHeight": false
         }
       }
     ]
