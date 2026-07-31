@@ -1,11 +1,23 @@
 [
   {
     "name": "Value",
-    "tagType": "AtomicTag",
-    "valueSource": "opc",
-    "opcServer": "Ignition OPC UA Server",
-    "opcItemPath": "ns=1;s=[RCP1]SYS_PT2.Val",
-    "dataType": "Float4",
+    "typeId": "_Root/Analog",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Value",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": "ns=1;s=[RCP1]SYS_PT2.Val",
+        "dataType": "Float4",
+        "documentation": "PLC Val \u2014 Devices Value/Value",
+        "metadata": {
+          "shortDescription": "PLC Val \u2014 Devices Value/Value",
+          "longDescription": "PLC Val \u2014 Devices Value/Value"
+        }
+      }
+    ],
     "documentation": "PLC Val \u2014 Devices Value/Value",
     "metadata": {
       "shortDescription": "PLC Val \u2014 Devices Value/Value",
@@ -14,11 +26,23 @@
   },
   {
     "name": "Status",
-    "tagType": "AtomicTag",
-    "valueSource": "opc",
-    "opcServer": "Ignition OPC UA Server",
-    "opcItemPath": "ns=1;s=[RCP1]SYS_PT2.Val_Fault",
-    "dataType": "Int1",
+    "typeId": "_Root/Multistate",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Value",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": "ns=1;s=[RCP1]SYS_PT2.Val_Fault",
+        "dataType": "Int1",
+        "documentation": "PLC Val_Fault \u2014 Devices Status/Value",
+        "metadata": {
+          "shortDescription": "PLC Val_Fault \u2014 Devices Status/Value",
+          "longDescription": "PLC Val_Fault \u2014 Devices Status/Value"
+        }
+      }
+    ],
     "documentation": "PLC Val_Fault \u2014 Devices Status/Value",
     "metadata": {
       "shortDescription": "PLC Val_Fault \u2014 Devices Status/Value",
@@ -27,11 +51,23 @@
   },
   {
     "name": "HiHi",
-    "tagType": "AtomicTag",
-    "valueSource": "opc",
-    "opcServer": "Ignition OPC UA Server",
-    "opcItemPath": "ns=1;s=[RCP1]SYS_PT2.Sts_HiHi",
-    "dataType": "Boolean",
+    "typeId": "_Root/Digital",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Value",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": "ns=1;s=[RCP1]SYS_PT2.Sts_HiHi",
+        "dataType": "Boolean",
+        "documentation": "PLC Sts_HiHi \u2014 Devices HiHi/Value",
+        "metadata": {
+          "shortDescription": "PLC Sts_HiHi \u2014 Devices HiHi/Value",
+          "longDescription": "PLC Sts_HiHi \u2014 Devices HiHi/Value"
+        }
+      }
+    ],
     "documentation": "PLC Sts_HiHi \u2014 Devices HiHi/Value",
     "metadata": {
       "shortDescription": "PLC Sts_HiHi \u2014 Devices HiHi/Value",
@@ -40,11 +76,23 @@
   },
   {
     "name": "Hi",
-    "tagType": "AtomicTag",
-    "valueSource": "opc",
-    "opcServer": "Ignition OPC UA Server",
-    "opcItemPath": "ns=1;s=[RCP1]SYS_PT2.Sts_Hi",
-    "dataType": "Boolean",
+    "typeId": "_Root/Digital",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Value",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": "ns=1;s=[RCP1]SYS_PT2.Sts_Hi",
+        "dataType": "Boolean",
+        "documentation": "PLC Sts_Hi \u2014 Devices Hi/Value",
+        "metadata": {
+          "shortDescription": "PLC Sts_Hi \u2014 Devices Hi/Value",
+          "longDescription": "PLC Sts_Hi \u2014 Devices Hi/Value"
+        }
+      }
+    ],
     "documentation": "PLC Sts_Hi \u2014 Devices Hi/Value",
     "metadata": {
       "shortDescription": "PLC Sts_Hi \u2014 Devices Hi/Value",
@@ -53,11 +101,23 @@
   },
   {
     "name": "Lo",
-    "tagType": "AtomicTag",
-    "valueSource": "opc",
-    "opcServer": "Ignition OPC UA Server",
-    "opcItemPath": "ns=1;s=[RCP1]SYS_PT2.Sts_Lo",
-    "dataType": "Boolean",
+    "typeId": "_Root/Digital",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Value",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": "ns=1;s=[RCP1]SYS_PT2.Sts_Lo",
+        "dataType": "Boolean",
+        "documentation": "PLC Sts_Lo \u2014 Devices Lo/Value",
+        "metadata": {
+          "shortDescription": "PLC Sts_Lo \u2014 Devices Lo/Value",
+          "longDescription": "PLC Sts_Lo \u2014 Devices Lo/Value"
+        }
+      }
+    ],
     "documentation": "PLC Sts_Lo \u2014 Devices Lo/Value",
     "metadata": {
       "shortDescription": "PLC Sts_Lo \u2014 Devices Lo/Value",
@@ -66,11 +126,23 @@
   },
   {
     "name": "LoLo",
-    "tagType": "AtomicTag",
-    "valueSource": "opc",
-    "opcServer": "Ignition OPC UA Server",
-    "opcItemPath": "ns=1;s=[RCP1]SYS_PT2.Sts_LoLo",
-    "dataType": "Boolean",
+    "typeId": "_Root/Digital",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Value",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": "ns=1;s=[RCP1]SYS_PT2.Sts_LoLo",
+        "dataType": "Boolean",
+        "documentation": "PLC Sts_LoLo \u2014 Devices LoLo/Value",
+        "metadata": {
+          "shortDescription": "PLC Sts_LoLo \u2014 Devices LoLo/Value",
+          "longDescription": "PLC Sts_LoLo \u2014 Devices LoLo/Value"
+        }
+      }
+    ],
     "documentation": "PLC Sts_LoLo \u2014 Devices LoLo/Value",
     "metadata": {
       "shortDescription": "PLC Sts_LoLo \u2014 Devices LoLo/Value",
@@ -79,11 +151,23 @@
   },
   {
     "name": "Fail",
-    "tagType": "AtomicTag",
-    "valueSource": "opc",
-    "opcServer": "Ignition OPC UA Server",
-    "opcItemPath": "ns=1;s=[RCP1]SYS_PT2.Sts_Fail",
-    "dataType": "Boolean",
+    "typeId": "_Root/Digital",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Value",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": "ns=1;s=[RCP1]SYS_PT2.Sts_Fail",
+        "dataType": "Boolean",
+        "documentation": "PLC Sts_Fail \u2014 Devices Fail/Value",
+        "metadata": {
+          "shortDescription": "PLC Sts_Fail \u2014 Devices Fail/Value",
+          "longDescription": "PLC Sts_Fail \u2014 Devices Fail/Value"
+        }
+      }
+    ],
     "documentation": "PLC Sts_Fail \u2014 Devices Fail/Value",
     "metadata": {
       "shortDescription": "PLC Sts_Fail \u2014 Devices Fail/Value",
@@ -92,11 +176,23 @@
   },
   {
     "name": "HiHiLim",
-    "tagType": "AtomicTag",
-    "valueSource": "opc",
-    "opcServer": "Ignition OPC UA Server",
-    "opcItemPath": "ns=1;s=[RCP1]SYS_PT2.Val_HiHiLim",
-    "dataType": "Float4",
+    "typeId": "_Root/Analog",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Value",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": "ns=1;s=[RCP1]SYS_PT2.Val_HiHiLim",
+        "dataType": "Float4",
+        "documentation": "PLC Val_HiHiLim \u2014 Devices HiHiLim/Value",
+        "metadata": {
+          "shortDescription": "PLC Val_HiHiLim \u2014 Devices HiHiLim/Value",
+          "longDescription": "PLC Val_HiHiLim \u2014 Devices HiHiLim/Value"
+        }
+      }
+    ],
     "documentation": "PLC Val_HiHiLim \u2014 Devices HiHiLim/Value",
     "metadata": {
       "shortDescription": "PLC Val_HiHiLim \u2014 Devices HiHiLim/Value",
@@ -105,11 +201,23 @@
   },
   {
     "name": "HiLim",
-    "tagType": "AtomicTag",
-    "valueSource": "opc",
-    "opcServer": "Ignition OPC UA Server",
-    "opcItemPath": "ns=1;s=[RCP1]SYS_PT2.Val_HiLim",
-    "dataType": "Float4",
+    "typeId": "_Root/Analog",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Value",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": "ns=1;s=[RCP1]SYS_PT2.Val_HiLim",
+        "dataType": "Float4",
+        "documentation": "PLC Val_HiLim \u2014 Devices HiLim/Value",
+        "metadata": {
+          "shortDescription": "PLC Val_HiLim \u2014 Devices HiLim/Value",
+          "longDescription": "PLC Val_HiLim \u2014 Devices HiLim/Value"
+        }
+      }
+    ],
     "documentation": "PLC Val_HiLim \u2014 Devices HiLim/Value",
     "metadata": {
       "shortDescription": "PLC Val_HiLim \u2014 Devices HiLim/Value",
@@ -118,11 +226,23 @@
   },
   {
     "name": "LoLim",
-    "tagType": "AtomicTag",
-    "valueSource": "opc",
-    "opcServer": "Ignition OPC UA Server",
-    "opcItemPath": "ns=1;s=[RCP1]SYS_PT2.Val_LoLim",
-    "dataType": "Float4",
+    "typeId": "_Root/Analog",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Value",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": "ns=1;s=[RCP1]SYS_PT2.Val_LoLim",
+        "dataType": "Float4",
+        "documentation": "PLC Val_LoLim \u2014 Devices LoLim/Value",
+        "metadata": {
+          "shortDescription": "PLC Val_LoLim \u2014 Devices LoLim/Value",
+          "longDescription": "PLC Val_LoLim \u2014 Devices LoLim/Value"
+        }
+      }
+    ],
     "documentation": "PLC Val_LoLim \u2014 Devices LoLim/Value",
     "metadata": {
       "shortDescription": "PLC Val_LoLim \u2014 Devices LoLim/Value",
@@ -131,11 +251,23 @@
   },
   {
     "name": "LoLoLim",
-    "tagType": "AtomicTag",
-    "valueSource": "opc",
-    "opcServer": "Ignition OPC UA Server",
-    "opcItemPath": "ns=1;s=[RCP1]SYS_PT2.Val_LoLoLim",
-    "dataType": "Float4",
+    "typeId": "_Root/Analog",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Value",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": "ns=1;s=[RCP1]SYS_PT2.Val_LoLoLim",
+        "dataType": "Float4",
+        "documentation": "PLC Val_LoLoLim \u2014 Devices LoLoLim/Value",
+        "metadata": {
+          "shortDescription": "PLC Val_LoLoLim \u2014 Devices LoLoLim/Value",
+          "longDescription": "PLC Val_LoLoLim \u2014 Devices LoLoLim/Value"
+        }
+      }
+    ],
     "documentation": "PLC Val_LoLoLim \u2014 Devices LoLoLim/Value",
     "metadata": {
       "shortDescription": "PLC Val_LoLoLim \u2014 Devices LoLoLim/Value",
@@ -144,11 +276,23 @@
   },
   {
     "name": "Cmd_Reset",
-    "tagType": "AtomicTag",
-    "valueSource": "opc",
-    "opcServer": "Ignition OPC UA Server",
-    "opcItemPath": "ns=1;s=[RCP1]SYS_PT2.OCmd_Reset",
-    "dataType": "Boolean",
+    "typeId": "_Root/Digital",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Value",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": "ns=1;s=[RCP1]SYS_PT2.OCmd_Reset",
+        "dataType": "Boolean",
+        "documentation": "PLC OCmd_Reset \u2014 Devices Cmd_Reset/Value",
+        "metadata": {
+          "shortDescription": "PLC OCmd_Reset \u2014 Devices Cmd_Reset/Value",
+          "longDescription": "PLC OCmd_Reset \u2014 Devices Cmd_Reset/Value"
+        }
+      }
+    ],
     "documentation": "PLC OCmd_Reset \u2014 Devices Cmd_Reset/Value",
     "metadata": {
       "shortDescription": "PLC OCmd_Reset \u2014 Devices Cmd_Reset/Value",
