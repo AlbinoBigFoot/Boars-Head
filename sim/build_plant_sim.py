@@ -39,9 +39,26 @@ def infer_dtype(path: str, dt: str | None) -> tuple[str, str]:
     if dt and dt in DTYPE_MAP:
         return DTYPE_MAP[dt], dt
     parent = path.split("/")[-2] if "/" in path else ""
-    if parent in ("CMD", "Fault", "Alm", "Cutout", "Failed", "Started", "Comm"):
+    if parent in (
+        "CMD",
+        "Fault",
+        "Alm",
+        "Cutout",
+        "Failed",
+        "Started",
+        "Comm",
+        "AutoEN",
+        "Start_Req",
+        "Stop_Req",
+        "OCmd_Reset",
+        "Rdy_Reset",
+        "Sts_BypActive",
+        "Sts_FirstOut",
+        "Sts_IntlkOK",
+        "Sts_NBIntlkOK",
+    ) or parent.startswith("MSet_Bypass"):
         return "Boolean", "Boolean"
-    if parent in ("Status", "CP_Mode", "SV_Mode", "Rung", "Color"):
+    if parent in ("Status", "CP_Mode", "SV_Mode", "Rung", "Color", "Sts_Intlk", "Cfg_Bypassable"):
         return "Int32", "Int4"
     return "Float", "Float4"
 
@@ -55,8 +72,8 @@ def infer_dtype(path: str, dt: str | None) -> tuple[str, str]:
 # Temp/SP is now _Root/Analog under device Temp (path Temp/SP/Value). Defaults: Evap 35F, CT 85F,
 # Pump 50 gpm, ExhaustFan 1000 cfm, Compressor DisP 25 psi.
 # Over-SP AnalogValue red demos: EV-02, CT-01, PMP-01, EFAN-01.
-# Compressors demo Status/FLA%/SVP%/CP/SV + DisP/Amps/Rung/Color/bools (PLC-aligned).
-# Over-SP AnalogValue red demos: COMP-01 FLA (>70 SP), COMP-02 SVP (>50 SP).
+# Compressors demo Rung/FLA%/SVP%/CP/SV + DisP/Amps/Color/bools (PLC-aligned).
+# SP children removed from Devices/Compressor — no FLA/SVP/DisP SP demos.
 EV_PROFILES: dict[str, dict[str, str]] = {
     # EV-01: Comm Loss via tag enabled=false (sim value unused while disabled)
     "EV-01": {
@@ -699,23 +716,25 @@ TANK_PROFILES: dict[str, dict[str, str]] = {
 # Faceplate Controls/Config/Interlocks demo leaves (Devices/Compressor flat + Interlock/).
 # Keys are relative paths under Compressors/COMP-##/ (not Value-parent names).
 COMP_FACEPLATE_DEFAULTS: dict[str, tuple[str, str]] = {
-    "OPER": ("true", "Boolean"),
-    "MAINT": ("false", "Boolean"),
-    "PROG": ("false", "Boolean"),
-    "Cmd_Start": ("false", "Boolean"),
-    "Cmd_Stop": ("false", "Boolean"),
-    "Cmd_Auto": ("false", "Boolean"),
-    "Cmd_Manual": ("false", "Boolean"),
-    "Cmd_Remote": ("false", "Boolean"),
-    "RuntimeHours": ("1247.5", "Float"),
-    "MotorStarts": ("382", "Int32"),
-    "MaxRunTimePerStart": ("18.5", "Float"),
+    "Start_Req": ("false", "Boolean"),
+    "Stop_Req": ("false", "Boolean"),
+    "TotalRuntime": ("1247.5", "Float"),
     "AutoEN": ("true", "Boolean"),
     "Min_Runtime_Set": ("120.0", "Float"),
     "Fail_Timer_PRE": ("30.0", "Float"),
-    "DisP/SP": ("25.0", "Float"),
-    "FLA/SP": ("70.0", "Float"),
-    "SVP/SP": ("50.0", "Float"),
+    "DisP": ("20.0", "Float"),
+    "Amps": ("0.0", "Float"),
+    "FLA": ("0.0", "Float"),
+    "SVP": ("0.0", "Float"),
+    "CP_Mode": ("2", "Int32"),
+    "SV_Mode": ("2", "Int32"),
+    "Rung": ("0", "Int32"),
+    "Color": ("0", "Int32"),
+    "Alm": ("false", "Boolean"),
+    "Cutout": ("false", "Boolean"),
+    "Failed": ("false", "Boolean"),
+    "Started": ("false", "Boolean"),
+    "Comm": ("false", "Boolean"),
     "Interlock/Sts_IntlkOK": ("false", "Boolean"),
     "Interlock/Sts_NBIntlkOK": ("true", "Boolean"),
     "Interlock/Sts_BypActive": ("false", "Boolean"),
@@ -724,20 +743,14 @@ COMP_FACEPLATE_DEFAULTS: dict[str, tuple[str, str]] = {
     "Interlock/Cfg_Bypassable": ("7", "Int32"),
     "Interlock/OCmd_Reset": ("false", "Boolean"),
     "Interlock/Rdy_Reset": ("true", "Boolean"),
-    "Interlock/Cfg_CondTxt00": ("Oil Pressure", "String"),
-    "Interlock/Cfg_CondTxt01": ("Discharge Temp", "String"),
-    "Interlock/Cfg_CondTxt02": ("Motor OL", "String"),
-    "Interlock/Cfg_CondTxt03": ("Emergency Stop", "String"),
 }
-for _i in range(4, 16):
-    COMP_FACEPLATE_DEFAULTS[f"Interlock/Cfg_CondTxt{_i:02d}"] = ("", "String")
 for _i in range(16):
     COMP_FACEPLATE_DEFAULTS[f"Interlock/MSet_Bypass{_i:02d}"] = ("false", "Boolean")
 
 COMP_PROFILES: dict[str, dict[str, str]] = {
-    # COMP-01: Run; CP Auto / SV Manual â€” FLA > SP (70)
+    # COMP-01: Run; CP Auto / SV Manual
     "COMP-01": {
-        "Status": "1",
+        "AutoEN": "true",
         "DisP": "35.0",
         "Amps": "realistic(185.0, 5.0, 0.04, 0.18, true)",
         "FLA": "realistic(78.0, 3.0, 0.05, 0.2, true)",
@@ -751,10 +764,11 @@ COMP_PROFILES: dict[str, dict[str, str]] = {
         "Failed": "false",
         "Started": "true",
         "Comm": "false",
+        "TotalRuntime": "1247.5",
     },
-    # COMP-02: Idle; CP Manual / SV Auto â€” SVP stays under SP; mild Amps
+    # COMP-02: Idle; CP Manual / SV Auto
     "COMP-02": {
-        "Status": "4",
+        "AutoEN": "true",
         "DisP": "realistic(18.0, 1.0, 0.05, 0.2, true)",
         "Amps": "realistic(42.0, 3.0, 0.04, 0.18, true)",
         "FLA": "realistic(42.0, 3.0, 0.04, 0.18, true)",
@@ -768,10 +782,11 @@ COMP_PROFILES: dict[str, dict[str, str]] = {
         "Failed": "false",
         "Started": "false",
         "Comm": "false",
+        "TotalRuntime": "980.0",
     },
-    # COMP-03: Fault; CP/SV Remote â€” Alm + Failed; Cutout color
+    # COMP-03: Fault; CP/SV Remote — Alm + Failed; Cutout color
     "COMP-03": {
-        "Status": "2",
+        "AutoEN": "false",
         "DisP": "realistic(20.0, 1.2, 0.06, 0.22, true)",
         "Amps": "realistic(12.0, 2.0, 0.05, 0.2, true)",
         "FLA": "realistic(28.0, 2.5, 0.04, 0.18, true)",
@@ -785,10 +800,11 @@ COMP_PROFILES: dict[str, dict[str, str]] = {
         "Failed": "true",
         "Started": "false",
         "Comm": "false",
+        "TotalRuntime": "2100.0",
     },
-    # COMP-04: Off; CP Auto / SV Manual â€” low but nonzero FLA/SVP
+    # COMP-04: Off; CP Auto / SV Manual
     "COMP-04": {
-        "Status": "0",
+        "AutoEN": "true",
         "DisP": "realistic(15.0, 0.8, 0.04, 0.18, true)",
         "Amps": "realistic(5.0, 1.0, 0.04, 0.18, true)",
         "FLA": "realistic(8.0, 1.5, 0.04, 0.18, true)",
@@ -802,10 +818,11 @@ COMP_PROFILES: dict[str, dict[str, str]] = {
         "Failed": "false",
         "Started": "false",
         "Comm": "false",
+        "TotalRuntime": "450.0",
     },
-    # COMP-05: Manual; CP Remote / SV Manual â€” AntiRec / Starting demo
+    # COMP-05: AntiRec / Starting demo; CP Remote / SV Manual
     "COMP-05": {
-        "Status": "3",
+        "AutoEN": "true",
         "DisP": "realistic(28.0, 1.0, 0.05, 0.2, true)",
         "Amps": "realistic(95.0, 4.0, 0.05, 0.2, true)",
         "FLA": "realistic(55.0, 3.0, 0.05, 0.2, true)",
@@ -819,6 +836,7 @@ COMP_PROFILES: dict[str, dict[str, str]] = {
         "Failed": "false",
         "Started": "true",
         "Comm": "false",
+        "TotalRuntime": "875.0",
     },
 }
 

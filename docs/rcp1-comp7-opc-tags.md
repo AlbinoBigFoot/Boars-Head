@@ -31,26 +31,30 @@ No live OPC device named `RCP1` is configured in this lab gateway yet. Tags are 
 | Failed/Value | Failed | Screw_Compressor.Failed |
 | Min_Runtime_Set/Value | Min_Runtime_Set | Screw_Compressor.Min_Runtime_Set |
 | Rung/Value | Rung | Screw_Compressor.Rung |
-| RuntimeHours/Value | TotalRuntime | Screw_Compressor.TotalRuntime (FT Runtimes) |
+| TotalRuntime/Value | TotalRuntime | Screw_Compressor.TotalRuntime (FT Runtimes) |
 | SVP/Value | SVP | Screw_Compressor.SVP |
 | SV_Mode/Value | SV_Mode | Screw_Compressor.SV_Mode |
 | Started/Value | Started | Screw_Compressor.Started |
-| Cmd_Start/Value | Start_Req | closest PLC bool (not Cmd_Start) |
-| Cmd_Stop/Value | Stop_Req | closest PLC bool (not Cmd_Stop) |
+| Start_Req/Value | Start_Req | closest PLC bool (not Cmd_Start) |
+| Stop_Req/Value | Stop_Req | closest PLC bool (not Cmd_Stop) |
 | Interlock/MSet_Bypass00–15 | Interlock/MSet_Bypass00–15 | P_Intlk |
 | Interlock/Sts_* / OCmd_Reset / Rdy_Reset / Cfg_Bypassable | same under Interlock/ | P_Intlk |
 
-## Not on RCP1 (no Screw_Compressor leaf / HMI-only)
+## Removed from Devices/Compressor (no Screw_Compressor leaf)
 
-| Devices member | Notes |
+Trimmed HMI/demo-only members. StatusIndicator / overview use **Rung**.
+`_Alarms` (`Config/_Alarms`) kept as HMI rollup.
+
+| Removed member | Notes |
 |----------------|-------|
-| Status | HMI multistate; no PLC `Status` on Screw_Compressor (use Color/Rung) |
+| Status | Was HMI multistate; use Rung/Color |
 | OPER / MAINT / PROG | No nested P_Mode on Screw_Compressor |
 | Cmd_Auto / Cmd_Manual / Cmd_Remote | No matching bools; Mode_Change is Int4 |
 | MotorStarts / MaxRunTimePerStart | Not present on Screw_Compressor |
-| DisP/SP, FLA/SP, SVP/SP | HMI Analog SP children (memory) |
+| DisP/SP, FLA/SP, SVP/SP | HMI Analog SP children |
 | Interlock/Cfg_CondTxt00–15 | HMI strings; not in P_Intlk |
-| SummaryInstances / _Alarms | Expression / Config references |
+| SummaryInstances | Expression rollup; not PLC |
+| RuntimeHours / Cmd_Start / Cmd_Stop | Renamed to TotalRuntime / Start_Req / Stop_Req |
 
 ## Consumer
 

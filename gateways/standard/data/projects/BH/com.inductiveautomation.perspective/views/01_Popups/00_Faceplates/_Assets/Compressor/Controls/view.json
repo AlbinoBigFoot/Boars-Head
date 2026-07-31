@@ -84,183 +84,6 @@
       {
         "type": "ia.container.flex",
         "meta": {
-          "name": "ModeSection"
-        },
-        "position": {
-          "shrink": 0
-        },
-        "propConfig": {
-          "position.display": {
-            "binding": {
-              "config": {
-                "expression": "qualityOf(tag({view.params.tagPath} + '/OPER/Value')) = 'Good' || qualityOf(tag({view.params.tagPath} + '/MAINT/Value')) = 'Good' || qualityOf(tag({view.params.tagPath} + '/PROG/Value')) = 'Good'"
-              },
-              "type": "expr"
-            }
-          }
-        },
-        "props": {
-          "direction": "column",
-          "style": {
-            "classes": "faceplate-section faceplate-section-card"
-          }
-        },
-        "children": [
-          {
-            "type": "ia.display.label",
-            "meta": {
-              "name": "ModeTitle"
-            },
-            "props": {
-              "text": "Mode",
-              "style": {
-                "classes": "faceplate-section-title font-label"
-              }
-            }
-          },
-          {
-            "type": "ia.container.flex",
-            "meta": {
-              "name": "ModeChips"
-            },
-            "props": {
-              "direction": "row",
-              "style": {
-                "gap": "6px",
-                "flexWrap": "wrap"
-              }
-            },
-            "children": [
-              {
-                "type": "ia.display.label",
-                "meta": {
-                  "name": "ChipMaint"
-                },
-                "events": {
-                  "dom": {
-                    "onClick": {
-                      "config": {
-                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tclicked = 'MAINT'\n\tmodes = ['OPER', 'MAINT', 'PROG']\n\tpaths = [base + '/' + m for m in modes]\n\tvals = [m == clicked for m in modes]\n\tsystem.tag.writeBlocking(paths, vals)"
-                      },
-                      "scope": "G",
-                      "type": "script"
-                    }
-                  }
-                },
-                "propConfig": {
-                  "props.style.classes": {
-                    "binding": {
-                      "config": {
-                        "expression": "if(tag({view.params.tagPath} + '/MAINT/Value'), 'faceplate-mode-chip faceplate-mode-active', 'faceplate-mode-chip')"
-                      },
-                      "type": "expr"
-                    }
-                  },
-                  "props.style.cursor": {
-                    "binding": {
-                      "config": {
-                        "expression": "if(!{session.custom.ReadOnly}, 'pointer', 'not-allowed')"
-                      },
-                      "type": "expr"
-                    }
-                  }
-                },
-                "props": {
-                  "text": "Maint",
-                  "style": {
-                    "classes": "faceplate-mode-chip"
-                  }
-                }
-              },
-              {
-                "type": "ia.display.label",
-                "meta": {
-                  "name": "ChipProg"
-                },
-                "events": {
-                  "dom": {
-                    "onClick": {
-                      "config": {
-                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tclicked = 'PROG'\n\tmodes = ['OPER', 'MAINT', 'PROG']\n\tpaths = [base + '/' + m for m in modes]\n\tvals = [m == clicked for m in modes]\n\tsystem.tag.writeBlocking(paths, vals)"
-                      },
-                      "scope": "G",
-                      "type": "script"
-                    }
-                  }
-                },
-                "propConfig": {
-                  "props.style.classes": {
-                    "binding": {
-                      "config": {
-                        "expression": "if(tag({view.params.tagPath} + '/PROG/Value'), 'faceplate-mode-chip faceplate-mode-active', 'faceplate-mode-chip')"
-                      },
-                      "type": "expr"
-                    }
-                  },
-                  "props.style.cursor": {
-                    "binding": {
-                      "config": {
-                        "expression": "if(!{session.custom.ReadOnly}, 'pointer', 'not-allowed')"
-                      },
-                      "type": "expr"
-                    }
-                  }
-                },
-                "props": {
-                  "text": "Prog",
-                  "style": {
-                    "classes": "faceplate-mode-chip"
-                  }
-                }
-              },
-              {
-                "type": "ia.display.label",
-                "meta": {
-                  "name": "ChipOper"
-                },
-                "events": {
-                  "dom": {
-                    "onClick": {
-                      "config": {
-                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tclicked = 'OPER'\n\tmodes = ['OPER', 'MAINT', 'PROG']\n\tpaths = [base + '/' + m for m in modes]\n\tvals = [m == clicked for m in modes]\n\tsystem.tag.writeBlocking(paths, vals)"
-                      },
-                      "scope": "G",
-                      "type": "script"
-                    }
-                  }
-                },
-                "propConfig": {
-                  "props.style.classes": {
-                    "binding": {
-                      "config": {
-                        "expression": "if(tag({view.params.tagPath} + '/OPER/Value'), 'faceplate-mode-chip faceplate-mode-active', 'faceplate-mode-chip')"
-                      },
-                      "type": "expr"
-                    }
-                  },
-                  "props.style.cursor": {
-                    "binding": {
-                      "config": {
-                        "expression": "if(!{session.custom.ReadOnly}, 'pointer', 'not-allowed')"
-                      },
-                      "type": "expr"
-                    }
-                  }
-                },
-                "props": {
-                  "text": "Oper",
-                  "style": {
-                    "classes": "faceplate-mode-chip"
-                  }
-                }
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "type": "ia.container.flex",
-        "meta": {
           "name": "StatusSection"
         },
         "position": {
@@ -279,7 +102,7 @@
               "name": "StatusTitle"
             },
             "props": {
-              "text": "Status",
+              "text": "Rung",
               "style": {
                 "classes": "faceplate-section-title font-label"
               }
@@ -303,7 +126,7 @@
               "props.params.tagPath": {
                 "binding": {
                   "config": {
-                    "expression": "if({view.params.tagPath} = '', '', {view.params.tagPath} + '/Status')"
+                    "expression": "if({view.params.tagPath} = '', '', {view.params.tagPath} + '/Rung')"
                   },
                   "type": "expr"
                 }
@@ -397,7 +220,7 @@
                   "component": {
                     "onActionPerformed": {
                       "config": {
-                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd_Start/Value']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
+                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Start_Req/Value']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
                       },
                       "scope": "G",
                       "type": "script"
@@ -435,7 +258,7 @@
                   "component": {
                     "onActionPerformed": {
                       "config": {
-                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd_Stop/Value']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
+                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Stop_Req/Value']\n\tvals = [True]\n\tsystem.tag.writeBlocking(paths, vals)"
                       },
                       "scope": "G",
                       "type": "script"
@@ -473,7 +296,7 @@
                   "component": {
                     "onActionPerformed": {
                       "config": {
-                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd_Auto/Value']\n\tvals = [True]\n\tpaths.append(base + '/CP_Mode/Value')\n\tvals.append(2)\n\tsystem.tag.writeBlocking(paths, vals)"
+                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/CP_Mode/Value']\n\tvals = [2]\n\tsystem.tag.writeBlocking(paths, vals)"
                       },
                       "scope": "G",
                       "type": "script"
@@ -511,7 +334,7 @@
                   "component": {
                     "onActionPerformed": {
                       "config": {
-                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd_Manual/Value']\n\tvals = [True]\n\tpaths.append(base + '/CP_Mode/Value')\n\tvals.append(3)\n\tsystem.tag.writeBlocking(paths, vals)"
+                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/CP_Mode/Value']\n\tvals = [3]\n\tsystem.tag.writeBlocking(paths, vals)"
                       },
                       "scope": "G",
                       "type": "script"
@@ -549,7 +372,7 @@
                   "component": {
                     "onActionPerformed": {
                       "config": {
-                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd_Remote/Value']\n\tvals = [True]\n\tpaths.append(base + '/CP_Mode/Value')\n\tvals.append(1)\n\tsystem.tag.writeBlocking(paths, vals)"
+                        "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/CP_Mode/Value']\n\tvals = [1]\n\tsystem.tag.writeBlocking(paths, vals)"
                       },
                       "scope": "G",
                       "type": "script"
@@ -631,7 +454,7 @@
                   "shrink": 0
                 },
                 "props": {
-                  "text": "Runtime hours",
+                  "text": "Total runtime",
                   "style": {
                     "classes": "faceplate-kpi-label font-label"
                   }
@@ -649,125 +472,7 @@
                   "props.text": {
                     "binding": {
                       "config": {
-                        "expression": "if({view.params.tagPath} = '', '', numberFormat(toFloat(tag({view.params.tagPath} + '/RuntimeHours/Value')), '#0.0'))"
-                      },
-                      "type": "expr"
-                    }
-                  }
-                },
-                "props": {
-                  "style": {
-                    "classes": "font-value"
-                  },
-                  "text": ""
-                }
-              }
-            ]
-          },
-          {
-            "type": "ia.container.flex",
-            "meta": {
-              "name": "Starts"
-            },
-            "position": {
-              "shrink": 0
-            },
-            "props": {
-              "direction": "row",
-              "alignItems": "center",
-              "style": {
-                "classes": "faceplate-kpi-row"
-              }
-            },
-            "children": [
-              {
-                "type": "ia.display.label",
-                "meta": {
-                  "name": "StartsLbl"
-                },
-                "position": {
-                  "basis": "140px",
-                  "shrink": 0
-                },
-                "props": {
-                  "text": "Motor starts",
-                  "style": {
-                    "classes": "faceplate-kpi-label font-label"
-                  }
-                }
-              },
-              {
-                "type": "ia.display.label",
-                "meta": {
-                  "name": "StartsVal"
-                },
-                "position": {
-                  "grow": 1
-                },
-                "propConfig": {
-                  "props.text": {
-                    "binding": {
-                      "config": {
-                        "expression": "if({view.params.tagPath} = '', '', numberFormat(toFloat(tag({view.params.tagPath} + '/MotorStarts/Value')), '#0.0'))"
-                      },
-                      "type": "expr"
-                    }
-                  }
-                },
-                "props": {
-                  "style": {
-                    "classes": "font-value"
-                  },
-                  "text": ""
-                }
-              }
-            ]
-          },
-          {
-            "type": "ia.container.flex",
-            "meta": {
-              "name": "MaxRun"
-            },
-            "position": {
-              "shrink": 0
-            },
-            "props": {
-              "direction": "row",
-              "alignItems": "center",
-              "style": {
-                "classes": "faceplate-kpi-row"
-              }
-            },
-            "children": [
-              {
-                "type": "ia.display.label",
-                "meta": {
-                  "name": "MaxRunLbl"
-                },
-                "position": {
-                  "basis": "140px",
-                  "shrink": 0
-                },
-                "props": {
-                  "text": "Max run / start",
-                  "style": {
-                    "classes": "faceplate-kpi-label font-label"
-                  }
-                }
-              },
-              {
-                "type": "ia.display.label",
-                "meta": {
-                  "name": "MaxRunVal"
-                },
-                "position": {
-                  "grow": 1
-                },
-                "propConfig": {
-                  "props.text": {
-                    "binding": {
-                      "config": {
-                        "expression": "if({view.params.tagPath} = '', '', numberFormat(toFloat(tag({view.params.tagPath} + '/MaxRunTimePerStart/Value')), '#0.0'))"
+                        "expression": "if({view.params.tagPath} = '', '', numberFormat(toFloat(tag({view.params.tagPath} + '/TotalRuntime/Value')), '#0.0'))"
                       },
                       "type": "expr"
                     }

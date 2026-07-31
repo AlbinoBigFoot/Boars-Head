@@ -337,40 +337,101 @@
       },
       "tags": [
         {
-          "name": "Status",
+          "name": "Alm",
           "tagType": "UdtInstance",
           "tags": [
             {
-              "metadata": {
-                "shortDescription": "status",
-                "longDescription": "compressor status",
-                "states": [
-                  {
-                    "label": "Off",
-                    "value": 0
-                  },
-                  {
-                    "label": "Run",
-                    "value": 1
-                  },
-                  {
-                    "label": "Fault",
-                    "value": 2
-                  },
-                  {
-                    "label": "Manual",
-                    "value": 3
-                  },
-                  {
-                    "label": "Idle",
-                    "value": 4
-                  }
-                ]
-              },
-              "dataType": "Int4",
               "name": "Value",
-              "value": 1,
-              "tagType": "AtomicTag"
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Alm/Value"
+            }
+          ]
+        },
+        {
+          "name": "Amps",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Amps/Value"
+            }
+          ]
+        },
+        {
+          "name": "AutoEN",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/AutoEN/Value"
+            }
+          ]
+        },
+        {
+          "name": "CP_Mode",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/CP_Mode/Value"
+            }
+          ]
+        },
+        {
+          "name": "Start_Req",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Start_Req/Value"
+            }
+          ]
+        },
+        {
+          "name": "Stop_Req",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Stop_Req/Value"
+            }
+          ]
+        },
+        {
+          "name": "Color",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Color/Value"
+            }
+          ]
+        },
+        {
+          "name": "Comm",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Comm/Value"
+            }
+          ]
+        },
+        {
+          "name": "Cutout",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Cutout/Value"
             }
           ]
         },
@@ -380,44 +441,377 @@
           "tags": [
             {
               "name": "Value",
-              "value": 125.0,
-              "engUnit": "psi",
-              "tagType": "AtomicTag"
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/DisP/Value"
             }
           ]
         },
         {
-          "name": "_Alarms",
-          "typeId": "Config/_Alarms",
+          "name": "FLA",
           "tagType": "UdtInstance",
           "tags": [
             {
-              "valueSource": "memory",
-              "dataType": "Boolean",
-              "name": "_Active",
-              "value": false,
-              "tagType": "AtomicTag"
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/FLA/Value"
+            }
+          ]
+        },
+        {
+          "name": "Fail_Timer_PRE",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Fail_Timer_PRE/Value"
+            }
+          ]
+        },
+        {
+          "name": "Failed",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Failed/Value"
+            }
+          ]
+        },
+        {
+          "name": "Min_Runtime_Set",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Min_Runtime_Set/Value"
+            }
+          ]
+        },
+        {
+          "name": "Rung",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Rung/Value"
+            }
+          ]
+        },
+        {
+          "name": "TotalRuntime",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/TotalRuntime/Value"
+            }
+          ]
+        },
+        {
+          "name": "SVP",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/SVP/Value"
+            }
+          ]
+        },
+        {
+          "name": "SV_Mode",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/SV_Mode/Value"
+            }
+          ]
+        },
+        {
+          "name": "Started",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Started/Value"
+            }
+          ]
+        },
+        {
+          "name": "Interlock",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Cfg_Bypassable",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Interlock/Cfg_Bypassable/Value"
+                }
+              ]
             },
             {
-              "valueSource": "memory",
-              "dataType": "Int4",
-              "name": "_ActiveHighPriority",
-              "value": 10,
-              "tagType": "AtomicTag"
+              "name": "MSet_Bypass00",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Interlock/MSet_Bypass00/Value"
+                }
+              ]
             },
             {
-              "valueSource": "memory",
-              "dataType": "Int4",
-              "name": "_UnackHighPriority",
-              "value": 10,
-              "tagType": "AtomicTag"
+              "name": "MSet_Bypass01",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Interlock/MSet_Bypass01/Value"
+                }
+              ]
             },
             {
-              "valueSource": "memory",
-              "dataType": "Boolean",
-              "name": "_Unack",
-              "value": false,
-              "tagType": "AtomicTag"
+              "name": "MSet_Bypass02",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Interlock/MSet_Bypass02/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass03",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Interlock/MSet_Bypass03/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass04",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Interlock/MSet_Bypass04/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass05",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Interlock/MSet_Bypass05/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass06",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Interlock/MSet_Bypass06/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass07",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Interlock/MSet_Bypass07/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass08",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Interlock/MSet_Bypass08/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass09",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Interlock/MSet_Bypass09/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass10",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Interlock/MSet_Bypass10/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass11",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Interlock/MSet_Bypass11/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass12",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Interlock/MSet_Bypass12/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass13",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Interlock/MSet_Bypass13/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass14",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Interlock/MSet_Bypass14/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass15",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Interlock/MSet_Bypass15/Value"
+                }
+              ]
+            },
+            {
+              "name": "OCmd_Reset",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Interlock/OCmd_Reset/Value"
+                }
+              ]
+            },
+            {
+              "name": "Rdy_Reset",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Interlock/Rdy_Reset/Value"
+                }
+              ]
+            },
+            {
+              "name": "Sts_BypActive",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Interlock/Sts_BypActive/Value"
+                }
+              ]
+            },
+            {
+              "name": "Sts_FirstOut",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Interlock/Sts_FirstOut/Value"
+                }
+              ]
+            },
+            {
+              "name": "Sts_Intlk",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Interlock/Sts_Intlk/Value"
+                }
+              ]
+            },
+            {
+              "name": "Sts_IntlkOK",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Interlock/Sts_IntlkOK/Value"
+                }
+              ]
+            },
+            {
+              "name": "Sts_NBIntlkOK",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-01/Interlock/Sts_NBIntlkOK/Value"
+                }
+              ]
             }
           ]
         }
@@ -433,40 +827,101 @@
       },
       "tags": [
         {
-          "name": "Status",
+          "name": "Alm",
           "tagType": "UdtInstance",
           "tags": [
             {
-              "metadata": {
-                "shortDescription": "status",
-                "longDescription": "compressor status",
-                "states": [
-                  {
-                    "label": "Off",
-                    "value": 0
-                  },
-                  {
-                    "label": "Run",
-                    "value": 1
-                  },
-                  {
-                    "label": "Fault",
-                    "value": 2
-                  },
-                  {
-                    "label": "Manual",
-                    "value": 3
-                  },
-                  {
-                    "label": "Idle",
-                    "value": 4
-                  }
-                ]
-              },
-              "dataType": "Int4",
               "name": "Value",
-              "value": 0,
-              "tagType": "AtomicTag"
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Alm/Value"
+            }
+          ]
+        },
+        {
+          "name": "Amps",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Amps/Value"
+            }
+          ]
+        },
+        {
+          "name": "AutoEN",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/AutoEN/Value"
+            }
+          ]
+        },
+        {
+          "name": "CP_Mode",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/CP_Mode/Value"
+            }
+          ]
+        },
+        {
+          "name": "Start_Req",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Start_Req/Value"
+            }
+          ]
+        },
+        {
+          "name": "Stop_Req",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Stop_Req/Value"
+            }
+          ]
+        },
+        {
+          "name": "Color",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Color/Value"
+            }
+          ]
+        },
+        {
+          "name": "Comm",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Comm/Value"
+            }
+          ]
+        },
+        {
+          "name": "Cutout",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Cutout/Value"
             }
           ]
         },
@@ -476,44 +931,377 @@
           "tags": [
             {
               "name": "Value",
-              "value": 0.0,
-              "engUnit": "psi",
-              "tagType": "AtomicTag"
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/DisP/Value"
             }
           ]
         },
         {
-          "name": "_Alarms",
-          "typeId": "Config/_Alarms",
+          "name": "FLA",
           "tagType": "UdtInstance",
           "tags": [
             {
-              "valueSource": "memory",
-              "dataType": "Boolean",
-              "name": "_Active",
-              "value": false,
-              "tagType": "AtomicTag"
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/FLA/Value"
+            }
+          ]
+        },
+        {
+          "name": "Fail_Timer_PRE",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Fail_Timer_PRE/Value"
+            }
+          ]
+        },
+        {
+          "name": "Failed",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Failed/Value"
+            }
+          ]
+        },
+        {
+          "name": "Min_Runtime_Set",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Min_Runtime_Set/Value"
+            }
+          ]
+        },
+        {
+          "name": "Rung",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Rung/Value"
+            }
+          ]
+        },
+        {
+          "name": "TotalRuntime",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/TotalRuntime/Value"
+            }
+          ]
+        },
+        {
+          "name": "SVP",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/SVP/Value"
+            }
+          ]
+        },
+        {
+          "name": "SV_Mode",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/SV_Mode/Value"
+            }
+          ]
+        },
+        {
+          "name": "Started",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Started/Value"
+            }
+          ]
+        },
+        {
+          "name": "Interlock",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Cfg_Bypassable",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Interlock/Cfg_Bypassable/Value"
+                }
+              ]
             },
             {
-              "valueSource": "memory",
-              "dataType": "Int4",
-              "name": "_ActiveHighPriority",
-              "value": 10,
-              "tagType": "AtomicTag"
+              "name": "MSet_Bypass00",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Interlock/MSet_Bypass00/Value"
+                }
+              ]
             },
             {
-              "valueSource": "memory",
-              "dataType": "Int4",
-              "name": "_UnackHighPriority",
-              "value": 10,
-              "tagType": "AtomicTag"
+              "name": "MSet_Bypass01",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Interlock/MSet_Bypass01/Value"
+                }
+              ]
             },
             {
-              "valueSource": "memory",
-              "dataType": "Boolean",
-              "name": "_Unack",
-              "value": false,
-              "tagType": "AtomicTag"
+              "name": "MSet_Bypass02",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Interlock/MSet_Bypass02/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass03",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Interlock/MSet_Bypass03/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass04",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Interlock/MSet_Bypass04/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass05",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Interlock/MSet_Bypass05/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass06",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Interlock/MSet_Bypass06/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass07",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Interlock/MSet_Bypass07/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass08",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Interlock/MSet_Bypass08/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass09",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Interlock/MSet_Bypass09/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass10",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Interlock/MSet_Bypass10/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass11",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Interlock/MSet_Bypass11/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass12",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Interlock/MSet_Bypass12/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass13",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Interlock/MSet_Bypass13/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass14",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Interlock/MSet_Bypass14/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass15",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Interlock/MSet_Bypass15/Value"
+                }
+              ]
+            },
+            {
+              "name": "OCmd_Reset",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Interlock/OCmd_Reset/Value"
+                }
+              ]
+            },
+            {
+              "name": "Rdy_Reset",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Interlock/Rdy_Reset/Value"
+                }
+              ]
+            },
+            {
+              "name": "Sts_BypActive",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Interlock/Sts_BypActive/Value"
+                }
+              ]
+            },
+            {
+              "name": "Sts_FirstOut",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Interlock/Sts_FirstOut/Value"
+                }
+              ]
+            },
+            {
+              "name": "Sts_Intlk",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Interlock/Sts_Intlk/Value"
+                }
+              ]
+            },
+            {
+              "name": "Sts_IntlkOK",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Interlock/Sts_IntlkOK/Value"
+                }
+              ]
+            },
+            {
+              "name": "Sts_NBIntlkOK",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-02/Interlock/Sts_NBIntlkOK/Value"
+                }
+              ]
             }
           ]
         }
@@ -529,40 +1317,101 @@
       },
       "tags": [
         {
-          "name": "Status",
+          "name": "Alm",
           "tagType": "UdtInstance",
           "tags": [
             {
-              "metadata": {
-                "shortDescription": "status",
-                "longDescription": "compressor status",
-                "states": [
-                  {
-                    "label": "Off",
-                    "value": 0
-                  },
-                  {
-                    "label": "Run",
-                    "value": 1
-                  },
-                  {
-                    "label": "Fault",
-                    "value": 2
-                  },
-                  {
-                    "label": "Manual",
-                    "value": 3
-                  },
-                  {
-                    "label": "Idle",
-                    "value": 4
-                  }
-                ]
-              },
-              "dataType": "Int4",
               "name": "Value",
-              "value": 2,
-              "tagType": "AtomicTag"
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Alm/Value"
+            }
+          ]
+        },
+        {
+          "name": "Amps",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Amps/Value"
+            }
+          ]
+        },
+        {
+          "name": "AutoEN",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/AutoEN/Value"
+            }
+          ]
+        },
+        {
+          "name": "CP_Mode",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/CP_Mode/Value"
+            }
+          ]
+        },
+        {
+          "name": "Start_Req",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Start_Req/Value"
+            }
+          ]
+        },
+        {
+          "name": "Stop_Req",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Stop_Req/Value"
+            }
+          ]
+        },
+        {
+          "name": "Color",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Color/Value"
+            }
+          ]
+        },
+        {
+          "name": "Comm",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Comm/Value"
+            }
+          ]
+        },
+        {
+          "name": "Cutout",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Cutout/Value"
             }
           ]
         },
@@ -572,44 +1421,377 @@
           "tags": [
             {
               "name": "Value",
-              "value": 98.5,
-              "engUnit": "psi",
-              "tagType": "AtomicTag"
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/DisP/Value"
             }
           ]
         },
         {
-          "name": "_Alarms",
-          "typeId": "Config/_Alarms",
+          "name": "FLA",
           "tagType": "UdtInstance",
           "tags": [
             {
-              "valueSource": "memory",
-              "dataType": "Boolean",
-              "name": "_Active",
-              "value": true,
-              "tagType": "AtomicTag"
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/FLA/Value"
+            }
+          ]
+        },
+        {
+          "name": "Fail_Timer_PRE",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Fail_Timer_PRE/Value"
+            }
+          ]
+        },
+        {
+          "name": "Failed",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Failed/Value"
+            }
+          ]
+        },
+        {
+          "name": "Min_Runtime_Set",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Min_Runtime_Set/Value"
+            }
+          ]
+        },
+        {
+          "name": "Rung",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Rung/Value"
+            }
+          ]
+        },
+        {
+          "name": "TotalRuntime",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/TotalRuntime/Value"
+            }
+          ]
+        },
+        {
+          "name": "SVP",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/SVP/Value"
+            }
+          ]
+        },
+        {
+          "name": "SV_Mode",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/SV_Mode/Value"
+            }
+          ]
+        },
+        {
+          "name": "Started",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Started/Value"
+            }
+          ]
+        },
+        {
+          "name": "Interlock",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Cfg_Bypassable",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Interlock/Cfg_Bypassable/Value"
+                }
+              ]
             },
             {
-              "valueSource": "memory",
-              "dataType": "Int4",
-              "name": "_ActiveHighPriority",
-              "value": 1,
-              "tagType": "AtomicTag"
+              "name": "MSet_Bypass00",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Interlock/MSet_Bypass00/Value"
+                }
+              ]
             },
             {
-              "valueSource": "memory",
-              "dataType": "Int4",
-              "name": "_UnackHighPriority",
-              "value": 1,
-              "tagType": "AtomicTag"
+              "name": "MSet_Bypass01",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Interlock/MSet_Bypass01/Value"
+                }
+              ]
             },
             {
-              "valueSource": "memory",
-              "dataType": "Boolean",
-              "name": "_Unack",
-              "value": true,
-              "tagType": "AtomicTag"
+              "name": "MSet_Bypass02",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Interlock/MSet_Bypass02/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass03",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Interlock/MSet_Bypass03/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass04",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Interlock/MSet_Bypass04/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass05",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Interlock/MSet_Bypass05/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass06",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Interlock/MSet_Bypass06/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass07",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Interlock/MSet_Bypass07/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass08",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Interlock/MSet_Bypass08/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass09",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Interlock/MSet_Bypass09/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass10",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Interlock/MSet_Bypass10/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass11",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Interlock/MSet_Bypass11/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass12",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Interlock/MSet_Bypass12/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass13",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Interlock/MSet_Bypass13/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass14",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Interlock/MSet_Bypass14/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass15",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Interlock/MSet_Bypass15/Value"
+                }
+              ]
+            },
+            {
+              "name": "OCmd_Reset",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Interlock/OCmd_Reset/Value"
+                }
+              ]
+            },
+            {
+              "name": "Rdy_Reset",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Interlock/Rdy_Reset/Value"
+                }
+              ]
+            },
+            {
+              "name": "Sts_BypActive",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Interlock/Sts_BypActive/Value"
+                }
+              ]
+            },
+            {
+              "name": "Sts_FirstOut",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Interlock/Sts_FirstOut/Value"
+                }
+              ]
+            },
+            {
+              "name": "Sts_Intlk",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Interlock/Sts_Intlk/Value"
+                }
+              ]
+            },
+            {
+              "name": "Sts_IntlkOK",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Interlock/Sts_IntlkOK/Value"
+                }
+              ]
+            },
+            {
+              "name": "Sts_NBIntlkOK",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-03/Interlock/Sts_NBIntlkOK/Value"
+                }
+              ]
             }
           ]
         }
@@ -621,44 +1803,105 @@
       "tagType": "UdtInstance",
       "metadata": {
         "shortDescription": "COMP-04",
-        "longDescription": "Compressor 4"
+        "longDescription": "COMP-04"
       },
       "tags": [
         {
-          "name": "Status",
+          "name": "Alm",
           "tagType": "UdtInstance",
           "tags": [
             {
-              "metadata": {
-                "shortDescription": "status",
-                "longDescription": "compressor status",
-                "states": [
-                  {
-                    "label": "Off",
-                    "value": 0
-                  },
-                  {
-                    "label": "Run",
-                    "value": 1
-                  },
-                  {
-                    "label": "Fault",
-                    "value": 2
-                  },
-                  {
-                    "label": "Manual",
-                    "value": 3
-                  },
-                  {
-                    "label": "Idle",
-                    "value": 4
-                  }
-                ]
-              },
-              "dataType": "Int4",
               "name": "Value",
-              "value": 2,
-              "tagType": "AtomicTag"
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Alm/Value"
+            }
+          ]
+        },
+        {
+          "name": "Amps",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Amps/Value"
+            }
+          ]
+        },
+        {
+          "name": "AutoEN",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/AutoEN/Value"
+            }
+          ]
+        },
+        {
+          "name": "CP_Mode",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/CP_Mode/Value"
+            }
+          ]
+        },
+        {
+          "name": "Start_Req",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Start_Req/Value"
+            }
+          ]
+        },
+        {
+          "name": "Stop_Req",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Stop_Req/Value"
+            }
+          ]
+        },
+        {
+          "name": "Color",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Color/Value"
+            }
+          ]
+        },
+        {
+          "name": "Comm",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Comm/Value"
+            }
+          ]
+        },
+        {
+          "name": "Cutout",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Cutout/Value"
             }
           ]
         },
@@ -668,44 +1911,867 @@
           "tags": [
             {
               "name": "Value",
-              "value": 98.5,
-              "engUnit": "psi",
-              "tagType": "AtomicTag"
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/DisP/Value"
             }
           ]
         },
         {
-          "name": "_Alarms",
-          "typeId": "Config/_Alarms",
+          "name": "FLA",
           "tagType": "UdtInstance",
           "tags": [
             {
-              "valueSource": "memory",
-              "dataType": "Boolean",
-              "name": "_Active",
-              "value": true,
-              "tagType": "AtomicTag"
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/FLA/Value"
+            }
+          ]
+        },
+        {
+          "name": "Fail_Timer_PRE",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Fail_Timer_PRE/Value"
+            }
+          ]
+        },
+        {
+          "name": "Failed",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Failed/Value"
+            }
+          ]
+        },
+        {
+          "name": "Min_Runtime_Set",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Min_Runtime_Set/Value"
+            }
+          ]
+        },
+        {
+          "name": "Rung",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Rung/Value"
+            }
+          ]
+        },
+        {
+          "name": "TotalRuntime",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/TotalRuntime/Value"
+            }
+          ]
+        },
+        {
+          "name": "SVP",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/SVP/Value"
+            }
+          ]
+        },
+        {
+          "name": "SV_Mode",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/SV_Mode/Value"
+            }
+          ]
+        },
+        {
+          "name": "Started",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Started/Value"
+            }
+          ]
+        },
+        {
+          "name": "Interlock",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Cfg_Bypassable",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Interlock/Cfg_Bypassable/Value"
+                }
+              ]
             },
             {
-              "valueSource": "memory",
-              "dataType": "Int4",
-              "name": "_ActiveHighPriority",
-              "value": 1,
-              "tagType": "AtomicTag"
+              "name": "MSet_Bypass00",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Interlock/MSet_Bypass00/Value"
+                }
+              ]
             },
             {
-              "valueSource": "memory",
-              "dataType": "Int4",
-              "name": "_UnackHighPriority",
-              "value": 1,
-              "tagType": "AtomicTag"
+              "name": "MSet_Bypass01",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Interlock/MSet_Bypass01/Value"
+                }
+              ]
             },
             {
-              "valueSource": "memory",
-              "dataType": "Boolean",
-              "name": "_Unack",
-              "value": true,
-              "tagType": "AtomicTag"
+              "name": "MSet_Bypass02",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Interlock/MSet_Bypass02/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass03",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Interlock/MSet_Bypass03/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass04",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Interlock/MSet_Bypass04/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass05",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Interlock/MSet_Bypass05/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass06",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Interlock/MSet_Bypass06/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass07",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Interlock/MSet_Bypass07/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass08",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Interlock/MSet_Bypass08/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass09",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Interlock/MSet_Bypass09/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass10",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Interlock/MSet_Bypass10/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass11",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Interlock/MSet_Bypass11/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass12",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Interlock/MSet_Bypass12/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass13",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Interlock/MSet_Bypass13/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass14",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Interlock/MSet_Bypass14/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass15",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Interlock/MSet_Bypass15/Value"
+                }
+              ]
+            },
+            {
+              "name": "OCmd_Reset",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Interlock/OCmd_Reset/Value"
+                }
+              ]
+            },
+            {
+              "name": "Rdy_Reset",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Interlock/Rdy_Reset/Value"
+                }
+              ]
+            },
+            {
+              "name": "Sts_BypActive",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Interlock/Sts_BypActive/Value"
+                }
+              ]
+            },
+            {
+              "name": "Sts_FirstOut",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Interlock/Sts_FirstOut/Value"
+                }
+              ]
+            },
+            {
+              "name": "Sts_Intlk",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Interlock/Sts_Intlk/Value"
+                }
+              ]
+            },
+            {
+              "name": "Sts_IntlkOK",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Interlock/Sts_IntlkOK/Value"
+                }
+              ]
+            },
+            {
+              "name": "Sts_NBIntlkOK",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-04/Interlock/Sts_NBIntlkOK/Value"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "COMP-05",
+      "typeId": "Devices/Compressor",
+      "tagType": "UdtInstance",
+      "metadata": {
+        "shortDescription": "COMP-05",
+        "longDescription": "COMP-05"
+      },
+      "tags": [
+        {
+          "name": "Alm",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Alm/Value"
+            }
+          ]
+        },
+        {
+          "name": "Amps",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Amps/Value"
+            }
+          ]
+        },
+        {
+          "name": "AutoEN",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/AutoEN/Value"
+            }
+          ]
+        },
+        {
+          "name": "CP_Mode",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/CP_Mode/Value"
+            }
+          ]
+        },
+        {
+          "name": "Start_Req",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Start_Req/Value"
+            }
+          ]
+        },
+        {
+          "name": "Stop_Req",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Stop_Req/Value"
+            }
+          ]
+        },
+        {
+          "name": "Color",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Color/Value"
+            }
+          ]
+        },
+        {
+          "name": "Comm",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Comm/Value"
+            }
+          ]
+        },
+        {
+          "name": "Cutout",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Cutout/Value"
+            }
+          ]
+        },
+        {
+          "name": "DisP",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/DisP/Value"
+            }
+          ]
+        },
+        {
+          "name": "FLA",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/FLA/Value"
+            }
+          ]
+        },
+        {
+          "name": "Fail_Timer_PRE",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Fail_Timer_PRE/Value"
+            }
+          ]
+        },
+        {
+          "name": "Failed",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Failed/Value"
+            }
+          ]
+        },
+        {
+          "name": "Min_Runtime_Set",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Min_Runtime_Set/Value"
+            }
+          ]
+        },
+        {
+          "name": "Rung",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Rung/Value"
+            }
+          ]
+        },
+        {
+          "name": "TotalRuntime",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/TotalRuntime/Value"
+            }
+          ]
+        },
+        {
+          "name": "SVP",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/SVP/Value"
+            }
+          ]
+        },
+        {
+          "name": "SV_Mode",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/SV_Mode/Value"
+            }
+          ]
+        },
+        {
+          "name": "Started",
+          "tagType": "UdtInstance",
+          "tags": [
+            {
+              "name": "Value",
+              "tagType": "AtomicTag",
+              "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Started/Value"
+            }
+          ]
+        },
+        {
+          "name": "Interlock",
+          "tagType": "Folder",
+          "tags": [
+            {
+              "name": "Cfg_Bypassable",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Interlock/Cfg_Bypassable/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass00",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Interlock/MSet_Bypass00/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass01",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Interlock/MSet_Bypass01/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass02",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Interlock/MSet_Bypass02/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass03",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Interlock/MSet_Bypass03/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass04",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Interlock/MSet_Bypass04/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass05",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Interlock/MSet_Bypass05/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass06",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Interlock/MSet_Bypass06/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass07",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Interlock/MSet_Bypass07/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass08",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Interlock/MSet_Bypass08/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass09",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Interlock/MSet_Bypass09/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass10",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Interlock/MSet_Bypass10/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass11",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Interlock/MSet_Bypass11/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass12",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Interlock/MSet_Bypass12/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass13",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Interlock/MSet_Bypass13/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass14",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Interlock/MSet_Bypass14/Value"
+                }
+              ]
+            },
+            {
+              "name": "MSet_Bypass15",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Interlock/MSet_Bypass15/Value"
+                }
+              ]
+            },
+            {
+              "name": "OCmd_Reset",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Interlock/OCmd_Reset/Value"
+                }
+              ]
+            },
+            {
+              "name": "Rdy_Reset",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Interlock/Rdy_Reset/Value"
+                }
+              ]
+            },
+            {
+              "name": "Sts_BypActive",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Interlock/Sts_BypActive/Value"
+                }
+              ]
+            },
+            {
+              "name": "Sts_FirstOut",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Interlock/Sts_FirstOut/Value"
+                }
+              ]
+            },
+            {
+              "name": "Sts_Intlk",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Interlock/Sts_Intlk/Value"
+                }
+              ]
+            },
+            {
+              "name": "Sts_IntlkOK",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Interlock/Sts_IntlkOK/Value"
+                }
+              ]
+            },
+            {
+              "name": "Sts_NBIntlkOK",
+              "tagType": "UdtInstance",
+              "tags": [
+                {
+                  "name": "Value",
+                  "tagType": "AtomicTag",
+                  "sourceTagPath": "[default]_Sim_/Compressors/COMP-05/Interlock/Sts_NBIntlkOK/Value"
+                }
+              ]
             }
           ]
         }
