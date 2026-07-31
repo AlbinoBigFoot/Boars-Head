@@ -109,7 +109,7 @@
     "custom.values.analog": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '',\n\t'',\n\tif({view.custom.selectedSp} = '',\n\t\t{view.params.tagPath} + '/Level/Value',\n\t\t{view.params.tagPath} + '/' + {view.custom.selectedSp} + '/SP'))"
+          "expression": "if({view.params.tagPath} = '',\n\t'',\n\tif({view.custom.selectedSp} = '',\n\t\t{view.params.tagPath} + '/Level/Value',\n\t\t{view.params.tagPath} + '/' + {view.custom.selectedSp} + '/SP/Value'))"
         },
         "type": "expr"
       }

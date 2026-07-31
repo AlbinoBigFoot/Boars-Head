@@ -907,7 +907,7 @@
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.custom.values.fla} = '' || qualityOf(tag({view.custom.values.fla})) != 'Good',\n\t'comp-analog',\n\tif(isBad(tag(left({view.custom.values.fla}, len({view.custom.values.fla}) - 6) + '/SP')),\n\t\t'comp-analog analog-label',\n\t\tif(tag({view.custom.values.fla}) > tag(left({view.custom.values.fla}, len({view.custom.values.fla}) - 6) + '/SP'),\n\t\t\t'comp-analog analog-over-sp',\n\t\t\t'comp-analog analog-label')))"
+                            "expression": "if({view.custom.values.fla} = '' || qualityOf(tag({view.custom.values.fla})) != 'Good',\n\t'comp-analog',\n\tif(isBad(tag(left({view.custom.values.fla}, len({view.custom.values.fla}) - 6) + '/SP/Value')),\n\t\t'comp-analog analog-label',\n\t\tif(tag({view.custom.values.fla}) > tag(left({view.custom.values.fla}, len({view.custom.values.fla}) - 6) + '/SP/Value'),\n\t\t\t'comp-analog analog-over-sp',\n\t\t\t'comp-analog analog-label')))"
                           },
                           "type": "expr"
                         }
@@ -1036,7 +1036,7 @@
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.custom.values.svp} = '' || qualityOf(tag({view.custom.values.svp})) != 'Good',\n\t'comp-analog',\n\tif(isBad(tag(left({view.custom.values.svp}, len({view.custom.values.svp}) - 6) + '/SP')),\n\t\t'comp-analog analog-label',\n\t\tif(tag({view.custom.values.svp}) > tag(left({view.custom.values.svp}, len({view.custom.values.svp}) - 6) + '/SP'),\n\t\t\t'comp-analog analog-over-sp',\n\t\t\t'comp-analog analog-label')))"
+                            "expression": "if({view.custom.values.svp} = '' || qualityOf(tag({view.custom.values.svp})) != 'Good',\n\t'comp-analog',\n\tif(isBad(tag(left({view.custom.values.svp}, len({view.custom.values.svp}) - 6) + '/SP/Value')),\n\t\t'comp-analog analog-label',\n\t\tif(tag({view.custom.values.svp}) > tag(left({view.custom.values.svp}, len({view.custom.values.svp}) - 6) + '/SP/Value'),\n\t\t\t'comp-analog analog-over-sp',\n\t\t\t'comp-analog analog-label')))"
                           },
                           "type": "expr"
                         }

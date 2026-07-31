@@ -38,7 +38,7 @@
     "custom.effectiveSpPath": {
       "binding": {
         "config": {
-          "expression": "if({view.params.spTagPath} != '',\n\t{view.params.spTagPath},\n\tif({view.params.tagPath} = '',\n\t\t'',\n\t\tif(right({view.params.tagPath}, 6) = '/Value',\n\t\t\tleft({view.params.tagPath}, len({view.params.tagPath}) - 6) + '/SP',\n\t\t\t'')))"
+          "expression": "if({view.params.spTagPath} != '',\n\t{view.params.spTagPath},\n\tif({view.params.tagPath} = '',\n\t\t'',\n\t\tif(right({view.params.tagPath}, 6) = '/Value',\n\t\t\tleft({view.params.tagPath}, len({view.params.tagPath}) - 6) + '/SP/Value',\n\t\t\t'')))"
         },
         "type": "expr"
       },
