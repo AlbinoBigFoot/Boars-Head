@@ -1,63 +1,58 @@
-# ROOT-FIX — corrected architecture (`260731-5un`)
+# ROOT-FIX — `260731-5un` Devices UDT `_Root` / Interlock repair
 
 **Date:** 2026-07-31  
-**Commit message:** `fix(260731-5un): RCP1 OPC-only; _Root stays on Devices/Units`
+**Commit message:** `fix(260731-5un): Devices UDT members use _Root and Config/Interlock`
 
-## Corrected rule (user-confirmed)
+## Real bug (Designer evidence)
 
-| Layer | What belongs there |
-|-------|--------------------|
-| **`[default]RCP1/...`** | **OPC UA tags ONLY** — bare `AtomicTag` + `valueSource: opc` + `opcItemPath` + `dataType`. **No `typeId`, no `_Root`, no fake Folder+Value mimicking `_Root`.** Organizational `Folder`s are OK only to mirror PLC nesting (e.g. `Interlock/…`, `Fail_Timer/PRE`). |
-| **`Devices/*` / `Units/*` plant instances** | **`_Root/*` and `Config/*` UDT instances.** Their `Value` (reference) points at the RCP1 OPC leaf. |
+Designer Tag Browser under **`[default]_types_/Devices`** showed:
 
-```
-Devices/Units member (_Root/Digital|Analog|…)
-  └── Value  (valueSource: reference)
-        └── sourceTagPath → [default]RCP1/<device>/<leaf>   ← OPC AtomicTag
-```
+1. **`Interlock` as empty Folder** (no expand) — must be `UdtInstance` `typeId: Config/Interlock`
+2. **`AutoEN` / `Fail_Timer_PRE` / `Min_Runtime_Set` as AtomicTag** — must be `_Root/Digital` / `_Root/Analog`
 
-**Not:**
-```
-RCP1/<device>/<leaf> as _Root UdtInstance
-  └── Value (opc)   ← WRONG — put _Root on Devices, not RCP1
-```
+**Not** an RCP1 problem. RCP1 stays OPC AtomicTags only; Units bind `sourceTagPath` into `_Root` `Value` members.
 
-## What went wrong in `76c05d8`
+## Disk vs Designer (Compressor)
 
-Commit `76c05d8` converted **143 RCP1 leaves TO `_Root`** and rewrote Units `sourceTagPath`s to `…/Value` under RCP1. That inverted the architecture: earlier frustration about missing `_Root` was about **device/unit tags**, not about instantiating `_Root` under RCP1.
+On disk in `tag-type-definition/default/Devices/udts.json`, Compressor **already had**:
 
-## What this fix did
+| Member | typeId |
+|--------|--------|
+| AutoEN | `_Root/Digital` |
+| Fail_Timer_PRE | `_Root/Analog` |
+| Min_Runtime_Set | `_Root/Analog` |
+| Interlock | `Config/Interlock` (UdtInstance, empty overrides OK — type owns 24 members) |
 
-1. Restored RCP1 folders from pre-`76c05d8` (`7065981`) for COMP 7, HTLR-Pump 1, Main Liq SV, HSS-Pumps Pressure (flat OPC AtomicTags).
-2. Flattened **HTR** Folder+Value/SP mimic into flat OPC AtomicTags (`HH`, `HH_SP`, …) — no nested Value folders.
-3. Restored Units `sourceTagPath`s to `[default]RCP1/<device>/<leaf>` (not `…/Value`). HTR SP leaves use `…/HH_SP` etc.
-4. Audited **Devices** UDT defs — process members already use `typeId: _Root/…` or `Config/…` (nested `Devices/VFD` under Evaporator is intentional composition).
+Designer showing AtomicTags / empty Interlock Folder for Compressor = **stale gateway memory or unresolved `Config/Interlock`**, not missing typeIds on those leaves. Force `POST scan/config` + Tag Browser refresh / Designer reconnect.
 
-## Examples
+## Real on-disk debt (this fix)
 
-**RCP1 OPC leaf (COMP 7 / Alm):**
+Still broken as bare `Interlock` **Folder** (no `typeId`), 40 nested kids:
 
-```json
-{
-  "name": "Alm",
-  "tagType": "AtomicTag",
-  "valueSource": "opc",
-  "opcServer": "Ignition OPC UA Server",
-  "opcItemPath": "ns=1;s=[RCP1]COMP[7].Alm",
-  "dataType": "Boolean"
-}
-```
+| Devices type | Before | After |
+|--------------|--------|-------|
+| **CoolingTower** | `Folder` (40 kids) | `UdtInstance` `Config/Interlock` |
+| **ExhaustFan** | `Folder` (40 kids) | `UdtInstance` `Config/Interlock` |
+| **Evaporator** | `Folder` (40 kids) | `UdtInstance` `Config/Interlock` |
 
-**Units sourceTagPath:**
+Already correct on disk (no change this commit):
 
-```json
-"sourceTagPath": "[default]RCP1/COMP 7/Alm"
-```
+- **Valve / Compressor / Pump** — Interlock → `Config/Interlock`
+- **Tank / Sensor / VFD** — no Interlock member
+- Full Devices audit: **zero** remaining bare `AtomicTag` / `Folder` members without `typeId`
 
-(Device member remains `_Root/Digital` with reference `Value` → that path.)
+## Config/Interlock health
 
-## Verification
+`tag-type-definition/default/Config/udts.json` → `Interlock` UdtType with **24** members (`Cfg_Bypassable`, `MSet_Bypass00–15`, `OCmd_Reset`, `Rdy_Reset`, `Sts_*`). Healthy.
 
-- RCP1 under `tag-definition/default/RCP1/`: **zero** `typeId` / `_Root` / `UdtInstance`
-- Units: **zero** mistaken `…/Value` under RCP1 (except legitimate leaf named `HSS-Pumps Pressure/Value`)
-- Devices: process leaves on `_Root/*` / `Config/*`
+## Correct architecture
+
+1. **`_types_/Devices/*`** members = `_Root/*` or `Config/Interlock` or `Config/_Alarms` — never bare AtomicTag, never empty Folder for Interlock
+2. **`RCP1/`** = OPC AtomicTags only — do **not** put `_Root` into RCP1
+3. Units reference RCP1 OPC paths into `_Root` Value members
+
+## Tooling
+
+- Edit: `gateways/standard/data/config/resources/core/ignition/tag-type-definition/default/Devices/udts.json`
+- Scan: `POST /data/api/v1/scan/config` with `X-Ignition-API-Token: Name:plaintextKey` from `.env` `IGNITION_API_TOKEN`
+- If Designer still stale after HTTP 200: refresh Tag Browser or reconnect Designer
