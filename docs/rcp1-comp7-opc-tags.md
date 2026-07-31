@@ -2,26 +2,31 @@
 
 Test OPC source folder for `_Root` **reference** `Value` tags on `Devices/Compressor`.
 
-**Convention (2026-07-31):** every RCP1 process leaf is a `_Root/*` (or `Config/Interlock`)
-`UdtInstance` with OPC on the nested `Value` tag — not a bare `AtomicTag`. Units
-`sourceTagPath`s point at `[default]RCP1/COMP 7/<member>/Value`.
+**Convention (corrected 2026-07-31):**
+
+- **`[default]RCP1/...`** = **OPC AtomicTags only** (no `typeId`, no `_Root`).
+- **`_Root/*` / `Config/*`** live on **Devices / Units** plant instances.
+- Units `sourceTagPath`s point at `[default]RCP1/COMP 7/<member>` (the OPC leaf), **not** `…/Value` under RCP1.
+
+See `.planning/quick/260731-5un-config-interlock-udt-rcp1-udt-root-sweep/ROOT-FIX.md`.
 
 ## Paths
 
 | Layer | Path |
 |-------|------|
-| Ignition tags | `[default]RCP1/COMP 7/<PLC member>/Value` |
+| Ignition OPC tags | `[default]RCP1/COMP 7/<PLC member>` |
 | OPC item path | `ns=1;s=[RCP1]COMP[7].<member>` |
 | FT View (legacy) | `{[RCP1]COMP[7].<member>}` |
+| Devices `_Root` Value | reference → RCP1 path above |
 
 No live OPC device named `RCP1` is configured in this lab gateway yet. Tags are proper OPC
-`valueSource` entries on `_Root/*/Value` using the Logix-style node id from
+`valueSource` AtomicTags using the Logix-style node id from
 `PLC/Screw_Compressor` UDT bindings (`DeviceName=RCP1`, `TagPrefix=COMP[7]`).
 
 ## Devices → RCP1 mapping (wired on `Units/Machine Room` / `COMP 7`)
 
-| Devices/Compressor | RCP1 tag | PLC evidence |
-|--------------------|----------|--------------|
+| Devices/Compressor | RCP1 OPC leaf | PLC evidence |
+|--------------------|---------------|--------------|
 | Alm/Value | Alm | Screw_Compressor.Alm |
 | Amps/Value | Amps | Screw_Compressor.Amps |
 | AutoEN/Value | AutoEN | Screw_Compressor.AutoEN |
@@ -63,5 +68,5 @@ Trimmed HMI/demo-only members. StatusIndicator / overview use **Rung**.
 ## Consumer
 
 `Units/Machine Room` → `COMP 7` UdtInstance overrides set `sourceTagPath` on each wired
-`…/Value` (type `_Root/*` already uses `valueSource: reference`) to
-`[default]RCP1/COMP 7/<member>/Value`.
+Devices `…/Value` (type `_Root/*`, `valueSource: reference`) to
+`[default]RCP1/COMP 7/<member>`.
