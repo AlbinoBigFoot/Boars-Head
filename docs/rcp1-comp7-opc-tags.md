@@ -2,17 +2,21 @@
 
 Test OPC source folder for `_Root` **reference** `Value` tags on `Devices/Compressor`.
 
+**Convention (2026-07-31):** every RCP1 process leaf is a `_Root/*` (or `Config/Interlock`)
+`UdtInstance` with OPC on the nested `Value` tag — not a bare `AtomicTag`. Units
+`sourceTagPath`s point at `[default]RCP1/COMP 7/<member>/Value`.
+
 ## Paths
 
 | Layer | Path |
 |-------|------|
-| Ignition tags | `[default]RCP1/COMP 7/<PLC member>` |
+| Ignition tags | `[default]RCP1/COMP 7/<PLC member>/Value` |
 | OPC item path | `ns=1;s=[RCP1]COMP[7].<member>` |
 | FT View (legacy) | `{[RCP1]COMP[7].<member>}` |
 
 No live OPC device named `RCP1` is configured in this lab gateway yet. Tags are proper OPC
-`valueSource` entries using the Logix-style node id from `PLC/Screw_Compressor` UDT bindings
-(`DeviceName=RCP1`, `TagPrefix=COMP[7]`).
+`valueSource` entries on `_Root/*/Value` using the Logix-style node id from
+`PLC/Screw_Compressor` UDT bindings (`DeviceName=RCP1`, `TagPrefix=COMP[7]`).
 
 ## Devices → RCP1 mapping (wired on `Units/Machine Room` / `COMP 7`)
 
@@ -59,4 +63,5 @@ Trimmed HMI/demo-only members. StatusIndicator / overview use **Rung**.
 ## Consumer
 
 `Units/Machine Room` → `COMP 7` UdtInstance overrides set `sourceTagPath` on each wired
-`…/Value` (type `_Root/*` already uses `valueSource: reference`).
+`…/Value` (type `_Root/*` already uses `valueSource: reference`) to
+`[default]RCP1/COMP 7/<member>/Value`.
