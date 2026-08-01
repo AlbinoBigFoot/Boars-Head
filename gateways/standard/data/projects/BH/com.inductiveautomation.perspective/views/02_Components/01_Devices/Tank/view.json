@@ -1370,6 +1370,14 @@
               },
               "type": "expr"
             }
+          },
+          "meta.visible": {
+            "binding": {
+              "config": {
+                "expression": "if(coalesce({view.custom.values.commLoss}, false),\n\ttrue,\n\tif({view.custom.values.status} = '' || isBad(tag({view.custom.values.status})),\n\t\tfalse,\n\t\tcoalesce(tag({view.custom.values.status}), 0) != 0))"
+              },
+              "type": "expr"
+            }
           }
         },
         "props": {

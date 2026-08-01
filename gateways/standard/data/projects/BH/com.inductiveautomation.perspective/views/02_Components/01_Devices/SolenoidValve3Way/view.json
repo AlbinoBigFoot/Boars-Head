@@ -501,7 +501,7 @@
           "meta.visible": {
             "binding": {
               "config": {
-                "expression": "coalesce({view.params.feedback}, true)"
+                "expression": "{view.params.tagPath} != '' && coalesce({view.params.feedback}, true)"
               },
               "type": "expr"
             }
@@ -548,7 +548,7 @@
           "meta.visible": {
             "binding": {
               "config": {
-                "expression": "coalesce({view.params.feedback}, true)"
+                "expression": "{view.params.tagPath} != '' && coalesce({view.params.feedback}, true)"
               },
               "type": "expr"
             }
