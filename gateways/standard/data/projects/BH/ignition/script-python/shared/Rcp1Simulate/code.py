@@ -227,8 +227,11 @@ def _demoValue(name, dataType, tagPath=None):
 		return 2  # RUNNING
 
 	# Tank Status: 0=OK, 1=LOW, … — never seed 1 (looks like LOW fault)
+	# Sensor Status (Val_Fault): 0=OK. Do not match "Pump" inside "*-Pumps Pressure".
 	if n == "Status":
-		if "Pump" in dev or "EF" in dev:
+		if "Pumps Pressure" in dev or "Pressure" in dev:
+			return 0  # Sensor OK
+		if ("Pump" in dev or "EF" in dev) and "Pressure" not in dev:
 			return 1
 		if any(x in dev for x in ("HTR", "LTR", "HPR")):
 			return 0  # OK
@@ -246,17 +249,36 @@ def _demoValue(name, dataType, tagPath=None):
 		return 1
 	if n == "Started":
 		return False if dev in ("COMP 6",) or "Pump 2" in dev else True
-	if n in ("Comm", "AutoEN", "Rdy", "Enable"):
+	if n in ("AutoEN", "Rdy", "Enable"):
 		return True
 
-	# Keep Alm/Failed false for a clean demo (no blanket medium alarms).
-	# One compressor can show a discrete Alm for variety without analog Hi@0 storms.
-	if n == "Alm":
-		return True if dev == "COMP 7" else False
-	if n in ("Failed", "Cutout", "Fault", "HH", "LL", "H", "L", "LSH", "LSL"):
+	# Comm/Value has Equality@1 alarm on Devices UDTs. Seeding Comm=True lights
+	# every compressor/valve alarm chrome (metrics High maps to CSS "medium").
+	# Perspective Comm Loss uses isBad(Rung/Value), not this bit — keep False.
+	if n == "Comm":
 		return False
-	if n in ("Hi", "Lo", "HiHi", "LoLo", "Fail"):
+
+	# Discrete alarm bits — all clear for a clean SIM demo.
+	if n in (
+		"Alm", "Failed", "Cutout", "Fault",
+		"Alm_FailToStart", "Alm_IOFault", "Sts_FailToStart",
+		"HH", "LL", "H", "L", "LSH", "LSL",
+		"Hi", "Lo", "HiHi", "LoLo", "Fail",
+	):
 		return False
+
+	# Sensor PV leaf is named Value (…/HSS-Pumps Pressure/Value on RCP1).
+	if n == "Value":
+		if "HSS" in dev:
+			return 145.0
+		if "HSL" in dev:
+			return 42.0
+		if "LSL" in dev:
+			return 28.0
+		if "LSS" in dev:
+			return 18.0
+		# Non-sensor leaves named Value are rare under RCP1 — leave numeric 0.
+		return 0.0
 
 	if n in ("Amps", "FLA"):
 		if dev == "COMP 6":
@@ -484,9 +506,11 @@ def toMemory(tagPaths=None):
 	seedPaths = []
 	seedVals = []
 	seedNames = set([
-		"Rung", "Status", "Val_Sts", "Comm", "Started", "AutoEN", "Alm",
-		"Amps", "FLA", "SVP", "Level", "Pressure", "Color", "CP_Mode", "SV_Mode",
-		"Hi", "Lo", "HiHi", "LoLo", "Fail",
+		"Rung", "Status", "Val_Sts", "Comm", "Started", "AutoEN",
+		"Alm", "Failed", "Cutout", "Alm_FailToStart", "Alm_IOFault", "Sts_FailToStart",
+		"Amps", "FLA", "SVP", "Level", "Pressure", "Value",
+		"Color", "CP_Mode", "SV_Mode",
+		"Hi", "Lo", "HiHi", "LoLo", "Fail", "LSH", "LSL", "H", "L", "HH", "LL",
 	])
 	for tagPath in tagPaths:
 		_parent, name = _parentAndName(tagPath)
