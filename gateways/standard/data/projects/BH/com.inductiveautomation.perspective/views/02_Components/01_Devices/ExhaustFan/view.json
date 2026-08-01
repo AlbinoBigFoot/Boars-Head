@@ -11,7 +11,8 @@
   },
   "params": {
     "faceplate": null,
-    "tagPath": ""
+    "tagPath": "",
+    "analog": true
   },
   "propConfig": {
     "custom.label": {
@@ -64,6 +65,10 @@
       "persistent": true
     },
     "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.analog": {
       "paramDirection": "input",
       "persistent": true
     },
@@ -255,7 +260,8 @@
           "justify": "center",
           "style": {
             "minHeight": "20px",
-            "width": "100%"
+            "width": "100%",
+            "classes": "label"
           }
         },
         "type": "ia.container.flex"
@@ -576,7 +582,7 @@
           "props.style.classes": {
             "binding": {
               "config": {
-                "expression": "if(coalesce({view.custom.values.commLoss}, false),\n\t'device-graphic device-comm-loss',\n\t'device-graphic')"
+                "expression": "if(coalesce({view.custom.values.commLoss}, false),\n\t'device-graphic device-comm-loss component',\n\t'device-graphic component')"
               },
               "type": "expr"
             }
@@ -596,6 +602,22 @@
             "binding": {
               "config": {
                 "expression": "{view.custom.values.analog}"
+              },
+              "type": "expr"
+            }
+          },
+          "meta.visible": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({view.params.analog}, true)"
+              },
+              "type": "expr"
+            }
+          },
+          "props.style.classes": {
+            "binding": {
+              "config": {
+                "expression": "if(coalesce({view.params.analog}, true),\n\t'value',\n\t'')"
               },
               "type": "expr"
             }
@@ -634,6 +656,14 @@
             "binding": {
               "config": {
                 "expression": "{view.custom.values.status}"
+              },
+              "type": "expr"
+            }
+          },
+          "props.style.classes": {
+            "binding": {
+              "config": {
+                "expression": "if(coalesce({view.params.analog}, true),\n\t'status',\n\t'value')"
               },
               "type": "expr"
             }
@@ -713,6 +743,14 @@
             }
           ],
           "type": "expr-struct"
+        }
+      },
+      "props.style.classes": {
+        "binding": {
+          "config": {
+            "expression": "'device-vertical'"
+          },
+          "type": "expr"
         }
       }
     },
