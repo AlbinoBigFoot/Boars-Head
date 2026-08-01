@@ -139,8 +139,10 @@ def _readCurrentValue(tagPath, dataType, name=None):
 	"""
 	fallback = _defaultForType(dataType)
 	leaf = str(name or "")
+	# Comm Loss = isBad(Rung/Value). Seed a Good numeric/bool when OPC was Bad.
 	if leaf == "Rung":
-		fallback = True
+		dt = str(dataType or "").lower()
+		fallback = True if "bool" in dt else 1
 	try:
 		qv = system.tag.readBlocking([tagPath])[0]
 		if qv is None:
@@ -346,6 +348,7 @@ def toMemory(tagPaths=None):
 			"opcServer": "",
 			"documentation": stashDoc,
 			"value": value,
+			"defaultValue": value,
 		}
 		# Preserve metadata when present
 		if cfg.get("metadata") is not None:
@@ -361,6 +364,34 @@ def toMemory(tagPaths=None):
 				_cachePut(tagPath, path, server, cleanDoc if opcItemPath else (cleanDoc or documentation))
 		else:
 			fail += 1
+
+	# Force Comm-Loss probe tags to healthy demo values (Good quality alone is
+	# enough for isBad(), but non-zero Rung/Status makes the HMI readable).
+	seedPaths = []
+	seedVals = []
+	for tagPath in tagPaths:
+		_parent, name = _parentAndName(tagPath)
+		if name not in ("Rung", "Status", "Comm"):
+			continue
+		try:
+			cfg = system.tag.getConfiguration(tagPath, False)[0]
+			dt = str(cfg.get("dataType") or "Float4").lower()
+			if name == "Comm":
+				val = True
+			elif "bool" in dt:
+				val = True
+			else:
+				val = 1
+			seedPaths.append(tagPath)
+			seedVals.append(val)
+		except:
+			pass
+	if seedPaths:
+		try:
+			system.tag.writeBlocking(seedPaths, seedVals)
+			logger.info("seeded %d Comm/Rung/Status demo values" % len(seedPaths))
+		except Exception as e:
+			logger.warn("seed write failed: %s" % str(e))
 
 	logger.info("RCP1 Simulate ON — memory=%d fail=%d" % (ok, fail))
 	_logSampleSources("after-toMemory")

@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>RCP1 Simulate proof</title>
+<style>
+body{font-family:Segoe UI,system-ui,sans-serif;background:#0f1419;color:#e7ecf1;padding:24px;max-width:900px;margin:0 auto}
+h1{font-size:22px;margin:0 0 8px} .ok{color:#3dd68c} .muted{color:#9aa7b5;font-size:14px}
+pre{background:#1a222c;border:1px solid #2b3642;border-radius:8px;padding:14px;overflow:auto;font-size:12px;line-height:1.45}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+img{width:100%;border:1px solid #2b3642;border-radius:8px}
+li{margin:6px 0}
+</style></head><body>
+<h1>RCP1 Simulate — verified</h1>
+<p class="muted">2026-08-01 · gateway bh-ignition-standard · 503 AtomicTags</p>
+<ul>
+<li class="ok">Simulate tag loads: <code>[default]RCP1/Simulate</code> memory / Good</li>
+<li class="ok">SIM ON → <code>memory=503 fail=0</code></li>
+<li class="ok">Sample <code>COMP 7/Alm</code> valueSource=<b>memory</b>, OPC stashed in documentation</li>
+<li class="ok">Sample <code>COMP 7/Rung</code> memory / Good / value=1</li>
+<li class="ok">Units/Machine Room sourceTagPaths → <code>[default]RCP1/…</code></li>
+</ul>
+<pre>applySimulate(True)
+listRcp1AtomicTags found 503
+seeded 21 Comm/Rung/Status demo values
+RCP1 Simulate ON — memory=503 fail=0
+after-toMemory sample [default]RCP1/COMP 7/Alm valueSource=memory opc= stash=yes quality=Good value=False
+after-toMemory sample [default]RCP1/COMP 7/Rung valueSource=memory opc= stash=yes quality=Good value=1
+after-toMemory sample [default]RCP1/Simulate valueSource=memory quality=Good value=True</pre>
+<div class="grid">
+<img src="../rcp1-sim-off-verified.png" alt="SIM off">
+<img src="rcp1-sim-on.png" alt="SIM on">
+</div>
+</body></html>
