@@ -44,10 +44,16 @@ Bad until a Logix driver exposes those node ids.
 | `BR EF` | 5 | `BR_EEF17.…` + `BR_EEF17_FailToStart` (P_DIn sail switch) | ExhaustFan |
 | `MR EF` | 5 | `MR_EEF15.…` + `MR_EEF15_FailToStart` (P_DIn sail switch) | ExhaustFan |
 
-**Total:** 503 OPC AtomicTags under `[default]RCP1/`.
+**Total:** 503 OPC AtomicTags under `[default]RCP1/` (+ 1 Memory control
+`[default]RCP1/Simulate`).
 
 Structural `Folder` nodes are used only to nest PLC-shaped paths (`Fail_Timer/PRE`,
 `Interlock/*`) — children remain AtomicTags.
+
+## Simulate mode
+
+Boolean `[default]RCP1/Simulate` flips those 503 leaves between OPC and Memory for
+demo. See **`docs/rcp1-simulate.md`** (tagChange script, path stash, header toggle).
 
 ## Units/Machine Room device list
 
