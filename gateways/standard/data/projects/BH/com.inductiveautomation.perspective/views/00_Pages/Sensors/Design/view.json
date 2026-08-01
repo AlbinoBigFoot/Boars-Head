@@ -1,7 +1,7 @@
 {
   "custom": {},
   "params": {
-    "tagPath": "[default]Plant/Machine Room/Valves"
+    "tagPath": "[default]Plant/Machine Room/Sensors"
   },
   "propConfig": {
     "params.tagPath": {
@@ -112,16 +112,16 @@
             "type": "ia.display.view",
             "version": 0,
             "props": {
-              "path": "02_Components/01_Devices/SolenoidValve",
+              "path": "02_Components/01_Devices/Sensor",
               "params": {
-                "tagPath": "[default]Plant/Machine Room/Valves/Main Liq SV",
-                "faceplate": "SolenoidValve",
-                "label": "MAIN LIQ SV"
+                "tagPath": "[default]Plant/Machine Room/Sensors/HSS-Pumps Pressure",
+                "faceplate": "Sensor",
+                "label": "HSS-PT2"
               },
               "style": {
                 "classes": "",
-                "height": "133px",
-                "width": "71px",
+                "height": "124px",
+                "width": "83px",
                 "flex": "0 0 auto"
               }
             },
@@ -131,7 +131,85 @@
               "basis": "auto"
             },
             "meta": {
-              "name": "Main_Liq_SV"
+              "name": "HSS_Pumps_Pressure"
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "version": 0,
+            "props": {
+              "path": "02_Components/01_Devices/Sensor",
+              "params": {
+                "tagPath": "[default]Plant/Machine Room/Sensors/HSL-Pumps Pressure",
+                "faceplate": "Sensor",
+                "label": "HSL-PSIG"
+              },
+              "style": {
+                "classes": "",
+                "height": "124px",
+                "width": "83px",
+                "flex": "0 0 auto"
+              }
+            },
+            "position": {
+              "grow": 0,
+              "shrink": 0,
+              "basis": "auto"
+            },
+            "meta": {
+              "name": "HSL_Pumps_Pressure"
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "version": 0,
+            "props": {
+              "path": "02_Components/01_Devices/Sensor",
+              "params": {
+                "tagPath": "[default]Plant/Machine Room/Sensors/LSL-Pumps Pressure",
+                "faceplate": "Sensor",
+                "label": "LSL-PSIG"
+              },
+              "style": {
+                "classes": "",
+                "height": "124px",
+                "width": "83px",
+                "flex": "0 0 auto"
+              }
+            },
+            "position": {
+              "grow": 0,
+              "shrink": 0,
+              "basis": "auto"
+            },
+            "meta": {
+              "name": "LSL_Pumps_Pressure"
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "version": 0,
+            "props": {
+              "path": "02_Components/01_Devices/Sensor",
+              "params": {
+                "tagPath": "[default]Plant/Machine Room/Sensors/LSS-Pumps Pressure",
+                "faceplate": "Sensor",
+                "label": "LSS-PT1"
+              },
+              "style": {
+                "classes": "",
+                "height": "124px",
+                "width": "83px",
+                "flex": "0 0 auto"
+              }
+            },
+            "position": {
+              "grow": 0,
+              "shrink": 0,
+              "basis": "auto"
+            },
+            "meta": {
+              "name": "LSS_Pumps_Pressure"
             }
           }
         ]
