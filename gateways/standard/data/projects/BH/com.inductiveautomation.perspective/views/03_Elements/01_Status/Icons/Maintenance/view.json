@@ -1,0 +1,92 @@
+{
+  "custom": {},
+  "params": {},
+  "props": {},
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "SVG"
+        },
+        "props": {
+          "elements": [
+            {
+              "d": "M11.5537 2.41406C12.8332 1.13459 14.5715 0.592698 16.2383 0.789062C16.5341 0.823931 16.7388 1.02457 16.8096 1.26758C16.8792 1.50645 16.8196 1.78264 16.6191 1.9834L14.2979 4.30469C14.1012 4.50129 14.0293 4.79097 14.1113 5.05664L14.6621 6.84277C14.7353 7.07934 14.9207 7.26473 15.1572 7.33789L16.9434 7.88867C17.209 7.97067 17.4987 7.89875 17.6953 7.70215L20.0166 5.38086C20.2174 5.18039 20.4936 5.12084 20.7324 5.19043C20.9754 5.26124 21.1761 5.4659 21.2109 5.76172C21.4073 7.42851 20.8654 9.16682 19.5859 10.4463C17.9888 12.0433 15.6791 12.4864 13.6826 11.7842L4.93555 20.5322C3.97796 21.4894 2.42522 21.4897 1.46777 20.5322C0.510326 19.5748 0.510558 18.022 1.46777 17.0645L10.2148 8.31641C9.5132 6.32021 9.957 4.01094 11.5537 2.41406ZM3.75977 18.2227C3.53007 17.993 3.15748 17.993 2.92773 18.2227C2.69799 18.4524 2.69799 18.8249 2.92773 19.0547C3.15748 19.2844 3.53004 19.2844 3.75977 19.0547C3.98935 18.825 3.9894 18.4524 3.75977 18.2227Z",
+              "fill": {
+                "paint": "var(--icon)"
+              },
+              "stroke": {
+                "linecap": "butt",
+                "linejoin": "miter",
+                "miterlimit": "4",
+                "paint": "black",
+                "width": "0.5"
+              },
+              "type": "path"
+            }
+          ],
+          "viewBox": "0 0 22 22"
+        },
+        "type": "ia.shapes.svg"
+      }
+    ],
+    "meta": {
+      "name": "root",
+      "contextMenu": {}
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex",
+    "propConfig": {
+      "meta.contextMenu.items": {
+        "binding": {
+          "config": {
+            "struct": {
+              "tagPath": "\"No TagPath: \""
+            },
+            "waitOnAll": true
+          },
+          "transforms": [
+            {
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = self.view.params.tagPath\n\texcept:\n\t\tpass\n\tif tagPath is None or str(tagPath).strip() == '':\n\t\ttagPath = value.tagPath + self.view.id.split('@')[0].split('/')[-1]\n\titems = [\n\t\t\t  {\n\t\t\t    \"text\": \"Ticket Logger\",\n\t\t\t    \"icon\": {\n\t\t\t      \"path\": \"material/info\",\n\t\t\t      \"color\": \"--neutral-80\",\n\t\t\t      \"style\": {}\n\t\t\t    },\n\t\t\t    \"style\": {\n\t\t\t      \"classes\": \"bg-component font-value\",\n\t\t\t      \"height\": 24,\n\t\t\t      \"width\": 120\n\t\t\t    },\n\t\t\t    \"type\": \"message\",\n\t\t\t    \"children\": [],\n\t\t\t    \"link\": {\n\t\t\t      \"url\": \"\",\n\t\t\t      \"target\": \"self\"\n\t\t\t    },\n\t\t\t    \"method\": {\n\t\t\t      \"name\": \"\",\n\t\t\t      \"params\": {}\n\t\t\t    },\n\t\t\t    \"message\": {\n\t\t\t      \"type\": \"ticketLog\",\n\t\t\t      \"payload\": {\n\t\t\t        \"tagPath\": tagPath,\n\t\t\t        \"viewName\": self.view.id.split('@')[0]\n\t\t\t      },\n\t\t\t      \"scope\": \"page\"\n\t\t\t    }\n\t\t\t  }\n\t\t\t]\n\treturn items",
+              "type": "script"
+            }
+          ],
+          "type": "expr-struct"
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "config": {
+            "struct": {
+              "items": "{this.meta.contextMenu.items}",
+              "permission": "{session.custom.TicketLogAccess}"
+            },
+            "waitOnAll": true
+          },
+          "transforms": [
+            {
+              "expression": "len({value}['items']) > 0 && {value}['permission']",
+              "type": "expression"
+            }
+          ],
+          "type": "expr-struct"
+        }
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    }
+  }
+}
