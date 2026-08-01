@@ -4760,9 +4760,9 @@
               }
             },
             "data": {
-              "action": "",
-              "page": "",
-              "viewPath": "",
+              "action": "page",
+              "page": "/plants/new-castle",
+              "viewPath": "00_Pages/LandingPage/PlantPlaceholder",
               "tagPath": ""
             },
             "items": []
@@ -4780,9 +4780,9 @@
               }
             },
             "data": {
-              "action": "",
-              "page": "",
-              "viewPath": "",
+              "action": "page",
+              "page": "/plants/forrest-city",
+              "viewPath": "00_Pages/LandingPage/PlantPlaceholder",
               "tagPath": ""
             },
             "items": []
@@ -4800,9 +4800,9 @@
               }
             },
             "data": {
-              "action": "",
-              "page": "",
-              "viewPath": "",
+              "action": "page",
+              "page": "/plants/petersburg",
+              "viewPath": "00_Pages/LandingPage/PlantPlaceholder",
               "tagPath": ""
             },
             "items": []
@@ -4820,9 +4820,9 @@
               }
             },
             "data": {
-              "action": "",
-              "page": "",
-              "viewPath": "",
+              "action": "page",
+              "page": "/plants/holland",
+              "viewPath": "00_Pages/LandingPage/PlantPlaceholder",
               "tagPath": ""
             },
             "items": []
@@ -4952,7 +4952,7 @@
               },
               "transforms": [
                 {
-                  "code": "\tpath = ''\n\ttry:\n\t\tpath = str(value)\n\texcept:\n\t\tpath = ''\n\tif path == '/' or path == '':\n\t\treturn 'Boars Head International'\n\treturn 'Groveport'",
+                  "code": "\tpath = ''\n\ttry:\n\t\tpath = str(value)\n\texcept:\n\t\tpath = ''\n\tif path == '/' or path == '':\n\t\treturn 'Boars Head International'\n\tif path.startswith('/plants/'):\n\t\treturn path.split('/')[-1].replace('-', ' ').title()\n\treturn 'Groveport'",
                   "type": "script"
                 }
               ],

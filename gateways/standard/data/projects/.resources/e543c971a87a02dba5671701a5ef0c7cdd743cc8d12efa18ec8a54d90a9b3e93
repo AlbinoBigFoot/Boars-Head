@@ -1,6 +1,7 @@
 {
   "custom": {
-    "theme": ""
+    "theme": "",
+    "navData": {}
   },
   "params": {},
   "propConfig": {
@@ -10,6 +11,27 @@
           "path": "session.props.theme"
         },
         "type": "property"
+      },
+      "persistent": true
+    },
+    "custom.navData": {
+      "binding": {
+        "config": {
+          "fallbackDelay": 2.5,
+          "mode": "direct",
+          "tagPath": "[default]_Config/MapMarkerNavigation"
+        },
+        "transforms": [
+          {
+            "expression": "if(isNull({value}),\n\t\"\",{value})",
+            "type": "expression"
+          }
+        ],
+        "type": "tag"
+      },
+      "onChange": {
+        "enabled": null,
+        "script": "\tvalue = currentValue.value\n\tdata = {}\n\tif value is None or value == '' or value == {}:\n\t\treturn\n\ttry:\n\t\t# Document tags may expose nested QualifiedValues\n\t\tfor k in value:\n\t\t\tv = value[k]\n\t\t\ttry:\n\t\t\t\tdata[k] = v.value\n\t\t\texcept:\n\t\t\t\tdata[k] = v\n\texcept:\n\t\ttry:\n\t\t\tdata = system.util.jsonDecode(system.util.jsonEncode(value))\n\t\texcept:\n\t\t\treturn\n\tif not data:\n\t\treturn\n\t# Ensure page navigation even if action omitted\n\tif data.get('page') and not data.get('action'):\n\t\tdata['action'] = 'page'\n\tNavigation.Nav.navigate(data)\n\tsystem.tag.writeAsync(['[default]_Config/MapMarkerNavigation'], [{}])"
       },
       "persistent": true
     }
