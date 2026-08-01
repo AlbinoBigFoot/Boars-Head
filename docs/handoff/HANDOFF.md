@@ -1,7 +1,10 @@
 # Handoff — RCP1 Simulate mode
 
-**Branch:** `feat/rcp1-simulate`  
-**Commit:** `0ce707c` — `feat: RCP1 Simulate toggle — OPC vs memory via tagChange`  
+**Branch:** `feat/rcp1-simulate` (pushed to `origin`)  
+**Commits:**
+- `0ce707c` — `feat: RCP1 Simulate toggle — OPC vs memory via tagChange`
+- `095efef` — `docs: RCP1 Simulate handoff commit hash + branch pointer`
+
 **Base:** `main` (branched while main was ahead of `origin/main`)  
 **Primary doc:** [`docs/rcp1-simulate.md`](../rcp1-simulate.md)
 
@@ -31,6 +34,8 @@ Read `docs/rcp1-simulate.md` for behavior, path stash (`#OPC:` in documentation)
 | `docs/handoff/rcp1-sim-off.png` | SIM off (OPC) — Machine Room |
 | `docs/handoff/rcp1-sim-on.png` | SIM ON (Memory) — Machine Room |
 
+Pushover attachments sent successfully (HTTP 200) for both shots.
+
 ## Changed files (feature)
 
 - `gateways/.../BH/ignition/script-python/shared/Rcp1Simulate/`
@@ -45,7 +50,3 @@ Read `docs/rcp1-simulate.md` for behavior, path stash (`#OPC:` in documentation)
 - Plant Programmable Device Simulator (`Sim` / `bh-plant-sim.csv`) is **not** used for RCP1; Memory tags are the demo path.
 - Runtime `system.tag.configure` may temporarily rewrite folder layout on disk; committed tree keeps nested Folders inside `udts.json` + root `Simulate` Memory tag.
 - After pull: POST scan/projects (and scan/config if tags changed).
-
-## Commit
-
-See `git log -1 --oneline` on this branch after push.
