@@ -54,7 +54,7 @@
     "custom.values.running": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '' || isBad(tag({view.params.tagPath} + '/Status/Value')),\n\tfalse,\n\ttag({view.params.tagPath} + '/Status/Value') = 1)"
+          "expression": "if({view.params.tagPath} = '' || isBad(tag({view.params.tagPath} + '/Status/Value')),\n\tfalse,\n\ttag({view.params.tagPath} + '/Status/Value') = 2 || coalesce(tag({view.params.tagPath} + '/Started/Value'), false))"
         },
         "type": "expr"
       }

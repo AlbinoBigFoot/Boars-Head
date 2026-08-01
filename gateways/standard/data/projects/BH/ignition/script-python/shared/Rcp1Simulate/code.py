@@ -174,9 +174,12 @@ def _logSampleSources(label, samplePaths=None):
 			"[default]RCP1/COMP 7/Rung",
 			"[default]RCP1/COMP 7/Amps",
 			"[default]RCP1/Simulate",
+			"[default]RCP1/MR EF/Started",
+			"[default]RCP1/MR AD/Alm",
+			"[default]RCP1/FIRE/Alm",
 			"[default]Plant/Machine Room/COMP 7/Rung/Value",
-			"[default]Plant/Machine Room/COMP 7/Amps/Value",
-			"[default]Plant/Machine Room/HTR/Status/Value",
+			"[default]Plant/Machine Room/MR EF/Status/Value",
+			"[default]Plant/Machine Room/MR AD/Value",
 		]
 	for tp in samplePaths:
 		try:
@@ -231,7 +234,10 @@ def _demoValue(name, dataType, tagPath=None):
 	if n == "Status":
 		if "Pumps Pressure" in dev or "Pressure" in dev:
 			return 0  # Sensor OK
-		if ("Pump" in dev or "EF" in dev) and "Pressure" not in dev:
+		# ExhaustFan Status = P_Motor Val_Sts: 0=UNK, 1=STOPPED, 2=RUNNING
+		if "EF" in dev and "Pressure" not in dev:
+			return 2  # RUNNING
+		if "Pump" in dev and "Pressure" not in dev:
 			return 1
 		if any(x in dev for x in ("HTR", "LTR", "HPR")):
 			return 0  # OK
@@ -248,9 +254,13 @@ def _demoValue(name, dataType, tagPath=None):
 	if n in ("Color", "CP_Mode", "SV_Mode"):
 		return 1
 	if n == "Started":
+		# Exhaust fans (MR EF / BR EF) run in demo; Pump 2 / COMP 6 stay off.
 		return False if dev in ("COMP 6",) or "Pump 2" in dev else True
 	if n in ("AutoEN", "Rdy", "Enable"):
 		return True
+	# Safety lamps (MR AD / VL AD / RDISKS / FIRE) — False = normal (okValue false).
+	if n == "Alm" and any(x in dev for x in ("MR AD", "VL AD", "RDISKS", "FIRE")):
+		return False
 
 	# Comm/Value has Equality@1 alarm on Devices UDTs. Seeding Comm=True lights
 	# every compressor/valve alarm chrome (metrics High maps to CSS "medium").
