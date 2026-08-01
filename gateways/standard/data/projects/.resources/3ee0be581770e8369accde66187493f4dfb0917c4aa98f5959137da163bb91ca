@@ -1,0 +1,243 @@
+{
+  "custom": {
+    "tags": []
+  },
+  "params": {
+    "hiddenTags": "",
+    "tagPath": ""
+  },
+  "propConfig": {
+    "params.hiddenTags": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.tags": {
+      "binding": {
+        "config": {
+          "struct": {
+            "hiddenTags": "{view.params.hiddenTags}",
+            "tagPath": "{view.params.tagPath}"
+          },
+          "waitOnAll": true
+        },
+        "transforms": [
+          {
+            "code": "\thiddenTagsInput = value.get('hiddenTags', '')\n\thidden_set = set()\n\ttry:\n\t\ttext = str(hiddenTagsInput or '')\n\t\tif text:\n\t\t\ttext = text.replace(';', ',')\n\t\t\tfor item in text.split(','):\n\t\t\t\titem = item.strip()\n\t\t\t\tif item:\n\t\t\t\t\thidden_set.add(item)\n\texcept Exception:\n\t\tpass\n\n\tdef isHidden(fullPath):\n\t\tif not hidden_set:\n\t\t\treturn False\n\t\tif fullPath in hidden_set:\n\t\t\treturn True\n\t\tstripped = fullPath.split(']', 1)[-1] if ']' in fullPath else fullPath\n\t\tif stripped in hidden_set:\n\t\t\treturn True\n\t\treturn False\n\n\tdef isNoise(fullPath):\n\t\tparts = [p for p in str(fullPath).replace('\\\\', '/').split('/') if p]\n\t\tnoise = ('_Alarms', 'SummaryInstances')\n\t\tfor p in parts:\n\t\t\tif p in noise:\n\t\t\t\treturn True\n\t\treturn False\n\n\tdef modeName(mode):\n\t\tif mode is None:\n\t\t\treturn 'Equality'\n\t\ttry:\n\t\t\tif hasattr(mode, 'name'):\n\t\t\t\treturn str(mode.name())\n\t\texcept:\n\t\t\tpass\n\t\ts = str(mode)\n\t\tif '.' in s:\n\t\t\ts = s.split('.')[-1]\n\t\treturn s or 'Equality'\n\n\tdef dataTypeName(dt):\n\t\tif dt is None:\n\t\t\treturn ''\n\t\ttry:\n\t\t\tif hasattr(dt, 'name'):\n\t\t\t\treturn str(dt.name())\n\t\texcept:\n\t\t\tpass\n\t\treturn str(dt)\n\n\tSETPOINT_MODES = set([\n\t\t'AboveSetpoint', 'BelowSetpoint', 'BetweenSetpoints', 'OutsideSetpoints',\n\t\t'AboveOrEqualSetpoint', 'BelowOrEqualSetpoint'\n\t])\n\tDIGITAL_MODES = set(['Equality', 'Inequality', 'AnyChange', 'Bit', 'OnChange'])\n\n\tresult = []\n\troot_path = str(value.get('tagPath') or '')\n\tif not root_path:\n\t\treturn result\n\n\ttry:\n\t\tbrowse_results = system.tag.browse(path=root_path, filter={'recursive': True}).getResults()\n\texcept:\n\t\treturn result\n\n\tcandidate_paths = []\n\tfor tag in browse_results:\n\t\ttry:\n\t\t\ttt = str(tag['tagType'])\n\t\texcept:\n\t\t\tcontinue\n\t\tif tt in ['Folder', 'UdtType']:\n\t\t\tcontinue\n\t\tfull_path = str(tag['fullPath'])\n\t\tif isNoise(full_path):\n\t\t\tcontinue\n\t\tcandidate_paths.append(full_path)\n\tif root_path not in candidate_paths and not isNoise(root_path):\n\t\tcandidate_paths.append(root_path)\n\n\tfor full_path in candidate_paths:\n\t\tif isHidden(full_path):\n\t\t\tcontinue\n\t\ttry:\n\t\t\tcfg = system.tag.getConfiguration(full_path, False)\n\t\texcept:\n\t\t\tcontinue\n\t\tif not cfg or len(cfg) == 0:\n\t\t\tcontinue\n\t\tnode = cfg[0]\n\t\tif node.get('enabled', True) == False:\n\t\t\tcontinue\n\t\talarms = node.get('alarms')\n\t\tif not alarms:\n\t\t\tcontinue\n\t\tdt = dataTypeName(node.get('dataType'))\n\t\t# Prefer parent UDT shortDescription (…/Alm) over Value\n\t\tlabel_base = ''\n\t\ttry:\n\t\t\tmd = node.get('metadata') or {}\n\t\t\tlabel_base = str(md.get('shortDescription') or '').strip()\n\t\texcept:\n\t\t\tlabel_base = ''\n\t\tif not label_base:\n\t\t\ttry:\n\t\t\t\tparent = full_path.rsplit('/', 1)[0]\n\t\t\t\tpcfg = system.tag.getConfiguration(parent, False)\n\t\t\t\tif pcfg:\n\t\t\t\t\tpmd = pcfg[0].get('metadata') or {}\n\t\t\t\t\tlabel_base = str(pmd.get('shortDescription') or '').strip()\n\t\texcept:\n\t\t\tpass\n\t\tif not label_base:\n\t\t\trel = full_path\n\t\t\tif full_path.startswith(root_path):\n\t\t\t\trel = full_path[len(root_path):].lstrip('/')\n\t\t\tparts = [p for p in rel.split('/') if p]\n\t\t\tif parts and parts[-1] == 'Value' and len(parts) >= 2:\n\t\t\t\tlabel_base = parts[-2]\n\t\t\telif parts:\n\t\t\t\tlabel_base = parts[-1]\n\t\t\telse:\n\t\t\t\tlabel_base = full_path.split('/')[-1]\n\t\t\tif ']' in label_base:\n\t\t\t\tlabel_base = label_base.split(']', 1)[-1]\n\n\t\tfor alarm in alarms:\n\t\t\ttry:\n\t\t\t\talarm_name = str(alarm.get('name') or 'Alarm')\n\t\t\texcept:\n\t\t\t\talarm_name = 'Alarm'\n\t\t\tmode = modeName(alarm.get('mode'))\n\t\t\tis_digital = (mode in DIGITAL_MODES) or (dt in ('Boolean', 'Bool', 'Int1'))\n\t\t\thas_setpoint = mode in SETPOINT_MODES\n\t\t\tif not has_setpoint and not is_digital and mode not in DIGITAL_MODES:\n\t\t\t\thas_setpoint = True\n\t\t\t\tis_digital = False\n\t\t\tlabel = label_base\n\t\t\tif alarm_name and alarm_name != 'Alarm':\n\t\t\t\tlabel = '%s / %s' % (label_base, alarm_name)\n\t\t\tresult.append({\n\t\t\t\t'tagPath': full_path,\n\t\t\t\t'alarmName': alarm_name,\n\t\t\t\t'label': label,\n\t\t\t\t'isDigital': bool(is_digital and not has_setpoint),\n\t\t\t\t'hasSetpoint': bool(has_setpoint),\n\t\t\t\t'mode': mode\n\t\t\t})\n\n\tresult.sort(key=lambda x: (str(x.get('label') or ''), str(x.get('alarmName') or '')))\n\treturn result\n",
+            "type": "script"
+          }
+        ],
+        "type": "expr-struct"
+      },
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 320,
+      "width": 500
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root",
+      "contextMenu": {}
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "gap": "6px",
+        "overflow": "hidden",
+        "minHeight": 0,
+        "height": "100%",
+        "padding": "4px"
+      }
+    },
+    "propConfig": {
+      "meta.contextMenu.items": {
+        "binding": {
+          "config": {
+            "struct": {
+              "tagPath": "\"No TagPath: \""
+            },
+            "waitOnAll": true
+          },
+          "transforms": [
+            {
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = self.view.params.tagPath\n\texcept:\n\t\tpass\n\tif tagPath is None or str(tagPath).strip() == '':\n\t\ttagPath = value.tagPath + self.view.id.split('@')[0].split('/')[-1]\n\titems = [\n\t\t\t  {\n\t\t\t    \"text\": \"Ticket Logger\",\n\t\t\t    \"icon\": {\n\t\t\t      \"path\": \"material/info\",\n\t\t\t      \"color\": \"--neutral-80\",\n\t\t\t      \"style\": {}\n\t\t\t    },\n\t\t\t    \"style\": {\n\t\t\t      \"classes\": \"bg-component font-value\",\n\t\t\t      \"height\": 24,\n\t\t\t      \"width\": 120\n\t\t\t    },\n\t\t\t    \"type\": \"message\",\n\t\t\t    \"children\": [],\n\t\t\t    \"link\": {\n\t\t\t      \"url\": \"\",\n\t\t\t      \"target\": \"self\"\n\t\t\t    },\n\t\t\t    \"method\": {\n\t\t\t      \"name\": \"\",\n\t\t\t      \"params\": {}\n\t\t\t    },\n\t\t\t    \"message\": {\n\t\t\t      \"type\": \"ticketLog\",\n\t\t\t      \"payload\": {\n\t\t\t        \"tagPath\": tagPath,\n\t\t\t        \"viewName\": self.view.id.split('@')[0]\n\t\t\t      },\n\t\t\t      \"scope\": \"page\"\n\t\t\t    }\n\t\t\t  }\n\t\t\t]\n\treturn items",
+              "type": "script"
+            }
+          ],
+          "type": "expr-struct"
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "config": {
+            "struct": {
+              "items": "{this.meta.contextMenu.items}",
+              "permission": "{session.custom.TicketLogAccess}"
+            },
+            "waitOnAll": true
+          },
+          "transforms": [
+            {
+              "expression": "len({value}['items']) > 0 && {value}['permission']",
+              "type": "expression"
+            }
+          ],
+          "type": "expr-struct"
+        }
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    },
+    "children": [
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "AcTitle"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "struct": {
+                  "tags": "{view.custom.tags}"
+                },
+                "waitOnAll": true
+              },
+              "transforms": [
+                {
+                  "code": "\ttags = value.get('tags') or []\n\tn = len(tags)\n\treturn 'Alarm configuration (%d)' % n\n",
+                  "type": "script"
+                }
+              ],
+              "type": "expr-struct"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "classes": "faceplate-section-title font-label"
+          },
+          "text": "Alarm configuration (0)"
+        }
+      },
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "AcEmpty"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "struct": {
+                  "tags": "{view.custom.tags}"
+                },
+                "waitOnAll": true
+              },
+              "transforms": [
+                {
+                  "code": "\ttags = value.get('tags') or []\n\treturn len(tags) == 0\n",
+                  "type": "script"
+                }
+              ],
+              "type": "expr-struct"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "classes": "faceplate-stub font-label"
+          },
+          "text": "No configured alarms found under this device."
+        }
+      },
+      {
+        "type": "ia.display.flex-repeater",
+        "meta": {
+          "name": "FlexRepeater"
+        },
+        "position": {
+          "basis": "0px",
+          "grow": 1,
+          "shrink": 1
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "struct": {
+                  "tags": "{view.custom.tags}"
+                },
+                "waitOnAll": true
+              },
+              "transforms": [
+                {
+                  "code": "\ttags = value.get('tags') or []\n\treturn len(tags) > 0\n",
+                  "type": "script"
+                }
+              ],
+              "type": "expr-struct"
+            }
+          },
+          "props.instances": {
+            "binding": {
+              "config": {
+                "struct": {
+                  "alarms": "{view.custom.tags}"
+                },
+                "waitOnAll": true
+              },
+              "transforms": [
+                {
+                  "code": "\tinstances = []\n\talarms = value.get('alarms') or []\n\tfor i, item in enumerate(alarms):\n\t\tinstances.append({\n\t\t\t'instanceStyle': {'classes': ''},\n\t\t\t'instancePosition': {},\n\t\t\t'highlightRow': i % 2 == 1,\n\t\t\t'tagPath': item.get('tagPath', ''),\n\t\t\t'alarmName': item.get('alarmName', 'Alarm'),\n\t\t\t'label': item.get('label', ''),\n\t\t\t'isDigital': bool(item.get('isDigital')),\n\t\t\t'hasSetpoint': bool(item.get('hasSetpoint'))\n\t\t})\n\treturn instances\n",
+                  "type": "script"
+                }
+              ],
+              "type": "expr-struct"
+            }
+          }
+        },
+        "props": {
+          "direction": "column",
+          "elementPosition": {
+            "grow": 0,
+            "shrink": 0
+          },
+          "path": "01_Popups/00_Faceplates/_Assets/AlarmConfigurationRow",
+          "style": {
+            "classes": "faceplate-alarm-list",
+            "gap": "1px",
+            "minHeight": "0",
+            "overflow": "auto"
+          },
+          "useDefaultViewWidth": false
+        }
+      }
+    ]
+  }
+}

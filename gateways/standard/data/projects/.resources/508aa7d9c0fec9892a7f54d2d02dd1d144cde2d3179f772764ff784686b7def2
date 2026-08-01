@@ -1,0 +1,522 @@
+{
+  "custom": {
+    "label": "",
+    "metadata": "",
+    "orientation": "vertical",
+    "values": {},
+    "alarm": {
+      "active": false,
+      "priority": 10,
+      "unack": false
+    }
+  },
+  "params": {
+    "faceplate": null,
+    "tagPath": "",
+    "orientation": {
+      "horizontal": false,
+      "horizontalReverse": false,
+      "vertical": true,
+      "verticalReverse": false
+    },
+    "feedback": true,
+    "label": "SNS"
+  },
+  "propConfig": {
+    "custom.label": {
+      "binding": {
+        "config": {
+          "expression": "coalesce({view.params.label}, '')"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "custom.metadata": {
+      "binding": {
+        "config": {
+          "expression": "if(\n\t{view.params.tagPath}!='' && isGood(tag({view.params.tagPath} + '.Metadata')),\n\ttag({view.params.tagPath} + '.Metadata'),\n\t'')"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "custom.orientation": {
+      "binding": {
+        "config": {
+          "expression": "if({view.params.orientation.horizontal},\n   'horizontal',\n   if({view.params.orientation.horizontalReverse},\n      'horizontal-reverse',\n      if({view.params.orientation.verticalReverse},\n         'vertical-reverse',\n         'vertical')))"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "custom.values": {
+      "persistent": true
+    },
+    "custom.values.status": {
+      "binding": {
+        "config": {
+          "expression": "if({view.params.tagPath} = '',\n\t'',\n\t{view.params.tagPath} + '/Status/Value')"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.values.analog": {
+      "binding": {
+        "config": {
+          "expression": "if({view.params.tagPath} = '',\n\t'',\n\t{view.params.tagPath} + '/Value/Value')"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.values.commLoss": {
+      "binding": {
+        "config": {
+          "expression": "if({view.params.tagPath} = '',\n\tfalse,\n\tisBad(tag({view.params.tagPath} + '/Value/Value')))"
+        },
+        "type": "expr"
+      }
+    },
+    "params.faceplate": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.orientation": {
+      "paramDirection": "inout",
+      "persistent": true
+    },
+    "params.orientation.horizontal": {
+      "onChange": {
+        "enabled": null,
+        "script": "\tif currentValue.value:\n\t\tself.params.orientation.horizontalReverse = False\n\t\tself.params.orientation.vertical = False\n\t\tself.params.orientation.verticalReverse = False\n\telif not self.params.orientation.vertical and not self.params.orientation.horizontalReverse and not self.params.orientation.verticalReverse:\n\t\tself.params.orientation.vertical = True"
+      }
+    },
+    "params.orientation.horizontalReverse": {
+      "onChange": {
+        "enabled": null,
+        "script": "\tif currentValue.value:\n\t\tself.params.orientation.horizontal = False\n\t\tself.params.orientation.vertical = False\n\t\tself.params.orientation.verticalReverse = False\n\telif not self.params.orientation.vertical and not self.params.orientation.horizontal and not self.params.orientation.verticalReverse:\n\t\tself.params.orientation.vertical = True"
+      }
+    },
+    "params.orientation.vertical": {
+      "onChange": {
+        "enabled": null,
+        "script": "\tif currentValue.value:\n\t\tself.params.orientation.horizontal = False\n\t\tself.params.orientation.horizontalReverse = False\n\t\tself.params.orientation.verticalReverse = False\n\telif not self.params.orientation.horizontalReverse and not self.params.orientation.horizontal and not self.params.orientation.verticalReverse:\n\t\tself.params.orientation.horizontal = True"
+      }
+    },
+    "params.orientation.verticalReverse": {
+      "onChange": {
+        "enabled": null,
+        "script": "\tif currentValue.value:\n\t\tself.params.orientation.horizontalReverse = False\n\t\tself.params.orientation.horizontal = False\n\t\tself.params.orientation.vertical = False\n\telif not self.params.orientation.vertical and not self.params.orientation.horizontalReverse and not self.params.orientation.horizontal:\n\t\tself.params.orientation.vertical = True"
+      }
+    },
+    "custom.alarm": {
+      "persistent": true
+    },
+    "custom.alarm.active": {
+      "binding": {
+        "config": {
+          "fallbackDelay": 2.5,
+          "mode": "indirect",
+          "references": {
+            "tagPath": "{view.params.tagPath}"
+          },
+          "tagPath": "{tagPath}/_Alarms/_Active"
+        },
+        "transforms": [
+          {
+            "expression": "if(isNull({value}),\n\tFalse,\n\tif(typeof({value}) = 'java.lang.Boolean',\n\t\t{value},\n\t\t{value} = True || {value} = 1 || {value} = 'true' || {value} = 'True'))",
+            "type": "expression"
+          }
+        ],
+        "type": "tag"
+      },
+      "persistent": true
+    },
+    "custom.alarm.unack": {
+      "binding": {
+        "config": {
+          "fallbackDelay": 2.5,
+          "mode": "indirect",
+          "references": {
+            "tagPath": "{view.params.tagPath}"
+          },
+          "tagPath": "{tagPath}/_Alarms/_Unack"
+        },
+        "transforms": [
+          {
+            "expression": "if(isNull({value}),\n\tFalse,\n\tif(typeof({value}) = 'java.lang.Boolean',\n\t\t{value},\n\t\t{value} = True || {value} = 1 || {value} = 'true' || {value} = 'True'))",
+            "type": "expression"
+          }
+        ],
+        "type": "tag"
+      },
+      "persistent": true
+    },
+    "custom.alarm.priority": {
+      "binding": {
+        "config": {
+          "fallbackDelay": 2.5,
+          "mode": "indirect",
+          "references": {
+            "tagPath": "{view.params.tagPath}"
+          },
+          "tagPath": "{tagPath}/_Alarms/_ActiveHighPriority"
+        },
+        "transforms": [
+          {
+            "expression": "if(isNull({value}),\n\t10,\n\t{value})",
+            "type": "expression"
+          }
+        ],
+        "type": "tag"
+      },
+      "persistent": true
+    },
+    "params.feedback": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.label": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 100,
+      "width": 160
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "IconHeader"
+            },
+            "position": {
+              "basis": "20px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "path": "view.params.tagPath"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "path": "03_Elements/01_Status/IconHeader",
+              "style": {
+                "classes": "icon-header",
+                "height": "20px",
+                "overflow": "visible",
+                "width": "20px"
+              },
+              "useDefaultViewHeight": true,
+              "useDefaultViewWidth": true
+            },
+            "type": "ia.display.view"
+          }
+        ],
+        "meta": {
+          "name": "NotificationHeader"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "style": {
+            "classes": "notification-wrapper",
+            "overflow": "visible"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "Badge"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.label"
+                  },
+                  "type": "property"
+                }
+              },
+              "props.style.cursor": {
+                "binding": {
+                  "config": {
+                    "expression": "if(isNull({view.params.faceplate}) || {view.params.faceplate} = '',\n   '',\n   'pointer')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "align": "center",
+              "style": {
+                "classes": "tag-label sensor-badge font-value",
+                "fontSize": "11px",
+                "fontWeight": "700",
+                "textAlign": "center"
+              },
+              "text": "SNS"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "Stem"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.elements[0].d": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.orientation.vertical} || {view.params.orientation.verticalReverse},\n   'M1 0V24',\n   'M0 1H24')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.height": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.orientation.vertical} || {view.params.orientation.verticalReverse},\n   '24px',\n   '2px')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.width": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.orientation.vertical} || {view.params.orientation.verticalReverse},\n   '2px',\n   '24px')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.viewBox": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.orientation.vertical} || {view.params.orientation.verticalReverse},\n   '0 0 2 24',\n   '0 0 24 2')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "elements": [
+                {
+                  "name": "stem",
+                  "stroke": {
+                    "linecap": "butt",
+                    "linejoin": "miter",
+                    "paint": "var(--neutral-100)",
+                    "width": "2"
+                  },
+                  "style": {},
+                  "type": "path"
+                }
+              ],
+              "preserveAspectRatio": "none",
+              "style": {
+                "alignSelf": "center",
+                "classes": "stem-line",
+                "margin": "0px",
+                "padding": "0px"
+              }
+            },
+            "type": "ia.shapes.svg"
+          }
+        ],
+        "meta": {
+          "name": "StemAssembly"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.direction": {
+            "binding": {
+              "config": {
+                "expression": "if({view.params.orientation.verticalReverse},\n   'column-reverse',\n   if({view.params.orientation.horizontalReverse},\n      'row-reverse',\n      if({view.params.orientation.horizontal},\n         'row',\n         'column')))"
+              },
+              "type": "expr"
+            }
+          },
+          "props.style.classes": {
+            "binding": {
+              "config": {
+                "expression": "if(coalesce({view.custom.values.commLoss}, false),\n\t'stem device-comm-loss',\n\t'stem')"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "alignItems": "center",
+          "direction": "column",
+          "style": {
+            "classes": "stem",
+            "gap": "0px",
+            "overflow": "visible"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "meta": {
+          "name": "AnalogValue",
+          "visible": true
+        },
+        "position": {
+          "basis": "18px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.params.tagPath": {
+            "binding": {
+              "config": {
+                "expression": "{view.custom.values.analog}"
+              },
+              "type": "expr"
+            }
+          },
+          "meta.visible": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({view.params.feedback}, true)"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "params": {
+            "spacing": {
+              "center": true,
+              "data": 0,
+              "engUnit": 30
+            }
+          },
+          "path": "03_Elements/01_Status/AnalogValue",
+          "style": {
+            "classes": "value",
+            "cursor": "pointer",
+            "height": "18px",
+            "minHeight": "18px",
+            "overflow": "visible"
+          },
+          "useDefaultViewHeight": true
+        },
+        "type": "ia.display.view"
+      },
+      {
+        "meta": {
+          "name": "Status",
+          "visible": false
+        },
+        "position": {
+          "basis": "22px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.params.tagPath": {
+            "binding": {
+              "config": {
+                "expression": "{view.custom.values.analog}"
+              },
+              "type": "expr"
+            }
+          },
+          "meta.visible": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({view.params.feedback}, true) && coalesce({view.custom.values.commLoss}, false)"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "path": "03_Elements/01_Status/StatusIndicator",
+          "style": {
+            "classes": "status nut",
+            "cursor": "pointer",
+            "height": "22px",
+            "minHeight": "22px",
+            "overflow": "visible"
+          },
+          "useDefaultViewHeight": true
+        },
+        "type": "ia.display.view"
+      }
+    ],
+    "events": {
+      "dom": {
+        "onClick": {
+          "config": {
+            "script": "\tfaceplate = self.view.params.faceplate\n\tif faceplate is None or str(faceplate).strip() == '':\n\t\treturn\n\ttagPath = str(self.view.params.tagPath or '')\n\ttitle = str(self.view.custom.label or '')\n\tif title in (None, '', 'nn', 'SNS'):\n\t\ttitle = tagPath.split('/')[-1] if tagPath else self.view.name\n\t# Unified tabbed Faceplate. show* are hints; tagFlags hide empty tabs.\n\tparams = {\n\t\t'tagPath': tagPath,\n\t\t'deviceType': 'Sensor',\n\t\t'webGuiUrl': '',\n\t\t'showControls': True,\n\t\t'showConfiguration': True,\n\t\t'showInterlocks': True,\n\t\t'showTrend': True,\n\t\t'showAlarmConfiguration': True,\n\t\t'showAlarms': True\n\t}\n\tNavigation.Faceplate.openFaceplate(\n\t\t'sensor-fp-%s' % (tagPath or title),\n\t\ttagPath,\n\t\t'01_Popups/00_Faceplates/Faceplate',\n\t\tFalse,\n\t\ttitle,\n\t\t560,\n\t\t640,\n\t\tparams\n\t)\n"
+          },
+          "scope": "G",
+          "type": "script"
+        }
+      }
+    },
+    "meta": {
+      "name": "root"
+    },
+    "propConfig": {
+      "props.alignContent": {
+        "binding": {
+          "config": {
+            "expression": "if({view.params.orientation.verticalReverse},\n   'flex-start',\n   'flex-end')"
+          },
+          "type": "expr"
+        }
+      },
+      "props.justify": {
+        "binding": {
+          "config": {
+            "expression": "if({view.params.orientation.vertical} || {view.params.orientation.verticalReverse},\n   'center',\n   if({view.params.orientation.horizontalReverse},\n      'flex-start',\n      'flex-end'))"
+          },
+          "type": "expr"
+        }
+      },
+      "props.style.classes": {
+        "binding": {
+          "config": {
+            "expression": "if({view.params.orientation.horizontal},\n   'sensor-horizontal sensor-component',\n   if({view.params.orientation.horizontalReverse},\n      'sensor-horizontal-reverse sensor-component',\n      if({view.params.orientation.vertical},\n         'sensor-vertical sensor-component',\n         'sensor-vertical-reverse sensor-component')))"
+          },
+          "type": "expr"
+        }
+      }
+    },
+    "props": {
+      "alignItems": "center",
+      "direction": "column",
+      "style": {
+        "overflow": "visible",
+        "position": "relative"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

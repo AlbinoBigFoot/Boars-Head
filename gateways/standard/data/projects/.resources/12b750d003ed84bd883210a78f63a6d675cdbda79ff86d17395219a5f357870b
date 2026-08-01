@@ -1,0 +1,128 @@
+{
+  "custom": {
+    "quality": "Bad_NotFound",
+    "value": false
+  },
+  "params": {
+    "label": "",
+    "okValue": true,
+    "tagPath": ""
+  },
+  "propConfig": {
+    "custom.quality": {
+      "binding": {
+        "config": {
+          "expression": "if({view.params.tagPath} \u003d \u0027\u0027,\n\t\u0027Bad_NotFound\u0027,\n\tqualityOf(tag({view.params.tagPath})))"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "custom.value": {
+      "binding": {
+        "config": {
+          "expression": "if({view.params.tagPath} \u003d \u0027\u0027 || left({view.custom.quality}, 4) !\u003d \u0027Good\u0027,\n\tfalse,\n\tcoalesce(tag({view.params.tagPath}), false))"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "params.label": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.okValue": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 48,
+      "width": 72
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Label"
+        },
+        "position": {
+          "basis": "16px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.params.label"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "align": "center",
+          "style": {
+            "classes": "font-value",
+            "fontSize": "11px",
+            "fontWeight": "700",
+            "height": "16px",
+            "lineHeight": "16px",
+            "overflow": "visible",
+            "textAlign": "center",
+            "whiteSpace": "nowrap",
+            "width": "100%"
+          }
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Dot"
+        },
+        "position": {
+          "basis": "28px",
+          "grow": 0,
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.style.classes": {
+            "binding": {
+              "config": {
+                "expression": "if({view.params.tagPath} \u003d \u0027\u0027 || left({view.custom.quality}, 4) !\u003d \u0027Good\u0027,\n\t\u0027status-dot status-dot-unknown\u0027,\n\tif({view.custom.value} \u003d {view.params.okValue},\n\t\t\u0027status-dot status-dot-ok\u0027,\n\t\t\u0027status-dot status-dot-alarm\u0027))"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "alignSelf": "center",
+            "flexShrink": 0
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "alignItems": "center",
+      "direction": "column",
+      "style": {
+        "classes": "status-dot-root",
+        "gap": "2px",
+        "overflow": "visible",
+        "width": "100%"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}
