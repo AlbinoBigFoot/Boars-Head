@@ -1,0 +1,274 @@
+[
+  {
+    "name": "Overview",
+    "typeId": "Overview/Exhaust Fan Overview",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Instances",
+        "typeId": "_Root/Document",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": {
+              "columns": [
+                {
+                  "dateFormat": "MM/DD/YYYY",
+                  "footer": {
+                    "title": "",
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    }
+                  },
+                  "align": "center",
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "justify": "center",
+                  "progressBar": {
+                    "max": 100,
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "format": "0,0.##",
+                      "enabled": true,
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "unselected": "",
+                      "selected": ""
+                    }
+                  },
+                  "viewParams": {
+                    "value": ""
+                  },
+                  "render": "auto",
+                  "visible": true,
+                  "nullFormat": {
+                    "nullFormatValue": "",
+                    "includeNullStrings": false,
+                    "strict": false
+                  },
+                  "resizable": true,
+                  "editable": false,
+                  "sortable": false,
+                  "sort": "none",
+                  "viewPath": "03_Elements/03_Table/DeviceLabelAlarmIndicator",
+                  "filter": {
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover",
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "boolean": {
+                      "condition": ""
+                    }
+                  },
+                  "boolean": "checkbox",
+                  "strictWidth": true,
+                  "field": "tagPath",
+                  "width": 164,
+                  "header": {
+                    "title": "Device Name",
+                    "align": "center",
+                    "justify": "center",
+                    "style": {
+                      "classes": ""
+                    }
+                  },
+                  "style": {
+                    "classes": ""
+                  }
+                }
+              ],
+              "data": [
+                {
+                  "tagPath": "[default]Plant/Machine Room/ExhaustFans/BR EF"
+                },
+                {
+                  "tagPath": "[default]Plant/Machine Room/ExhaustFans/MR EF"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Rebuild",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "BR EF",
+      "longDescription": "exhaust fan (Devices HMI layer; PLC source P_Motor)"
+    },
+    "name": "BR EF",
+    "typeId": "Devices/ExhaustFan",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Started",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/BR EF/Started",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Failed",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/BR EF/Failed",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Alm",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/BR EF/Alm",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Cmd_Reset",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/BR EF/Cmd_Reset",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Status",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/BR EF/Status",
+            "valueSource": "reference"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "MR EF",
+    "typeId": "Devices/ExhaustFan",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Started",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/MR EF/Started",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Failed",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/MR EF/Failed",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Alm",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/MR EF/Alm",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Cmd_Reset",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/MR EF/Cmd_Reset",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Status",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/MR EF/Status",
+            "valueSource": "reference"
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "shortDescription": "MR EF"
+    }
+  }
+]
