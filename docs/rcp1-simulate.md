@@ -23,8 +23,12 @@ toggle then binds to null and Simulate never flips OPC ↔ Memory.
 
 Units/Machine Room Values stay `valueSource=reference` with
 `sourceTagPath=[default]RCP1/…`. Only the RCP1 AtomicTags change to `memory`
-when SIM is ON; Plant instance is `Plant/Machine Room/Overview` →
-`typeId: Units/Machine Room`.
+when SIM is ON. Perspective binds to **`[default]Plant/Machine Room`**
+(device UDT instances with the same RCP1 `sourceTagPath` overrides — the thin
+`Units/Machine Room` Overview instance did not expand children at runtime).
+
+**Scan order:** POST `/scan/config` (tags/UDTs) first, then `/scan/projects`
+(views/scripts).
 
 OPC server when not simulating: `Ignition OPC UA Server`  
 Node id form: `ns=1;s=[RCP1]<PLC_TAG>.<member>` (see `docs/rcp1-opc-tags.md`)

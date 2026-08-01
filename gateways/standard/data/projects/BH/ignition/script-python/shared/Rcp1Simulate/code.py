@@ -174,22 +174,60 @@ def _logSampleSources(label, samplePaths=None):
 			"[default]RCP1/COMP 7/Rung",
 			"[default]RCP1/COMP 7/Amps",
 			"[default]RCP1/Simulate",
+			"[default]Plant/Machine Room/COMP 7/Rung/Value",
+			"[default]Plant/Machine Room/COMP 7/Amps/Value",
+			"[default]Plant/Machine Room/HTR/Status/Value",
 		]
 	for tp in samplePaths:
 		try:
-			cfg = system.tag.getConfiguration(tp, False)[0]
-			vs = cfg.get("valueSource")
-			opc = cfg.get("opcItemPath") or ""
-			doc = str(cfg.get("documentation") or "")
-			stash = "yes" if doc.startswith(OPC_MARKER) else "no"
 			qv = system.tag.readBlocking([tp])[0]
 			qual = str(getattr(qv, "quality", ""))
+			val = getattr(qv, "value", None)
+			vs = ""
+			opc = ""
+			stash = "n/a"
+			try:
+				cfg = system.tag.getConfiguration(tp, False)[0]
+				vs = cfg.get("valueSource")
+				opc = cfg.get("opcItemPath") or ""
+				doc = str(cfg.get("documentation") or "")
+				stash = "yes" if doc.startswith(OPC_MARKER) else "no"
+				stp = cfg.get("sourceTagPath") or ""
+				if stp:
+					opc = "src=" + str(stp)
+			except:
+				pass
 			logger.info(
 				"%s sample %s valueSource=%s opc=%s stash=%s quality=%s value=%s"
-				% (label, tp, vs, opc, stash, qual, getattr(qv, "value", None))
+				% (label, tp, vs, opc, stash, qual, val)
 			)
 		except Exception as e:
 			logger.warn("%s sample %s failed: %s" % (label, tp, str(e)))
+
+
+def _demoValue(name, dataType):
+	"""Demo values so Machine Room looks alive in SIM (not just Good quality)."""
+	n = str(name or "")
+	dt = str(dataType or "").lower()
+	if n in ("Rung", "Status", "Color", "CP_Mode", "SV_Mode"):
+		return 1
+	if n in ("Comm", "Started", "AutoEN", "Rdy", "Enable"):
+		return True
+	if n in ("Alm", "Failed", "Cutout", "Fault", "HH", "LL", "H", "L", "LSH", "LSL"):
+		return False
+	if n in ("Amps", "FLA"):
+		return 42.0
+	if n in ("SVP", "Level", "Pressure"):
+		return 55.0
+	if n.endswith("_SP") or n.endswith("SP"):
+		return 25.0
+	if "bool" in dt:
+		return False
+	if "int" in dt or "long" in dt or "short" in dt or "byte" in dt:
+		return 1 if n in ("Rung", "Status") else 0
+	if "string" in dt:
+		return ""
+	return 0.0
 
 
 def listRcp1AtomicTags():
@@ -338,7 +376,19 @@ def toMemory(tagPaths=None):
 			path = ""
 			server = OPC_SERVER
 
-		value = _readCurrentValue(tagPath, dataType, name)
+		# Prefer live Good OPC value; otherwise seed a readable demo value.
+		live = _readCurrentValue(tagPath, dataType, name)
+		try:
+			qv = system.tag.readBlocking([tagPath])[0]
+			qual = getattr(qv, "quality", None)
+			good = False
+			if qual is not None and hasattr(qual, "isGood"):
+				good = bool(qual.isGood())
+			elif qual is not None:
+				good = str(qual).upper().find("GOOD") >= 0
+		except:
+			good = False
+		value = live if good else _demoValue(name, dataType)
 		newCfg = {
 			"name": name,
 			"tagType": "AtomicTag",
@@ -365,31 +415,28 @@ def toMemory(tagPaths=None):
 		else:
 			fail += 1
 
-	# Force Comm-Loss probe tags to healthy demo values (Good quality alone is
-	# enough for isBad(), but non-zero Rung/Status makes the HMI readable).
+	# Second pass: force demo values on key leaves (configure defaultValue can lag).
 	seedPaths = []
 	seedVals = []
+	seedNames = set([
+		"Rung", "Status", "Comm", "Started", "AutoEN",
+		"Amps", "FLA", "SVP", "Level", "Pressure", "Color", "CP_Mode", "SV_Mode",
+	])
 	for tagPath in tagPaths:
 		_parent, name = _parentAndName(tagPath)
-		if name not in ("Rung", "Status", "Comm"):
+		if name not in seedNames:
 			continue
 		try:
 			cfg = system.tag.getConfiguration(tagPath, False)[0]
-			dt = str(cfg.get("dataType") or "Float4").lower()
-			if name == "Comm":
-				val = True
-			elif "bool" in dt:
-				val = True
-			else:
-				val = 1
+			dt = cfg.get("dataType") or "Float4"
 			seedPaths.append(tagPath)
-			seedVals.append(val)
+			seedVals.append(_demoValue(name, dt))
 		except:
 			pass
 	if seedPaths:
 		try:
 			system.tag.writeBlocking(seedPaths, seedVals)
-			logger.info("seeded %d Comm/Rung/Status demo values" % len(seedPaths))
+			logger.info("seeded %d demo values for running HMI" % len(seedPaths))
 		except Exception as e:
 			logger.warn("seed write failed: %s" % str(e))
 
