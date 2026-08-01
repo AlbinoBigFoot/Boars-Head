@@ -131,11 +131,20 @@ def _stashDocumentation(opcItemPath, documentation):
 	return OPC_MARKER + str(path) + "\n" + str(clean)
 
 
-def _readCurrentValue(tagPath, dataType):
+def _readCurrentValue(tagPath, dataType, name=None):
+	"""Read live value when quality is Good; otherwise demo-safe defaults.
+
+	Comm Loss on device graphics is isBad(Rung/Value) — Memory tags must have
+	Good quality. When OPC was Bad, seed Rung=True so the HMI is usable in SIM.
+	"""
+	fallback = _defaultForType(dataType)
+	leaf = str(name or "")
+	if leaf == "Rung":
+		fallback = True
 	try:
 		qv = system.tag.readBlocking([tagPath])[0]
 		if qv is None:
-			return _defaultForType(dataType)
+			return fallback
 		qual = getattr(qv, "quality", None)
 		good = True
 		try:
@@ -146,13 +155,39 @@ def _readCurrentValue(tagPath, dataType):
 		except:
 			good = True
 		if not good:
-			return _defaultForType(dataType)
+			return fallback
 		val = qv.value
 		if val is None:
-			return _defaultForType(dataType)
+			return fallback
 		return val
 	except:
-		return _defaultForType(dataType)
+		return fallback
+
+
+def _logSampleSources(label, samplePaths=None):
+	"""Log valueSource for a few RCP1 leaves so gateway logs prove the flip."""
+	if samplePaths is None:
+		samplePaths = [
+			"[default]RCP1/COMP 7/Alm",
+			"[default]RCP1/COMP 7/Rung",
+			"[default]RCP1/COMP 7/Amps",
+			"[default]RCP1/Simulate",
+		]
+	for tp in samplePaths:
+		try:
+			cfg = system.tag.getConfiguration(tp, False)[0]
+			vs = cfg.get("valueSource")
+			opc = cfg.get("opcItemPath") or ""
+			doc = str(cfg.get("documentation") or "")
+			stash = "yes" if doc.startswith(OPC_MARKER) else "no"
+			qv = system.tag.readBlocking([tp])[0]
+			qual = str(getattr(qv, "quality", ""))
+			logger.info(
+				"%s sample %s valueSource=%s opc=%s stash=%s quality=%s value=%s"
+				% (label, tp, vs, opc, stash, qual, getattr(qv, "value", None))
+			)
+		except Exception as e:
+			logger.warn("%s sample %s failed: %s" % (label, tp, str(e)))
 
 
 def listRcp1AtomicTags():
@@ -301,7 +336,7 @@ def toMemory(tagPaths=None):
 			path = ""
 			server = OPC_SERVER
 
-		value = _readCurrentValue(tagPath, dataType)
+		value = _readCurrentValue(tagPath, dataType, name)
 		newCfg = {
 			"name": name,
 			"tagType": "AtomicTag",
@@ -328,6 +363,7 @@ def toMemory(tagPaths=None):
 			fail += 1
 
 	logger.info("RCP1 Simulate ON — memory=%d fail=%d" % (ok, fail))
+	_logSampleSources("after-toMemory")
 	return ok, fail
 
 
@@ -376,6 +412,7 @@ def toOpc(tagPaths=None):
 			fail += 1
 
 	logger.info("RCP1 Simulate OFF — opc=%d fail=%d" % (ok, fail))
+	_logSampleSources("after-toOpc")
 	return ok, fail
 
 
@@ -387,6 +424,7 @@ def applySimulate(simulate):
 	"""
 	wantSim = bool(simulate)
 	logger.info("applySimulate(%s)" % wantSim)
+	_logSampleSources("before-apply")
 	if wantSim:
 		return toMemory()
 	return toOpc()

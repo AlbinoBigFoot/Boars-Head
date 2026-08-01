@@ -16,6 +16,16 @@ available). Faceplates can write Memory tags directly.
 | `[default]RCP1/Simulate` | Boolean Memory control — **excluded** from reconfigure |
 | `[default]RCP1/**` (other AtomicTags) | Flipped between `opc` and `memory` |
 
+`Simulate` lives in `tag-definition/default/RCP1/tags.json`. The folder’s
+`unary-resource.json` **must** list `"files": ["tags.json"]` (same pattern as
+`_Config`). An empty `files` array leaves the control tag unloaded — the Header
+toggle then binds to null and Simulate never flips OPC ↔ Memory.
+
+Units/Machine Room Values stay `valueSource=reference` with
+`sourceTagPath=[default]RCP1/…`. Only the RCP1 AtomicTags change to `memory`
+when SIM is ON; Plant instance is `Plant/Machine Room/Overview` →
+`typeId: Units/Machine Room`.
+
 OPC server when not simulating: `Ignition OPC UA Server`  
 Node id form: `ns=1;s=[RCP1]<PLC_TAG>.<member>` (see `docs/rcp1-opc-tags.md`)
 
