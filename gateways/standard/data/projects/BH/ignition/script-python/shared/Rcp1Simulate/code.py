@@ -205,26 +205,91 @@ def _logSampleSources(label, samplePaths=None):
 			logger.warn("%s sample %s failed: %s" % (label, tp, str(e)))
 
 
-def _demoValue(name, dataType):
-	"""Demo values so Machine Room looks alive in SIM (not just Good quality)."""
+def _deviceKey(tagPath):
+	"""RCP1 device folder name, e.g. COMP 7 / HTLR-Pump 1 / HTR."""
+	parts = [p for p in str(tagPath).replace("\\", "/").split("/") if p]
+	# [default]RCP1/<device>/...
+	if len(parts) >= 3 and parts[1] == "RCP1":
+		return parts[2]
+	return parts[-2] if len(parts) >= 2 else ""
+
+
+def _demoValue(name, dataType, tagPath=None):
+	"""Demo values so Machine Room looks alive in SIM (varied, not all alarming)."""
 	n = str(name or "")
 	dt = str(dataType or "").lower()
-	if n in ("Rung", "Status", "Color", "CP_Mode", "SV_Mode"):
+	dev = _deviceKey(tagPath) if tagPath else ""
+
+	# Pump Val_Sts: 0=UNK, 1=STOPPED, 2=RUNNING
+	if n == "Val_Sts":
+		if "Pump 2" in dev:
+			return 1  # STOPPED
+		return 2  # RUNNING
+
+	# Tank Status: 0=OK, 1=LOW, … — never seed 1 (looks like LOW fault)
+	if n == "Status":
+		if "Pump" in dev or "EF" in dev:
+			return 1
+		if any(x in dev for x in ("HTR", "LTR", "HPR")):
+			return 0  # OK
+		if "SV" in dev or "Valve" in dev or "Liq" in dev:
+			return 2  # OPEN
+		return 0
+
+	# Compressor Rung: 0=Off, 1=Running — vary the bank
+	if n == "Rung":
+		if dev in ("COMP 6",):
+			return 0  # STOP
+		return 1  # RUN
+
+	if n in ("Color", "CP_Mode", "SV_Mode"):
 		return 1
-	if n in ("Comm", "Started", "AutoEN", "Rdy", "Enable"):
+	if n == "Started":
+		return False if dev in ("COMP 6",) or "Pump 2" in dev else True
+	if n in ("Comm", "AutoEN", "Rdy", "Enable"):
 		return True
-	if n in ("Alm", "Failed", "Cutout", "Fault", "HH", "LL", "H", "L", "LSH", "LSL"):
+
+	# Keep Alm/Failed false for a clean demo (no blanket medium alarms).
+	# One compressor can show a discrete Alm for variety without analog Hi@0 storms.
+	if n == "Alm":
+		return True if dev == "COMP 7" else False
+	if n in ("Failed", "Cutout", "Fault", "HH", "LL", "H", "L", "LSH", "LSL"):
 		return False
+	if n in ("Hi", "Lo", "HiHi", "LoLo", "Fail"):
+		return False
+
 	if n in ("Amps", "FLA"):
-		return 42.0
-	if n in ("SVP", "Level", "Pressure"):
+		if dev == "COMP 6":
+			return 0.0
+		if dev == "COMP 1":
+			return 48.0
+		if dev == "COMP 4":
+			return 36.0
+		if dev == "COMP 5":
+			return 41.0
+		if dev == "COMP 7":
+			return 52.0
+		return 40.0
+	if n == "SVP":
+		if dev == "COMP 6":
+			return 0.0
+		if dev == "COMP 7":
+			return 72.0
 		return 55.0
+	if n in ("Level", "Pressure"):
+		if "HTR" in dev:
+			return 62.0
+		if "LTR" in dev:
+			return 48.0
+		if "HPR" in dev:
+			return 55.0
+		return 50.0
 	if n.endswith("_SP") or n.endswith("SP"):
 		return 25.0
 	if "bool" in dt:
 		return False
 	if "int" in dt or "long" in dt or "short" in dt or "byte" in dt:
-		return 1 if n in ("Rung", "Status") else 0
+		return 0
 	if "string" in dt:
 		return ""
 	return 0.0
@@ -388,7 +453,7 @@ def toMemory(tagPaths=None):
 				good = str(qual).upper().find("GOOD") >= 0
 		except:
 			good = False
-		value = live if good else _demoValue(name, dataType)
+		value = live if good else _demoValue(name, dataType, tagPath)
 		newCfg = {
 			"name": name,
 			"tagType": "AtomicTag",
@@ -419,8 +484,9 @@ def toMemory(tagPaths=None):
 	seedPaths = []
 	seedVals = []
 	seedNames = set([
-		"Rung", "Status", "Comm", "Started", "AutoEN",
+		"Rung", "Status", "Val_Sts", "Comm", "Started", "AutoEN", "Alm",
 		"Amps", "FLA", "SVP", "Level", "Pressure", "Color", "CP_Mode", "SV_Mode",
+		"Hi", "Lo", "HiHi", "LoLo", "Fail",
 	])
 	for tagPath in tagPaths:
 		_parent, name = _parentAndName(tagPath)
@@ -430,7 +496,7 @@ def toMemory(tagPaths=None):
 			cfg = system.tag.getConfiguration(tagPath, False)[0]
 			dt = cfg.get("dataType") or "Float4"
 			seedPaths.append(tagPath)
-			seedVals.append(_demoValue(name, dt))
+			seedVals.append(_demoValue(name, dt, tagPath))
 		except:
 			pass
 	if seedPaths:

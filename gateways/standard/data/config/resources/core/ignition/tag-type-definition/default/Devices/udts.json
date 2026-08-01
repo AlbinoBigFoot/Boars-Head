@@ -39,8 +39,8 @@
       },
       {
         "metadata": {
-          "shortDescription": "Close",
-          "longDescription": "Close"
+          "longDescription": "Close",
+          "shortDescription": "Close"
         },
         "name": "Cmd_Close",
         "typeId": "_Root/Digital",
@@ -48,8 +48,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Close",
               "longDescription": "Close",
+              "shortDescription": "Close",
               "states": [
                 {
                   "label": "Off",
@@ -61,16 +61,16 @@
                 }
               ]
             },
-            "name": "Value",
             "value": false,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Open",
-          "longDescription": "Open"
+          "longDescription": "Open",
+          "shortDescription": "Open"
         },
         "name": "Cmd_Open",
         "typeId": "_Root/Digital",
@@ -78,8 +78,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Open",
               "longDescription": "Open",
+              "shortDescription": "Open",
               "states": [
                 {
                   "label": "Off",
@@ -91,16 +91,16 @@
                 }
               ]
             },
-            "name": "Value",
             "value": false,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Reset",
-          "longDescription": "Reset"
+          "longDescription": "Reset",
+          "shortDescription": "Reset"
         },
         "name": "Cmd_Reset",
         "typeId": "_Root/Digital",
@@ -108,8 +108,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Reset",
               "longDescription": "Reset",
+              "shortDescription": "Reset",
               "states": [
                 {
                   "label": "Off",
@@ -121,8 +121,8 @@
                 }
               ]
             },
-            "name": "Value",
             "value": false,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
@@ -212,8 +212,8 @@
       },
       {
         "metadata": {
-          "shortDescription": "Maintenance",
-          "longDescription": "Maintenance"
+          "longDescription": "Maintenance",
+          "shortDescription": "Maintenance"
         },
         "name": "MAINT",
         "typeId": "_Root/Digital",
@@ -221,8 +221,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Maintenance",
               "longDescription": "Maintenance",
+              "shortDescription": "Maintenance",
               "states": [
                 {
                   "label": "Off",
@@ -234,16 +234,16 @@
                 }
               ]
             },
-            "name": "Value",
             "value": false,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Operator",
-          "longDescription": "Operator"
+          "longDescription": "Operator",
+          "shortDescription": "Operator"
         },
         "name": "OPER",
         "typeId": "_Root/Digital",
@@ -251,8 +251,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Operator",
               "longDescription": "Operator",
+              "shortDescription": "Operator",
               "states": [
                 {
                   "label": "Off",
@@ -264,8 +264,8 @@
                 }
               ]
             },
-            "name": "Value",
             "value": true,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
@@ -302,8 +302,8 @@
       },
       {
         "metadata": {
-          "shortDescription": "Program",
-          "longDescription": "Program"
+          "longDescription": "Program",
+          "shortDescription": "Program"
         },
         "name": "PROG",
         "typeId": "_Root/Digital",
@@ -311,8 +311,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Program",
               "longDescription": "Program",
+              "shortDescription": "Program",
               "states": [
                 {
                   "label": "Off",
@@ -324,8 +324,8 @@
                 }
               ]
             },
-            "name": "Value",
             "value": false,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
@@ -461,23 +461,21 @@
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historyProvider": "historian",
-            "historicalDeadbandStyle": "Discrete",
             "alarms": [
               {
-                "mode": null,
                 "setpointA": 0.0,
                 "name": "Hi",
                 "priority": "Medium",
-                "enabled": true
+                "enabled": false
               },
               {
-                "mode": null,
                 "setpointA": 0.0,
                 "name": "Lo",
                 "priority": "Medium",
-                "enabled": true
+                "enabled": false
               }
             ],
+            "historicalDeadbandStyle": "Discrete",
             "historyEnabled": true,
             "formatString": "#0.0",
             "value": 0.0,
@@ -490,8 +488,8 @@
       },
       {
         "metadata": {
-          "shortDescription": "Auto enable",
-          "longDescription": "Auto enable"
+          "longDescription": "Auto enable",
+          "shortDescription": "Auto enable"
         },
         "name": "AutoEN",
         "typeId": "_Root/Digital",
@@ -499,8 +497,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Auto enable",
               "longDescription": "Auto enable",
+              "shortDescription": "Auto enable",
               "states": [
                 {
                   "label": "Off",
@@ -512,8 +510,8 @@
                 }
               ]
             },
-            "name": "Value",
             "value": true,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
@@ -685,23 +683,21 @@
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historyProvider": "historian",
-            "historicalDeadbandStyle": "Discrete",
             "alarms": [
               {
-                "mode": null,
                 "setpointA": 0.0,
                 "name": "Hi",
                 "priority": "Medium",
-                "enabled": true
+                "enabled": false
               },
               {
-                "mode": null,
                 "setpointA": 0.0,
                 "name": "Lo",
                 "priority": "Medium",
-                "enabled": true
+                "enabled": false
               }
             ],
+            "historicalDeadbandStyle": "Discrete",
             "historyEnabled": true,
             "formatString": "#0.0",
             "value": 0.0,
@@ -725,23 +721,21 @@
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historyProvider": "historian",
-            "historicalDeadbandStyle": "Discrete",
             "alarms": [
               {
-                "mode": null,
                 "setpointA": 0.0,
                 "name": "Hi",
                 "priority": "Medium",
-                "enabled": true
+                "enabled": false
               },
               {
-                "mode": null,
                 "setpointA": 0.0,
                 "name": "Lo",
                 "priority": "Medium",
-                "enabled": true
+                "enabled": false
               }
             ],
+            "historicalDeadbandStyle": "Discrete",
             "historyEnabled": true,
             "formatString": "#0",
             "value": 0.0,
@@ -754,8 +748,8 @@
       },
       {
         "metadata": {
-          "shortDescription": "Fail timer preset",
-          "longDescription": "Fail timer preset"
+          "longDescription": "Fail timer preset",
+          "shortDescription": "Fail timer preset"
         },
         "name": "Fail_Timer_PRE",
         "typeId": "_Root/Analog",
@@ -763,20 +757,20 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Fail timer preset",
-              "longDescription": "Fail timer preset"
+              "longDescription": "Fail timer preset",
+              "shortDescription": "Fail timer preset"
             },
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historyProvider": "historian",
             "historicalDeadbandStyle": "Discrete",
-            "name": "Value",
             "historyEnabled": true,
             "formatString": "#0.0",
             "value": 30.0,
-            "tagType": "AtomicTag",
             "engUnit": "s",
-            "sampleMode": "OnChange"
+            "sampleMode": "OnChange",
+            "name": "Value",
+            "tagType": "AtomicTag"
           }
         ]
       },
@@ -821,8 +815,8 @@
       },
       {
         "metadata": {
-          "shortDescription": "Min runtime set",
-          "longDescription": "Min runtime set"
+          "longDescription": "Min runtime set",
+          "shortDescription": "Min runtime set"
         },
         "name": "Min_Runtime_Set",
         "typeId": "_Root/Analog",
@@ -830,20 +824,20 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Min runtime set",
-              "longDescription": "Min runtime set"
+              "longDescription": "Min runtime set",
+              "shortDescription": "Min runtime set"
             },
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historyProvider": "historian",
             "historicalDeadbandStyle": "Discrete",
-            "name": "Value",
             "historyEnabled": true,
             "formatString": "#0",
             "value": 120.0,
-            "tagType": "AtomicTag",
             "engUnit": "s",
-            "sampleMode": "OnChange"
+            "sampleMode": "OnChange",
+            "name": "Value",
+            "tagType": "AtomicTag"
           }
         ]
       },
@@ -898,23 +892,21 @@
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historyProvider": "historian",
-            "historicalDeadbandStyle": "Discrete",
             "alarms": [
               {
-                "mode": null,
                 "setpointA": 0.0,
                 "name": "Hi",
                 "priority": "Medium",
-                "enabled": true
+                "enabled": false
               },
               {
-                "mode": null,
                 "setpointA": 0.0,
                 "name": "Lo",
                 "priority": "Medium",
-                "enabled": true
+                "enabled": false
               }
             ],
+            "historicalDeadbandStyle": "Discrete",
             "historyEnabled": true,
             "formatString": "#0",
             "value": 0.0,
@@ -1113,8 +1105,8 @@
       },
       {
         "metadata": {
-          "shortDescription": "Auto",
-          "longDescription": "Auto"
+          "longDescription": "Auto",
+          "shortDescription": "Auto"
         },
         "name": "Cmd_Auto",
         "typeId": "_Root/Digital",
@@ -1122,8 +1114,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Auto",
               "longDescription": "Auto",
+              "shortDescription": "Auto",
               "states": [
                 {
                   "label": "Off",
@@ -1135,16 +1127,16 @@
                 }
               ]
             },
-            "name": "Value",
             "value": false,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Manual",
-          "longDescription": "Manual"
+          "longDescription": "Manual",
+          "shortDescription": "Manual"
         },
         "name": "Cmd_Manual",
         "typeId": "_Root/Digital",
@@ -1152,8 +1144,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Manual",
               "longDescription": "Manual",
+              "shortDescription": "Manual",
               "states": [
                 {
                   "label": "Off",
@@ -1165,16 +1157,16 @@
                 }
               ]
             },
-            "name": "Value",
             "value": false,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Start",
-          "longDescription": "Start"
+          "longDescription": "Start",
+          "shortDescription": "Start"
         },
         "name": "Cmd_Start",
         "typeId": "_Root/Digital",
@@ -1182,8 +1174,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Start",
               "longDescription": "Start",
+              "shortDescription": "Start",
               "states": [
                 {
                   "label": "Off",
@@ -1195,16 +1187,16 @@
                 }
               ]
             },
-            "name": "Value",
             "value": false,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Stop",
-          "longDescription": "Stop"
+          "longDescription": "Stop",
+          "shortDescription": "Stop"
         },
         "name": "Cmd_Stop",
         "typeId": "_Root/Digital",
@@ -1212,8 +1204,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Stop",
               "longDescription": "Stop",
+              "shortDescription": "Stop",
               "states": [
                 {
                   "label": "Off",
@@ -1225,8 +1217,8 @@
                 }
               ]
             },
-            "name": "Value",
             "value": false,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
@@ -1316,8 +1308,8 @@
       },
       {
         "metadata": {
-          "shortDescription": "Maintenance",
-          "longDescription": "Maintenance"
+          "longDescription": "Maintenance",
+          "shortDescription": "Maintenance"
         },
         "name": "MAINT",
         "typeId": "_Root/Digital",
@@ -1325,8 +1317,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Maintenance",
               "longDescription": "Maintenance",
+              "shortDescription": "Maintenance",
               "states": [
                 {
                   "label": "Off",
@@ -1338,16 +1330,16 @@
                 }
               ]
             },
-            "name": "Value",
             "value": false,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Motor starts",
-          "longDescription": "Cooling tower fan motor starts"
+          "longDescription": "Cooling tower fan motor starts",
+          "shortDescription": "Motor starts"
         },
         "name": "MotorStarts",
         "typeId": "_Root/Analog",
@@ -1355,27 +1347,27 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Motor starts",
-              "longDescription": "Cooling tower fan motor starts"
+              "longDescription": "Cooling tower fan motor starts",
+              "shortDescription": "Motor starts"
             },
+            "dataType": "Int4",
             "historicalDeadband": 0.0,
             "historicalDeadbandMode": "Absolute",
-            "dataType": "Int4",
             "historyProvider": "historian",
             "historicalDeadbandStyle": "Discrete",
-            "name": "Value",
             "historyEnabled": true,
             "formatString": "#0",
             "value": 512,
-            "tagType": "AtomicTag",
-            "sampleMode": "OnChange"
+            "sampleMode": "OnChange",
+            "name": "Value",
+            "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Operator",
-          "longDescription": "Operator"
+          "longDescription": "Operator",
+          "shortDescription": "Operator"
         },
         "name": "OPER",
         "typeId": "_Root/Digital",
@@ -1383,8 +1375,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Operator",
               "longDescription": "Operator",
+              "shortDescription": "Operator",
               "states": [
                 {
                   "label": "Off",
@@ -1396,16 +1388,16 @@
                 }
               ]
             },
-            "name": "Value",
             "value": true,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Program",
-          "longDescription": "Program"
+          "longDescription": "Program",
+          "shortDescription": "Program"
         },
         "name": "PROG",
         "typeId": "_Root/Digital",
@@ -1413,8 +1405,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Program",
               "longDescription": "Program",
+              "shortDescription": "Program",
               "states": [
                 {
                   "label": "Off",
@@ -1426,16 +1418,16 @@
                 }
               ]
             },
-            "name": "Value",
             "value": false,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Runtime hours",
-          "longDescription": "Cooling tower fan runtime hours"
+          "longDescription": "Cooling tower fan runtime hours",
+          "shortDescription": "Runtime hours"
         },
         "name": "RuntimeHours",
         "typeId": "_Root/Analog",
@@ -1443,20 +1435,20 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Runtime hours",
-              "longDescription": "Cooling tower fan runtime hours"
+              "longDescription": "Cooling tower fan runtime hours",
+              "shortDescription": "Runtime hours"
             },
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historyProvider": "historian",
             "historicalDeadbandStyle": "Discrete",
-            "name": "Value",
             "historyEnabled": true,
             "formatString": "#0.0",
             "value": 2145.0,
-            "tagType": "AtomicTag",
             "engUnit": "h",
-            "sampleMode": "OnChange"
+            "sampleMode": "OnChange",
+            "name": "Value",
+            "tagType": "AtomicTag"
           }
         ]
       },
@@ -1585,27 +1577,7 @@
         "tagType": "UdtInstance",
         "tags": [
           {
-            "metadata": {
-              "shortDescription": "setpoint",
-              "longDescription": "Cooling tower basin temperature setpoint"
-            },
-            "name": "SP",
-            "typeId": "_Root/Analog",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "setpoint",
-                  "longDescription": "Cooling tower basin temperature setpoint"
-                },
-                "name": "Value",
-                "value": 85.0,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "engUnit": "\u00b0F",
+            "engUnit": "°F",
             "name": "Value",
             "tagType": "AtomicTag"
           }
@@ -1706,8 +1678,8 @@
       },
       {
         "metadata": {
-          "shortDescription": "Auto enable",
-          "longDescription": "Auto enable"
+          "longDescription": "Auto enable",
+          "shortDescription": "Auto enable"
         },
         "name": "AutoEN",
         "typeId": "_Root/Digital",
@@ -1715,8 +1687,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Auto enable",
               "longDescription": "Auto enable",
+              "shortDescription": "Auto enable",
               "states": [
                 {
                   "label": "Off",
@@ -1728,16 +1700,16 @@
                 }
               ]
             },
-            "name": "Value",
             "value": true,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Fail to start timer PRE",
-          "longDescription": "Maps to P_Motor Cfg_FailToStartT"
+          "longDescription": "Maps to P_Motor Cfg_FailToStartT",
+          "shortDescription": "Fail to start timer PRE"
         },
         "name": "Fail_Timer_PRE",
         "typeId": "_Root/Analog",
@@ -1745,27 +1717,27 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Fail to start timer PRE",
-              "longDescription": "Maps to P_Motor Cfg_FailToStartT"
+              "longDescription": "Maps to P_Motor Cfg_FailToStartT",
+              "shortDescription": "Fail to start timer PRE"
             },
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historyProvider": "historian",
             "historicalDeadbandStyle": "Discrete",
-            "name": "Value",
             "historyEnabled": true,
             "formatString": "#0.0",
             "value": 30.0,
-            "tagType": "AtomicTag",
             "engUnit": "s",
-            "sampleMode": "OnChange"
+            "sampleMode": "OnChange",
+            "name": "Value",
+            "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Interlock",
-          "longDescription": "Config/Interlock (PLC HTR_PUMP1_INTLK / P_Intlk)"
+          "longDescription": "Config/Interlock (PLC HTR_PUMP1_INTLK / P_Intlk)",
+          "shortDescription": "Interlock"
         },
         "name": "Interlock",
         "typeId": "Config/Interlock",
@@ -2175,46 +2147,24 @@
         "tagType": "UdtInstance",
         "tags": [
           {
-            "metadata": {
-              "shortDescription": "setpoint",
-              "longDescription": "Exhaust fan airflow setpoint"
-            },
-            "name": "SP",
-            "typeId": "_Root/Analog",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "setpoint",
-                  "longDescription": "Exhaust fan airflow setpoint"
-                },
-                "name": "Value",
-                "value": 1000.0,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historyProvider": "historian",
-            "historicalDeadbandStyle": "Discrete",
             "alarms": [
               {
-                "mode": null,
                 "setpointA": 0.0,
                 "name": "Hi",
                 "priority": "Medium",
                 "enabled": true
               },
               {
-                "mode": null,
                 "setpointA": 0.0,
                 "name": "Lo",
                 "priority": "Medium",
                 "enabled": true
               }
             ],
+            "historicalDeadbandStyle": "Discrete",
             "historyEnabled": true,
             "formatString": "#0.0",
             "value": 0.0,
@@ -2266,8 +2216,8 @@
       },
       {
         "metadata": {
-          "shortDescription": "Auto enable",
-          "longDescription": "Auto enable"
+          "longDescription": "Auto enable",
+          "shortDescription": "Auto enable"
         },
         "name": "AutoEN",
         "typeId": "_Root/Digital",
@@ -2275,8 +2225,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Auto enable",
               "longDescription": "Auto enable",
+              "shortDescription": "Auto enable",
               "states": [
                 {
                   "label": "Off",
@@ -2288,16 +2238,16 @@
                 }
               ]
             },
-            "name": "Value",
             "value": true,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Auto",
-          "longDescription": "Auto mode command"
+          "longDescription": "Auto mode command",
+          "shortDescription": "Auto"
         },
         "name": "Cmd_Auto",
         "typeId": "_Root/Digital",
@@ -2305,8 +2255,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Auto",
               "longDescription": "Auto mode command",
+              "shortDescription": "Auto",
               "states": [
                 {
                   "label": "Off",
@@ -2318,16 +2268,16 @@
                 }
               ]
             },
-            "name": "Value",
             "value": false,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Manual",
-          "longDescription": "Manual mode command"
+          "longDescription": "Manual mode command",
+          "shortDescription": "Manual"
         },
         "name": "Cmd_Manual",
         "typeId": "_Root/Digital",
@@ -2335,8 +2285,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Manual",
               "longDescription": "Manual mode command",
+              "shortDescription": "Manual",
               "states": [
                 {
                   "label": "Off",
@@ -2348,16 +2298,16 @@
                 }
               ]
             },
-            "name": "Value",
             "value": false,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Reset",
-          "longDescription": "Reset faults / interlocks"
+          "longDescription": "Reset faults / interlocks",
+          "shortDescription": "Reset"
         },
         "name": "Cmd_Reset",
         "typeId": "_Root/Digital",
@@ -2365,8 +2315,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Reset",
               "longDescription": "Reset faults / interlocks",
+              "shortDescription": "Reset",
               "states": [
                 {
                   "label": "Off",
@@ -2378,16 +2328,16 @@
                 }
               ]
             },
-            "name": "Value",
             "value": false,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Start",
-          "longDescription": "Operator start command"
+          "longDescription": "Operator start command",
+          "shortDescription": "Start"
         },
         "name": "Cmd_Start",
         "typeId": "_Root/Digital",
@@ -2395,8 +2345,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Start",
               "longDescription": "Operator start command",
+              "shortDescription": "Start",
               "states": [
                 {
                   "label": "Off",
@@ -2408,16 +2358,16 @@
                 }
               ]
             },
-            "name": "Value",
             "value": false,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Stop",
-          "longDescription": "Operator stop command"
+          "longDescription": "Operator stop command",
+          "shortDescription": "Stop"
         },
         "name": "Cmd_Stop",
         "typeId": "_Root/Digital",
@@ -2425,8 +2375,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Stop",
               "longDescription": "Operator stop command",
+              "shortDescription": "Stop",
               "states": [
                 {
                   "label": "Off",
@@ -2438,8 +2388,8 @@
                 }
               ]
             },
-            "name": "Value",
             "value": false,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
@@ -2485,8 +2435,8 @@
       },
       {
         "metadata": {
-          "shortDescription": "Fail timer preset",
-          "longDescription": "Fail-to-start/stop timer preset"
+          "longDescription": "Fail-to-start/stop timer preset",
+          "shortDescription": "Fail timer preset"
         },
         "name": "Fail_Timer_PRE",
         "typeId": "_Root/Analog",
@@ -2494,20 +2444,20 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Fail timer preset",
-              "longDescription": "Fail-to-start/stop timer preset"
+              "longDescription": "Fail-to-start/stop timer preset",
+              "shortDescription": "Fail timer preset"
             },
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historyProvider": "historian",
             "historicalDeadbandStyle": "Discrete",
-            "name": "Value",
             "historyEnabled": true,
             "formatString": "#0.0",
             "value": 30.0,
-            "tagType": "AtomicTag",
             "engUnit": "s",
-            "sampleMode": "OnChange"
+            "sampleMode": "OnChange",
+            "name": "Value",
+            "tagType": "AtomicTag"
           }
         ]
       },
@@ -2557,8 +2507,8 @@
       },
       {
         "metadata": {
-          "shortDescription": "Maintenance",
-          "longDescription": "Maintenance mode ownership"
+          "longDescription": "Maintenance mode ownership",
+          "shortDescription": "Maintenance"
         },
         "name": "MAINT",
         "typeId": "_Root/Digital",
@@ -2566,8 +2516,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Maintenance",
               "longDescription": "Maintenance mode ownership",
+              "shortDescription": "Maintenance",
               "states": [
                 {
                   "label": "Off",
@@ -2579,16 +2529,16 @@
                 }
               ]
             },
-            "name": "Value",
             "value": false,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Motor starts",
-          "longDescription": "Motor start count"
+          "longDescription": "Motor start count",
+          "shortDescription": "Motor starts"
         },
         "name": "MotorStarts",
         "typeId": "_Root/Analog",
@@ -2596,27 +2546,27 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Motor starts",
-              "longDescription": "Motor start count"
+              "longDescription": "Motor start count",
+              "shortDescription": "Motor starts"
             },
+            "dataType": "Int4",
             "historicalDeadband": 0.0,
             "historicalDeadbandMode": "Absolute",
-            "dataType": "Int4",
             "historyProvider": "historian",
             "historicalDeadbandStyle": "Discrete",
-            "name": "Value",
             "historyEnabled": true,
             "formatString": "#0",
             "value": 382,
-            "tagType": "AtomicTag",
-            "sampleMode": "OnChange"
+            "sampleMode": "OnChange",
+            "name": "Value",
+            "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Operator",
-          "longDescription": "Operator mode ownership"
+          "longDescription": "Operator mode ownership",
+          "shortDescription": "Operator"
         },
         "name": "OPER",
         "typeId": "_Root/Digital",
@@ -2624,8 +2574,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Operator",
               "longDescription": "Operator mode ownership",
+              "shortDescription": "Operator",
               "states": [
                 {
                   "label": "Off",
@@ -2637,16 +2587,16 @@
                 }
               ]
             },
-            "name": "Value",
             "value": true,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Program",
-          "longDescription": "Program mode ownership"
+          "longDescription": "Program mode ownership",
+          "shortDescription": "Program"
         },
         "name": "PROG",
         "typeId": "_Root/Digital",
@@ -2654,8 +2604,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Program",
               "longDescription": "Program mode ownership",
+              "shortDescription": "Program",
               "states": [
                 {
                   "label": "Off",
@@ -2667,16 +2617,16 @@
                 }
               ]
             },
-            "name": "Value",
             "value": false,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Runtime hours",
-          "longDescription": "Total runtime hours"
+          "longDescription": "Total runtime hours",
+          "shortDescription": "Runtime hours"
         },
         "name": "RuntimeHours",
         "typeId": "_Root/Analog",
@@ -2684,20 +2634,20 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Runtime hours",
-              "longDescription": "Total runtime hours"
+              "longDescription": "Total runtime hours",
+              "shortDescription": "Runtime hours"
             },
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historyProvider": "historian",
             "historicalDeadbandStyle": "Discrete",
-            "name": "Value",
             "historyEnabled": true,
             "formatString": "#0.0",
             "value": 1247.5,
-            "tagType": "AtomicTag",
             "engUnit": "h",
-            "sampleMode": "OnChange"
+            "sampleMode": "OnChange",
+            "name": "Value",
+            "tagType": "AtomicTag"
           }
         ]
       },
@@ -2844,114 +2794,51 @@
   {
     "metadata": {
       "shortDescription": "tank / vessel",
-      "longDescription": "Recirculator/Accumulator-style vessel (PLC-backed): Level % + SP, HH/H/L/LL marks + SP, LSH/LSL, optional Pressure; no Config/Interlock (vessel has no P_Intlk \u2014 pump interlocks live on Devices/Pump)"
+      "longDescription": "Recirculator/Accumulator-style vessel (PLC-backed): Level % + SP, HH/H/L/LL marks + SP, LSH/LSL, optional Pressure; no Config/Interlock (vessel has no P_Intlk — pump interlocks live on Devices/Pump)"
     },
     "name": "Tank",
     "tagType": "UdtType",
     "tags": [
       {
         "metadata": {
-          "shortDescription": "High level mark",
-          "longDescription": "High level alarm bit + SP (%)"
+          "longDescription": "High level alarm bit + SP (%)",
+          "shortDescription": "High level mark"
         },
         "name": "H",
         "typeId": "_Root/Digital",
         "tagType": "UdtInstance",
         "tags": [
           {
-            "metadata": {
-              "shortDescription": "H setpoint",
-              "longDescription": "H level mark SP (%)"
-            },
-            "name": "SP",
-            "typeId": "_Root/Analog",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "H setpoint",
-                  "longDescription": "H level mark SP (%)"
-                },
-                "name": "Value",
-                "value": 80.0,
-                "tagType": "AtomicTag",
-                "engUnit": "%"
-              }
-            ]
-          },
-          {
-            "name": "Value",
             "value": false,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "High-high level mark",
-          "longDescription": "High-high level alarm bit + SP (%)"
+          "longDescription": "High-high level alarm bit + SP (%)",
+          "shortDescription": "High-high level mark"
         },
         "name": "HH",
         "typeId": "_Root/Digital",
         "tagType": "UdtInstance",
         "tags": [
           {
-            "metadata": {
-              "shortDescription": "HH setpoint",
-              "longDescription": "HH level mark SP (%)"
-            },
-            "name": "SP",
-            "typeId": "_Root/Analog",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "HH setpoint",
-                  "longDescription": "HH level mark SP (%)"
-                },
-                "name": "Value",
-                "value": 95.0,
-                "tagType": "AtomicTag",
-                "engUnit": "%"
-              }
-            ]
-          },
-          {
-            "name": "Value",
             "value": false,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
       },
       {
         "name": "Interlock",
-        "typeId": "Config/Interlock",
-        "tagType": "UdtInstance",
+        "tagType": "Folder",
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Condition 00",
-              "longDescription": "Condition 00"
-            },
-            "name": "Cfg_CondTxt00",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 00",
-                  "longDescription": "Condition 00"
-                },
-                "name": "Value",
-                "value": "Low Level Cutout",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 01",
-              "longDescription": "Condition 01"
+              "longDescription": "Condition 01",
+              "shortDescription": "Condition 01"
             },
             "name": "Cfg_CondTxt01",
             "typeId": "_Root/String",
@@ -2959,39 +2846,19 @@
             "tags": [
               {
                 "metadata": {
-                  "shortDescription": "Condition 01",
-                  "longDescription": "Condition 01"
+                  "longDescription": "Condition 01",
+                  "shortDescription": "Condition 01"
                 },
-                "name": "Value",
                 "value": "High Level Cutout",
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
-          {
-            "metadata": {
-              "shortDescription": "Condition 02",
-              "longDescription": "Condition 02"
-            },
-            "name": "Cfg_CondTxt02",
-            "typeId": "_Root/String",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "Condition 02",
-                  "longDescription": "Condition 02"
-                },
                 "name": "Value",
-                "value": "Level Transmitter",
                 "tagType": "AtomicTag"
               }
             ]
           },
           {
             "metadata": {
-              "shortDescription": "Condition 03",
-              "longDescription": "Condition 03"
+              "longDescription": "Condition 03",
+              "shortDescription": "Condition 03"
             },
             "name": "Cfg_CondTxt03",
             "typeId": "_Root/String",
@@ -2999,11 +2866,141 @@
             "tags": [
               {
                 "metadata": {
-                  "shortDescription": "Condition 03",
-                  "longDescription": "Condition 03"
+                  "longDescription": "Condition 03",
+                  "shortDescription": "Condition 03"
                 },
-                "name": "Value",
                 "value": "Vessel Pressure",
+                "name": "Value",
+                "tagType": "AtomicTag"
+              }
+            ]
+          },
+          {
+            "metadata": {
+              "longDescription": "Reset vessel interlocks",
+              "shortDescription": "Reset interlocks"
+            },
+            "name": "OCmd_Reset",
+            "typeId": "_Root/Digital",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "metadata": {
+                  "longDescription": "Reset vessel interlocks",
+                  "shortDescription": "Reset interlocks",
+                  "states": [
+                    {
+                      "label": "Off",
+                      "value": 0
+                    },
+                    {
+                      "label": "On",
+                      "value": 1
+                    }
+                  ]
+                },
+                "value": false,
+                "name": "Value",
+                "tagType": "AtomicTag"
+              }
+            ]
+          },
+          {
+            "metadata": {
+              "longDescription": "Vessel interlocks OK",
+              "shortDescription": "Interlocks OK"
+            },
+            "name": "Sts_IntlkOK",
+            "typeId": "_Root/Digital",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "metadata": {
+                  "longDescription": "Vessel interlocks OK",
+                  "shortDescription": "Interlocks OK",
+                  "states": [
+                    {
+                      "label": "Off",
+                      "value": 0
+                    },
+                    {
+                      "label": "On",
+                      "value": 1
+                    }
+                  ]
+                },
+                "value": true,
+                "name": "Value",
+                "tagType": "AtomicTag"
+              }
+            ]
+          },
+          {
+            "metadata": {
+              "longDescription": "Condition 00",
+              "shortDescription": "Condition 00"
+            },
+            "name": "Cfg_CondTxt00",
+            "typeId": "_Root/String",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "metadata": {
+                  "longDescription": "Condition 00",
+                  "shortDescription": "Condition 00"
+                },
+                "value": "Low Level Cutout",
+                "name": "Value",
+                "tagType": "AtomicTag"
+              }
+            ]
+          },
+          {
+            "metadata": {
+              "longDescription": "Reset ready",
+              "shortDescription": "Reset ready"
+            },
+            "name": "Rdy_Reset",
+            "typeId": "_Root/Digital",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "metadata": {
+                  "longDescription": "Reset ready",
+                  "shortDescription": "Reset ready",
+                  "states": [
+                    {
+                      "label": "Off",
+                      "value": 0
+                    },
+                    {
+                      "label": "On",
+                      "value": 1
+                    }
+                  ]
+                },
+                "value": true,
+                "name": "Value",
+                "tagType": "AtomicTag"
+              }
+            ]
+          },
+          {
+            "metadata": {
+              "longDescription": "Condition 02",
+              "shortDescription": "Condition 02"
+            },
+            "name": "Cfg_CondTxt02",
+            "typeId": "_Root/String",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "metadata": {
+                  "longDescription": "Condition 02",
+                  "shortDescription": "Condition 02"
+                },
+                "value": "Level Transmitter",
+                "name": "Value",
                 "tagType": "AtomicTag"
               }
             ]
@@ -3012,74 +3009,32 @@
       },
       {
         "metadata": {
-          "shortDescription": "Low level mark",
-          "longDescription": "Low level alarm bit + SP (%)"
+          "longDescription": "Low level alarm bit + SP (%)",
+          "shortDescription": "Low level mark"
         },
         "name": "L",
         "typeId": "_Root/Digital",
         "tagType": "UdtInstance",
         "tags": [
           {
-            "name": "Value",
             "value": false,
+            "name": "Value",
             "tagType": "AtomicTag"
-          },
-          {
-            "metadata": {
-              "shortDescription": "L setpoint",
-              "longDescription": "L level mark SP (%)"
-            },
-            "name": "SP",
-            "typeId": "_Root/Analog",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "L setpoint",
-                  "longDescription": "L level mark SP (%)"
-                },
-                "name": "Value",
-                "value": 20.0,
-                "tagType": "AtomicTag",
-                "engUnit": "%"
-              }
-            ]
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Low-low level mark",
-          "longDescription": "Low-low level alarm bit + SP (%)"
+          "longDescription": "Low-low level alarm bit + SP (%)",
+          "shortDescription": "Low-low level mark"
         },
         "name": "LL",
         "typeId": "_Root/Digital",
         "tagType": "UdtInstance",
         "tags": [
           {
-            "metadata": {
-              "shortDescription": "LL setpoint",
-              "longDescription": "LL level mark SP (%)"
-            },
-            "name": "SP",
-            "typeId": "_Root/Analog",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "LL setpoint",
-                  "longDescription": "LL level mark SP (%)"
-                },
-                "name": "Value",
-                "value": 5.0,
-                "tagType": "AtomicTag",
-                "engUnit": "%"
-              }
-            ]
-          },
-          {
-            "name": "Value",
             "value": false,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
@@ -3131,28 +3086,6 @@
             "engUnit": "%",
             "name": "Value",
             "tagType": "AtomicTag"
-          },
-          {
-            "metadata": {
-              "shortDescription": "level setpoint",
-              "longDescription": "Level setpoint (PLC LEVEL_SP / Level_SP)"
-            },
-            "name": "SP",
-            "typeId": "_Root/Analog",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "level setpoint",
-                  "longDescription": "Level setpoint (PLC LEVEL_SP / Level_SP)"
-                },
-                "name": "Value",
-                "formatString": "#0.0",
-                "value": 50.0,
-                "tagType": "AtomicTag",
-                "engUnit": "%"
-              }
-            ]
           }
         ]
       },
@@ -3319,8 +3252,8 @@
     "tags": [
       {
         "metadata": {
-          "shortDescription": "Reset",
-          "longDescription": "OCmd_Reset"
+          "longDescription": "OCmd_Reset",
+          "shortDescription": "Reset"
         },
         "name": "Cmd_Reset",
         "typeId": "_Root/Digital",
@@ -3328,8 +3261,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Reset",
               "longDescription": "OCmd_Reset",
+              "shortDescription": "Reset",
               "states": [
                 {
                   "label": "Off",
@@ -3435,8 +3368,8 @@
       },
       {
         "metadata": {
-          "shortDescription": "HiHiLim",
-          "longDescription": "Val_HiHiLim / OSet_HiHiLim"
+          "longDescription": "Val_HiHiLim / OSet_HiHiLim",
+          "shortDescription": "HiHiLim"
         },
         "name": "HiHiLim",
         "typeId": "_Root/Analog",
@@ -3444,20 +3377,20 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "HiHiLim",
-              "longDescription": "Val_HiHiLim / OSet_HiHiLim"
+              "longDescription": "Val_HiHiLim / OSet_HiHiLim",
+              "shortDescription": "HiHiLim"
             },
-            "name": "Value",
             "formatString": "#0.0",
             "engUnit": "psig",
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "HiLim",
-          "longDescription": "Val_HiLim / OSet_HiLim"
+          "longDescription": "Val_HiLim / OSet_HiLim",
+          "shortDescription": "HiLim"
         },
         "name": "HiLim",
         "typeId": "_Root/Analog",
@@ -3465,12 +3398,12 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "HiLim",
-              "longDescription": "Val_HiLim / OSet_HiLim"
+              "longDescription": "Val_HiLim / OSet_HiLim",
+              "shortDescription": "HiLim"
             },
-            "name": "Value",
             "formatString": "#0.0",
             "engUnit": "psig",
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
@@ -3506,8 +3439,8 @@
       },
       {
         "metadata": {
-          "shortDescription": "LoLim",
-          "longDescription": "Val_LoLim / OSet_LoLim"
+          "longDescription": "Val_LoLim / OSet_LoLim",
+          "shortDescription": "LoLim"
         },
         "name": "LoLim",
         "typeId": "_Root/Analog",
@@ -3515,12 +3448,12 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "LoLim",
-              "longDescription": "Val_LoLim / OSet_LoLim"
+              "longDescription": "Val_LoLim / OSet_LoLim",
+              "shortDescription": "LoLim"
             },
-            "name": "Value",
             "formatString": "#0.0",
             "engUnit": "psig",
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
@@ -3556,8 +3489,8 @@
       },
       {
         "metadata": {
-          "shortDescription": "LoLoLim",
-          "longDescription": "Val_LoLoLim / OSet_LoLoLim"
+          "longDescription": "Val_LoLoLim / OSet_LoLoLim",
+          "shortDescription": "LoLoLim"
         },
         "name": "LoLoLim",
         "typeId": "_Root/Analog",
@@ -3565,12 +3498,12 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "LoLoLim",
-              "longDescription": "Val_LoLoLim / OSet_LoLoLim"
+              "longDescription": "Val_LoLoLim / OSet_LoLoLim",
+              "shortDescription": "LoLoLim"
             },
-            "name": "Value",
             "formatString": "#0.0",
             "engUnit": "psig",
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
@@ -3626,17 +3559,17 @@
       },
       {
         "metadata": {
-          "shortDescription": "PV",
-          "longDescription": "Process value (PLC Val)"
+          "longDescription": "Process value (PLC Val)",
+          "shortDescription": "PV"
         },
         "name": "Value",
         "typeId": "_Root/Analog",
         "tagType": "UdtInstance",
         "tags": [
           {
-            "name": "Value",
             "formatString": "#0.0",
             "engUnit": "psig",
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
@@ -3658,8 +3591,8 @@
     "tags": [
       {
         "metadata": {
-          "shortDescription": "Bleed time",
-          "longDescription": "Bleed time"
+          "longDescription": "Bleed time",
+          "shortDescription": "Bleed time"
         },
         "name": "Cfg_Bleed",
         "typeId": "_Root/Analog",
@@ -3667,27 +3600,27 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Bleed time",
-              "longDescription": "Bleed time"
+              "longDescription": "Bleed time",
+              "shortDescription": "Bleed time"
             },
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historyProvider": "historian",
             "historicalDeadbandStyle": "Discrete",
-            "name": "Value",
             "historyEnabled": true,
             "formatString": "#0.0",
             "value": 2.0,
-            "tagType": "AtomicTag",
             "engUnit": "min",
-            "sampleMode": "OnChange"
+            "sampleMode": "OnChange",
+            "name": "Value",
+            "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Cooling time",
-          "longDescription": "Cooling time"
+          "longDescription": "Cooling time",
+          "shortDescription": "Cooling time"
         },
         "name": "Cfg_CoolingTime",
         "typeId": "_Root/Analog",
@@ -3695,27 +3628,27 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Cooling time",
-              "longDescription": "Cooling time"
+              "longDescription": "Cooling time",
+              "shortDescription": "Cooling time"
             },
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historyProvider": "historian",
             "historicalDeadbandStyle": "Discrete",
-            "name": "Value",
             "historyEnabled": true,
             "formatString": "#0.0",
             "value": 45.0,
-            "tagType": "AtomicTag",
             "engUnit": "min",
-            "sampleMode": "OnChange"
+            "sampleMode": "OnChange",
+            "name": "Value",
+            "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Fan delay time",
-          "longDescription": "Fan delay time"
+          "longDescription": "Fan delay time",
+          "shortDescription": "Fan delay time"
         },
         "name": "Cfg_FanDelay",
         "typeId": "_Root/Analog",
@@ -3723,27 +3656,27 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Fan delay time",
-              "longDescription": "Fan delay time"
+              "longDescription": "Fan delay time",
+              "shortDescription": "Fan delay time"
             },
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historyProvider": "historian",
             "historicalDeadbandStyle": "Discrete",
-            "name": "Value",
             "historyEnabled": true,
             "formatString": "#0.0",
             "value": 1.0,
-            "tagType": "AtomicTag",
             "engUnit": "min",
-            "sampleMode": "OnChange"
+            "sampleMode": "OnChange",
+            "name": "Value",
+            "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Main hot gas time",
-          "longDescription": "Main hot gas time"
+          "longDescription": "Main hot gas time",
+          "shortDescription": "Main hot gas time"
         },
         "name": "Cfg_MainHotGas",
         "typeId": "_Root/Analog",
@@ -3751,27 +3684,27 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Main hot gas time",
-              "longDescription": "Main hot gas time"
+              "longDescription": "Main hot gas time",
+              "shortDescription": "Main hot gas time"
             },
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historyProvider": "historian",
             "historicalDeadbandStyle": "Discrete",
-            "name": "Value",
             "historyEnabled": true,
             "formatString": "#0.0",
             "value": 8.0,
-            "tagType": "AtomicTag",
             "engUnit": "min",
-            "sampleMode": "OnChange"
+            "sampleMode": "OnChange",
+            "name": "Value",
+            "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Pump-out time",
-          "longDescription": "Pump-out time"
+          "longDescription": "Pump-out time",
+          "shortDescription": "Pump-out time"
         },
         "name": "Cfg_PumpOut",
         "typeId": "_Root/Analog",
@@ -3779,27 +3712,27 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Pump-out time",
-              "longDescription": "Pump-out time"
+              "longDescription": "Pump-out time",
+              "shortDescription": "Pump-out time"
             },
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historyProvider": "historian",
             "historicalDeadbandStyle": "Discrete",
-            "name": "Value",
             "historyEnabled": true,
             "formatString": "#0.0",
             "value": 3.0,
-            "tagType": "AtomicTag",
             "engUnit": "min",
-            "sampleMode": "OnChange"
+            "sampleMode": "OnChange",
+            "name": "Value",
+            "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Soft hot gas time",
-          "longDescription": "Soft hot gas time"
+          "longDescription": "Soft hot gas time",
+          "shortDescription": "Soft hot gas time"
         },
         "name": "Cfg_SoftHotGas",
         "typeId": "_Root/Analog",
@@ -3807,27 +3740,27 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Soft hot gas time",
-              "longDescription": "Soft hot gas time"
+              "longDescription": "Soft hot gas time",
+              "shortDescription": "Soft hot gas time"
             },
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historyProvider": "historian",
             "historicalDeadbandStyle": "Discrete",
-            "name": "Value",
             "historyEnabled": true,
             "formatString": "#0.0",
             "value": 2.0,
-            "tagType": "AtomicTag",
             "engUnit": "min",
-            "sampleMode": "OnChange"
+            "sampleMode": "OnChange",
+            "name": "Value",
+            "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "ZAT deadband",
-          "longDescription": "ZAT deadband"
+          "longDescription": "ZAT deadband",
+          "shortDescription": "ZAT deadband"
         },
         "name": "Cfg_ZoneAirTempDB",
         "typeId": "_Root/Analog",
@@ -3835,27 +3768,27 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "ZAT deadband",
-              "longDescription": "ZAT deadband"
+              "longDescription": "ZAT deadband",
+              "shortDescription": "ZAT deadband"
             },
             "historicalDeadband": 0.01,
             "historicalDeadbandMode": "Absolute",
             "historyProvider": "historian",
             "historicalDeadbandStyle": "Discrete",
-            "name": "Value",
             "historyEnabled": true,
             "formatString": "#0.0",
             "value": 2.0,
-            "tagType": "AtomicTag",
-            "engUnit": "\u00b0F",
-            "sampleMode": "OnChange"
+            "engUnit": "°F",
+            "sampleMode": "OnChange",
+            "name": "Value",
+            "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Cleanup",
-          "longDescription": "Cleanup command (PLC Cleanup)"
+          "longDescription": "Cleanup command (PLC Cleanup)",
+          "shortDescription": "Cleanup"
         },
         "name": "Cleanup",
         "typeId": "_Root/Digital",
@@ -3863,8 +3796,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Cleanup",
               "longDescription": "Cleanup command (PLC Cleanup)",
+              "shortDescription": "Cleanup",
               "states": [
                 {
                   "label": "Off",
@@ -3876,16 +3809,16 @@
                 }
               ]
             },
-            "name": "Value",
             "value": false,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Start Defrost",
-          "longDescription": "HMI start defrost (PLC HMIStartDefrost)"
+          "longDescription": "HMI start defrost (PLC HMIStartDefrost)",
+          "shortDescription": "Start Defrost"
         },
         "name": "Cmd_StartDefrost",
         "typeId": "_Root/Digital",
@@ -3893,8 +3826,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Start Defrost",
               "longDescription": "HMI start defrost (PLC HMIStartDefrost)",
+              "shortDescription": "Start Defrost",
               "states": [
                 {
                   "label": "Off",
@@ -3906,16 +3839,16 @@
                 }
               ]
             },
-            "name": "Value",
             "value": false,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
       },
       {
         "metadata": {
-          "shortDescription": "Stop Defrost",
-          "longDescription": "HMI stop defrost (PLC HMIStopDefrost)"
+          "longDescription": "HMI stop defrost (PLC HMIStopDefrost)",
+          "shortDescription": "Stop Defrost"
         },
         "name": "Cmd_StopDefrost",
         "typeId": "_Root/Digital",
@@ -3923,8 +3856,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Stop Defrost",
               "longDescription": "HMI stop defrost (PLC HMIStopDefrost)",
+              "shortDescription": "Stop Defrost",
               "states": [
                 {
                   "label": "Off",
@@ -3936,8 +3869,8 @@
                 }
               ]
             },
-            "name": "Value",
             "value": false,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
@@ -3954,7 +3887,7 @@
       {
         "metadata": {
           "shortDescription": "Fan 2 VFD",
-          "longDescription": "Fan 2 Variable Frequency Drive (disabled \u2014 BH plant is single-fan EV-01..16)"
+          "longDescription": "Fan 2 Variable Frequency Drive (disabled — BH plant is single-fan EV-01..16)"
         },
         "name": "Fan 2",
         "typeId": "Devices/VFD",
@@ -3964,7 +3897,7 @@
       {
         "metadata": {
           "shortDescription": "Fan 3 VFD",
-          "longDescription": "Fan 3 Variable Frequency Drive (disabled \u2014 BH plant is single-fan EV-01..16)"
+          "longDescription": "Fan 3 Variable Frequency Drive (disabled — BH plant is single-fan EV-01..16)"
         },
         "name": "Fan 3",
         "typeId": "Devices/VFD",
@@ -3973,8 +3906,8 @@
       },
       {
         "metadata": {
-          "shortDescription": "HMI Enable",
-          "longDescription": "Operator enable (PLC HMIEnable)"
+          "longDescription": "Operator enable (PLC HMIEnable)",
+          "shortDescription": "HMI Enable"
         },
         "name": "HMIEnable",
         "typeId": "_Root/Digital",
@@ -3982,8 +3915,8 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "HMI Enable",
               "longDescription": "Operator enable (PLC HMIEnable)",
+              "shortDescription": "HMI Enable",
               "states": [
                 {
                   "label": "Off",
@@ -3995,8 +3928,8 @@
                 }
               ]
             },
-            "name": "Value",
             "value": true,
+            "name": "Value",
             "tagType": "AtomicTag"
           }
         ]
@@ -4106,26 +4039,6 @@
         "typeId": "_Root/Analog",
         "tagType": "UdtInstance",
         "tags": [
-          {
-            "metadata": {
-              "shortDescription": "setpoint",
-              "longDescription": "Evaporator pressure setpoint"
-            },
-            "name": "SP",
-            "typeId": "_Root/Analog",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "setpoint",
-                  "longDescription": "Evaporator pressure setpoint"
-                },
-                "name": "Value",
-                "value": 30.0,
-                "tagType": "AtomicTag"
-              }
-            ]
-          },
           {
             "engUnit": "psi",
             "name": "Value",
@@ -4262,29 +4175,9 @@
         "tagType": "UdtInstance",
         "tags": [
           {
-            "engUnit": "\u00b0F",
+            "engUnit": "°F",
             "name": "Value",
             "tagType": "AtomicTag"
-          },
-          {
-            "metadata": {
-              "shortDescription": "ZAT setpoint",
-              "longDescription": "Zone air temp setpoint (PLC Cfg_ZoneAirTemp)"
-            },
-            "name": "SP",
-            "typeId": "_Root/Analog",
-            "tagType": "UdtInstance",
-            "tags": [
-              {
-                "metadata": {
-                  "shortDescription": "ZAT setpoint",
-                  "longDescription": "Zone air temp setpoint (PLC Cfg_ZoneAirTemp)"
-                },
-                "name": "Value",
-                "value": 35.0,
-                "tagType": "AtomicTag"
-              }
-            ]
           }
         ]
       },
