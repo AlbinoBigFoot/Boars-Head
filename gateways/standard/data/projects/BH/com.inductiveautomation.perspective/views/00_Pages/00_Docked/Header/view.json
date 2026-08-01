@@ -29,7 +29,7 @@
                   },
                   "transforms": [
                     {
-                      "expression": "if({value}, 'font-label rcp1-sim-label rcp1-sim-label-on', 'font-label rcp1-sim-label')",
+                      "expression": "if(coalesce({value}, false), 'font-label rcp1-sim-label rcp1-sim-label-on', 'font-label rcp1-sim-label')",
                       "type": "expression"
                     }
                   ],
@@ -45,7 +45,7 @@
                   },
                   "transforms": [
                     {
-                      "expression": "if({value}, 'SIM ON', 'SIM')",
+                      "expression": "if(coalesce({value}, false), 'SIM ON', 'SIM')",
                       "type": "expression"
                     }
                   ],
@@ -132,7 +132,7 @@
               },
               "transforms": [
                 {
-                  "expression": "if({value}, 'rcp1-sim-toggle rcp1-sim-toggle-on', 'rcp1-sim-toggle')",
+                  "expression": "if(coalesce({value}, false), 'rcp1-sim-toggle rcp1-sim-toggle-on', 'rcp1-sim-toggle')",
                   "type": "expression"
                 }
               ],
