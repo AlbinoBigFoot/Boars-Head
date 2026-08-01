@@ -40,11 +40,11 @@ PLANTS = [
 	{
 		"label": "Groveport",
 		"name": "Groveport OH",
-		"page": "/machine-room",
-		"viewPath": "00_Pages/Machine Room/Overview",
-		"tagPath": "[default]Plant/Machine Room",
+		"page": "/plants/groveport",
+		"viewPath": "00_Pages/LandingPage/PlantPlaceholder",
+		"tagPath": "",
 		"coords": [-82.943375287534, 39.83741622205],
-		"placeholder": False,
+		"placeholder": True,
 	},
 	{
 		"label": "New Castle",
@@ -146,18 +146,12 @@ def update_tags():
 		node = by_label.get(p["label"])
 		if not node:
 			raise SystemExit("missing nav node %s" % p["label"])
-		if p["placeholder"]:
-			node["data"] = {
-				"action": "page",
-				"page": p["page"],
-				"viewPath": p["viewPath"],
-				"tagPath": p["tagPath"],
-			}
-		else:
-			# Groveport keeps machine-room target
-			node["data"]["action"] = "page"
-			node["data"]["page"] = p["page"]
-			node["data"]["viewPath"] = p["viewPath"]
+		node["data"] = {
+			"action": "page",
+			"page": p["page"],
+			"viewPath": p["viewPath"],
+			"tagPath": p["tagPath"],
+		}
 	for t in tags:
 		if t.get("name") == "MapMarkerGeoJson":
 			t["defaultValue"] = geojson_features()
