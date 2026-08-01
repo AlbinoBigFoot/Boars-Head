@@ -4,7 +4,7 @@
   },
   "params": {
     "tagPath": "[default]Plant/Machine Room",
-    "typeId": "Devices/Tank"
+    "typeId": "Devices/ExhaustFan"
   },
   "props": {
     "defaultSize": {
@@ -22,7 +22,7 @@
           "shrink": 0
         },
         "props": {
-          "text": "Machine Room Tanks",
+          "text": "Machine Room Exhaust Fans",
           "style": {
             "classes": "font-title",
             "fontSize": "20px",
@@ -228,7 +228,7 @@
           "props.path": {
             "binding": {
               "config": {
-                "expression": "if({view.custom.overviewMode}='details','00_Pages/Tanks/Details',if({view.custom.overviewMode}='design','00_Pages/Tanks/Design','00_Pages/NoViewPath'))"
+                "expression": "if({view.custom.overviewMode}='details','00_Pages/ExhaustFans/Details',if({view.custom.overviewMode}='design','00_Pages/ExhaustFans/Design','00_Pages/NoViewPath'))"
               },
               "type": "expr"
             }
@@ -251,7 +251,7 @@
           }
         },
         "props": {
-          "path": "00_Pages/Tanks/Details",
+          "path": "00_Pages/ExhaustFans/Details",
           "style": {
             "classes": "",
             "height": "100%",

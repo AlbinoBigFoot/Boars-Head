@@ -1,10 +1,15 @@
 {
   "custom": {},
   "params": {
-    "tagPath": "[default]Plant/Machine Room"
+    "tagPath": "[default]Plant/Machine Room",
+    "typeId": "Devices/ExhaustFan"
   },
   "propConfig": {
     "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.typeId": {
       "paramDirection": "input",
       "persistent": true
     }
@@ -20,13 +25,9 @@
     "version": 0,
     "props": {
       "direction": "column",
-      "justify": "flex-start",
-      "alignItems": "stretch",
       "style": {
-        "classes": "bg-page themed-scroll",
-        "gap": "16px",
-        "overflow": "auto",
-        "padding": "16px",
+        "classes": "bg-page",
+        "overflow": "hidden",
         "height": "100%"
       }
     },
@@ -86,104 +87,49 @@
     },
     "children": [
       {
-        "type": "ia.container.flex",
+        "type": "ia.display.view",
         "version": 0,
         "props": {
-          "direction": "row",
-          "wrap": "wrap",
-          "justify": "flex-start",
-          "alignItems": "flex-start",
+          "path": "00_Pages/Unit/Overview",
+          "params": {
+            "tagPath": "",
+            "typeId": "Devices/ExhaustFan"
+          },
           "style": {
             "classes": "",
-            "gap": "24px",
+            "flex": "1 1 auto",
+            "minHeight": 0,
+            "overflow": "hidden",
+            "height": "100%",
             "width": "100%"
           }
         },
-        "position": {
-          "grow": 0,
-          "shrink": 0,
-          "basis": "auto"
-        },
-        "meta": {
-          "name": "DeviceRow"
-        },
-        "children": [
-          {
-            "type": "ia.display.view",
-            "version": 0,
-            "props": {
-              "path": "02_Components/01_Devices/Tank",
-              "params": {
-                "tagPath": "[default]Plant/Machine Room/HTR",
-                "faceplate": "Tank"
-              },
-              "style": {
-                "classes": "",
-                "height": "186px",
-                "width": "207px",
-                "flex": "0 0 auto"
+        "propConfig": {
+          "props.params.tagPath": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "view.params.tagPath"
               }
-            },
-            "position": {
-              "grow": 0,
-              "shrink": 0,
-              "basis": "auto"
-            },
-            "meta": {
-              "name": "HTR"
             }
           },
-          {
-            "type": "ia.display.view",
-            "version": 0,
-            "props": {
-              "path": "02_Components/01_Devices/Tank",
-              "params": {
-                "tagPath": "[default]Plant/Machine Room/HPR",
-                "faceplate": "Tank"
-              },
-              "style": {
-                "classes": "",
-                "height": "186px",
-                "width": "207px",
-                "flex": "0 0 auto"
+          "props.params.typeId": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "view.params.typeId"
               }
-            },
-            "position": {
-              "grow": 0,
-              "shrink": 0,
-              "basis": "auto"
-            },
-            "meta": {
-              "name": "HPR"
-            }
-          },
-          {
-            "type": "ia.display.view",
-            "version": 0,
-            "props": {
-              "path": "02_Components/01_Devices/Tank",
-              "params": {
-                "tagPath": "[default]Plant/Machine Room/LTR",
-                "faceplate": "Tank"
-              },
-              "style": {
-                "classes": "",
-                "height": "186px",
-                "width": "207px",
-                "flex": "0 0 auto"
-              }
-            },
-            "position": {
-              "grow": 0,
-              "shrink": 0,
-              "basis": "auto"
-            },
-            "meta": {
-              "name": "LTR"
             }
           }
-        ]
+        },
+        "position": {
+          "grow": 1,
+          "shrink": 1,
+          "basis": "100%"
+        },
+        "meta": {
+          "name": "UnitOverview"
+        }
       }
     ]
   }
