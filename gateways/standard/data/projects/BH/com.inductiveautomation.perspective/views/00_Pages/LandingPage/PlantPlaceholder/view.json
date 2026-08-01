@@ -1,0 +1,140 @@
+{
+  "custom": {},
+  "params": {
+    "plantName": ""
+  },
+  "propConfig": {
+    "params.plantName": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 400,
+      "width": 800
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Title"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "struct": {
+                  "name": "{view.params.plantName}",
+                  "path": "{page.props.path}"
+                },
+                "waitOnAll": true
+              },
+              "transforms": [
+                {
+                  "code": "\tname = value['name'] or ''\n\tif name:\n\t\treturn str(name)\n\tpath = str(value['path'] or '')\n\treturn path.split('/')[-1].replace('-', ' ').title() or 'Plant'",
+                  "type": "script"
+                }
+              ],
+              "type": "expr-struct"
+            }
+          }
+        },
+        "props": {
+          "text": "Plant",
+          "style": {
+            "classes": "font-title",
+            "fontSize": "22px",
+            "fontWeight": "700",
+            "marginBottom": "8px"
+          }
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Body"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "text": "Plant overview coming soon.",
+          "style": {
+            "classes": "font-label",
+            "fontSize": "14px"
+          }
+        },
+        "type": "ia.display.label"
+      }
+    ],
+    "meta": {
+      "name": "root",
+      "contextMenu": {}
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "bg-page",
+        "height": "100%",
+        "padding": "24px",
+        "width": "100%"
+      }
+    },
+    "type": "ia.container.flex",
+    "propConfig": {
+      "meta.contextMenu.items": {
+        "binding": {
+          "config": {
+            "struct": {
+              "tagPath": "\"No TagPath: \""
+            },
+            "waitOnAll": true
+          },
+          "transforms": [
+            {
+              "code": "\ttagPath = value.tagPath + self.view.id.split('@')[0].split('/')[-1]\n\titems = [{\n\t\t\"text\": \"Ticket Logger\",\n\t\t\"icon\": {\"path\": \"material/info\", \"color\": \"--neutral-80\", \"style\": {}},\n\t\t\"style\": {\"classes\": \"bg-component font-value\", \"height\": 24, \"width\": 120},\n\t\t\"type\": \"message\",\n\t\t\"children\": [],\n\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\"message\": {\n\t\t\t\"type\": \"ticketLog\",\n\t\t\t\"payload\": {\"tagPath\": tagPath, \"viewName\": self.view.id.split('@')[0]},\n\t\t\t\"scope\": \"page\"\n\t\t}\n\t}]\n\treturn items",
+              "type": "script"
+            }
+          ],
+          "type": "expr-struct"
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "config": {
+            "struct": {
+              "items": "{this.meta.contextMenu.items}",
+              "permission": "{session.custom.TicketLogAccess}"
+            },
+            "waitOnAll": true
+          },
+          "transforms": [
+            {
+              "expression": "len({value}['items']) > 0 && {value}['permission']",
+              "type": "expression"
+            }
+          ],
+          "type": "expr-struct"
+        }
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    }
+  }
+}
