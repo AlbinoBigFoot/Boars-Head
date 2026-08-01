@@ -1,0 +1,308 @@
+{
+  "custom": {
+    "chartDataAnalog": null,
+    "sensors": {
+      "analog": []
+    }
+  },
+  "params": {
+    "hiddenTags": "",
+    "tagPath": ""
+  },
+  "propConfig": {
+    "custom.chartDataAnalog": {
+      "binding": {
+        "config": {
+          "struct": {
+            "hours": "{view.root.children.Dropdown.props.value}",
+            "sensors": "{view.custom.sensors.analog}"
+          },
+          "waitOnAll": true
+        },
+        "transforms": [
+          {
+            "code": "\tresult = None\n\tsensors = value.get('sensors') or []\n\thours = value.get('hours')\n\tif not sensors:\n\t\treturn result\n\n\ttry:\n\t\thours = int(hours) if hours is not None else 2\n\texcept:\n\t\thours = 2\n\tif hours <= 0:\n\t\thours = 2\n\n\tpaths = []\n\taliases = []\n\tfor s in sensors:\n\t\tif not hasattr(s, 'get'):\n\t\t\tcontinue\n\t\tpath = s.get('path')\n\t\tif not path:\n\t\t\tcontinue\n\t\tpaths.append(str(path))\n\t\talias = s.get('alias')\n\t\taliases.append(str(alias) if alias else str(path).rsplit('/', 1)[-1])\n\n\tif not paths:\n\t\treturn result\n\n\tend = system.date.now()\n\tstart = system.date.addHours(end, -hours)\n\n\ttry:\n\t\tresult = system.tag.queryTagHistory(\n\t\t\tpaths=paths,\n\t\t\tstartDate=start,\n\t\t\tendDate=end,\n\t\t\treturnSize=100,\n\t\t\taggregationMode='Average',\n\t\t\treturnFormat='Wide',\n\t\t\tcolumnNames=aliases\n\t\t)\n\texcept:\n\t\tresult = None\n\n\treturn result",
+            "type": "script"
+          }
+        ],
+        "type": "expr-struct"
+      },
+      "persistent": true
+    },
+    "custom.sensors": {
+      "binding": {
+        "config": {
+          "struct": {
+            "hiddenTags": "{view.params.hiddenTags}",
+            "tagPath": "{view.params.tagPath}"
+          },
+          "waitOnAll": true
+        },
+        "transforms": [
+          {
+            "code": "\tresult = {'analog': []}\n\ttrend_key = value.get('trendKey', '')\n\ttag_path = value.get('tagPath', '')\n\thiddenTagsInput = value.get('hiddenTags', '')\n\tif tag_path:\n\t\ttag_path = tag_path.rstrip('/')\n\tif not tag_path:\n\t\treturn result\n\n\t# Parse hiddenTags\n\thidden_set = set()\n\ttry:\n\t\ttext = str(hiddenTagsInput or '')\n\t\tif text:\n\t\t\ttext = text.replace(';', ',')\n\t\t\tfor item in text.split(','):\n\t\t\t\titem = item.strip()\n\t\t\t\tif item:\n\t\t\t\t\thidden_set.add(item)\n\texcept Exception:\n\t\tpass\n\n\tdef isHidden(fullPath):\n\t\tif not hidden_set:\n\t\t\treturn False\n\t\tif fullPath in hidden_set:\n\t\t\treturn True\n\t\t# Accept a provider-stripped form (no leading [provider])\n\t\tstripped = fullPath.split(']', 1)[-1] if ']' in fullPath else fullPath\n\t\tif stripped in hidden_set:\n\t\t\treturn True\n\t\treturn False\n\n\tcandidates = []\n\n\ttry:\n\t\tbrowse = system.tag.browse(path=tag_path, filter={'recursive': True}).getResults()\n\texcept:\n\t\tbrowse = []\n\tfor entry in browse:\n\t\ttry:\n\t\t\ttag_type = str(entry['tagType'])\n\t\texcept:\n\t\t\ttag_type = ''\n\t\tif tag_type in ('Folder', 'UdtType', 'UdtInstance', 'Property'):\n\t\t\tcontinue\n\t\tfull_path = str(entry['fullPath'])\n\t\t# Skip meta-property references (tag.Value, tag.Enabled, etc.)\n\t\tif '.' in full_path.rsplit('/', 1)[-1]:\n\t\t\tcontinue\n\t\tif isHidden(full_path):\n\t\t\tcontinue\n\t\tcandidates.append(full_path)\n\n\tif not candidates:\n\t\ttry:\n\t\t\texists = system.tag.exists(tag_path)\n\t\texcept:\n\t\t\texists = False\n\t\tif exists and not isHidden(tag_path):\n\t\t\tcandidates.append(tag_path)\n\n\tif not candidates:\n\t\treturn result\n\n\tall_paths = []\n\tfor p in candidates:\n\t\tall_paths.append(p + '.Enabled')\n\t\tall_paths.append(p + '.HistoryEnabled')\n\t\tall_paths.append(p + '.DataType')\n\ttry:\n\t\tall_values = system.tag.readBlocking(all_paths)\n\texcept:\n\t\treturn result\n\n\tfor i, full_path in enumerate(candidates):\n\t\tenabled_qv = all_values[i * 3]\n\t\the_qv      = all_values[i * 3 + 1]\n\t\tdt_qv      = all_values[i * 3 + 2]\n\n\t\ttry:\n\t\t\tif not enabled_qv.value:\n\t\t\t\tcontinue\n\t\texcept:\n\t\t\tcontinue\n\n\t\ttry:\n\t\t\tif not he_qv.value:\n\t\t\t\tcontinue\n\t\texcept:\n\t\t\tcontinue\n\n\t\ttry:\n\t\t\tdt_raw = dt_qv.value if dt_qv is not None else ''\n\t\t\tif hasattr(dt_raw, 'name'):\n\t\t\t\tdt = str(dt_raw.name).lower()\n\t\t\telse:\n\t\t\t\tdt = str(dt_raw).lower()\n\t\t\tif '.' in dt:\n\t\t\t\tdt = dt.rsplit('.', 1)[-1]\n\t\texcept:\n\t\t\tdt = ''\n\n\t\tif 'string' in dt or 'date' in dt or 'bool' in dt:\n\t\t\tcontinue\n\n\t\tparts = full_path.split('/')\n\t\tleaf_name = parts[-1] if parts else full_path\n\t\tif len(parts) >= 2 and leaf_name.upper() == 'VALUE':\n\t\t\talias = parts[-2]\n\t\telse:\n\t\t\talias = leaf_name\n\n\t\tsensor = {\n\t\t\t'path': full_path,\n\t\t\t'alias': alias,\n\t\t\t'aggregate': 'Average'\n\t\t}\n\n\t\tresult['analog'].append(sensor)\n\n\treturn result",
+            "type": "script"
+          }
+        ],
+        "type": "expr-struct"
+      },
+      "persistent": true
+    },
+    "params.hiddenTags": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 360,
+      "width": 500
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Dropdown"
+        },
+        "position": {
+          "basis": "28px",
+          "shrink": 0
+        },
+        "props": {
+          "dropdownOptionStyle": {
+            "classes": "font-label"
+          },
+          "options": [
+            {
+              "label": "2 Hours",
+              "value": 2
+            },
+            {
+              "label": "4 Hours",
+              "value": 4
+            },
+            {
+              "label": "8 Hours",
+              "value": 8
+            },
+            {
+              "label": "24 Hours",
+              "value": 24
+            }
+          ],
+          "search": {
+            "enabled": false
+          },
+          "style": {
+            "background": "var(--neutral-30)",
+            "borderBottomLeftRadius": "var(--radius-xxs, 2px)",
+            "borderBottomRightRadius": "var(--radius-xxs, 2px)",
+            "borderColor": "#161616",
+            "borderTopLeftRadius": "var(--radius-xxs, 2px)",
+            "borderTopRightRadius": "var(--radius-xxs, 2px)",
+            "borderWidth": 1,
+            "classes": "font-label",
+            "cursor": "pointer",
+            "height": "24px",
+            "marginLeft": "2px",
+            "marginTop": "2px",
+            "width": "100px"
+          },
+          "value": 2
+        },
+        "type": "ia.input.dropdown"
+      },
+      {
+        "meta": {
+          "name": "AnalogChart"
+        },
+        "position": {
+          "grow": 1
+        },
+        "propConfig": {
+          "props.series": {
+            "binding": {
+              "config": {
+                "struct": {
+                  "chartData": "{view.custom.chartDataAnalog}",
+                  "sensors": "{view.custom.sensors.analog}"
+                },
+                "waitOnAll": true
+              },
+              "transforms": [
+                {
+                  "code": "\tsensors = value.get('sensors') or []\n\tdata = value.get('chartData')\n\tseries = []\n\n\tif data is None:\n\t\treturn series\n\n\ttry:\n\t\trow_count = data.getRowCount()\n\texcept:\n\t\trow_count = 0\n\tif row_count <= 0:\n\t\treturn series\n\n\ttry:\n\t\tcol_names = list(data.getColumnNames())\n\texcept:\n\t\ttry:\n\t\t\tcol_names = [data.getColumnName(i) for i in range(data.getColumnCount())]\n\t\texcept:\n\t\t\treturn series\n\n\tdef add_series(name, column):\n\t\tif column not in col_names or column == 't_stamp':\n\t\t\treturn\n\t\ttry:\n\t\t\tfiltered = system.dataset.filterColumns(data, ['t_stamp', column])\n\t\texcept:\n\t\t\treturn\n\t\tseries.append({'name': name or column, 'data': filtered})\n\n\tused = set()\n\tfor s in sensors:\n\t\talias = s.get('alias', '') if hasattr(s, 'get') else ''\n\t\tpath = s.get('path', '') if hasattr(s, 'get') else ''\n\t\tcol = None\n\t\tif alias and alias in col_names:\n\t\t\tcol = alias\n\t\telif path and path in col_names:\n\t\t\tcol = path\n\t\telse:\n\t\t\tleaf = (path or '').rsplit('/', 1)[-1]\n\t\t\tfor n in col_names:\n\t\t\t\tif n == 't_stamp':\n\t\t\t\t\tcontinue\n\t\t\t\tif n == leaf or n.endswith('/' + leaf) or (alias and (n == alias or n.endswith('/' + alias))):\n\t\t\t\t\tcol = n\n\t\t\t\t\tbreak\n\t\tif col and col not in used:\n\t\t\tadd_series(alias or col, col)\n\t\t\tused.add(col)\n\n\tif not series:\n\t\tfor column in col_names:\n\t\t\tif column != 't_stamp':\n\t\t\t\tadd_series(column, column)\n\n\treturn series",
+                  "type": "script"
+                }
+              ],
+              "type": "expr-struct"
+            }
+          },
+          "props.style.display": {
+            "binding": {
+              "config": {
+                "expression": "if(len({view.custom.sensors.analog}) > 0, 'block', 'none')"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "options": {
+            "chart": {
+              "events": {
+                "animationEnd": false,
+                "beforeMount": false,
+                "beforeResetZoom": false,
+                "beforeZoom": false,
+                "brushScrolled": false,
+                "click": false,
+                "dataPointMouseEnter": false,
+                "dataPointMouseLeave": false,
+                "dataPointSelection": false,
+                "legendClick": false,
+                "markerClick": false,
+                "mounted": false,
+                "mouseLeave": false,
+                "mouseMove": false,
+                "scrolled": false,
+                "selection": false,
+                "updated": false,
+                "xAxisLabelClick": false,
+                "zoomed": false
+              },
+              "height": 350,
+              "stacked": false,
+              "toolbar": {
+                "show": true
+              },
+              "type": "line"
+            },
+            "dataLabels": {
+              "enabled": false
+            },
+            "fill": {
+              "opacity": 1
+            },
+            "legend": {
+              "position": "bottom",
+              "show": true,
+              "showForSingleSeries": true
+            },
+            "markers": {
+              "size": 0
+            },
+            "stroke": {
+              "width": 1
+            },
+            "tooltip": {
+              "enabled": true,
+              "x": {
+                "format": "HH:mm:ss",
+                "show": true
+              }
+            },
+            "xaxis": {
+              "labels": {
+                "datetimeFormatter": {
+                  "day": "dd MMM",
+                  "hour": "hh:mm",
+                  "minute": "hh:mm:ss",
+                  "month": "MMM YY",
+                  "year": "yyyy"
+                },
+                "datetimeUTC": false,
+                "show": true
+              },
+              "type": "datetime"
+            },
+            "yaxis": [
+              {
+                "decimalsInFloat": 1,
+                "opposite": false,
+                "title": {
+                  "style": {
+                    "fontFamily": "Poppins",
+                    "fontWeight": 400
+                  },
+                  "text": ""
+                }
+              }
+            ]
+          },
+          "style": {
+            "background": "var(--neutral-40)"
+          }
+        },
+        "type": "kyvislabs.display.apexchart"
+      }
+    ],
+    "meta": {
+      "name": "root",
+      "contextMenu": {}
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "gap": "4px",
+        "overflow": "hidden"
+      }
+    },
+    "type": "ia.container.flex",
+    "propConfig": {
+      "meta.contextMenu.items": {
+        "binding": {
+          "config": {
+            "struct": {
+              "tagPath": "\"No TagPath: \""
+            },
+            "waitOnAll": true
+          },
+          "transforms": [
+            {
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = self.view.params.tagPath\n\texcept:\n\t\tpass\n\tif tagPath is None or str(tagPath).strip() == '':\n\t\ttagPath = value.tagPath + self.view.id.split('@')[0].split('/')[-1]\n\titems = [\n\t\t\t  {\n\t\t\t    \"text\": \"Ticket Logger\",\n\t\t\t    \"icon\": {\n\t\t\t      \"path\": \"material/info\",\n\t\t\t      \"color\": \"--neutral-80\",\n\t\t\t      \"style\": {}\n\t\t\t    },\n\t\t\t    \"style\": {\n\t\t\t      \"classes\": \"bg-component font-value\",\n\t\t\t      \"height\": 24,\n\t\t\t      \"width\": 120\n\t\t\t    },\n\t\t\t    \"type\": \"message\",\n\t\t\t    \"children\": [],\n\t\t\t    \"link\": {\n\t\t\t      \"url\": \"\",\n\t\t\t      \"target\": \"self\"\n\t\t\t    },\n\t\t\t    \"method\": {\n\t\t\t      \"name\": \"\",\n\t\t\t      \"params\": {}\n\t\t\t    },\n\t\t\t    \"message\": {\n\t\t\t      \"type\": \"ticketLog\",\n\t\t\t      \"payload\": {\n\t\t\t        \"tagPath\": tagPath,\n\t\t\t        \"viewName\": self.view.id.split('@')[0]\n\t\t\t      },\n\t\t\t      \"scope\": \"page\"\n\t\t\t    }\n\t\t\t  }\n\t\t\t]\n\treturn items",
+              "type": "script"
+            }
+          ],
+          "type": "expr-struct"
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "config": {
+            "struct": {
+              "items": "{this.meta.contextMenu.items}",
+              "permission": "{session.custom.TicketLogAccess}"
+            },
+            "waitOnAll": true
+          },
+          "transforms": [
+            {
+              "expression": "len({value}['items']) > 0 && {value}['permission']",
+              "type": "expression"
+            }
+          ],
+          "type": "expr-struct"
+        }
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    }
+  }
+}

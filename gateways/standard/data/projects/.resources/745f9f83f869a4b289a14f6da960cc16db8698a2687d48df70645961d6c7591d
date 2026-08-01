@@ -1,0 +1,141 @@
+{
+  "custom": {},
+  "params": {
+    "label": "CONDENSER",
+    "page": "",
+    "viewPath": ""
+  },
+  "propConfig": {
+    "params.label": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.page": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.viewPath": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 36,
+      "width": 168
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "alignItems": "stretch",
+      "justify": "start",
+      "direction": "row",
+      "style": {
+        "classes": "nav-button",
+        "overflow": "visible",
+        "height": "36px",
+        "minHeight": "36px",
+        "width": "max-content",
+        "minWidth": "72px",
+        "cursor": "pointer",
+        "backgroundColor": "transparent"
+      }
+    },
+    "events": {
+      "dom": {
+        "onClick": {
+          "config": {
+            "script": "\tpage = str(self.view.params.page or '').strip()\n\tviewPath = str(self.view.params.viewPath or '').strip()\n\tif not page and not viewPath:\n\t\treturn\n\tdata = {}\n\tif page:\n\t\tdata['action'] = 'page'\n\t\tdata['page'] = page\n\tif viewPath:\n\t\tdata['viewPath'] = viewPath\n\tNavigation.Nav.navigate(data)\n"
+          },
+          "scope": "G",
+          "type": "script"
+        }
+      }
+    },
+    "children": [
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Shape"
+        },
+        "position": {
+          "shrink": 0,
+          "grow": 0,
+          "basis": "auto"
+        },
+        "props": {
+          "alignItems": "center",
+          "justify": "center",
+          "direction": "row",
+          "style": {
+            "classes": "nav-button-shape",
+            "overflow": "visible",
+            "height": "36px",
+            "minHeight": "36px",
+            "width": "max-content",
+            "minWidth": "72px",
+            "position": "relative"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Stroke"
+            },
+            "props": {
+              "style": {
+                "classes": "nav-button-stroke"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Fill"
+            },
+            "props": {
+              "style": {
+                "classes": "nav-button-fill"
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Label"
+            },
+            "position": {
+              "shrink": 0,
+              "grow": 0,
+              "basis": "auto"
+            },
+            "props": {
+              "text": "CONDENSER",
+              "style": {
+                "classes": "nav-button-label",
+                "whiteSpace": "nowrap",
+                "textAlign": "center",
+                "overflow": "visible"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "path": "view.params.label"
+                  },
+                  "type": "property"
+                }
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,201 @@
+{
+  "custom": {
+    "channel": 0,
+    "nn": "00"
+  },
+  "params": {
+    "interlockPath": "",
+    "channel": 0
+  },
+  "propConfig": {
+    "params.interlockPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.channel": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.nn": {
+      "binding": {
+        "config": {
+          "expression": "if({view.params.channel} < 10, '0' + toStr({view.params.channel}), toStr({view.params.channel}))"
+        },
+        "type": "expr"
+      }
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 32,
+      "width": 500
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "propConfig": {
+      "meta.visible": {
+        "binding": {
+          "config": {
+            "struct": {
+              "path": "{view.params.interlockPath}",
+              "nn": "{view.custom.nn}",
+              "ch": "{view.params.channel}"
+            },
+            "waitOnAll": true
+          },
+          "transforms": [
+            {
+              "code": "\tpath = value.get('path') or ''\n\tnn = value.get('nn') or '00'\n\tch = int(value.get('ch') or 0)\n\tif not path:\n\t\treturn False\n\ttry:\n\t\ttxt = system.tag.readBlocking([path + '/Cfg_CondTxt' + nn + '/Value'])[0].value\n\t\tsts = int(system.tag.readBlocking([path + '/Sts_Intlk/Value'])[0].value or 0)\n\t\tbit = bool(sts & (1 << ch))\n\t\tlabel_ok = bool(txt) and str(txt).strip() != ''\n\t\treturn bit or label_ok\n\texcept:\n\t\treturn False",
+              "type": "script"
+            }
+          ],
+          "type": "expr-struct"
+        }
+      },
+      "props.style.classes": {
+        "binding": {
+          "config": {
+            "struct": {
+              "path": "{view.params.interlockPath}",
+              "ch": "{view.params.channel}"
+            },
+            "waitOnAll": true
+          },
+          "transforms": [
+            {
+              "code": "\tpath = value.get('path') or ''\n\tch = int(value.get('ch') or 0)\n\tbase = 'faceplate-interlock-row'\n\ttry:\n\t\tsts = int(system.tag.readBlocking([path + '/Sts_Intlk/Value'])[0].value or 0)\n\t\tif sts & (1 << ch):\n\t\t\treturn base + ' faceplate-interlock-fault'\n\t\treturn base + ' faceplate-interlock-ok'\n\texcept:\n\t\treturn base",
+              "type": "script"
+            }
+          ],
+          "type": "expr-struct"
+        }
+      }
+    },
+    "props": {
+      "direction": "row",
+      "alignItems": "center",
+      "style": {
+        "classes": "faceplate-interlock-row",
+        "gap": "8px",
+        "padding": "4px 8px"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "CondLbl"
+        },
+        "position": {
+          "grow": 1
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "coalesce(tag({view.params.interlockPath} + '/Cfg_CondTxt' + {view.custom.nn} + '/Value'), 'Interlock ' + {view.custom.nn})"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "classes": "font-label"
+          },
+          "text": ""
+        }
+      },
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "StatusCode"
+        },
+        "position": {
+          "basis": "72px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "struct": {
+                  "path": "{view.params.interlockPath}",
+                  "ch": "{view.params.channel}"
+                },
+                "waitOnAll": true
+              },
+              "transforms": [
+                {
+                  "code": "\tpath = value.get('path') or ''\n\tch = int(value.get('ch') or 0)\n\ttry:\n\t\tsts = int(system.tag.readBlocking([path + '/Sts_Intlk/Value'])[0].value or 0)\n\t\tif sts & (1 << ch):\n\t\t\treturn 'FLT'\n\t\treturn 'OK'\n\texcept:\n\t\treturn '\u2014'",
+                  "type": "script"
+                }
+              ],
+              "type": "expr-struct"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "classes": "font-value faceplate-interlock-sts"
+          },
+          "text": "\u2014"
+        }
+      },
+      {
+        "type": "ia.input.checkbox",
+        "meta": {
+          "name": "Bypass"
+        },
+        "position": {
+          "basis": "28px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.selected": {
+            "binding": {
+              "config": {
+                "fallbackDelay": 2.5,
+                "mode": "indirect",
+                "references": {
+                  "path": "{view.params.interlockPath} + '/MSet_Bypass' + {view.custom.nn} + '/Value'"
+                },
+                "tagPath": "{path}"
+              },
+              "type": "tag",
+              "bidirectional": true
+            }
+          },
+          "props.enabled": {
+            "binding": {
+              "config": {
+                "struct": {
+                  "path": "{view.params.interlockPath}",
+                  "ch": "{view.params.channel}",
+                  "ro": "{session.custom.ReadOnly}"
+                },
+                "waitOnAll": true
+              },
+              "transforms": [
+                {
+                  "code": "\tif value.get('ro'):\n\t\treturn False\n\tpath = value.get('path') or ''\n\tch = int(value.get('ch') or 0)\n\ttry:\n\t\tcfg = int(system.tag.readBlocking([path + '/Cfg_Bypassable/Value'])[0].value or 0)\n\t\treturn bool(cfg & (1 << ch))\n\texcept:\n\t\treturn False",
+                  "type": "script"
+                }
+              ],
+              "type": "expr-struct"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "classes": "faceplate-interlock-bypass"
+          }
+        }
+      }
+    ]
+  }
+}

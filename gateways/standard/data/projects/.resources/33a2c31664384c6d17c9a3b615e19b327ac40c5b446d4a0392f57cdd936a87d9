@@ -1,0 +1,301 @@
+{
+  "custom": {
+    "engUnit": "",
+    "format": "",
+    "quality": "Uncertain_InitialValue",
+    "type": "Integer",
+    "value": "",
+    "overSp": false
+  },
+  "params": {
+    "compact": false,
+    "spacing": {
+      "center": false,
+      "data": 0,
+      "engUnit": 30
+    },
+    "tagPath": "",
+    "spTagPath": "",
+    "forceColor": ""
+  },
+  "propConfig": {
+    "params.compact": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.engUnit": {
+      "binding": {
+        "config": {
+          "expression": "if({view.custom.quality} = 'Good',\n   tag({view.params.tagPath} + '.EngUnit'),\n   '')"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "custom.format": {
+      "binding": {
+        "config": {
+          "expression": "if({view.custom.quality} = 'Good',\n   if({view.custom.type} = 'Integer',\n      '#',\n      if(isNull(tag({view.params.tagPath} + '.FormatString')) || tag({view.params.tagPath} + '.FormatString') = '',\n         '#0.0',\n         tag({view.params.tagPath} + '.FormatString'))),\n   '')"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "custom.quality": {
+      "binding": {
+        "config": {
+          "fallbackDelay": 2.5,
+          "mode": "indirect",
+          "references": {
+            "tagPath": "{view.params.tagPath}"
+          },
+          "tagPath": "{tagPath}"
+        },
+        "transforms": [
+          {
+            "expression": "qualityOf({value})",
+            "type": "expression"
+          }
+        ],
+        "type": "tag"
+      },
+      "persistent": true
+    },
+    "custom.type": {
+      "binding": {
+        "config": {
+          "expression": "typeOf(tag({view.params.tagPath}))"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "custom.value": {
+      "binding": {
+        "config": {
+          "expression": "if({view.custom.quality} = 'Good',\n\tnumberFormat(tag({view.params.tagPath}), {view.custom.format}),\n\t'')"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "params.spacing": {
+      "paramDirection": "inout",
+      "persistent": true
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.spTagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.forceColor": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.overSp": {
+      "binding": {
+        "config": {
+          "expression": "if({view.params.tagPath} = '' || {view.params.spTagPath} = '' || {view.custom.quality} != 'Good' || isBad(tag({view.params.spTagPath})),\n\tfalse,\n\ttag({view.params.tagPath}) > tag({view.params.spTagPath}))"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 18,
+      "width": 92
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "propConfig": {
+      "props.justify": {
+        "binding": {
+          "config": {
+            "expression": "if({view.params.spacing.center},\n\t'center',\n\t'flex-start')"
+          },
+          "type": "expr"
+        }
+      }
+    },
+    "props": {
+      "alignContent": "center",
+      "alignItems": "baseline",
+      "justify": "flex-start",
+      "style": {
+        "cursor": "pointer",
+        "overflow": "visible",
+        "height": "100%",
+        "minHeight": "0px",
+        "width": "100%"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "Value"
+        },
+        "position": {
+          "grow": 1,
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.grow": {
+            "binding": {
+              "config": {
+                "expression": "if({view.params.spacing.center},\n\t0,\n\t1)"
+              },
+              "type": "expr"
+            }
+          },
+          "props.style.color": {
+            "binding": {
+              "config": {
+                "expression": "if({view.custom.quality} != 'Good',\n\t'#90A4AE',\n\tif({view.params.forceColor} = 'critical',\n\t\t'var(--status-level-critical, var(--analog-over-sp))',\n\t\tif({view.params.forceColor} = 'warning',\n\t\t\t'var(--status-level-warning)',\n\t\t\tif({view.custom.overSp},\n\t\t\t\t'var(--analog-over-sp)',\n\t\t\t\t'var(--accent)'))))"
+              },
+              "type": "expr"
+            }
+          },
+          "props.style.fontSize": {
+            "binding": {
+              "config": {
+                "expression": "if({view.params.compact},\n\t'11px',\n\t'14px')"
+              },
+              "type": "expr"
+            }
+          },
+          "props.style.paddingRight": {
+            "binding": {
+              "config": {
+                "expression": "if({view.params.spacing.data} = '',\n\t'0em',\n\t0.85 * {view.params.spacing.data} + 'em')"
+              },
+              "type": "expr"
+            }
+          },
+          "props.style.textAlign": {
+            "binding": {
+              "config": {
+                "expression": "if({view.params.spacing.center},\n\t'left',\n\t'right')"
+              },
+              "type": "expr"
+            }
+          },
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.custom.value"
+              },
+              "type": "property"
+            }
+          },
+          "props.style.classes": {
+            "binding": {
+              "config": {
+                "expression": "if({view.params.forceColor} = 'critical',\n\t'analog-over-sp',\n\tif({view.params.forceColor} = 'warning',\n\t\t'analog-level-warning',\n\t\tif({view.custom.overSp},\n\t\t\t'analog-over-sp',\n\t\t\t'')))"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "fontSize": "14px",
+            "lineHeight": "1.1",
+            "margin": "0px",
+            "overflow": "visible",
+            "padding": "0px",
+            "textAlign": "right",
+            "color": "var(--accent)",
+            "whiteSpace": "nowrap"
+          },
+          "text": ""
+        }
+      },
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "EngineeringUnit"
+        },
+        "position": {
+          "grow": 1,
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.grow": {
+            "binding": {
+              "config": {
+                "expression": "if({view.params.spacing.center},\n\t0,\n\t1)"
+              },
+              "type": "expr"
+            }
+          },
+          "position.basis": {
+            "binding": {
+              "config": {
+                "expression": "if({view.params.spacing.center},\n\t'auto',\n\tif({view.params.spacing.engUnit} = '',\n\t\t'auto',\n\t\t{view.params.spacing.engUnit} + 'px'))"
+              },
+              "type": "expr"
+            }
+          },
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.custom.engUnit"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "color": "var(--neutral-60)",
+            "fontSize": "11px",
+            "lineHeight": "1.1",
+            "margin": "0px",
+            "padding": "0px",
+            "whiteSpace": "nowrap"
+          },
+          "text": ""
+        }
+      }
+    ],
+    "events": {
+      "dom": {
+        "onContextMenu": {
+          "config": {
+            "draggable": false,
+            "id": "ContextMenu",
+            "modal": false,
+            "overlayDismiss": false,
+            "position": {
+              "relativeLocation": "bottom-right"
+            },
+            "positionType": "relative",
+            "resizable": false,
+            "showCloseIcon": false,
+            "type": "toggle",
+            "viewParams": {
+              "discrete": "false",
+              "tagPath": "{view.params.tagPath}"
+            },
+            "viewPath": "01_Popups/00_Faceplates/Alerts/ContextMenu",
+            "viewportBound": true
+          },
+          "preventDefault": true,
+          "scope": "C",
+          "stopPropagation": true,
+          "type": "popup"
+        }
+      }
+    }
+  }
+}
