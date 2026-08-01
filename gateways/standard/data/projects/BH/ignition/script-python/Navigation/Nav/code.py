@@ -64,6 +64,7 @@ def navigate(data=None):
 		"00_Pages/Devices/Overview": "/devices",
 		"00_Pages/Tanks/Overview": "/tanks",
 		"00_Pages/Valves/Overview": "/valves",
+		"00_Pages/Sensors/Overview": "/sensors",
 		"00_Pages/Alarms/Summary": "/alarms",
 		"00_Pages/Alarms/Journal": "/alarms/journal",
 		"00_Pages/Operations/AuditLog": "/operations/audit",
