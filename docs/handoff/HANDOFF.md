@@ -1,7 +1,8 @@
 # Handoff — RCP1 Simulate mode
 
 **Branch:** `feat/rcp1-simulate`  
-**Base:** `main` (was ahead of `origin/main` when branched)  
+**Commit:** `0ce707c` — `feat: RCP1 Simulate toggle — OPC vs memory via tagChange`  
+**Base:** `main` (branched while main was ahead of `origin/main`)  
 **Primary doc:** [`docs/rcp1-simulate.md`](../rcp1-simulate.md)
 
 ## Status

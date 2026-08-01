@@ -91,6 +91,7 @@ errors.
 
 ## Related
 
+- Branch: **`feat/rcp1-simulate`** (commit `0ce707c`)
 - `docs/rcp1-opc-tags.md` — OPC tree inventory
-- `docs/handoff/HANDOFF.md` — branch / remote handoff pointer
+- `docs/handoff/HANDOFF.md` — remote handoff pointer
 - Screenshots: `docs/handoff/rcp1-sim-off.png`, `docs/handoff/rcp1-sim-on.png`
