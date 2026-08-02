@@ -5,15 +5,125 @@
     "tagType": "UdtInstance",
     "tags": [
       {
-        "typeId": "_Root/Document",
         "name": "Instances",
-        "tagType": "AtomicTag"
+        "typeId": "_Root/Document",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": {
+              "columns": [
+                {
+                  "dateFormat": "MM/DD/YYYY",
+                  "footer": {
+                    "title": "",
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    }
+                  },
+                  "align": "center",
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "justify": "center",
+                  "progressBar": {
+                    "max": 100,
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "format": "0,0.##",
+                      "enabled": true,
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "unselected": "",
+                      "selected": ""
+                    }
+                  },
+                  "viewParams": {
+                    "value": ""
+                  },
+                  "render": "auto",
+                  "visible": true,
+                  "nullFormat": {
+                    "nullFormatValue": "",
+                    "includeNullStrings": false,
+                    "strict": false
+                  },
+                  "resizable": true,
+                  "editable": false,
+                  "sortable": false,
+                  "sort": "none",
+                  "viewPath": "03_Elements/03_Table/DeviceLabelAlarmIndicator",
+                  "filter": {
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover",
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "boolean": {
+                      "condition": ""
+                    }
+                  },
+                  "boolean": "checkbox",
+                  "strictWidth": true,
+                  "field": "tagPath",
+                  "width": 164,
+                  "header": {
+                    "title": "Device Name",
+                    "align": "center",
+                    "justify": "center",
+                    "style": {
+                      "classes": ""
+                    }
+                  },
+                  "style": {
+                    "classes": ""
+                  }
+                }
+              ],
+              "data": [
+                {
+                  "tagPath": "[default]Plant/Machine Room/Valves/Main Liq SV"
+                }
+              ]
+            }
+          }
+        ]
       },
       {
         "valueSource": "memory",
         "dataType": "Boolean",
         "name": "Rebuild",
-        "tagType": "AtomicTag"
+        "tagType": "AtomicTag",
+        "value": false
       }
     ]
   },
@@ -519,7 +629,7 @@
       {
         "valueSource": "memory",
         "dataType": "String",
-        "value": "SO",
+        "value": "MO",
         "name": "valveType",
         "tagType": "AtomicTag"
       },
@@ -543,9 +653,36 @@
             "name": "Value",
             "tagType": "AtomicTag",
             "sourceTagPath": "[default]RCP1/Main Liq SV/Alm_IOFault",
-            "valueSource": "reference"
+            "valueSource": "reference",
+            "metadata": {
+              "shortDescription": "I/O Fault",
+              "longDescription": "I/O Fault",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "alarms": [
+              {
+                "mode": "Equality",
+                "setpointA": 1.0,
+                "name": "Alarm",
+                "priority": "High",
+                "enabled": true
+              }
+            ]
           }
-        ]
+        ],
+        "metadata": {
+          "shortDescription": "I/O Fault",
+          "longDescription": "I/O Fault"
+        }
       },
       {
         "name": "Alm_FullStall",
@@ -555,9 +692,36 @@
             "name": "Value",
             "tagType": "AtomicTag",
             "sourceTagPath": "[default]RCP1/Main Liq SV/Alm_FullStall",
-            "valueSource": "reference"
+            "valueSource": "reference",
+            "metadata": {
+              "shortDescription": "Full Stall",
+              "longDescription": "Full Stall",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "alarms": [
+              {
+                "mode": "Equality",
+                "setpointA": 1.0,
+                "name": "Alarm",
+                "priority": "High",
+                "enabled": true
+              }
+            ]
           }
-        ]
+        ],
+        "metadata": {
+          "shortDescription": "Full Stall",
+          "longDescription": "Full Stall"
+        }
       },
       {
         "name": "Alm_TransitStall",
@@ -567,9 +731,36 @@
             "name": "Value",
             "tagType": "AtomicTag",
             "sourceTagPath": "[default]RCP1/Main Liq SV/Alm_TransitStall",
-            "valueSource": "reference"
+            "valueSource": "reference",
+            "metadata": {
+              "shortDescription": "Transit Stall",
+              "longDescription": "Transit Stall",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "alarms": [
+              {
+                "mode": "Equality",
+                "setpointA": 1.0,
+                "name": "Alarm",
+                "priority": "High",
+                "enabled": true
+              }
+            ]
           }
-        ]
+        ],
+        "metadata": {
+          "shortDescription": "Transit Stall",
+          "longDescription": "Transit Stall"
+        }
       },
       {
         "name": "Alm_IntlkTrip",
@@ -579,9 +770,36 @@
             "name": "Value",
             "tagType": "AtomicTag",
             "sourceTagPath": "[default]RCP1/Main Liq SV/Alm_IntlkTrip",
-            "valueSource": "reference"
+            "valueSource": "reference",
+            "metadata": {
+              "shortDescription": "Interlock Trip",
+              "longDescription": "Interlock Trip",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "alarms": [
+              {
+                "mode": "Equality",
+                "setpointA": 1.0,
+                "name": "Alarm",
+                "priority": "Medium",
+                "enabled": true
+              }
+            ]
           }
-        ]
+        ],
+        "metadata": {
+          "shortDescription": "Interlock Trip",
+          "longDescription": "Interlock Trip"
+        }
       }
     ]
   }
