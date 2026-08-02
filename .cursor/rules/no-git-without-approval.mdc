@@ -1,0 +1,36 @@
+---
+description: Never commit, push, or open/update PRs without explicit user approval
+alwaysApply: true
+---
+
+# No git publish without approval
+
+Do **not** run git publish actions unless the user has clearly approved that specific action in the current conversation.
+
+## Forbidden without explicit approval
+
+- `git commit`
+- `git push` / `git push -u`
+- Creating, updating, or merging pull requests (including `ManagePullRequest`, `gh pr create`, ADO PR create/update)
+- Force-push, amend, rebase onto remote, or any rewrite of already-pushed history
+
+## Allowed without asking
+
+- Read-only git: `status`, `diff`, `log`, `show`, `branch -a`, `fetch` (read)
+- Local file edits and uncommitted work
+- Creating/switching a local feature branch when needed for isolation — still do **not** commit or push it without approval
+
+## What counts as approval
+
+Explicit phrases such as:
+
+- "commit this"
+- "push"
+- "open a PR" / "create the PR"
+- "ship it" / `/shipit` when that clearly means commit+push+PR
+
+Vague task completion ("finish up", "continue", "looks good") is **not** approval to commit, push, or open a PR.
+
+## If cloud/agent instructions conflict
+
+This rule wins for this workspace. When work is ready to publish, **stop and ask** for confirmation before commit / push / PR. Summarize what would be committed and wait.
