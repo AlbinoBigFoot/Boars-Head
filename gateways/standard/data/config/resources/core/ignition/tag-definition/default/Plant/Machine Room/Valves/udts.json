@@ -20,7 +20,7 @@
   {
     "metadata": {
       "shortDescription": "Main Liq SV",
-      "longDescription": "P_ValveSO MAIN_LIQ_CV5 (Devices HMI layer; Value refs → [default]RCP1/Main Liq SV/* OPC leaves)"
+      "longDescription": "P_ValveSO MAIN_LIQ_CV5 (Devices HMI layer; Value refs \u2192 [default]RCP1/Main Liq SV/* OPC leaves)"
     },
     "name": "Main Liq SV",
     "typeId": "Devices/Valve",
@@ -389,6 +389,58 @@
                 "tagType": "AtomicTag"
               }
             ]
+          },
+          {
+            "name": "Cfg_CondTxt00",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "valueSource": "memory",
+                "dataType": "String",
+                "value": "Open Travel Timeout",
+                "name": "Value",
+                "tagType": "AtomicTag"
+              }
+            ]
+          },
+          {
+            "name": "Cfg_CondTxt01",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "valueSource": "memory",
+                "dataType": "String",
+                "value": "Close Travel Timeout",
+                "name": "Value",
+                "tagType": "AtomicTag"
+              }
+            ]
+          },
+          {
+            "name": "Cfg_CondTxt02",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "valueSource": "memory",
+                "dataType": "String",
+                "value": "Not in Auto",
+                "name": "Value",
+                "tagType": "AtomicTag"
+              }
+            ]
+          },
+          {
+            "name": "Cfg_CondTxt03",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "valueSource": "memory",
+                "dataType": "String",
+                "value": "Permissive Lost",
+                "name": "Value",
+                "tagType": "AtomicTag"
+              }
+            ]
           }
         ]
       },
@@ -459,6 +511,25 @@
           {
             "valueSource": "reference",
             "sourceTagPath": "[default]RCP1/Main Liq SV/TravelTime",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "String",
+        "value": "SO",
+        "name": "valveType",
+        "tagType": "AtomicTag"
+      },
+      {
+        "name": "Cmd",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Cmd_Open",
             "name": "Value",
             "tagType": "AtomicTag"
           }
