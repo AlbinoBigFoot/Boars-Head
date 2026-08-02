@@ -138,8 +138,9 @@
           "name": "Label"
         },
         "position": {
-          "grow": 1,
-          "shrink": 0
+          "grow": 0,
+          "shrink": 1,
+          "basis": "auto"
         },
         "propConfig": {
           "position.display": {
@@ -171,7 +172,7 @@
         },
         "props": {
           "style": {
-            "classes": "font-label"
+            "classes": "font-label config-input-label"
           }
         },
         "type": "ia.display.label"
@@ -181,7 +182,7 @@
           "component": {
             "onActionPerformed": {
               "config": {
-                "script": "\ttagPath = self.view.params.tagPath\n\tvalue = self.props.value\n\tself.view.custom.edit = False\n\tif session.custom.ReadOnly:\n\t\treturn\n\tif value is None or not system.tag.exists(tagPath):\n\t\treturn\n\tsystem.tag.writeBlocking([tagPath], [value])"
+                "script": "\ttagPath = self.view.params.tagPath\n\tvalue = self.props.value\n\tself.view.custom.edit = False\n\tif self.session.custom.ReadOnly:\n\t\treturn\n\tif value is None or not system.tag.exists(tagPath):\n\t\treturn\n\tsystem.tag.writeBlocking([tagPath], [value])"
               },
               "scope": "G",
               "type": "script"
@@ -264,7 +265,7 @@
           "dom": {
             "onClick": {
               "config": {
-                "script": "\tif self.view.params.permission and not session.custom.ReadOnly:\n\t\tif self.view.custom.edit:\n\t\t\tself.view.custom.edit = False\n\t\telse:\n\t\t\tself.view.custom.edit = True"
+                "script": "\tif self.view.params.permission and not self.session.custom.ReadOnly:\n\t\tif self.view.custom.edit:\n\t\t\tself.view.custom.edit = False\n\t\telse:\n\t\t\tself.view.custom.edit = True"
               },
               "scope": "G",
               "type": "script"
@@ -307,9 +308,12 @@
     },
     "props": {
       "alignItems": "center",
-      "justify": "center",
+      "justify": "flex-start",
       "style": {
-        "overflow": "visible"
+        "classes": "config-input-row",
+        "overflow": "visible",
+        "gap": "8px",
+        "width": "100%"
       }
     },
     "type": "ia.container.flex",
