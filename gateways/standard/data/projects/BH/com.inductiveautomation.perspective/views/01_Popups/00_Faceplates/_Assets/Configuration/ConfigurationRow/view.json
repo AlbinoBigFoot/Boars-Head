@@ -2,7 +2,8 @@
   "custom": {
     "dataType": "",
     "isBoolean": false,
-    "isMultistate": false
+    "isMultistate": false,
+    "metadata": ""
   },
   "params": {
     "highlightRow": false,
@@ -27,12 +28,38 @@
       },
       "persistent": true
     },
+    "custom.metadata": {
+      "binding": {
+        "config": {
+          "fallbackDelay": 2.5,
+          "mode": "indirect",
+          "references": {
+            "tagPath": "{view.params.tagPath}"
+          },
+          "tagPath": "{tagPath}.Metadata"
+        },
+        "transforms": [
+          {
+            "expression": "if(isNull({value}),\n\t\"\",\n\t{value}\n\t)",
+            "type": "expression"
+          }
+        ],
+        "type": "tag"
+      },
+      "persistent": true
+    },
     "custom.isMultistate": {
       "binding": {
         "config": {
-          "expression": "{view.custom.dataType} = 'Int4'"
+          "path": "view.custom.metadata"
         },
-        "type": "expr"
+        "transforms": [
+          {
+            "code": "\t# Multistate only when metadata defines states — not every Int4\n\t# (e.g. TravelTime is Int4 seconds and must use AnalogInput).\n\tif value is None or value == '':\n\t\treturn False\n\tstates = None\n\ttry:\n\t\tstates = value.get('states') if hasattr(value, 'get') else value['states']\n\texcept:\n\t\ttry:\n\t\t\tstates = value['states']\n\t\texcept:\n\t\t\tstates = None\n\treturn bool(states)",
+            "type": "script"
+          }
+        ],
+        "type": "property"
       },
       "persistent": true
     },
@@ -154,11 +181,14 @@
     "props": {
       "alignContent": "center",
       "alignItems": "center",
+      "justify": "flex-start",
       "style": {
+        "classes": "faceplate-config-row",
         "gap": "8px",
         "overflow": "visible",
-        "paddingLeft": "5px",
-        "paddingRight": "5px"
+        "paddingLeft": "12px",
+        "paddingRight": "12px",
+        "width": "100%"
       }
     },
     "type": "ia.container.flex"
