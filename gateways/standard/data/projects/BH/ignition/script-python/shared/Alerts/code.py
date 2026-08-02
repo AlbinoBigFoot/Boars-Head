@@ -182,7 +182,7 @@ def showFaceplate(tagPath="", deviceType="Compressor", webGuiUrl="", title=None,
 		if not hiddenFromConfiguration:
 			hiddenFromConfiguration = (
 				"OPER/,PROG/,MAINT/,Cmd/,Cmd_Open/,Cmd_Close/,Cmd_Reset/,Cmd_Position/,"
-				"valveType/,OpenLS/,ClosedLS/,Failed/,Comm/,Status/,Interlock/,_Alarms/"
+				"valveType/,OpenLS/,ClosedLS/,Failed/,Comm/,Status/,Interlock/,Alm_/,_Alarms/"
 			)
 		if not hiddenFromTrend:
 			hiddenFromTrend = "Status/,Interlock/"
