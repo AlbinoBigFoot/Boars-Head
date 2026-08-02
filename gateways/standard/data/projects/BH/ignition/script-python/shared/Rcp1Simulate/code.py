@@ -177,9 +177,9 @@ def _logSampleSources(label, samplePaths=None):
 			"[default]RCP1/MR EF/Started",
 			"[default]RCP1/MR AD/Alm",
 			"[default]RCP1/FIRE/Alm",
-			"[default]Plant/Machine Room/COMP 7/Rung/Value",
-			"[default]Plant/Machine Room/MR EF/Status/Value",
-			"[default]Plant/Machine Room/MR AD/Value",
+			"[default]Plant/Machine Room/Compressors/COMP 7/Rung/Value",
+			"[default]Plant/Machine Room/ExhaustFans/MR EF/Status/Value",
+			"[default]Plant/Machine Room/Digitals/MR AD/Value",
 		]
 	for tp in samplePaths:
 		try:
@@ -244,6 +244,25 @@ def _demoValue(name, dataType, tagPath=None):
 		if "SV" in dev or "Valve" in dev or "Liq" in dev:
 			return 2  # OPEN
 		return 0
+
+	# Valve travel / transit stall timer (Cfg_TransitStallT) — never leave null/0 in SIM.
+	if n == "TravelTime":
+		return 5
+
+	# Valve ownership modes (P_ValveSO Sts_Oper/Prog/Maint) — default Operator so
+	# Open/Close are usable; mutual exclusive with PROG/MAINT.
+	if n == "OPER":
+		return True
+	if n in ("PROG", "MAINT"):
+		return False
+
+	# Limit switches follow Status for valve demo (OPEN → OpenLS).
+	if n == "OpenLS":
+		if "SV" in dev or "Valve" in dev or "Liq" in dev:
+			return True
+		return False
+	if n == "ClosedLS":
+		return False
 
 	# Compressor Rung: 0=Off, 1=Running — vary the bank
 	if n == "Rung":
@@ -485,7 +504,14 @@ def toMemory(tagPaths=None):
 				good = str(qual).upper().find("GOOD") >= 0
 		except:
 			good = False
-		value = live if good else _demoValue(name, dataType, tagPath)
+		# Prefer live Good OPC; still replace null / empty travel timer so SIM HMI is usable.
+		demo = _demoValue(name, dataType, tagPath)
+		if not good or live is None:
+			value = demo
+		elif name == "TravelTime" and (live == 0 or live == 0.0):
+			value = demo
+		else:
+			value = live
 		newCfg = {
 			"name": name,
 			"tagType": "AtomicTag",
@@ -521,6 +547,8 @@ def toMemory(tagPaths=None):
 		"Amps", "FLA", "SVP", "Level", "Pressure", "Value",
 		"Color", "CP_Mode", "SV_Mode",
 		"Hi", "Lo", "HiHi", "LoLo", "Fail", "LSH", "LSL", "H", "L", "HH", "LL",
+		# Valve faceplate Controls: modes, LS, travel timer
+		"OPER", "PROG", "MAINT", "TravelTime", "OpenLS", "ClosedLS",
 	])
 	for tagPath in tagPaths:
 		_parent, name = _parentAndName(tagPath)
@@ -540,9 +568,42 @@ def toMemory(tagPaths=None):
 		except Exception as e:
 			logger.warn("seed write failed: %s" % str(e))
 
+	_seedInterlockDemo()
+
 	logger.info("RCP1 Simulate ON — memory=%d fail=%d" % (ok, fail))
 	_logSampleSources("after-toMemory")
 	return ok, fail
+
+
+def _seedInterlockDemo():
+	"""Named CondTxt + status bits for Main Liq SV Interlocks faceplate demo."""
+	plantIlk = "[default]Plant/Machine Room/Valves/Main Liq SV/Interlock"
+	rcpIlk = "[default]RCP1/Main Liq SV/Interlock"
+	conds = {
+		"00": "Open Travel Timeout",
+		"01": "Close Travel Timeout",
+		"02": "Not in Auto",
+		"03": "Permissive Lost",
+	}
+	paths = []
+	vals = []
+	for nn, text in conds.items():
+		paths.append("%s/Cfg_CondTxt%s/Value" % (plantIlk, nn))
+		vals.append(text)
+	paths.extend([
+		rcpIlk + "/Sts_Intlk",
+		rcpIlk + "/Sts_IntlkOK",
+		rcpIlk + "/Sts_NBIntlkOK",
+		rcpIlk + "/Sts_FirstOut",
+		rcpIlk + "/Cfg_Bypassable",
+		rcpIlk + "/Rdy_Reset",
+	])
+	vals.extend([5, False, True, 1, 15, True])
+	try:
+		system.tag.writeBlocking(paths, vals)
+		logger.info("seeded Main Liq SV interlock demo (%d tags)" % len(paths))
+	except Exception as e:
+		logger.warn("interlock demo seed failed: %s" % str(e))
 
 
 def toOpc(tagPaths=None):

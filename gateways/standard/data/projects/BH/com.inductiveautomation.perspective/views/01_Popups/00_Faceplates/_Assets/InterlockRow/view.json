@@ -27,7 +27,7 @@
   },
   "props": {
     "defaultSize": {
-      "height": 32,
+      "height": 40,
       "width": 500
     }
   },
@@ -37,25 +37,6 @@
       "name": "root"
     },
     "propConfig": {
-      "meta.visible": {
-        "binding": {
-          "config": {
-            "struct": {
-              "path": "{view.params.interlockPath}",
-              "nn": "{view.custom.nn}",
-              "ch": "{view.params.channel}"
-            },
-            "waitOnAll": true
-          },
-          "transforms": [
-            {
-              "code": "\tpath = value.get('path') or ''\n\tnn = value.get('nn') or '00'\n\tch = int(value.get('ch') or 0)\n\tif not path:\n\t\treturn False\n\ttry:\n\t\ttxt = system.tag.readBlocking([path + '/Cfg_CondTxt' + nn + '/Value'])[0].value\n\t\tsts = int(system.tag.readBlocking([path + '/Sts_Intlk/Value'])[0].value or 0)\n\t\tbit = bool(sts & (1 << ch))\n\t\tlabel_ok = bool(txt) and str(txt).strip() != ''\n\t\treturn bit or label_ok\n\texcept:\n\t\treturn False",
-              "type": "script"
-            }
-          ],
-          "type": "expr-struct"
-        }
-      },
       "props.style.classes": {
         "binding": {
           "config": {
@@ -81,7 +62,12 @@
       "style": {
         "classes": "faceplate-interlock-row",
         "gap": "8px",
-        "padding": "4px 8px"
+        "padding": "0px 12px",
+        "overflow": "auto",
+        "minHeight": "40px",
+        "height": "40px",
+        "width": "100%",
+        "boxSizing": "border-box"
       }
     },
     "children": [
@@ -91,7 +77,9 @@
           "name": "CondLbl"
         },
         "position": {
-          "grow": 1
+          "grow": 1,
+          "shrink": 1,
+          "basis": "0px"
         },
         "propConfig": {
           "props.text": {
@@ -105,7 +93,9 @@
         },
         "props": {
           "style": {
-            "classes": "font-label"
+            "classes": "font-label faceplate-interlock-cond",
+            "overflow": "auto",
+            "minWidth": "0px"
           },
           "text": ""
         }
@@ -116,8 +106,9 @@
           "name": "StatusCode"
         },
         "position": {
-          "basis": "72px",
-          "shrink": 0
+          "basis": "56px",
+          "shrink": 0,
+          "grow": 0
         },
         "propConfig": {
           "props.text": {
@@ -141,7 +132,9 @@
         },
         "props": {
           "style": {
-            "classes": "font-value faceplate-interlock-sts"
+            "classes": "font-value faceplate-interlock-sts",
+            "overflow": "auto",
+            "textAlign": "center"
           },
           "text": "\u2014"
         }
@@ -152,8 +145,9 @@
           "name": "Bypass"
         },
         "position": {
-          "basis": "28px",
-          "shrink": 0
+          "basis": "36px",
+          "shrink": 0,
+          "grow": 0
         },
         "propConfig": {
           "props.selected": {
@@ -162,9 +156,10 @@
                 "fallbackDelay": 2.5,
                 "mode": "indirect",
                 "references": {
-                  "path": "{view.params.interlockPath} + '/MSet_Bypass' + {view.custom.nn} + '/Value'"
+                  "base": "{view.params.interlockPath}",
+                  "nn": "{view.custom.nn}"
                 },
-                "tagPath": "{path}"
+                "tagPath": "{base}/MSet_Bypass{nn}/Value"
               },
               "type": "tag",
               "bidirectional": true
@@ -188,14 +183,45 @@
               ],
               "type": "expr-struct"
             }
+          },
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "''"
+              },
+              "type": "expr"
+            }
           }
         },
         "props": {
+          "text": "",
+          "textPosition": "right",
           "style": {
-            "classes": "faceplate-interlock-bypass"
+            "classes": "faceplate-interlock-bypass",
+            "overflow": "auto"
           }
         }
       }
-    ]
+    ],
+    "events": {
+      "dom": {
+        "contextmenu": {
+          "config": {
+            "script": "\tshared.ticketLog.promptFromEvent(self, event)"
+          },
+          "scope": "G",
+          "type": "script"
+        }
+      },
+      "component": {
+        "ticketLog": {
+          "config": {
+            "script": "\tshared.ticketLog.handleMessage(self, payload)"
+          },
+          "scope": "G",
+          "type": "script"
+        }
+      }
+    }
   }
 }
