@@ -2967,6 +2967,31 @@ body:has(.psc-animations-off) .container-fade-in {
 	user-select: none;
 }
 
+/* Shared Modes row (faceplate Controls) */
+.psc-faceplate-mode-btn {
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	background: var(--surface-container);
+	color: var(--text-muted);
+	opacity: 0.55;
+	user-select: none;
+	min-width: 68px;
+}
+
+.psc-faceplate-mode-btn-active {
+	border-color: var(--text);
+	background: var(--surface-card);
+	color: var(--text);
+	opacity: 1;
+}
+
+.psc-faceplate-mode-btn-label {
+	font-size: 10px;
+	font-weight: 600;
+	line-height: 1.1;
+	white-space: nowrap;
+}
+
 .psc-faceplate-mode-code {
 	font-size: 12px;
 	color: var(--text);
@@ -2997,8 +3022,95 @@ body:has(.psc-animations-off) .container-fade-in {
 	font-size: 12px;
 }
 
+/* Configuration AnalogInput / MultiStateInput — keep label + value + edit as a tight cluster */
+.psc-faceplate-config-row {
+	min-height: 36px;
+}
+
+.psc-config-input-row {
+	justify-content: flex-start !important;
+	gap: 8px;
+	width: 100%;
+}
+
+.psc-config-input-label {
+	flex: 0 1 auto;
+	max-width: 220px;
+	margin-right: 4px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.psc-faceplate-interlocks {
+	min-height: 0;
+	width: 100%;
+	box-sizing: border-box;
+}
+
 .psc-faceplate-interlock-header {
 	margin-bottom: 4px;
+	flex-shrink: 0 !important;
+	box-sizing: border-box;
+}
+
+.psc-faceplate-interlock-agg {
+	width: 100%;
+	box-sizing: border-box;
+	flex-shrink: 0 !important;
+}
+
+/* Status chips: size to content so overflow:auto does not paint bars */
+.psc-faceplate-interlock-stat {
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	background: var(--surface-container);
+	padding: 8px 10px !important;
+	min-width: 0 !important;
+	min-height: 52px !important;
+	box-sizing: border-box !important;
+	flex: 1 1 0 !important;
+}
+
+.psc-faceplate-interlock-stat-label {
+	font-size: 10px !important;
+	font-weight: 700 !important;
+	letter-spacing: 0.03em;
+	text-transform: uppercase;
+	color: var(--text-muted) !important;
+	white-space: nowrap;
+	line-height: 1.2 !important;
+	max-width: 100%;
+}
+
+.psc-faceplate-interlock-stat-value {
+	font-size: 14px !important;
+	font-weight: 700 !important;
+	color: var(--text) !important;
+	white-space: nowrap;
+	line-height: 1.2 !important;
+}
+
+.psc-faceplate-interlock-stat-ok .psc-faceplate-interlock-stat-value {
+	color: var(--text-muted) !important;
+}
+
+.psc-faceplate-interlock-stat-fault {
+	border-color: color-mix(in srgb, var(--alarm-hi, #c62828) 45%, var(--border));
+	background: color-mix(in srgb, var(--alarm-hi, #c62828) 12%, var(--surface-container));
+}
+
+.psc-faceplate-interlock-stat-fault .psc-faceplate-interlock-stat-value {
+	color: var(--alarm-hi, #c62828) !important;
+}
+
+.psc-faceplate-interlock-stat-byp {
+	border-color: color-mix(in srgb, var(--qual-7, #f9a825) 45%, var(--border));
+	background: color-mix(in srgb, var(--qual-7, #f9a825) 12%, var(--surface-container));
+}
+
+.psc-faceplate-interlock-stat-byp .psc-faceplate-interlock-stat-value {
+	color: var(--qual-7, #f9a825) !important;
 }
 
 .psc-faceplate-interlock-colhdr {
@@ -3009,12 +3121,49 @@ body:has(.psc-animations-off) .container-fade-in {
 	font-size: 11px;
 	font-weight: 700;
 	text-transform: uppercase;
+	flex-shrink: 0 !important;
+	box-sizing: border-box;
+}
+
+.psc-faceplate-interlock-channels {
+	min-height: 0 !important;
+	min-width: 0 !important;
+	width: 100% !important;
+	box-sizing: border-box !important;
+}
+
+/* Repeater instance wrappers: fixed row height, no nested scroll chrome */
+.psc-faceplate-interlocks .ia_flexRepeater__child,
+.psc-faceplate-interlocks [data-component="ia.display.flex-repeater"] > .flex-repeater-container > *,
+.psc-faceplate-interlock-instance {
+	min-height: 40px !important;
+	height: 40px !important;
+	max-height: 40px !important;
+	min-width: 0 !important;
+	max-width: 100% !important;
+	box-sizing: border-box !important;
+	flex-shrink: 0 !important;
 }
 
 .psc-faceplate-interlock-row {
-	min-height: 28px;
+	min-height: 40px !important;
+	height: 40px !important;
+	max-height: 40px !important;
 	border-bottom: 1px solid var(--border);
 	background: var(--surface-card);
+	max-width: 100% !important;
+	min-width: 0 !important;
+	width: 100% !important;
+	box-sizing: border-box !important;
+	align-items: center !important;
+}
+
+.psc-faceplate-interlock-cond {
+	min-width: 0 !important;
+	max-width: 100% !important;
+	white-space: nowrap !important;
+	text-overflow: ellipsis;
+	line-height: 1.2 !important;
 }
 
 .psc-faceplate-interlock-ok .psc-faceplate-interlock-sts {
@@ -3031,13 +3180,46 @@ body:has(.psc-animations-off) .container-fade-in {
 }
 
 .psc-faceplate-interlock-bypass {
-	margin: 0;
+	margin: 0 !important;
+	justify-content: center !important;
+	align-items: center !important;
+	min-width: 0 !important;
+	max-width: 36px !important;
+}
+
+/* Bypass column: box only — hide caption text nodes, keep the checkbox icon */
+.psc-faceplate-interlock-bypass {
+	font-size: 0 !important;
+	color: transparent !important;
+}
+.psc-faceplate-interlock-bypass svg,
+.psc-faceplate-interlock-bypass .ia_checkbox__icon,
+.psc-faceplate-interlock-bypass .ia_checkbox__checkedIcon,
+.psc-faceplate-interlock-bypass .ia_checkbox__uncheckedIcon,
+.psc-faceplate-interlock-bypass .ia_checkbox__indeterminateIcon {
+	font-size: 24px !important;
+	color: var(--text) !important;
+	fill: currentColor !important;
+}
+.psc-faceplate-interlock-bypass .ia_checkbox__text,
+.psc-faceplate-interlock-bypass .ia_checkbox__labelText,
+.psc-faceplate-interlock-bypass .check-label,
+.psc-faceplate-interlock-bypass label > span:not([class*="icon"]):not([class*="Icon"]) {
+	display: none !important;
+	width: 0 !important;
+	max-width: 0 !important;
+	overflow: hidden !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	font-size: 0 !important;
 }
 
 .psc-faceplate-interlock-sts {
 	font-family: monospace;
 	font-size: 11px;
 	text-align: center;
+	line-height: 1.2 !important;
+	white-space: nowrap !important;
 }
 
 /* Pump / motor faceplate fault status codes (text + class, not color-only) */
@@ -3066,3 +3248,11 @@ body:has(.psc-animations-off) .container-fade-in {
 	font-weight: 700;
 }
 
+.psc-faceplate-ls-on {
+	font-weight: 700;
+	color: var(--text);
+}
+
+.psc-faceplate-ls-off {
+	color: var(--text-muted);
+}

@@ -166,22 +166,40 @@ def contextMenuTicketLog(tagPath="", viewName=None):
 
 def showFaceplate(tagPath="", deviceType="Compressor", webGuiUrl="", title=None,
 		showControls=True, showConfiguration=True, showInterlocks=True, showTrend=True,
-		showAlarmConfiguration=True, showAlarms=True, width=560, height=640):
+		showAlarmConfiguration=True, showAlarms=True, width=560, height=640,
+		hiddenFromConfiguration="", hiddenFromTrend="",
+		hiddenFromAlarmConfiguration="", hiddenFromAlarms=""):
 	"""Open the shared tabbed Faceplate shell (Scout-style).
 
 	Caller show* flags are hints ANDed with Faceplate tagFlags (empty tabs hide).
 	deviceType selects Controls embeds under 01_Popups/00_Faceplates/_Assets/...
+	hiddenFrom* are comma-separated paths; entries ending with / match a folder prefix.
 	"""
+	# Device-type curation defaults (caller can override / extend).
+	dt = deviceType or "Compressor"
+	if dt == "Valve":
+		# TravelTime (Cfg_TransitStallT) on Configuration — backs TransitStall alarm. Hide ops/status.
+		if not hiddenFromConfiguration:
+			hiddenFromConfiguration = (
+				"OPER/,PROG/,MAINT/,Cmd/,Cmd_Open/,Cmd_Close/,Cmd_Reset/,Cmd_Position/,"
+				"valveType/,OpenLS/,ClosedLS/,Failed/,Comm/,Status/,Interlock/,_Alarms/"
+			)
+		if not hiddenFromTrend:
+			hiddenFromTrend = "Status/,Interlock/"
 	params = {
 		"tagPath": tagPath,
-		"deviceType": deviceType or "Compressor",
+		"deviceType": dt,
 		"webGuiUrl": webGuiUrl or "",
 		"showControls": bool(showControls),
 		"showConfiguration": bool(showConfiguration),
 		"showInterlocks": bool(showInterlocks),
 		"showTrend": bool(showTrend),
 		"showAlarmConfiguration": bool(showAlarmConfiguration),
-		"showAlarms": bool(showAlarms)
+		"showAlarms": bool(showAlarms),
+		"hiddenFromConfiguration": hiddenFromConfiguration or "",
+		"hiddenFromTrend": hiddenFromTrend or "",
+		"hiddenFromAlarmConfiguration": hiddenFromAlarmConfiguration or "",
+		"hiddenFromAlarms": hiddenFromAlarms or "",
 	}
 	if not title:
 		title = tagPath.split("/")[-1] if tagPath else "Faceplate"
