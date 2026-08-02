@@ -1,0 +1,789 @@
+{
+  "custom": {
+    "label": "",
+    "metadata": "",
+    "selected": "Controls",
+    "tagFlags": {
+      "defaultTab": "Controls",
+      "showAlarmConfiguration": false,
+      "showAlarms": false,
+      "showConfiguration": false,
+      "showControls": true,
+      "showInterlocks": false,
+      "showTrend": false
+    },
+    "visibleTabCount": 1
+  },
+  "params": {
+    "deviceType": "Compressor",
+    "hiddenFromAlarmConfiguration": "",
+    "hiddenFromAlarms": "",
+    "hiddenFromConfiguration": "",
+    "hiddenFromTrend": "",
+    "showAlarmConfiguration": true,
+    "showAlarms": true,
+    "showConfiguration": true,
+    "showControls": true,
+    "showInterlocks": true,
+    "showTrend": true,
+    "tagPath": "",
+    "webGuiUrl": ""
+  },
+  "propConfig": {
+    "custom.label": {
+      "binding": {
+        "config": {
+          "expression": "try(\n    if(\n        isNull({view.custom.metadata.shortDescription}) ||\n        {view.custom.metadata.shortDescription} = '',\n        if({view.params.tagPath} = '',\n           '',\n           subString({view.params.tagPath}, lastIndexOf({view.params.tagPath}, '/') + 1)),\n        {view.custom.metadata.shortDescription}\n    ),\n'')"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "custom.metadata": {
+      "binding": {
+        "config": {
+          "expression": "if(\n\t{view.params.tagPath}!='' && isGood(tag({view.params.tagPath} + '.Metadata')),\n\ttag({view.params.tagPath} + '.Metadata'),\n\t'')"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "custom.selected": {
+      "persistent": true
+    },
+    "custom.tagFlags": {
+      "binding": {
+        "config": {
+          "struct": {
+            "deviceType": "{view.params.deviceType}",
+            "hiddenFromAlarmConfiguration": "{view.params.hiddenFromAlarmConfiguration}",
+            "hiddenFromAlarms": "{view.params.hiddenFromAlarms}",
+            "hiddenFromConfiguration": "{view.params.hiddenFromConfiguration}",
+            "hiddenFromTrend": "{view.params.hiddenFromTrend}",
+            "showAlarmConfiguration": "{view.params.showAlarmConfiguration}",
+            "showAlarms": "{view.params.showAlarms}",
+            "showConfiguration": "{view.params.showConfiguration}",
+            "showControls": "{view.params.showControls}",
+            "showInterlocks": "{view.params.showInterlocks}",
+            "showTrend": "{view.params.showTrend}",
+            "tagPath": "{view.params.tagPath}"
+          },
+          "waitOnAll": true
+        },
+        "transforms": [
+          {
+            "code": "\timport system\n\n\tresult = {\n\t\t'showControls': False,\n\t\t'showConfiguration': False,\n\t\t'showInterlocks': False,\n\t\t'showTrend': False,\n\t\t'showAlarmConfiguration': False,\n\t\t'showAlarms': False,\n\t\t'defaultTab': 'Controls'\n\t}\n\n\tdef parseHidden(text):\n\t\ts = set()\n\t\ttry:\n\t\t\tt = str(text or '')\n\t\t\tif t:\n\t\t\t\tt = t.replace(';', ',')\n\t\t\t\tfor item in t.split(','):\n\t\t\t\t\titem = item.strip()\n\t\t\t\t\tif item:\n\t\t\t\t\t\ts.add(item)\n\t\texcept Exception:\n\t\t\tpass\n\t\treturn s\n\n\tdef isHidden(fullPath, hidden_set):\n\t\tif not hidden_set:\n\t\t\treturn False\n\t\tif fullPath in hidden_set:\n\t\t\treturn True\n\t\tstripped = fullPath.split(']', 1)[-1] if ']' in fullPath else fullPath\n\t\tif stripped in hidden_set:\n\t\t\treturn True\n\t\treturn False\n\n\ttagPath = value.get('tagPath', '') if hasattr(value, 'get') else ''\n\tdeviceType = value.get('deviceType', '') if hasattr(value, 'get') else ''\n\tcallerControls = value.get('showControls', True) if hasattr(value, 'get') else True\n\tcallerConfiguration = value.get('showConfiguration', True) if hasattr(value, 'get') else True\n\tcallerInterlocks = value.get('showInterlocks', True) if hasattr(value, 'get') else True\n\tcallerTrend = value.get('showTrend', True) if hasattr(value, 'get') else True\n\tcallerAlarmCfg = value.get('showAlarmConfiguration', True) if hasattr(value, 'get') else True\n\tcallerAlarms = value.get('showAlarms', True) if hasattr(value, 'get') else True\n\thidTrend = parseHidden(value.get('hiddenFromTrend', '') if hasattr(value, 'get') else '')\n\thidCfg = parseHidden(value.get('hiddenFromConfiguration', '') if hasattr(value, 'get') else '')\n\thidAlarmCfg = parseHidden(value.get('hiddenFromAlarmConfiguration', '') if hasattr(value, 'get') else '')\n\thidAlarms = parseHidden(value.get('hiddenFromAlarms', '') if hasattr(value, 'get') else '')\n\n\t# Controls: device types that have a Controls asset\n\thasControlsAsset = str(deviceType or '') in ('Compressor', 'Pump', 'ExhaustFan', 'Valve', 'Tank', 'Sensor', 'Evaporator', 'CoolingTower', '')\n\tresult['showControls'] = bool(callerControls) and hasControlsAsset\n\n\t# Interlocks: Interlock folder usable\n\tshowIlk = False\n\tif tagPath and callerInterlocks:\n\t\ttry:\n\t\t\tq = system.tag.readBlocking([tagPath + '/Interlock/Sts_IntlkOK/Value'])[0]\n\t\t\tif str(q.quality) == 'Good' or (hasattr(q.quality, 'isGood') and q.quality.isGood()):\n\t\t\t\tshowIlk = True\n\t\texcept Exception:\n\t\t\tpass\n\t\tif not showIlk:\n\t\t\ttry:\n\t\t\t\ttxt = system.tag.readBlocking([tagPath + '/Interlock/Cfg_CondTxt00'])[0]\n\t\t\t\tif str(txt.quality) == 'Good' or (hasattr(txt.quality, 'isGood') and txt.quality.isGood()):\n\t\t\t\t\tif txt.value and str(txt.value).strip():\n\t\t\t\t\t\tshowIlk = True\n\t\t\texcept Exception:\n\t\t\t\tpass\n\t\tif not showIlk:\n\t\t\ttry:\n\t\t\t\tsts = system.tag.readBlocking([tagPath + '/Interlock/Sts_Intlk/Value'])[0]\n\t\t\t\tif str(sts.quality) == 'Good' or (hasattr(sts.quality, 'isGood') and sts.quality.isGood()):\n\t\t\t\t\tshowIlk = True\n\t\t\texcept Exception:\n\t\t\t\tpass\n\tresult['showInterlocks'] = showIlk\n\n\t# Browse leaves for Trend / Configuration / Alarm flags\n\tshowTrend = False\n\tshowCfg = False\n\tshowAlarmCfg = False\n\tshowAlarms = False\n\tif tagPath:\n\t\ttry:\n\t\t\tresults = system.tag.browse(path=tagPath, filter={'recursive': True}).getResults()\n\t\texcept Exception:\n\t\t\tresults = []\n\t\tleaves = []\n\t\tfor t in results or []:\n\t\t\ttry:\n\t\t\t\tif str(t['tagType']) != 'AtomicTag':\n\t\t\t\t\tcontinue\n\t\t\t\tfp = str(t['fullPath'])\n\t\t\t\tleaves.append(fp)\n\t\t\texcept Exception:\n\t\t\t\tpass\n\t\tfor leaf in leaves:\n\t\t\ttry:\n\t\t\t\tcfgs = system.tag.getConfiguration(leaf, False)\n\t\t\t\tif not cfgs:\n\t\t\t\t\tcontinue\n\t\t\t\tcfg = cfgs[0]\n\t\t\t\talarms = cfg.get('alarms') or []\n\t\t\t\thasAlarms = len(alarms) > 0\n\t\t\t\treadOnly = cfg.get('readOnly', False)\n\t\t\t\thist = cfg.get('historyEnabled', False)\n\t\t\t\tdt = str(cfg.get('dataType') or '')\n\t\t\t\tanalog = dt in ('Float4', 'Float8', 'Int1', 'Int2', 'Int4', 'Int8', 'Double')\n\t\t\t\tif hist and analog and not isHidden(leaf, hidTrend):\n\t\t\t\t\tshowTrend = True\n\t\t\t\tif (not readOnly) and (not hasAlarms) and dt and not isHidden(leaf, hidCfg):\n\t\t\t\t\tshowCfg = True\n\t\t\t\tif hasAlarms and not isHidden(leaf, hidAlarmCfg):\n\t\t\t\t\tshowAlarmCfg = True\n\t\t\t\tif hasAlarms and not isHidden(leaf, hidAlarms):\n\t\t\t\t\tshowAlarms = True\n\t\t\texcept Exception:\n\t\t\t\tpass\n\n\tresult['showTrend'] = bool(callerTrend) and showTrend\n\tresult['showConfiguration'] = bool(callerConfiguration) and showCfg\n\tresult['showAlarmConfiguration'] = bool(callerAlarmCfg) and showAlarmCfg\n\tresult['showAlarms'] = bool(callerAlarms) and showAlarms\n\n\t# BH Controls-first default tab order\n\torder = [\n\t\t('showControls', 'Controls'),\n\t\t('showConfiguration', 'Configuration'),\n\t\t('showInterlocks', 'Interlocks'),\n\t\t('showTrend', 'Trend'),\n\t\t('showAlarmConfiguration', 'Alarm Configuration'),\n\t\t('showAlarms', 'Alarms'),\n\t]\n\tresult['defaultTab'] = 'Controls'\n\tfor key, name in order:\n\t\tif result.get(key):\n\t\t\tresult['defaultTab'] = name\n\t\t\tbreak\n\treturn result\n",
+            "type": "script"
+          }
+        ],
+        "type": "expr-struct"
+      },
+      "onChange": {
+        "enabled": null,
+        "script": "\tflags = currentValue.value\n\tif not flags:\n\t\treturn\n\tsel = self.custom.selected\n\tvisible = {\n\t\t'Controls': flags.get('showControls'),\n\t\t'Configuration': flags.get('showConfiguration'),\n\t\t'Interlocks': flags.get('showInterlocks'),\n\t\t'Trend': flags.get('showTrend'),\n\t\t'Alarm Configuration': flags.get('showAlarmConfiguration'),\n\t\t'Alarms': flags.get('showAlarms'),\n\t}\n\tif not visible.get(sel, False):\n\t\tself.custom.selected = flags.get('defaultTab') or 'Controls'"
+      },
+      "persistent": true
+    },
+    "custom.visibleTabCount": {
+      "binding": {
+        "config": {
+          "expression": "(if({view.params.showControls} && {view.custom.tagFlags.showControls}, 1, 0) + if({view.params.showConfiguration} && {view.custom.tagFlags.showConfiguration}, 1, 0) + if({view.params.showInterlocks} && {view.custom.tagFlags.showInterlocks}, 1, 0) + if({view.params.showTrend} && {view.custom.tagFlags.showTrend}, 1, 0) + if({view.params.showAlarmConfiguration} && {view.custom.tagFlags.showAlarmConfiguration}, 1, 0) + if({view.params.showAlarms} && {view.custom.tagFlags.showAlarms}, 1, 0))"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "params.deviceType": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.hiddenFromAlarmConfiguration": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.hiddenFromAlarms": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.hiddenFromConfiguration": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.hiddenFromTrend": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.showAlarmConfiguration": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.showAlarms": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.showConfiguration": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.showControls": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.showInterlocks": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.showTrend": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.webGuiUrl": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 640,
+      "width": 560
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "Title"
+            },
+            "position": {
+              "basis": "0px",
+              "grow": 1
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.label"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "classes": "faceplate-title font-title"
+              }
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\turl = str(self.view.params.webGuiUrl or '').strip()\n\tif not url:\n\t\treturn\n\tsystem.perspective.openURL(url)\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "WebGui"
+            },
+            "position": {
+              "basis": "88px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "meta.visible": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.deviceType} = 'Compressor' && len(coalesce({view.params.webGuiUrl}, '')) > 0"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "classes": "container-button font-button",
+                "marginRight": "6px"
+              },
+              "text": "Web GUI"
+            },
+            "type": "ia.input.button"
+          }
+        ],
+        "meta": {
+          "name": "Header"
+        },
+        "position": {
+          "basis": "44px",
+          "shrink": 0
+        },
+        "props": {
+          "alignItems": "center",
+          "justify": "space-between",
+          "style": {
+            "classes": "faceplate-header bg-header"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tself.view.custom.selected = self.meta.name"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Controls"
+            },
+            "propConfig": {
+              "position.basis": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.showControls} && {view.custom.tagFlags.showControls}, '72px', '0px')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "position.grow": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.showControls} && {view.custom.tagFlags.showControls}, 1, 0)"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.classes": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.display": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.showControls} && {view.custom.tagFlags.showControls}, 'flex', 'none')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "path": "this.meta.name"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "style": {},
+              "textStyle": {
+                "classes": "faceplate-tab-text"
+              }
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tself.view.custom.selected = self.meta.name"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Configuration"
+            },
+            "propConfig": {
+              "position.basis": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.showConfiguration} && {view.custom.tagFlags.showConfiguration}, '96px', '0px')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "position.grow": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.showConfiguration} && {view.custom.tagFlags.showConfiguration}, 1, 0)"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.classes": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.display": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.showConfiguration} && {view.custom.tagFlags.showConfiguration}, 'flex', 'none')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "path": "this.meta.name"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "style": {},
+              "textStyle": {
+                "classes": "faceplate-tab-text"
+              }
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tself.view.custom.selected = self.meta.name"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Interlocks"
+            },
+            "propConfig": {
+              "position.basis": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.showInterlocks} && {view.custom.tagFlags.showInterlocks}, '80px', '0px')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "position.grow": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.showInterlocks} && {view.custom.tagFlags.showInterlocks}, 1, 0)"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.classes": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.display": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.showInterlocks} && {view.custom.tagFlags.showInterlocks}, 'flex', 'none')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "path": "this.meta.name"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "style": {},
+              "textStyle": {
+                "classes": "faceplate-tab-text"
+              }
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tself.view.custom.selected = self.meta.name"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Trend"
+            },
+            "propConfig": {
+              "position.basis": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.showTrend} && {view.custom.tagFlags.showTrend}, '64px', '0px')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "position.grow": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.showTrend} && {view.custom.tagFlags.showTrend}, 1, 0)"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.classes": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.display": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.showTrend} && {view.custom.tagFlags.showTrend}, 'flex', 'none')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "path": "this.meta.name"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "style": {},
+              "textStyle": {
+                "classes": "faceplate-tab-text"
+              }
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tself.view.custom.selected = self.meta.name"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Alarm Configuration"
+            },
+            "propConfig": {
+              "position.basis": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.showAlarmConfiguration} && {view.custom.tagFlags.showAlarmConfiguration}, '120px', '0px')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "position.grow": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.showAlarmConfiguration} && {view.custom.tagFlags.showAlarmConfiguration}, 1, 0)"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.classes": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.display": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.showAlarmConfiguration} && {view.custom.tagFlags.showAlarmConfiguration}, 'flex', 'none')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "path": "this.meta.name"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "style": {},
+              "textStyle": {
+                "classes": "faceplate-tab-text"
+              }
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tself.view.custom.selected = self.meta.name"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Alarms"
+            },
+            "propConfig": {
+              "position.basis": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.showAlarms} && {view.custom.tagFlags.showAlarms}, '64px', '0px')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "position.grow": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.showAlarms} && {view.custom.tagFlags.showAlarms}, 1, 0)"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.classes": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.display": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.showAlarms} && {view.custom.tagFlags.showAlarms}, 'flex', 'none')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "path": "this.meta.name"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "style": {},
+              "textStyle": {
+                "classes": "faceplate-tab-text"
+              }
+            },
+            "type": "ia.input.button"
+          }
+        ],
+        "meta": {
+          "name": "Tabs"
+        },
+        "position": {
+          "basis": "56px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.style.classes": {
+            "binding": {
+              "config": {
+                "expression": "'faceplate-buttons-' + {view.custom.visibleTabCount}"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "alignItems": "flex-end",
+          "style": {
+            "overflow": "visible"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "EmbeddedView"
+            },
+            "position": {
+              "basis": "0px",
+              "grow": 1
+            },
+            "propConfig": {
+              "props.params.hiddenTags": {
+                "binding": {
+                  "config": {
+                    "expression": "case(\n  {view.custom.selected},\n  \"Trend\", {view.params.hiddenFromTrend},\n  \"Configuration\", {view.params.hiddenFromConfiguration},\n  \"Alarm Configuration\", {view.params.hiddenFromAlarmConfiguration},\n  \"Alarms\", {view.params.hiddenFromAlarms},\n  ''\n)"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "path": "view.params.tagPath"
+                  },
+                  "type": "property"
+                }
+              },
+              "props.path": {
+                "binding": {
+                  "config": {
+                    "expression": "case(\n  {view.custom.selected},\n  \"Controls\",\n    case({view.params.deviceType},\n      \"Compressor\", \"01_Popups/00_Faceplates/_Assets/Compressor/Controls\",\n      \"Pump\", \"01_Popups/00_Faceplates/_Assets/Pump/Controls\",\n      \"ExhaustFan\", \"01_Popups/00_Faceplates/_Assets/ExhaustFan/Controls\",\n      \"Valve\", \"01_Popups/00_Faceplates/_Assets/Valve/Controls\",\n      \"Tank\", \"01_Popups/00_Faceplates/_Assets/Tank/Controls\",\n      \"Sensor\", \"01_Popups/00_Faceplates/_Assets/Sensor/Controls\",\n      \"Evaporator\", \"01_Popups/00_Faceplates/_Assets/Evaporator/Controls\",\n      \"CoolingTower\", \"01_Popups/00_Faceplates/_Assets/CoolingTower/Controls\",\n      \"01_Popups/00_Faceplates/_Assets/Compressor/Controls\"),\n  \"Configuration\", \"01_Popups/00_Faceplates/_Assets/Configuration/Configuration\",\n  \"Interlocks\", \"01_Popups/00_Faceplates/_Assets/Interlocks\",\n  \"Trend\", \"01_Popups/00_Faceplates/_Assets/Trend\",\n  \"Alarm Configuration\", \"01_Popups/00_Faceplates/_Assets/AlarmConfiguration\",\n  \"Alarms\", \"01_Popups/00_Faceplates/_Assets/Alarms\",\n  \"01_Popups/00_Faceplates/_Assets/Compressor/Controls\"\n)"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "height": "100%",
+                "minHeight": 0,
+                "overflow": "auto",
+                "width": "100%"
+              }
+            },
+            "type": "ia.display.view"
+          }
+        ],
+        "meta": {
+          "name": "Body"
+        },
+        "position": {
+          "basis": "0px",
+          "grow": 1
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "classes": "faceplate-body",
+            "minHeight": 0,
+            "overflow": "hidden"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "contextMenu": {},
+      "name": "root"
+    },
+    "propConfig": {
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "config": {
+            "struct": {
+              "items": "{this.meta.contextMenu.items}",
+              "permission": "{session.custom.TicketLogAccess}"
+            },
+            "waitOnAll": true
+          },
+          "transforms": [
+            {
+              "expression": "len({value}['items']) > 0 && {value}['permission']",
+              "type": "expression"
+            }
+          ],
+          "type": "expr-struct"
+        }
+      },
+      "meta.contextMenu.items": {
+        "binding": {
+          "config": {
+            "struct": {
+              "tagPath": "\"No TagPath: \""
+            },
+            "waitOnAll": true
+          },
+          "transforms": [
+            {
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = self.view.params.tagPath\n\texcept:\n\t\tpass\n\tif tagPath is None or str(tagPath).strip() == '':\n\t\ttagPath = value.tagPath + self.view.id.split('@')[0].split('/')[-1]\n\titems = [\n\t\t\t  {\n\t\t\t    \"text\": \"Ticket Logger\",\n\t\t\t    \"icon\": {\n\t\t\t      \"path\": \"material/info\",\n\t\t\t      \"color\": \"--neutral-80\",\n\t\t\t      \"style\": {}\n\t\t\t    },\n\t\t\t    \"style\": {\n\t\t\t      \"classes\": \"bg-component font-value\",\n\t\t\t      \"height\": 24,\n\t\t\t      \"width\": 120\n\t\t\t    },\n\t\t\t    \"type\": \"message\",\n\t\t\t    \"children\": [],\n\t\t\t    \"link\": {\n\t\t\t      \"url\": \"\",\n\t\t\t      \"target\": \"self\"\n\t\t\t    },\n\t\t\t    \"method\": {\n\t\t\t      \"name\": \"\",\n\t\t\t      \"params\": {}\n\t\t\t    },\n\t\t\t    \"message\": {\n\t\t\t      \"type\": \"ticketLog\",\n\t\t\t      \"payload\": {\n\t\t\t        \"tagPath\": tagPath,\n\t\t\t        \"viewName\": self.view.id.split('@')[0]\n\t\t\t      },\n\t\t\t      \"scope\": \"page\"\n\t\t\t    }\n\t\t\t  }\n\t\t\t]\n\treturn items",
+              "type": "script"
+            }
+          ],
+          "type": "expr-struct"
+        }
+      }
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "bg-component container-card container-card-border faceplate",
+        "height": "100%",
+        "minHeight": 0,
+        "overflow": "hidden",
+        "padding": "0px",
+        "width": "100%"
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    },
+    "type": "ia.container.flex"
+  }
+}

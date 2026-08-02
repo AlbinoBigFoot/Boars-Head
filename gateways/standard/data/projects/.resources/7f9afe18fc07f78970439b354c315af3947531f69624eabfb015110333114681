@@ -1,0 +1,732 @@
+{
+  "custom": {},
+  "params": {
+    "tagPath": "",
+    "deviceType": ""
+  },
+  "propConfig": {
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.deviceType": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 90,
+      "width": 520
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root",
+      "contextMenu": {}
+    },
+    "propConfig": {
+      "meta.contextMenu.items": {
+        "binding": {
+          "config": {
+            "struct": {
+              "tagPath": "{view.params.tagPath}"
+            },
+            "waitOnAll": false
+          },
+          "transforms": [
+            {
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = self.view.params.tagPath\n\texcept:\n\t\tpass\n\tif tagPath is None or str(tagPath).strip() == '':\n\t\ttagPath = 'No TagPath: ' + self.view.id.split('@')[0].split('/')[-1]\n\titems = [\n\t\t{\n\t\t\t\"text\": \"Ticket Logger\",\n\t\t\t\"icon\": {\n\t\t\t\t\"path\": \"material/info\",\n\t\t\t\t\"color\": \"--neutral-80\",\n\t\t\t\t\"style\": {}\n\t\t\t},\n\t\t\t\"style\": {\n\t\t\t\t\"classes\": \"bg-component font-value\",\n\t\t\t\t\"height\": 24,\n\t\t\t\t\"width\": 120\n\t\t\t},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\n\t\t\t\t\"type\": \"ticketLog\",\n\t\t\t\t\"payload\": {\n\t\t\t\t\t\"tagPath\": tagPath,\n\t\t\t\t\t\"viewName\": self.view.id.split('@')[0]\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t]\n\treturn items",
+              "type": "script"
+            }
+          ],
+          "type": "expr-struct"
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "config": {
+            "struct": {
+              "items": "{this.meta.contextMenu.items}",
+              "permission": "{session.custom.TicketLogAccess}"
+            },
+            "waitOnAll": true
+          },
+          "transforms": [
+            {
+              "expression": "len({value}['items']) > 0 && {value}['permission']",
+              "type": "expression"
+            }
+          ],
+          "type": "expr-struct"
+        }
+      },
+      "position.display": {
+        "binding": {
+          "config": {
+            "expression": "({view.params.deviceType} = 'Pump' || {view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'ExhaustFan' || {view.params.deviceType} = 'CoolingTower') || ({view.params.deviceType} = 'Compressor')"
+          },
+          "type": "expr"
+        }
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "faceplate-section faceplate-section-card",
+        "gap": "6px",
+        "width": "100%"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "ModeTitle"
+        },
+        "props": {
+          "text": "Mode",
+          "style": {
+            "classes": "faceplate-section-title font-label"
+          }
+        }
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "ModeRow"
+        },
+        "props": {
+          "direction": "row",
+          "alignItems": "stretch",
+          "style": {
+            "gap": "8px",
+            "flexWrap": "wrap"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "ModeOper",
+              "tooltip": {
+                "enabled": true,
+                "text": "Operator",
+                "location": "bottom",
+                "width": "160px",
+                "style": {
+                  "background": "var(--neutral-70)",
+                  "borderRadius": "8px",
+                  "fontSize": "0.9rem",
+                  "padding": "6px 10px"
+                }
+              }
+            },
+            "position": {
+              "basis": "72px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "config": {
+                    "expression": "({view.params.deviceType} = 'Pump' || {view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'ExhaustFan' || {view.params.deviceType} = 'CoolingTower')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.classes": {
+                "binding": {
+                  "config": {
+                    "expression": "if(if({view.params.deviceType} = 'Pump', tag({view.params.tagPath} + '/Sts_Oper/Value'), tag({view.params.tagPath} + '/OPER/Value')), 'faceplate-mode-btn faceplate-mode-btn-active', 'faceplate-mode-btn')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.cursor": {
+                "binding": {
+                  "config": {
+                    "expression": "if(!{session.custom.ReadOnly}, 'pointer', 'not-allowed')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tdt = str(self.view.params.deviceType or '')\n\tif dt == 'Pump':\n\t\tclicked = 'Sts_Oper'\n\t\tmodes = ['Sts_Oper', 'Sts_Maint', 'Sts_Prog']\n\t\tpaths = [base + '/' + m + '/Value' for m in modes]\n\t\tvals = [m == clicked for m in modes]\n\telse:\n\t\tclicked = 'OPER'\n\t\tmodes = ['OPER', 'MAINT', 'PROG']\n\t\tpaths = [base + '/' + m for m in modes]\n\t\tvals = [m == clicked for m in modes]\n\tsystem.tag.writeBlocking(paths, vals)"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "props": {
+              "direction": "column",
+              "alignItems": "center",
+              "justify": "center",
+              "style": {
+                "classes": "faceplate-mode-btn",
+                "gap": "4px",
+                "padding": "6px 4px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "Icon"
+                },
+                "position": {
+                  "basis": "22px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "03_Elements/01_Status/Icons/Operator",
+                  "style": {
+                    "height": "22px",
+                    "width": "22px"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Label"
+                },
+                "props": {
+                  "text": "Operator",
+                  "style": {
+                    "classes": "font-label faceplate-mode-btn-label",
+                    "textAlign": "center"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "ModeProg",
+              "tooltip": {
+                "enabled": true,
+                "text": "Program",
+                "location": "bottom",
+                "width": "160px",
+                "style": {
+                  "background": "var(--neutral-70)",
+                  "borderRadius": "8px",
+                  "fontSize": "0.9rem",
+                  "padding": "6px 10px"
+                }
+              }
+            },
+            "position": {
+              "basis": "72px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "config": {
+                    "expression": "({view.params.deviceType} = 'Pump' || {view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'ExhaustFan' || {view.params.deviceType} = 'CoolingTower')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.classes": {
+                "binding": {
+                  "config": {
+                    "expression": "if(if({view.params.deviceType} = 'Pump', tag({view.params.tagPath} + '/Sts_Prog/Value'), tag({view.params.tagPath} + '/PROG/Value')), 'faceplate-mode-btn faceplate-mode-btn-active', 'faceplate-mode-btn')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.cursor": {
+                "binding": {
+                  "config": {
+                    "expression": "if(!{session.custom.ReadOnly}, 'pointer', 'not-allowed')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tdt = str(self.view.params.deviceType or '')\n\tif dt == 'Pump':\n\t\tclicked = 'Sts_Prog'\n\t\tmodes = ['Sts_Oper', 'Sts_Maint', 'Sts_Prog']\n\t\tpaths = [base + '/' + m + '/Value' for m in modes]\n\t\tvals = [m == clicked for m in modes]\n\telse:\n\t\tclicked = 'PROG'\n\t\tmodes = ['OPER', 'MAINT', 'PROG']\n\t\tpaths = [base + '/' + m for m in modes]\n\t\tvals = [m == clicked for m in modes]\n\tsystem.tag.writeBlocking(paths, vals)"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "props": {
+              "direction": "column",
+              "alignItems": "center",
+              "justify": "center",
+              "style": {
+                "classes": "faceplate-mode-btn",
+                "gap": "4px",
+                "padding": "6px 4px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "Icon"
+                },
+                "position": {
+                  "basis": "22px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "03_Elements/01_Status/Icons/Program",
+                  "style": {
+                    "height": "22px",
+                    "width": "22px"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Label"
+                },
+                "props": {
+                  "text": "Program",
+                  "style": {
+                    "classes": "font-label faceplate-mode-btn-label",
+                    "textAlign": "center"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "ModeMaint",
+              "tooltip": {
+                "enabled": true,
+                "text": "Maintenance",
+                "location": "bottom",
+                "width": "160px",
+                "style": {
+                  "background": "var(--neutral-70)",
+                  "borderRadius": "8px",
+                  "fontSize": "0.9rem",
+                  "padding": "6px 10px"
+                }
+              }
+            },
+            "position": {
+              "basis": "72px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "config": {
+                    "expression": "({view.params.deviceType} = 'Pump' || {view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'ExhaustFan' || {view.params.deviceType} = 'CoolingTower')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.classes": {
+                "binding": {
+                  "config": {
+                    "expression": "if(if({view.params.deviceType} = 'Pump', tag({view.params.tagPath} + '/Sts_Maint/Value'), tag({view.params.tagPath} + '/MAINT/Value')), 'faceplate-mode-btn faceplate-mode-btn-active', 'faceplate-mode-btn')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.cursor": {
+                "binding": {
+                  "config": {
+                    "expression": "if(!{session.custom.ReadOnly}, 'pointer', 'not-allowed')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tdt = str(self.view.params.deviceType or '')\n\tif dt == 'Pump':\n\t\tclicked = 'Sts_Maint'\n\t\tmodes = ['Sts_Oper', 'Sts_Maint', 'Sts_Prog']\n\t\tpaths = [base + '/' + m + '/Value' for m in modes]\n\t\tvals = [m == clicked for m in modes]\n\telse:\n\t\tclicked = 'MAINT'\n\t\tmodes = ['OPER', 'MAINT', 'PROG']\n\t\tpaths = [base + '/' + m for m in modes]\n\t\tvals = [m == clicked for m in modes]\n\tsystem.tag.writeBlocking(paths, vals)"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "props": {
+              "direction": "column",
+              "alignItems": "center",
+              "justify": "center",
+              "style": {
+                "classes": "faceplate-mode-btn",
+                "gap": "4px",
+                "padding": "6px 4px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "Icon"
+                },
+                "position": {
+                  "basis": "22px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "03_Elements/01_Status/Icons/Maintenance",
+                  "style": {
+                    "height": "22px",
+                    "width": "22px"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Label"
+                },
+                "props": {
+                  "text": "Maintenance",
+                  "style": {
+                    "classes": "font-label faceplate-mode-btn-label",
+                    "textAlign": "center"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "ModeRemote",
+              "tooltip": {
+                "enabled": true,
+                "text": "Remote",
+                "location": "bottom",
+                "width": "160px",
+                "style": {
+                  "background": "var(--neutral-70)",
+                  "borderRadius": "8px",
+                  "fontSize": "0.9rem",
+                  "padding": "6px 10px"
+                }
+              }
+            },
+            "position": {
+              "basis": "72px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "config": {
+                    "expression": "({view.params.deviceType} = 'Compressor')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.classes": {
+                "binding": {
+                  "config": {
+                    "expression": "if(tag({view.params.tagPath} + '/CP_Mode/Value') = 1, 'faceplate-mode-btn faceplate-mode-btn-active', 'faceplate-mode-btn')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.cursor": {
+                "binding": {
+                  "config": {
+                    "expression": "if(!{session.custom.ReadOnly}, 'pointer', 'not-allowed')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/CP_Mode/Value']\n\tvals = [1]\n\tsystem.tag.writeBlocking(paths, vals)"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "props": {
+              "direction": "column",
+              "alignItems": "center",
+              "justify": "center",
+              "style": {
+                "classes": "faceplate-mode-btn",
+                "gap": "4px",
+                "padding": "6px 4px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "Icon"
+                },
+                "position": {
+                  "basis": "22px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "03_Elements/01_Status/Icons/Remote",
+                  "style": {
+                    "height": "22px",
+                    "width": "22px"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Label"
+                },
+                "props": {
+                  "text": "Remote",
+                  "style": {
+                    "classes": "font-label faceplate-mode-btn-label",
+                    "textAlign": "center"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "ModeAuto",
+              "tooltip": {
+                "enabled": true,
+                "text": "Auto",
+                "location": "bottom",
+                "width": "160px",
+                "style": {
+                  "background": "var(--neutral-70)",
+                  "borderRadius": "8px",
+                  "fontSize": "0.9rem",
+                  "padding": "6px 10px"
+                }
+              }
+            },
+            "position": {
+              "basis": "72px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "config": {
+                    "expression": "({view.params.deviceType} = 'Compressor')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.classes": {
+                "binding": {
+                  "config": {
+                    "expression": "if(tag({view.params.tagPath} + '/CP_Mode/Value') = 2, 'faceplate-mode-btn faceplate-mode-btn-active', 'faceplate-mode-btn')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.cursor": {
+                "binding": {
+                  "config": {
+                    "expression": "if(!{session.custom.ReadOnly}, 'pointer', 'not-allowed')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/CP_Mode/Value']\n\tvals = [2]\n\tsystem.tag.writeBlocking(paths, vals)"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "props": {
+              "direction": "column",
+              "alignItems": "center",
+              "justify": "center",
+              "style": {
+                "classes": "faceplate-mode-btn",
+                "gap": "4px",
+                "padding": "6px 4px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "Icon"
+                },
+                "position": {
+                  "basis": "22px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "03_Elements/01_Status/Icons/Auto",
+                  "style": {
+                    "height": "22px",
+                    "width": "22px"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Label"
+                },
+                "props": {
+                  "text": "Auto",
+                  "style": {
+                    "classes": "font-label faceplate-mode-btn-label",
+                    "textAlign": "center"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "ModeManual",
+              "tooltip": {
+                "enabled": true,
+                "text": "Manual",
+                "location": "bottom",
+                "width": "160px",
+                "style": {
+                  "background": "var(--neutral-70)",
+                  "borderRadius": "8px",
+                  "fontSize": "0.9rem",
+                  "padding": "6px 10px"
+                }
+              }
+            },
+            "position": {
+              "basis": "72px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "config": {
+                    "expression": "({view.params.deviceType} = 'Compressor')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.classes": {
+                "binding": {
+                  "config": {
+                    "expression": "if(tag({view.params.tagPath} + '/CP_Mode/Value') = 3, 'faceplate-mode-btn faceplate-mode-btn-active', 'faceplate-mode-btn')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.cursor": {
+                "binding": {
+                  "config": {
+                    "expression": "if(!{session.custom.ReadOnly}, 'pointer', 'not-allowed')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/CP_Mode/Value']\n\tvals = [3]\n\tsystem.tag.writeBlocking(paths, vals)"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "props": {
+              "direction": "column",
+              "alignItems": "center",
+              "justify": "center",
+              "style": {
+                "classes": "faceplate-mode-btn",
+                "gap": "4px",
+                "padding": "6px 4px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "Icon"
+                },
+                "position": {
+                  "basis": "22px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "03_Elements/01_Status/Icons/Hand",
+                  "style": {
+                    "height": "22px",
+                    "width": "22px"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Label"
+                },
+                "props": {
+                  "text": "Manual",
+                  "style": {
+                    "classes": "font-label faceplate-mode-btn-label",
+                    "textAlign": "center"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

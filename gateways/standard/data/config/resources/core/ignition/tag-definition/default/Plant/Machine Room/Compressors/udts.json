@@ -1,0 +1,2807 @@
+[
+  {
+    "name": "Overview",
+    "typeId": "Overview/Compressor Overview",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Instances",
+        "typeId": "_Root/Document",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": {
+              "columns": [
+                {
+                  "dateFormat": "MM/DD/YYYY",
+                  "footer": {
+                    "title": "",
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    }
+                  },
+                  "align": "center",
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "justify": "center",
+                  "progressBar": {
+                    "max": 100,
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "format": "0,0.##",
+                      "enabled": true,
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "unselected": "",
+                      "selected": ""
+                    }
+                  },
+                  "viewParams": {
+                    "value": ""
+                  },
+                  "render": "auto",
+                  "visible": true,
+                  "nullFormat": {
+                    "nullFormatValue": "",
+                    "includeNullStrings": false,
+                    "strict": false
+                  },
+                  "resizable": true,
+                  "editable": false,
+                  "sortable": false,
+                  "sort": "none",
+                  "viewPath": "03_Elements/03_Table/DeviceLabelAlarmIndicator",
+                  "filter": {
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover",
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "boolean": {
+                      "condition": ""
+                    }
+                  },
+                  "boolean": "checkbox",
+                  "strictWidth": true,
+                  "field": "tagPath",
+                  "width": 164,
+                  "header": {
+                    "title": "Device Name",
+                    "align": "center",
+                    "justify": "center",
+                    "style": {
+                      "classes": ""
+                    }
+                  },
+                  "style": {
+                    "classes": ""
+                  }
+                }
+              ],
+              "data": [
+                {
+                  "tagPath": "[default]Plant/Machine Room/Compressors/COMP 1"
+                },
+                {
+                  "tagPath": "[default]Plant/Machine Room/Compressors/COMP 4"
+                },
+                {
+                  "tagPath": "[default]Plant/Machine Room/Compressors/COMP 5"
+                },
+                {
+                  "tagPath": "[default]Plant/Machine Room/Compressors/COMP 6"
+                },
+                {
+                  "tagPath": "[default]Plant/Machine Room/Compressors/COMP 7"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Rebuild",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false
+      }
+    ]
+  },
+  {
+    "name": "COMP 1",
+    "typeId": "Devices/Compressor",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Alm",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 1/Alm",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Amps",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 1/Amps",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "AutoEN",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 1/AutoEN",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "CP_Mode",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 1/CP_Mode",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Color",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 1/Color",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Comm",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 1/Comm",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Cutout",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 1/Cutout",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "DisP",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 1/DisP",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "FLA",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 1/FLA",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Fail_Timer_PRE",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 1/Fail_Timer/PRE",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Failed",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 1/Failed",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Min_Runtime_Set",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 1/Min_Runtime_Set",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Rung",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 1/Rung",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "TotalRuntime",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 1/TotalRuntime",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "SVP",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 1/SVP",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "SV_Mode",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 1/SV_Mode",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Started",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 1/Started",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Start_Req",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 1/Start_Req",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Stop_Req",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 1/Stop_Req",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Interlock",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "MSet_Bypass00",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 1/Interlock/MSet_Bypass00",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass01",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 1/Interlock/MSet_Bypass01",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass02",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 1/Interlock/MSet_Bypass02",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass03",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 1/Interlock/MSet_Bypass03",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass04",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 1/Interlock/MSet_Bypass04",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass05",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 1/Interlock/MSet_Bypass05",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass06",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 1/Interlock/MSet_Bypass06",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass07",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 1/Interlock/MSet_Bypass07",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass08",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 1/Interlock/MSet_Bypass08",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass09",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 1/Interlock/MSet_Bypass09",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass10",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 1/Interlock/MSet_Bypass10",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass11",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 1/Interlock/MSet_Bypass11",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass12",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 1/Interlock/MSet_Bypass12",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass13",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 1/Interlock/MSet_Bypass13",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass14",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 1/Interlock/MSet_Bypass14",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass15",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 1/Interlock/MSet_Bypass15",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Sts_BypActive",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 1/Interlock/Sts_BypActive",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Sts_NBIntlkOK",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 1/Interlock/Sts_NBIntlkOK",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Sts_IntlkOK",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 1/Interlock/Sts_IntlkOK",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "OCmd_Reset",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 1/Interlock/OCmd_Reset",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Rdy_Reset",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 1/Interlock/Rdy_Reset",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Sts_Intlk",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 1/Interlock/Sts_Intlk",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Sts_FirstOut",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 1/Interlock/Sts_FirstOut",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Cfg_Bypassable",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 1/Interlock/Cfg_Bypassable",
+                "valueSource": "reference"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "shortDescription": "COMP 1",
+      "longDescription": "screw compressor (Devices HMI layer; Value refs \u2192 [default]RCP1/COMP 1/* OPC leaves for COMP[7] test)"
+    }
+  },
+  {
+    "metadata": {
+      "shortDescription": "COMP 4",
+      "longDescription": "screw compressor (Devices HMI layer; Value refs \u2192 [default]RCP1/COMP 4/* OPC leaves for COMP[7] test)"
+    },
+    "name": "COMP 4",
+    "typeId": "Devices/Compressor",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Alm",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 4/Alm",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Amps",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 4/Amps",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "AutoEN",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 4/AutoEN",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "CP_Mode",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 4/CP_Mode",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Color",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 4/Color",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Comm",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 4/Comm",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Cutout",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 4/Cutout",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "DisP",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 4/DisP",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "FLA",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 4/FLA",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Fail_Timer_PRE",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 4/Fail_Timer/PRE",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Failed",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 4/Failed",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Min_Runtime_Set",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 4/Min_Runtime_Set",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Rung",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 4/Rung",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "TotalRuntime",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 4/TotalRuntime",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "SVP",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 4/SVP",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "SV_Mode",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 4/SV_Mode",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Started",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 4/Started",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Start_Req",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 4/Start_Req",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Stop_Req",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 4/Stop_Req",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Interlock",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "MSet_Bypass00",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 4/Interlock/MSet_Bypass00",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass01",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 4/Interlock/MSet_Bypass01",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass02",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 4/Interlock/MSet_Bypass02",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass03",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 4/Interlock/MSet_Bypass03",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass04",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 4/Interlock/MSet_Bypass04",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass05",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 4/Interlock/MSet_Bypass05",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass06",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 4/Interlock/MSet_Bypass06",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass07",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 4/Interlock/MSet_Bypass07",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass08",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 4/Interlock/MSet_Bypass08",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass09",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 4/Interlock/MSet_Bypass09",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass10",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 4/Interlock/MSet_Bypass10",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass11",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 4/Interlock/MSet_Bypass11",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass12",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 4/Interlock/MSet_Bypass12",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass13",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 4/Interlock/MSet_Bypass13",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass14",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 4/Interlock/MSet_Bypass14",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass15",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 4/Interlock/MSet_Bypass15",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Sts_BypActive",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 4/Interlock/Sts_BypActive",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Sts_NBIntlkOK",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 4/Interlock/Sts_NBIntlkOK",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Sts_IntlkOK",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 4/Interlock/Sts_IntlkOK",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "OCmd_Reset",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 4/Interlock/OCmd_Reset",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Rdy_Reset",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 4/Interlock/Rdy_Reset",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Sts_Intlk",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 4/Interlock/Sts_Intlk",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Sts_FirstOut",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 4/Interlock/Sts_FirstOut",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Cfg_Bypassable",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 4/Interlock/Cfg_Bypassable",
+                "valueSource": "reference"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "COMP 5",
+      "longDescription": "screw compressor (Devices HMI layer; Value refs \u2192 [default]RCP1/COMP 5/* OPC leaves for COMP[7] test)"
+    },
+    "name": "COMP 5",
+    "typeId": "Devices/Compressor",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Alm",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 5/Alm",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Amps",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 5/Amps",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "AutoEN",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 5/AutoEN",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "CP_Mode",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 5/CP_Mode",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Color",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 5/Color",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Comm",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 5/Comm",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Cutout",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 5/Cutout",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "DisP",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 5/DisP",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "FLA",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 5/FLA",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Fail_Timer_PRE",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 5/Fail_Timer/PRE",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Failed",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 5/Failed",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Min_Runtime_Set",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 5/Min_Runtime_Set",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Rung",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 5/Rung",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "TotalRuntime",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 5/TotalRuntime",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "SVP",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 5/SVP",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "SV_Mode",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 5/SV_Mode",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Started",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 5/Started",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Start_Req",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 5/Start_Req",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Stop_Req",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 5/Stop_Req",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Interlock",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "MSet_Bypass00",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 5/Interlock/MSet_Bypass00",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass01",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 5/Interlock/MSet_Bypass01",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass02",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 5/Interlock/MSet_Bypass02",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass03",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 5/Interlock/MSet_Bypass03",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass04",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 5/Interlock/MSet_Bypass04",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass05",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 5/Interlock/MSet_Bypass05",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass06",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 5/Interlock/MSet_Bypass06",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass07",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 5/Interlock/MSet_Bypass07",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass08",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 5/Interlock/MSet_Bypass08",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass09",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 5/Interlock/MSet_Bypass09",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass10",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 5/Interlock/MSet_Bypass10",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass11",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 5/Interlock/MSet_Bypass11",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass12",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 5/Interlock/MSet_Bypass12",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass13",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 5/Interlock/MSet_Bypass13",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass14",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 5/Interlock/MSet_Bypass14",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass15",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 5/Interlock/MSet_Bypass15",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Sts_BypActive",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 5/Interlock/Sts_BypActive",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Sts_NBIntlkOK",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 5/Interlock/Sts_NBIntlkOK",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Sts_IntlkOK",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 5/Interlock/Sts_IntlkOK",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "OCmd_Reset",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 5/Interlock/OCmd_Reset",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Rdy_Reset",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 5/Interlock/Rdy_Reset",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Sts_Intlk",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 5/Interlock/Sts_Intlk",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Sts_FirstOut",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 5/Interlock/Sts_FirstOut",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Cfg_Bypassable",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 5/Interlock/Cfg_Bypassable",
+                "valueSource": "reference"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "COMP 6",
+      "longDescription": "screw compressor (Devices HMI layer; Value refs \u2192 [default]RCP1/COMP 6/* OPC leaves for COMP[7] test)"
+    },
+    "name": "COMP 6",
+    "typeId": "Devices/Compressor",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Alm",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 6/Alm",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Amps",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 6/Amps",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "AutoEN",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 6/AutoEN",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "CP_Mode",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 6/CP_Mode",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Color",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 6/Color",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Comm",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 6/Comm",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Cutout",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 6/Cutout",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "DisP",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 6/DisP",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "FLA",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 6/FLA",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Fail_Timer_PRE",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 6/Fail_Timer/PRE",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Failed",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 6/Failed",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Min_Runtime_Set",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 6/Min_Runtime_Set",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Rung",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 6/Rung",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "TotalRuntime",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 6/TotalRuntime",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "SVP",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 6/SVP",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "SV_Mode",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 6/SV_Mode",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Started",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 6/Started",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Start_Req",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 6/Start_Req",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Stop_Req",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 6/Stop_Req",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Interlock",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "MSet_Bypass00",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 6/Interlock/MSet_Bypass00",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass01",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 6/Interlock/MSet_Bypass01",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass02",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 6/Interlock/MSet_Bypass02",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass03",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 6/Interlock/MSet_Bypass03",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass04",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 6/Interlock/MSet_Bypass04",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass05",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 6/Interlock/MSet_Bypass05",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass06",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 6/Interlock/MSet_Bypass06",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass07",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 6/Interlock/MSet_Bypass07",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass08",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 6/Interlock/MSet_Bypass08",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass09",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 6/Interlock/MSet_Bypass09",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass10",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 6/Interlock/MSet_Bypass10",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass11",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 6/Interlock/MSet_Bypass11",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass12",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 6/Interlock/MSet_Bypass12",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass13",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 6/Interlock/MSet_Bypass13",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass14",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 6/Interlock/MSet_Bypass14",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass15",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 6/Interlock/MSet_Bypass15",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Sts_BypActive",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 6/Interlock/Sts_BypActive",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Sts_NBIntlkOK",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 6/Interlock/Sts_NBIntlkOK",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Sts_IntlkOK",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 6/Interlock/Sts_IntlkOK",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "OCmd_Reset",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 6/Interlock/OCmd_Reset",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Rdy_Reset",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 6/Interlock/Rdy_Reset",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Sts_Intlk",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 6/Interlock/Sts_Intlk",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Sts_FirstOut",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 6/Interlock/Sts_FirstOut",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Cfg_Bypassable",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 6/Interlock/Cfg_Bypassable",
+                "valueSource": "reference"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "COMP 7",
+      "longDescription": "screw compressor (Devices HMI layer; Value refs \u2192 [default]RCP1/COMP 7/* OPC leaves for COMP[7] test)"
+    },
+    "name": "COMP 7",
+    "typeId": "Devices/Compressor",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Alm",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 7/Alm",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Amps",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 7/Amps",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "AutoEN",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 7/AutoEN",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "CP_Mode",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 7/CP_Mode",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Color",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 7/Color",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Comm",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 7/Comm",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Cutout",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 7/Cutout",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "DisP",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 7/DisP",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "FLA",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 7/FLA",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Fail_Timer_PRE",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 7/Fail_Timer/PRE",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Failed",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 7/Failed",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Min_Runtime_Set",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 7/Min_Runtime_Set",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Rung",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 7/Rung",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "TotalRuntime",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 7/TotalRuntime",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "SVP",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 7/SVP",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "SV_Mode",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 7/SV_Mode",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Started",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 7/Started",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Start_Req",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 7/Start_Req",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Stop_Req",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "sourceTagPath": "[default]RCP1/COMP 7/Stop_Req",
+            "valueSource": "reference"
+          }
+        ]
+      },
+      {
+        "name": "Interlock",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "MSet_Bypass00",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 7/Interlock/MSet_Bypass00",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass01",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 7/Interlock/MSet_Bypass01",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass02",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 7/Interlock/MSet_Bypass02",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass03",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 7/Interlock/MSet_Bypass03",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass04",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 7/Interlock/MSet_Bypass04",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass05",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 7/Interlock/MSet_Bypass05",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass06",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 7/Interlock/MSet_Bypass06",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass07",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 7/Interlock/MSet_Bypass07",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass08",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 7/Interlock/MSet_Bypass08",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass09",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 7/Interlock/MSet_Bypass09",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass10",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 7/Interlock/MSet_Bypass10",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass11",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 7/Interlock/MSet_Bypass11",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass12",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 7/Interlock/MSet_Bypass12",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass13",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 7/Interlock/MSet_Bypass13",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass14",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 7/Interlock/MSet_Bypass14",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "MSet_Bypass15",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 7/Interlock/MSet_Bypass15",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Sts_BypActive",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 7/Interlock/Sts_BypActive",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Sts_NBIntlkOK",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 7/Interlock/Sts_NBIntlkOK",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Sts_IntlkOK",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 7/Interlock/Sts_IntlkOK",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "OCmd_Reset",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 7/Interlock/OCmd_Reset",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Rdy_Reset",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 7/Interlock/Rdy_Reset",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Sts_Intlk",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 7/Interlock/Sts_Intlk",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Sts_FirstOut",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 7/Interlock/Sts_FirstOut",
+                "valueSource": "reference"
+              }
+            ]
+          },
+          {
+            "name": "Cfg_Bypassable",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "sourceTagPath": "[default]RCP1/COMP 7/Interlock/Cfg_Bypassable",
+                "valueSource": "reference"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
