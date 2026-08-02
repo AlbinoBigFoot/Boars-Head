@@ -6298,6 +6298,77 @@
                 "valueSource": "reference"
               }
             ]
+          },
+          {
+            "name": "Cfg_CondTxt00",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "valueSource": "memory",
+                "dataType": "String",
+                "value": "Open Travel Timeout",
+                "name": "Value",
+                "tagType": "AtomicTag"
+              }
+            ]
+          },
+          {
+            "name": "Cfg_CondTxt01",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "valueSource": "memory",
+                "dataType": "String",
+                "value": "Close Travel Timeout",
+                "name": "Value",
+                "tagType": "AtomicTag"
+              }
+            ]
+          },
+          {
+            "name": "Cfg_CondTxt02",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "valueSource": "memory",
+                "dataType": "String",
+                "value": "Not in Auto",
+                "name": "Value",
+                "tagType": "AtomicTag"
+              }
+            ]
+          },
+          {
+            "name": "Cfg_CondTxt03",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "valueSource": "memory",
+                "dataType": "String",
+                "value": "Permissive Lost",
+                "name": "Value",
+                "tagType": "AtomicTag"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "String",
+        "value": "SO",
+        "name": "valveType",
+        "tagType": "AtomicTag"
+      },
+      {
+        "name": "Cmd",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Cmd_Open",
+            "name": "Value",
+            "tagType": "AtomicTag"
           }
         ]
       }
