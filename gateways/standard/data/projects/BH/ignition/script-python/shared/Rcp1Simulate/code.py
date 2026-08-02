@@ -576,9 +576,18 @@ def toMemory(tagPaths=None):
 
 
 def _seedInterlockDemo():
-	"""Named CondTxt + status bits for Main Liq SV Interlocks faceplate demo."""
-	plantIlk = "[default]Plant/Machine Room/Valves/Main Liq SV/Interlock"
+	"""Named CondTxt + status bits + Alm_* for Main Liq SV faceplate demos."""
+	# Prefer Valves/ folder layout; fall back to flat Machine Room (main).
+	plantBase = "[default]Plant/Machine Room/Valves/Main Liq SV"
+	try:
+		qv = system.tag.readBlocking([plantBase + "/Failed/Value"])
+		if str(qv[0].quality) != "Good":
+			plantBase = "[default]Plant/Machine Room/Main Liq SV"
+	except Exception:
+		plantBase = "[default]Plant/Machine Room/Main Liq SV"
+	plantIlk = plantBase + "/Interlock"
 	rcpIlk = "[default]RCP1/Main Liq SV/Interlock"
+	rcpBase = "[default]RCP1/Main Liq SV"
 	conds = {
 		"00": "Open Travel Timeout",
 		"01": "Close Travel Timeout",
@@ -599,9 +608,12 @@ def _seedInterlockDemo():
 		rcpIlk + "/Rdy_Reset",
 	])
 	vals.extend([5, False, True, 1, 15, True])
+	for alm in ("Alm_IOFault", "Alm_FullStall", "Alm_TransitStall", "Alm_IntlkTrip"):
+		paths.append("%s/%s" % (rcpBase, alm))
+		vals.append(False)
 	try:
 		system.tag.writeBlocking(paths, vals)
-		logger.info("seeded Main Liq SV interlock demo (%d tags)" % len(paths))
+		logger.info("seeded Main Liq SV interlock/alarm demo (%d tags)" % len(paths))
 	except Exception as e:
 		logger.warn("interlock demo seed failed: %s" % str(e))
 

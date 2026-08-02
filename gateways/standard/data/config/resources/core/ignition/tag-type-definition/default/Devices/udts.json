@@ -210,15 +210,6 @@
                 }
               ]
             },
-            "alarms": [
-              {
-                "mode": "Equality",
-                "setpointA": 1.0,
-                "name": "Alarm",
-                "priority": "High",
-                "enabled": true
-              }
-            ],
             "value": false,
             "name": "Value",
             "tagType": "AtomicTag"
@@ -249,15 +240,6 @@
                 }
               ]
             },
-            "alarms": [
-              {
-                "mode": "Equality",
-                "setpointA": 1.0,
-                "name": "Alarm",
-                "priority": "High",
-                "enabled": true
-              }
-            ],
             "value": false,
             "name": "Value",
             "tagType": "AtomicTag"
@@ -452,6 +434,162 @@
             "formatString": "#0.0",
             "value": 2.5,
             "engUnit": "s",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "I/O Fault",
+          "longDescription": "P_ValveSO Alm_IOFault"
+        },
+        "name": "Alm_IOFault",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "I/O Fault",
+              "longDescription": "P_ValveSO Alm_IOFault",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "alarms": [
+              {
+                "mode": "Equality",
+                "setpointA": 1.0,
+                "name": "Alarm",
+                "priority": "High",
+                "enabled": true
+              }
+            ],
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Full Stall",
+          "longDescription": "P_ValveSO Alm_FullStall"
+        },
+        "name": "Alm_FullStall",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Full Stall",
+              "longDescription": "P_ValveSO Alm_FullStall",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "alarms": [
+              {
+                "mode": "Equality",
+                "setpointA": 1.0,
+                "name": "Alarm",
+                "priority": "High",
+                "enabled": true
+              }
+            ],
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Transit Stall",
+          "longDescription": "P_ValveSO Alm_TransitStall"
+        },
+        "name": "Alm_TransitStall",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Transit Stall",
+              "longDescription": "P_ValveSO Alm_TransitStall",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "alarms": [
+              {
+                "mode": "Equality",
+                "setpointA": 1.0,
+                "name": "Alarm",
+                "priority": "High",
+                "enabled": true
+              }
+            ],
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Interlock Trip",
+          "longDescription": "P_ValveSO Alm_IntlkTrip"
+        },
+        "name": "Alm_IntlkTrip",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Interlock Trip",
+              "longDescription": "P_ValveSO Alm_IntlkTrip",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "alarms": [
+              {
+                "mode": "Equality",
+                "setpointA": 1.0,
+                "name": "Alarm",
+                "priority": "Medium",
+                "enabled": true
+              }
+            ],
+            "value": false,
             "name": "Value",
             "tagType": "AtomicTag"
           }
@@ -1640,7 +1778,7 @@
         "tagType": "UdtInstance",
         "tags": [
           {
-            "engUnit": "\u00b0F",
+            "engUnit": "°F",
             "name": "Value",
             "tagType": "AtomicTag"
           }
@@ -2857,7 +2995,7 @@
   {
     "metadata": {
       "shortDescription": "tank / vessel",
-      "longDescription": "Recirculator/Accumulator-style vessel (PLC-backed): Level % + SP, HH/H/L/LL marks + SP, LSH/LSL, optional Pressure; no Config/Interlock (vessel has no P_Intlk \u2014 pump interlocks live on Devices/Pump)"
+      "longDescription": "Recirculator/Accumulator-style vessel (PLC-backed): Level % + SP, HH/H/L/LL marks + SP, LSH/LSL, optional Pressure; no Config/Interlock (vessel has no P_Intlk — pump interlocks live on Devices/Pump)"
     },
     "name": "Tank",
     "tagType": "UdtType",
@@ -3841,7 +3979,7 @@
             "historyEnabled": true,
             "formatString": "#0.0",
             "value": 2.0,
-            "engUnit": "\u00b0F",
+            "engUnit": "°F",
             "sampleMode": "OnChange",
             "name": "Value",
             "tagType": "AtomicTag"
@@ -3950,7 +4088,7 @@
       {
         "metadata": {
           "shortDescription": "Fan 2 VFD",
-          "longDescription": "Fan 2 Variable Frequency Drive (disabled \u2014 BH plant is single-fan EV-01..16)"
+          "longDescription": "Fan 2 Variable Frequency Drive (disabled — BH plant is single-fan EV-01..16)"
         },
         "name": "Fan 2",
         "typeId": "Devices/VFD",
@@ -3960,7 +4098,7 @@
       {
         "metadata": {
           "shortDescription": "Fan 3 VFD",
-          "longDescription": "Fan 3 Variable Frequency Drive (disabled \u2014 BH plant is single-fan EV-01..16)"
+          "longDescription": "Fan 3 Variable Frequency Drive (disabled — BH plant is single-fan EV-01..16)"
         },
         "name": "Fan 3",
         "typeId": "Devices/VFD",
@@ -4238,7 +4376,7 @@
         "tagType": "UdtInstance",
         "tags": [
           {
-            "engUnit": "\u00b0F",
+            "engUnit": "°F",
             "name": "Value",
             "tagType": "AtomicTag"
           }
