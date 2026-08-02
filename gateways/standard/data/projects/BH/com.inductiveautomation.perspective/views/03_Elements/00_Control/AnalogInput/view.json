@@ -176,8 +176,9 @@
           "name": "Label"
         },
         "position": {
-          "grow": 1,
-          "shrink": 0
+          "grow": 0,
+          "shrink": 1,
+          "basis": "auto"
         },
         "propConfig": {
           "position.display": {
@@ -209,7 +210,7 @@
         },
         "props": {
           "style": {
-            "classes": "font-label"
+            "classes": "font-label config-input-label"
           }
         },
         "type": "ia.display.label"
@@ -222,7 +223,8 @@
           }
         },
         "position": {
-          "basis": "55px"
+          "basis": "64px",
+          "shrink": 0
         },
         "propConfig": {
           "custom.editedValue": {
@@ -234,7 +236,7 @@
             },
             "onChange": {
               "enabled": null,
-              "script": "\tif currentValue.value != previousValue.value:\n\t\tif session.custom.ReadOnly:\n\t\t\treturn\n\t\ttagPath = self.view.params.tagPath\n\t\tif system.tag.exists(tagPath):\n\t\t\tsystem.tag.writeBlocking([tagPath], [currentValue.value])"
+              "script": "\tif currentValue.value != previousValue.value:\n\t\tif self.session.custom.ReadOnly:\n\t\t\treturn\n\t\ttagPath = self.view.params.tagPath\n\t\tif system.tag.exists(tagPath):\n\t\t\tsystem.tag.writeBlocking([tagPath], [currentValue.value])"
             }
           },
           "meta.tooltip.enabled": {
@@ -305,6 +307,7 @@
           "name": "Value"
         },
         "position": {
+          "basis": "48px",
           "shrink": 0
         },
         "propConfig": {
@@ -334,7 +337,9 @@
           }
         },
         "props": {
-          "style": {}
+          "style": {
+            "textAlign": "right"
+          }
         },
         "type": "ia.display.label"
       },
@@ -343,6 +348,7 @@
           "name": "EU"
         },
         "position": {
+          "basis": "auto",
           "shrink": 0
         },
         "propConfig": {
@@ -367,7 +373,7 @@
           "dom": {
             "onClick": {
               "config": {
-                "script": "\tif self.view.params.permission and not session.custom.ReadOnly:\n\t\tif self.view.custom.edit:\n\t\t\tself.view.custom.edit = False\n\t\telse:\n\t\t\tself.view.custom.edit = True"
+                "script": "\tif self.view.params.permission and not self.session.custom.ReadOnly:\n\t\tif self.view.custom.edit:\n\t\t\tself.view.custom.edit = False\n\t\telse:\n\t\t\tself.view.custom.edit = True"
               },
               "scope": "G",
               "type": "script"
@@ -410,9 +416,12 @@
     },
     "props": {
       "alignItems": "center",
-      "justify": "center",
+      "justify": "flex-start",
       "style": {
-        "overflow": "visible"
+        "classes": "config-input-row",
+        "overflow": "visible",
+        "gap": "8px",
+        "width": "100%"
       }
     },
     "type": "ia.container.flex",

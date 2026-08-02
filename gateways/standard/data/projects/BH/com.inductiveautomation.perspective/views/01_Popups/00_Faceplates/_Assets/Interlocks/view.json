@@ -74,10 +74,13 @@
     "props": {
       "direction": "column",
       "style": {
-        "classes": "faceplate-section",
+        "classes": "faceplate-section faceplate-interlocks",
         "gap": "8px",
         "overflow": "auto",
-        "padding": "4px"
+        "padding": "4px",
+        "minHeight": "0px",
+        "width": "100%",
+        "height": "100%"
       }
     },
     "children": [
@@ -86,140 +89,39 @@
         "meta": {
           "name": "Header"
         },
+        "position": {
+          "shrink": 0,
+          "grow": 0
+        },
         "props": {
-          "direction": "column",
+          "direction": "row",
+          "alignItems": "center",
+          "justify": "flex-start",
           "style": {
-            "classes": "faceplate-interlock-header faceplate-section-card",
-            "gap": "4px",
-            "padding": "8px"
+            "classes": "faceplate-interlock-header",
+            "gap": "8px",
+            "padding": "4px 0px",
+            "overflow": "auto",
+            "width": "100%",
+            "flexShrink": 0
           }
         },
         "children": [
-          {
-            "type": "ia.display.label",
-            "meta": {
-              "name": "HdrTitle"
-            },
-            "props": {
-              "text": "Interlocks",
-              "style": {
-                "classes": "faceplate-section-title font-label"
-              }
-            }
-          },
-          {
-            "type": "ia.container.flex",
-            "meta": {
-              "name": "AggRow"
-            },
-            "props": {
-              "direction": "row",
-              "style": {
-                "gap": "12px",
-                "flexWrap": "wrap"
-              }
-            },
-            "children": [
-              {
-                "type": "ia.display.label",
-                "meta": {
-                  "name": "OkAgg"
-                },
-                "propConfig": {
-                  "props.text": {
-                    "binding": {
-                      "config": {
-                        "expression": "'Intlk OK: ' + if(tag({view.params.tagPath} + '/Interlock/Sts_IntlkOK/Value'), 'Yes', 'No')"
-                      },
-                      "type": "expr"
-                    }
-                  }
-                },
-                "props": {
-                  "style": {
-                    "classes": "font-label"
-                  },
-                  "text": "Intlk OK: \u2014"
-                }
-              },
-              {
-                "type": "ia.display.label",
-                "meta": {
-                  "name": "NbOkAgg"
-                },
-                "propConfig": {
-                  "props.text": {
-                    "binding": {
-                      "config": {
-                        "expression": "'NB OK: ' + if(tag({view.params.tagPath} + '/Interlock/Sts_NBIntlkOK/Value'), 'Yes', 'No')"
-                      },
-                      "type": "expr"
-                    }
-                  }
-                },
-                "props": {
-                  "style": {
-                    "classes": "font-label"
-                  },
-                  "text": "NB OK: \u2014"
-                }
-              },
-              {
-                "type": "ia.display.label",
-                "meta": {
-                  "name": "BypAgg"
-                },
-                "propConfig": {
-                  "props.text": {
-                    "binding": {
-                      "config": {
-                        "expression": "'Bypass: ' + if(tag({view.params.tagPath} + '/Interlock/Sts_BypActive/Value'), 'Active', 'Off')"
-                      },
-                      "type": "expr"
-                    }
-                  }
-                },
-                "props": {
-                  "style": {
-                    "classes": "font-label"
-                  },
-                  "text": "Bypass: \u2014"
-                }
-              },
-              {
-                "type": "ia.display.label",
-                "meta": {
-                  "name": "FoAgg"
-                },
-                "propConfig": {
-                  "props.text": {
-                    "binding": {
-                      "config": {
-                        "expression": "'FirstOut: ' + if(tag({view.params.tagPath} + '/Interlock/Sts_FirstOut/Value'), 'Yes', 'No')"
-                      },
-                      "type": "expr"
-                    }
-                  }
-                },
-                "props": {
-                  "style": {
-                    "classes": "font-label"
-                  },
-                  "text": "FirstOut: \u2014"
-                }
-              }
-            ]
-          },
           {
             "type": "ia.input.button",
             "meta": {
               "name": "ResetBtn"
             },
+            "position": {
+              "basis": "100px",
+              "shrink": 0,
+              "grow": 0
+            },
             "events": {
               "component": {
                 "onActionPerformed": {
                   "config": {
-                    "script": "\tif session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tp = base + '/Interlock/OCmd_Reset/Value'\n\tsystem.tag.writeBlocking([p], [True])"
+                    "script": "\tif self.session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tp = base + '/Interlock/OCmd_Reset/Value'\n\tsystem.tag.writeBlocking([p], [True])"
                   },
                   "scope": "G",
                   "type": "script"
@@ -239,7 +141,8 @@
             "props": {
               "text": "Reset",
               "style": {
-                "classes": "faceplate-cmd-btn font-label"
+                "classes": "faceplate-cmd-btn font-label",
+                "width": "100%"
               }
             }
           }
@@ -250,12 +153,20 @@
         "meta": {
           "name": "ColHdr"
         },
+        "position": {
+          "shrink": 0,
+          "grow": 0
+        },
         "props": {
           "direction": "row",
+          "alignItems": "center",
           "style": {
             "gap": "8px",
-            "padding": "0 8px",
-            "classes": "faceplate-interlock-colhdr"
+            "padding": "4px 12px",
+            "classes": "faceplate-interlock-colhdr",
+            "width": "100%",
+            "overflow": "auto",
+            "flexShrink": 0
           }
         },
         "children": [
@@ -265,7 +176,8 @@
               "name": "HCond"
             },
             "position": {
-              "grow": 1
+              "grow": 1,
+              "basis": "0px"
             },
             "props": {
               "text": "Condition",
@@ -280,12 +192,15 @@
               "name": "HSts"
             },
             "position": {
-              "basis": "72px"
+              "basis": "56px",
+              "shrink": 0
             },
             "props": {
               "text": "Status",
               "style": {
-                "classes": "font-label"
+                "classes": "font-label",
+                "textAlign": "center",
+                "overflow": "auto"
               }
             }
           },
@@ -295,16 +210,57 @@
               "name": "HByp"
             },
             "position": {
-              "basis": "28px"
+              "basis": "36px",
+              "shrink": 0
             },
             "props": {
               "text": "Byp",
               "style": {
-                "classes": "font-label"
+                "classes": "font-label",
+                "textAlign": "center",
+                "overflow": "auto"
               }
             }
           }
         ]
+      },
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "EmptyChannels"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "struct": {
+                  "tagPath": "{view.params.tagPath}",
+                  "sts": "tag({view.params.tagPath} + '/Interlock/Sts_Intlk/Value')",
+                  "c0": "tag({view.params.tagPath} + '/Interlock/Cfg_CondTxt00/Value')"
+                },
+                "waitOnAll": true
+              },
+              "transforms": [
+                {
+                  "type": "script",
+                  "code": "\tbase = value.get('tagPath') or ''\n\tif not base:\n\t\treturn False\n\tilk = base + '/Interlock'\n\ttry:\n\t\tsts = int(value.get('sts') or 0)\n\t\tc0 = value.get('c0')\n\t\tif c0 is not None and str(c0).strip() != '':\n\t\t\treturn False\n\t\tif sts:\n\t\t\treturn False\n\t\tpaths = [ilk + '/Cfg_CondTxt%02d/Value' % i for i in range(1, 16)]\n\t\tqv = system.tag.readBlocking(paths)\n\t\tfor q in qv:\n\t\t\ttxt = q.value\n\t\t\tif txt is not None and str(txt).strip() != '':\n\t\t\t\treturn False\n\t\treturn True\n\texcept:\n\t\treturn True"
+                }
+              ],
+              "type": "expr-struct"
+            }
+          }
+        },
+        "props": {
+          "text": "No named interlock conditions configured for this device.",
+          "style": {
+            "classes": "font-label faceplate-config-empty",
+            "padding": "8px",
+            "fontStyle": "italic"
+          }
+        }
       },
       {
         "type": "ia.display.flex-repeater",
@@ -312,20 +268,24 @@
           "name": "Channels"
         },
         "position": {
-          "grow": 1
+          "grow": 1,
+          "shrink": 1,
+          "basis": "0px"
         },
         "propConfig": {
           "props.instances": {
             "binding": {
               "config": {
                 "struct": {
-                  "tagPath": "{view.params.tagPath}"
+                  "tagPath": "{view.params.tagPath}",
+                  "sts": "tag({view.params.tagPath} + '/Interlock/Sts_Intlk/Value')",
+                  "c0": "tag({view.params.tagPath} + '/Interlock/Cfg_CondTxt00/Value')"
                 },
                 "waitOnAll": true
               },
               "transforms": [
                 {
-                  "code": "\tbase = value.get('tagPath') or ''\n\tilk = (base + '/Interlock') if base else ''\n\tinstances = []\n\tfor i in range(16):\n\t\tinstances.append({\n\t\t\t'instanceStyle': {'classes': ''},\n\t\t\t'instancePosition': {},\n\t\t\t'interlockPath': ilk,\n\t\t\t'channel': i\n\t\t})\n\treturn instances",
+                  "code": "\tbase = value.get('tagPath') or ''\n\tilk = (base + '/Interlock') if base else ''\n\tinstances = []\n\tif not ilk:\n\t\treturn instances\n\ttry:\n\t\tsts = int(system.tag.readBlocking([ilk + '/Sts_Intlk/Value'])[0].value or 0)\n\texcept:\n\t\tsts = 0\n\ttry:\n\t\tpaths = [ilk + '/Cfg_CondTxt%02d/Value' % i for i in range(16)]\n\t\tqv = system.tag.readBlocking(paths)\n\texcept:\n\t\tqv = [None] * 16\n\tfor i in range(16):\n\t\ttxt = qv[i].value if qv[i] is not None else ''\n\t\tlabel_ok = bool(txt) and str(txt).strip() != ''\n\t\tbit = bool(sts & (1 << i))\n\t\tif not (bit or label_ok):\n\t\t\tcontinue\n\t\tinstances.append({\n\t\t\t'instanceStyle': {'classes': 'faceplate-interlock-instance'},\n\t\t\t'instancePosition': {'basis': '40px', 'shrink': 0, 'grow': 0},\n\t\t\t'interlockPath': ilk,\n\t\t\t'channel': i\n\t\t})\n\treturn instances",
                   "type": "script"
                 }
               ],
@@ -337,11 +297,17 @@
           "direction": "column",
           "path": "01_Popups/00_Faceplates/_Assets/InterlockRow",
           "elementPosition": {
-            "grow": 0
+            "grow": 0,
+            "shrink": 0,
+            "basis": "40px"
           },
           "useDefaultViewWidth": false,
+          "useDefaultViewHeight": true,
           "style": {
-            "overflow": "auto"
+            "classes": "faceplate-interlock-channels",
+            "overflow": "auto",
+            "minHeight": "0px",
+            "width": "100%"
           }
         }
       }
