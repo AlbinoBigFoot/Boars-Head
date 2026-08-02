@@ -432,16 +432,23 @@
         "children": [
           {
             "meta": {
-              "name": "Faceplate"
+              "name": "FaceplateIcon"
             },
             "position": {
               "basis": "30px",
               "shrink": 0
             },
             "props": {
-              "path": "03_Elements/01_Status/Icons/Faceplate"
+              "path": "material/fullscreen",
+              "style": {
+                "height": "20px",
+                "minHeight": "20px",
+                "minWidth": "20px",
+                "width": "20px",
+                "marginLeft": "5px"
+              }
             },
-            "type": "ia.display.view"
+            "type": "ia.display.icon"
           },
           {
             "meta": {
@@ -483,7 +490,8 @@
         "props": {
           "style": {
             "cursor": "help",
-            "overflow": "visible"
+            "overflow": "visible",
+            "alignItems": "center"
           }
         },
         "type": "ia.container.flex"
