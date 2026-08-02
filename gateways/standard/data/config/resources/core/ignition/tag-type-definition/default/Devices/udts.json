@@ -2,7 +2,7 @@
   {
     "metadata": {
       "shortDescription": "valve",
-      "longDescription": "solenoid / single-output valve (Devices HMI layer; PLC source P_ValveSO / MAIN_LIQ_CV5)"
+      "longDescription": "Valve HMI layer; valveType SO/MO/MP/C selects command UI (SO=Cmd 0/1, MO=Cmd_Open/Cmd_Close, MP/C=Cmd_Position)"
     },
     "name": "Valve",
     "tagType": "UdtType",
@@ -126,6 +126,65 @@
             "tagType": "AtomicTag"
           }
         ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Cmd",
+          "longDescription": "SO single digital command (1=Open, 0=Close)"
+        },
+        "name": "Cmd",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Cmd",
+              "longDescription": "SO single digital command (1=Open, 0=Close)",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Cmd Position",
+          "longDescription": "MP/C position command 0-100%"
+        },
+        "name": "Cmd_Position",
+        "typeId": "_Root/Analog",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "formatString": "#0.0",
+            "value": 0.0,
+            "engUnit": "%",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "valve type",
+          "longDescription": "Rockwell AOI class: SO | MO | MP | C (drives faceplate command UI)"
+        },
+        "valueSource": "memory",
+        "dataType": "String",
+        "value": "SO",
+        "name": "valveType",
+        "tagType": "AtomicTag"
       },
       {
         "metadata": {
@@ -379,13 +438,17 @@
       {
         "metadata": {
           "shortDescription": "Travel Time",
-          "longDescription": "Valve travel / transit time (engUnit s)"
+          "longDescription": "Transit stall timeout (PLC Cfg_TransitStallT); used by TransitStall alarm"
         },
         "name": "TravelTime",
         "typeId": "_Root/Analog",
         "tagType": "UdtInstance",
         "tags": [
           {
+            "metadata": {
+              "shortDescription": "Travel Time",
+              "longDescription": "Transit stall timeout (PLC Cfg_TransitStallT); used by TransitStall alarm"
+            },
             "formatString": "#0.0",
             "value": 2.5,
             "engUnit": "s",
@@ -1577,7 +1640,7 @@
         "tagType": "UdtInstance",
         "tags": [
           {
-            "engUnit": "°F",
+            "engUnit": "\u00b0F",
             "name": "Value",
             "tagType": "AtomicTag"
           }
@@ -2794,7 +2857,7 @@
   {
     "metadata": {
       "shortDescription": "tank / vessel",
-      "longDescription": "Recirculator/Accumulator-style vessel (PLC-backed): Level % + SP, HH/H/L/LL marks + SP, LSH/LSL, optional Pressure; no Config/Interlock (vessel has no P_Intlk — pump interlocks live on Devices/Pump)"
+      "longDescription": "Recirculator/Accumulator-style vessel (PLC-backed): Level % + SP, HH/H/L/LL marks + SP, LSH/LSL, optional Pressure; no Config/Interlock (vessel has no P_Intlk \u2014 pump interlocks live on Devices/Pump)"
     },
     "name": "Tank",
     "tagType": "UdtType",
@@ -3778,7 +3841,7 @@
             "historyEnabled": true,
             "formatString": "#0.0",
             "value": 2.0,
-            "engUnit": "°F",
+            "engUnit": "\u00b0F",
             "sampleMode": "OnChange",
             "name": "Value",
             "tagType": "AtomicTag"
@@ -3887,7 +3950,7 @@
       {
         "metadata": {
           "shortDescription": "Fan 2 VFD",
-          "longDescription": "Fan 2 Variable Frequency Drive (disabled — BH plant is single-fan EV-01..16)"
+          "longDescription": "Fan 2 Variable Frequency Drive (disabled \u2014 BH plant is single-fan EV-01..16)"
         },
         "name": "Fan 2",
         "typeId": "Devices/VFD",
@@ -3897,7 +3960,7 @@
       {
         "metadata": {
           "shortDescription": "Fan 3 VFD",
-          "longDescription": "Fan 3 Variable Frequency Drive (disabled — BH plant is single-fan EV-01..16)"
+          "longDescription": "Fan 3 Variable Frequency Drive (disabled \u2014 BH plant is single-fan EV-01..16)"
         },
         "name": "Fan 3",
         "typeId": "Devices/VFD",
@@ -4175,7 +4238,7 @@
         "tagType": "UdtInstance",
         "tags": [
           {
-            "engUnit": "°F",
+            "engUnit": "\u00b0F",
             "name": "Value",
             "tagType": "AtomicTag"
           }
