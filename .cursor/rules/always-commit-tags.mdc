@@ -1,0 +1,23 @@
+---
+description: Always commit Ignition tag definitions with related work
+alwaysApply: true
+---
+
+# Always commit tags
+
+When tag definitions change under the Ignition config tree, **always stage and commit them** with the related work. Do not leave tag edits as local-only “scan churn.”
+
+## Include
+
+- `gateways/*/data/config/resources/core/ignition/tag-definition/**`
+- `gateways/*/data/config/resources/core/ignition/tag-type-definition/**`
+- RCP1 / Plant / Devices / Units UDT and instance files (`tags.json`, `udts.json`, `unary-resource.json`, nested Interlock folders, etc.)
+
+## Exclude (not project tags)
+
+- `tag-definition/System/Gateway/**` StoreAndForward / auditing noise
+- Secrets (`.env`, `.ignition-scan.json`)
+
+## Practice
+
+If SIM or config-scan rewrites `udts.json` ↔ `tags.json` + `unary-resource.json`, commit the full consistent set (delete old file + add new + unary) so the repo matches the working gateway.
