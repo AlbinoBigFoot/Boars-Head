@@ -4721,26 +4721,6 @@
                     },
                     "items": [],
                     "label": "Audit Log"
-                  },
-                  {
-                    "data": {
-                      "tagPath": "",
-                      "viewPath": "98_Configuration/Tools/L5K/Parser",
-                      "page": "/tools/l5k-parser",
-                      "action": "page"
-                    },
-                    "expanded": false,
-                    "icon": {
-                      "color": "",
-                      "path": "material/build",
-                      "style": {
-                        "classes": "",
-                        "height": "18px",
-                        "width": "18px"
-                      }
-                    },
-                    "items": [],
-                    "label": "L5K Parser"
                   }
                 ],
                 "label": "Operations"
@@ -4983,7 +4963,7 @@
             },
             "onChange": {
               "enabled": null,
-              "script": "\tif origin == \"Binding\" and currentValue.value is not None:\n\t\tif self.view.custom.lastClickPath:\n\t\t\tself.view.custom.lastClickPath = ''\n\t\t\treturn\n\t\tif currentValue.value != self.props.selection[0]:\n\t\t\tselection = currentValue.value\n\t\t\titems = self.props.items\n\t\t\tif selection is not None:\n\t\t\t\ttry:\n\t\t\t\t\tself.props.selection[0] = selection\n\t\t\t\t\tindexes = selection.split('/')\n\t\t\t\t\tfor index in indexes:\n\t\t\t\t\t\titem = items[int(index)]\n\t\t\t\t\t\titem.expanded = True\n\t\t\t\t\t\titems = item.items\n\t\t\t\texcept IndexError:\n\t\t\t\t\tpass"
+              "script": "\tif origin == \"Binding\" and currentValue.value is not None:\n\t\tif self.view.custom.lastClickPath:\n\t\t\tself.view.custom.lastClickPath = \"\"\n\t\t\treturn\n\t\tselection = currentValue.value\n\t\tcurrent_sel = None\n\t\ttry:\n\t\t\tsel = self.props.selection\n\t\t\tif sel is not None and len(sel) > 0:\n\t\t\t\tcurrent_sel = sel[0]\n\t\texcept:\n\t\t\tcurrent_sel = None\n\t\tif selection == current_sel:\n\t\t\treturn\n\t\titems = self.props.items\n\t\tif selection is None or items is None:\n\t\t\treturn\n\t\ttry:\n\t\t\tself.props.selection = [selection]\n\t\t\tindexes = str(selection).split(\"/\")\n\t\t\tfor index in indexes:\n\t\t\t\tif index == \"\":\n\t\t\t\t\tcontinue\n\t\t\t\titem = items[int(index)]\n\t\t\t\titem.expanded = True\n\t\t\t\titems = item.items\n\t\texcept:\n\t\t\tpass"
             }
           },
           "props.items": {
