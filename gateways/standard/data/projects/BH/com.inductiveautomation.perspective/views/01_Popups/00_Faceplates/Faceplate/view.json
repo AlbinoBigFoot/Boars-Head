@@ -218,6 +218,39 @@
               "text": "Web GUI"
             },
             "type": "ia.input.button"
+          },
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\ttagPath = str(self.view.params.tagPath or '')\n\tlabel = str(self.view.custom.label or '')\n\tkey = tagPath or label\n\tfor pid in [\n\t\t'comp-fp-%s' % key,\n\t\t'nav-fp-%s' % key,\n\t\t'fp-%s' % key,\n\t\t'pump-fp-%s' % key,\n\t\tkey,\n\t]:\n\t\ttry:\n\t\t\tsystem.perspective.closePopup(pid)\n\t\texcept:\n\t\t\tpass\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Close"
+            },
+            "position": {
+              "basis": "36px",
+              "shrink": 0
+            },
+            "props": {
+              "path": "material/close",
+              "style": {
+                "classes": "color-icon container-icon faceplate-close",
+                "cursor": "pointer",
+                "minHeight": 36,
+                "minWidth": 36,
+                "padding": 4,
+                "position": "relative",
+                "zIndex": 41
+              }
+            },
+            "type": "ia.display.icon"
           }
         ],
         "meta": {
@@ -231,7 +264,9 @@
           "alignItems": "center",
           "justify": "space-between",
           "style": {
-            "classes": "faceplate-header bg-header"
+            "classes": "faceplate-header bg-header",
+            "position": "relative",
+            "zIndex": 40
           }
         },
         "type": "ia.container.flex"
@@ -696,7 +731,9 @@
                 "minHeight": 0,
                 "overflow": "auto",
                 "width": "100%"
-              }
+              },
+              "useDefaultViewHeight": false,
+              "useDefaultViewWidth": false
             },
             "type": "ia.display.view"
           }

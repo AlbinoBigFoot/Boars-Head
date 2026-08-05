@@ -16,11 +16,13 @@ def openFaceplate(id, tagPath, view, modal=False, title=None, width=560, height=
 		popup_params['tagPath'] = tagPath
 	if not title:
 		title = tagPath.split('/')[-1] if tagPath else 'Faceplate'
+	# Native chrome header is CSS-hidden (see stylesheet .ia_popup__header).
+	# In-view Faceplate header supplies title + Close X; drag uses .popup-drag.
 	system.perspective.openPopup(
 		id, view,
 		params=popup_params,
 		title=title,
-		showCloseIcon=True,
+		showCloseIcon=False,
 		draggable=True,
 		resizable=True,
 		modal=modal,
