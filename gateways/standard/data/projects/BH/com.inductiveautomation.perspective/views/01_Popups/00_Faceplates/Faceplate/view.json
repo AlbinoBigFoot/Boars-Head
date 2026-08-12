@@ -275,454 +275,519 @@
         "type": "ia.container.flex"
       },
       {
-        "children": [
-          {
-            "events": {
-              "component": {
-                "onActionPerformed": {
-                  "config": {
-                    "script": "\tself.view.custom.selected = self.meta.name"
-                  },
-                  "scope": "G",
-                  "type": "script"
-                }
-              }
-            },
-            "meta": {
-              "name": "Controls"
-            },
-            "propConfig": {
-              "position.basis": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.params.showControls} && {view.custom.tagFlags.showControls}, '72px', '0px')"
-                  },
-                  "type": "expr"
-                }
-              },
-              "position.grow": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.params.showControls} && {view.custom.tagFlags.showControls}, 1, 0)"
-                  },
-                  "type": "expr"
-                }
-              },
-              "props.style.classes": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
-                  },
-                  "type": "expr"
-                }
-              },
-              "props.style.display": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.params.showControls} && {view.custom.tagFlags.showControls}, 'flex', 'none')"
-                  },
-                  "type": "expr"
-                }
-              },
-              "props.text": {
-                "binding": {
-                  "config": {
-                    "path": "this.meta.name"
-                  },
-                  "type": "property"
-                }
-              }
-            },
-            "props": {
-              "style": {},
-              "textStyle": {
-                "classes": "faceplate-tab-text"
-              }
-            },
-            "type": "ia.input.button"
-          },
-          {
-            "events": {
-              "component": {
-                "onActionPerformed": {
-                  "config": {
-                    "script": "\tself.view.custom.selected = self.meta.name"
-                  },
-                  "scope": "G",
-                  "type": "script"
-                }
-              }
-            },
-            "meta": {
-              "name": "Configuration"
-            },
-            "propConfig": {
-              "position.basis": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.params.showConfiguration} && {view.custom.tagFlags.showConfiguration}, '96px', '0px')"
-                  },
-                  "type": "expr"
-                }
-              },
-              "position.grow": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.params.showConfiguration} && {view.custom.tagFlags.showConfiguration}, 1, 0)"
-                  },
-                  "type": "expr"
-                }
-              },
-              "props.style.classes": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
-                  },
-                  "type": "expr"
-                }
-              },
-              "props.style.display": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.params.showConfiguration} && {view.custom.tagFlags.showConfiguration}, 'flex', 'none')"
-                  },
-                  "type": "expr"
-                }
-              },
-              "props.text": {
-                "binding": {
-                  "config": {
-                    "path": "this.meta.name"
-                  },
-                  "type": "property"
-                }
-              }
-            },
-            "props": {
-              "style": {},
-              "textStyle": {
-                "classes": "faceplate-tab-text"
-              }
-            },
-            "type": "ia.input.button"
-          },
-          {
-            "events": {
-              "component": {
-                "onActionPerformed": {
-                  "config": {
-                    "script": "\tself.view.custom.selected = self.meta.name"
-                  },
-                  "scope": "G",
-                  "type": "script"
-                }
-              }
-            },
-            "meta": {
-              "name": "Interlocks"
-            },
-            "propConfig": {
-              "position.basis": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.params.showInterlocks} && {view.custom.tagFlags.showInterlocks}, '80px', '0px')"
-                  },
-                  "type": "expr"
-                }
-              },
-              "position.grow": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.params.showInterlocks} && {view.custom.tagFlags.showInterlocks}, 1, 0)"
-                  },
-                  "type": "expr"
-                }
-              },
-              "props.style.classes": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
-                  },
-                  "type": "expr"
-                }
-              },
-              "props.style.display": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.params.showInterlocks} && {view.custom.tagFlags.showInterlocks}, 'flex', 'none')"
-                  },
-                  "type": "expr"
-                }
-              },
-              "props.text": {
-                "binding": {
-                  "config": {
-                    "path": "this.meta.name"
-                  },
-                  "type": "property"
-                }
-              }
-            },
-            "props": {
-              "style": {},
-              "textStyle": {
-                "classes": "faceplate-tab-text"
-              }
-            },
-            "type": "ia.input.button"
-          },
-          {
-            "events": {
-              "component": {
-                "onActionPerformed": {
-                  "config": {
-                    "script": "\tself.view.custom.selected = self.meta.name"
-                  },
-                  "scope": "G",
-                  "type": "script"
-                }
-              }
-            },
-            "meta": {
-              "name": "Trend"
-            },
-            "propConfig": {
-              "position.basis": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.params.showTrend} && {view.custom.tagFlags.showTrend}, '64px', '0px')"
-                  },
-                  "type": "expr"
-                }
-              },
-              "position.grow": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.params.showTrend} && {view.custom.tagFlags.showTrend}, 1, 0)"
-                  },
-                  "type": "expr"
-                }
-              },
-              "props.style.classes": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
-                  },
-                  "type": "expr"
-                }
-              },
-              "props.style.display": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.params.showTrend} && {view.custom.tagFlags.showTrend}, 'flex', 'none')"
-                  },
-                  "type": "expr"
-                }
-              },
-              "props.text": {
-                "binding": {
-                  "config": {
-                    "path": "this.meta.name"
-                  },
-                  "type": "property"
-                }
-              }
-            },
-            "props": {
-              "style": {},
-              "textStyle": {
-                "classes": "faceplate-tab-text"
-              }
-            },
-            "type": "ia.input.button"
-          },
-          {
-            "events": {
-              "component": {
-                "onActionPerformed": {
-                  "config": {
-                    "script": "\tself.view.custom.selected = self.meta.name"
-                  },
-                  "scope": "G",
-                  "type": "script"
-                }
-              }
-            },
-            "meta": {
-              "name": "Alarm Configuration"
-            },
-            "propConfig": {
-              "position.basis": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.params.showAlarmConfiguration} && {view.custom.tagFlags.showAlarmConfiguration}, '120px', '0px')"
-                  },
-                  "type": "expr"
-                }
-              },
-              "position.grow": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.params.showAlarmConfiguration} && {view.custom.tagFlags.showAlarmConfiguration}, 1, 0)"
-                  },
-                  "type": "expr"
-                }
-              },
-              "props.style.classes": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
-                  },
-                  "type": "expr"
-                }
-              },
-              "props.style.display": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.params.showAlarmConfiguration} && {view.custom.tagFlags.showAlarmConfiguration}, 'flex', 'none')"
-                  },
-                  "type": "expr"
-                }
-              },
-              "props.text": {
-                "binding": {
-                  "config": {
-                    "path": "this.meta.name"
-                  },
-                  "type": "property"
-                }
-              }
-            },
-            "props": {
-              "style": {},
-              "textStyle": {
-                "classes": "faceplate-tab-text"
-              }
-            },
-            "type": "ia.input.button"
-          },
-          {
-            "events": {
-              "component": {
-                "onActionPerformed": {
-                  "config": {
-                    "script": "\tself.view.custom.selected = self.meta.name"
-                  },
-                  "scope": "G",
-                  "type": "script"
-                }
-              }
-            },
-            "meta": {
-              "name": "Alarms"
-            },
-            "propConfig": {
-              "position.basis": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.params.showAlarms} && {view.custom.tagFlags.showAlarms}, '64px', '0px')"
-                  },
-                  "type": "expr"
-                }
-              },
-              "position.grow": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.params.showAlarms} && {view.custom.tagFlags.showAlarms}, 1, 0)"
-                  },
-                  "type": "expr"
-                }
-              },
-              "props.style.classes": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
-                  },
-                  "type": "expr"
-                }
-              },
-              "props.style.display": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.params.showAlarms} && {view.custom.tagFlags.showAlarms}, 'flex', 'none')"
-                  },
-                  "type": "expr"
-                }
-              },
-              "props.text": {
-                "binding": {
-                  "config": {
-                    "path": "this.meta.name"
-                  },
-                  "type": "property"
-                }
-              }
-            },
-            "props": {
-              "style": {},
-              "textStyle": {
-                "classes": "faceplate-tab-text"
-              }
-            },
-            "type": "ia.input.button"
-          }
-        ],
+        "type": "ia.container.flex",
         "meta": {
-          "name": "Tabs"
+          "name": "Content"
         },
         "position": {
-          "basis": "56px",
-          "shrink": 0
+          "basis": "0px",
+          "grow": 1
+        },
+        "props": {
+          "style": {
+            "classes": "faceplate-content",
+            "minHeight": 0,
+            "overflow": "hidden",
+            "width": "100%",
+            "height": "100%"
+          }
         },
         "propConfig": {
+          "props.direction": {
+            "binding": {
+              "config": {
+                "expression": "if({view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'Solenoid' || {view.params.deviceType} = 'SolenoidValve', 'row', 'column')"
+              },
+              "type": "expr"
+            }
+          },
           "props.style.classes": {
             "binding": {
               "config": {
-                "expression": "'faceplate-buttons-' + {view.custom.visibleTabCount}"
+                "expression": "if({view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'Solenoid' || {view.params.deviceType} = 'SolenoidValve',\n   'faceplate-content faceplate-tabs-vertical',\n   'faceplate-content')"
               },
               "type": "expr"
             }
           }
         },
-        "props": {
-          "alignItems": "flex-end",
-          "style": {
-            "overflow": "visible"
-          }
-        },
-        "type": "ia.container.flex"
-      },
-      {
         "children": [
           {
+            "children": [
+              {
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\tself.view.custom.selected = self.meta.name"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "Controls"
+                },
+                "propConfig": {
+                  "position.basis": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.showControls} && {view.custom.tagFlags.showControls},\n   if({view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'Solenoid' || {view.params.deviceType} = 'SolenoidValve', '44px', '72px'),\n   '0px')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "position.grow": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.showControls} && {view.custom.tagFlags.showControls},\n   if({view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'Solenoid' || {view.params.deviceType} = 'SolenoidValve', 0, 1),\n   0)"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.style.display": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.showControls} && {view.custom.tagFlags.showControls}, 'flex', 'none')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "path": "this.meta.name"
+                      },
+                      "type": "property"
+                    }
+                  },
+                  "position.shrink": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'Solenoid' || {view.params.deviceType} = 'SolenoidValve', 0, 1)"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {},
+                  "textStyle": {
+                    "classes": "faceplate-tab-text"
+                  }
+                },
+                "type": "ia.input.button"
+              },
+              {
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\tself.view.custom.selected = self.meta.name"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "Configuration"
+                },
+                "propConfig": {
+                  "position.basis": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.showConfiguration} && {view.custom.tagFlags.showConfiguration},\n   if({view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'Solenoid' || {view.params.deviceType} = 'SolenoidValve', '44px', '96px'),\n   '0px')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "position.grow": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.showConfiguration} && {view.custom.tagFlags.showConfiguration},\n   if({view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'Solenoid' || {view.params.deviceType} = 'SolenoidValve', 0, 1),\n   0)"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.style.display": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.showConfiguration} && {view.custom.tagFlags.showConfiguration}, 'flex', 'none')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "path": "this.meta.name"
+                      },
+                      "type": "property"
+                    }
+                  },
+                  "position.shrink": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'Solenoid' || {view.params.deviceType} = 'SolenoidValve', 0, 1)"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {},
+                  "textStyle": {
+                    "classes": "faceplate-tab-text"
+                  }
+                },
+                "type": "ia.input.button"
+              },
+              {
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\tself.view.custom.selected = self.meta.name"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "Interlocks"
+                },
+                "propConfig": {
+                  "position.basis": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.showInterlocks} && {view.custom.tagFlags.showInterlocks},\n   if({view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'Solenoid' || {view.params.deviceType} = 'SolenoidValve', '44px', '80px'),\n   '0px')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "position.grow": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.showInterlocks} && {view.custom.tagFlags.showInterlocks},\n   if({view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'Solenoid' || {view.params.deviceType} = 'SolenoidValve', 0, 1),\n   0)"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.style.display": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.showInterlocks} && {view.custom.tagFlags.showInterlocks}, 'flex', 'none')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "path": "this.meta.name"
+                      },
+                      "type": "property"
+                    }
+                  },
+                  "position.shrink": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'Solenoid' || {view.params.deviceType} = 'SolenoidValve', 0, 1)"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {},
+                  "textStyle": {
+                    "classes": "faceplate-tab-text"
+                  }
+                },
+                "type": "ia.input.button"
+              },
+              {
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\tself.view.custom.selected = self.meta.name"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "Trend"
+                },
+                "propConfig": {
+                  "position.basis": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.showTrend} && {view.custom.tagFlags.showTrend},\n   if({view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'Solenoid' || {view.params.deviceType} = 'SolenoidValve', '44px', '64px'),\n   '0px')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "position.grow": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.showTrend} && {view.custom.tagFlags.showTrend},\n   if({view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'Solenoid' || {view.params.deviceType} = 'SolenoidValve', 0, 1),\n   0)"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.style.display": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.showTrend} && {view.custom.tagFlags.showTrend}, 'flex', 'none')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "path": "this.meta.name"
+                      },
+                      "type": "property"
+                    }
+                  },
+                  "position.shrink": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'Solenoid' || {view.params.deviceType} = 'SolenoidValve', 0, 1)"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {},
+                  "textStyle": {
+                    "classes": "faceplate-tab-text"
+                  }
+                },
+                "type": "ia.input.button"
+              },
+              {
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\tself.view.custom.selected = self.meta.name"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "Alarm Configuration"
+                },
+                "propConfig": {
+                  "position.basis": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.showAlarmConfiguration} && {view.custom.tagFlags.showAlarmConfiguration},\n   if({view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'Solenoid' || {view.params.deviceType} = 'SolenoidValve', '44px', '120px'),\n   '0px')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "position.grow": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.showAlarmConfiguration} && {view.custom.tagFlags.showAlarmConfiguration},\n   if({view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'Solenoid' || {view.params.deviceType} = 'SolenoidValve', 0, 1),\n   0)"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.style.display": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.showAlarmConfiguration} && {view.custom.tagFlags.showAlarmConfiguration}, 'flex', 'none')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "path": "this.meta.name"
+                      },
+                      "type": "property"
+                    }
+                  },
+                  "position.shrink": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'Solenoid' || {view.params.deviceType} = 'SolenoidValve', 0, 1)"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {},
+                  "textStyle": {
+                    "classes": "faceplate-tab-text"
+                  }
+                },
+                "type": "ia.input.button"
+              },
+              {
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\tself.view.custom.selected = self.meta.name"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "Alarms"
+                },
+                "propConfig": {
+                  "position.basis": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.showAlarms} && {view.custom.tagFlags.showAlarms},\n   if({view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'Solenoid' || {view.params.deviceType} = 'SolenoidValve', '44px', '64px'),\n   '0px')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "position.grow": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.showAlarms} && {view.custom.tagFlags.showAlarms},\n   if({view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'Solenoid' || {view.params.deviceType} = 'SolenoidValve', 0, 1),\n   0)"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.style.display": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.showAlarms} && {view.custom.tagFlags.showAlarms}, 'flex', 'none')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "path": "this.meta.name"
+                      },
+                      "type": "property"
+                    }
+                  },
+                  "position.shrink": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'Solenoid' || {view.params.deviceType} = 'SolenoidValve', 0, 1)"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {},
+                  "textStyle": {
+                    "classes": "faceplate-tab-text"
+                  }
+                },
+                "type": "ia.input.button"
+              }
+            ],
             "meta": {
-              "name": "EmbeddedView"
+              "name": "Tabs"
             },
             "position": {
-              "basis": "0px",
-              "grow": 1
+              "basis": "56px",
+              "shrink": 0
             },
             "propConfig": {
-              "props.params.hiddenTags": {
+              "props.style.classes": {
                 "binding": {
                   "config": {
-                    "expression": "case(\n  {view.custom.selected},\n  \"Trend\", {view.params.hiddenFromTrend},\n  \"Configuration\", {view.params.hiddenFromConfiguration},\n  \"Alarm Configuration\", {view.params.hiddenFromAlarmConfiguration},\n  \"Alarms\", {view.params.hiddenFromAlarms},\n  ''\n)"
+                    "expression": "if({view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'Solenoid' || {view.params.deviceType} = 'SolenoidValve',\n   'faceplate-buttons-' + {view.custom.visibleTabCount} + ' faceplate-tabs-vertical',\n   'faceplate-buttons-' + {view.custom.visibleTabCount})"
                   },
                   "type": "expr"
                 }
               },
-              "props.params.tagPath": {
+              "position.basis": {
                 "binding": {
                   "config": {
-                    "path": "view.params.tagPath"
+                    "expression": "if({view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'Solenoid' || {view.params.deviceType} = 'SolenoidValve', '112px', '56px')"
                   },
-                  "type": "property"
+                  "type": "expr"
                 }
               },
-              "props.path": {
+              "props.direction": {
                 "binding": {
                   "config": {
-                    "expression": "case(\n  {view.custom.selected},\n  \"Controls\",\n    case({view.params.deviceType},\n      \"Compressor\", \"01_Popups/00_Faceplates/_Assets/Compressor/Controls\",\n      \"Pump\", \"01_Popups/00_Faceplates/_Assets/Pump/Controls\",\n      \"ExhaustFan\", \"01_Popups/00_Faceplates/_Assets/ExhaustFan/Controls\",\n      \"Valve\", \"01_Popups/00_Faceplates/_Assets/Valve/Controls\",\n      \"Tank\", \"01_Popups/00_Faceplates/_Assets/Tank/Controls\",\n      \"Sensor\", \"01_Popups/00_Faceplates/_Assets/Sensor/Controls\",\n      \"Evaporator\", \"01_Popups/00_Faceplates/_Assets/Evaporator/Controls\",\n      \"CoolingTower\", \"01_Popups/00_Faceplates/_Assets/CoolingTower/Controls\",\n      \"01_Popups/00_Faceplates/_Assets/Compressor/Controls\"),\n  \"Configuration\", \"01_Popups/00_Faceplates/_Assets/Configuration/Configuration\",\n  \"Interlocks\", \"01_Popups/00_Faceplates/_Assets/Interlocks\",\n  \"Trend\", \"01_Popups/00_Faceplates/_Assets/Trend\",\n  \"Alarm Configuration\", \"01_Popups/00_Faceplates/_Assets/AlarmConfiguration\",\n  \"Alarms\", \"01_Popups/00_Faceplates/_Assets/Alarms\",\n  \"01_Popups/00_Faceplates/_Assets/Compressor/Controls\"\n)"
+                    "expression": "if({view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'Solenoid' || {view.params.deviceType} = 'SolenoidValve', 'column', 'row')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.alignItems": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'Solenoid' || {view.params.deviceType} = 'SolenoidValve', 'stretch', 'flex-end')"
                   },
                   "type": "expr"
                 }
@@ -730,33 +795,79 @@
             },
             "props": {
               "style": {
-                "height": "100%",
-                "minHeight": 0,
-                "overflow": "auto",
-                "width": "100%"
-              },
-              "useDefaultViewHeight": false,
-              "useDefaultViewWidth": false
+                "overflow": "visible"
+              }
             },
-            "type": "ia.display.view"
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "EmbeddedView"
+                },
+                "position": {
+                  "basis": "0px",
+                  "grow": 1
+                },
+                "propConfig": {
+                  "props.params.hiddenTags": {
+                    "binding": {
+                      "config": {
+                        "expression": "case(\n  {view.custom.selected},\n  \"Trend\", {view.params.hiddenFromTrend},\n  \"Configuration\", {view.params.hiddenFromConfiguration},\n  \"Alarm Configuration\", {view.params.hiddenFromAlarmConfiguration},\n  \"Alarms\", {view.params.hiddenFromAlarms},\n  ''\n)"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.params.tagPath": {
+                    "binding": {
+                      "config": {
+                        "path": "view.params.tagPath"
+                      },
+                      "type": "property"
+                    }
+                  },
+                  "props.path": {
+                    "binding": {
+                      "config": {
+                        "expression": "case(\n  {view.custom.selected},\n  \"Controls\",\n    case({view.params.deviceType},\n      \"Compressor\", \"01_Popups/00_Faceplates/_Assets/Compressor/Controls\",\n      \"Pump\", \"01_Popups/00_Faceplates/_Assets/Pump/Controls\",\n      \"ExhaustFan\", \"01_Popups/00_Faceplates/_Assets/ExhaustFan/Controls\",\n      \"Valve\", \"01_Popups/00_Faceplates/_Assets/Valve/Controls\",\n      \"Tank\", \"01_Popups/00_Faceplates/_Assets/Tank/Controls\",\n      \"Sensor\", \"01_Popups/00_Faceplates/_Assets/Sensor/Controls\",\n      \"Evaporator\", \"01_Popups/00_Faceplates/_Assets/Evaporator/Controls\",\n      \"CoolingTower\", \"01_Popups/00_Faceplates/_Assets/CoolingTower/Controls\",\n      \"01_Popups/00_Faceplates/_Assets/Compressor/Controls\"),\n  \"Configuration\", \"01_Popups/00_Faceplates/_Assets/Configuration/Configuration\",\n  \"Interlocks\", \"01_Popups/00_Faceplates/_Assets/Interlocks\",\n  \"Trend\", \"01_Popups/00_Faceplates/_Assets/Trend\",\n  \"Alarm Configuration\", \"01_Popups/00_Faceplates/_Assets/AlarmConfiguration\",\n  \"Alarms\", \"01_Popups/00_Faceplates/_Assets/Alarms\",\n  \"01_Popups/00_Faceplates/_Assets/Compressor/Controls\"\n)"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "height": "100%",
+                    "minHeight": 0,
+                    "overflow": "auto",
+                    "width": "100%"
+                  },
+                  "useDefaultViewHeight": false,
+                  "useDefaultViewWidth": false
+                },
+                "type": "ia.display.view"
+              }
+            ],
+            "meta": {
+              "name": "Body"
+            },
+            "position": {
+              "basis": "0px",
+              "grow": 1
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "classes": "faceplate-body",
+                "minHeight": 0,
+                "overflow": "hidden",
+                "minWidth": 0
+              }
+            },
+            "type": "ia.container.flex"
           }
-        ],
-        "meta": {
-          "name": "Body"
-        },
-        "position": {
-          "basis": "0px",
-          "grow": 1
-        },
-        "props": {
-          "direction": "column",
-          "style": {
-            "classes": "faceplate-body",
-            "minHeight": 0,
-            "overflow": "hidden"
-          }
-        },
-        "type": "ia.container.flex"
+        ]
       }
     ],
     "meta": {
@@ -798,12 +909,19 @@
           ],
           "type": "expr-struct"
         }
+      },
+      "props.style.classes": {
+        "binding": {
+          "config": {
+            "expression": "if({view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'Solenoid' || {view.params.deviceType} = 'SolenoidValve',\n   'bg-component container-card container-card-border faceplate faceplate-tabs-vertical',\n   'bg-component container-card container-card-border faceplate')"
+          },
+          "type": "expr"
+        }
       }
     },
     "props": {
       "direction": "column",
       "style": {
-        "classes": "bg-component container-card container-card-border faceplate",
         "height": "100%",
         "minHeight": 0,
         "overflow": "hidden",

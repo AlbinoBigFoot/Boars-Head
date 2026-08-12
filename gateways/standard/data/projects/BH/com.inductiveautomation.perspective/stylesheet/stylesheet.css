@@ -2943,6 +2943,69 @@ body:has(.psc-animations-off) .container-fade-in {
 	flex: 1 1 auto;
 }
 
+/* ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+ * Valve / solenoid faceplate only — left vertical tabs (reduces horizontal whitespace)
+ * Gated by Faceplate view bindings when deviceType is Valve|Solenoid|SolenoidValve.
+ * ---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+.psc-faceplate-content {
+	min-height: 0;
+	min-width: 0;
+	flex: 1 1 auto;
+	overflow: hidden;
+}
+
+.psc-faceplate-content.psc-faceplate-tabs-vertical {
+	align-items: stretch;
+}
+
+/* Tab strip: column stack on the left */
+[class*="psc-faceplate-buttons"].psc-faceplate-tabs-vertical {
+	display: flex !important;
+	flex-direction: column !important;
+	align-items: stretch !important;
+	justify-content: flex-start !important;
+	height: 100% !important;
+	width: 100%;
+	min-width: 0;
+	padding: 4px 0 4px 4px;
+	gap: 2px;
+	grid-template-columns: none !important;
+	box-sizing: border-box;
+}
+
+.psc-faceplate-tabs-vertical .psc-faceplate-button,
+.psc-faceplate-tabs-vertical .psc-faceplate-button-selected {
+	border-radius: 6px 0 0 6px;
+	width: 100% !important;
+	max-width: 100%;
+	height: auto !important;
+	min-height: 40px;
+	flex: 0 0 auto !important;
+	box-sizing: border-box;
+	text-align: left;
+	justify-content: flex-start;
+	padding: 6px 8px;
+}
+
+.psc-faceplate-tabs-vertical .psc-faceplate-button-selected {
+	border-right: none;
+	border-bottom: 1px solid var(--border);
+	box-shadow: -1px 0 2px rgba(0, 0, 0, 0.12);
+	min-height: 48px;
+	z-index: 2;
+}
+
+/* Body fills remaining width; reconnect border to left tab edge */
+.psc-faceplate-tabs-vertical .psc-faceplate-body,
+.psc-faceplate-content.psc-faceplate-tabs-vertical .psc-faceplate-body {
+	border-top: 1px solid var(--border);
+	border-left: none;
+	min-width: 0;
+	min-height: 0;
+	flex: 1 1 auto;
+}
+
 .psc-faceplate-kpi-row {
 	gap: 8px;
 	align-items: center;
