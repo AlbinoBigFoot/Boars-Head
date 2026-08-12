@@ -1551,15 +1551,27 @@ body:has(.psc-animations-off) .container-fade-in {
  *
  * Do NOT give .psc-faceplate a z-index — it stacks the whole view above this strip
  * and title-bar drag dies (hit-test hits header/title instead of .popup-drag).
+ * Faceplate Close is ~36px + header pad 8px; 40px inset still covered the X so
+ * clicks hit .popup-drag instead of Close — use 56px for device faceplates.
  */
 #popup-AdhocTrend > .popup-drag,
-#popup-AdhocTrendConfig > .popup-drag,
+#popup-AdhocTrendConfig > .popup-drag {
+	z-index: 100;
+	top: 0;
+	left: 0;
+	right: 40px;
+	width: auto;
+	height: 48px;
+	cursor: grab;
+	pointer-events: auto;
+}
+
 .popup:has(.psc-faceplate) > .popup-drag,
 .ia_popup:has(.psc-faceplate) > .popup-drag {
 	z-index: 100;
 	top: 0;
 	left: 0;
-	right: 40px;
+	right: 56px;
 	width: auto;
 	height: 48px;
 	cursor: grab;

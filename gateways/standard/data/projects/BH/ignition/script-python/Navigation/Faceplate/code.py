@@ -14,6 +14,8 @@ def openFaceplate(id, tagPath, view, modal=False, title=None, width=560, height=
 			pass
 	if 'tagPath' not in popup_params or not popup_params.get('tagPath'):
 		popup_params['tagPath'] = tagPath
+	# So the in-view Close X can close this exact popup (drag strip sits above the view).
+	popup_params['popupId'] = id
 	if not title:
 		title = tagPath.split('/')[-1] if tagPath else 'Faceplate'
 	# Native chrome header is CSS-hidden (see stylesheet .ia_popup__header).

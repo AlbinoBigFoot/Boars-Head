@@ -203,8 +203,10 @@ def showFaceplate(tagPath="", deviceType="Compressor", webGuiUrl="", title=None,
 	}
 	if not title:
 		title = tagPath.split("/")[-1] if tagPath else "Faceplate"
+	popupId = "comp-fp-%s" % (tagPath or title)
+	params["popupId"] = popupId
 	Navigation.Faceplate.openFaceplate(
-		"comp-fp-%s" % (tagPath or title),
+		popupId,
 		tagPath,
 		"01_Popups/00_Faceplates/Faceplate",
 		False,

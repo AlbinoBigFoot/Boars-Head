@@ -20,6 +20,7 @@
     "hiddenFromAlarms": "",
     "hiddenFromConfiguration": "",
     "hiddenFromTrend": "",
+    "popupId": "",
     "showAlarmConfiguration": true,
     "showAlarms": true,
     "showConfiguration": true,
@@ -224,7 +225,7 @@
               "dom": {
                 "onClick": {
                   "config": {
-                    "script": "\ttagPath = str(self.view.params.tagPath or '')\n\tlabel = str(self.view.custom.label or '')\n\tkey = tagPath or label\n\tfor pid in [\n\t\t'comp-fp-%s' % key,\n\t\t'nav-fp-%s' % key,\n\t\t'fp-%s' % key,\n\t\t'pump-fp-%s' % key,\n\t\tkey,\n\t]:\n\t\ttry:\n\t\t\tsystem.perspective.closePopup(pid)\n\t\texcept:\n\t\t\tpass\n"
+                    "script": "\tids = []\n\tpopupId = str(self.view.params.popupId or '').strip()\n\tif popupId:\n\t\tids.append(popupId)\n\ttagPath = str(self.view.params.tagPath or '')\n\tlabel = str(self.view.custom.label or '')\n\tkey = tagPath or label\n\tids.extend([\n\t\t'comp-fp-%s' % key,\n\t\t'nav-fp-%s' % key,\n\t\t'fp-%s' % key,\n\t\t'pump-fp-%s' % key,\n\t\t'valve-fp-%s' % key,\n\t\t'sensor-fp-%s' % key,\n\t\t'tank-fp-%s' % key,\n\t\t'efan-fp-%s' % key,\n\t\t'ev-fp-%s' % key,\n\t\t'ct-fp-%s' % key,\n\t\tkey,\n\t])\n\tleaf = key.split('/')[-1] if key else ''\n\tif leaf and leaf != key:\n\t\tids.extend([\n\t\t\t'comp-fp-%s' % leaf,\n\t\t\t'nav-fp-%s' % leaf,\n\t\t\t'fp-%s' % leaf,\n\t\t\tleaf,\n\t\t])\n\tseen = set()\n\tfor pid in ids:\n\t\tif not pid or pid in seen:\n\t\t\tcontinue\n\t\tseen.add(pid)\n\t\ttry:\n\t\t\tsystem.perspective.closePopup(pid)\n\t\texcept:\n\t\t\tpass\n"
                   },
                   "scope": "G",
                   "type": "script"
