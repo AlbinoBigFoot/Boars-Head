@@ -1548,10 +1548,14 @@ body:has(.psc-animations-off) .container-fade-in {
  * AdhocTrend / Config / device faceplates: drag via .popup-drag.
  * Cover the custom title bar; inset right so the in-view close X stays clickable.
  * (Hiding .ia_popup__header leaves the default drag strip unusable without this.)
+ *
+ * Do NOT give .psc-faceplate a z-index — it stacks the whole view above this strip
+ * and title-bar drag dies (hit-test hits header/title instead of .popup-drag).
  */
 #popup-AdhocTrend > .popup-drag,
 #popup-AdhocTrendConfig > .popup-drag,
-.popup:has(.psc-faceplate) > .popup-drag {
+.popup:has(.psc-faceplate) > .popup-drag,
+.ia_popup:has(.psc-faceplate) > .popup-drag {
 	z-index: 100;
 	top: 0;
 	left: 0;
@@ -1564,8 +1568,41 @@ body:has(.psc-animations-off) .container-fade-in {
 
 #popup-AdhocTrend > .popup-drag:active,
 #popup-AdhocTrendConfig > .popup-drag:active,
-.popup:has(.psc-faceplate) > .popup-drag:active {
+.popup:has(.psc-faceplate) > .popup-drag:active,
+.ia_popup:has(.psc-faceplate) > .popup-drag:active {
 	cursor: grabbing;
+}
+
+/* Device faceplate shell — same fit pattern as #popup-AdhocTrend.
+   container-card margin:2px otherwise makes popup-body scrollH = height+4. */
+.popup:has(.psc-faceplate),
+.ia_popup:has(.psc-faceplate) {
+	overflow: hidden !important;
+	scrollbar-width: none;
+}
+
+.popup:has(.psc-faceplate)::-webkit-scrollbar,
+.ia_popup:has(.psc-faceplate)::-webkit-scrollbar {
+	width: 0 !important;
+	height: 0 !important;
+	display: none !important;
+}
+
+.popup:has(.psc-faceplate) > .body-wrapper,
+.popup:has(.psc-faceplate) > .ia_popup__content,
+.popup:has(.psc-faceplate) > .body-wrapper > .view-parent,
+.popup:has(.psc-faceplate) > .ia_popup__content > .view-parent,
+.ia_popup:has(.psc-faceplate) > .body-wrapper,
+.ia_popup:has(.psc-faceplate) > .ia_popup__content,
+.ia_popup:has(.psc-faceplate) > .body-wrapper > .view-parent,
+.ia_popup:has(.psc-faceplate) > .ia_popup__content > .view-parent {
+	height: 100% !important;
+	width: 100% !important;
+	min-height: 0 !important;
+	min-width: 0 !important;
+	max-height: 100% !important;
+	max-width: 100% !important;
+	overflow: hidden !important;
 }
 
 .client-root .popup {
@@ -2777,9 +2814,14 @@ body:has(.psc-animations-off) .container-fade-in {
 
 .psc-faceplate {
 	background: var(--surface-card);
-	z-index: 990;
+	/* No z-index — must stay below sibling .popup-drag (see popup drag rules). */
 	min-height: 0;
+	max-height: 100%;
+	height: 100%;
 	overflow: hidden;
+	/* Override .psc-container-card / -border margin:2px (causes 4px popup-body scrollbar). */
+	margin: 0 !important;
+	box-sizing: border-box !important;
 }
 
 .psc-faceplate-header {
@@ -2796,7 +2838,8 @@ body:has(.psc-animations-off) .container-fade-in {
 	z-index: 40;
 	flex: 0 0 auto;
 	isolation: isolate;
-	pointer-events: auto;
+	/* Let .popup-drag receive presses on the title strip; Close keeps pointer-events. */
+	pointer-events: none;
 	overflow: hidden;
 }
 
@@ -2807,6 +2850,7 @@ body:has(.psc-animations-off) .container-fade-in {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	pointer-events: none;
 }
 
 /* In-view Close X — native popup header is hidden globally */
@@ -2818,6 +2862,10 @@ body:has(.psc-animations-off) .container-fade-in {
 	min-height: 36px !important;
 	padding: 4px !important;
 	box-sizing: border-box;
+	pointer-events: auto !important;
+}
+
+.psc-faceplate-header .psc-container-button {
 	pointer-events: auto !important;
 }
 
