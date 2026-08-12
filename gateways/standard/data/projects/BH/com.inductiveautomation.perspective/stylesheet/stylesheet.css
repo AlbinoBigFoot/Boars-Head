@@ -2968,8 +2968,8 @@ body:has(.psc-animations-off) .container-fade-in {
 	height: 100% !important;
 	width: 100%;
 	min-width: 0;
-	padding: 4px 0 4px 4px;
-	gap: 2px;
+	padding: 6px 0 6px 6px;
+	gap: 4px;
 	grid-template-columns: none !important;
 	box-sizing: border-box;
 }
@@ -2980,20 +2980,27 @@ body:has(.psc-animations-off) .container-fade-in {
 	width: 100% !important;
 	max-width: 100%;
 	height: auto !important;
-	min-height: 40px;
+	min-height: 52px;
 	flex: 0 0 auto !important;
 	box-sizing: border-box;
 	text-align: left;
 	justify-content: flex-start;
-	padding: 6px 8px;
+	padding: 10px 12px;
+	font-size: 13px;
+	line-height: 1.25;
 }
 
 .psc-faceplate-tabs-vertical .psc-faceplate-button-selected {
 	border-right: none;
 	border-bottom: 1px solid var(--border);
 	box-shadow: -1px 0 2px rgba(0, 0, 0, 0.12);
-	min-height: 48px;
+	min-height: 60px;
 	z-index: 2;
+	font-size: 13px;
+}
+
+.psc-faceplate-tabs-vertical .psc-faceplate-tab-text {
+	font-size: 13px;
 }
 
 /* Body fills remaining width; reconnect border to left tab edge */
