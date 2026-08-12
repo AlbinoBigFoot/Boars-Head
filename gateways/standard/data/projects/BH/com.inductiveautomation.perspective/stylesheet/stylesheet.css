@@ -2980,27 +2980,47 @@ body:has(.psc-animations-off) .container-fade-in {
 	width: 100% !important;
 	max-width: 100%;
 	height: auto !important;
-	min-height: 52px;
+	min-height: 68px;
 	flex: 0 0 auto !important;
 	box-sizing: border-box;
-	text-align: left;
-	justify-content: flex-start;
-	padding: 10px 12px;
+	display: flex !important;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	padding: 12px 10px;
 	font-size: 13px;
 	line-height: 1.25;
+	white-space: normal;
 }
 
 .psc-faceplate-tabs-vertical .psc-faceplate-button-selected {
 	border-right: none;
 	border-bottom: 1px solid var(--border);
 	box-shadow: -1px 0 2px rgba(0, 0, 0, 0.12);
-	min-height: 60px;
+	min-height: 76px;
 	z-index: 2;
 	font-size: 13px;
 }
 
-.psc-faceplate-tabs-vertical .psc-faceplate-tab-text {
+/* Center label text (incl. wrapped two-line titles) inside Perspective button internals */
+.psc-faceplate-tabs-vertical .psc-faceplate-tab-text,
+.psc-faceplate-tabs-vertical .psc-faceplate-button .ia_button__text,
+.psc-faceplate-tabs-vertical .psc-faceplate-button-selected .ia_button__text,
+.psc-faceplate-tabs-vertical .psc-faceplate-button .ia_labelComponent,
+.psc-faceplate-tabs-vertical .psc-faceplate-button-selected .ia_labelComponent,
+.psc-faceplate-tabs-vertical .psc-faceplate-button > span,
+.psc-faceplate-tabs-vertical .psc-faceplate-button-selected > span {
 	font-size: 13px;
+	text-align: center !important;
+	width: 100%;
+	max-width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	white-space: normal;
+	line-height: 1.25;
+	box-sizing: border-box;
 }
 
 /* Body fills remaining width; reconnect border to left tab edge */
