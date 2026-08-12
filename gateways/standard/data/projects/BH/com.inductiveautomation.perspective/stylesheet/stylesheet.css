@@ -1557,7 +1557,7 @@ body:has(.psc-animations-off) .container-fade-in {
 	left: 0;
 	right: 40px;
 	width: auto;
-	height: 44px;
+	height: 48px;
 	cursor: grab;
 	pointer-events: auto;
 }
@@ -2785,7 +2785,11 @@ body:has(.psc-animations-off) .container-fade-in {
 .psc-faceplate-header {
 	align-items: center;
 	gap: 8px;
-	min-height: 40px;
+	/* 48px fits 36px close + 4px pad + 1px border without overflow:auto scrollbar */
+	box-sizing: border-box;
+	min-height: 48px;
+	height: 48px;
+	max-height: 48px;
 	padding: 4px 8px;
 	border-bottom: 1px solid var(--border);
 	position: relative;
@@ -2793,6 +2797,7 @@ body:has(.psc-animations-off) .container-fade-in {
 	flex: 0 0 auto;
 	isolation: isolate;
 	pointer-events: auto;
+	overflow: hidden;
 }
 
 .psc-faceplate-title {

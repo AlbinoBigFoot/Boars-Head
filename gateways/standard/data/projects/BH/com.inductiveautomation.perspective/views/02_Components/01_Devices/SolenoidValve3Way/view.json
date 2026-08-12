@@ -572,7 +572,7 @@
       "dom": {
         "onClick": {
           "config": {
-            "script": "\tfaceplate = self.view.params.faceplate\n\tif faceplate is None or str(faceplate).strip() == '':\n\t\treturn\n\ttagPath = str(self.view.params.tagPath or '')\n\ttitle = str(self.view.custom.label or '')\n\tif title in (None, '', 'nn'):\n\t\ttitle = tagPath.split('/')[-1] if tagPath else self.view.name\n\t# Unified Faceplate via shared.Alerts (Valve Config/Trend curation defaults).\n\tshared.Alerts.showFaceplate(\n\t\ttagPath=tagPath,\n\t\tdeviceType='Valve',\n\t\ttitle=title,\n\t\twidth=560,\n\t\theight=640\n\t)\n"
+            "script": "\tfaceplate = self.view.params.faceplate\n\tif faceplate is None or str(faceplate).strip() == '':\n\t\treturn\n\ttagPath = str(self.view.params.tagPath or '')\n\ttitle = str(self.view.custom.label or '')\n\tif title in (None, '', 'nn'):\n\t\ttitle = tagPath.split('/')[-1] if tagPath else self.view.name\n\t# Unified Faceplate via shared.Alerts (Valve Config/Trend curation defaults).\n\tshared.Alerts.showFaceplate(\n\t\ttagPath=tagPath,\n\t\tdeviceType='Valve',\n\t\ttitle=title,\n\t\twidth=560,\n\t\theight=656\n\t)\n"
           },
           "scope": "G",
           "type": "script"

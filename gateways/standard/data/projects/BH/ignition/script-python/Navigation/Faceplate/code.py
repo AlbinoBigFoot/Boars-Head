@@ -1,4 +1,4 @@
-def openFaceplate(id, tagPath, view, modal=False, title=None, width=560, height=640, params=None):
+def openFaceplate(id, tagPath, view, modal=False, title=None, width=560, height=656, params=None):
 	"""Open a device faceplate popup (Scout Navigation.Faceplate pattern, BH geometry).
 
 	params may include tagPath plus unified Faceplate fields:

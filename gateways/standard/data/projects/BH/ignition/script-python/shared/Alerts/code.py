@@ -166,7 +166,7 @@ def contextMenuTicketLog(tagPath="", viewName=None):
 
 def showFaceplate(tagPath="", deviceType="Compressor", webGuiUrl="", title=None,
 		showControls=True, showConfiguration=True, showInterlocks=True, showTrend=True,
-		showAlarmConfiguration=True, showAlarms=True, width=560, height=640,
+		showAlarmConfiguration=True, showAlarms=True, width=560, height=656,
 		hiddenFromConfiguration="", hiddenFromTrend="",
 		hiddenFromAlarmConfiguration="", hiddenFromAlarms=""):
 	"""Open the shared tabbed Faceplate shell (Scout-style).
