@@ -176,15 +176,17 @@
         ]
       },
       {
-        "metadata": {
-          "shortDescription": "valve type",
-          "longDescription": "Rockwell AOI class: SO | MO | MP | C (drives faceplate command UI)"
-        },
-        "valueSource": "memory",
-        "dataType": "String",
-        "value": "SO",
         "name": "valveType",
-        "tagType": "AtomicTag"
+        "typeId": "_Root/String",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "dataType": "String",
+            "value": "SO"
+          }
+        ]
       },
       {
         "metadata": {
@@ -592,6 +594,824 @@
             "value": false,
             "name": "Value",
             "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "PermOK",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Rdy_Open",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Rdy_Close",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Nrdy_Disabled",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Nrdy_CfgErr",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Nrdy_Intlk",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Nrdy_Perm",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Nrdy_IOFault",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Nrdy_Fail",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Nrdy_NoMode",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Cfg_HasClosedLS",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Cfg_HasOpenLS",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Cfg_LSFail",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Cfg_FailOpen",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Cfg_PCmdClear",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Cfg_OCmdResets",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Cfg_HasPermObj",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Cfg_HasIntlkObj",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Cfg_HasStatsObj",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Cfg_ShedOnIOFault",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Cfg_ShedOnTransitStall",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Cfg_ShedOnFullStall",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Cmd_Bypass",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Cmd_Enable",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Cmd_Disable",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Disabled",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Ovrd",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Cfg_OvrdPermIntlk",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Ack_IOFault",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Ack_FullStall",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Ack_TransitStall",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Ack_IntlkTrip",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Cmd_ResetAckAll",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "value": false,
+            "metadata": {
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Cfg_FullStallT",
+        "typeId": "_Root/Analog",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "dataType": "Float8",
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "name": "Cfg_SimFdbkT",
+        "typeId": "_Root/Analog",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "dataType": "Float8",
+            "value": 0.0
           }
         ]
       },
@@ -1778,7 +2598,7 @@
         "tagType": "UdtInstance",
         "tags": [
           {
-            "engUnit": "°F",
+            "engUnit": "\u00b0F",
             "name": "Value",
             "tagType": "AtomicTag"
           }
@@ -2995,7 +3815,7 @@
   {
     "metadata": {
       "shortDescription": "tank / vessel",
-      "longDescription": "Recirculator/Accumulator-style vessel (PLC-backed): Level % + SP, HH/H/L/LL marks + SP, LSH/LSL, optional Pressure; no Config/Interlock (vessel has no P_Intlk — pump interlocks live on Devices/Pump)"
+      "longDescription": "Recirculator/Accumulator-style vessel (PLC-backed): Level % + SP, HH/H/L/LL marks + SP, LSH/LSL, optional Pressure; no Config/Interlock (vessel has no P_Intlk \u2014 pump interlocks live on Devices/Pump)"
     },
     "name": "Tank",
     "tagType": "UdtType",
@@ -3979,7 +4799,7 @@
             "historyEnabled": true,
             "formatString": "#0.0",
             "value": 2.0,
-            "engUnit": "°F",
+            "engUnit": "\u00b0F",
             "sampleMode": "OnChange",
             "name": "Value",
             "tagType": "AtomicTag"
@@ -4088,7 +4908,7 @@
       {
         "metadata": {
           "shortDescription": "Fan 2 VFD",
-          "longDescription": "Fan 2 Variable Frequency Drive (disabled — BH plant is single-fan EV-01..16)"
+          "longDescription": "Fan 2 Variable Frequency Drive (disabled \u2014 BH plant is single-fan EV-01..16)"
         },
         "name": "Fan 2",
         "typeId": "Devices/VFD",
@@ -4098,7 +4918,7 @@
       {
         "metadata": {
           "shortDescription": "Fan 3 VFD",
-          "longDescription": "Fan 3 Variable Frequency Drive (disabled — BH plant is single-fan EV-01..16)"
+          "longDescription": "Fan 3 Variable Frequency Drive (disabled \u2014 BH plant is single-fan EV-01..16)"
         },
         "name": "Fan 3",
         "typeId": "Devices/VFD",
@@ -4376,7 +5196,7 @@
         "tagType": "UdtInstance",
         "tags": [
           {
-            "engUnit": "°F",
+            "engUnit": "\u00b0F",
             "name": "Value",
             "tagType": "AtomicTag"
           }

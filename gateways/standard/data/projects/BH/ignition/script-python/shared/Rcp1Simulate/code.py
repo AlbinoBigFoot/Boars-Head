@@ -248,6 +248,10 @@ def _demoValue(name, dataType, tagPath=None):
 	# Valve travel / transit stall timer (Cfg_TransitStallT) — never leave null/0 in SIM.
 	if n == "TravelTime":
 		return 5
+	if n == "Cfg_FullStallT":
+		return 10
+	if n == "Cfg_SimFdbkT":
+		return 2
 
 	# Valve ownership modes (P_ValveSO Sts_Oper/Prog/Maint) — default Operator so
 	# Open/Close are usable; mutual exclusive with PROG/MAINT.
@@ -262,6 +266,17 @@ def _demoValue(name, dataType, tagPath=None):
 			return True
 		return False
 	if n == "ClosedLS":
+		return False
+
+	# Ready / not-ready / perm for Valve Controls (FT Home + Diagnostics).
+	if n in ("PermOK", "Rdy_Open", "Rdy_Close"):
+		return True
+	if n.startswith("Nrdy_"):
+		return False
+	if n in ("Cfg_HasClosedLS", "Cfg_HasOpenLS", "Cfg_FailOpen", "Cfg_PCmdClear",
+	         "Cfg_OCmdResets", "Cfg_HasPermObj", "Cfg_HasIntlkObj", "Cfg_HasStatsObj",
+	         "Cfg_ShedOnIOFault", "Cfg_ShedOnTransitStall", "Cfg_ShedOnFullStall",
+	         "Cfg_LSFail", "Cfg_OvrdPermIntlk", "Disabled", "Ovrd", "Cmd_Bypass"):
 		return False
 
 	# Compressor Rung: 0=Off, 1=Running — vary the bank
@@ -547,8 +562,14 @@ def toMemory(tagPaths=None):
 		"Amps", "FLA", "SVP", "Level", "Pressure", "Value",
 		"Color", "CP_Mode", "SV_Mode",
 		"Hi", "Lo", "HiHi", "LoLo", "Fail", "LSH", "LSL", "H", "L", "HH", "LL",
-		# Valve faceplate Controls: modes, LS, travel timer
+		# Valve faceplate Controls: modes, LS, travel timer, ready / not-ready
 		"OPER", "PROG", "MAINT", "TravelTime", "OpenLS", "ClosedLS",
+		"PermOK", "Rdy_Open", "Rdy_Close",
+		"Nrdy_Disabled", "Nrdy_CfgErr", "Nrdy_Intlk", "Nrdy_Perm",
+		"Nrdy_IOFault", "Nrdy_Fail", "Nrdy_NoMode",
+		"Cfg_HasClosedLS", "Cfg_HasOpenLS", "Cfg_FailOpen",
+		"Cfg_FullStallT", "Cfg_SimFdbkT", "Disabled", "Ovrd",
+		"Cfg_OvrdPermIntlk", "Cmd_Bypass",
 	])
 	for tagPath in tagPaths:
 		_parent, name = _parentAndName(tagPath)

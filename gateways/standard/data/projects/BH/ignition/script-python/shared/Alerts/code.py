@@ -178,14 +178,19 @@ def showFaceplate(tagPath="", deviceType="Compressor", webGuiUrl="", title=None,
 	# Device-type curation defaults (caller can override / extend).
 	dt = deviceType or "Compressor"
 	if dt == "Valve":
-		# TravelTime (Cfg_TransitStallT) on Configuration — backs TransitStall alarm. Hide ops/status.
+		# Curate Configuration to Cfg_* + TravelTime; hide ops / ready / alarms.
 		if not hiddenFromConfiguration:
 			hiddenFromConfiguration = (
-				"OPER/,PROG/,MAINT/,Cmd/,Cmd_Open/,Cmd_Close/,Cmd_Reset/,Cmd_Position/,"
-				"valveType/,OpenLS/,ClosedLS/,Failed/,Comm/,Status/,Interlock/,Alm_/,_Alarms/"
+				"OPER/,PROG/,MAINT/,Cmd/,Cmd_Open/,Cmd_Close/,Cmd_Reset/,Cmd_Position/,Cmd_Bypass/,"
+				"Cmd_Enable/,Cmd_Disable/,Cmd_ResetAckAll/,valveType/,OpenLS/,ClosedLS/,Failed/,Comm/,"
+				"Status/,Interlock/,Alm_/,Ack_/,PermOK/,Rdy_/,Nrdy_/,Disabled/,Ovrd/,_Alarms/"
 			)
 		if not hiddenFromTrend:
-			hiddenFromTrend = "Status/,Interlock/"
+			hiddenFromTrend = "Status/,Interlock/,Nrdy_/,Rdy_/,Cfg_/,Ack_/"
+		if not hiddenFromAlarmConfiguration:
+			hiddenFromAlarmConfiguration = "Cfg_/,Nrdy_/,Rdy_/,Cmd_/,OPER/,PROG/,MAINT/"
+		if not hiddenFromAlarms:
+			hiddenFromAlarms = "Cfg_/,Nrdy_/,Rdy_/"
 	params = {
 		"tagPath": tagPath,
 		"deviceType": dt,

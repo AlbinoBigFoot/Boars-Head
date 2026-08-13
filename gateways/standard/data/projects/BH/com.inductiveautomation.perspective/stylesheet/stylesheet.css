@@ -3437,3 +3437,42 @@ body:has(.psc-animations-off) .container-fade-in {
 .psc-faceplate-ls-off {
 	color: var(--text-muted);
 }
+
+/* Valve Controls — FT Home status banner + Not Ready list */
+.psc-faceplate-status-banner {
+	background: var(--neutral-40);
+	border: 1px solid var(--border);
+	border-radius: var(--borderRadius);
+	gap: 8px;
+}
+.psc-faceplate-status-banner-text {
+	font-weight: 700;
+	font-size: 18px;
+	letter-spacing: 0.02em;
+}
+.psc-faceplate-status-open {
+	background: var(--neutral-50);
+}
+.psc-faceplate-status-closed {
+	background: var(--neutral-40);
+}
+.psc-faceplate-status-transit {
+	background: var(--neutral-45, var(--neutral-40));
+}
+.psc-faceplate-status-disabled {
+	background: var(--neutral-30);
+	opacity: 0.9;
+}
+.psc-faceplate-nrdy-dot {
+	background: var(--neutral-50);
+	border: 1px solid var(--border);
+	display: inline-block;
+}
+.psc-faceplate-nrdy-active {
+	background: var(--alarm-medium, #c9a227);
+	border-color: var(--alarm-medium, #c9a227);
+}
+.psc-faceplate-nrdy-label {
+	font-size: 12px;
+}
+

@@ -116,6 +116,197 @@
       {
         "type": "ia.container.flex",
         "meta": {
+          "name": "StatusBanner"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "alignItems": "center",
+          "justify": "space-between",
+          "style": {
+            "classes": "faceplate-status-banner",
+            "width": "100%",
+            "minHeight": "40px",
+            "padding": "6px 12px",
+            "boxSizing": "border-box"
+          }
+        },
+        "propConfig": {
+          "props.style.classes": {
+            "binding": {
+              "config": {
+                "expression": "if({view.params.tagPath} = '', 'faceplate-status-banner',\n\tcase(coalesce(tag({view.params.tagPath} + '/Status/Value'), -1),\n\t\t1, 'faceplate-status-banner faceplate-status-closed',\n\t\t2, 'faceplate-status-banner faceplate-status-open',\n\t\t5, 'faceplate-status-banner faceplate-status-transit',\n\t\t6, 'faceplate-status-banner faceplate-status-transit',\n\t\t33, 'faceplate-status-banner faceplate-status-disabled',\n\t\t'faceplate-status-banner'))"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "StatusText"
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.tagPath} = '', '\u2014',\n\tcase(coalesce(tag({view.params.tagPath} + '/Status/Value'), -1),\n\t\t0, 'UNK',\n\t\t1, 'CLOSED',\n\t\t2, 'OPEN',\n\t\t5, 'CLOSING',\n\t\t6, 'OPENING',\n\t\t33, 'DISABLED',\n\t\t'STS ' + str(coalesce(tag({view.params.tagPath} + '/Status/Value'), '?'))))"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "text": "\u2014",
+              "style": {
+                "classes": "faceplate-status-banner-text font-value"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "ReadyChips"
+            },
+            "props": {
+              "direction": "row",
+              "style": {
+                "gap": "6px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "PermOK"
+                },
+                "position": {
+                  "basis": "56px",
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "classes": "faceplate-fault-chip",
+                    "gap": "2px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Code"
+                    },
+                    "props": {
+                      "text": "P",
+                      "style": {
+                        "classes": "faceplate-fault-code font-label"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "State"
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(coalesce(tag({view.params.tagPath} + '/PermOK/Value'), false), 'OK', 'NOT'))"
+                          },
+                          "type": "expr"
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(tag({view.params.tagPath} + '/PermOK/Value'), false),\n\t\t'faceplate-fault-state faceplate-fault-ok',\n\t\t'faceplate-fault-state faceplate-fault-active'))"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "text": "\u2014",
+                      "style": {
+                        "classes": "faceplate-fault-state"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "IntlkOK"
+                },
+                "position": {
+                  "basis": "56px",
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "classes": "faceplate-fault-chip",
+                    "gap": "2px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Code"
+                    },
+                    "props": {
+                      "text": "I",
+                      "style": {
+                        "classes": "faceplate-fault-code font-label"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "State"
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(coalesce(tag({view.params.tagPath} + '/Interlock/Sts_IntlkOK/Value'), false), 'OK', 'NOT'))"
+                          },
+                          "type": "expr"
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(tag({view.params.tagPath} + '/Interlock/Sts_IntlkOK/Value'), false),\n\t\t'faceplate-fault-state faceplate-fault-ok',\n\t\t'faceplate-fault-state faceplate-fault-active'))"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "text": "\u2014",
+                      "style": {
+                        "classes": "faceplate-fault-state"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
           "name": "FaultsSection"
         },
         "position": {
@@ -517,6 +708,448 @@
                 }
               }
             }
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "NotReadySection"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "classes": "faceplate-section faceplate-section-card"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Title"
+            },
+            "props": {
+              "text": "Device Not Ready Reasons",
+              "style": {
+                "classes": "faceplate-section-title font-label"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Rows"
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "2px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "NrdyDisabled"
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "center",
+                  "style": {
+                    "gap": "8px",
+                    "padding": "2px 0"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Dot"
+                    },
+                    "propConfig": {
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(tag({view.params.tagPath} + '/Nrdy_Disabled/Value'), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "text": "",
+                      "style": {
+                        "classes": "faceplate-nrdy-dot",
+                        "width": "10px",
+                        "height": "10px",
+                        "borderRadius": "50%"
+                      }
+                    },
+                    "position": {
+                      "basis": "10px",
+                      "shrink": 0
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Label"
+                    },
+                    "props": {
+                      "text": "Device Disabled by Maintenance",
+                      "style": {
+                        "classes": "font-label faceplate-nrdy-label"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "NrdyCfgErr"
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "center",
+                  "style": {
+                    "gap": "8px",
+                    "padding": "2px 0"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Dot"
+                    },
+                    "propConfig": {
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(tag({view.params.tagPath} + '/Nrdy_CfgErr/Value'), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "text": "",
+                      "style": {
+                        "classes": "faceplate-nrdy-dot",
+                        "width": "10px",
+                        "height": "10px",
+                        "borderRadius": "50%"
+                      }
+                    },
+                    "position": {
+                      "basis": "10px",
+                      "shrink": 0
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Label"
+                    },
+                    "props": {
+                      "text": "Configuration Error",
+                      "style": {
+                        "classes": "font-label faceplate-nrdy-label"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "NrdyIntlk"
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "center",
+                  "style": {
+                    "gap": "8px",
+                    "padding": "2px 0"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Dot"
+                    },
+                    "propConfig": {
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(tag({view.params.tagPath} + '/Nrdy_Intlk/Value'), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "text": "",
+                      "style": {
+                        "classes": "faceplate-nrdy-dot",
+                        "width": "10px",
+                        "height": "10px",
+                        "borderRadius": "50%"
+                      }
+                    },
+                    "position": {
+                      "basis": "10px",
+                      "shrink": 0
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Label"
+                    },
+                    "props": {
+                      "text": "Device Interlocks Not OK",
+                      "style": {
+                        "classes": "font-label faceplate-nrdy-label"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "NrdyPerm"
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "center",
+                  "style": {
+                    "gap": "8px",
+                    "padding": "2px 0"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Dot"
+                    },
+                    "propConfig": {
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(tag({view.params.tagPath} + '/Nrdy_Perm/Value'), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "text": "",
+                      "style": {
+                        "classes": "faceplate-nrdy-dot",
+                        "width": "10px",
+                        "height": "10px",
+                        "borderRadius": "50%"
+                      }
+                    },
+                    "position": {
+                      "basis": "10px",
+                      "shrink": 0
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Label"
+                    },
+                    "props": {
+                      "text": "Device Permissives Not OK",
+                      "style": {
+                        "classes": "font-label faceplate-nrdy-label"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "NrdyIOFault"
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "center",
+                  "style": {
+                    "gap": "8px",
+                    "padding": "2px 0"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Dot"
+                    },
+                    "propConfig": {
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(tag({view.params.tagPath} + '/Nrdy_IOFault/Value'), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "text": "",
+                      "style": {
+                        "classes": "faceplate-nrdy-dot",
+                        "width": "10px",
+                        "height": "10px",
+                        "borderRadius": "50%"
+                      }
+                    },
+                    "position": {
+                      "basis": "10px",
+                      "shrink": 0
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Label"
+                    },
+                    "props": {
+                      "text": "I/O Fault (shed requires reset)",
+                      "style": {
+                        "classes": "font-label faceplate-nrdy-label"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "NrdyFail"
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "center",
+                  "style": {
+                    "gap": "8px",
+                    "padding": "2px 0"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Dot"
+                    },
+                    "propConfig": {
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(tag({view.params.tagPath} + '/Nrdy_Fail/Value'), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "text": "",
+                      "style": {
+                        "classes": "faceplate-nrdy-dot",
+                        "width": "10px",
+                        "height": "10px",
+                        "borderRadius": "50%"
+                      }
+                    },
+                    "position": {
+                      "basis": "10px",
+                      "shrink": 0
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Label"
+                    },
+                    "props": {
+                      "text": "Device Failure (shed requires reset)",
+                      "style": {
+                        "classes": "font-label faceplate-nrdy-label"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "NrdyNoMode"
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "center",
+                  "style": {
+                    "gap": "8px",
+                    "padding": "2px 0"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Dot"
+                    },
+                    "propConfig": {
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(tag({view.params.tagPath} + '/Nrdy_NoMode/Value'), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "text": "",
+                      "style": {
+                        "classes": "faceplate-nrdy-dot",
+                        "width": "10px",
+                        "height": "10px",
+                        "borderRadius": "50%"
+                      }
+                    },
+                    "position": {
+                      "basis": "10px",
+                      "shrink": 0
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Label"
+                    },
+                    "props": {
+                      "text": "Device Logic Disabled/No Mode",
+                      "style": {
+                        "classes": "font-label faceplate-nrdy-label"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
           }
         ]
       }

@@ -166,7 +166,7 @@
           "props.enabled": {
             "binding": {
               "config": {
-                "expression": "!{session.custom.ReadOnly}"
+                "expression": "!{session.custom.ReadOnly} &&\n({view.params.tagPath} = '' ||\n coalesce(tag({view.params.tagPath} + '/Rdy_Open/Value'), true))"
               },
               "type": "expr"
             }
@@ -204,7 +204,7 @@
           "props.enabled": {
             "binding": {
               "config": {
-                "expression": "!{session.custom.ReadOnly}"
+                "expression": "!{session.custom.ReadOnly} &&\n({view.params.tagPath} = '' ||\n coalesce(tag({view.params.tagPath} + '/Rdy_Close/Value'), true))"
               },
               "type": "expr"
             }
