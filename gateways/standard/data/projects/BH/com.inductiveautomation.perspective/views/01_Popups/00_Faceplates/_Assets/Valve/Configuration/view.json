@@ -1,15 +1,15 @@
 {
   "custom": {},
   "params": {
-    "tagPath": "",
-    "hiddenTags": ""
+    "hiddenTags": "",
+    "tagPath": ""
   },
   "propConfig": {
-    "params.tagPath": {
+    "params.hiddenTags": {
       "paramDirection": "input",
       "persistent": true
     },
-    "params.hiddenTags": {
+    "params.tagPath": {
       "paramDirection": "input",
       "persistent": true
     }
@@ -21,1327 +21,152 @@
     }
   },
   "root": {
-    "type": "ia.container.flex",
-    "meta": {
-      "name": "root",
-      "contextMenu": {}
-    },
-    "props": {
-      "direction": "column",
-      "style": {
-        "gap": "8px",
-        "overflow": "auto",
-        "padding": "4px",
-        "minHeight": 0,
-        "height": "100%"
-      }
-    },
     "children": [
       {
-        "type": "ia.container.flex",
         "meta": {
           "name": "LimitSwitches"
         },
         "position": {
           "shrink": 0
         },
-        "props": {
-          "direction": "column",
-          "style": {
-            "classes": "faceplate-section faceplate-section-card",
-            "width": "100%"
+        "propConfig": {
+          "props.params.tagPath": {
+            "binding": {
+              "config": {
+                "path": "view.params.tagPath"
+              },
+              "type": "property"
+            }
           }
         },
-        "children": [
-          {
-            "type": "ia.display.label",
-            "meta": {
-              "name": "Title"
-            },
-            "props": {
-              "text": "Limit Switches",
-              "style": {
-                "classes": "faceplate-section-title font-label"
-              }
-            }
+        "props": {
+          "params": {
+            "rowsJson": "[{\"leaf\":\"Cfg_HasClosedLS\",\"kind\":\"checkbox\",\"label\":\"Valve has Closed Limit Switch\"},{\"leaf\":\"Cfg_HasOpenLS\",\"kind\":\"checkbox\",\"label\":\"Valve has Open Limit Switch\"},{\"leaf\":\"Cfg_LSFail\",\"kind\":\"checkbox\",\"label\":\"Fault when both limit switches are ON\"}]",
+            "title": "Limit Switches"
           },
-          {
-            "type": "ia.container.flex",
-            "meta": {
-              "name": "Body"
-            },
-            "props": {
-              "direction": "column",
-              "style": {
-                "gap": "2px",
-                "width": "100%"
-              }
-            },
-            "children": [
-              {
-                "type": "ia.container.flex",
-                "meta": {
-                  "name": "HasClosed"
-                },
-                "props": {
-                  "direction": "row",
-                  "alignItems": "center",
-                  "justify": "space-between",
-                  "style": {
-                    "gap": "8px",
-                    "padding": "4px 0",
-                    "width": "100%"
-                  }
-                },
-                "children": [
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "Lbl"
-                    },
-                    "props": {
-                      "text": "Valve has Closed Limit Switch",
-                      "style": {
-                        "classes": "font-label",
-                        "flex": "1"
-                      }
-                    },
-                    "position": {
-                      "grow": 1
-                    }
-                  },
-                  {
-                    "type": "ia.input.checkbox",
-                    "meta": {
-                      "name": "Chk"
-                    },
-                    "position": {
-                      "basis": "28px",
-                      "shrink": 0
-                    },
-                    "propConfig": {
-                      "props.selected": {
-                        "binding": {
-                          "config": {
-                            "mode": "indirect",
-                            "tagPath": "{tagPath}/Cfg_HasClosedLS/Value",
-                            "bidirectional": true,
-                            "fallbackDelay": 2.5,
-                            "references": {
-                              "tagPath": "{view.params.tagPath}"
-                            }
-                          },
-                          "type": "tag"
-                        }
-                      },
-                      "props.enabled": {
-                        "binding": {
-                          "config": {
-                            "expression": "!{session.custom.ReadOnly}"
-                          },
-                          "type": "expr"
-                        }
-                      }
-                    },
-                    "props": {
-                      "selected": false
-                    }
-                  }
-                ]
-              },
-              {
-                "type": "ia.container.flex",
-                "meta": {
-                  "name": "HasOpen"
-                },
-                "props": {
-                  "direction": "row",
-                  "alignItems": "center",
-                  "justify": "space-between",
-                  "style": {
-                    "gap": "8px",
-                    "padding": "4px 0",
-                    "width": "100%"
-                  }
-                },
-                "children": [
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "Lbl"
-                    },
-                    "props": {
-                      "text": "Valve has Open Limit Switch",
-                      "style": {
-                        "classes": "font-label",
-                        "flex": "1"
-                      }
-                    },
-                    "position": {
-                      "grow": 1
-                    }
-                  },
-                  {
-                    "type": "ia.input.checkbox",
-                    "meta": {
-                      "name": "Chk"
-                    },
-                    "position": {
-                      "basis": "28px",
-                      "shrink": 0
-                    },
-                    "propConfig": {
-                      "props.selected": {
-                        "binding": {
-                          "config": {
-                            "mode": "indirect",
-                            "tagPath": "{tagPath}/Cfg_HasOpenLS/Value",
-                            "bidirectional": true,
-                            "fallbackDelay": 2.5,
-                            "references": {
-                              "tagPath": "{view.params.tagPath}"
-                            }
-                          },
-                          "type": "tag"
-                        }
-                      },
-                      "props.enabled": {
-                        "binding": {
-                          "config": {
-                            "expression": "!{session.custom.ReadOnly}"
-                          },
-                          "type": "expr"
-                        }
-                      }
-                    },
-                    "props": {
-                      "selected": false
-                    }
-                  }
-                ]
-              },
-              {
-                "type": "ia.container.flex",
-                "meta": {
-                  "name": "LsFail"
-                },
-                "props": {
-                  "direction": "row",
-                  "alignItems": "center",
-                  "justify": "space-between",
-                  "style": {
-                    "gap": "8px",
-                    "padding": "4px 0",
-                    "width": "100%"
-                  }
-                },
-                "children": [
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "Lbl"
-                    },
-                    "props": {
-                      "text": "Fault when both limit switches are ON",
-                      "style": {
-                        "classes": "font-label",
-                        "flex": "1"
-                      }
-                    },
-                    "position": {
-                      "grow": 1
-                    }
-                  },
-                  {
-                    "type": "ia.input.checkbox",
-                    "meta": {
-                      "name": "Chk"
-                    },
-                    "position": {
-                      "basis": "28px",
-                      "shrink": 0
-                    },
-                    "propConfig": {
-                      "props.selected": {
-                        "binding": {
-                          "config": {
-                            "mode": "indirect",
-                            "tagPath": "{tagPath}/Cfg_LSFail/Value",
-                            "bidirectional": true,
-                            "fallbackDelay": 2.5,
-                            "references": {
-                              "tagPath": "{view.params.tagPath}"
-                            }
-                          },
-                          "type": "tag"
-                        }
-                      },
-                      "props.enabled": {
-                        "binding": {
-                          "config": {
-                            "expression": "!{session.custom.ReadOnly}"
-                          },
-                          "type": "expr"
-                        }
-                      }
-                    },
-                    "props": {
-                      "selected": false
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        ]
+          "path": "01_Popups/00_Faceplates/_Assets/Configuration/ConfigSection"
+        },
+        "type": "ia.display.view"
       },
       {
-        "type": "ia.container.flex",
         "meta": {
           "name": "Behavior"
         },
         "position": {
           "shrink": 0
         },
-        "props": {
-          "direction": "column",
-          "style": {
-            "classes": "faceplate-section faceplate-section-card",
-            "width": "100%"
+        "propConfig": {
+          "props.params.tagPath": {
+            "binding": {
+              "config": {
+                "path": "view.params.tagPath"
+              },
+              "type": "property"
+            }
           }
         },
-        "children": [
-          {
-            "type": "ia.display.label",
-            "meta": {
-              "name": "Title"
-            },
-            "props": {
-              "text": "Behavior",
-              "style": {
-                "classes": "faceplate-section-title font-label"
-              }
-            }
+        "props": {
+          "params": {
+            "rowsJson": "[{\"leaf\":\"Cfg_PCmdClear\",\"kind\":\"checkbox\",\"label\":\"Clear Program commands upon receipt\"},{\"leaf\":\"Cfg_OCmdResets\",\"kind\":\"checkbox\",\"label\":\"Operator command resets fault\"},{\"leaf\":\"Cfg_FailOpen\",\"kind\":\"checkbox\",\"label\":\"Fail Open (energize to close)\"}]",
+            "title": "Behavior"
           },
-          {
-            "type": "ia.container.flex",
-            "meta": {
-              "name": "Body"
-            },
-            "props": {
-              "direction": "column",
-              "style": {
-                "gap": "2px",
-                "width": "100%"
-              }
-            },
-            "children": [
-              {
-                "type": "ia.container.flex",
-                "meta": {
-                  "name": "PCmdClear"
-                },
-                "props": {
-                  "direction": "row",
-                  "alignItems": "center",
-                  "justify": "space-between",
-                  "style": {
-                    "gap": "8px",
-                    "padding": "4px 0",
-                    "width": "100%"
-                  }
-                },
-                "children": [
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "Lbl"
-                    },
-                    "props": {
-                      "text": "Clear Program commands upon receipt",
-                      "style": {
-                        "classes": "font-label",
-                        "flex": "1"
-                      }
-                    },
-                    "position": {
-                      "grow": 1
-                    }
-                  },
-                  {
-                    "type": "ia.input.checkbox",
-                    "meta": {
-                      "name": "Chk"
-                    },
-                    "position": {
-                      "basis": "28px",
-                      "shrink": 0
-                    },
-                    "propConfig": {
-                      "props.selected": {
-                        "binding": {
-                          "config": {
-                            "mode": "indirect",
-                            "tagPath": "{tagPath}/Cfg_PCmdClear/Value",
-                            "bidirectional": true,
-                            "fallbackDelay": 2.5,
-                            "references": {
-                              "tagPath": "{view.params.tagPath}"
-                            }
-                          },
-                          "type": "tag"
-                        }
-                      },
-                      "props.enabled": {
-                        "binding": {
-                          "config": {
-                            "expression": "!{session.custom.ReadOnly}"
-                          },
-                          "type": "expr"
-                        }
-                      }
-                    },
-                    "props": {
-                      "selected": false
-                    }
-                  }
-                ]
-              },
-              {
-                "type": "ia.container.flex",
-                "meta": {
-                  "name": "OCmdResets"
-                },
-                "props": {
-                  "direction": "row",
-                  "alignItems": "center",
-                  "justify": "space-between",
-                  "style": {
-                    "gap": "8px",
-                    "padding": "4px 0",
-                    "width": "100%"
-                  }
-                },
-                "children": [
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "Lbl"
-                    },
-                    "props": {
-                      "text": "Operator command resets fault",
-                      "style": {
-                        "classes": "font-label",
-                        "flex": "1"
-                      }
-                    },
-                    "position": {
-                      "grow": 1
-                    }
-                  },
-                  {
-                    "type": "ia.input.checkbox",
-                    "meta": {
-                      "name": "Chk"
-                    },
-                    "position": {
-                      "basis": "28px",
-                      "shrink": 0
-                    },
-                    "propConfig": {
-                      "props.selected": {
-                        "binding": {
-                          "config": {
-                            "mode": "indirect",
-                            "tagPath": "{tagPath}/Cfg_OCmdResets/Value",
-                            "bidirectional": true,
-                            "fallbackDelay": 2.5,
-                            "references": {
-                              "tagPath": "{view.params.tagPath}"
-                            }
-                          },
-                          "type": "tag"
-                        }
-                      },
-                      "props.enabled": {
-                        "binding": {
-                          "config": {
-                            "expression": "!{session.custom.ReadOnly}"
-                          },
-                          "type": "expr"
-                        }
-                      }
-                    },
-                    "props": {
-                      "selected": false
-                    }
-                  }
-                ]
-              },
-              {
-                "type": "ia.container.flex",
-                "meta": {
-                  "name": "FailOpen"
-                },
-                "props": {
-                  "direction": "row",
-                  "alignItems": "center",
-                  "justify": "space-between",
-                  "style": {
-                    "gap": "8px",
-                    "padding": "4px 0",
-                    "width": "100%"
-                  }
-                },
-                "children": [
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "Lbl"
-                    },
-                    "props": {
-                      "text": "Fail Open (energize to close)",
-                      "style": {
-                        "classes": "font-label",
-                        "flex": "1"
-                      }
-                    },
-                    "position": {
-                      "grow": 1
-                    }
-                  },
-                  {
-                    "type": "ia.input.checkbox",
-                    "meta": {
-                      "name": "Chk"
-                    },
-                    "position": {
-                      "basis": "28px",
-                      "shrink": 0
-                    },
-                    "propConfig": {
-                      "props.selected": {
-                        "binding": {
-                          "config": {
-                            "mode": "indirect",
-                            "tagPath": "{tagPath}/Cfg_FailOpen/Value",
-                            "bidirectional": true,
-                            "fallbackDelay": 2.5,
-                            "references": {
-                              "tagPath": "{view.params.tagPath}"
-                            }
-                          },
-                          "type": "tag"
-                        }
-                      },
-                      "props.enabled": {
-                        "binding": {
-                          "config": {
-                            "expression": "!{session.custom.ReadOnly}"
-                          },
-                          "type": "expr"
-                        }
-                      }
-                    },
-                    "props": {
-                      "selected": false
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        ]
+          "path": "01_Popups/00_Faceplates/_Assets/Configuration/ConfigSection"
+        },
+        "type": "ia.display.view"
       },
       {
-        "type": "ia.container.flex",
         "meta": {
-          "name": "Navigation"
+          "name": "ObjectNav"
         },
         "position": {
           "shrink": 0
         },
-        "props": {
-          "direction": "column",
-          "style": {
-            "classes": "faceplate-section faceplate-section-card",
-            "width": "100%"
+        "propConfig": {
+          "props.params.tagPath": {
+            "binding": {
+              "config": {
+                "path": "view.params.tagPath"
+              },
+              "type": "property"
+            }
           }
         },
-        "children": [
-          {
-            "type": "ia.display.label",
-            "meta": {
-              "name": "Title"
-            },
-            "props": {
-              "text": "Object Navigation",
-              "style": {
-                "classes": "faceplate-section-title font-label"
-              }
-            }
+        "props": {
+          "params": {
+            "rowsJson": "[{\"leaf\":\"Cfg_HasPermObj\",\"kind\":\"checkbox\",\"label\":\"Enable navigation to permissive object\"},{\"leaf\":\"Cfg_HasIntlkObj\",\"kind\":\"checkbox\",\"label\":\"Enable navigation to interlock object\"},{\"leaf\":\"Cfg_HasStatsObj\",\"kind\":\"checkbox\",\"label\":\"Enable navigation to valve statistics object\"}]",
+            "title": "Object Navigation"
           },
-          {
-            "type": "ia.container.flex",
-            "meta": {
-              "name": "Body"
-            },
-            "props": {
-              "direction": "column",
-              "style": {
-                "gap": "2px",
-                "width": "100%"
-              }
-            },
-            "children": [
-              {
-                "type": "ia.container.flex",
-                "meta": {
-                  "name": "HasPerm"
-                },
-                "props": {
-                  "direction": "row",
-                  "alignItems": "center",
-                  "justify": "space-between",
-                  "style": {
-                    "gap": "8px",
-                    "padding": "4px 0",
-                    "width": "100%"
-                  }
-                },
-                "children": [
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "Lbl"
-                    },
-                    "props": {
-                      "text": "Enable navigation to permissive object",
-                      "style": {
-                        "classes": "font-label",
-                        "flex": "1"
-                      }
-                    },
-                    "position": {
-                      "grow": 1
-                    }
-                  },
-                  {
-                    "type": "ia.input.checkbox",
-                    "meta": {
-                      "name": "Chk"
-                    },
-                    "position": {
-                      "basis": "28px",
-                      "shrink": 0
-                    },
-                    "propConfig": {
-                      "props.selected": {
-                        "binding": {
-                          "config": {
-                            "mode": "indirect",
-                            "tagPath": "{tagPath}/Cfg_HasPermObj/Value",
-                            "bidirectional": true,
-                            "fallbackDelay": 2.5,
-                            "references": {
-                              "tagPath": "{view.params.tagPath}"
-                            }
-                          },
-                          "type": "tag"
-                        }
-                      },
-                      "props.enabled": {
-                        "binding": {
-                          "config": {
-                            "expression": "!{session.custom.ReadOnly}"
-                          },
-                          "type": "expr"
-                        }
-                      }
-                    },
-                    "props": {
-                      "selected": false
-                    }
-                  }
-                ]
-              },
-              {
-                "type": "ia.container.flex",
-                "meta": {
-                  "name": "HasIntlk"
-                },
-                "props": {
-                  "direction": "row",
-                  "alignItems": "center",
-                  "justify": "space-between",
-                  "style": {
-                    "gap": "8px",
-                    "padding": "4px 0",
-                    "width": "100%"
-                  }
-                },
-                "children": [
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "Lbl"
-                    },
-                    "props": {
-                      "text": "Enable navigation to interlock object",
-                      "style": {
-                        "classes": "font-label",
-                        "flex": "1"
-                      }
-                    },
-                    "position": {
-                      "grow": 1
-                    }
-                  },
-                  {
-                    "type": "ia.input.checkbox",
-                    "meta": {
-                      "name": "Chk"
-                    },
-                    "position": {
-                      "basis": "28px",
-                      "shrink": 0
-                    },
-                    "propConfig": {
-                      "props.selected": {
-                        "binding": {
-                          "config": {
-                            "mode": "indirect",
-                            "tagPath": "{tagPath}/Cfg_HasIntlkObj/Value",
-                            "bidirectional": true,
-                            "fallbackDelay": 2.5,
-                            "references": {
-                              "tagPath": "{view.params.tagPath}"
-                            }
-                          },
-                          "type": "tag"
-                        }
-                      },
-                      "props.enabled": {
-                        "binding": {
-                          "config": {
-                            "expression": "!{session.custom.ReadOnly}"
-                          },
-                          "type": "expr"
-                        }
-                      }
-                    },
-                    "props": {
-                      "selected": false
-                    }
-                  }
-                ]
-              },
-              {
-                "type": "ia.container.flex",
-                "meta": {
-                  "name": "HasStats"
-                },
-                "props": {
-                  "direction": "row",
-                  "alignItems": "center",
-                  "justify": "space-between",
-                  "style": {
-                    "gap": "8px",
-                    "padding": "4px 0",
-                    "width": "100%"
-                  }
-                },
-                "children": [
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "Lbl"
-                    },
-                    "props": {
-                      "text": "Enable navigation to valve statistics object",
-                      "style": {
-                        "classes": "font-label",
-                        "flex": "1"
-                      }
-                    },
-                    "position": {
-                      "grow": 1
-                    }
-                  },
-                  {
-                    "type": "ia.input.checkbox",
-                    "meta": {
-                      "name": "Chk"
-                    },
-                    "position": {
-                      "basis": "28px",
-                      "shrink": 0
-                    },
-                    "propConfig": {
-                      "props.selected": {
-                        "binding": {
-                          "config": {
-                            "mode": "indirect",
-                            "tagPath": "{tagPath}/Cfg_HasStatsObj/Value",
-                            "bidirectional": true,
-                            "fallbackDelay": 2.5,
-                            "references": {
-                              "tagPath": "{view.params.tagPath}"
-                            }
-                          },
-                          "type": "tag"
-                        }
-                      },
-                      "props.enabled": {
-                        "binding": {
-                          "config": {
-                            "expression": "!{session.custom.ReadOnly}"
-                          },
-                          "type": "expr"
-                        }
-                      }
-                    },
-                    "props": {
-                      "selected": false
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        ]
+          "path": "01_Popups/00_Faceplates/_Assets/Configuration/ConfigSection"
+        },
+        "type": "ia.display.view"
       },
       {
-        "type": "ia.container.flex",
         "meta": {
           "name": "Deenergize"
         },
         "position": {
           "shrink": 0
         },
-        "props": {
-          "direction": "column",
-          "style": {
-            "classes": "faceplate-section faceplate-section-card",
-            "width": "100%"
+        "propConfig": {
+          "props.params.tagPath": {
+            "binding": {
+              "config": {
+                "path": "view.params.tagPath"
+              },
+              "type": "property"
+            }
           }
         },
-        "children": [
-          {
-            "type": "ia.display.label",
-            "meta": {
-              "name": "Title"
-            },
-            "props": {
-              "text": "Deenergize Valve",
-              "style": {
-                "classes": "faceplate-section-title font-label"
-              }
-            }
+        "props": {
+          "params": {
+            "rowsJson": "[{\"leaf\":\"Cfg_ShedOnIOFault\",\"kind\":\"checkbox\",\"label\":\"On I/O Fault\"},{\"leaf\":\"Cfg_ShedOnTransitStall\",\"kind\":\"checkbox\",\"label\":\"On Transit Stall\"},{\"leaf\":\"Cfg_ShedOnFullStall\",\"kind\":\"checkbox\",\"label\":\"On Full Stall\"}]",
+            "title": "Deenergize Valve"
           },
-          {
-            "type": "ia.container.flex",
-            "meta": {
-              "name": "Body"
-            },
-            "props": {
-              "direction": "column",
-              "style": {
-                "gap": "2px",
-                "width": "100%"
-              }
-            },
-            "children": [
-              {
-                "type": "ia.container.flex",
-                "meta": {
-                  "name": "ShedIO"
-                },
-                "props": {
-                  "direction": "row",
-                  "alignItems": "center",
-                  "justify": "space-between",
-                  "style": {
-                    "gap": "8px",
-                    "padding": "4px 0",
-                    "width": "100%"
-                  }
-                },
-                "children": [
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "Lbl"
-                    },
-                    "props": {
-                      "text": "On I/O Fault",
-                      "style": {
-                        "classes": "font-label",
-                        "flex": "1"
-                      }
-                    },
-                    "position": {
-                      "grow": 1
-                    }
-                  },
-                  {
-                    "type": "ia.input.checkbox",
-                    "meta": {
-                      "name": "Chk"
-                    },
-                    "position": {
-                      "basis": "28px",
-                      "shrink": 0
-                    },
-                    "propConfig": {
-                      "props.selected": {
-                        "binding": {
-                          "config": {
-                            "mode": "indirect",
-                            "tagPath": "{tagPath}/Cfg_ShedOnIOFault/Value",
-                            "bidirectional": true,
-                            "fallbackDelay": 2.5,
-                            "references": {
-                              "tagPath": "{view.params.tagPath}"
-                            }
-                          },
-                          "type": "tag"
-                        }
-                      },
-                      "props.enabled": {
-                        "binding": {
-                          "config": {
-                            "expression": "!{session.custom.ReadOnly}"
-                          },
-                          "type": "expr"
-                        }
-                      }
-                    },
-                    "props": {
-                      "selected": false
-                    }
-                  }
-                ]
-              },
-              {
-                "type": "ia.container.flex",
-                "meta": {
-                  "name": "ShedTransit"
-                },
-                "props": {
-                  "direction": "row",
-                  "alignItems": "center",
-                  "justify": "space-between",
-                  "style": {
-                    "gap": "8px",
-                    "padding": "4px 0",
-                    "width": "100%"
-                  }
-                },
-                "children": [
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "Lbl"
-                    },
-                    "props": {
-                      "text": "On Transit Stall",
-                      "style": {
-                        "classes": "font-label",
-                        "flex": "1"
-                      }
-                    },
-                    "position": {
-                      "grow": 1
-                    }
-                  },
-                  {
-                    "type": "ia.input.checkbox",
-                    "meta": {
-                      "name": "Chk"
-                    },
-                    "position": {
-                      "basis": "28px",
-                      "shrink": 0
-                    },
-                    "propConfig": {
-                      "props.selected": {
-                        "binding": {
-                          "config": {
-                            "mode": "indirect",
-                            "tagPath": "{tagPath}/Cfg_ShedOnTransitStall/Value",
-                            "bidirectional": true,
-                            "fallbackDelay": 2.5,
-                            "references": {
-                              "tagPath": "{view.params.tagPath}"
-                            }
-                          },
-                          "type": "tag"
-                        }
-                      },
-                      "props.enabled": {
-                        "binding": {
-                          "config": {
-                            "expression": "!{session.custom.ReadOnly}"
-                          },
-                          "type": "expr"
-                        }
-                      }
-                    },
-                    "props": {
-                      "selected": false
-                    }
-                  }
-                ]
-              },
-              {
-                "type": "ia.container.flex",
-                "meta": {
-                  "name": "ShedFull"
-                },
-                "props": {
-                  "direction": "row",
-                  "alignItems": "center",
-                  "justify": "space-between",
-                  "style": {
-                    "gap": "8px",
-                    "padding": "4px 0",
-                    "width": "100%"
-                  }
-                },
-                "children": [
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "Lbl"
-                    },
-                    "props": {
-                      "text": "On Full Stall",
-                      "style": {
-                        "classes": "font-label",
-                        "flex": "1"
-                      }
-                    },
-                    "position": {
-                      "grow": 1
-                    }
-                  },
-                  {
-                    "type": "ia.input.checkbox",
-                    "meta": {
-                      "name": "Chk"
-                    },
-                    "position": {
-                      "basis": "28px",
-                      "shrink": 0
-                    },
-                    "propConfig": {
-                      "props.selected": {
-                        "binding": {
-                          "config": {
-                            "mode": "indirect",
-                            "tagPath": "{tagPath}/Cfg_ShedOnFullStall/Value",
-                            "bidirectional": true,
-                            "fallbackDelay": 2.5,
-                            "references": {
-                              "tagPath": "{view.params.tagPath}"
-                            }
-                          },
-                          "type": "tag"
-                        }
-                      },
-                      "props.enabled": {
-                        "binding": {
-                          "config": {
-                            "expression": "!{session.custom.ReadOnly}"
-                          },
-                          "type": "expr"
-                        }
-                      }
-                    },
-                    "props": {
-                      "selected": false
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        ]
+          "path": "01_Popups/00_Faceplates/_Assets/Configuration/ConfigSection"
+        },
+        "type": "ia.display.view"
       },
       {
-        "type": "ia.container.flex",
         "meta": {
           "name": "Timing"
         },
         "position": {
           "shrink": 0
         },
-        "props": {
-          "direction": "column",
-          "style": {
-            "classes": "faceplate-section faceplate-section-card",
-            "width": "100%"
+        "propConfig": {
+          "props.params.tagPath": {
+            "binding": {
+              "config": {
+                "path": "view.params.tagPath"
+              },
+              "type": "property"
+            }
           }
         },
-        "children": [
-          {
-            "type": "ia.display.label",
-            "meta": {
-              "name": "Title"
-            },
-            "props": {
-              "text": "Timing (sec)",
-              "style": {
-                "classes": "faceplate-section-title font-label"
-              }
-            }
+        "props": {
+          "params": {
+            "rowsJson": "[{\"leaf\":\"TravelTime\",\"kind\":\"numeric\",\"label\":\"Time after command with no motion before fault\"},{\"leaf\":\"Cfg_FullStallT\",\"kind\":\"numeric\",\"label\":\"Time after command to reach position before fault\"},{\"leaf\":\"Cfg_SimFdbkT\",\"kind\":\"numeric\",\"label\":\"Feedback delay for loopback / no feedback\"}]",
+            "title": "Timing (sec)"
           },
-          {
-            "type": "ia.container.flex",
-            "meta": {
-              "name": "Body"
-            },
-            "props": {
-              "direction": "column",
-              "style": {
-                "gap": "2px",
-                "width": "100%"
-              }
-            },
-            "children": [
-              {
-                "type": "ia.container.flex",
-                "meta": {
-                  "name": "TransitT"
-                },
-                "props": {
-                  "direction": "row",
-                  "alignItems": "center",
-                  "justify": "space-between",
-                  "style": {
-                    "gap": "8px",
-                    "padding": "4px 0",
-                    "width": "100%"
-                  }
-                },
-                "children": [
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "Lbl"
-                    },
-                    "props": {
-                      "text": "Time after command with no motion before fault",
-                      "style": {
-                        "classes": "font-label",
-                        "flex": "1"
-                      }
-                    },
-                    "position": {
-                      "grow": 1
-                    }
-                  },
-                  {
-                    "type": "ia.input.numeric-entry-field",
-                    "meta": {
-                      "name": "Num"
-                    },
-                    "position": {
-                      "basis": "80px",
-                      "shrink": 0
-                    },
-                    "propConfig": {
-                      "props.value": {
-                        "binding": {
-                          "config": {
-                            "mode": "indirect",
-                            "tagPath": "{tagPath}/TravelTime/Value",
-                            "bidirectional": true,
-                            "fallbackDelay": 2.5,
-                            "references": {
-                              "tagPath": "{view.params.tagPath}"
-                            }
-                          },
-                          "type": "tag"
-                        }
-                      },
-                      "props.enabled": {
-                        "binding": {
-                          "config": {
-                            "expression": "!{session.custom.ReadOnly}"
-                          },
-                          "type": "expr"
-                        }
-                      }
-                    },
-                    "props": {
-                      "value": 0,
-                      "format": "#,##0.###",
-                      "style": {
-                        "classes": "font-value",
-                        "width": "100%"
-                      }
-                    }
-                  }
-                ]
-              },
-              {
-                "type": "ia.container.flex",
-                "meta": {
-                  "name": "FullT"
-                },
-                "props": {
-                  "direction": "row",
-                  "alignItems": "center",
-                  "justify": "space-between",
-                  "style": {
-                    "gap": "8px",
-                    "padding": "4px 0",
-                    "width": "100%"
-                  }
-                },
-                "children": [
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "Lbl"
-                    },
-                    "props": {
-                      "text": "Time after command to reach position before fault",
-                      "style": {
-                        "classes": "font-label",
-                        "flex": "1"
-                      }
-                    },
-                    "position": {
-                      "grow": 1
-                    }
-                  },
-                  {
-                    "type": "ia.input.numeric-entry-field",
-                    "meta": {
-                      "name": "Num"
-                    },
-                    "position": {
-                      "basis": "80px",
-                      "shrink": 0
-                    },
-                    "propConfig": {
-                      "props.value": {
-                        "binding": {
-                          "config": {
-                            "mode": "indirect",
-                            "tagPath": "{tagPath}/Cfg_FullStallT/Value",
-                            "bidirectional": true,
-                            "fallbackDelay": 2.5,
-                            "references": {
-                              "tagPath": "{view.params.tagPath}"
-                            }
-                          },
-                          "type": "tag"
-                        }
-                      },
-                      "props.enabled": {
-                        "binding": {
-                          "config": {
-                            "expression": "!{session.custom.ReadOnly}"
-                          },
-                          "type": "expr"
-                        }
-                      }
-                    },
-                    "props": {
-                      "value": 0,
-                      "format": "#,##0.###",
-                      "style": {
-                        "classes": "font-value",
-                        "width": "100%"
-                      }
-                    }
-                  }
-                ]
-              },
-              {
-                "type": "ia.container.flex",
-                "meta": {
-                  "name": "SimFdbk"
-                },
-                "props": {
-                  "direction": "row",
-                  "alignItems": "center",
-                  "justify": "space-between",
-                  "style": {
-                    "gap": "8px",
-                    "padding": "4px 0",
-                    "width": "100%"
-                  }
-                },
-                "children": [
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "Lbl"
-                    },
-                    "props": {
-                      "text": "Feedback delay for loopback / no feedback",
-                      "style": {
-                        "classes": "font-label",
-                        "flex": "1"
-                      }
-                    },
-                    "position": {
-                      "grow": 1
-                    }
-                  },
-                  {
-                    "type": "ia.input.numeric-entry-field",
-                    "meta": {
-                      "name": "Num"
-                    },
-                    "position": {
-                      "basis": "80px",
-                      "shrink": 0
-                    },
-                    "propConfig": {
-                      "props.value": {
-                        "binding": {
-                          "config": {
-                            "mode": "indirect",
-                            "tagPath": "{tagPath}/Cfg_SimFdbkT/Value",
-                            "bidirectional": true,
-                            "fallbackDelay": 2.5,
-                            "references": {
-                              "tagPath": "{view.params.tagPath}"
-                            }
-                          },
-                          "type": "tag"
-                        }
-                      },
-                      "props.enabled": {
-                        "binding": {
-                          "config": {
-                            "expression": "!{session.custom.ReadOnly}"
-                          },
-                          "type": "expr"
-                        }
-                      }
-                    },
-                    "props": {
-                      "value": 0,
-                      "format": "#,##0.###",
-                      "style": {
-                        "classes": "font-value",
-                        "width": "100%"
-                      }
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        ]
+          "path": "01_Popups/00_Faceplates/_Assets/Configuration/ConfigSection"
+        },
+        "type": "ia.display.view"
       }
-    ]
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "gap": "8px",
+        "height": "100%",
+        "minHeight": 0,
+        "overflowX": "hidden",
+        "overflowY": "auto",
+        "padding": "4px"
+      }
+    },
+    "type": "ia.container.flex"
   }
 }

@@ -49,6 +49,114 @@ def deviceTypeSourceFilter(selected):
 	return ",".join(["*%s*" % folder for folder in items])
 
 
+def sourceWildcard(tagPath):
+	"""Alarm Status source filter for a device tag path (same shape as the faceplate table)."""
+	raw = str(tagPath or "").strip()
+	if not raw:
+		return None
+	provider = "default"
+	path = raw
+	if raw.startswith("["):
+		end = raw.find("]")
+		if end > 1:
+			provider = raw[1:end]
+			path = raw[end + 1 :]
+	path = path.lstrip("/")
+	if not path:
+		return None
+	return "prov:%s:/tag:%s*" % (provider, path)
+
+
+def _alarmEventId(event):
+	for getter in (
+		lambda e: e.getId(),
+		lambda e: e.get("EventId") if hasattr(e, "get") else None,
+		lambda e: getattr(e, "id", None),
+	):
+		try:
+			value = getter(event)
+			if value not in (None, ""):
+				return str(value)
+		except:
+			pass
+	return None
+
+
+def _collectUnackedIds(sourceFilter):
+	ids = []
+	if not sourceFilter:
+		return ids
+	try:
+		events = system.alarm.queryStatus(
+			source=[sourceFilter],
+			state=["ActiveUnacked", "ClearUnacked"],
+		)
+	except:
+		return ids
+	if events is None:
+		return ids
+	try:
+		rowCount = events.getRowCount()
+		names = list(events.getColumnNames()) if hasattr(events, "getColumnNames") else []
+		col = "EventId" if "EventId" in names else (names[0] if names else None)
+		if col is not None:
+			for i in range(rowCount):
+				value = events.getValueAt(i, col)
+				if value not in (None, ""):
+					ids.append(str(value))
+			return ids
+	except:
+		pass
+	try:
+		for event in events:
+			eid = _alarmEventId(event)
+			if eid:
+				ids.append(eid)
+	except:
+		pass
+	return ids
+
+
+def acknowledgeForTag(tagPath, username="", notes="Faceplate Ack / Reset"):
+	"""Acknowledge unacked Ignition alarms associated with this device (same set as the faceplate table)."""
+	filters = []
+	primary = sourceWildcard(tagPath)
+	if primary:
+		filters.append(primary)
+	raw = str(tagPath or "").strip()
+	pathOnly = raw[raw.find("]") + 1:].lstrip("/") if raw.startswith("[") else raw.lstrip("/")
+	if pathOnly:
+		fallback = "*%s*" % pathOnly
+		if fallback not in filters:
+			filters.append(fallback)
+	for member in ("Alm_IOFault", "Alm_FullStall", "Alm_TransitStall", "Alm_IntlkTrip"):
+		memberPath = raw.rstrip("/") + "/" + member + "/Value"
+		try:
+			cfg = system.tag.getConfiguration(memberPath, False)[0]
+			srcTag = cfg.get("sourceTagPath")
+			wild = sourceWildcard(srcTag) if srcTag else None
+			if wild and wild not in filters:
+				filters.append(wild)
+		except:
+			pass
+	ids = []
+	seen = set()
+	for src in filters:
+		for eid in _collectUnackedIds(src):
+			if eid not in seen:
+				seen.add(eid)
+				ids.append(eid)
+	if not ids:
+		return 0
+	user = str(username or "")
+	try:
+		system.alarm.acknowledge(ids, notes or "Faceplate Ack / Reset", user)
+	except:
+		logger.warn("acknowledge failed for %s (%d events)" % (raw, len(ids)))
+		raise
+	return len(ids)
+
+
 def rebuild(rebuildTagPath):
 	"""
 	Rebuild expression tags under an _Alarms UDT instance.

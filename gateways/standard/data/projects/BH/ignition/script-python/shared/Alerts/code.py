@@ -22,7 +22,76 @@ ADHOC_TREND_CONFIG_WIDTH = 340
 ADHOC_TREND_CONFIG_HEIGHT = 520
 ADHOC_TREND_GAP = 12
 
-def showAlert(state="info", title="", message="", showCloseBtn=True, btnTextPrimary="", btnTextSecondary="", btnIconPrimary="", btnIconSecondary="", btnIconAlignment="right", btnActionPrimary=None, btnActionSecondary=None, payload={}):
+def confirmApplyWrite(label, tagPath, newValue, oldValue=None, title="Apply configuration",
+		extraPayload=None, btnTextApply="Apply"):
+	"""Confirm before writing a config value. Cancel does not write.
+
+	No dialog (and no write) if newValue equals oldValue.
+	"""
+	try:
+		if oldValue is not None and shared.Audit.valuesEqual(newValue, oldValue):
+			return
+	except Exception:
+		if oldValue is not None and newValue == oldValue:
+			return
+	lbl = label if label not in (None, "") else (str(tagPath or "").split("/")[-1] or "Parameter")
+	old_s = "—" if oldValue is None else str(oldValue)
+	new_s = str(newValue)
+	msg = (
+		"Apply this configuration change?<br><br>"
+		"<b>%s</b><br>Old: %s<br>New: %s"
+	) % (lbl, old_s, new_s)
+	payload = {
+		"tagPath": tagPath,
+		"value": newValue,
+		"label": lbl,
+		"oldValue": oldValue,
+		"viewName": "",
+	}
+	if extraPayload:
+		try:
+			payload.update(dict(extraPayload))
+		except Exception:
+			pass
+	showAlert(
+		state="info",
+		title=title,
+		message=msg,
+		showCloseBtn=False,
+		btnTextPrimary=btnTextApply or "Apply",
+		btnTextSecondary="Cancel",
+		btnActionPrimary="writeValue",
+		btnActionSecondary="cancel",
+		payload=payload,
+		overlayDismiss=False,
+	)
+
+
+def promptConfigWrite(component, propPath, tagPath, label, newValue, oldValue):
+	"""Snap the widget back to oldValue, then confirm. Tag writes only on Apply."""
+	try:
+		if str(propPath).endswith("selected"):
+			component.props.selected = bool(oldValue)
+		elif str(propPath).endswith("value"):
+			component.props.value = oldValue
+		elif str(propPath).endswith("text"):
+			component.props.text = oldValue if oldValue is not None else ""
+	except Exception:
+		pass
+	try:
+		component.refreshBinding(propPath)
+	except Exception:
+		pass
+	confirmApplyWrite(
+		label=label,
+		tagPath=tagPath,
+		newValue=newValue,
+		oldValue=oldValue,
+		extraPayload={"viewName": ""},
+	)
+
+
+def showAlert(state="info", title="", message="", showCloseBtn=True, btnTextPrimary="", btnTextSecondary="", btnIconPrimary="", btnIconSecondary="", btnIconAlignment="right", btnActionPrimary=None, btnActionSecondary=None, payload={}, overlayDismiss=True):
 	"""Opens the alert popup
 	
 	Parameters
@@ -66,16 +135,17 @@ def showAlert(state="info", title="", message="", showCloseBtn=True, btnTextPrim
 		"payload":payload
 	}
 
-	# Size popup to message content (Perspective locks size at open); keep within viewport.
+	# Compact confirm: count <br> lines; avoid 520px empty body / inner scrollbars.
 	msg = message if message is not None else ""
 	try:
-		msg_len = len(str(msg))
-		line_count = str(msg).count("\n") + 1
+		msg_s = str(msg)
+		msg_len = len(msg_s)
+		line_count = msg_s.count("\n") + msg_s.lower().count("<br") + 1
 	except:
 		msg_len = 0
 		line_count = 1
-	height = int(min(520, max(200, 160 + msg_len * 0.55 + line_count * 14)))
-	width = 520 if msg_len > 48 else 320
+	height = int(min(300, max(168, 72 + line_count * 18 + (26 if title else 0) + 44)))
+	width = 400 if msg_len > 48 else 320
 
 	system.perspective.openPopup(
 		id="alertDialog", 
@@ -85,7 +155,7 @@ def showAlert(state="info", title="", message="", showCloseBtn=True, btnTextPrim
 		draggable=True,
 		showCloseIcon=False,
 		modal=False,
-		overlayDismiss=True
+		overlayDismiss=overlayDismiss
 	)
 
 def showAdhocTrend():

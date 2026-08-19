@@ -50,7 +50,11 @@
       "persistent": true
     },
     "custom.selected": {
-      "persistent": true
+      "persistent": true,
+      "onChange": {
+        "enabled": true,
+        "script": "\t# Width is applied in stylesheet via .psc-faceplate-trend-wide on the view root.\n\t# alterPopup is not available in this Ignition version.\n\tpass\n"
+      }
     },
     "custom.tagFlags": {
       "binding": {
@@ -914,7 +918,7 @@
       "props.style.classes": {
         "binding": {
           "config": {
-            "expression": "if({view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'Solenoid' || {view.params.deviceType} = 'SolenoidValve',\n   'bg-component container-card container-card-border faceplate faceplate-tabs-vertical',\n   'bg-component container-card container-card-border faceplate')"
+            "expression": "if({view.params.deviceType} = 'Valve' || {view.params.deviceType} = 'Solenoid' || {view.params.deviceType} = 'SolenoidValve',\n   if({view.custom.selected} = 'Trend',\n      'bg-component container-card container-card-border faceplate faceplate-tabs-vertical faceplate-trend-wide',\n      'bg-component container-card container-card-border faceplate faceplate-tabs-vertical'),\n   if({view.custom.selected} = 'Trend',\n      'bg-component container-card container-card-border faceplate faceplate-trend-wide',\n      'bg-component container-card container-card-border faceplate'))"
           },
           "type": "expr"
         }

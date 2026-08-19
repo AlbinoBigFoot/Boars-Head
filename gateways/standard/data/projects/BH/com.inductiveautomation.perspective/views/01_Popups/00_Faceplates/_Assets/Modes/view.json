@@ -94,16 +94,56 @@
     },
     "children": [
       {
-        "type": "ia.display.label",
+        "type": "ia.container.flex",
         "meta": {
-          "name": "ModeTitle"
+          "name": "ModeHeader"
         },
         "props": {
-          "text": "Mode",
+          "direction": "row",
+          "alignItems": "center",
+          "justify": "space-between",
           "style": {
-            "classes": "faceplate-section-title font-label"
+            "classes": "faceplate-mode-header",
+            "gap": "8px",
+            "width": "100%"
           }
-        }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "ModeTitle"
+            },
+            "props": {
+              "text": "Mode",
+              "style": {
+                "classes": "faceplate-section-title font-label"
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "ModeCurrent"
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.deviceType} = 'Compressor',\n\tcase(tag({view.params.tagPath} + '/CP_Mode/Value'), 1, 'Remote', 2, 'Auto', 3, 'Manual', '\u2014'),\n\tif(coalesce(if({view.params.deviceType} = 'Pump',\n\t\ttag({view.params.tagPath} + '/Sts_Oper/Value'),\n\t\ttag({view.params.tagPath} + '/OPER/Value')), false),\n\t\t'Operator',\n\t\tif(coalesce(if({view.params.deviceType} = 'Pump',\n\t\t\ttag({view.params.tagPath} + '/Sts_Prog/Value'),\n\t\t\ttag({view.params.tagPath} + '/PROG/Value')), false),\n\t\t\t'Program',\n\t\t\tif(coalesce(if({view.params.deviceType} = 'Pump',\n\t\t\t\ttag({view.params.tagPath} + '/Sts_Maint/Value'),\n\t\t\t\ttag({view.params.tagPath} + '/MAINT/Value')), false),\n\t\t\t\t'Maintenance',\n\t\t\t\t'\u2014'))))"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "text": "\u2014",
+              "style": {
+                "classes": "font-label faceplate-mode-current"
+              }
+            }
+          }
+        ]
       },
       {
         "type": "ia.container.flex",
@@ -152,7 +192,7 @@
               "props.style.classes": {
                 "binding": {
                   "config": {
-                    "expression": "if(if({view.params.deviceType} = 'Pump', tag({view.params.tagPath} + '/Sts_Oper/Value'), tag({view.params.tagPath} + '/OPER/Value')), 'faceplate-mode-btn faceplate-mode-btn-active', 'faceplate-mode-btn')"
+                    "expression": "if(coalesce(if({view.params.deviceType} = 'Pump',\n\ttag({view.params.tagPath} + '/Sts_Oper/Value'),\n\ttag({view.params.tagPath} + '/OPER/Value')), false),\n\t'faceplate-mode-btn faceplate-mode-btn-active',\n\t'faceplate-mode-btn')"
                   },
                   "type": "expr"
                 }
@@ -170,7 +210,7 @@
               "dom": {
                 "onClick": {
                   "config": {
-                    "script": "\tdef _r(p):\n\t\ttry:\n\t\t\tc = system.tag.getConfiguration(p, False)[0]\n\t\t\ts = c.get('sourceTagPath')\n\t\t\treturn str(s) if s else p\n\t\texcept:\n\t\t\treturn p\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tdt = str(self.view.params.deviceType or '')\n\tif dt == 'Pump':\n\t\tclicked = 'Sts_Oper'\n\t\tmodes = ['Sts_Oper', 'Sts_Maint', 'Sts_Prog']\n\telse:\n\t\tclicked = 'OPER'\n\t\tmodes = ['OPER', 'MAINT', 'PROG']\n\tpaths = [_r(base + '/' + m + '/Value') for m in modes]\n\tvals = [m == clicked for m in modes]\n\tsystem.tag.writeBlocking(paths, vals)\n"
+                    "script": "\tif self.session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tdt = str(self.view.params.deviceType or '')\n\tif dt == 'Pump':\n\t\tshared.ValveCommands.setPumpMode(base, 'Sts_Oper')\n\telse:\n\t\tshared.ValveCommands.setMode(base, 'OPER')\n"
                   },
                   "scope": "G",
                   "type": "script"
@@ -253,7 +293,7 @@
               "props.style.classes": {
                 "binding": {
                   "config": {
-                    "expression": "if(if({view.params.deviceType} = 'Pump', tag({view.params.tagPath} + '/Sts_Prog/Value'), tag({view.params.tagPath} + '/PROG/Value')), 'faceplate-mode-btn faceplate-mode-btn-active', 'faceplate-mode-btn')"
+                    "expression": "if(coalesce(if({view.params.deviceType} = 'Pump',\n\ttag({view.params.tagPath} + '/Sts_Prog/Value'),\n\ttag({view.params.tagPath} + '/PROG/Value')), false),\n\t'faceplate-mode-btn faceplate-mode-btn-active',\n\t'faceplate-mode-btn')"
                   },
                   "type": "expr"
                 }
@@ -271,7 +311,7 @@
               "dom": {
                 "onClick": {
                   "config": {
-                    "script": "\tdef _r(p):\n\t\ttry:\n\t\t\tc = system.tag.getConfiguration(p, False)[0]\n\t\t\ts = c.get('sourceTagPath')\n\t\t\treturn str(s) if s else p\n\t\texcept:\n\t\t\treturn p\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tdt = str(self.view.params.deviceType or '')\n\tif dt == 'Pump':\n\t\tclicked = 'Sts_Prog'\n\t\tmodes = ['Sts_Oper', 'Sts_Maint', 'Sts_Prog']\n\telse:\n\t\tclicked = 'PROG'\n\t\tmodes = ['OPER', 'MAINT', 'PROG']\n\tpaths = [_r(base + '/' + m + '/Value') for m in modes]\n\tvals = [m == clicked for m in modes]\n\tsystem.tag.writeBlocking(paths, vals)\n"
+                    "script": "\tif self.session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tdt = str(self.view.params.deviceType or '')\n\tif dt == 'Pump':\n\t\tshared.ValveCommands.setPumpMode(base, 'Sts_Prog')\n\telse:\n\t\tshared.ValveCommands.setMode(base, 'PROG')\n"
                   },
                   "scope": "G",
                   "type": "script"
@@ -354,7 +394,7 @@
               "props.style.classes": {
                 "binding": {
                   "config": {
-                    "expression": "if(if({view.params.deviceType} = 'Pump', tag({view.params.tagPath} + '/Sts_Maint/Value'), tag({view.params.tagPath} + '/MAINT/Value')), 'faceplate-mode-btn faceplate-mode-btn-active', 'faceplate-mode-btn')"
+                    "expression": "if(coalesce(if({view.params.deviceType} = 'Pump',\n\ttag({view.params.tagPath} + '/Sts_Maint/Value'),\n\ttag({view.params.tagPath} + '/MAINT/Value')), false),\n\t'faceplate-mode-btn faceplate-mode-btn-active',\n\t'faceplate-mode-btn')"
                   },
                   "type": "expr"
                 }
@@ -372,7 +412,7 @@
               "dom": {
                 "onClick": {
                   "config": {
-                    "script": "\tdef _r(p):\n\t\ttry:\n\t\t\tc = system.tag.getConfiguration(p, False)[0]\n\t\t\ts = c.get('sourceTagPath')\n\t\t\treturn str(s) if s else p\n\t\texcept:\n\t\t\treturn p\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tdt = str(self.view.params.deviceType or '')\n\tif dt == 'Pump':\n\t\tclicked = 'Sts_Maint'\n\t\tmodes = ['Sts_Oper', 'Sts_Maint', 'Sts_Prog']\n\telse:\n\t\tclicked = 'MAINT'\n\t\tmodes = ['OPER', 'MAINT', 'PROG']\n\tpaths = [_r(base + '/' + m + '/Value') for m in modes]\n\tvals = [m == clicked for m in modes]\n\tsystem.tag.writeBlocking(paths, vals)\n"
+                    "script": "\tif self.session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tdt = str(self.view.params.deviceType or '')\n\tif dt == 'Pump':\n\t\tshared.ValveCommands.setPumpMode(base, 'Sts_Maint')\n\telse:\n\t\tshared.ValveCommands.setMode(base, 'MAINT')\n"
                   },
                   "scope": "G",
                   "type": "script"

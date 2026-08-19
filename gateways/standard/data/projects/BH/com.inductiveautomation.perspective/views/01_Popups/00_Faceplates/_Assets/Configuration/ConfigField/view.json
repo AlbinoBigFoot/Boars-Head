@@ -1,0 +1,258 @@
+{
+  "custom": {},
+  "params": {
+    "inputKind": "checkbox",
+    "label": "",
+    "tagPath": ""
+  },
+  "propConfig": {
+    "params.inputKind": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.label": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 40,
+      "width": 400
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "row",
+      "alignItems": "center",
+      "justify": "space-between",
+      "style": {
+        "gap": "8px",
+        "overflow": "hidden",
+        "padding": "6px 0",
+        "width": "100%",
+        "minWidth": 0
+      }
+    },
+    "children": [
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "Lbl"
+        },
+        "position": {
+          "grow": 1,
+          "shrink": 1,
+          "basis": "0px"
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.params.label"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "text": "",
+          "style": {
+            "classes": "font-label config-field-label",
+            "overflow": "hidden",
+            "minWidth": 0,
+            "whiteSpace": "normal",
+            "lineHeight": "1.45"
+          }
+        }
+      },
+      {
+        "type": "ia.input.checkbox",
+        "meta": {
+          "name": "Chk"
+        },
+        "position": {
+          "basis": "28px",
+          "shrink": 0,
+          "grow": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "lower({view.params.inputKind}) = 'checkbox' || lower({view.params.inputKind}) = 'bool' || lower({view.params.inputKind}) = 'boolean'"
+              },
+              "type": "expr"
+            }
+          },
+          "props.selected": {
+            "binding": {
+              "config": {
+                "mode": "indirect",
+                "tagPath": "{tagPath}",
+                "bidirectional": false,
+                "fallbackDelay": 2.5,
+                "references": {
+                  "tagPath": "{view.params.tagPath}"
+                }
+              },
+              "type": "tag"
+            },
+            "onChange": {
+              "enabled": null,
+              "script": "\ttry:\n\t\tif origin != 'Browser':\n\t\t\treturn\n\t\tif self.session.custom.ReadOnly:\n\t\t\tself.refreshBinding('props.selected')\n\t\t\treturn\n\t\ttagPath = self.view.params.tagPath\n\t\tif not tagPath:\n\t\t\tself.refreshBinding('props.selected')\n\t\t\treturn\n\t\tnewValue = bool(currentValue.value)\n\t\toldValue = bool(previousValue.value) if previousValue is not None else (not newValue)\n\t\tif newValue == oldValue:\n\t\t\treturn\n\t\tlabel = self.view.params.label or tagPath\n\t\tshared.Alerts.promptConfigWrite(self, 'props.selected', tagPath, label, newValue, oldValue)\n\texcept:\n\t\tsystem.util.getLogger('ConfigField').info('Error prompting apply write')\n\t\ttry:\n\t\t\tself.refreshBinding('props.selected')\n\t\texcept:\n\t\t\tpass\n"
+            }
+          },
+          "props.enabled": {
+            "binding": {
+              "config": {
+                "expression": "!coalesce({session.custom.ReadOnly}, false)"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "selected": false,
+          "text": "",
+          "textPosition": "right",
+          "style": {
+            "overflow": "hidden"
+          }
+        }
+      },
+      {
+        "type": "ia.display.view",
+        "meta": {
+          "name": "Analog"
+        },
+        "position": {
+          "basis": "148px",
+          "shrink": 0,
+          "grow": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "lower({view.params.inputKind}) = 'numeric' || lower({view.params.inputKind}) = 'number' || lower({view.params.inputKind}) = 'analog'"
+              },
+              "type": "expr"
+            }
+          },
+          "props.params.tagPath": {
+            "binding": {
+              "config": {
+                "expression": "if(lower({view.params.inputKind}) = 'numeric' || lower({view.params.inputKind}) = 'number' || lower({view.params.inputKind}) = 'analog', {view.params.tagPath}, '')"
+              },
+              "type": "expr"
+            }
+          },
+          "props.params.permission": {
+            "binding": {
+              "config": {
+                "expression": "!coalesce({session.custom.ReadOnly}, false)"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "path": "03_Elements/00_Control/AnalogInput",
+          "useDefaultViewWidth": false,
+          "useDefaultViewHeight": false,
+          "params": {
+            "label": "Null",
+            "permission": true,
+            "tagPath": ""
+          },
+          "style": {
+            "alignSelf": "center",
+            "minHeight": "28px",
+            "overflow": "visible"
+          }
+        }
+      },
+      {
+        "type": "ia.display.view",
+        "meta": {
+          "name": "String"
+        },
+        "position": {
+          "basis": "148px",
+          "shrink": 0,
+          "grow": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "lower({view.params.inputKind}) = 'string' || lower({view.params.inputKind}) = 'text'"
+              },
+              "type": "expr"
+            }
+          },
+          "props.params.tagPath": {
+            "binding": {
+              "config": {
+                "expression": "if(lower({view.params.inputKind}) = 'string' || lower({view.params.inputKind}) = 'text', {view.params.tagPath}, '')"
+              },
+              "type": "expr"
+            }
+          },
+          "props.params.permission": {
+            "binding": {
+              "config": {
+                "expression": "!coalesce({session.custom.ReadOnly}, false)"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "path": "03_Elements/00_Control/StringInput",
+          "useDefaultViewWidth": false,
+          "useDefaultViewHeight": false,
+          "params": {
+            "label": "Null",
+            "permission": true,
+            "tagPath": ""
+          },
+          "style": {
+            "alignSelf": "center",
+            "minHeight": "28px",
+            "overflow": "visible"
+          }
+        }
+      }
+    ],
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "cancel",
+          "pageScope": true,
+          "script": "\tpath = payload.get('tagPath') if payload else None\n\tif path and path != self.view.params.tagPath:\n\t\treturn\n\ttry:\n\t\tself.getChild('Chk').refreshBinding('props.selected')\n\texcept:\n\t\tpass\n",
+          "sessionScope": false,
+          "viewScope": false
+        },
+        {
+          "messageType": "writeValue",
+          "pageScope": true,
+          "script": "\tkind = str(self.view.params.inputKind or 'checkbox').lower()\n\tif kind not in ('checkbox', 'bool', 'boolean'):\n\t\treturn\n\tpath = payload.get('tagPath') if payload else None\n\tif not path or path != self.view.params.tagPath:\n\t\treturn\n\tif payload.get('alreadyWritten'):\n\t\ttry:\n\t\t\tself.getChild('Chk').refreshBinding('props.selected')\n\t\texcept:\n\t\t\tpass\n\t\treturn\n\ttry:\n\t\tshared.Audit.writeTag(\n\t\t\tpath,\n\t\t\tpayload.get('value'),\n\t\t\tlabel=payload.get('label'),\n\t\t\tviewName=payload.get('viewName') or self.view.id.split('@')[0],\n\t\t)\n\texcept:\n\t\tsystem.tag.writeBlocking([path], [payload.get('value')])\n",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    }
+  }
+}

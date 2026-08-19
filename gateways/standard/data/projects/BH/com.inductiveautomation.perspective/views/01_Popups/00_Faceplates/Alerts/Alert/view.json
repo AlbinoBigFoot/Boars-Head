@@ -79,7 +79,7 @@
     "props.defaultSize.height": {
       "binding": {
         "config": {
-          "expression": "min(520, max(200, 160 + len({view.params.message}) * 0.65))"
+          "expression": "min(300, max(168, 72 + (len({view.params.message}) / 42 + 1) * 18 + 70))"
         },
         "type": "expr"
       }
@@ -87,7 +87,7 @@
     "props.defaultSize.width": {
       "binding": {
         "config": {
-          "expression": "if(len({view.params.message}) > 48, 520, 320)"
+          "expression": "if(len({view.params.message}) > 48, 400, 320)"
         },
         "type": "expr"
       }
@@ -95,8 +95,8 @@
   },
   "props": {
     "defaultSize": {
-      "height": 240,
-      "width": 400
+      "height": 200,
+      "width": 360
     }
   },
   "root": {
@@ -268,7 +268,8 @@
                 "props": {
                   "style": {
                     "classes": "font-header",
-                    "line-height": "32px"
+                    "line-height": "24px",
+                    "marginBottom": "2px"
                   }
                 },
                 "type": "ia.display.label"
@@ -278,7 +279,7 @@
                   "name": "Markdown"
                 },
                 "position": {
-                  "grow": 1,
+                  "grow": 0,
                   "shrink": 1
                 },
                 "propConfig": {
@@ -300,8 +301,9 @@
                     "overflowWrap": "anywhere",
                     "wordBreak": "break-word",
                     "whiteSpace": "pre-wrap",
-                    "overflowY": "auto",
-                    "maxHeight": "320px"
+                    "overflowY": "hidden",
+                    "maxHeight": "none",
+                    "lineHeight": "1.35"
                   }
                 },
                 "type": "ia.display.markdown"
@@ -362,7 +364,7 @@
             "props": {
               "path": "material/close",
               "style": {
-                "classes": "Alerts/AlertClose"
+                "classes": "alert-close"
               }
             },
             "type": "ia.display.icon"
@@ -420,9 +422,9 @@
             "borderTopStyle": "solid",
             "borderTopWidth": "4px",
             "padding": "12px",
-            "overflowY": "auto",
+            "overflowY": "hidden",
             "overflowX": "hidden",
-            "minHeight": "80px"
+            "minHeight": "0"
           }
         },
         "type": "ia.container.flex"
@@ -434,7 +436,7 @@
               "component": {
                 "onActionPerformed": {
                   "config": {
-                    "script": "\taction = self.view.params.btnActionSecondary\n\t\t\n\tif len(action):\n\t\tsystem.perspective.sendMessage(messageType = action, payload = self.view.params.payload)\n\t\t\n\tsystem.perspective.closePopup(id = \"alertDialog\")"
+                    "script": "\taction = self.view.params.btnActionSecondary\n\t\t\n\tif len(action):\n\t\tsystem.perspective.sendMessage(messageType=action, payload=self.view.params.payload, scope='page')\n\t\t\n\tsystem.perspective.closePopup(id = \"alertDialog\")"
                   },
                   "scope": "G",
                   "type": "script"
@@ -445,6 +447,8 @@
               "name": "actionSecondary"
             },
             "position": {
+              "basis": "96px",
+              "grow": 0,
               "shrink": 0
             },
             "propConfig": {
@@ -486,72 +490,12 @@
                   "type": "property"
                 }
               },
-              "props.image.style.fill": {
-                "binding": {
-                  "config": {
-                    "path": "view.params.state"
-                  },
-                  "transforms": [
-                    {
-                      "fallback": "var(--text)",
-                      "inputType": "scalar",
-                      "mappings": [
-                        {
-                          "input": "info",
-                          "output": "var(--accent)"
-                        },
-                        {
-                          "input": "success",
-                          "output": "#117539"
-                        },
-                        {
-                          "input": "warning",
-                          "output": "var(--sts-defrost)"
-                        },
-                        {
-                          "input": "error",
-                          "output": "var(--sts-fault)"
-                        }
-                      ],
-                      "outputType": "color",
-                      "type": "map"
-                    }
-                  ],
-                  "type": "property"
-                }
-              },
               "props.style.classes": {
                 "binding": {
                   "config": {
-                    "path": "view.params.state"
+                    "expression": "concat('alert-btn alert-btn-secondary alert-btn-', {view.params.state})"
                   },
-                  "transforms": [
-                    {
-                      "fallback": "Alerts/AlertButtonSecondary",
-                      "inputType": "scalar",
-                      "mappings": [
-                        {
-                          "input": "error",
-                          "output": "Alerts/ErrorButtonSecondary"
-                        },
-                        {
-                          "input": "warning",
-                          "output": "Alerts/WarningButtonSecondary"
-                        },
-                        {
-                          "input": "info",
-                          "output": "Alerts/InfoButtonSecondary"
-                        },
-                        {
-                          "input": "success",
-                          "output": "Alerts/SuccessButtonSecondary"
-                        }
-                      ],
-                      "outputType": "style-list",
-                      "type": "map"
-                    }
-                  ],
-                  "type": "property"
+                  "type": "expr"
                 }
               },
               "props.text": {
@@ -571,6 +515,7 @@
               },
               "primary": false,
               "style": {
+                "classes": "alert-btn alert-btn-secondary",
                 "marginRight": "8px",
                 "paddingLeft": "8px",
                 "paddingRight": "8px"
@@ -583,7 +528,7 @@
               "component": {
                 "onActionPerformed": {
                   "config": {
-                    "script": "\taction = self.view.params.btnActionPrimary\n\t\t\n\tif len(action):\n\t\tsystem.perspective.sendMessage(messageType = action, payload = self.view.params.payload)\n\t\t\n\tsystem.perspective.closePopup(id = \"alertDialog\")"
+                    "script": "\taction = self.view.params.btnActionPrimary or ''\n\tpayload = {}\n\tsrc = self.view.params.payload\n\ttry:\n\t\tif src:\n\t\t\tfor k in src:\n\t\t\t\tpayload[k] = src[k]\n\texcept:\n\t\tpayload = dict(src) if src else {}\n\tif action == 'writeValue' and payload.get('tagPath') and not payload.get('skipWrite'):\n\t\ttry:\n\t\t\tshared.Audit.writeTag(\n\t\t\t\tpayload.get('tagPath'),\n\t\t\t\tpayload.get('value'),\n\t\t\t\tlabel=payload.get('label'),\n\t\t\t\tviewName=payload.get('viewName'),\n\t\t\t)\n\t\t\tpayload['alreadyWritten'] = True\n\t\texcept:\n\t\t\tpass\n\tif action:\n\t\tsystem.perspective.sendMessage(messageType=action, payload=payload, scope='page')\n\tsystem.perspective.closePopup(id='alertDialog')\n"
                   },
                   "scope": "G",
                   "type": "script"
@@ -594,6 +539,8 @@
               "name": "actionPrimary"
             },
             "position": {
+              "basis": "96px",
+              "grow": 0,
               "shrink": 0
             },
             "propConfig": {
@@ -638,35 +585,9 @@
               "props.style.classes": {
                 "binding": {
                   "config": {
-                    "path": "view.params.state"
+                    "expression": "concat('alert-btn alert-btn-primary alert-btn-', {view.params.state})"
                   },
-                  "transforms": [
-                    {
-                      "fallback": "Alerts/AlertButtonPrimary",
-                      "inputType": "scalar",
-                      "mappings": [
-                        {
-                          "input": "error",
-                          "output": "Alerts/ErrorButtonPrimary"
-                        },
-                        {
-                          "input": "warning",
-                          "output": "Alerts/WarningButtonPrimary"
-                        },
-                        {
-                          "input": "info",
-                          "output": "Alerts/InfoButtonPrimary"
-                        },
-                        {
-                          "input": "success",
-                          "output": "Alerts/SuccessButtonPrimary"
-                        }
-                      ],
-                      "outputType": "style-list",
-                      "type": "map"
-                    }
-                  ],
-                  "type": "property"
+                  "type": "expr"
                 }
               },
               "props.text": {
@@ -684,7 +605,9 @@
                 "icon": {},
                 "width": 20
               },
+              "primary": true,
               "style": {
+                "classes": "alert-btn alert-btn-primary",
                 "paddingLeft": "8px",
                 "paddingRight": "8px"
               }
@@ -731,7 +654,7 @@
         "borderStyle": "solid",
         "classes": "bg-component container-card container-card-border",
         "maxHeight": "80vh",
-        "overflowY": "auto",
+        "overflowY": "hidden",
         "overflowX": "hidden"
       }
     },

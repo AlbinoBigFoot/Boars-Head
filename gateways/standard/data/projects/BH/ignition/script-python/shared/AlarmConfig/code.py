@@ -15,11 +15,28 @@ _EXPLICIT_ALMS = (
 	"Cutout",
 )
 
+_ALM_LABELS = {
+	"Alm_IOFault": "I/O Fault",
+	"Alm_FullStall": "Full Stall",
+	"Alm_TransitStall": "Transit Stall",
+	"Alm_IntlkTrip": "Interlock Trip",
+	"Alm_FailToStart": "Fail to Start",
+	"Failed": "Failed",
+	"Comm": "Communications",
+	"Cutout": "Cutout",
+	"Alm": "Alarm",
+}
+
+_GENERIC_ALARM_NAMES = set(["Alarm", "Value", "Alm", ""])
+
 _SETPOINT_MODES = set([
 	"AboveSetpoint", "BelowSetpoint", "BetweenSetpoints", "OutsideSetpoints",
 	"AboveOrEqualSetpoint", "BelowOrEqualSetpoint",
 ])
-_DIGITAL_MODES = set(["Equality", "Inequality", "AnyChange", "Bit", "OnChange"])
+_DIGITAL_MODES = set([
+	"Equality", "Inequality", "AnyChange", "Bit", "OnChange",
+	"WhenTrue", "WhenFalse",
+])
 
 
 def _parseHidden(text):
@@ -165,6 +182,39 @@ def _alarmsOn(path):
 	return full_path, node, alarms
 
 
+def _folderName(full_path):
+	parts = [p for p in str(full_path).replace("\\", "/").split("/") if p]
+	if parts and parts[-1] == "Value" and len(parts) >= 2:
+		name = parts[-2]
+	elif parts:
+		name = parts[-1]
+	else:
+		name = str(full_path)
+	if "]" in name:
+		name = name.split("]", 1)[-1]
+	return name
+
+
+def _humanize(token):
+	key = str(token or "").strip()
+	if key in _ALM_LABELS:
+		return _ALM_LABELS[key]
+	s = key
+	if s.startswith("Alm_"):
+		s = s[4:]
+	out = []
+	for i, ch in enumerate(s):
+		if i and ch.isupper() and (s[i - 1].islower() or (i + 1 < len(s) and s[i + 1].islower())):
+			out.append(" ")
+		if ch == "_":
+			out.append(" ")
+		else:
+			out.append(ch)
+	pretty = "".join(out).replace("  ", " ").strip()
+	pretty = pretty.replace("IO ", "I/O ").replace("Intlk ", "Interlock ")
+	return pretty or key
+
+
 def _labelFor(full_path, node, root_path):
 	label_base = ""
 	try:
@@ -182,18 +232,9 @@ def _labelFor(full_path, node, root_path):
 		except Exception:
 			pass
 	if not label_base:
-		rel = full_path
-		if full_path.startswith(root_path):
-			rel = full_path[len(root_path):].lstrip("/")
-		parts = [p for p in rel.split("/") if p]
-		if parts and parts[-1] == "Value" and len(parts) >= 2:
-			label_base = parts[-2]
-		elif parts:
-			label_base = parts[-1]
-		else:
-			label_base = full_path.split("/")[-1]
-		if "]" in label_base:
-			label_base = label_base.split("]", 1)[-1]
+		label_base = _humanize(_folderName(full_path))
+	else:
+		label_base = _humanize(label_base)
 	return label_base
 
 
@@ -240,18 +281,34 @@ def listAlarms(tagPath, hiddenTags=""):
 				has_setpoint = True
 				is_digital = False
 
+			folder = _folderName(full_path)
+			try:
+				notes = str(alarm.get("notes") or "").strip()
+			except Exception:
+				notes = ""
+			if not notes and folder.startswith("Alm_"):
+				notes = folder
+
 			label = label_base
-			if alarm_name and alarm_name != "Alarm":
-				label = "%s / %s" % (label_base, alarm_name)
+			if alarm_name and alarm_name not in _GENERIC_ALARM_NAMES:
+				# Alarm object already has a plain-English name — use it as the title.
+				label = _humanize(alarm_name)
+			elif folder.startswith("Alm_"):
+				label = _humanize(folder)
 
 			key = full_path + "|" + alarm_name
 			if key in seen_keys:
 				continue
 			seen_keys.add(key)
+			inst = full_path
+			if inst.endswith("/Value"):
+				inst = inst[:-6]
 			result.append({
 				"tagPath": full_path,
+				"instancePath": inst,
 				"alarmName": alarm_name,
 				"label": label,
+				"notes": notes,
 				"isDigital": bool(is_digital and not has_setpoint),
 				"hasSetpoint": bool(has_setpoint),
 				"mode": mode,
@@ -260,3 +317,97 @@ def listAlarms(tagPath, hiddenTags=""):
 	result.sort(key=lambda x: (str(x.get("label") or ""), str(x.get("alarmName") or "")))
 	logger.info("listAlarms(%s) -> %d" % (root_path, len(result)))
 	return result
+
+
+def applyOverride(tagPath, alarmName, priority=None, mode=None, viewName=None):
+	"""Merge priority/mode onto the instance alarm (UDT instance override).
+
+	Boolean alarms use WhenTrue / WhenFalse (not Equality).
+	Successful changes are written to OpsAudit.
+	"""
+	tag_path = str(tagPath or "").strip()
+	alarm_name = str(alarmName or "").strip()
+	if not tag_path or not alarm_name:
+		raise ValueError("tagPath and alarmName are required")
+
+	parent, _, leaf = tag_path.rpartition("/")
+	if not parent or not leaf:
+		raise ValueError("invalid tagPath: %s" % tag_path)
+
+	old_priority = None
+	old_mode = None
+	try:
+		cfg = system.tag.getConfiguration(tag_path, False)[0]
+		existing = cfg.get("alarms") or []
+		if existing:
+			names = []
+			for a in existing:
+				try:
+					names.append(str(a.get("name") or ""))
+				except Exception:
+					pass
+			if alarm_name not in names:
+				# Inherited UDT alarm name may differ from the faceplate label.
+				if len(names) == 1 and names[0]:
+					alarm_name = names[0]
+			for a in existing:
+				try:
+					if str(a.get("name") or "") == alarm_name:
+						old_priority = a.get("priority")
+						old_mode = a.get("mode")
+						break
+				except Exception:
+					pass
+	except Exception as e:
+		logger.warn("applyOverride getConfiguration %s: %s" % (tag_path, e))
+
+	alarm = {"name": alarm_name}
+	if priority not in (None, ""):
+		alarm["priority"] = str(priority)
+	if mode not in (None, ""):
+		m = str(mode)
+		if m in ("1", "1.0", "True", "true", "WhenTrue"):
+			m = "WhenTrue"
+		elif m in ("0", "0.0", "False", "false", "WhenFalse"):
+			m = "WhenFalse"
+		alarm["mode"] = m
+
+	payload = {"name": leaf, "alarms": [alarm]}
+	q = system.tag.configure(parent, [payload], "m")
+	ok = True
+	try:
+		if q:
+			item = q[0] if hasattr(q, "__getitem__") else q
+			if hasattr(item, "isGood"):
+				ok = bool(item.isGood())
+			else:
+				s = str(item)
+				if s and s.upper().find("GOOD") < 0 and s not in ("192", "None"):
+					ok = False
+					logger.warn("applyOverride quality %s %s" % (tag_path, s))
+	except Exception:
+		pass
+	logger.info("applyOverride %s %s %s ok=%s" % (tag_path, alarm_name, alarm, ok))
+	if ok:
+		try:
+			parts = [p for p in tag_path.replace("\\", "/").split("/") if p]
+			base = " ".join(parts[-3:]) if len(parts) >= 2 else tag_path
+			if priority not in (None, ""):
+				shared.Audit.logEvent(
+					"alarm config",
+					"%s %s priority" % (base, alarm_name),
+					"%s -> %s" % (old_priority if old_priority not in (None, "") else "—", alarm.get("priority")),
+					tagPath=tag_path,
+					viewName=viewName,
+				)
+			if mode not in (None, ""):
+				shared.Audit.logEvent(
+					"alarm config",
+					"%s %s trigger" % (base, alarm_name),
+					"%s -> %s" % (old_mode if old_mode not in (None, "") else "—", alarm.get("mode")),
+					tagPath=tag_path,
+					viewName=viewName,
+				)
+		except Exception as ex:
+			logger.warn("applyOverride audit %s: %s" % (tag_path, ex))
+	return {"ok": ok, "tagPath": tag_path, "alarmName": alarm_name, "alarm": alarm}

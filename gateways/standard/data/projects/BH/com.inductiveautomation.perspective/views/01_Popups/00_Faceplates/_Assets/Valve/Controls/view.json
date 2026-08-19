@@ -116,197 +116,6 @@
       {
         "type": "ia.container.flex",
         "meta": {
-          "name": "StatusBanner"
-        },
-        "position": {
-          "shrink": 0
-        },
-        "props": {
-          "direction": "row",
-          "alignItems": "center",
-          "justify": "space-between",
-          "style": {
-            "classes": "faceplate-status-banner",
-            "width": "100%",
-            "minHeight": "40px",
-            "padding": "6px 12px",
-            "boxSizing": "border-box"
-          }
-        },
-        "propConfig": {
-          "props.style.classes": {
-            "binding": {
-              "config": {
-                "expression": "if({view.params.tagPath} = '', 'faceplate-status-banner',\n\tcase(coalesce(tag({view.params.tagPath} + '/Status/Value'), -1),\n\t\t1, 'faceplate-status-banner faceplate-status-closed',\n\t\t2, 'faceplate-status-banner faceplate-status-open',\n\t\t5, 'faceplate-status-banner faceplate-status-transit',\n\t\t6, 'faceplate-status-banner faceplate-status-transit',\n\t\t33, 'faceplate-status-banner faceplate-status-disabled',\n\t\t'faceplate-status-banner'))"
-              },
-              "type": "expr"
-            }
-          }
-        },
-        "children": [
-          {
-            "type": "ia.display.label",
-            "meta": {
-              "name": "StatusText"
-            },
-            "propConfig": {
-              "props.text": {
-                "binding": {
-                  "config": {
-                    "expression": "if({view.params.tagPath} = '', '\u2014',\n\tcase(coalesce(tag({view.params.tagPath} + '/Status/Value'), -1),\n\t\t0, 'UNK',\n\t\t1, 'CLOSED',\n\t\t2, 'OPEN',\n\t\t5, 'CLOSING',\n\t\t6, 'OPENING',\n\t\t33, 'DISABLED',\n\t\t'STS ' + str(coalesce(tag({view.params.tagPath} + '/Status/Value'), '?'))))"
-                  },
-                  "type": "expr"
-                }
-              }
-            },
-            "props": {
-              "text": "\u2014",
-              "style": {
-                "classes": "faceplate-status-banner-text font-value"
-              }
-            }
-          },
-          {
-            "type": "ia.container.flex",
-            "meta": {
-              "name": "ReadyChips"
-            },
-            "props": {
-              "direction": "row",
-              "style": {
-                "gap": "6px"
-              }
-            },
-            "children": [
-              {
-                "type": "ia.container.flex",
-                "meta": {
-                  "name": "PermOK"
-                },
-                "position": {
-                  "basis": "56px",
-                  "shrink": 0
-                },
-                "props": {
-                  "direction": "column",
-                  "style": {
-                    "classes": "faceplate-fault-chip",
-                    "gap": "2px"
-                  }
-                },
-                "children": [
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "Code"
-                    },
-                    "props": {
-                      "text": "P",
-                      "style": {
-                        "classes": "faceplate-fault-code font-label"
-                      }
-                    }
-                  },
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "State"
-                    },
-                    "propConfig": {
-                      "props.text": {
-                        "binding": {
-                          "config": {
-                            "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(coalesce(tag({view.params.tagPath} + '/PermOK/Value'), false), 'OK', 'NOT'))"
-                          },
-                          "type": "expr"
-                        }
-                      },
-                      "props.style.classes": {
-                        "binding": {
-                          "config": {
-                            "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(tag({view.params.tagPath} + '/PermOK/Value'), false),\n\t\t'faceplate-fault-state faceplate-fault-ok',\n\t\t'faceplate-fault-state faceplate-fault-active'))"
-                          },
-                          "type": "expr"
-                        }
-                      }
-                    },
-                    "props": {
-                      "text": "\u2014",
-                      "style": {
-                        "classes": "faceplate-fault-state"
-                      }
-                    }
-                  }
-                ]
-              },
-              {
-                "type": "ia.container.flex",
-                "meta": {
-                  "name": "IntlkOK"
-                },
-                "position": {
-                  "basis": "56px",
-                  "shrink": 0
-                },
-                "props": {
-                  "direction": "column",
-                  "style": {
-                    "classes": "faceplate-fault-chip",
-                    "gap": "2px"
-                  }
-                },
-                "children": [
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "Code"
-                    },
-                    "props": {
-                      "text": "I",
-                      "style": {
-                        "classes": "faceplate-fault-code font-label"
-                      }
-                    }
-                  },
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "State"
-                    },
-                    "propConfig": {
-                      "props.text": {
-                        "binding": {
-                          "config": {
-                            "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(coalesce(tag({view.params.tagPath} + '/Interlock/Sts_IntlkOK/Value'), false), 'OK', 'NOT'))"
-                          },
-                          "type": "expr"
-                        }
-                      },
-                      "props.style.classes": {
-                        "binding": {
-                          "config": {
-                            "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(tag({view.params.tagPath} + '/Interlock/Sts_IntlkOK/Value'), false),\n\t\t'faceplate-fault-state faceplate-fault-ok',\n\t\t'faceplate-fault-state faceplate-fault-active'))"
-                          },
-                          "type": "expr"
-                        }
-                      }
-                    },
-                    "props": {
-                      "text": "\u2014",
-                      "style": {
-                        "classes": "faceplate-fault-state"
-                      }
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "type": "ia.container.flex",
-        "meta": {
           "name": "FaultsSection"
         },
         "position": {
@@ -488,6 +297,16 @@
         "position": {
           "shrink": 0
         },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "{view.params.tagPath} != '' &&\n(coalesce(tag({view.params.tagPath} + '/Cfg_HasOpenLS/Value'), false) ||\n coalesce(tag({view.params.tagPath} + '/Cfg_HasClosedLS/Value'), false))"
+              },
+              "type": "expr"
+            }
+          }
+        },
         "props": {
           "direction": "column",
           "style": {
@@ -528,6 +347,16 @@
                 "position": {
                   "basis": "100px",
                   "shrink": 0
+                },
+                "propConfig": {
+                  "position.display": {
+                    "binding": {
+                      "config": {
+                        "expression": "coalesce(tag({view.params.tagPath} + '/Cfg_HasOpenLS/Value'), false)"
+                      },
+                      "type": "expr"
+                    }
+                  }
                 },
                 "props": {
                   "direction": "column",
@@ -589,6 +418,16 @@
                 "position": {
                   "basis": "100px",
                   "shrink": 0
+                },
+                "propConfig": {
+                  "position.display": {
+                    "binding": {
+                      "config": {
+                        "expression": "coalesce(tag({view.params.tagPath} + '/Cfg_HasClosedLS/Value'), false)"
+                      },
+                      "type": "expr"
+                    }
+                  }
                 },
                 "props": {
                   "direction": "column",
@@ -702,7 +541,7 @@
               "props.path": {
                 "binding": {
                   "config": {
-                    "expression": "case(\n\tif({view.params.tagPath} = '', 'SO',\n\t\tupper(coalesce(tag({view.params.tagPath} + '/valveType'), 'SO'))),\n\t'SO', '01_Popups/00_Faceplates/_Assets/Valve/Cmd_SO',\n\t'MO', '01_Popups/00_Faceplates/_Assets/Valve/Cmd_MO',\n\t'MP', '01_Popups/00_Faceplates/_Assets/Valve/Cmd_Position',\n\t'C', '01_Popups/00_Faceplates/_Assets/Valve/Cmd_Position',\n\t'01_Popups/00_Faceplates/_Assets/Valve/Cmd_SO')"
+                    "expression": "case(\n\tif({view.params.tagPath} = '', 'SO',\n\t\tupper(coalesce(\n\t\t\ttag({view.params.tagPath} + '/valveType/Value'),\n\t\t\ttag({view.params.tagPath} + '/valveType'),\n\t\t\t'SO'))),\n\t'SO', '01_Popups/00_Faceplates/_Assets/Valve/Cmd_SO',\n\t'MO', '01_Popups/00_Faceplates/_Assets/Valve/Cmd_MO',\n\t'MP', '01_Popups/00_Faceplates/_Assets/Valve/Cmd_Position',\n\t'C', '01_Popups/00_Faceplates/_Assets/Valve/Cmd_Position',\n\t'01_Popups/00_Faceplates/_Assets/Valve/Cmd_SO')"
                   },
                   "type": "expr"
                 }

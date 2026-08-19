@@ -544,12 +544,13 @@ VALVE_PROFILES: dict[str, dict[str, str]] = {
         "Failed": "false",
         "TravelTime": "2.0",
     },
-    # MAIN-LIQ-SV: Fault demo (Failed + intlk not OK)
+    # MAIN-LIQ-SV: Closed, healthy (Failed/Comm OK); intlk text for Interlocks tab
     "MAIN-LIQ-SV": {
         "Status": "1",
         "OpenLS": "false",
-        "ClosedLS": "false",
-        "Failed": "true",
+        "ClosedLS": "true",
+        "Failed": "false",
+        "Comm": "false",
         "TravelTime": "3.0",
         "Interlock/Sts_IntlkOK": "false",
         "Interlock/Cfg_CondTxt00": "Main Liquid Permissive",

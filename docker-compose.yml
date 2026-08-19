@@ -27,7 +27,7 @@ services:
       -a localhost
       -h ${STANDARD_HTTP_PORT:-9088}
       -s ${STANDARD_HTTPS_PORT:-9043}
-      -m ${STANDARD_MAX_MEMORY_MB:-2048}
+      -m ${STANDARD_MAX_MEMORY_MB:-6144}
     restart: unless-stopped
     networks:
       - bh-ot

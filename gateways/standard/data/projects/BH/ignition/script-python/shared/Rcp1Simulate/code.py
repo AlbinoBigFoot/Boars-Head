@@ -632,6 +632,10 @@ def _seedInterlockDemo():
 	for alm in ("Alm_IOFault", "Alm_FullStall", "Alm_TransitStall", "Alm_IntlkTrip"):
 		paths.append("%s/%s" % (rcpBase, alm))
 		vals.append(False)
+	# Faceplate FAULTS chips: Failed/Comm stay OK (false) for normal demo.
+	for base in (rcpBase, plantBase):
+		paths.extend([base + "/Failed", base + "/Comm"])
+		vals.extend([False, False])
 	try:
 		system.tag.writeBlocking(paths, vals)
 		logger.info("seeded Main Liq SV interlock/alarm demo (%d tags)" % len(paths))
@@ -642,11 +646,11 @@ def _seedInterlockDemo():
 	# Reference overrides sometimes omit alarms at runtime even when present on disk.
 	try:
 		alarmed = 0
-		for alm, prio in (
-			("Alm_IOFault", "High"),
-			("Alm_FullStall", "High"),
-			("Alm_TransitStall", "High"),
-			("Alm_IntlkTrip", "Medium"),
+		for alm, prio, disp in (
+			("Alm_IOFault", "High", "IO Fault"),
+			("Alm_FullStall", "High", "Full Stall"),
+			("Alm_TransitStall", "High", "Transit Stall"),
+			("Alm_IntlkTrip", "Medium", "Interlock Trip"),
 		):
 			leaf = "%s/%s/Value" % (plantBase, alm)
 			try:
@@ -655,29 +659,29 @@ def _seedInterlockDemo():
 				continue
 			if cfg.get("alarms"):
 				alarmed += 1
-				continue
-			parent = leaf.rsplit("/", 1)[0]
-			newCfg = {
-				"name": "Value",
-				"tagType": "AtomicTag",
-				"valueSource": cfg.get("valueSource") or "reference",
-				"sourceTagPath": cfg.get("sourceTagPath") or ("%s/%s" % (rcpBase, alm)),
-				"dataType": cfg.get("dataType") or "Boolean",
-				"alarms": [{
-					"name": "Alarm",
-					"mode": "Equality",
-					"setpointA": 1.0,
-					"priority": prio,
-					"enabled": True,
-				}],
-			}
-			if cfg.get("metadata") is not None:
-				newCfg["metadata"] = cfg.get("metadata")
-			try:
-				system.tag.configure(parent, [newCfg], "o")
-				alarmed += 1
-			except Exception as ce:
-				logger.warn("alarm configure %s: %s" % (leaf, str(ce)))
+			else:
+				parent = leaf.rsplit("/", 1)[0]
+				newCfg = {
+					"name": "Value",
+					"tagType": "AtomicTag",
+					"valueSource": cfg.get("valueSource") or "reference",
+					"sourceTagPath": cfg.get("sourceTagPath") or ("%s/%s" % (rcpBase, alm)),
+					"dataType": cfg.get("dataType") or "Boolean",
+					"alarms": [{
+						"name": disp,
+						"notes": alm,
+						"mode": "WhenTrue",
+						"priority": prio,
+						"enabled": True,
+					}],
+				}
+				if cfg.get("metadata") is not None:
+					newCfg["metadata"] = cfg.get("metadata")
+				try:
+					system.tag.configure(parent, [newCfg], "o")
+					alarmed += 1
+				except Exception as ce:
+					logger.warn("alarm configure %s: %s" % (leaf, str(ce)))
 		logger.info("Plant valve Alm_* alarm configs present=%d" % alarmed)
 		try:
 			nrows = len(shared.AlarmConfig.listAlarms(plantBase, ""))
@@ -689,7 +693,7 @@ def _seedInterlockDemo():
 
 	# Prove faceplate command writes (same paths Cmd_MO / Modes use).
 	try:
-		shared.ValveCommands.closeValve(plantBase, "MO")
+		shared.ValveCommands.closeValve(plantBase, "SO")
 		qv = system.tag.readBlocking([
 			plantBase + "/OpenLS/Value",
 			plantBase + "/ClosedLS/Value",
@@ -700,7 +704,7 @@ def _seedInterlockDemo():
 			% (qv[0].value, qv[1].value, qv[2].value, qv[0].quality)
 		)
 		shared.ValveCommands.setMode(plantBase, "MAINT")
-		shared.ValveCommands.openValve(plantBase, "MO")
+		shared.ValveCommands.openValve(plantBase, "SO")
 		shared.ValveCommands.setMode(plantBase, "OPER")
 		qv2 = system.tag.readBlocking([
 			plantBase + "/OpenLS/Value",
@@ -777,3 +781,55 @@ def applySimulate(simulate):
 	if wantSim:
 		return toMemory()
 	return toOpc()
+
+
+# Leaves that must be Memory when Simulate is ON (faceplate writes).
+_ENSURE_SAMPLE = [
+	"[default]RCP1/Main Liq SV/Cmd_Open",
+	"[default]RCP1/Main Liq SV/OPER",
+	"[default]RCP1/Main Liq SV/Cmd_Close",
+]
+
+
+def _simulateWanted():
+	try:
+		qv = system.tag.readBlocking([SIMULATE_TAG])[0]
+		return bool(qv.value)
+	except Exception:
+		return False
+
+
+def _valueSource(tagPath):
+	try:
+		cfg = system.tag.getConfiguration(tagPath, False)[0]
+		return str(cfg.get("valueSource") or "")
+	except Exception:
+		return ""
+
+
+def ensureApplied(force=False):
+	"""
+	Re-apply Simulate when the Memory control is ON but RCP1 leaves are still OPC.
+
+	Gateway Tag Change on a Memory tag does NOT fire at boot (IA behaviour), so
+	Simulate can read True while faceplate writes still hit Bad OPC. Timer +
+	ValveCommands call this so Mode/Cmd work without a manual OFF→ON toggle.
+	"""
+	want = _simulateWanted()
+	if not want:
+		return False
+	need = bool(force)
+	if not need:
+		for tp in _ENSURE_SAMPLE:
+			vs = _valueSource(tp)
+			if vs == "opc":
+				need = True
+				logger.warn(
+					"ensureApplied: Simulate=True but %s valueSource=%s — applying toMemory"
+					% (tp, vs)
+				)
+				break
+	if not need:
+		return False
+	applySimulate(True)
+	return True

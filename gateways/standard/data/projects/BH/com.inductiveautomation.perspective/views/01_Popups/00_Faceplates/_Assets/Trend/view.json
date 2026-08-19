@@ -1,9 +1,9 @@
 {
   "custom": {
     "chartDataAnalog": null,
-    "sensors": {
-      "analog": []
-    }
+    "hours": 1,
+    "penOptions": [],
+    "selectedPens": []
   },
   "params": {
     "hiddenTags": "",
@@ -14,14 +14,14 @@
       "binding": {
         "config": {
           "struct": {
-            "hours": "{view.root.children.Dropdown.props.value}",
-            "sensors": "{view.custom.sensors.analog}"
+            "hours": "{view.custom.hours}",
+            "selectedPens": "{view.custom.selectedPens}"
           },
           "waitOnAll": true
         },
         "transforms": [
           {
-            "code": "\tresult = None\n\tsensors = value.get('sensors') or []\n\thours = value.get('hours')\n\tif not sensors:\n\t\treturn result\n\n\ttry:\n\t\thours = int(hours) if hours is not None else 2\n\texcept:\n\t\thours = 2\n\tif hours <= 0:\n\t\thours = 2\n\n\tpaths = []\n\taliases = []\n\tfor s in sensors:\n\t\tif not hasattr(s, 'get'):\n\t\t\tcontinue\n\t\tpath = s.get('path')\n\t\tif not path:\n\t\t\tcontinue\n\t\tpaths.append(str(path))\n\t\talias = s.get('alias')\n\t\taliases.append(str(alias) if alias else str(path).rsplit('/', 1)[-1])\n\n\tif not paths:\n\t\treturn result\n\n\tend = system.date.now()\n\tstart = system.date.addHours(end, -hours)\n\n\ttry:\n\t\tresult = system.tag.queryTagHistory(\n\t\t\tpaths=paths,\n\t\t\tstartDate=start,\n\t\t\tendDate=end,\n\t\t\treturnSize=100,\n\t\t\taggregationMode='Average',\n\t\t\treturnFormat='Wide',\n\t\t\tcolumnNames=aliases\n\t\t)\n\texcept:\n\t\tresult = None\n\n\treturn result",
+            "code": "\tresult = None\n\tselected = value.get('selectedPens') if hasattr(value, 'get') else None\n\thours = value.get('hours') if hasattr(value, 'get') else 1\n\tif selected is None:\n\t\treturn result\n\tif isinstance(selected, (str, unicode)):\n\t\tselected = [selected] if selected else []\n\ttry:\n\t\thours = int(hours) if hours is not None else 1\n\texcept:\n\t\thours = 1\n\tif hours <= 0:\n\t\thours = 1\n\n\tpaths = []\n\taliases = []\n\tseen = set()\n\tfor item in selected:\n\t\tpath = str(item or '').strip()\n\t\tif not path or path in seen:\n\t\t\tcontinue\n\t\tseen.add(path)\n\t\tpaths.append(path)\n\t\tleaf = path.rsplit('/', 1)[-1]\n\t\tparts = path.split('/')\n\t\tif len(parts) >= 2 and leaf.upper() == 'VALUE':\n\t\t\talias = parts[-2]\n\t\telse:\n\t\t\talias = leaf\n\t\taliases.append(alias)\n\n\tif not paths:\n\t\treturn result\n\n\tend = system.date.now()\n\tstart = system.date.addHours(end, -hours)\n\ttry:\n\t\tresult = system.tag.queryTagHistory(\n\t\t\tpaths=paths,\n\t\t\tstartDate=start,\n\t\t\tendDate=end,\n\t\t\treturnSize=120,\n\t\t\taggregationMode='Average',\n\t\t\treturnFormat='Wide',\n\t\t\tcolumnNames=aliases\n\t\t)\n\texcept:\n\t\tresult = None\n\treturn result",
             "type": "script"
           }
         ],
@@ -29,7 +29,10 @@
       },
       "persistent": true
     },
-    "custom.sensors": {
+    "custom.hours": {
+      "persistent": true
+    },
+    "custom.penOptions": {
       "binding": {
         "config": {
           "struct": {
@@ -40,12 +43,15 @@
         },
         "transforms": [
           {
-            "code": "\tresult = {'analog': []}\n\ttrend_key = value.get('trendKey', '')\n\ttag_path = value.get('tagPath', '')\n\thiddenTagsInput = value.get('hiddenTags', '')\n\tif tag_path:\n\t\ttag_path = tag_path.rstrip('/')\n\tif not tag_path:\n\t\treturn result\n\n\t# Parse hiddenTags\n\thidden_set = set()\n\ttry:\n\t\ttext = str(hiddenTagsInput or '')\n\t\tif text:\n\t\t\ttext = text.replace(';', ',')\n\t\t\tfor item in text.split(','):\n\t\t\t\titem = item.strip()\n\t\t\t\tif item:\n\t\t\t\t\thidden_set.add(item)\n\texcept Exception:\n\t\tpass\n\n\tdef isHidden(fullPath):\n\t\tif not hidden_set:\n\t\t\treturn False\n\t\tstripped = fullPath.split(']', 1)[-1] if ']' in fullPath else fullPath\n\t\tnorm = stripped.replace(chr(92), '/')\n\t\tif fullPath in hidden_set or stripped in hidden_set or norm in hidden_set:\n\t\t\treturn True\n\t\tnorm_slash = '/' + norm.strip('/') + '/'\n\t\tfor h in hidden_set:\n\t\t\thh = str(h).replace(chr(92), '/')\n\t\t\tif hh.endswith('/'):\n\t\t\t\tseg = hh.strip('/')\n\t\t\t\tif not seg:\n\t\t\t\t\tcontinue\n\t\t\t\tif ('/' + seg + '/') in norm_slash:\n\t\t\t\t\treturn True\n\t\t\t\tif norm.strip('/') == seg or norm.strip('/').startswith(seg + '/'):\n\t\t\t\t\treturn True\n\t\t\telse:\n\t\t\t\tif norm.endswith('/' + hh) or norm.split('/')[-1] == hh:\n\t\t\t\t\treturn True\n\t\treturn False\n\n\tcandidates = []\n\n\ttry:\n\t\tbrowse = system.tag.browse(path=tag_path, filter={'recursive': True}).getResults()\n\texcept:\n\t\tbrowse = []\n\tfor entry in browse:\n\t\ttry:\n\t\t\ttag_type = str(entry['tagType'])\n\t\texcept:\n\t\t\ttag_type = ''\n\t\tif tag_type in ('Folder', 'UdtType', 'UdtInstance', 'Property'):\n\t\t\tcontinue\n\t\tfull_path = str(entry['fullPath'])\n\t\t# Skip meta-property references (tag.Value, tag.Enabled, etc.)\n\t\tif '.' in full_path.rsplit('/', 1)[-1]:\n\t\t\tcontinue\n\t\tif isHidden(full_path):\n\t\t\tcontinue\n\t\tcandidates.append(full_path)\n\n\tif not candidates:\n\t\ttry:\n\t\t\texists = system.tag.exists(tag_path)\n\t\texcept:\n\t\t\texists = False\n\t\tif exists and not isHidden(tag_path):\n\t\t\tcandidates.append(tag_path)\n\n\tif not candidates:\n\t\treturn result\n\n\tall_paths = []\n\tfor p in candidates:\n\t\tall_paths.append(p + '.Enabled')\n\t\tall_paths.append(p + '.HistoryEnabled')\n\t\tall_paths.append(p + '.DataType')\n\ttry:\n\t\tall_values = system.tag.readBlocking(all_paths)\n\texcept:\n\t\treturn result\n\n\tfor i, full_path in enumerate(candidates):\n\t\tenabled_qv = all_values[i * 3]\n\t\the_qv      = all_values[i * 3 + 1]\n\t\tdt_qv      = all_values[i * 3 + 2]\n\n\t\ttry:\n\t\t\tif not enabled_qv.value:\n\t\t\t\tcontinue\n\t\texcept:\n\t\t\tcontinue\n\n\t\ttry:\n\t\t\tif not he_qv.value:\n\t\t\t\tcontinue\n\t\texcept:\n\t\t\tcontinue\n\n\t\ttry:\n\t\t\tdt_raw = dt_qv.value if dt_qv is not None else ''\n\t\t\tif hasattr(dt_raw, 'name'):\n\t\t\t\tdt = str(dt_raw.name).lower()\n\t\t\telse:\n\t\t\t\tdt = str(dt_raw).lower()\n\t\t\tif '.' in dt:\n\t\t\t\tdt = dt.rsplit('.', 1)[-1]\n\t\texcept:\n\t\t\tdt = ''\n\n\t\tif 'string' in dt or 'date' in dt or 'bool' in dt:\n\t\t\tcontinue\n\n\t\tparts = full_path.split('/')\n\t\tleaf_name = parts[-1] if parts else full_path\n\t\tif len(parts) >= 2 and leaf_name.upper() == 'VALUE':\n\t\t\talias = parts[-2]\n\t\telse:\n\t\t\talias = leaf_name\n\n\t\tsensor = {\n\t\t\t'path': full_path,\n\t\t\t'alias': alias,\n\t\t\t'aggregate': 'Average'\n\t\t}\n\n\t\tresult['analog'].append(sensor)\n\n\treturn result",
+            "code": "\tresult = []\n\ttag_path = value.get('tagPath', '') if hasattr(value, 'get') else ''\n\thiddenTagsInput = value.get('hiddenTags', '') if hasattr(value, 'get') else ''\n\tif tag_path:\n\t\ttag_path = str(tag_path).rstrip('/')\n\tif not tag_path:\n\t\treturn result\n\n\thidden_set = set()\n\ttry:\n\t\ttext = str(hiddenTagsInput or '')\n\t\tif text:\n\t\t\ttext = text.replace(';', ',')\n\t\t\tfor item in text.split(','):\n\t\t\t\titem = item.strip()\n\t\t\t\tif item:\n\t\t\t\t\thidden_set.add(item)\n\texcept Exception:\n\t\tpass\n\n\tdef isHidden(fullPath):\n\t\tif not hidden_set:\n\t\t\treturn False\n\t\tstripped = fullPath.split(']', 1)[-1] if ']' in fullPath else fullPath\n\t\tnorm = stripped.replace(chr(92), '/')\n\t\tif fullPath in hidden_set or stripped in hidden_set or norm in hidden_set:\n\t\t\treturn True\n\t\tnorm_slash = '/' + norm.strip('/') + '/'\n\t\tfor h in hidden_set:\n\t\t\thh = str(h).replace(chr(92), '/')\n\t\t\tif hh.endswith('/'):\n\t\t\t\tseg = hh.strip('/')\n\t\t\t\tif not seg:\n\t\t\t\t\tcontinue\n\t\t\t\tif ('/' + seg + '/') in norm_slash:\n\t\t\t\t\treturn True\n\t\t\t\tif norm.strip('/') == seg or norm.strip('/').startswith(seg + '/'):\n\t\t\t\t\treturn True\n\t\t\telse:\n\t\t\t\tif norm.endswith('/' + hh) or norm.split('/')[-1] == hh:\n\t\t\t\t\treturn True\n\t\treturn False\n\n\tcandidates = []\n\ttry:\n\t\tbrowse = system.tag.browse(path=tag_path, filter={'recursive': True}).getResults()\n\texcept:\n\t\tbrowse = []\n\tfor entry in browse:\n\t\ttry:\n\t\t\ttag_type = str(entry['tagType'])\n\t\texcept:\n\t\t\ttag_type = ''\n\t\tif tag_type in ('Folder', 'UdtType', 'UdtInstance', 'Property'):\n\t\t\tcontinue\n\t\tfull_path = str(entry['fullPath'])\n\t\tif '.' in full_path.rsplit('/', 1)[-1]:\n\t\t\tcontinue\n\t\tif isHidden(full_path):\n\t\t\tcontinue\n\t\tcandidates.append(full_path)\n\n\tif not candidates:\n\t\treturn result\n\n\tall_paths = []\n\tfor p in candidates:\n\t\tall_paths.append(p + '.Enabled')\n\t\tall_paths.append(p + '.HistoryEnabled')\n\t\tall_paths.append(p + '.DataType')\n\ttry:\n\t\tall_values = system.tag.readBlocking(all_paths)\n\texcept:\n\t\treturn result\n\n\tfor i, full_path in enumerate(candidates):\n\t\tenabled_qv = all_values[i * 3]\n\t\the_qv = all_values[i * 3 + 1]\n\t\tdt_qv = all_values[i * 3 + 2]\n\t\ttry:\n\t\t\tif not enabled_qv.value:\n\t\t\t\tcontinue\n\t\texcept:\n\t\t\tcontinue\n\t\ttry:\n\t\t\tif not he_qv.value:\n\t\t\t\tcontinue\n\t\texcept:\n\t\t\tcontinue\n\t\ttry:\n\t\t\tdt_raw = dt_qv.value if dt_qv is not None else ''\n\t\t\tif hasattr(dt_raw, 'name'):\n\t\t\t\tdt = str(dt_raw.name).lower()\n\t\t\telse:\n\t\t\t\tdt = str(dt_raw).lower()\n\t\t\tif '.' in dt:\n\t\t\t\tdt = dt.rsplit('.', 1)[-1]\n\t\texcept:\n\t\t\tdt = ''\n\t\tif 'string' in dt or 'date' in dt or 'bool' in dt:\n\t\t\tcontinue\n\t\tparts = full_path.split('/')\n\t\tleaf_name = parts[-1] if parts else full_path\n\t\tif len(parts) >= 2 and leaf_name.upper() == 'VALUE':\n\t\t\talias = parts[-2]\n\t\telse:\n\t\t\talias = leaf_name\n\t\tresult.append({'label': alias, 'value': full_path})\n\treturn result",
             "type": "script"
           }
         ],
         "type": "expr-struct"
       },
+      "persistent": true
+    },
+    "custom.selectedPens": {
       "persistent": true
     },
     "params.hiddenTags": {
@@ -59,63 +65,167 @@
   },
   "props": {
     "defaultSize": {
-      "height": 360,
-      "width": 500
+      "height": 420,
+      "width": 860
     }
   },
   "root": {
     "children": [
       {
+        "children": [
+          {
+            "meta": {
+              "name": "Pens"
+            },
+            "position": {
+              "grow": 1,
+              "shrink": 1,
+              "basis": "180px"
+            },
+            "propConfig": {
+              "props.options": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.penOptions"
+                  },
+                  "type": "property"
+                }
+              },
+              "props.value": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.selectedPens",
+                    "bidirectional": true
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "dropdownOptionStyle": {
+                "classes": "font-label"
+              },
+              "multiSelect": true,
+              "placeholder": {
+                "text": "Select pens"
+              },
+              "search": {
+                "enabled": true,
+                "exclusive": false
+              },
+              "style": {
+                "classes": "font-label",
+                "minHeight": "28px",
+                "width": "100%"
+              }
+            },
+            "type": "ia.input.dropdown"
+          },
+          {
+            "meta": {
+              "name": "Hours"
+            },
+            "position": {
+              "basis": "148px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.value": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.hours",
+                    "bidirectional": true
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "dropdownOptionStyle": {
+                "classes": "font-label"
+              },
+              "options": [
+                {"label": "Last 1 Hour", "value": 1},
+                {"label": "Last 2 Hours", "value": 2},
+                {"label": "Last 3 Hours", "value": 3},
+                {"label": "Last 4 Hours", "value": 4},
+                {"label": "Last 5 Hours", "value": 5},
+                {"label": "Last 6 Hours", "value": 6},
+                {"label": "Last 7 Hours", "value": 7},
+                {"label": "Last 8 Hours", "value": 8},
+                {"label": "Last 9 Hours", "value": 9},
+                {"label": "Last 10 Hours", "value": 10},
+                {"label": "Last 11 Hours", "value": 11},
+                {"label": "Last 12 Hours", "value": 12},
+                {"label": "Last 13 Hours", "value": 13},
+                {"label": "Last 14 Hours", "value": 14},
+                {"label": "Last 15 Hours", "value": 15},
+                {"label": "Last 16 Hours", "value": 16},
+                {"label": "Last 17 Hours", "value": 17},
+                {"label": "Last 18 Hours", "value": 18},
+                {"label": "Last 19 Hours", "value": 19},
+                {"label": "Last 20 Hours", "value": 20},
+                {"label": "Last 21 Hours", "value": 21},
+                {"label": "Last 22 Hours", "value": 22},
+                {"label": "Last 23 Hours", "value": 23},
+                {"label": "Last 24 Hours", "value": 24}
+              ],
+              "search": {
+                "enabled": false
+              },
+              "style": {
+                "classes": "font-label",
+                "minHeight": "28px",
+                "width": "100%"
+              },
+              "value": 1
+            },
+            "type": "ia.input.dropdown"
+          }
+        ],
         "meta": {
-          "name": "Dropdown"
+          "name": "Toolbar"
         },
         "position": {
-          "basis": "28px",
           "shrink": 0
         },
         "props": {
-          "dropdownOptionStyle": {
-            "classes": "font-label"
-          },
-          "options": [
-            {
-              "label": "2 Hours",
-              "value": 2
-            },
-            {
-              "label": "4 Hours",
-              "value": 4
-            },
-            {
-              "label": "8 Hours",
-              "value": 8
-            },
-            {
-              "label": "24 Hours",
-              "value": 24
-            }
-          ],
-          "search": {
-            "enabled": false
-          },
+          "alignItems": "center",
+          "direction": "row",
           "style": {
-            "background": "var(--neutral-30)",
-            "borderBottomLeftRadius": "var(--radius-xxs, 2px)",
-            "borderBottomRightRadius": "var(--radius-xxs, 2px)",
-            "borderColor": "#161616",
-            "borderTopLeftRadius": "var(--radius-xxs, 2px)",
-            "borderTopRightRadius": "var(--radius-xxs, 2px)",
-            "borderWidth": 1,
-            "classes": "font-label",
-            "cursor": "pointer",
-            "height": "24px",
-            "marginLeft": "2px",
-            "marginTop": "2px",
-            "width": "100px"
-          },
-          "value": 2
+            "gap": "8px",
+            "padding": "4px 2px 0 2px",
+            "width": "100%"
+          }
         },
-        "type": "ia.input.dropdown"
+        "type": "ia.container.flex"
+      },
+      {
+        "meta": {
+          "name": "EmptyHint"
+        },
+        "position": {
+          "grow": 1
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "len({view.custom.selectedPens}) = 0"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "text": "Select one or more pens to trend.",
+          "style": {
+            "classes": "faceplate-trend-empty",
+            "padding": "24px 8px",
+            "width": "100%"
+          }
+        },
+        "type": "ia.display.label"
       },
       {
         "meta": {
@@ -125,30 +235,30 @@
           "grow": 1
         },
         "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "len({view.custom.selectedPens}) > 0"
+              },
+              "type": "expr"
+            }
+          },
           "props.series": {
             "binding": {
               "config": {
                 "struct": {
                   "chartData": "{view.custom.chartDataAnalog}",
-                  "sensors": "{view.custom.sensors.analog}"
+                  "selectedPens": "{view.custom.selectedPens}"
                 },
                 "waitOnAll": true
               },
               "transforms": [
                 {
-                  "code": "\tsensors = value.get('sensors') or []\n\tdata = value.get('chartData')\n\tseries = []\n\n\tif data is None:\n\t\treturn series\n\n\ttry:\n\t\trow_count = data.getRowCount()\n\texcept:\n\t\trow_count = 0\n\tif row_count <= 0:\n\t\treturn series\n\n\ttry:\n\t\tcol_names = list(data.getColumnNames())\n\texcept:\n\t\ttry:\n\t\t\tcol_names = [data.getColumnName(i) for i in range(data.getColumnCount())]\n\t\texcept:\n\t\t\treturn series\n\n\tdef add_series(name, column):\n\t\tif column not in col_names or column == 't_stamp':\n\t\t\treturn\n\t\ttry:\n\t\t\tfiltered = system.dataset.filterColumns(data, ['t_stamp', column])\n\t\texcept:\n\t\t\treturn\n\t\tseries.append({'name': name or column, 'data': filtered})\n\n\tused = set()\n\tfor s in sensors:\n\t\talias = s.get('alias', '') if hasattr(s, 'get') else ''\n\t\tpath = s.get('path', '') if hasattr(s, 'get') else ''\n\t\tcol = None\n\t\tif alias and alias in col_names:\n\t\t\tcol = alias\n\t\telif path and path in col_names:\n\t\t\tcol = path\n\t\telse:\n\t\t\tleaf = (path or '').rsplit('/', 1)[-1]\n\t\t\tfor n in col_names:\n\t\t\t\tif n == 't_stamp':\n\t\t\t\t\tcontinue\n\t\t\t\tif n == leaf or n.endswith('/' + leaf) or (alias and (n == alias or n.endswith('/' + alias))):\n\t\t\t\t\tcol = n\n\t\t\t\t\tbreak\n\t\tif col and col not in used:\n\t\t\tadd_series(alias or col, col)\n\t\t\tused.add(col)\n\n\tif not series:\n\t\tfor column in col_names:\n\t\t\tif column != 't_stamp':\n\t\t\t\tadd_series(column, column)\n\n\treturn series",
+                  "code": "\tselected = value.get('selectedPens') or []\n\tdata = value.get('chartData')\n\tseries = []\n\tif data is None:\n\t\treturn series\n\ttry:\n\t\trow_count = data.getRowCount()\n\texcept:\n\t\trow_count = 0\n\tif row_count <= 0:\n\t\treturn series\n\ttry:\n\t\tcol_names = list(data.getColumnNames())\n\texcept:\n\t\ttry:\n\t\t\tcol_names = [data.getColumnName(i) for i in range(data.getColumnCount())]\n\t\texcept:\n\t\t\treturn series\n\n\tdef add_series(name, column):\n\t\tif column not in col_names or column == 't_stamp':\n\t\t\treturn\n\t\ttry:\n\t\t\tfiltered = system.dataset.filterColumns(data, ['t_stamp', column])\n\t\texcept:\n\t\t\treturn\n\t\tseries.append({'name': name or column, 'data': filtered})\n\n\tused = set()\n\tif isinstance(selected, (str, unicode)):\n\t\tselected = [selected] if selected else []\n\tfor item in selected or []:\n\t\tpath = str(item or '')\n\t\tleaf = path.rsplit('/', 1)[-1]\n\t\tparts = path.split('/')\n\t\talias = parts[-2] if len(parts) >= 2 and leaf.upper() == 'VALUE' else leaf\n\t\tcol = None\n\t\tif alias and alias in col_names:\n\t\t\tcol = alias\n\t\telif path and path in col_names:\n\t\t\tcol = path\n\t\telse:\n\t\t\tfor n in col_names:\n\t\t\t\tif n == 't_stamp':\n\t\t\t\t\tcontinue\n\t\t\t\tif n == leaf or n.endswith('/' + leaf) or n == alias or n.endswith('/' + alias):\n\t\t\t\t\tcol = n\n\t\t\t\t\tbreak\n\t\tif col and col not in used:\n\t\t\tadd_series(alias or col, col)\n\t\t\tused.add(col)\n\tif not series:\n\t\tfor column in col_names:\n\t\t\tif column != 't_stamp':\n\t\t\t\tadd_series(column, column)\n\treturn series",
                   "type": "script"
                 }
               ],
               "type": "expr-struct"
-            }
-          },
-          "props.style.display": {
-            "binding": {
-              "config": {
-                "expression": "if(len({view.custom.sensors.analog}) > 0, 'block', 'none')"
-              },
-              "type": "expr"
             }
           }
         },
@@ -250,7 +360,9 @@
       "direction": "column",
       "style": {
         "gap": "4px",
-        "overflow": "hidden"
+        "overflow": "hidden",
+        "height": "100%",
+        "minHeight": 0
       }
     },
     "type": "ia.container.flex",

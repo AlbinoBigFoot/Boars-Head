@@ -119,7 +119,7 @@
               "props.text": {
                 "binding": {
                   "config": {
-                    "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(coalesce(tag({view.params.tagPath} + '/Cmd/Value'),\n\t\ttag({view.params.tagPath} + '/Cmd_Open/Value')),\n\t\t'ON', 'OFF'))"
+                    "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(coalesce(tag({view.params.tagPath} + '/Cmd/Value'),\n\t\ttag({view.params.tagPath} + '/Cmd_Open/Value'), false),\n\t\t'ON', 'OFF'))"
                   },
                   "type": "expr"
                 }
@@ -127,7 +127,7 @@
               "props.style.classes": {
                 "binding": {
                   "config": {
-                    "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(tag({view.params.tagPath} + '/Cmd/Value'),\n\t\ttag({view.params.tagPath} + '/Cmd_Open/Value')),\n\t\t'faceplate-fault-state faceplate-ls-on',\n\t\t'faceplate-fault-state faceplate-ls-off'))"
+                    "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(tag({view.params.tagPath} + '/Cmd/Value'),\n\t\ttag({view.params.tagPath} + '/Cmd_Open/Value'), false),\n\t\t'faceplate-fault-state faceplate-ls-on',\n\t\t'faceplate-fault-state faceplate-ls-off'))"
                   },
                   "type": "expr"
                 }
@@ -155,7 +155,7 @@
           "component": {
             "onActionPerformed": {
               "config": {
-                "script": "\tdef _r(p):\n\t\ttry:\n\t\t\tc = system.tag.getConfiguration(p, False)[0]\n\t\t\ts = c.get('sourceTagPath')\n\t\t\treturn str(s) if s else p\n\t\texcept:\n\t\t\treturn p\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd/Value', base + '/Cmd_Open/Value', base + '/OpenLS/Value', base + '/ClosedLS/Value', base + '/Status/Value']\n\tvals = [True, True, True, False, 2]\n\tsystem.tag.writeBlocking([_r(p) for p in paths], vals)\n"
+                "script": "\tif self.session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tshared.ValveCommands.openValve(base, 'SO')\n"
               },
               "scope": "G",
               "type": "script"
@@ -166,7 +166,15 @@
           "props.enabled": {
             "binding": {
               "config": {
-                "expression": "!{session.custom.ReadOnly} &&\n({view.params.tagPath} = '' ||\n coalesce(tag({view.params.tagPath} + '/Rdy_Open/Value'), true))"
+                "expression": "!{session.custom.ReadOnly} &&\n({view.params.tagPath} = '' ||\n qualityOf(tag({view.params.tagPath} + '/Rdy_Open/Value')) != 'Good' ||\n coalesce(tag({view.params.tagPath} + '/Rdy_Open/Value'), true))"
+              },
+              "type": "expr"
+            }
+          },
+          "props.style.classes": {
+            "binding": {
+              "config": {
+                "expression": "if({view.params.tagPath} = '', 'faceplate-cmd-btn font-label',\n\tif(if(coalesce(tag({view.params.tagPath} + '/Cfg_HasOpenLS/Value'), false),\n\t\tcoalesce(tag({view.params.tagPath} + '/OpenLS/Value'), false),\n\t\tcoalesce(tag({view.params.tagPath} + '/Cmd/Value'),\n\t\t\ttag({view.params.tagPath} + '/Cmd_Open/Value'), false)),\n\t\t'faceplate-cmd-btn faceplate-cmd-btn-active font-label',\n\t\t'faceplate-cmd-btn font-label'))"
               },
               "type": "expr"
             }
@@ -193,7 +201,7 @@
           "component": {
             "onActionPerformed": {
               "config": {
-                "script": "\tdef _r(p):\n\t\ttry:\n\t\t\tc = system.tag.getConfiguration(p, False)[0]\n\t\t\ts = c.get('sourceTagPath')\n\t\t\treturn str(s) if s else p\n\t\texcept:\n\t\t\treturn p\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpaths = [base + '/Cmd/Value', base + '/Cmd_Close/Value', base + '/Cmd_Open/Value', base + '/OpenLS/Value', base + '/ClosedLS/Value', base + '/Status/Value']\n\tvals = [False, True, False, False, True, 1]\n\tsystem.tag.writeBlocking([_r(p) for p in paths], vals)\n"
+                "script": "\tif self.session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tshared.ValveCommands.closeValve(base, 'SO')\n"
               },
               "scope": "G",
               "type": "script"
@@ -204,7 +212,15 @@
           "props.enabled": {
             "binding": {
               "config": {
-                "expression": "!{session.custom.ReadOnly} &&\n({view.params.tagPath} = '' ||\n coalesce(tag({view.params.tagPath} + '/Rdy_Close/Value'), true))"
+                "expression": "!{session.custom.ReadOnly} &&\n({view.params.tagPath} = '' ||\n qualityOf(tag({view.params.tagPath} + '/Rdy_Close/Value')) != 'Good' ||\n coalesce(tag({view.params.tagPath} + '/Rdy_Close/Value'), true))"
+              },
+              "type": "expr"
+            }
+          },
+          "props.style.classes": {
+            "binding": {
+              "config": {
+                "expression": "if({view.params.tagPath} = '', 'faceplate-cmd-btn font-label',\n\tif(if(coalesce(tag({view.params.tagPath} + '/Cfg_HasClosedLS/Value'), false),\n\t\tcoalesce(tag({view.params.tagPath} + '/ClosedLS/Value'), false),\n\t\t!coalesce(tag({view.params.tagPath} + '/Cmd/Value'),\n\t\t\ttag({view.params.tagPath} + '/Cmd_Open/Value'), false)),\n\t\t'faceplate-cmd-btn faceplate-cmd-btn-active font-label',\n\t\t'faceplate-cmd-btn font-label'))"
               },
               "type": "expr"
             }
@@ -231,7 +247,7 @@
           "component": {
             "onActionPerformed": {
               "config": {
-                "script": "\tdef _r(p):\n\t\ttry:\n\t\t\tc = system.tag.getConfiguration(p, False)[0]\n\t\t\ts = c.get('sourceTagPath')\n\t\t\treturn str(s) if s else p\n\t\texcept:\n\t\t\treturn p\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tsystem.tag.writeBlocking([_r(base + '/Cmd_Reset/Value')], [True])\n"
+                "script": "\tif self.session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tshared.ValveCommands.resetValve(base)\n"
               },
               "scope": "G",
               "type": "script"

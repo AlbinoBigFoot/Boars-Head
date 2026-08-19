@@ -1,0 +1,209 @@
+{
+  "custom": {
+    "edit": false,
+    "value": ""
+  },
+  "params": {
+    "label": "Null",
+    "permission": true,
+    "tagPath": ""
+  },
+  "propConfig": {
+    "custom.value": {
+      "binding": {
+        "config": {
+          "mode": "indirect",
+          "tagPath": "{tagPath}",
+          "fallbackDelay": 2.5,
+          "references": {
+            "tagPath": "{view.params.tagPath}"
+          }
+        },
+        "transforms": [
+          {
+            "expression": "if(isNull({value}), '', toStr({value}))",
+            "type": "expression"
+          }
+        ],
+        "type": "tag"
+      },
+      "persistent": true
+    },
+    "params.label": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.permission": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 28,
+      "width": 160
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "alignItems": "center",
+      "justify": "flex-end",
+      "style": {
+        "classes": "config-input-row",
+        "gap": "6px",
+        "overflow": "visible",
+        "width": "100%"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.input.text-field",
+        "meta": {
+          "name": "EditValue"
+        },
+        "position": {
+          "basis": "80px",
+          "grow": 0,
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "path": "view.custom.edit"
+              },
+              "type": "property"
+            }
+          },
+          "props.enabled": {
+            "binding": {
+              "config": {
+                "expression": "{view.params.permission} && !coalesce({session.custom.ReadOnly}, false)"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "events": {
+          "component": {
+            "onActionPerformed": {
+              "config": {
+                "script": "\tif self.session.custom.ReadOnly:\n\t\treturn\n\ttagPath = self.view.params.tagPath\n\tif not tagPath:\n\t\treturn\n\tnewV = self.props.text\n\toldV = None\n\ttry:\n\t\toldV = system.tag.readBlocking([tagPath])[0].value\n\texcept:\n\t\toldV = self.view.custom.value\n\ttry:\n\t\tskip = shared.Audit.valuesEqual(newV, oldV)\n\texcept:\n\t\tskip = (newV == oldV)\n\tself.view.custom.edit = False\n\ttry:\n\t\tself.props.text = oldV if oldV is not None else ''\n\texcept:\n\t\tpass\n\tif skip:\n\t\treturn\n\tlabel = self.view.params.label\n\tif label in (None, '', 'Null'):\n\t\tlabel = str(tagPath).split('/')[-1]\n\tshared.Alerts.confirmApplyWrite(\n\t\tlabel=label,\n\t\ttagPath=tagPath,\n\t\tnewValue=newV,\n\t\toldValue=oldV,\n\t\textraPayload={'viewName': self.view.id.split('@')[0]},\n\t)\n"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "props": {
+          "text": "",
+          "style": {
+            "classes": "font-value"
+          }
+        }
+      },
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "Value"
+        },
+        "position": {
+          "basis": "80px",
+          "grow": 0,
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "!{view.custom.edit}"
+              },
+              "type": "expr"
+            }
+          },
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.custom.value"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "text": "",
+          "style": {
+            "classes": "font-value",
+            "textAlign": "right",
+            "overflow": "hidden"
+          }
+        }
+      },
+      {
+        "type": "ia.display.icon",
+        "meta": {
+          "name": "EditIcon"
+        },
+        "position": {
+          "basis": "20px",
+          "shrink": 0
+        },
+        "events": {
+          "dom": {
+            "onClick": {
+              "config": {
+                "script": "\tif not self.view.params.permission or self.session.custom.ReadOnly:\n\t\treturn\n\teditVal = None\n\ttry:\n\t\teditVal = self.parent.getChild('EditValue')\n\texcept:\n\t\tpass\n\tif self.view.custom.edit:\n\t\ttagPath = self.view.params.tagPath\n\t\ttry:\n\t\t\tnewV = editVal.props.text\n\t\texcept:\n\t\t\tnewV = None\n\t\toldV = None\n\t\ttry:\n\t\t\toldV = system.tag.readBlocking([tagPath])[0].value\n\t\texcept:\n\t\t\toldV = self.view.custom.value\n\t\tself.view.custom.edit = False\n\t\ttry:\n\t\t\teditVal.props.text = '' if oldV is None else str(oldV)\n\t\texcept:\n\t\t\tpass\n\t\ttry:\n\t\t\tskip = shared.Audit.valuesEqual(newV, oldV)\n\t\texcept:\n\t\t\tskip = (newV == oldV)\n\t\tif skip or newV is None or not tagPath:\n\t\t\treturn\n\t\tlabel = self.view.params.label\n\t\tif label in (None, '', 'Null'):\n\t\t\tlabel = str(tagPath).split('/')[-1]\n\t\tshared.Alerts.confirmApplyWrite(\n\t\t\tlabel=label,\n\t\t\ttagPath=tagPath,\n\t\t\tnewValue=newV,\n\t\t\toldValue=oldV,\n\t\t\textraPayload={'viewName': self.view.id.split('@')[0]},\n\t\t)\n\telse:\n\t\ttry:\n\t\t\tqv = system.tag.readBlocking([self.view.params.tagPath])[0].value\n\t\t\teditVal.props.text = '' if qv is None else str(qv)\n\t\texcept:\n\t\t\tpass\n\t\tself.view.custom.edit = True\n"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "propConfig": {
+          "props.style.cursor": {
+            "binding": {
+              "config": {
+                "expression": "if({view.params.permission} && !coalesce({session.custom.ReadOnly}, false), 'pointer', 'not-allowed')"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "path": "material/edit",
+          "style": {
+            "classes": "font-value"
+          }
+        }
+      }
+    ],
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "cancel",
+          "pageScope": true,
+          "script": "\tif not self.view.params.tagPath or payload.get('tagPath') != self.view.params.tagPath:\n\t\treturn\n\tself.view.custom.edit = False\n\ttry:\n\t\tqv = system.tag.readBlocking([self.view.params.tagPath])[0].value\n\t\tself.getChild('EditValue').props.text = '' if qv is None else str(qv)\n\texcept:\n\t\tpass\n",
+          "sessionScope": false,
+          "viewScope": false
+        },
+        {
+          "messageType": "writeValue",
+          "pageScope": true,
+          "script": "\tif not self.view.params.tagPath or payload.get('tagPath') != self.view.params.tagPath:\n\t\treturn\n\tif not payload.get('alreadyWritten'):\n\t\tshared.Audit.writeTag(\n\t\t\tpayload.get('tagPath'),\n\t\t\tpayload.get('value'),\n\t\t\tlabel=payload.get('label'),\n\t\t\tviewName=payload.get('viewName') or self.view.id.split('@')[0],\n\t\t)\n\tself.view.custom.edit = False\n\ttry:\n\t\tself.getChild('EditValue').props.text = '' if payload.get('value') is None else str(payload.get('value'))\n\texcept:\n\t\tpass\n",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    }
+  }
+}

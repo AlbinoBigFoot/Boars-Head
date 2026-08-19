@@ -1550,9 +1550,7 @@ body:has(.psc-animations-off) .container-fade-in {
  * (Hiding .ia_popup__header leaves the default drag strip unusable without this.)
  *
  * Do NOT give .psc-faceplate a z-index — it stacks the whole view above this strip
- * and title-bar drag dies (hit-test hits header/title instead of .popup-drag).
- * Faceplate Close is ~36px + header pad 8px; 40px inset still covered the X so
- * clicks hit .popup-drag instead of Close — use 56px for device faceplates.
+ * and title-bar drag dies. Faceplate Close needs a 56px right inset (40px covers the X).
  */
 #popup-AdhocTrend > .popup-drag,
 #popup-AdhocTrendConfig > .popup-drag {
@@ -1585,12 +1583,18 @@ body:has(.psc-animations-off) .container-fade-in {
 	cursor: grabbing;
 }
 
-/* Device faceplate shell — same fit pattern as #popup-AdhocTrend.
-   container-card margin:2px otherwise makes popup-body scrollH = height+4. */
+/* Same fit as AdhocTrend — container-card margin:2px otherwise scrollH = height+4. */
 .popup:has(.psc-faceplate),
 .ia_popup:has(.psc-faceplate) {
 	overflow: hidden !important;
 	scrollbar-width: none;
+}
+
+/* Device faceplate: widen only while Trend is selected (class on the view root). */
+.popup:has(.psc-faceplate-trend-wide),
+.ia_popup:has(.psc-faceplate-trend-wide) {
+	width: min(960px, 96vw) !important;
+	min-width: min(960px, 96vw) !important;
 }
 
 .popup:has(.psc-faceplate)::-webkit-scrollbar,
@@ -2826,12 +2830,11 @@ body:has(.psc-animations-off) .container-fade-in {
 
 .psc-faceplate {
 	background: var(--surface-card);
-	/* No z-index — must stay below sibling .popup-drag (see popup drag rules). */
+	/* No z-index — must stay below sibling .popup-drag */
 	min-height: 0;
 	max-height: 100%;
 	height: 100%;
 	overflow: hidden;
-	/* Override .psc-container-card / -border margin:2px (causes 4px popup-body scrollbar). */
 	margin: 0 !important;
 	box-sizing: border-box !important;
 }
@@ -2839,7 +2842,6 @@ body:has(.psc-animations-off) .container-fade-in {
 .psc-faceplate-header {
 	align-items: center;
 	gap: 8px;
-	/* 48px fits 36px close + 4px pad + 1px border without overflow:auto scrollbar */
 	box-sizing: border-box;
 	min-height: 48px;
 	height: 48px;
@@ -2850,7 +2852,6 @@ body:has(.psc-animations-off) .container-fade-in {
 	z-index: 40;
 	flex: 0 0 auto;
 	isolation: isolate;
-	/* Let .popup-drag receive presses on the title strip; Close keeps pointer-events. */
 	pointer-events: none;
 	overflow: hidden;
 }
@@ -2865,6 +2866,10 @@ body:has(.psc-animations-off) .container-fade-in {
 	pointer-events: none;
 }
 
+.psc-faceplate-header .psc-container-button {
+	pointer-events: auto !important;
+}
+
 /* In-view Close X — native popup header is hidden globally */
 .psc-faceplate-close {
 	position: relative;
@@ -2874,10 +2879,6 @@ body:has(.psc-animations-off) .container-fade-in {
 	min-height: 36px !important;
 	padding: 4px !important;
 	box-sizing: border-box;
-	pointer-events: auto !important;
-}
-
-.psc-faceplate-header .psc-container-button {
 	pointer-events: auto !important;
 }
 
@@ -2955,11 +2956,7 @@ body:has(.psc-animations-off) .container-fade-in {
 	flex: 1 1 auto;
 }
 
-/* ----------------------------------------------------------------------------------------------------------------------------------------------------------------
- * Valve / solenoid faceplate only — left vertical tabs (reduces horizontal whitespace)
- * Gated by Faceplate view bindings when deviceType is Valve|Solenoid|SolenoidValve.
- * ---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
-
+/* Valve / solenoid: left vertical tabs (deviceType Valve|Solenoid|SolenoidValve) */
 .psc-faceplate-content {
 	min-height: 0;
 	min-width: 0;
@@ -2971,7 +2968,6 @@ body:has(.psc-animations-off) .container-fade-in {
 	align-items: stretch;
 }
 
-/* Tab strip: column stack on the left */
 [class*="psc-faceplate-buttons"].psc-faceplate-tabs-vertical {
 	display: flex !important;
 	flex-direction: column !important;
@@ -3015,7 +3011,6 @@ body:has(.psc-animations-off) .container-fade-in {
 	font-size: 13px;
 }
 
-/* Center label text (incl. wrapped two-line titles) inside Perspective button internals */
 .psc-faceplate-tabs-vertical .psc-faceplate-tab-text,
 .psc-faceplate-tabs-vertical .psc-faceplate-button .ia_button__text,
 .psc-faceplate-tabs-vertical .psc-faceplate-button-selected .ia_button__text,
@@ -3035,7 +3030,6 @@ body:has(.psc-animations-off) .container-fade-in {
 	box-sizing: border-box;
 }
 
-/* Body fills remaining width; reconnect border to left tab edge */
 .psc-faceplate-tabs-vertical .psc-faceplate-body,
 .psc-faceplate-content.psc-faceplate-tabs-vertical .psc-faceplate-body {
 	border-top: 1px solid var(--border);
@@ -3098,26 +3092,32 @@ body:has(.psc-animations-off) .container-fade-in {
 }
 
 .psc-faceplate-alarm-list {
-	background: var(--neutral-40, var(--surface-container));
+	background: var(--surface);
 	min-height: 0;
 }
 
 .psc-faceplate-alarm-row {
-	background: var(--neutral-40, var(--surface));
+	background: var(--surface);
 	border-bottom: 1px solid var(--border);
 }
 
 .psc-faceplate-alarm-row-alt {
-	background: var(--neutral-50, var(--surface-container));
+	background: color-mix(in srgb, var(--text) 7%, var(--surface));
 }
 
 .psc-faceplate-alarm-name {
-	font-size: 12px;
+	font-size: 14px;
 	font-weight: 600;
 	text-align: center;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+}
+
+.psc-faceplate-alarm-notes {
+	font-size: 11px;
+	text-align: center;
+	color: var(--text-muted);
 }
 
 .psc-faceplate-alarm-fields {
@@ -3126,9 +3126,10 @@ body:has(.psc-animations-off) .container-fade-in {
 }
 
 .psc-faceplate-alarm-field-label {
-	font-size: 11px;
+	font-size: 13px;
+	font-weight: 600;
 	text-align: center;
-	color: var(--text-muted);
+	color: var(--text);
 }
 
 
@@ -3196,6 +3197,38 @@ body:has(.psc-animations-off) .container-fade-in {
 
 .psc-faceplate-cmd-btn:hover {
 	border-color: var(--text-muted);
+}
+
+.psc-faceplate-cmd-btn-active {
+	border-color: var(--text);
+	background: var(--surface-card);
+}
+
+.psc-faceplate-cmd-btn-bypass {
+	border-color: var(--status-level-warning, #fbc02d);
+	background: var(--status-level-warning, #fbc02d);
+	color: #212121;
+}
+
+.psc-faceplate-bypass-banner {
+	color: var(--status-level-warning, #fbc02d);
+	font-weight: 700;
+}
+
+.psc-faceplate-hint {
+	color: var(--text-muted);
+	font-size: 11px;
+	line-height: 1.4;
+	white-space: normal;
+}
+
+.psc-faceplate-trend-empty {
+	color: var(--text-muted);
+	font-size: 18px;
+	font-weight: 600;
+	line-height: 1.4;
+	text-align: center;
+	white-space: normal;
 }
 
 .psc-faceplate-config-empty {
@@ -3403,7 +3436,43 @@ body:has(.psc-animations-off) .container-fade-in {
 	white-space: nowrap !important;
 }
 
+/* Device Not Ready reason dots (empty labels collapse without these) */
+.psc-faceplate-nrdy-dot {
+	display: block !important;
+	box-sizing: border-box !important;
+	width: 10px !important;
+	height: 10px !important;
+	min-width: 10px !important;
+	min-height: 10px !important;
+	padding: 0 !important;
+	border-radius: 50% !important;
+	border: 1px solid var(--border-strong, var(--border)) !important;
+	background: var(--surface-container) !important;
+	flex-shrink: 0 !important;
+	overflow: hidden !important;
+	font-size: 0 !important;
+	line-height: 0 !important;
+}
+.psc-faceplate-nrdy-active {
+	background: var(--sts-fault) !important;
+	border-color: var(--sts-fault) !important;
+}
+.psc-faceplate-nrdy-label {
+	line-height: 1.3;
+}
+
 /* Pump / motor faceplate fault status codes (text + class, not color-only) */
+.psc-faceplate-fault-chips {
+	flex-wrap: wrap !important;
+	overflow-x: hidden !important;
+	overflow-y: visible !important;
+}
+.psc-faceplate-fault-chips > * {
+	flex: 0 0 108px !important;
+	width: 108px;
+	max-width: 108px;
+	box-sizing: border-box;
+}
 .psc-faceplate-fault-chip {
 	min-width: 88px;
 	padding: 4px 6px;
@@ -3438,41 +3507,18 @@ body:has(.psc-animations-off) .container-fade-in {
 	color: var(--text-muted);
 }
 
-/* Valve Controls — FT Home status banner + Not Ready list */
-.psc-faceplate-status-banner {
-	background: var(--neutral-40);
-	border: 1px solid var(--border);
-	border-radius: var(--borderRadius);
-	gap: 8px;
-}
-.psc-faceplate-status-banner-text {
-	font-weight: 700;
-	font-size: 18px;
-	letter-spacing: 0.02em;
-}
-.psc-faceplate-status-open {
-	background: var(--neutral-50);
-}
-.psc-faceplate-status-closed {
-	background: var(--neutral-40);
-}
-.psc-faceplate-status-transit {
-	background: var(--neutral-45, var(--neutral-40));
-}
-.psc-faceplate-status-disabled {
-	background: var(--neutral-30);
-	opacity: 0.9;
-}
-.psc-faceplate-nrdy-dot {
-	background: var(--neutral-50);
-	border: 1px solid var(--border);
-	display: inline-block;
-}
-.psc-faceplate-nrdy-active {
-	background: var(--alarm-medium, #c9a227);
-	border-color: var(--alarm-medium, #c9a227);
-}
-.psc-faceplate-nrdy-label {
-	font-size: 12px;
+.psc-config-field-label {
+	line-height: 1.45;
+	white-space: normal;
 }
 
+/* Analog/string config editors: same slot display vs edit so the pencil does not jump */
+.psc-analog-input-edit,
+.psc-config-input-row .ia_numericEntryFieldComponent,
+.psc-config-input-row .ia_textFieldComponent {
+	box-sizing: border-box !important;
+	height: 24px !important;
+	min-height: 24px !important;
+	max-height: 24px !important;
+	max-width: 64px !important;
+}

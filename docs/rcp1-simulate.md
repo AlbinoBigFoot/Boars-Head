@@ -68,6 +68,18 @@ browse of AtomicTags. Structural Folder nodes are untouched.
 
 `applySimulate(True)` → `toMemory()`; `applySimulate(False)` → `toOpc()`.
 
+**Boot caveat:** `Simulate` is a Memory tag. Gateway Tag Change does **not** fire at
+startup for an unchanged Memory value, so the Header can show **SIM ON** while RCP1
+leaves are still OPC and faceplate writes fail. Mitigations:
+
+| Mechanism | Role |
+|-----------|------|
+| Timer `ignition/timer/rcp1SimulateEnsure` | Every 15s calls `ensureApplied()` |
+| `shared.Rcp1Simulate.ensureApplied()` | If Simulate=True but sample leaves are still OPC → `toMemory()` |
+| `shared.ValveCommands` writes | Call `ensureApplied()` (and force+retry on Bad quality) |
+
+Manual recovery without waiting: Header toggle **SIM OFF → ON**.
+
 ## UI toggle
 
 | Item | Detail |

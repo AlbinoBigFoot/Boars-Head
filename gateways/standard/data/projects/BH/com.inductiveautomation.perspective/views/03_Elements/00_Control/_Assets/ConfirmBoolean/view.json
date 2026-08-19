@@ -1,0 +1,147 @@
+{
+  "custom": {
+    "timeOut": {
+      "actionComplete": true,
+      "startTime": {
+        "$": [
+          "ts",
+          192,
+          0
+        ],
+        "$ts": 0
+      }
+    }
+  },
+  "params": {
+    "label": "",
+    "permissions": true,
+    "tagPath": ""
+  },
+  "propConfig": {
+    "custom.timeOut": {
+      "persistent": true
+    },
+    "custom.timeOut.endTime": {
+      "binding": {
+        "config": {
+          "expression": "dateArithmetic({view.custom.timeOut.startTime}, 60, 'sec')"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.timeOut.status": {
+      "binding": {
+        "config": {
+          "expression": "(now() > {view.custom.timeOut.endTime}) || {view.custom.timeOut.actionComplete}"
+        },
+        "type": "expr"
+      },
+      "onChange": {
+        "enabled": null,
+        "script": "\tsystem.perspective.closePopup(id = 'alertDialog')\n"
+      }
+    },
+    "params.label": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.permissions": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 28,
+      "width": 28
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "alignItems": "center",
+      "justify": "center",
+      "style": {
+        "width": "100%",
+        "height": "100%"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.input.checkbox",
+        "meta": {
+          "name": "Chk"
+        },
+        "position": {
+          "basis": "28px",
+          "shrink": 0,
+          "grow": 0
+        },
+        "propConfig": {
+          "props.selected": {
+            "binding": {
+              "config": {
+                "mode": "indirect",
+                "tagPath": "{tagPath}",
+                "bidirectional": false,
+                "fallbackDelay": 2.5,
+                "references": {
+                  "tagPath": "{view.params.tagPath}"
+                }
+              },
+              "type": "tag"
+            },
+            "onChange": {
+              "enabled": null,
+              "script": "\ttry:\n\t\tif origin != 'Browser':\n\t\t\treturn\n\t\tif self.session.custom.ReadOnly or not self.view.params.permissions:\n\t\t\tshared.Alerts.revertPending(self, 'props.selected')\n\t\t\treturn\n\t\ttagPath = self.view.params.tagPath\n\t\tif not tagPath:\n\t\t\tshared.Alerts.revertPending(self, 'props.selected')\n\t\t\treturn\n\t\tnewValue = bool(currentValue.value)\n\t\toldValue = bool(previousValue.value) if previousValue is not None else (not newValue)\n\t\tif newValue == oldValue:\n\t\t\treturn\n\t\tself.view.custom.timeOut.startTime = system.date.now()\n\t\tself.view.custom.timeOut.actionComplete = False\n\t\tlabel = self.view.params.label or str(tagPath).split('/')[-2]\n\t\tshared.Alerts.promptPendingWrite(self, 'props.selected',\n\t\t\tlabel=label,\n\t\t\ttagPath=tagPath,\n\t\t\tnewValue=newValue,\n\t\t\toldValue=oldValue,\n\t\t\ttitle='Apply configuration',\n\t\t\textraPayload={'viewName': self.view.id.split('@')[0]},\n\t\t)\n\texcept:\n\t\tsystem.util.getLogger('ConfirmBoolean').info('Error prompting apply write')\n\t\ttry:\n\t\t\tshared.Alerts.revertPending(self, 'props.selected')\n\t\texcept:\n\t\t\tpass\n"
+            }
+          },
+          "props.enabled": {
+            "binding": {
+              "config": {
+                "expression": "{view.params.permissions} && !{session.custom.ReadOnly} && {view.params.tagPath} != ''"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "selected": false,
+          "text": "",
+          "textPosition": "right",
+          "style": {
+            "classes": "confirm-boolean",
+            "overflow": "hidden"
+          }
+        }
+      }
+    ],
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "cancel",
+          "pageScope": true,
+          "script": "\tif payload.get('tagPath') == self.view.params.tagPath:\n\t\tshared.Alerts.revertPending(self.getChild('Chk'), 'props.selected', payload.get('oldValue'))\n\t\tself.view.custom.timeOut.actionComplete = True\n",
+          "sessionScope": false,
+          "viewScope": false
+        },
+        {
+          "messageType": "writeValue",
+          "pageScope": true,
+          "script": "\tif not self.view.params.tagPath or payload.get('tagPath') != self.view.params.tagPath:\n\t\treturn\n\tif not payload.get('alreadyWritten'):\n\t\ttry:\n\t\t\tshared.Audit.writeTag(\n\t\t\t\tpayload['tagPath'],\n\t\t\t\tpayload.get('value'),\n\t\t\t\tlabel=payload.get('label'),\n\t\t\t\tviewName=payload.get('viewName') or self.view.id.split('@')[0],\n\t\t\t)\n\t\texcept:\n\t\t\tshared.ValveCommands.writeTag(payload.get('tagPath'), payload.get('value'))\n\tself.view.custom.timeOut.actionComplete = True\n",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    }
+  }
+}

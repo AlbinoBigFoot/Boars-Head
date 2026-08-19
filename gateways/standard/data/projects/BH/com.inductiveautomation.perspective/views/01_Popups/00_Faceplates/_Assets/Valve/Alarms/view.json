@@ -80,9 +80,14 @@
                 },
                 "props": {
                   "direction": "row",
+                  "wrap": "wrap",
+                  "alignItems": "stretch",
+                  "justify": "flex-start",
                   "style": {
+                    "classes": "faceplate-fault-chips",
                     "gap": "8px",
-                    "flexWrap": "wrap"
+                    "overflow": "visible",
+                    "width": "100%"
                   }
                 },
                 "children": [
@@ -92,7 +97,8 @@
                       "name": "IOFault"
                     },
                     "position": {
-                      "basis": "120px",
+                      "basis": "108px",
+                      "grow": 0,
                       "shrink": 0
                     },
                     "props": {
@@ -153,7 +159,8 @@
                       "name": "FullStall"
                     },
                     "position": {
-                      "basis": "120px",
+                      "basis": "108px",
+                      "grow": 0,
                       "shrink": 0
                     },
                     "props": {
@@ -214,7 +221,8 @@
                       "name": "TransitStall"
                     },
                     "position": {
-                      "basis": "120px",
+                      "basis": "108px",
+                      "grow": 0,
                       "shrink": 0
                     },
                     "props": {
@@ -275,7 +283,8 @@
                       "name": "IntlkTrip"
                     },
                     "position": {
-                      "basis": "120px",
+                      "basis": "108px",
+                      "grow": 0,
                       "shrink": 0
                     },
                     "props": {
@@ -338,14 +347,15 @@
                   "name": "BtnAckAll"
                 },
                 "position": {
-                  "basis": "100px",
+                  "basis": "36px",
+                  "grow": 0,
                   "shrink": 0
                 },
                 "events": {
                   "component": {
                     "onActionPerformed": {
                       "config": {
-                        "script": "\tif self.session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tdef _r(p):\n\t\ttry:\n\t\t\tc = system.tag.getConfiguration(p, False)[0]\n\t\t\ts = c.get('sourceTagPath')\n\t\t\treturn str(s) if s else p\n\t\texcept:\n\t\t\treturn p\n\tpaths = [base + '/' + n + '/Value' for n in ('Ack_IOFault','Ack_FullStall','Ack_TransitStall','Ack_IntlkTrip','Cmd_ResetAckAll')]\n\tvals = [True] * len(paths)\n\tsystem.tag.writeBlocking([_r(p) for p in paths], vals)\n"
+                        "script": "\tif self.session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tdef _r(p):\n\t\ttry:\n\t\t\tc = system.tag.getConfiguration(p, False)[0]\n\t\t\ts = c.get('sourceTagPath')\n\t\t\treturn str(s) if s else p\n\t\texcept:\n\t\t\treturn p\n\tpaths = [base + '/' + n + '/Value' for n in ('Ack_IOFault','Ack_FullStall','Ack_TransitStall','Ack_IntlkTrip','Cmd_ResetAckAll')]\n\tvals = [True] * len(paths)\n\tsystem.tag.writeBlocking([_r(p) for p in paths], vals)\n\tuser = ''\n\ttry:\n\t\tuser = str(self.session.props.auth.user.userName or '')\n\texcept:\n\t\tpass\n\ttry:\n\t\tshared.Alarms.acknowledgeForTag(base, user, 'Faceplate Ack / Reset')\n\texcept:\n\t\tsystem.util.getLogger('ValveAlarms').warn('Ignition alarm ack failed for %s' % base)\n\ttry:\n\t\tviewName = self.view.id.split('@')[0]\n\t\tshared.Audit.logEvent('alarm ack/reset', base, 'Ack / Reset', tagPath=base, viewName=viewName)\n\texcept:\n\t\tsystem.util.getLogger('ValveAlarms').warn('OpsAudit ack/reset failed for %s' % base)\n"
                       },
                       "scope": "G",
                       "type": "script"
@@ -366,7 +376,11 @@
                   "text": "Ack / Reset",
                   "style": {
                     "classes": "faceplate-cmd-btn font-label",
-                    "width": "100%"
+                    "alignSelf": "center",
+                    "width": "auto",
+                    "minWidth": "108px",
+                    "height": "36px",
+                    "maxHeight": "36px"
                   }
                 }
               }

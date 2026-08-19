@@ -34,17 +34,66 @@
   {
     "metadata": {
       "shortDescription": "Main Liq SV",
-      "longDescription": "P_ValveSO MAIN_LIQ_CV5 (Devices HMI layer; Value refs \u2192 [default]RCP1/Main Liq SV/* OPC leaves)"
+      "longDescription": "P_ValveSO MAIN_LIQ_CV5 (Devices HMI layer; Value refs → [default]RCP1/Main Liq SV/* OPC leaves)"
     },
     "name": "Main Liq SV",
     "typeId": "Devices/Valve",
     "tagType": "UdtInstance",
     "tags": [
       {
+        "name": "Ack_FullStall",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Ack_FullStall",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Ack_IOFault",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Ack_IOFault",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Ack_IntlkTrip",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Ack_IntlkTrip",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Ack_TransitStall",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Ack_TransitStall",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
         "metadata": {
           "shortDescription": "Full Stall",
           "longDescription": "Full Stall"
         },
+        "typeId": "_Root/Digital",
         "name": "Alm_FullStall",
         "tagType": "AtomicTag",
         "tags": [
@@ -67,9 +116,9 @@
             "sourceTagPath": "[default]RCP1/Main Liq SV/Alm_FullStall",
             "alarms": [
               {
-                "mode": "Equality",
-                "setpointA": 1.0,
-                "name": "Alarm",
+                "mode": "WhenTrue",
+                "notes": "Alm_FullStall",
+                "name": "Full Stall",
                 "priority": "High",
                 "enabled": true
               }
@@ -84,6 +133,7 @@
           "shortDescription": "I/O Fault",
           "longDescription": "I/O Fault"
         },
+        "typeId": "_Root/Digital",
         "name": "Alm_IOFault",
         "tagType": "AtomicTag",
         "tags": [
@@ -104,15 +154,6 @@
               ]
             },
             "sourceTagPath": "[default]RCP1/Main Liq SV/Alm_IOFault",
-            "alarms": [
-              {
-                "mode": "Equality",
-                "setpointA": 1.0,
-                "name": "Alarm",
-                "priority": "High",
-                "enabled": true
-              }
-            ],
             "name": "Value",
             "tagType": "AtomicTag"
           }
@@ -123,6 +164,7 @@
           "shortDescription": "Interlock Trip",
           "longDescription": "Interlock Trip"
         },
+        "typeId": "_Root/Digital",
         "name": "Alm_IntlkTrip",
         "tagType": "AtomicTag",
         "tags": [
@@ -143,15 +185,6 @@
               ]
             },
             "sourceTagPath": "[default]RCP1/Main Liq SV/Alm_IntlkTrip",
-            "alarms": [
-              {
-                "mode": "Equality",
-                "setpointA": 1.0,
-                "name": "Alarm",
-                "priority": "Medium",
-                "enabled": true
-              }
-            ],
             "name": "Value",
             "tagType": "AtomicTag"
           }
@@ -162,6 +195,7 @@
           "shortDescription": "Transit Stall",
           "longDescription": "Transit Stall"
         },
+        "typeId": "_Root/Digital",
         "name": "Alm_TransitStall",
         "tagType": "AtomicTag",
         "tags": [
@@ -182,15 +216,186 @@
               ]
             },
             "sourceTagPath": "[default]RCP1/Main Liq SV/Alm_TransitStall",
-            "alarms": [
-              {
-                "mode": "Equality",
-                "setpointA": 1.0,
-                "name": "Alarm",
-                "priority": "High",
-                "enabled": true
-              }
-            ],
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Cfg_FailOpen",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_FailOpen",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Cfg_FullStallT",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_FullStallT",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Cfg_HasClosedLS",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_HasClosedLS",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Cfg_HasIntlkObj",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_HasIntlkObj",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Cfg_HasOpenLS",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_HasOpenLS",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Cfg_HasPermObj",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_HasPermObj",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Cfg_HasStatsObj",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_HasStatsObj",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Cfg_LSFail",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_LSFail",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Cfg_OCmdResets",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_OCmdResets",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Cfg_OvrdPermIntlk",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_OvrdPermIntlk",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Cfg_PCmdClear",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_PCmdClear",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Cfg_ShedOnFullStall",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_ShedOnFullStall",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Cfg_ShedOnIOFault",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_ShedOnIOFault",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Cfg_ShedOnTransitStall",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_ShedOnTransitStall",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Cfg_SimFdbkT",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_SimFdbkT",
             "name": "Value",
             "tagType": "AtomicTag"
           }
@@ -221,12 +426,48 @@
         ]
       },
       {
+        "name": "Cmd_Bypass",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Cmd_Bypass",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
         "name": "Cmd_Close",
         "tagType": "UdtInstance",
         "tags": [
           {
             "valueSource": "reference",
             "sourceTagPath": "[default]RCP1/Main Liq SV/Cmd_Close",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Cmd_Disable",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Cmd_Disable",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Cmd_Enable",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Cmd_Enable",
             "name": "Value",
             "tagType": "AtomicTag"
           }
@@ -257,12 +498,36 @@
         ]
       },
       {
+        "name": "Cmd_ResetAckAll",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Cmd_ResetAckAll",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
         "name": "Comm",
         "tagType": "UdtInstance",
         "tags": [
           {
             "valueSource": "reference",
             "sourceTagPath": "[default]RCP1/Main Liq SV/Comm",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Disabled",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Disabled",
             "name": "Value",
             "tagType": "AtomicTag"
           }
@@ -635,6 +900,90 @@
         ]
       },
       {
+        "name": "Nrdy_CfgErr",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Nrdy_CfgErr",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Nrdy_Disabled",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Nrdy_Disabled",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Nrdy_Fail",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Nrdy_Fail",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Nrdy_IOFault",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Nrdy_IOFault",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Nrdy_Intlk",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Nrdy_Intlk",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Nrdy_NoMode",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Nrdy_NoMode",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Nrdy_Perm",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Nrdy_Perm",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
         "name": "OPER",
         "tagType": "UdtInstance",
         "tags": [
@@ -659,12 +1008,60 @@
         ]
       },
       {
+        "name": "Ovrd",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Ovrd",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
         "name": "PROG",
         "tagType": "UdtInstance",
         "tags": [
           {
             "valueSource": "reference",
             "sourceTagPath": "[default]RCP1/Main Liq SV/PROG",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "PermOK",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/PermOK",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Rdy_Close",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Rdy_Close",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Rdy_Open",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "reference",
+            "sourceTagPath": "[default]RCP1/Main Liq SV/Rdy_Open",
             "name": "Value",
             "tagType": "AtomicTag"
           }
@@ -697,428 +1094,9 @@
       {
         "valueSource": "memory",
         "dataType": "String",
+        "value": "SO",
         "name": "valveType",
         "tagType": "AtomicTag"
-      },
-      {
-        "name": "PermOK",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/PermOK"
-          }
-        ]
-      },
-      {
-        "name": "Rdy_Open",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Rdy_Open"
-          }
-        ]
-      },
-      {
-        "name": "Rdy_Close",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Rdy_Close"
-          }
-        ]
-      },
-      {
-        "name": "Nrdy_Disabled",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Nrdy_Disabled"
-          }
-        ]
-      },
-      {
-        "name": "Nrdy_CfgErr",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Nrdy_CfgErr"
-          }
-        ]
-      },
-      {
-        "name": "Nrdy_Intlk",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Nrdy_Intlk"
-          }
-        ]
-      },
-      {
-        "name": "Nrdy_Perm",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Nrdy_Perm"
-          }
-        ]
-      },
-      {
-        "name": "Nrdy_IOFault",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Nrdy_IOFault"
-          }
-        ]
-      },
-      {
-        "name": "Nrdy_Fail",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Nrdy_Fail"
-          }
-        ]
-      },
-      {
-        "name": "Nrdy_NoMode",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Nrdy_NoMode"
-          }
-        ]
-      },
-      {
-        "name": "Cfg_HasClosedLS",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_HasClosedLS"
-          }
-        ]
-      },
-      {
-        "name": "Cfg_HasOpenLS",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_HasOpenLS"
-          }
-        ]
-      },
-      {
-        "name": "Cfg_LSFail",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_LSFail"
-          }
-        ]
-      },
-      {
-        "name": "Cfg_FailOpen",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_FailOpen"
-          }
-        ]
-      },
-      {
-        "name": "Cfg_PCmdClear",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_PCmdClear"
-          }
-        ]
-      },
-      {
-        "name": "Cfg_OCmdResets",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_OCmdResets"
-          }
-        ]
-      },
-      {
-        "name": "Cfg_HasPermObj",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_HasPermObj"
-          }
-        ]
-      },
-      {
-        "name": "Cfg_HasIntlkObj",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_HasIntlkObj"
-          }
-        ]
-      },
-      {
-        "name": "Cfg_HasStatsObj",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_HasStatsObj"
-          }
-        ]
-      },
-      {
-        "name": "Cfg_ShedOnIOFault",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_ShedOnIOFault"
-          }
-        ]
-      },
-      {
-        "name": "Cfg_ShedOnTransitStall",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_ShedOnTransitStall"
-          }
-        ]
-      },
-      {
-        "name": "Cfg_ShedOnFullStall",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_ShedOnFullStall"
-          }
-        ]
-      },
-      {
-        "name": "Cmd_Bypass",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Cmd_Bypass"
-          }
-        ]
-      },
-      {
-        "name": "Cmd_Enable",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Cmd_Enable"
-          }
-        ]
-      },
-      {
-        "name": "Cmd_Disable",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Cmd_Disable"
-          }
-        ]
-      },
-      {
-        "name": "Disabled",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Disabled"
-          }
-        ]
-      },
-      {
-        "name": "Ovrd",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Ovrd"
-          }
-        ]
-      },
-      {
-        "name": "Cfg_OvrdPermIntlk",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_OvrdPermIntlk"
-          }
-        ]
-      },
-      {
-        "name": "Ack_IOFault",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Ack_IOFault"
-          }
-        ]
-      },
-      {
-        "name": "Ack_FullStall",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Ack_FullStall"
-          }
-        ]
-      },
-      {
-        "name": "Ack_TransitStall",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Ack_TransitStall"
-          }
-        ]
-      },
-      {
-        "name": "Ack_IntlkTrip",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Ack_IntlkTrip"
-          }
-        ]
-      },
-      {
-        "name": "Cmd_ResetAckAll",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Cmd_ResetAckAll"
-          }
-        ]
-      },
-      {
-        "name": "Cfg_FullStallT",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_FullStallT"
-          }
-        ]
-      },
-      {
-        "name": "Cfg_SimFdbkT",
-        "tagType": "UdtInstance",
-        "tags": [
-          {
-            "name": "Value",
-            "tagType": "AtomicTag",
-            "valueSource": "reference",
-            "sourceTagPath": "[default]RCP1/Main Liq SV/Cfg_SimFdbkT"
-          }
-        ]
       }
     ]
   }

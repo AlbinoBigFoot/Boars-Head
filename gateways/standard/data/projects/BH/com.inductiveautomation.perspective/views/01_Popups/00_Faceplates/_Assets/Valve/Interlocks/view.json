@@ -11,8 +11,8 @@
   },
   "props": {
     "defaultSize": {
-      "height": 520,
-      "width": 520
+      "height": 220,
+      "width": 420
     }
   },
   "root": {
@@ -25,17 +25,38 @@
       "direction": "column",
       "style": {
         "gap": "8px",
-        "overflow": "auto",
+        "overflowX": "hidden",
+        "overflowY": "auto",
         "padding": "4px",
         "minHeight": 0,
         "height": "100%"
       }
     },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "cancel",
+          "pageScope": true,
+          "script": "\tpass\n",
+          "sessionScope": false,
+          "viewScope": false
+        },
+        {
+          "messageType": "writeValue",
+          "pageScope": true,
+          "script": "\tpath = payload.get('tagPath') if payload else None\n\tbase = self.view.params.tagPath or ''\n\tif not path or not base:\n\t\treturn\n\tleaf = str(path).rstrip('/').split('/')\n\tcmd = leaf[-2] if len(leaf) >= 2 and leaf[-1] == 'Value' else leaf[-1]\n\tif cmd == 'Cmd_Enable':\n\t\tshared.ValveCommands.enableDevice(base)\n\telif cmd == 'Cmd_Disable':\n\t\tshared.ValveCommands.disableDevice(base)\n\telif cmd in ('Cmd_Bypass', 'Sts_BypActive'):\n\t\tval = payload.get('value') if payload else None\n\t\tshared.ValveCommands.bypassDevice(base, val)\n",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    },
     "children": [
       {
         "type": "ia.container.flex",
         "meta": {
-          "name": "DeviceEnable"
+          "name": "DeviceBypass"
         },
         "position": {
           "shrink": 0
@@ -68,69 +89,63 @@
             "props": {
               "direction": "column",
               "style": {
-                "gap": "2px",
-                "width": "100%"
+                "gap": "8px",
+                "width": "100%",
+                "overflow": "hidden"
               }
             },
             "children": [
               {
-                "type": "ia.container.flex",
+                "type": "ia.display.label",
                 "meta": {
-                  "name": "StatusRow"
+                  "name": "StatusLbl"
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(coalesce(tag({view.params.tagPath} + '/Disabled/Value'), false),\n\t\t'DISABLED', 'ENABLED'))"
+                      },
+                      "type": "expr"
+                    }
+                  }
                 },
                 "props": {
-                  "direction": "row",
+                  "text": "ENABLED",
                   "style": {
-                    "gap": "8px",
-                    "flexWrap": "wrap"
+                    "classes": "font-value"
                   }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "BypLbl"
                 },
-                "children": [
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "DisabledLbl"
-                    },
-                    "propConfig": {
-                      "props.text": {
-                        "binding": {
-                          "config": {
-                            "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(coalesce(tag({view.params.tagPath} + '/Disabled/Value'), false),\n\t\t'DISABLED', 'ENABLED'))"
-                          },
-                          "type": "expr"
-                        }
-                      }
-                    },
-                    "props": {
-                      "text": "ENABLED",
-                      "style": {
-                        "classes": "font-value"
-                      }
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.tagPath} = '', '',\n\tif(coalesce(tag({view.params.tagPath} + '/Interlock/Sts_BypActive/Value'), false),\n\t\t'BYPASS ACTIVE \u2014 interlocks skipped',\n\t\t'Interlocks in service'))"
+                      },
+                      "type": "expr"
                     }
                   },
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "BypLbl"
-                    },
-                    "propConfig": {
-                      "props.text": {
-                        "binding": {
-                          "config": {
-                            "expression": "if({view.params.tagPath} = '', '',\n\tif(coalesce(tag({view.params.tagPath} + '/Interlock/Sts_BypActive/Value'), false),\n\t\t'BYPASS ACTIVE', ''))"
-                          },
-                          "type": "expr"
-                        }
-                      }
-                    },
-                    "props": {
-                      "text": "",
-                      "style": {
-                        "classes": "font-label"
-                      }
+                  "props.style.classes": {
+                    "binding": {
+                      "config": {
+                        "expression": "if(coalesce(tag({view.params.tagPath} + '/Interlock/Sts_BypActive/Value'), false),\n\t'font-label faceplate-bypass-banner',\n\t'font-label')"
+                      },
+                      "type": "expr"
                     }
                   }
-                ]
+                },
+                "props": {
+                  "text": "Interlocks in service",
+                  "style": {
+                    "classes": "font-label"
+                  }
+                }
               },
               {
                 "type": "ia.container.flex",
@@ -158,7 +173,7 @@
                       "component": {
                         "onActionPerformed": {
                           "config": {
-                            "script": "\tif self.session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tdef _r(p):\n\t\ttry:\n\t\t\tc = system.tag.getConfiguration(p, False)[0]\n\t\t\ts = c.get('sourceTagPath')\n\t\t\treturn str(s) if s else p\n\t\texcept:\n\t\t\treturn p\n\tsystem.tag.writeBlocking([_r(base + '/Cmd_Enable/Value')], [True])\n"
+                            "script": "\tif self.session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tshared.Alerts.confirmApplyWrite(\n\t\tlabel='Enable device',\n\t\ttagPath=base + '/Cmd_Enable/Value',\n\t\tnewValue=True,\n\t\toldValue=False,\n\t\textraPayload={'viewName': self.view.id.split('@')[0], 'skipWrite': True},\n\t)\n"
                           },
                           "scope": "G",
                           "type": "script"
@@ -170,6 +185,14 @@
                         "binding": {
                           "config": {
                             "expression": "!{session.custom.ReadOnly}"
+                          },
+                          "type": "expr"
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if(coalesce(tag({view.params.tagPath} + '/Disabled/Value'), false),\n\t'faceplate-cmd-btn font-label',\n\t'faceplate-cmd-btn faceplate-cmd-btn-active font-label')"
                           },
                           "type": "expr"
                         }
@@ -196,7 +219,7 @@
                       "component": {
                         "onActionPerformed": {
                           "config": {
-                            "script": "\tif self.session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tdef _r(p):\n\t\ttry:\n\t\t\tc = system.tag.getConfiguration(p, False)[0]\n\t\t\ts = c.get('sourceTagPath')\n\t\t\treturn str(s) if s else p\n\t\texcept:\n\t\t\treturn p\n\tsystem.tag.writeBlocking([_r(base + '/Cmd_Disable/Value')], [True])\n"
+                            "script": "\tif self.session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tshared.Alerts.confirmApplyWrite(\n\t\tlabel='Disable device',\n\t\ttagPath=base + '/Cmd_Disable/Value',\n\t\tnewValue=True,\n\t\toldValue=False,\n\t\textraPayload={'viewName': self.view.id.split('@')[0], 'skipWrite': True},\n\t)\n"
                           },
                           "scope": "G",
                           "type": "script"
@@ -208,6 +231,14 @@
                         "binding": {
                           "config": {
                             "expression": "!{session.custom.ReadOnly}"
+                          },
+                          "type": "expr"
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if(coalesce(tag({view.params.tagPath} + '/Disabled/Value'), false),\n\t'faceplate-cmd-btn faceplate-cmd-btn-active font-label',\n\t'faceplate-cmd-btn font-label')"
                           },
                           "type": "expr"
                         }
@@ -234,7 +265,7 @@
                       "component": {
                         "onActionPerformed": {
                           "config": {
-                            "script": "\tif self.session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tdef _r(p):\n\t\ttry:\n\t\t\tc = system.tag.getConfiguration(p, False)[0]\n\t\t\ts = c.get('sourceTagPath')\n\t\t\treturn str(s) if s else p\n\t\texcept:\n\t\t\treturn p\n\tsystem.tag.writeBlocking([_r(base + '/Cmd_Bypass/Value')], [True])\n"
+                            "script": "\tif self.session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\ton = False\n\ttry:\n\t\ton = bool(shared.ValveCommands.bypassActive(base))\n\texcept:\n\t\tpass\n\tshared.Alerts.confirmApplyWrite(\n\t\tlabel='Clear interlock bypass' if on else 'Bypass interlocks',\n\t\ttagPath=base + '/Interlock/Sts_BypActive/Value',\n\t\tnewValue=not on,\n\t\toldValue=on,\n\t\textraPayload={'viewName': self.view.id.split('@')[0], 'skipWrite': True},\n\t)\n"
                           },
                           "scope": "G",
                           "type": "script"
@@ -246,6 +277,22 @@
                         "binding": {
                           "config": {
                             "expression": "!{session.custom.ReadOnly}"
+                          },
+                          "type": "expr"
+                        }
+                      },
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "if(coalesce(tag({view.params.tagPath} + '/Interlock/Sts_BypActive/Value'), false),\n\t'Bypass On',\n\t'Bypass')"
+                          },
+                          "type": "expr"
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if(coalesce(tag({view.params.tagPath} + '/Interlock/Sts_BypActive/Value'), false),\n\t'faceplate-cmd-btn faceplate-cmd-btn-bypass font-label',\n\t'faceplate-cmd-btn font-label')"
                           },
                           "type": "expr"
                         }
@@ -262,109 +309,35 @@
                 ]
               },
               {
-                "type": "ia.container.flex",
+                "type": "ia.display.view",
                 "meta": {
                   "name": "OvrdPermIntlk"
                 },
-                "props": {
-                  "direction": "row",
-                  "alignItems": "center",
-                  "justify": "space-between",
-                  "style": {
-                    "gap": "8px",
-                    "padding": "4px 0",
-                    "width": "100%"
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.params.tagPath": {
+                    "binding": {
+                      "config": {
+                        "expression": "{view.params.tagPath} + '/Cfg_OvrdPermIntlk/Value'"
+                      },
+                      "type": "expr"
+                    }
                   }
                 },
-                "children": [
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "Lbl"
-                    },
-                    "props": {
-                      "text": "In Override Mode, bypass Interlocks and Permissives that can be bypassed",
-                      "style": {
-                        "classes": "font-label",
-                        "flex": "1"
-                      }
-                    },
-                    "position": {
-                      "grow": 1
-                    }
-                  },
-                  {
-                    "type": "ia.input.checkbox",
-                    "meta": {
-                      "name": "Chk"
-                    },
-                    "position": {
-                      "basis": "28px",
-                      "shrink": 0
-                    },
-                    "propConfig": {
-                      "props.selected": {
-                        "binding": {
-                          "config": {
-                            "mode": "indirect",
-                            "tagPath": "{tagPath}/Cfg_OvrdPermIntlk/Value",
-                            "bidirectional": true,
-                            "fallbackDelay": 2.5,
-                            "references": {
-                              "tagPath": "{view.params.tagPath}"
-                            }
-                          },
-                          "type": "tag"
-                        }
-                      },
-                      "props.enabled": {
-                        "binding": {
-                          "config": {
-                            "expression": "!{session.custom.ReadOnly}"
-                          },
-                          "type": "expr"
-                        }
-                      }
-                    },
-                    "props": {
-                      "selected": false
-                    }
+                "props": {
+                  "path": "01_Popups/00_Faceplates/_Assets/Configuration/ConfigField",
+                  "params": {
+                    "inputKind": "checkbox",
+                    "label": "Override checkbox: only in Override mode, skip bypassable perms/intlks",
+                    "tagPath": ""
                   }
-                ]
+                }
               }
             ]
           }
         ]
-      },
-      {
-        "type": "ia.display.view",
-        "meta": {
-          "name": "SharedInterlocks"
-        },
-        "position": {
-          "grow": 1,
-          "shrink": 1
-        },
-        "props": {
-          "path": "01_Popups/00_Faceplates/_Assets/Interlocks",
-          "params": {
-            "tagPath": ""
-          },
-          "style": {
-            "width": "100%",
-            "minHeight": "200px"
-          }
-        },
-        "propConfig": {
-          "props.params.tagPath": {
-            "binding": {
-              "config": {
-                "path": "view.params.tagPath"
-              },
-              "type": "property"
-            }
-          }
-        }
       }
     ]
   }

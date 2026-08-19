@@ -11,7 +11,9 @@
     "hasSetpoint": false,
     "highlightRow": false,
     "isDigital": true,
+    "instancePath": "",
     "label": "",
+    "notes": "",
     "tagPath": ""
   },
   "propConfig": {
@@ -27,7 +29,7 @@
     "custom.setpointPath": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '' || {view.params.alarmName} = '', '', {view.params.tagPath} + '/Alarms/' + {view.params.alarmName} + '.SetpointA')"
+          "expression": "if({view.params.tagPath} = '' || {view.params.alarmName} = '', '', {view.params.tagPath} + '/Alarms/' + {view.params.alarmName} + '.Mode')"
         },
         "type": "expr"
       },
@@ -63,7 +65,7 @@
         },
         "transforms": [
           {
-            "code": "\ttry:\n\t\tif value is None:\n\t\t\treturn 1\n\t\tv = float(value)\n\t\treturn 1 if v >= 0.5 else 0\n\texcept:\n\t\treturn 1",
+            "code": "\ts = str(value or '')\n\tif 'False' in s or s in ('0', '0.0', 'false'):\n\t\treturn 'WhenFalse'\n\treturn 'WhenTrue'",
             "type": "script"
           }
         ],
@@ -102,11 +104,19 @@
       "paramDirection": "input",
       "persistent": true
     },
+    "params.instancePath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
     "params.isDigital": {
       "paramDirection": "input",
       "persistent": true
     },
     "params.label": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.notes": {
       "paramDirection": "input",
       "persistent": true
     },
@@ -117,7 +127,7 @@
   },
   "props": {
     "defaultSize": {
-      "height": 88,
+      "height": 104,
       "width": 480
     }
   },
@@ -190,6 +200,20 @@
           "script": "\t# Ticket Logger context-menu opener\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
           "sessionScope": false,
           "viewScope": false
+        },
+        {
+          "messageType": "cancel",
+          "pageScope": true,
+          "script": "\tpath = payload.get('tagPath')\n\tif not path:\n\t\treturn\n\tfield = payload.get('field')\n\tif field == 'priority' and path == self.view.custom.priorityPath:\n\t\ttry:\n\t\t\tself.getChild('Fields').getChild('PrioritySection').getChild('PriorityDropdown').refreshBinding('props.value')\n\t\texcept:\n\t\t\tpass\n\telif field in ('trigger', 'setpoint') and path == self.view.custom.setpointPath:\n\t\ttry:\n\t\t\tif field == 'trigger':\n\t\t\t\tself.getChild('Fields').getChild('TriggerSection').getChild('TriggerDropdown').refreshBinding('props.value')\n\t\t\telse:\n\t\t\t\tself.getChild('Fields').getChild('SetpointSection').getChild('SetpointEntry').refreshBinding('props.value')\n\t\texcept:\n\t\t\tpass\n",
+          "sessionScope": false,
+          "viewScope": false
+        },
+        {
+          "messageType": "writeValue",
+          "pageScope": true,
+          "script": "\tif not payload:\n\t\treturn\n\tfield = payload.get('field')\n\talarmName = payload.get('alarmName')\n\tvalueTag = payload.get('valueTagPath')\n\tmyAlarm = self.view.params.alarmName\n\tmyTag = self.view.params.tagPath\n\tif field in ('priority', 'trigger', 'mode'):\n\t\tif alarmName and str(alarmName) != str(myAlarm):\n\t\t\treturn\n\t\tif valueTag and str(valueTag) != str(myTag):\n\t\t\treturn\n\t\tif not alarmName:\n\t\t\talarmName = myAlarm\n\t\tif not valueTag:\n\t\t\tvalueTag = myTag\n\t\tif not valueTag or not alarmName:\n\t\t\treturn\n\t\ttry:\n\t\t\tviewName = payload.get('viewName') or self.view.id.split('@')[0]\n\t\t\tif field == 'priority':\n\t\t\t\tshared.AlarmConfig.applyOverride(valueTag, alarmName, priority=payload.get('value'), viewName=viewName)\n\t\t\telse:\n\t\t\t\tshared.AlarmConfig.applyOverride(valueTag, alarmName, mode=payload.get('value'), viewName=viewName)\n\t\texcept:\n\t\t\tsystem.util.getLogger('AlarmConfiguration').info('applyOverride failed')\n\t\treturn\n\tif payload.get('alreadyWritten'):\n\t\treturn\n\tpath = payload.get('tagPath')\n\tif not path:\n\t\treturn\n\tsetp = str(self.view.custom.setpointPath or '')\n\tif str(path) != str(myTag or '') and str(path) != setp:\n\t\treturn\n\ttry:\n\t\tshared.Audit.writeTag(\n\t\t\tpath,\n\t\t\tpayload.get('value'),\n\t\t\tlabel=payload.get('label'),\n\t\t\tviewName=payload.get('viewName') or self.view.id.split('@')[0],\n\t\t)\n\texcept:\n\t\tsystem.tag.writeBlocking([path], [payload.get('value')])\n",
+          "sessionScope": false,
+          "viewScope": false
         }
       ]
     },
@@ -206,28 +230,50 @@
           "props.text": {
             "binding": {
               "config": {
-                "struct": {
-                  "alarmName": "{view.params.alarmName}",
-                  "label": "{view.params.label}",
-                  "tagPath": "{view.params.tagPath}"
-                },
-                "waitOnAll": true
+                "expression": "if({view.params.label} != '', {view.params.label}, {view.params.alarmName})"
               },
-              "transforms": [
-                {
-                  "code": "\tlabel = str(value.get('label') or '').strip()\n\tif label:\n\t\treturn label\n\talarm = str(value.get('alarmName') or 'Alarm')\n\tpath = str(value.get('tagPath') or '')\n\tparts = [p for p in path.replace('\\\\', '/').split('/') if p]\n\tif parts and parts[-1] == 'Value' and len(parts) >= 2:\n\t\tbase = parts[-2]\n\telse:\n\t\tbase = parts[-1] if parts else 'Alarm'\n\tif ']' in base:\n\t\tbase = base.split(']', 1)[-1]\n\tif alarm and alarm != 'Alarm':\n\t\treturn '%s / %s' % (base, alarm)\n\treturn base",
-                  "type": "script"
-                }
-              ],
-              "type": "expr-struct"
+              "type": "expr"
             }
           }
         },
         "props": {
           "style": {
-            "classes": "faceplate-alarm-name font-label"
+            "classes": "faceplate-alarm-name font-value"
           },
           "text": "Alarm"
+        }
+      },
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "Notes"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "if({view.params.notes} = '', '', 'Tag: ' + {view.params.notes})"
+              },
+              "type": "expr"
+            }
+          },
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "{view.params.notes} != ''"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "classes": "faceplate-alarm-notes font-label"
+          },
+          "text": ""
         }
       },
       {
@@ -273,7 +319,7 @@
                 },
                 "props": {
                   "style": {
-                    "classes": "faceplate-alarm-field-label font-label"
+                    "classes": "faceplate-alarm-field-label"
                   },
                   "text": "Priority"
                 }
@@ -300,8 +346,8 @@
                       "type": "property"
                     },
                     "onChange": {
-                      "enabled": null,
-                      "script": "\ttry:\n\t\tif origin != 'Browser':\n\t\t\treturn\n\t\tpath = self.view.custom.priorityPath\n\t\tif not path:\n\t\t\treturn\n\t\tnewVal = currentValue.value\n\t\tif newVal is None or str(newVal).strip() == '':\n\t\t\treturn\n\t\tsystem.tag.writeBlocking([path], [str(newVal)])\n\texcept:\n\t\tsystem.util.getLogger('AlarmConfiguration').info('Priority write failed')"
+                      "enabled": true,
+                      "script": "\tif str(origin) != 'Browser':\n\t\treturn\n\toldVal = self.view.custom.priorityValue\n\tif oldVal is None or str(oldVal).strip() == '':\n\t\treturn\n\tnewVal = currentValue.value\n\tif newVal is None or str(newVal).strip() == '':\n\t\tself.refreshBinding('props.value')\n\t\treturn\n\tif str(newVal) == str(oldVal):\n\t\treturn\n\tself.refreshBinding('props.value')\n\tif self.session.custom.ReadOnly:\n\t\treturn\n\tlabel = (self.view.params.label or self.view.params.alarmName or 'Alarm') + ' priority'\n\tshared.Alerts.confirmApplyWrite(\n\t\tlabel=label,\n\t\ttagPath=self.view.params.tagPath,\n\t\tnewValue=str(newVal),\n\t\toldValue=str(oldVal),\n\t\ttitle='Apply alarm configuration',\n\t\textraPayload={\n\t\t\t'field': 'priority',\n\t\t\t'alarmName': self.view.params.alarmName,\n\t\t\t'valueTagPath': self.view.params.tagPath,\n\t\t\t'skipWrite': True,\n\t\t\t'viewName': self.view.id.split('@')[0],\n\t\t},\n\t)\n"
                     }
                   }
                 },
@@ -333,6 +379,17 @@
                     "height": "26px"
                   },
                   "value": "Medium"
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\toldVal = self.view.custom.priorityValue\n\tif oldVal is None or str(oldVal).strip() == '':\n\t\treturn\n\tnewVal = self.props.value\n\tif newVal is None or str(newVal).strip() == '':\n\t\tself.refreshBinding('props.value')\n\t\treturn\n\tif str(newVal) == str(oldVal):\n\t\treturn\n\tself.refreshBinding('props.value')\n\tif self.session.custom.ReadOnly:\n\t\treturn\n\tlabel = (self.view.params.label or self.view.params.alarmName or 'Alarm') + ' priority'\n\tshared.Alerts.confirmApplyWrite(\n\t\tlabel=label,\n\t\ttagPath=self.view.params.tagPath,\n\t\tnewValue=str(newVal),\n\t\toldValue=str(oldVal),\n\t\ttitle='Apply alarm configuration',\n\t\textraPayload={\n\t\t\t'field': 'priority',\n\t\t\t'alarmName': self.view.params.alarmName,\n\t\t\t'valueTagPath': self.view.params.tagPath,\n\t\t\t'skipWrite': True,\n\t\t\t'viewName': self.view.id.split('@')[0],\n\t\t},\n\t)\n"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
                 }
               }
             ]
@@ -372,7 +429,7 @@
                 },
                 "props": {
                   "style": {
-                    "classes": "faceplate-alarm-field-label font-label"
+                    "classes": "faceplate-alarm-field-label"
                   },
                   "text": "Trigger on"
                 }
@@ -399,8 +456,8 @@
                       "type": "property"
                     },
                     "onChange": {
-                      "enabled": null,
-                      "script": "\ttry:\n\t\tif origin != 'Browser':\n\t\t\treturn\n\t\tpath = self.view.custom.setpointPath\n\t\tif not path:\n\t\t\treturn\n\t\traw = currentValue.value\n\t\ttry:\n\t\t\tv = 1.0 if float(raw) >= 0.5 else 0.0\n\t\texcept:\n\t\t\tv = 1.0 if raw in (True, 'true', 'True', 1, '1') else 0.0\n\t\tsystem.tag.writeBlocking([path], [v])\n\texcept:\n\t\tsystem.util.getLogger('AlarmConfiguration').info('Trigger write failed')"
+                      "enabled": true,
+                      "script": "\tif str(origin) != 'Browser':\n\t\treturn\n\tdef _mode(v):\n\t\ts = str(v or '')\n\t\tif s in ('WhenFalse', '0', '0.0', 'False', 'false'):\n\t\t\treturn 'WhenFalse'\n\t\tif s in ('WhenTrue', '1', '1.0', 'True', 'true'):\n\t\t\treturn 'WhenTrue'\n\t\treturn ''\n\toldV = _mode(self.view.custom.triggerValue)\n\tif not oldV:\n\t\treturn\n\tv = _mode(currentValue.value)\n\tif not v or v == oldV:\n\t\treturn\n\tself.refreshBinding('props.value')\n\tif self.session.custom.ReadOnly:\n\t\treturn\n\tlabel = (self.view.params.label or self.view.params.alarmName or 'Alarm') + ' trigger'\n\tshared.Alerts.confirmApplyWrite(\n\t\tlabel=label,\n\t\ttagPath=self.view.params.tagPath,\n\t\tnewValue=v,\n\t\toldValue=oldV,\n\t\ttitle='Apply alarm configuration',\n\t\textraPayload={\n\t\t\t'field': 'trigger',\n\t\t\t'alarmName': self.view.params.alarmName,\n\t\t\t'valueTagPath': self.view.params.tagPath,\n\t\t\t'skipWrite': True,\n\t\t\t'viewName': self.view.id.split('@')[0],\n\t\t},\n\t)\n"
                     }
                   }
                 },
@@ -408,18 +465,29 @@
                   "options": [
                     {
                       "label": "True",
-                      "value": 1
+                      "value": "WhenTrue"
                     },
                     {
                       "label": "False",
-                      "value": 0
+                      "value": "WhenFalse"
                     }
                   ],
                   "style": {
                     "classes": "font-value",
                     "height": "26px"
                   },
-                  "value": 1
+                  "value": "WhenTrue"
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\tdef _mode(v):\n\t\ts = str(v or '')\n\t\tif s in ('WhenFalse', '0', '0.0', 'False', 'false'):\n\t\t\treturn 'WhenFalse'\n\t\tif s in ('WhenTrue', '1', '1.0', 'True', 'true'):\n\t\t\treturn 'WhenTrue'\n\t\treturn ''\n\n\toldV = _mode(self.view.custom.triggerValue)\n\tif not oldV:\n\t\treturn\n\tv = _mode(self.props.value)\n\tif not v or v == oldV:\n\t\treturn\n\tself.refreshBinding('props.value')\n\tif self.session.custom.ReadOnly:\n\t\treturn\n\tlabel = (self.view.params.label or self.view.params.alarmName or 'Alarm') + ' trigger'\n\tshared.Alerts.confirmApplyWrite(\n\t\tlabel=label,\n\t\ttagPath=self.view.params.tagPath,\n\t\tnewValue=v,\n\t\toldValue=oldV,\n\t\ttitle='Apply alarm configuration',\n\t\textraPayload={\n\t\t\t'field': 'trigger',\n\t\t\t'alarmName': self.view.params.alarmName,\n\t\t\t'valueTagPath': self.view.params.tagPath,\n\t\t\t'skipWrite': True,\n\t\t\t'viewName': self.view.id.split('@')[0],\n\t\t},\n\t)\n"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
                 }
               }
             ]
@@ -459,7 +527,7 @@
                 },
                 "props": {
                   "style": {
-                    "classes": "faceplate-alarm-field-label font-label"
+                    "classes": "faceplate-alarm-field-label"
                   },
                   "text": "Setpoint"
                 }
@@ -487,7 +555,7 @@
                     },
                     "onChange": {
                       "enabled": null,
-                      "script": "\ttry:\n\t\tif origin != 'Browser':\n\t\t\treturn\n\t\tpath = self.view.custom.setpointPath\n\t\tif not path:\n\t\t\treturn\n\t\tnewVal = currentValue.value\n\t\tif newVal is None:\n\t\t\treturn\n\t\tsystem.tag.writeBlocking([path], [float(newVal)])\n\texcept:\n\t\tsystem.util.getLogger('AlarmConfiguration').info('Setpoint write failed')"
+                      "script": "\ttry:\n\t\tif origin != 'Browser':\n\t\t\treturn\n\t\tif self.session.custom.ReadOnly:\n\t\t\tself.refreshBinding('props.value')\n\t\t\treturn\n\t\tpath = self.view.custom.setpointPath\n\t\tif not path:\n\t\t\tself.refreshBinding('props.value')\n\t\t\treturn\n\t\tnewVal = currentValue.value\n\t\tif newVal is None:\n\t\t\tself.refreshBinding('props.value')\n\t\t\treturn\n\t\toldVal = previousValue.value if previousValue is not None else None\n\t\ttry:\n\t\t\tif oldVal is not None and float(newVal) == float(oldVal):\n\t\t\t\treturn\n\t\texcept:\n\t\t\tpass\n\t\tself.refreshBinding('props.value')\n\t\tlabel = (self.view.params.label or self.view.params.alarmName or 'Alarm') + ' setpoint'\n\t\tshared.Alerts.confirmApplyWrite(\n\t\t\tlabel=label,\n\t\t\ttagPath=path,\n\t\t\tnewValue=float(newVal),\n\t\t\toldValue=oldVal,\n\t\t\ttitle='Apply alarm configuration',\n\t\t\textraPayload={\n\t\t\t\t'field': 'setpoint',\n\t\t\t\t'viewName': self.view.id.split('@')[0],\n\t\t\t},\n\t\t)\n\texcept:\n\t\tsystem.util.getLogger('AlarmConfiguration').info('Setpoint confirm failed')\n\t\ttry:\n\t\t\tself.refreshBinding('props.value')\n\t\texcept:\n\t\t\tpass\n"
                     }
                   }
                 },

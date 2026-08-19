@@ -1,12 +1,14 @@
 # Valve faceplate command helpers (SO/MO + SIM feedback).
 # Plant Digitals are often valueSource=reference → RCP1 atomics; resolve before write.
 
+logger = system.util.getLogger("shared.ValveCommands")
+
 
 def _resolve(path):
 	"""Prefer OPC/Memory sourceTagPath when path is a reference leaf."""
 	try:
 		cfg = system.tag.getConfiguration(path, False)[0]
-		src = cfg.get("sourceTagPath")
+		src = cfg.get("sourceTagPath") or cfg.get("sourceTagPath")
 		if src:
 			return str(src)
 	except Exception:
@@ -14,12 +16,68 @@ def _resolve(path):
 	return path
 
 
-def _write(paths, vals):
+def _qualityGood(q):
+	try:
+		if q is None:
+			return False
+		if hasattr(q, "isGood"):
+			return bool(q.isGood())
+		return str(q).upper().find("GOOD") >= 0
+	except Exception:
+		return False
+
+
+def _writeRaw(paths, vals):
+	"""Write resolved paths; if OPC rejects, ensure SIM memory and retry once."""
 	resolved = [_resolve(p) for p in paths]
 	try:
-		return system.tag.writeBlocking(resolved, vals)
-	except Exception:
-		return system.tag.writeBlocking(paths, vals)
+		shared.Rcp1Simulate.ensureApplied()
+	except Exception as e:
+		logger.warn("ensureApplied before write: %s" % str(e))
+
+	try:
+		qualities = system.tag.writeBlocking(resolved, vals)
+	except Exception as e:
+		logger.warn("writeBlocking resolved failed (%s); retry raw paths" % str(e))
+		qualities = system.tag.writeBlocking(paths, vals)
+
+	bad = []
+	for i, q in enumerate(qualities or []):
+		if not _qualityGood(q):
+			bad.append((resolved[i] if i < len(resolved) else paths[i], str(q)))
+
+	if bad:
+		logger.warn("Bad write quality (will ensure SIM + retry): %s" % (bad,))
+		try:
+			shared.Rcp1Simulate.ensureApplied(force=True)
+		except Exception as e:
+			logger.warn("ensureApplied(force) failed: %s" % str(e))
+		try:
+			qualities = system.tag.writeBlocking(resolved, vals)
+		except Exception:
+			qualities = system.tag.writeBlocking(paths, vals)
+		bad2 = []
+		for i, q in enumerate(qualities or []):
+			if not _qualityGood(q):
+				bad2.append((resolved[i] if i < len(resolved) else paths[i], str(q)))
+		if bad2:
+			logger.error("Write still Bad after SIM ensure: %s" % (bad2,))
+
+	return qualities
+
+
+def _write(paths, vals, audit=True, label=None, viewName="Faceplate/Controls"):
+	"""Operator writes go through OpsAudit; SIM feedback uses raw writes."""
+	if not audit:
+		return _writeRaw(paths, vals)
+	results = []
+	for p, v in zip(paths, vals):
+		try:
+			results.append(shared.Audit.writeTag(p, v, label=label, viewName=viewName))
+		except Exception as e:
+			logger.error("Audit.writeTag failed %s: %s" % (p, e))
+			_writeRaw([p], [v])
+	return results
 
 
 def _simFeedback(base, opened):
@@ -32,30 +90,37 @@ def _simFeedback(base, opened):
 		base + "/Status/Value",
 	]
 	vals = [bool(opened), not bool(opened), status]
-	_write(paths, vals)
+	_write(paths, vals, audit=False)
 
 
 def openValve(tagPath, valveType="MO"):
-	"""Open command. SO → Cmd/Value=True; MO → pulse Cmd_Open + SIM feedback."""
+	"""Open command. SO → Cmd + Cmd_Open; MO → pulse Cmd_Open + SIM feedback."""
 	base = str(tagPath or "").strip()
 	if not base:
 		return
 	vt = str(valveType or "MO").strip().upper()
 	if vt == "SO":
-		_write([base + "/Cmd/Value"], [True])
+		# Plant Cmd aliases Cmd_Open; write both for SO faceplate parity
+		_write(
+			[base + "/Cmd/Value", base + "/Cmd_Open/Value"],
+			[True, True],
+		)
 	else:
 		_write([base + "/Cmd_Open/Value", base + "/Cmd_Close/Value"], [True, False])
 	_simFeedback(base, True)
 
 
 def closeValve(tagPath, valveType="MO"):
-	"""Close command. SO → Cmd/Value=False; MO → pulse Cmd_Close + SIM feedback."""
+	"""Close command. SO → clear Cmd/Cmd_Open + pulse Cmd_Close; MO → Cmd_Close."""
 	base = str(tagPath or "").strip()
 	if not base:
 		return
 	vt = str(valveType or "MO").strip().upper()
 	if vt == "SO":
-		_write([base + "/Cmd/Value"], [False])
+		_write(
+			[base + "/Cmd/Value", base + "/Cmd_Close/Value", base + "/Cmd_Open/Value"],
+			[False, True, False],
+		)
 	else:
 		_write([base + "/Cmd_Open/Value", base + "/Cmd_Close/Value"], [False, True])
 	_simFeedback(base, False)
@@ -68,6 +133,74 @@ def resetValve(tagPath):
 	_write([base + "/Cmd_Reset/Value"], [True])
 
 
+def writeTag(tagPath, value):
+	"""Write one tag path, resolving Digitals reference → source when needed."""
+	path = str(tagPath or "").strip()
+	if not path:
+		return
+	_write([path], [value])
+
+
+def _applyDisabled(base, disabled):
+	"""SIM has no PLC enable/disable logic — drive Disabled / Nrdy_Disabled locally."""
+	flag = bool(disabled)
+	_write(
+		[base + "/Disabled/Value"],
+		[flag],
+		label="Disable device" if flag else "Enable device",
+		viewName="Faceplate/Interlocks",
+	)
+	_write([base + "/Nrdy_Disabled/Value"], [flag], audit=False)
+
+
+def _readBool(path, default=False):
+	try:
+		return bool(system.tag.readBlocking([_resolve(path)])[0].value)
+	except Exception:
+		return default
+
+
+def enableDevice(tagPath):
+	base = str(tagPath or "").strip()
+	if not base:
+		return
+	_write([base + "/Cmd_Enable/Value"], [True], audit=False)
+	_applyDisabled(base, False)
+
+
+def disableDevice(tagPath):
+	base = str(tagPath or "").strip()
+	if not base:
+		return
+	_write([base + "/Cmd_Disable/Value"], [True], audit=False)
+	_applyDisabled(base, True)
+
+
+def bypassActive(tagPath):
+	base = str(tagPath or "").strip()
+	if not base:
+		return False
+	return _readBool(base + "/Interlock/Sts_BypActive/Value")
+
+
+def bypassDevice(tagPath, active=None):
+	"""Pulse Cmd_Bypass and set Interlock/Sts_BypActive. active=None toggles."""
+	base = str(tagPath or "").strip()
+	if not base:
+		return
+	if active is None:
+		active = not bypassActive(base)
+	else:
+		active = bool(active)
+	_write([base + "/Cmd_Bypass/Value"], [True], audit=False)
+	_write(
+		[base + "/Interlock/Sts_BypActive/Value"],
+		[active],
+		label="Bypass interlocks" if active else "Clear interlock bypass",
+		viewName="Faceplate/Interlocks",
+	)
+
+
 def setMode(tagPath, mode):
 	"""Set OPER/MAINT/PROG mutually exclusive (Valve / EF / CT style)."""
 	base = str(tagPath or "").strip()
@@ -77,6 +210,20 @@ def setMode(tagPath, mode):
 	modes = ["OPER", "MAINT", "PROG"]
 	if clicked not in modes:
 		clicked = "OPER"
+	paths = [base + "/" + m + "/Value" for m in modes]
+	vals = [m == clicked for m in modes]
+	_write(paths, vals)
+
+
+def setPumpMode(tagPath, mode):
+	"""Set Sts_Oper/Sts_Maint/Sts_Prog mutually exclusive (Pump style)."""
+	base = str(tagPath or "").strip()
+	if not base:
+		return
+	clicked = str(mode or "Sts_Oper").strip()
+	modes = ["Sts_Oper", "Sts_Maint", "Sts_Prog"]
+	if clicked not in modes:
+		clicked = "Sts_Oper"
 	paths = [base + "/" + m + "/Value" for m in modes]
 	vals = [m == clicked for m in modes]
 	_write(paths, vals)

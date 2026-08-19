@@ -1,6 +1,7 @@
 {
   "custom": {
     "edit": false,
+    "primedValue": null,
     "editTimeout": {
       "durationInSecs": 15
     },
@@ -21,6 +22,9 @@
     "tagPath": ""
   },
   "propConfig": {
+    "custom.primedValue": {
+      "persistent": false
+    },
     "custom.editTimeout": {
       "persistent": true
     },
@@ -224,6 +228,7 @@
         },
         "position": {
           "basis": "64px",
+          "grow": 0,
           "shrink": 0
         },
         "propConfig": {
@@ -236,7 +241,7 @@
             },
             "onChange": {
               "enabled": null,
-              "script": "\tif currentValue.value != previousValue.value:\n\t\tif self.session.custom.ReadOnly:\n\t\t\treturn\n\t\ttagPath = self.view.params.tagPath\n\t\tif system.tag.exists(tagPath):\n\t\t\tsystem.tag.writeBlocking([tagPath], [currentValue.value])"
+              "script": "\tif not self.view.custom.edit:\n\t\treturn\n\tif self.session.custom.ReadOnly:\n\t\tself.view.custom.edit = False\n\t\treturn\n\ttagPath = self.view.params.tagPath\n\tif not tagPath:\n\t\treturn\n\tnewV = currentValue.value\n\toldV = self.view.custom.primedValue\n\tif oldV is None:\n\t\ttry:\n\t\t\toldV = system.tag.readBlocking([tagPath])[0].value\n\t\texcept:\n\t\t\toldV = previousValue.value\n\ttry:\n\t\tskip = shared.Audit.valuesEqual(newV, oldV)\n\texcept:\n\t\tskip = (newV == oldV)\n\tself.view.custom.edit = False\n\ttry:\n\t\tself.props.value = oldV\n\texcept:\n\t\tpass\n\tif skip:\n\t\treturn\n\tlabel = self.view.params.label\n\tif label in (None, '', 'Null'):\n\t\tlabel = str(tagPath).split('/')[-1]\n\tshared.Alerts.confirmApplyWrite(\n\t\tlabel=label,\n\t\ttagPath=tagPath,\n\t\tnewValue=newV,\n\t\toldValue=oldV,\n\t\textraPayload={'viewName': self.view.id.split('@')[0]},\n\t)\n"
             }
           },
           "meta.tooltip.enabled": {
@@ -261,14 +266,6 @@
               "type": "property"
             }
           },
-          "position.grow": {
-            "binding": {
-              "config": {
-                "expression": "if({../Label.position.display},\n   0,\n   1)"
-              },
-              "type": "expr"
-            }
-          },
           "props.enabled": {
             "binding": {
               "config": {
@@ -286,10 +283,7 @@
             }
           },
           "props.value": {
-            "onChange": {
-              "enabled": null,
-              "script": "\tself.view.custom.edit = False\n"
-            }
+            "persistent": false
           }
         },
         "props": {
@@ -297,7 +291,11 @@
             "enabled": false
           },
           "style": {
-            "classes": "font-value"
+            "classes": "font-value analog-input-edit",
+            "width": "100%",
+            "minWidth": "64px",
+            "maxWidth": "64px",
+            "height": "24px"
           }
         },
         "type": "ia.input.numeric-entry-field"
@@ -307,7 +305,8 @@
           "name": "Value"
         },
         "position": {
-          "basis": "48px",
+          "basis": "64px",
+          "grow": 0,
           "shrink": 0
         },
         "propConfig": {
@@ -338,7 +337,9 @@
         },
         "props": {
           "style": {
-            "textAlign": "right"
+            "textAlign": "right",
+            "width": "100%",
+            "overflow": "hidden"
           }
         },
         "type": "ia.display.label"
@@ -348,7 +349,8 @@
           "name": "EU"
         },
         "position": {
-          "basis": "auto",
+          "basis": "22px",
+          "grow": 0,
           "shrink": 0
         },
         "propConfig": {
@@ -373,7 +375,7 @@
           "dom": {
             "onClick": {
               "config": {
-                "script": "\tif self.view.params.permission and not self.session.custom.ReadOnly:\n\t\tif self.view.custom.edit:\n\t\t\tself.view.custom.edit = False\n\t\telse:\n\t\t\tself.view.custom.edit = True"
+                "script": "\tif not self.view.params.permission or self.session.custom.ReadOnly:\n\t\treturn\n\teditVal = None\n\ttry:\n\t\teditVal = self.parent.getChild('EditValue')\n\texcept:\n\t\tpass\n\ttagPath = self.view.params.tagPath\n\ttagVal = None\n\ttry:\n\t\ttagVal = system.tag.readBlocking([tagPath])[0].value\n\texcept:\n\t\tpass\n\tself.view.custom.primedValue = tagVal\n\tif self.view.custom.edit:\n\t\tself.view.custom.edit = False\n\t\ttry:\n\t\t\teditVal.props.value = tagVal\n\t\texcept:\n\t\t\tpass\n\telse:\n\t\ttry:\n\t\t\teditVal.props.value = tagVal\n\t\texcept:\n\t\t\tpass\n\t\tself.view.custom.edit = True"
               },
               "scope": "G",
               "type": "script"
@@ -421,11 +423,20 @@
         "classes": "config-input-row",
         "overflow": "visible",
         "gap": "8px",
-        "width": "100%"
+        "width": "100%",
+        "height": "100%"
       }
     },
     "type": "ia.container.flex",
     "propConfig": {
+      "props.justify": {
+        "binding": {
+          "config": {
+            "expression": "if({view.params.label} = 'Null' || {view.params.label} = null, 'flex-end', 'flex-start')"
+          },
+          "type": "expr"
+        }
+      },
       "meta.contextMenu.items": {
         "binding": {
           "config": {
@@ -470,6 +481,20 @@
           "messageType": "ticketLog",
           "pageScope": true,
           "script": "\t# Ticket Logger context-menu opener\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        },
+        {
+          "messageType": "cancel",
+          "pageScope": true,
+          "script": "\tif not self.view.params.tagPath or payload.get('tagPath') != self.view.params.tagPath:\n\t\treturn\n\tself.view.custom.edit = False\n\ttry:\n\t\tqv = system.tag.readBlocking([self.view.params.tagPath])[0].value\n\t\tself.getChild('EditValue').props.value = qv\n\texcept:\n\t\tpass\n",
+          "sessionScope": false,
+          "viewScope": false
+        },
+        {
+          "messageType": "writeValue",
+          "pageScope": true,
+          "script": "\tif not self.view.params.tagPath or payload.get('tagPath') != self.view.params.tagPath:\n\t\treturn\n\tif not payload.get('alreadyWritten'):\n\t\tshared.Audit.writeTag(\n\t\t\tpayload.get('tagPath'),\n\t\t\tpayload.get('value'),\n\t\t\tlabel=payload.get('label'),\n\t\t\tviewName=payload.get('viewName') or self.view.id.split('@')[0],\n\t\t)\n\tself.view.custom.edit = False\n\ttry:\n\t\tself.getChild('EditValue').props.value = payload.get('value')\n\texcept:\n\t\tpass\n",
           "sessionScope": false,
           "viewScope": false
         }

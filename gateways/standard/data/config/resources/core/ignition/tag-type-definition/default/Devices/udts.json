@@ -452,28 +452,28 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "I/O Fault",
-              "longDescription": "P_ValveSO Alm_IOFault",
-              "states": [
-                {
-                  "label": "Off",
-                  "value": 0
-                },
-                {
-                  "label": "On",
-                  "value": 1
-                }
-              ]
+          "shortDescription": "I/O Fault",
+          "longDescription": "P_ValveSO Alm_IOFault",
+          "states": [
+            {
+              "label": "Off",
+              "value": 0
             },
-            "alarms": [
-              {
-                "mode": "Equality",
-                "setpointA": 1.0,
-                "name": "Alarm",
-                "priority": "High",
-                "enabled": true
-              }
-            ],
+            {
+              "label": "On",
+              "value": 1
+            }
+          ]
+        },
+        "alarms": [
+          {
+            "mode": "WhenTrue",
+            "name": "IO Fault",
+            "notes": "Alm_IOFault",
+            "priority": "High",
+            "enabled": true
+          }
+        ],
             "value": false,
             "name": "Value",
             "tagType": "AtomicTag"
@@ -491,28 +491,28 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Full Stall",
-              "longDescription": "P_ValveSO Alm_FullStall",
-              "states": [
-                {
-                  "label": "Off",
-                  "value": 0
-                },
-                {
-                  "label": "On",
-                  "value": 1
-                }
-              ]
+          "shortDescription": "Full Stall",
+          "longDescription": "P_ValveSO Alm_FullStall",
+          "states": [
+            {
+              "label": "Off",
+              "value": 0
             },
-            "alarms": [
-              {
-                "mode": "Equality",
-                "setpointA": 1.0,
-                "name": "Alarm",
-                "priority": "High",
-                "enabled": true
-              }
-            ],
+            {
+              "label": "On",
+              "value": 1
+            }
+          ]
+        },
+        "alarms": [
+          {
+            "mode": "WhenTrue",
+            "name": "Full Stall",
+            "notes": "Alm_FullStall",
+            "priority": "High",
+            "enabled": true
+          }
+        ],
             "value": false,
             "name": "Value",
             "tagType": "AtomicTag"
@@ -530,28 +530,28 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Transit Stall",
-              "longDescription": "P_ValveSO Alm_TransitStall",
-              "states": [
-                {
-                  "label": "Off",
-                  "value": 0
-                },
-                {
-                  "label": "On",
-                  "value": 1
-                }
-              ]
+          "shortDescription": "Transit Stall",
+          "longDescription": "P_ValveSO Alm_TransitStall",
+          "states": [
+            {
+              "label": "Off",
+              "value": 0
             },
-            "alarms": [
-              {
-                "mode": "Equality",
-                "setpointA": 1.0,
-                "name": "Alarm",
-                "priority": "High",
-                "enabled": true
-              }
-            ],
+            {
+              "label": "On",
+              "value": 1
+            }
+          ]
+        },
+        "alarms": [
+          {
+            "mode": "WhenTrue",
+            "name": "Transit Stall",
+            "notes": "Alm_TransitStall",
+            "priority": "High",
+            "enabled": true
+          }
+        ],
             "value": false,
             "name": "Value",
             "tagType": "AtomicTag"
@@ -569,28 +569,28 @@
         "tags": [
           {
             "metadata": {
-              "shortDescription": "Interlock Trip",
-              "longDescription": "P_ValveSO Alm_IntlkTrip",
-              "states": [
-                {
-                  "label": "Off",
-                  "value": 0
-                },
-                {
-                  "label": "On",
-                  "value": 1
-                }
-              ]
+          "shortDescription": "Interlock Trip",
+          "longDescription": "P_ValveSO Alm_IntlkTrip",
+          "states": [
+            {
+              "label": "Off",
+              "value": 0
             },
-            "alarms": [
-              {
-                "mode": "Equality",
-                "setpointA": 1.0,
-                "name": "Alarm",
-                "priority": "Medium",
-                "enabled": true
-              }
-            ],
+            {
+              "label": "On",
+              "value": 1
+            }
+          ]
+        },
+        "alarms": [
+          {
+            "mode": "WhenTrue",
+            "name": "Interlock Trip",
+            "notes": "Alm_IntlkTrip",
+            "priority": "Medium",
+            "enabled": true
+          }
+        ],
             "value": false,
             "name": "Value",
             "tagType": "AtomicTag"
