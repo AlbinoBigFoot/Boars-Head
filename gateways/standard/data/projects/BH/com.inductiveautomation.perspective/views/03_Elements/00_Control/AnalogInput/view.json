@@ -7,8 +7,8 @@
     },
     "format": "",
     "metadata": "",
-    "quality": "Bad_NotFound",
-    "value": "0.00"
+    "quality": "",
+    "value": ""
   },
   "params": {
     "Basis": {
@@ -94,9 +94,17 @@
     "custom.format": {
       "binding": {
         "config": {
-          "expression": "if({view.custom.quality} = 'Good',\n   tag({view.params.tagPath} + '.FormatString'),\n   '')"
+          "expression": "if({view.params.tagPath} = '', '#0',\n   try(tag({view.params.tagPath} + '.FormatString'), '#0'))"
         },
-        "type": "expr"
+        "type": "expr",
+        "overlays": {
+          "bad": false,
+          "error": false,
+          "pending": false,
+          "stale": false,
+          "unknown": false,
+          "disabled": false
+        }
       },
       "persistent": true
     },
@@ -116,7 +124,15 @@
             "type": "expression"
           }
         ],
-        "type": "tag"
+        "type": "tag",
+        "overlays": {
+          "bad": false,
+          "error": false,
+          "pending": false,
+          "stale": false,
+          "unknown": false,
+          "disabled": false
+        }
       },
       "persistent": true
     },
@@ -133,16 +149,32 @@
             "type": "expression"
           }
         ],
-        "type": "tag"
+        "type": "tag",
+        "overlays": {
+          "bad": false,
+          "error": false,
+          "pending": false,
+          "stale": false,
+          "unknown": false,
+          "disabled": false
+        }
       },
       "persistent": true
     },
     "custom.value": {
       "binding": {
         "config": {
-          "expression": "if({view.custom.quality} = 'Good',\n   numberFormat(toFloat(tag({view.params.tagPath})), {view.custom.format}),\n   '0.00')"
+          "expression": "if({view.params.tagPath} = '', '',\n  if(try(isGood(tag({view.params.tagPath})), false),\n     numberFormat(toFloat(try(tag({view.params.tagPath}), 0)), coalesce({view.custom.format}, '#0')),\n     ''))"
         },
-        "type": "expr"
+        "type": "expr",
+        "overlays": {
+          "bad": false,
+          "error": false,
+          "pending": false,
+          "stale": false,
+          "unknown": false,
+          "disabled": false
+        }
       },
       "persistent": true
     },
@@ -208,7 +240,15 @@
                   "type": "expression"
                 }
               ],
-              "type": "expr-struct"
+              "type": "expr-struct",
+              "overlays": {
+                "bad": false,
+                "error": false,
+                "pending": false,
+                "stale": false,
+                "unknown": false,
+                "disabled": false
+              }
             }
           }
         },
@@ -279,7 +319,15 @@
               "config": {
                 "expression": "try(tag({view.params.tagPath} + '.FormatString'),\n    '#0')"
               },
-              "type": "expr"
+              "type": "expr",
+              "overlays": {
+                "bad": false,
+                "error": false,
+                "pending": false,
+                "stale": false,
+                "unknown": false,
+                "disabled": false
+              }
             }
           },
           "props.value": {
@@ -357,9 +405,17 @@
           "props.text": {
             "binding": {
               "config": {
-                "expression": "if(isBadorError(tag({view.params.tagPath})),\n   'Bad Data',\n   try(tag({view.params.tagPath} + '.EngUnit'),\n    ''))"
+                "expression": "if({view.params.tagPath} = '', '',\n  if(try(isBadOrError(tag({view.params.tagPath})), false),\n     'Bad Data',\n     try(tag({view.params.tagPath} + '.EngUnit'), '')))"
               },
-              "type": "expr"
+              "type": "expr",
+              "overlays": {
+                "bad": false,
+                "error": false,
+                "pending": false,
+                "stale": false,
+                "unknown": false,
+                "disabled": false
+              }
             }
           }
         },
@@ -451,7 +507,15 @@
               "type": "script"
             }
           ],
-          "type": "expr-struct"
+          "type": "expr-struct",
+          "overlays": {
+            "bad": false,
+            "error": false,
+            "pending": false,
+            "stale": false,
+            "unknown": false,
+            "disabled": false
+          }
         }
       },
       "meta.contextMenu.enabled": {

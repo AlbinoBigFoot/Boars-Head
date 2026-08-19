@@ -1,11 +1,6 @@
 {
   "custom": {
-    "tags": [
-      "[Blythe]00700/HW/HWP001/VFD/MAN_DSBL",
-      "[Blythe]00700/HW/HWP001/VFD/RT",
-      "[Blythe]00700/HW/HWP001/VFD/STRT_NUM",
-      "[Blythe]00700/HW/HWP001/VFD/YAR_RST"
-    ]
+    "tags": []
   },
   "params": {
     "hiddenTags": "",
@@ -27,7 +22,15 @@
             "type": "script"
           }
         ],
-        "type": "expr-struct"
+        "type": "expr-struct",
+        "overlays": {
+          "bad": false,
+          "error": false,
+          "pending": false,
+          "stale": false,
+          "unknown": false,
+          "disabled": false
+        }
       },
       "persistent": true
     },
@@ -151,7 +154,15 @@
               "type": "script"
             }
           ],
-          "type": "expr-struct"
+          "type": "expr-struct",
+          "overlays": {
+            "bad": false,
+            "error": false,
+            "pending": false,
+            "stale": false,
+            "unknown": false,
+            "disabled": false
+          }
         }
       },
       "meta.contextMenu.enabled": {

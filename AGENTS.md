@@ -59,6 +59,10 @@ The snapshot already has Docker installed, images pulled, `.env` created, and th
 - The Ignition-side DB connection (named `ignition`) must be configured in the gateway UI; it is not
   auto-created.
 
+### Perspective bindings (prefer expressions)
+
+For live values, use **Expression → Structured expression → Expression transform**, and **script / script transform last** (commands, confirms, tag configure). Integration Toolkit `try()` / `isGood()` / `isBadOrError()` for quality-safe `tag()` reads. Empty `tagPath` params (no Designer placeholders). A later project-wide pass will convert leftover script bindings; see `docs/handoff/HANDOFF.md`.
+
 ### Optional: plant simulator
 
 `python3 sim/build_plant_sim.py` (stdlib only) regenerates `sim/bh-plant-sim.csv` and OPC-UA sim

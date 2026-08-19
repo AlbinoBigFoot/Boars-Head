@@ -41,7 +41,15 @@
               "type": "script"
             }
           ],
-          "type": "expr-struct"
+          "type": "expr-struct",
+          "overlays": {
+            "bad": false,
+            "error": false,
+            "pending": false,
+            "stale": false,
+            "unknown": false,
+            "disabled": false
+          }
         }
       },
       "meta.contextMenu.enabled": {
@@ -130,14 +138,22 @@
               "props.text": {
                 "binding": {
                   "config": {
-                    "expression": "if({view.params.deviceType} = 'Compressor',\n\tcase(tag({view.params.tagPath} + '/CP_Mode/Value'), 1, 'Remote', 2, 'Auto', 3, 'Manual', '\u2014'),\n\tif(coalesce(if({view.params.deviceType} = 'Pump',\n\t\ttag({view.params.tagPath} + '/Sts_Oper/Value'),\n\t\ttag({view.params.tagPath} + '/OPER/Value')), false),\n\t\t'Operator',\n\t\tif(coalesce(if({view.params.deviceType} = 'Pump',\n\t\t\ttag({view.params.tagPath} + '/Sts_Prog/Value'),\n\t\t\ttag({view.params.tagPath} + '/PROG/Value')), false),\n\t\t\t'Program',\n\t\t\tif(coalesce(if({view.params.deviceType} = 'Pump',\n\t\t\t\ttag({view.params.tagPath} + '/Sts_Maint/Value'),\n\t\t\t\ttag({view.params.tagPath} + '/MAINT/Value')), false),\n\t\t\t\t'Maintenance',\n\t\t\t\t'\u2014'))))"
+                    "expression": "if({view.params.deviceType} = 'Compressor',\n\tcase(try(if(isBadOrError(tag({view.params.tagPath} + '/CP_Mode/Value')), null, tag({view.params.tagPath} + '/CP_Mode/Value')), null), 1, 'Remote', 2, 'Auto', 3, 'Manual', '—'),\n\tif(coalesce(if({view.params.deviceType} = 'Pump',\n\t\ttry(if(isBadOrError(tag({view.params.tagPath} + '/Sts_Oper/Value')), null, tag({view.params.tagPath} + '/Sts_Oper/Value')), null),\n\t\ttry(if(isBadOrError(tag({view.params.tagPath} + '/OPER/Value')), null, tag({view.params.tagPath} + '/OPER/Value')), null)), false),\n\t\t'Operator',\n\t\tif(coalesce(if({view.params.deviceType} = 'Pump',\n\t\t\ttry(if(isBadOrError(tag({view.params.tagPath} + '/Sts_Prog/Value')), null, tag({view.params.tagPath} + '/Sts_Prog/Value')), null),\n\t\t\ttry(if(isBadOrError(tag({view.params.tagPath} + '/PROG/Value')), null, tag({view.params.tagPath} + '/PROG/Value')), null)), false),\n\t\t\t'Program',\n\t\t\tif(coalesce(if({view.params.deviceType} = 'Pump',\n\t\t\t\ttry(if(isBadOrError(tag({view.params.tagPath} + '/Sts_Maint/Value')), null, tag({view.params.tagPath} + '/Sts_Maint/Value')), null),\n\t\t\t\ttry(if(isBadOrError(tag({view.params.tagPath} + '/MAINT/Value')), null, tag({view.params.tagPath} + '/MAINT/Value')), null)), false),\n\t\t\t\t'Maintenance',\n\t\t\t\t'—'))))"
                   },
-                  "type": "expr"
+                  "type": "expr",
+                  "overlays": {
+                    "bad": false,
+                    "error": false,
+                    "pending": false,
+                    "stale": false,
+                    "unknown": false,
+                    "disabled": false
+                  }
                 }
               }
             },
             "props": {
-              "text": "\u2014",
+              "text": "—",
               "style": {
                 "classes": "font-label faceplate-mode-current"
               }
@@ -155,7 +171,9 @@
           "alignItems": "stretch",
           "style": {
             "gap": "8px",
-            "flexWrap": "wrap"
+            "flexWrap": "nowrap",
+            "overflow": "hidden",
+            "width": "100%"
           }
         },
         "children": [
@@ -192,9 +210,17 @@
               "props.style.classes": {
                 "binding": {
                   "config": {
-                    "expression": "if(coalesce(if({view.params.deviceType} = 'Pump',\n\ttag({view.params.tagPath} + '/Sts_Oper/Value'),\n\ttag({view.params.tagPath} + '/OPER/Value')), false),\n\t'faceplate-mode-btn faceplate-mode-btn-active',\n\t'faceplate-mode-btn')"
+                    "expression": "if(coalesce(if({view.params.deviceType} = 'Pump',\n\ttry(if(isBadOrError(tag({view.params.tagPath} + '/Sts_Oper/Value')), null, tag({view.params.tagPath} + '/Sts_Oper/Value')), null),\n\ttry(if(isBadOrError(tag({view.params.tagPath} + '/OPER/Value')), null, tag({view.params.tagPath} + '/OPER/Value')), null)), false),\n\t'faceplate-mode-btn faceplate-mode-btn-active',\n\t'faceplate-mode-btn')"
                   },
-                  "type": "expr"
+                  "type": "expr",
+                  "overlays": {
+                    "bad": false,
+                    "error": false,
+                    "pending": false,
+                    "stale": false,
+                    "unknown": false,
+                    "disabled": false
+                  }
                 }
               },
               "props.style.cursor": {
@@ -293,9 +319,17 @@
               "props.style.classes": {
                 "binding": {
                   "config": {
-                    "expression": "if(coalesce(if({view.params.deviceType} = 'Pump',\n\ttag({view.params.tagPath} + '/Sts_Prog/Value'),\n\ttag({view.params.tagPath} + '/PROG/Value')), false),\n\t'faceplate-mode-btn faceplate-mode-btn-active',\n\t'faceplate-mode-btn')"
+                    "expression": "if(coalesce(if({view.params.deviceType} = 'Pump',\n\ttry(if(isBadOrError(tag({view.params.tagPath} + '/Sts_Prog/Value')), null, tag({view.params.tagPath} + '/Sts_Prog/Value')), null),\n\ttry(if(isBadOrError(tag({view.params.tagPath} + '/PROG/Value')), null, tag({view.params.tagPath} + '/PROG/Value')), null)), false),\n\t'faceplate-mode-btn faceplate-mode-btn-active',\n\t'faceplate-mode-btn')"
                   },
-                  "type": "expr"
+                  "type": "expr",
+                  "overlays": {
+                    "bad": false,
+                    "error": false,
+                    "pending": false,
+                    "stale": false,
+                    "unknown": false,
+                    "disabled": false
+                  }
                 }
               },
               "props.style.cursor": {
@@ -394,9 +428,17 @@
               "props.style.classes": {
                 "binding": {
                   "config": {
-                    "expression": "if(coalesce(if({view.params.deviceType} = 'Pump',\n\ttag({view.params.tagPath} + '/Sts_Maint/Value'),\n\ttag({view.params.tagPath} + '/MAINT/Value')), false),\n\t'faceplate-mode-btn faceplate-mode-btn-active',\n\t'faceplate-mode-btn')"
+                    "expression": "if(coalesce(if({view.params.deviceType} = 'Pump',\n\ttry(if(isBadOrError(tag({view.params.tagPath} + '/Sts_Maint/Value')), null, tag({view.params.tagPath} + '/Sts_Maint/Value')), null),\n\ttry(if(isBadOrError(tag({view.params.tagPath} + '/MAINT/Value')), null, tag({view.params.tagPath} + '/MAINT/Value')), null)), false),\n\t'faceplate-mode-btn faceplate-mode-btn-active',\n\t'faceplate-mode-btn')"
                   },
-                  "type": "expr"
+                  "type": "expr",
+                  "overlays": {
+                    "bad": false,
+                    "error": false,
+                    "pending": false,
+                    "stale": false,
+                    "unknown": false,
+                    "disabled": false
+                  }
                 }
               },
               "props.style.cursor": {
@@ -481,7 +523,8 @@
             },
             "position": {
               "basis": "72px",
-              "shrink": 0
+              "shrink": 0,
+              "display": false
             },
             "propConfig": {
               "position.display": {
@@ -495,9 +538,17 @@
               "props.style.classes": {
                 "binding": {
                   "config": {
-                    "expression": "if(tag({view.params.tagPath} + '/CP_Mode/Value') = 1, 'faceplate-mode-btn faceplate-mode-btn-active', 'faceplate-mode-btn')"
+                    "expression": "if(try(if(isBadOrError(tag({view.params.tagPath} + '/CP_Mode/Value')), null, tag({view.params.tagPath} + '/CP_Mode/Value')), null) = 1, 'faceplate-mode-btn faceplate-mode-btn-active', 'faceplate-mode-btn')"
                   },
-                  "type": "expr"
+                  "type": "expr",
+                  "overlays": {
+                    "bad": false,
+                    "error": false,
+                    "pending": false,
+                    "stale": false,
+                    "unknown": false,
+                    "disabled": false
+                  }
                 }
               },
               "props.style.cursor": {
@@ -582,7 +633,8 @@
             },
             "position": {
               "basis": "72px",
-              "shrink": 0
+              "shrink": 0,
+              "display": false
             },
             "propConfig": {
               "position.display": {
@@ -596,9 +648,17 @@
               "props.style.classes": {
                 "binding": {
                   "config": {
-                    "expression": "if(tag({view.params.tagPath} + '/CP_Mode/Value') = 2, 'faceplate-mode-btn faceplate-mode-btn-active', 'faceplate-mode-btn')"
+                    "expression": "if(try(if(isBadOrError(tag({view.params.tagPath} + '/CP_Mode/Value')), null, tag({view.params.tagPath} + '/CP_Mode/Value')), null) = 2, 'faceplate-mode-btn faceplate-mode-btn-active', 'faceplate-mode-btn')"
                   },
-                  "type": "expr"
+                  "type": "expr",
+                  "overlays": {
+                    "bad": false,
+                    "error": false,
+                    "pending": false,
+                    "stale": false,
+                    "unknown": false,
+                    "disabled": false
+                  }
                 }
               },
               "props.style.cursor": {
@@ -683,7 +743,8 @@
             },
             "position": {
               "basis": "72px",
-              "shrink": 0
+              "shrink": 0,
+              "display": false
             },
             "propConfig": {
               "position.display": {
@@ -697,9 +758,17 @@
               "props.style.classes": {
                 "binding": {
                   "config": {
-                    "expression": "if(tag({view.params.tagPath} + '/CP_Mode/Value') = 3, 'faceplate-mode-btn faceplate-mode-btn-active', 'faceplate-mode-btn')"
+                    "expression": "if(try(if(isBadOrError(tag({view.params.tagPath} + '/CP_Mode/Value')), null, tag({view.params.tagPath} + '/CP_Mode/Value')), null) = 3, 'faceplate-mode-btn faceplate-mode-btn-active', 'faceplate-mode-btn')"
                   },
-                  "type": "expr"
+                  "type": "expr",
+                  "overlays": {
+                    "bad": false,
+                    "error": false,
+                    "pending": false,
+                    "stale": false,
+                    "unknown": false,
+                    "disabled": false
+                  }
                 }
               },
               "props.style.cursor": {

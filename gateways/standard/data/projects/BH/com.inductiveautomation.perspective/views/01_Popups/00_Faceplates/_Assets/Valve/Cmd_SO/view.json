@@ -36,7 +36,15 @@
               "type": "script"
             }
           ],
-          "type": "expr-struct"
+          "type": "expr-struct",
+          "overlays": {
+            "bad": false,
+            "error": false,
+            "pending": false,
+            "stale": false,
+            "unknown": false,
+            "disabled": false
+          }
         }
       },
       "meta.contextMenu.enabled": {
@@ -119,17 +127,33 @@
               "props.text": {
                 "binding": {
                   "config": {
-                    "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(coalesce(tag({view.params.tagPath} + '/Cmd/Value'),\n\t\ttag({view.params.tagPath} + '/Cmd_Open/Value'), false),\n\t\t'ON', 'OFF'))"
+                    "expression": "if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Cmd/Value')), null, tag({view.params.tagPath} + '/Cmd/Value')), null),\n\t\ttry(if(isBadOrError(tag({view.params.tagPath} + '/Cmd_Open/Value')), null, tag({view.params.tagPath} + '/Cmd_Open/Value')), null), false),\n\t\t'ON', 'OFF'))"
                   },
-                  "type": "expr"
+                  "type": "expr",
+                  "overlays": {
+                    "bad": false,
+                    "error": false,
+                    "pending": false,
+                    "stale": false,
+                    "unknown": false,
+                    "disabled": false
+                  }
                 }
               },
               "props.style.classes": {
                 "binding": {
                   "config": {
-                    "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(tag({view.params.tagPath} + '/Cmd/Value'),\n\t\ttag({view.params.tagPath} + '/Cmd_Open/Value'), false),\n\t\t'faceplate-fault-state faceplate-ls-on',\n\t\t'faceplate-fault-state faceplate-ls-off'))"
+                    "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Cmd/Value')), null, tag({view.params.tagPath} + '/Cmd/Value')), null),\n\t\ttry(if(isBadOrError(tag({view.params.tagPath} + '/Cmd_Open/Value')), null, tag({view.params.tagPath} + '/Cmd_Open/Value')), null), false),\n\t\t'faceplate-fault-state faceplate-ls-on',\n\t\t'faceplate-fault-state faceplate-ls-off'))"
                   },
-                  "type": "expr"
+                  "type": "expr",
+                  "overlays": {
+                    "bad": false,
+                    "error": false,
+                    "pending": false,
+                    "stale": false,
+                    "unknown": false,
+                    "disabled": false
+                  }
                 }
               }
             },
@@ -166,17 +190,33 @@
           "props.enabled": {
             "binding": {
               "config": {
-                "expression": "!{session.custom.ReadOnly} &&\n({view.params.tagPath} = '' ||\n qualityOf(tag({view.params.tagPath} + '/Rdy_Open/Value')) != 'Good' ||\n coalesce(tag({view.params.tagPath} + '/Rdy_Open/Value'), true))"
+                "expression": "!{session.custom.ReadOnly} &&\n({view.params.tagPath} = '' ||\n try(isBadOrError(tag({view.params.tagPath} + '/Rdy_Open/Value')), true) ||\n coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Rdy_Open/Value')), null, tag({view.params.tagPath} + '/Rdy_Open/Value')), null), true))"
               },
-              "type": "expr"
+              "type": "expr",
+              "overlays": {
+                "bad": false,
+                "error": false,
+                "pending": false,
+                "stale": false,
+                "unknown": false,
+                "disabled": false
+              }
             }
           },
           "props.style.classes": {
             "binding": {
               "config": {
-                "expression": "if({view.params.tagPath} = '', 'faceplate-cmd-btn font-label',\n\tif(if(coalesce(tag({view.params.tagPath} + '/Cfg_HasOpenLS/Value'), false),\n\t\tcoalesce(tag({view.params.tagPath} + '/OpenLS/Value'), false),\n\t\tcoalesce(tag({view.params.tagPath} + '/Cmd/Value'),\n\t\t\ttag({view.params.tagPath} + '/Cmd_Open/Value'), false)),\n\t\t'faceplate-cmd-btn faceplate-cmd-btn-active font-label',\n\t\t'faceplate-cmd-btn font-label'))"
+                "expression": "if({view.params.tagPath} = '', 'faceplate-cmd-btn font-label',\n\tif(if(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Cfg_HasOpenLS/Value')), null, tag({view.params.tagPath} + '/Cfg_HasOpenLS/Value')), null), false),\n\t\tcoalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/OpenLS/Value')), null, tag({view.params.tagPath} + '/OpenLS/Value')), null), false),\n\t\tcoalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Cmd/Value')), null, tag({view.params.tagPath} + '/Cmd/Value')), null),\n\t\t\ttry(if(isBadOrError(tag({view.params.tagPath} + '/Cmd_Open/Value')), null, tag({view.params.tagPath} + '/Cmd_Open/Value')), null), false)),\n\t\t'faceplate-cmd-btn faceplate-cmd-btn-active font-label',\n\t\t'faceplate-cmd-btn font-label'))"
               },
-              "type": "expr"
+              "type": "expr",
+              "overlays": {
+                "bad": false,
+                "error": false,
+                "pending": false,
+                "stale": false,
+                "unknown": false,
+                "disabled": false
+              }
             }
           }
         },
@@ -212,17 +252,33 @@
           "props.enabled": {
             "binding": {
               "config": {
-                "expression": "!{session.custom.ReadOnly} &&\n({view.params.tagPath} = '' ||\n qualityOf(tag({view.params.tagPath} + '/Rdy_Close/Value')) != 'Good' ||\n coalesce(tag({view.params.tagPath} + '/Rdy_Close/Value'), true))"
+                "expression": "!{session.custom.ReadOnly} &&\n({view.params.tagPath} = '' ||\n try(isBadOrError(tag({view.params.tagPath} + '/Rdy_Close/Value')), true) ||\n coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Rdy_Close/Value')), null, tag({view.params.tagPath} + '/Rdy_Close/Value')), null), true))"
               },
-              "type": "expr"
+              "type": "expr",
+              "overlays": {
+                "bad": false,
+                "error": false,
+                "pending": false,
+                "stale": false,
+                "unknown": false,
+                "disabled": false
+              }
             }
           },
           "props.style.classes": {
             "binding": {
               "config": {
-                "expression": "if({view.params.tagPath} = '', 'faceplate-cmd-btn font-label',\n\tif(if(coalesce(tag({view.params.tagPath} + '/Cfg_HasClosedLS/Value'), false),\n\t\tcoalesce(tag({view.params.tagPath} + '/ClosedLS/Value'), false),\n\t\t!coalesce(tag({view.params.tagPath} + '/Cmd/Value'),\n\t\t\ttag({view.params.tagPath} + '/Cmd_Open/Value'), false)),\n\t\t'faceplate-cmd-btn faceplate-cmd-btn-active font-label',\n\t\t'faceplate-cmd-btn font-label'))"
+                "expression": "if({view.params.tagPath} = '', 'faceplate-cmd-btn font-label',\n\tif(if(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Cfg_HasClosedLS/Value')), null, tag({view.params.tagPath} + '/Cfg_HasClosedLS/Value')), null), false),\n\t\tcoalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/ClosedLS/Value')), null, tag({view.params.tagPath} + '/ClosedLS/Value')), null), false),\n\t\t!coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Cmd/Value')), null, tag({view.params.tagPath} + '/Cmd/Value')), null),\n\t\t\ttry(if(isBadOrError(tag({view.params.tagPath} + '/Cmd_Open/Value')), null, tag({view.params.tagPath} + '/Cmd_Open/Value')), null), false)),\n\t\t'faceplate-cmd-btn faceplate-cmd-btn-active font-label',\n\t\t'faceplate-cmd-btn font-label'))"
               },
-              "type": "expr"
+              "type": "expr",
+              "overlays": {
+                "bad": false,
+                "error": false,
+                "pending": false,
+                "stale": false,
+                "unknown": false,
+                "disabled": false
+              }
             }
           }
         },

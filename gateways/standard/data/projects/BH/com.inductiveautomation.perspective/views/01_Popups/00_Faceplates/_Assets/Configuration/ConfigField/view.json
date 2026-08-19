@@ -82,13 +82,14 @@
         "position": {
           "basis": "28px",
           "shrink": 0,
-          "grow": 0
+          "grow": 0,
+          "display": false
         },
         "propConfig": {
           "position.display": {
             "binding": {
               "config": {
-                "expression": "lower({view.params.inputKind}) = 'checkbox' || lower({view.params.inputKind}) = 'bool' || lower({view.params.inputKind}) = 'boolean'"
+                "expression": "{view.params.tagPath} != '' && (lower({view.params.inputKind}) = 'checkbox' || lower({view.params.inputKind}) = 'bool' || lower({view.params.inputKind}) = 'boolean')"
               },
               "type": "expr"
             }
@@ -96,15 +97,17 @@
           "props.selected": {
             "binding": {
               "config": {
-                "mode": "indirect",
-                "tagPath": "{tagPath}",
-                "bidirectional": false,
-                "fallbackDelay": 2.5,
-                "references": {
-                  "tagPath": "{view.params.tagPath}"
-                }
+                "expression": "if({view.params.tagPath} = '', false,\n\tcoalesce(try(if(isBadOrError(tag({view.params.tagPath})), null, tag({view.params.tagPath})), null), false))"
               },
-              "type": "tag"
+              "type": "expr",
+              "overlays": {
+                "bad": false,
+                "error": false,
+                "pending": false,
+                "stale": false,
+                "unknown": false,
+                "disabled": false
+              }
             },
             "onChange": {
               "enabled": null,
@@ -153,7 +156,15 @@
               "config": {
                 "expression": "if(lower({view.params.inputKind}) = 'numeric' || lower({view.params.inputKind}) = 'number' || lower({view.params.inputKind}) = 'analog', {view.params.tagPath}, '')"
               },
-              "type": "expr"
+              "type": "expr",
+              "overlays": {
+                "bad": false,
+                "error": false,
+                "pending": false,
+                "stale": false,
+                "unknown": false,
+                "disabled": false
+              }
             }
           },
           "props.params.permission": {
@@ -205,7 +216,15 @@
               "config": {
                 "expression": "if(lower({view.params.inputKind}) = 'string' || lower({view.params.inputKind}) = 'text', {view.params.tagPath}, '')"
               },
-              "type": "expr"
+              "type": "expr",
+              "overlays": {
+                "bad": false,
+                "error": false,
+                "pending": false,
+                "stale": false,
+                "unknown": false,
+                "disabled": false
+              }
             }
           },
           "props.params.permission": {

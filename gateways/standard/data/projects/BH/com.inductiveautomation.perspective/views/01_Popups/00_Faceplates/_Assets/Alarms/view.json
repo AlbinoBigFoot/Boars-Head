@@ -43,9 +43,17 @@
           "props.filters.active.conditions.source": {
             "binding": {
               "config": {
-                "expression": "try(\n'prov:' + subString({view.params.tagPath}, 1, lastIndexOf({view.params.tagPath}, ']')) +\n':/tag:' + subString({view.params.tagPath}, lastIndexOf({view.params.tagPath}, ']') + 1) + '*',\n'')"
+                "expression": "if({view.params.tagPath} = '' || lastIndexOf({view.params.tagPath}, ']') < 0,\n  'prov:none:/tag:__unbound__',\n  try(\n'prov:' + subString({view.params.tagPath}, 1, lastIndexOf({view.params.tagPath}, ']')) +\n':/tag:' + subString({view.params.tagPath}, lastIndexOf({view.params.tagPath}, ']') + 1) + '*',\n'prov:none:/tag:__unbound__'))"
               },
-              "type": "expr"
+              "type": "expr",
+              "overlays": {
+                "bad": false,
+                "error": false,
+                "pending": false,
+                "stale": false,
+                "unknown": false,
+                "disabled": false
+              }
             }
           }
         },
@@ -114,7 +122,7 @@
         "binding": {
           "config": {
             "struct": {
-              "tagPath": "\"No TagPath: \""
+              "tagPath": ""
             },
             "waitOnAll": true
           },
@@ -124,7 +132,15 @@
               "type": "script"
             }
           ],
-          "type": "expr-struct"
+          "type": "expr-struct",
+          "overlays": {
+            "bad": false,
+            "error": false,
+            "pending": false,
+            "stale": false,
+            "unknown": false,
+            "disabled": false
+          }
         }
       },
       "meta.contextMenu.enabled": {

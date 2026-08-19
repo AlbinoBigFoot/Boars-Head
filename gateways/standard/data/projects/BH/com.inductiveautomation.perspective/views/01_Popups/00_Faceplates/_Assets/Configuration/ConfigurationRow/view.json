@@ -7,15 +7,23 @@
   },
   "params": {
     "highlightRow": false,
-    "tagPath": "[Blythe]00500/HW/TIT03A_SUP/SP"
+    "tagPath": ""
   },
   "propConfig": {
     "custom.dataType": {
       "binding": {
         "config": {
-          "expression": "if(qualityOf(tag({view.params.tagPath} + '.DataType')) = 'Good',\n   toStr(tag({view.params.tagPath} + '.DataType')),\n   '')"
+          "expression": "if(try(isGood(tag({view.params.tagPath} + '.DataType')), false),\n   toStr(try(if(isBadOrError(tag({view.params.tagPath} + '.DataType')), null, tag({view.params.tagPath} + '.DataType')), null)),\n   '')"
         },
-        "type": "expr"
+        "type": "expr",
+        "overlays": {
+          "bad": false,
+          "error": false,
+          "pending": false,
+          "stale": false,
+          "unknown": false,
+          "disabled": false
+        }
       },
       "persistent": true
     },
@@ -44,7 +52,15 @@
             "type": "expression"
           }
         ],
-        "type": "tag"
+        "type": "tag",
+        "overlays": {
+          "bad": false,
+          "error": false,
+          "pending": false,
+          "stale": false,
+          "unknown": false,
+          "disabled": false
+        }
       },
       "persistent": true
     },
@@ -102,7 +118,15 @@
               "config": {
                 "path": "view.params.tagPath"
               },
-              "type": "property"
+              "type": "property",
+              "overlays": {
+                "bad": false,
+                "error": false,
+                "pending": false,
+                "stale": false,
+                "unknown": false,
+                "disabled": false
+              }
             }
           },
           "props.params.permission": {
@@ -144,7 +168,15 @@
               "config": {
                 "path": "view.params.tagPath"
               },
-              "type": "property"
+              "type": "property",
+              "overlays": {
+                "bad": false,
+                "error": false,
+                "pending": false,
+                "stale": false,
+                "unknown": false,
+                "disabled": false
+              }
             }
           },
           "props.params.permission": {

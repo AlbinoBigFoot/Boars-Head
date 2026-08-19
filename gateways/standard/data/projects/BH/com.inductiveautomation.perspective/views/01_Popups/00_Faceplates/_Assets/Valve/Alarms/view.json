@@ -130,17 +130,33 @@
                           "props.text": {
                             "binding": {
                               "config": {
-                                "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(coalesce(tag({view.params.tagPath} + '/Alm_IOFault/Value'), false),\n\t\t'ACTIVE', 'OK'))"
+                                "expression": "if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_IOFault/Value')), null, tag({view.params.tagPath} + '/Alm_IOFault/Value')), null), false),\n\t\t'ACTIVE', 'OK'))"
                               },
-                              "type": "expr"
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              }
                             }
                           },
                           "props.style.classes": {
                             "binding": {
                               "config": {
-                                "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(tag({view.params.tagPath} + '/Alm_IOFault/Value'), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok'))"
+                                "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_IOFault/Value')), null, tag({view.params.tagPath} + '/Alm_IOFault/Value')), null), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok'))"
                               },
-                              "type": "expr"
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              }
                             }
                           }
                         },
@@ -192,17 +208,33 @@
                           "props.text": {
                             "binding": {
                               "config": {
-                                "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(coalesce(tag({view.params.tagPath} + '/Alm_FullStall/Value'), false),\n\t\t'ACTIVE', 'OK'))"
+                                "expression": "if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_FullStall/Value')), null, tag({view.params.tagPath} + '/Alm_FullStall/Value')), null), false),\n\t\t'ACTIVE', 'OK'))"
                               },
-                              "type": "expr"
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              }
                             }
                           },
                           "props.style.classes": {
                             "binding": {
                               "config": {
-                                "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(tag({view.params.tagPath} + '/Alm_FullStall/Value'), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok'))"
+                                "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_FullStall/Value')), null, tag({view.params.tagPath} + '/Alm_FullStall/Value')), null), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok'))"
                               },
-                              "type": "expr"
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              }
                             }
                           }
                         },
@@ -254,17 +286,33 @@
                           "props.text": {
                             "binding": {
                               "config": {
-                                "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(coalesce(tag({view.params.tagPath} + '/Alm_TransitStall/Value'), false),\n\t\t'ACTIVE', 'OK'))"
+                                "expression": "if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_TransitStall/Value')), null, tag({view.params.tagPath} + '/Alm_TransitStall/Value')), null), false),\n\t\t'ACTIVE', 'OK'))"
                               },
-                              "type": "expr"
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              }
                             }
                           },
                           "props.style.classes": {
                             "binding": {
                               "config": {
-                                "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(tag({view.params.tagPath} + '/Alm_TransitStall/Value'), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok'))"
+                                "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_TransitStall/Value')), null, tag({view.params.tagPath} + '/Alm_TransitStall/Value')), null), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok'))"
                               },
-                              "type": "expr"
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              }
                             }
                           }
                         },
@@ -316,17 +364,33 @@
                           "props.text": {
                             "binding": {
                               "config": {
-                                "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(coalesce(tag({view.params.tagPath} + '/Alm_IntlkTrip/Value'), false),\n\t\t'ACTIVE', 'OK'))"
+                                "expression": "if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_IntlkTrip/Value')), null, tag({view.params.tagPath} + '/Alm_IntlkTrip/Value')), null), false),\n\t\t'ACTIVE', 'OK'))"
                               },
-                              "type": "expr"
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              }
                             }
                           },
                           "props.style.classes": {
                             "binding": {
                               "config": {
-                                "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(tag({view.params.tagPath} + '/Alm_IntlkTrip/Value'), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok'))"
+                                "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_IntlkTrip/Value')), null, tag({view.params.tagPath} + '/Alm_IntlkTrip/Value')), null), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok'))"
                               },
-                              "type": "expr"
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              }
                             }
                           }
                         },
@@ -413,7 +477,15 @@
               "config": {
                 "path": "view.params.tagPath"
               },
-              "type": "property"
+              "type": "property",
+              "overlays": {
+                "bad": false,
+                "error": false,
+                "pending": false,
+                "stale": false,
+                "unknown": false,
+                "disabled": false
+              }
             }
           }
         }

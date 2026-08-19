@@ -36,7 +36,15 @@
               "type": "script"
             }
           ],
-          "type": "expr-struct"
+          "type": "expr-struct",
+          "overlays": {
+            "bad": false,
+            "error": false,
+            "pending": false,
+            "stale": false,
+            "unknown": false,
+            "disabled": false
+          }
         }
       },
       "meta.contextMenu.enabled": {
@@ -103,9 +111,17 @@
           "props.value": {
             "binding": {
               "config": {
-                "expression": "if({view.params.tagPath} = '', 0, coalesce(tag({view.params.tagPath} + '/Cmd_Position/Value'), 0))"
+                "expression": "if({view.params.tagPath} = '', 0, coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Cmd_Position/Value')), null, tag({view.params.tagPath} + '/Cmd_Position/Value')), null), 0))"
               },
-              "type": "expr"
+              "type": "expr",
+              "overlays": {
+                "bad": false,
+                "error": false,
+                "pending": false,
+                "stale": false,
+                "unknown": false,
+                "disabled": false
+              }
             }
           }
         },

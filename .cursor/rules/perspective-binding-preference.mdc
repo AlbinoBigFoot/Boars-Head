@@ -1,0 +1,17 @@
+---
+description: Prefer Perspective expressions over scripting for bindings
+alwaysApply: true
+---
+
+# Perspective binding preference
+
+When adding or changing Perspective bindings, **scripting is last**. Prefer, in order:
+
+1. **Expression** (`type: expr`)
+2. **Structured expression** (`type: expr-struct`)
+3. **Expression transform** on a binding
+4. **Script** / **script transform** — only if 1–3 cannot do the job (one-shot commands, confirms, tag browse/configure)
+
+Use Integration Toolkit expressions (`try()`, `isGood()`, `isBadOrError()`, `coalesce()`, `tag()`) for quality/null-safe reads. Do not use Designer placeholder tag paths; keep `params.tagPath` empty until the parent binds it.
+
+**Later (project-wide):** audit remaining script bindings/transforms and convert what can move up this list. See `docs/handoff/HANDOFF.md` parked note 2026-08-19.

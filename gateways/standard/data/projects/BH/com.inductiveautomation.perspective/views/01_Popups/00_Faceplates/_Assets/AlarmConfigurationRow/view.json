@@ -7,7 +7,7 @@
     "setpointValue": 0
   },
   "params": {
-    "alarmName": "Alarm",
+    "alarmName": "",
     "hasSetpoint": false,
     "highlightRow": false,
     "isDigital": true,
@@ -22,7 +22,15 @@
         "config": {
           "expression": "if({view.params.tagPath} = '' || {view.params.alarmName} = '', '', {view.params.tagPath} + '/Alarms/' + {view.params.alarmName} + '.Priority')"
         },
-        "type": "expr"
+        "type": "expr",
+        "overlays": {
+          "bad": false,
+          "error": false,
+          "pending": false,
+          "stale": false,
+          "unknown": false,
+          "disabled": false
+        }
       },
       "persistent": true
     },
@@ -31,64 +39,66 @@
         "config": {
           "expression": "if({view.params.tagPath} = '' || {view.params.alarmName} = '', '', {view.params.tagPath} + '/Alarms/' + {view.params.alarmName} + '.Mode')"
         },
-        "type": "expr"
+        "type": "expr",
+        "overlays": {
+          "bad": false,
+          "error": false,
+          "pending": false,
+          "stale": false,
+          "unknown": false,
+          "disabled": false
+        }
       },
       "persistent": true
     },
     "custom.priorityValue": {
       "binding": {
         "config": {
-          "mode": "indirect",
-          "references": {
-            "path": "{view.custom.priorityPath}"
-          },
-          "tagPath": "{path}"
+          "expression": "if({view.custom.priorityPath} = '', 'Medium',\n  try(\n    if(indexOf(toStr(try(if(isBadOrError(tag({view.custom.priorityPath})), null, tag({view.custom.priorityPath})), null)), '.') >= 0,\n      subString(toStr(try(if(isBadOrError(tag({view.custom.priorityPath})), null, tag({view.custom.priorityPath})), null)), lastIndexOf(toStr(try(if(isBadOrError(tag({view.custom.priorityPath})), null, tag({view.custom.priorityPath})), null)), '.') + 1),\n      if(toStr(try(if(isBadOrError(tag({view.custom.priorityPath})), null, tag({view.custom.priorityPath})), null)) = '', 'Medium', toStr(try(if(isBadOrError(tag({view.custom.priorityPath})), null, tag({view.custom.priorityPath})), null)))),\n    'Medium'))"
         },
-        "transforms": [
-          {
-            "code": "\tif value is None:\n\t\treturn 'Medium'\n\ttry:\n\t\tif hasattr(value, 'name'):\n\t\t\treturn str(value.name())\n\texcept:\n\t\tpass\n\ts = str(value)\n\tif s.startswith('AlarmPriority.') or s.startswith('Priority.'):\n\t\ts = s.split('.', 1)[-1]\n\treturn s if s else 'Medium'",
-            "type": "script"
-          }
-        ],
-        "type": "tag"
+        "type": "expr",
+        "overlays": {
+          "bad": false,
+          "error": false,
+          "pending": false,
+          "stale": false,
+          "unknown": false,
+          "disabled": false
+        }
       },
       "persistent": true
     },
     "custom.triggerValue": {
       "binding": {
         "config": {
-          "mode": "indirect",
-          "references": {
-            "path": "{view.custom.setpointPath}"
-          },
-          "tagPath": "{path}"
+          "expression": "if({view.custom.setpointPath} = '', 'WhenTrue',\n  try(\n    if(indexOf(toStr(try(if(isBadOrError(tag({view.custom.setpointPath})), null, tag({view.custom.setpointPath})), null)), 'False') >= 0 ||\n       toStr(try(if(isBadOrError(tag({view.custom.setpointPath})), null, tag({view.custom.setpointPath})), null)) = '0' ||\n       toStr(try(if(isBadOrError(tag({view.custom.setpointPath})), null, tag({view.custom.setpointPath})), null)) = '0.0' ||\n       toStr(try(if(isBadOrError(tag({view.custom.setpointPath})), null, tag({view.custom.setpointPath})), null)) = 'false',\n      'WhenFalse', 'WhenTrue'),\n    'WhenTrue'))"
         },
-        "transforms": [
-          {
-            "code": "\ts = str(value or '')\n\tif 'False' in s or s in ('0', '0.0', 'false'):\n\t\treturn 'WhenFalse'\n\treturn 'WhenTrue'",
-            "type": "script"
-          }
-        ],
-        "type": "tag"
+        "type": "expr",
+        "overlays": {
+          "bad": false,
+          "error": false,
+          "pending": false,
+          "stale": false,
+          "unknown": false,
+          "disabled": false
+        }
       },
       "persistent": true
     },
     "custom.setpointValue": {
       "binding": {
         "config": {
-          "mode": "indirect",
-          "references": {
-            "path": "{view.custom.setpointPath}"
-          },
-          "tagPath": "{path}"
+          "expression": "if({view.custom.setpointPath} = '', 0.0,\n  coalesce(try(toFloat(try(if(isBadOrError(tag({view.custom.setpointPath})), null, tag({view.custom.setpointPath})), null)), 0.0), 0.0))"
         },
-        "transforms": [
-          {
-            "code": "\ttry:\n\t\tif value is None:\n\t\t\treturn 0.0\n\t\treturn float(value)\n\texcept:\n\t\treturn 0.0",
-            "type": "script"
-          }
-        ],
-        "type": "tag"
+        "type": "expr",
+        "overlays": {
+          "bad": false,
+          "error": false,
+          "pending": false,
+          "stale": false,
+          "unknown": false,
+          "disabled": false
+        }
       },
       "persistent": true
     },
@@ -127,7 +137,7 @@
   },
   "props": {
     "defaultSize": {
-      "height": 104,
+      "height": 120,
       "width": 480
     }
   },
@@ -142,6 +152,7 @@
       "style": {
         "classes": "faceplate-alarm-row",
         "gap": "4px",
+        "overflow": "visible",
         "padding": "6px 8px"
       }
     },
@@ -158,7 +169,7 @@
         "binding": {
           "config": {
             "struct": {
-              "tagPath": "\"No TagPath: \""
+              "tagPath": ""
             },
             "waitOnAll": true
           },
@@ -168,7 +179,15 @@
               "type": "script"
             }
           ],
-          "type": "expr-struct"
+          "type": "expr-struct",
+          "overlays": {
+            "bad": false,
+            "error": false,
+            "pending": false,
+            "stale": false,
+            "unknown": false,
+            "disabled": false
+          }
         }
       },
       "meta.contextMenu.enabled": {
@@ -240,7 +259,7 @@
           "style": {
             "classes": "faceplate-alarm-name font-value"
           },
-          "text": "Alarm"
+          "text": ""
         }
       },
       {

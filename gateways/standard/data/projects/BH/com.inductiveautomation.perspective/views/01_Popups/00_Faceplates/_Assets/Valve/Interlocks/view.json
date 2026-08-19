@@ -104,9 +104,17 @@
                   "props.text": {
                     "binding": {
                       "config": {
-                        "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(coalesce(tag({view.params.tagPath} + '/Disabled/Value'), false),\n\t\t'DISABLED', 'ENABLED'))"
+                        "expression": "if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Disabled/Value')), null, tag({view.params.tagPath} + '/Disabled/Value')), null), false),\n\t\t'DISABLED', 'ENABLED'))"
                       },
-                      "type": "expr"
+                      "type": "expr",
+                      "overlays": {
+                        "bad": false,
+                        "error": false,
+                        "pending": false,
+                        "stale": false,
+                        "unknown": false,
+                        "disabled": false
+                      }
                     }
                   }
                 },
@@ -126,17 +134,33 @@
                   "props.text": {
                     "binding": {
                       "config": {
-                        "expression": "if({view.params.tagPath} = '', '',\n\tif(coalesce(tag({view.params.tagPath} + '/Interlock/Sts_BypActive/Value'), false),\n\t\t'BYPASS ACTIVE \u2014 interlocks skipped',\n\t\t'Interlocks in service'))"
+                        "expression": "if({view.params.tagPath} = '', '',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Interlock/Sts_BypActive/Value')), null, tag({view.params.tagPath} + '/Interlock/Sts_BypActive/Value')), null), false),\n\t\t'BYPASS ACTIVE — interlocks skipped',\n\t\t'Interlocks in service'))"
                       },
-                      "type": "expr"
+                      "type": "expr",
+                      "overlays": {
+                        "bad": false,
+                        "error": false,
+                        "pending": false,
+                        "stale": false,
+                        "unknown": false,
+                        "disabled": false
+                      }
                     }
                   },
                   "props.style.classes": {
                     "binding": {
                       "config": {
-                        "expression": "if(coalesce(tag({view.params.tagPath} + '/Interlock/Sts_BypActive/Value'), false),\n\t'font-label faceplate-bypass-banner',\n\t'font-label')"
+                        "expression": "if(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Interlock/Sts_BypActive/Value')), null, tag({view.params.tagPath} + '/Interlock/Sts_BypActive/Value')), null), false),\n\t'font-label faceplate-bypass-banner',\n\t'font-label')"
                       },
-                      "type": "expr"
+                      "type": "expr",
+                      "overlays": {
+                        "bad": false,
+                        "error": false,
+                        "pending": false,
+                        "stale": false,
+                        "unknown": false,
+                        "disabled": false
+                      }
                     }
                   }
                 },
@@ -192,9 +216,17 @@
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if(coalesce(tag({view.params.tagPath} + '/Disabled/Value'), false),\n\t'faceplate-cmd-btn font-label',\n\t'faceplate-cmd-btn faceplate-cmd-btn-active font-label')"
+                            "expression": "if(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Disabled/Value')), null, tag({view.params.tagPath} + '/Disabled/Value')), null), false),\n\t'faceplate-cmd-btn font-label',\n\t'faceplate-cmd-btn faceplate-cmd-btn-active font-label')"
                           },
-                          "type": "expr"
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
                         }
                       }
                     },
@@ -238,9 +270,17 @@
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if(coalesce(tag({view.params.tagPath} + '/Disabled/Value'), false),\n\t'faceplate-cmd-btn faceplate-cmd-btn-active font-label',\n\t'faceplate-cmd-btn font-label')"
+                            "expression": "if(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Disabled/Value')), null, tag({view.params.tagPath} + '/Disabled/Value')), null), false),\n\t'faceplate-cmd-btn faceplate-cmd-btn-active font-label',\n\t'faceplate-cmd-btn font-label')"
                           },
-                          "type": "expr"
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
                         }
                       }
                     },
@@ -284,17 +324,33 @@
                       "props.text": {
                         "binding": {
                           "config": {
-                            "expression": "if(coalesce(tag({view.params.tagPath} + '/Interlock/Sts_BypActive/Value'), false),\n\t'Bypass On',\n\t'Bypass')"
+                            "expression": "if(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Interlock/Sts_BypActive/Value')), null, tag({view.params.tagPath} + '/Interlock/Sts_BypActive/Value')), null), false),\n\t'Bypass On',\n\t'Bypass')"
                           },
-                          "type": "expr"
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
                         }
                       },
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if(coalesce(tag({view.params.tagPath} + '/Interlock/Sts_BypActive/Value'), false),\n\t'faceplate-cmd-btn faceplate-cmd-btn-bypass font-label',\n\t'faceplate-cmd-btn font-label')"
+                            "expression": "if(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Interlock/Sts_BypActive/Value')), null, tag({view.params.tagPath} + '/Interlock/Sts_BypActive/Value')), null), false),\n\t'faceplate-cmd-btn faceplate-cmd-btn-bypass font-label',\n\t'faceplate-cmd-btn font-label')"
                           },
-                          "type": "expr"
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
                         }
                       }
                     },
@@ -320,9 +376,17 @@
                   "props.params.tagPath": {
                     "binding": {
                       "config": {
-                        "expression": "{view.params.tagPath} + '/Cfg_OvrdPermIntlk/Value'"
+                        "expression": "if({view.params.tagPath} = '', '', {view.params.tagPath} + '/Cfg_OvrdPermIntlk/Value')"
                       },
-                      "type": "expr"
+                      "type": "expr",
+                      "overlays": {
+                        "bad": false,
+                        "error": false,
+                        "pending": false,
+                        "stale": false,
+                        "unknown": false,
+                        "disabled": false
+                      }
                     }
                   }
                 },

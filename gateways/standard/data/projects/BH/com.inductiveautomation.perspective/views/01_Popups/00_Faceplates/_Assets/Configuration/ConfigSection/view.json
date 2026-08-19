@@ -64,7 +64,7 @@
               },
               "transforms": [
                 {
-                  "code": "\timport json\n\tbase \u003d \u0027\u0027\n\traw \u003d \u0027[]\u0027\n\ttry:\n\t\tbase \u003d str((value or {}).get(\u0027base\u0027) or \u0027\u0027)\n\texcept:\n\t\tbase \u003d \u0027\u0027\n\ttry:\n\t\traw \u003d (value or {}).get(\u0027rowsJson\u0027)\n\texcept:\n\t\traw \u003d None\n\tif raw is None or raw \u003d\u003d \u0027\u0027:\n\t\traw \u003d \u0027[]\u0027\n\telif not isinstance(raw, basestring):\n\t\ttry:\n\t\t\traw \u003d json.dumps(raw)\n\t\texcept:\n\t\t\traw \u003d \u0027[]\u0027\n\ttry:\n\t\trows \u003d json.loads(raw)\n\texcept:\n\t\trows \u003d []\n\tout \u003d []\n\tfor r in rows or []:\n\t\tif not isinstance(r, dict):\n\t\t\tcontinue\n\t\tleaf \u003d str(r.get(\u0027leaf\u0027) or r.get(\u0027tag\u0027) or \u0027\u0027).strip().strip(\u0027/\u0027)\n\t\tkind \u003d str(r.get(\u0027kind\u0027) or r.get(\u0027inputKind\u0027) or \u0027checkbox\u0027).strip().lower() or \u0027checkbox\u0027\n\t\tlabel \u003d r.get(\u0027label\u0027) or leaf\n\t\tpath \u003d str(r.get(\u0027tagPath\u0027) or \u0027\u0027).strip()\n\t\tif not path and base and leaf:\n\t\t\tpath \u003d base.rstrip(\u0027/\u0027) + \u0027/\u0027 + leaf\n\t\t\tif not path.endswith(\u0027/Value\u0027):\n\t\t\t\tpath \u003d path + \u0027/Value\u0027\n\t\tout.append({\n\t\t\t\u0027instanceStyle\u0027: {\u0027classes\u0027: \u0027\u0027},\n\t\t\t\u0027instancePosition\u0027: {\u0027basis\u0027: \u002748px\u0027, \u0027grow\u0027: 0, \u0027shrink\u0027: 0},\n\t\t\t\u0027label\u0027: label,\n\t\t\t\u0027inputKind\u0027: kind,\n\t\t\t\u0027tagPath\u0027: path\n\t\t})\n\treturn out\n",
+                  "code": "\timport json\n\tbase \u003d \u0027\u0027\n\traw \u003d \u0027[]\u0027\n\ttry:\n\t\tbase \u003d str((value or {}).get(\u0027base\u0027) or \u0027\u0027).strip()\n\texcept:\n\t\tbase \u003d \u0027\u0027\n\tif not base:\n\t\treturn []\n\ttry:\n\t\traw \u003d (value or {}).get(\u0027rowsJson\u0027)\n\texcept:\n\t\traw \u003d None\n\tif raw is None or raw \u003d\u003d \u0027\u0027:\n\t\traw \u003d \u0027[]\u0027\n\telif not isinstance(raw, basestring):\n\t\ttry:\n\t\t\traw \u003d json.dumps(raw)\n\t\texcept:\n\t\t\traw \u003d \u0027[]\u0027\n\ttry:\n\t\trows \u003d json.loads(raw)\n\texcept:\n\t\trows \u003d []\n\tout \u003d []\n\tfor r in rows or []:\n\t\tif not isinstance(r, dict):\n\t\t\tcontinue\n\t\tleaf \u003d str(r.get(\u0027leaf\u0027) or r.get(\u0027tag\u0027) or \u0027\u0027).strip().strip(\u0027/\u0027)\n\t\tkind \u003d str(r.get(\u0027kind\u0027) or r.get(\u0027inputKind\u0027) or \u0027checkbox\u0027).strip().lower() or \u0027checkbox\u0027\n\t\tlabel \u003d r.get(\u0027label\u0027) or leaf\n\t\tpath \u003d str(r.get(\u0027tagPath\u0027) or \u0027\u0027).strip()\n\t\tif not path and leaf:\n\t\t\tpath \u003d base.rstrip(\u0027/\u0027) + \u0027/\u0027 + leaf\n\t\t\tif not path.endswith(\u0027/Value\u0027):\n\t\t\t\tpath \u003d path + \u0027/Value\u0027\n\t\tif not path:\n\t\t\tcontinue\n\t\tout.append({\n\t\t\t\u0027instanceStyle\u0027: {\u0027classes\u0027: \u0027\u0027},\n\t\t\t\u0027instancePosition\u0027: {\u0027basis\u0027: \u002748px\u0027, \u0027grow\u0027: 0, \u0027shrink\u0027: 0},\n\t\t\t\u0027label\u0027: label,\n\t\t\t\u0027inputKind\u0027: kind,\n\t\t\t\u0027tagPath\u0027: path\n\t\t})\n\treturn out\n",
                   "type": "script"
                 }
               ],
@@ -94,6 +94,16 @@
     },
     "position": {
       "shrink": 0
+    },
+    "propConfig": {
+      "position.display": {
+        "binding": {
+          "config": {
+            "expression": "{view.params.tagPath} !\u003d \u0027\u0027"
+          },
+          "type": "expr"
+        }
+      }
     },
     "props": {
       "direction": "column",

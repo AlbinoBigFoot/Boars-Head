@@ -36,7 +36,15 @@
               "type": "script"
             }
           ],
-          "type": "expr-struct"
+          "type": "expr-struct",
+          "overlays": {
+            "bad": false,
+            "error": false,
+            "pending": false,
+            "stale": false,
+            "unknown": false,
+            "disabled": false
+          }
         }
       },
       "meta.contextMenu.enabled": {
@@ -75,7 +83,7 @@
       "direction": "column",
       "style": {
         "classes": "",
-        "overflow": "auto",
+        "overflow": "hidden",
         "padding": "4px",
         "gap": "8px",
         "minHeight": 0,
@@ -108,7 +116,15 @@
               "config": {
                 "path": "view.params.tagPath"
               },
-              "type": "property"
+              "type": "property",
+              "overlays": {
+                "bad": false,
+                "error": false,
+                "pending": false,
+                "stale": false,
+                "unknown": false,
+                "disabled": false
+              }
             }
           }
         }
@@ -191,17 +207,33 @@
                       "props.text": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(coalesce(tag({view.params.tagPath} + '/Failed/Value'), false),\n\t\t'ACTIVE', 'OK'))"
+                            "expression": "if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Failed/Value')), null, tag({view.params.tagPath} + '/Failed/Value')), null), false),\n\t\t'ACTIVE', 'OK'))"
                           },
-                          "type": "expr"
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
                         }
                       },
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(tag({view.params.tagPath} + '/Failed/Value'), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok'))"
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Failed/Value')), null, tag({view.params.tagPath} + '/Failed/Value')), null), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok'))"
                           },
-                          "type": "expr"
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
                         }
                       }
                     },
@@ -252,17 +284,33 @@
                       "props.text": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(coalesce(tag({view.params.tagPath} + '/Comm/Value'), false),\n\t\t'FAULT', 'OK'))"
+                            "expression": "if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Comm/Value')), null, tag({view.params.tagPath} + '/Comm/Value')), null), false),\n\t\t'FAULT', 'OK'))"
                           },
-                          "type": "expr"
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
                         }
                       },
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(tag({view.params.tagPath} + '/Comm/Value'), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok'))"
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Comm/Value')), null, tag({view.params.tagPath} + '/Comm/Value')), null), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok'))"
                           },
-                          "type": "expr"
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
                         }
                       }
                     },
@@ -282,9 +330,17 @@
           "position.display": {
             "binding": {
               "config": {
-                "expression": "qualityOf(tag({view.params.tagPath} + '/Failed/Value')) = 'Good' || qualityOf(tag({view.params.tagPath} + '/Comm/Value')) = 'Good'"
+                "expression": "try(isGood(tag({view.params.tagPath} + '/Failed/Value')), false) || try(isGood(tag({view.params.tagPath} + '/Comm/Value')), false)"
               },
-              "type": "expr"
+              "type": "expr",
+              "overlays": {
+                "bad": false,
+                "error": false,
+                "pending": false,
+                "stale": false,
+                "unknown": false,
+                "disabled": false
+              }
             }
           }
         }
@@ -295,15 +351,24 @@
           "name": "StatusSection"
         },
         "position": {
-          "shrink": 0
+          "shrink": 0,
+          "display": false
         },
         "propConfig": {
           "position.display": {
             "binding": {
               "config": {
-                "expression": "{view.params.tagPath} != '' &&\n(coalesce(tag({view.params.tagPath} + '/Cfg_HasOpenLS/Value'), false) ||\n coalesce(tag({view.params.tagPath} + '/Cfg_HasClosedLS/Value'), false))"
+                "expression": "{view.params.tagPath} != '' &&\n(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Cfg_HasOpenLS/Value')), null, tag({view.params.tagPath} + '/Cfg_HasOpenLS/Value')), null), false) ||\n coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Cfg_HasClosedLS/Value')), null, tag({view.params.tagPath} + '/Cfg_HasClosedLS/Value')), null), false))"
               },
-              "type": "expr"
+              "type": "expr",
+              "overlays": {
+                "bad": false,
+                "error": false,
+                "pending": false,
+                "stale": false,
+                "unknown": false,
+                "disabled": false
+              }
             }
           }
         },
@@ -346,15 +411,24 @@
                 },
                 "position": {
                   "basis": "100px",
-                  "shrink": 0
+                  "shrink": 0,
+                  "display": false
                 },
                 "propConfig": {
                   "position.display": {
                     "binding": {
                       "config": {
-                        "expression": "coalesce(tag({view.params.tagPath} + '/Cfg_HasOpenLS/Value'), false)"
+                        "expression": "coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Cfg_HasOpenLS/Value')), null, tag({view.params.tagPath} + '/Cfg_HasOpenLS/Value')), null), false)"
                       },
-                      "type": "expr"
+                      "type": "expr",
+                      "overlays": {
+                        "bad": false,
+                        "error": false,
+                        "pending": false,
+                        "stale": false,
+                        "unknown": false,
+                        "disabled": false
+                      }
                     }
                   }
                 },
@@ -387,17 +461,33 @@
                       "props.text": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(coalesce(tag({view.params.tagPath} + '/OpenLS/Value'), false), 'ON', 'OFF'))"
+                            "expression": "if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/OpenLS/Value')), null, tag({view.params.tagPath} + '/OpenLS/Value')), null), false), 'ON', 'OFF'))"
                           },
-                          "type": "expr"
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
                         }
                       },
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(tag({view.params.tagPath} + '/OpenLS/Value'), false),\n\t\t'faceplate-fault-state faceplate-ls-on',\n\t\t'faceplate-fault-state faceplate-ls-off'))"
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/OpenLS/Value')), null, tag({view.params.tagPath} + '/OpenLS/Value')), null), false),\n\t\t'faceplate-fault-state faceplate-ls-on',\n\t\t'faceplate-fault-state faceplate-ls-off'))"
                           },
-                          "type": "expr"
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
                         }
                       }
                     },
@@ -417,15 +507,24 @@
                 },
                 "position": {
                   "basis": "100px",
-                  "shrink": 0
+                  "shrink": 0,
+                  "display": false
                 },
                 "propConfig": {
                   "position.display": {
                     "binding": {
                       "config": {
-                        "expression": "coalesce(tag({view.params.tagPath} + '/Cfg_HasClosedLS/Value'), false)"
+                        "expression": "coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Cfg_HasClosedLS/Value')), null, tag({view.params.tagPath} + '/Cfg_HasClosedLS/Value')), null), false)"
                       },
-                      "type": "expr"
+                      "type": "expr",
+                      "overlays": {
+                        "bad": false,
+                        "error": false,
+                        "pending": false,
+                        "stale": false,
+                        "unknown": false,
+                        "disabled": false
+                      }
                     }
                   }
                 },
@@ -458,17 +557,33 @@
                       "props.text": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(coalesce(tag({view.params.tagPath} + '/ClosedLS/Value'), false), 'ON', 'OFF'))"
+                            "expression": "if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/ClosedLS/Value')), null, tag({view.params.tagPath} + '/ClosedLS/Value')), null), false), 'ON', 'OFF'))"
                           },
-                          "type": "expr"
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
                         }
                       },
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(tag({view.params.tagPath} + '/ClosedLS/Value'), false),\n\t\t'faceplate-fault-state faceplate-ls-on',\n\t\t'faceplate-fault-state faceplate-ls-off'))"
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/ClosedLS/Value')), null, tag({view.params.tagPath} + '/ClosedLS/Value')), null), false),\n\t\t'faceplate-fault-state faceplate-ls-on',\n\t\t'faceplate-fault-state faceplate-ls-off'))"
                           },
-                          "type": "expr"
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
                         }
                       }
                     },
@@ -535,15 +650,31 @@
                   "config": {
                     "path": "view.params.tagPath"
                   },
-                  "type": "property"
+                  "type": "property",
+                  "overlays": {
+                    "bad": false,
+                    "error": false,
+                    "pending": false,
+                    "stale": false,
+                    "unknown": false,
+                    "disabled": false
+                  }
                 }
               },
               "props.path": {
                 "binding": {
                   "config": {
-                    "expression": "case(\n\tif({view.params.tagPath} = '', 'SO',\n\t\tupper(coalesce(\n\t\t\ttag({view.params.tagPath} + '/valveType/Value'),\n\t\t\ttag({view.params.tagPath} + '/valveType'),\n\t\t\t'SO'))),\n\t'SO', '01_Popups/00_Faceplates/_Assets/Valve/Cmd_SO',\n\t'MO', '01_Popups/00_Faceplates/_Assets/Valve/Cmd_MO',\n\t'MP', '01_Popups/00_Faceplates/_Assets/Valve/Cmd_Position',\n\t'C', '01_Popups/00_Faceplates/_Assets/Valve/Cmd_Position',\n\t'01_Popups/00_Faceplates/_Assets/Valve/Cmd_SO')"
+                    "expression": "case(\n\tif({view.params.tagPath} = '', 'SO',\n\t\tupper(coalesce(\n\t\t\ttry(if(isBadOrError(tag({view.params.tagPath} + '/valveType/Value')), null, tag({view.params.tagPath} + '/valveType/Value')), null),\n\t\t\ttry(if(isBadOrError(tag({view.params.tagPath} + '/valveType')), null, tag({view.params.tagPath} + '/valveType')), null),\n\t\t\t'SO'))),\n\t'SO', '01_Popups/00_Faceplates/_Assets/Valve/Cmd_SO',\n\t'MO', '01_Popups/00_Faceplates/_Assets/Valve/Cmd_MO',\n\t'MP', '01_Popups/00_Faceplates/_Assets/Valve/Cmd_Position',\n\t'C', '01_Popups/00_Faceplates/_Assets/Valve/Cmd_Position',\n\t'01_Popups/00_Faceplates/_Assets/Valve/Cmd_SO')"
                   },
-                  "type": "expr"
+                  "type": "expr",
+                  "overlays": {
+                    "bad": false,
+                    "error": false,
+                    "pending": false,
+                    "stale": false,
+                    "unknown": false,
+                    "disabled": false
+                  }
                 }
               }
             }
@@ -612,9 +743,17 @@
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(tag({view.params.tagPath} + '/Nrdy_Disabled/Value'), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Nrdy_Disabled/Value')), null, tag({view.params.tagPath} + '/Nrdy_Disabled/Value')), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
                           },
-                          "type": "expr"
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
                         }
                       }
                     },
@@ -669,9 +808,17 @@
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(tag({view.params.tagPath} + '/Nrdy_CfgErr/Value'), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Nrdy_CfgErr/Value')), null, tag({view.params.tagPath} + '/Nrdy_CfgErr/Value')), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
                           },
-                          "type": "expr"
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
                         }
                       }
                     },
@@ -726,9 +873,17 @@
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(tag({view.params.tagPath} + '/Nrdy_Intlk/Value'), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Nrdy_Intlk/Value')), null, tag({view.params.tagPath} + '/Nrdy_Intlk/Value')), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
                           },
-                          "type": "expr"
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
                         }
                       }
                     },
@@ -783,9 +938,17 @@
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(tag({view.params.tagPath} + '/Nrdy_Perm/Value'), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Nrdy_Perm/Value')), null, tag({view.params.tagPath} + '/Nrdy_Perm/Value')), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
                           },
-                          "type": "expr"
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
                         }
                       }
                     },
@@ -840,9 +1003,17 @@
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(tag({view.params.tagPath} + '/Nrdy_IOFault/Value'), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Nrdy_IOFault/Value')), null, tag({view.params.tagPath} + '/Nrdy_IOFault/Value')), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
                           },
-                          "type": "expr"
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
                         }
                       }
                     },
@@ -897,9 +1068,17 @@
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(tag({view.params.tagPath} + '/Nrdy_Fail/Value'), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Nrdy_Fail/Value')), null, tag({view.params.tagPath} + '/Nrdy_Fail/Value')), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
                           },
-                          "type": "expr"
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
                         }
                       }
                     },
@@ -954,9 +1133,17 @@
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(tag({view.params.tagPath} + '/Nrdy_NoMode/Value'), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Nrdy_NoMode/Value')), null, tag({view.params.tagPath} + '/Nrdy_NoMode/Value')), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
                           },
-                          "type": "expr"
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
                         }
                       }
                     },

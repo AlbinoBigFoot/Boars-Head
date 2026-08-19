@@ -357,7 +357,7 @@
         {
           "messageType": "writeValue",
           "pageScope": true,
-          "script": "\tif payload.get('tagPath') == self.view.params.tagPath:\n\t\tshared.Audit.writeTag(\n\t\t\tpayload['tagPath'],\n\t\t\tpayload['value'],\n\t\t\tlabel=payload.get('label'),\n\t\t\tviewName=payload.get('viewName'),\n\t\t)\n\t\tself.view.custom.timeOut.actionComplete = True\n",
+          "script": "\tif not self.view.params.tagPath or payload.get('tagPath') != self.view.params.tagPath:\n\t\treturn\n\tif not payload.get('alreadyWritten'):\n\t\tshared.Audit.writeTag(\n\t\t\tpayload['tagPath'],\n\t\t\tpayload['value'],\n\t\t\tlabel=payload.get('label'),\n\t\t\tviewName=payload.get('viewName'),\n\t\t)\n\tself.view.custom.timeOut.actionComplete = True\n",
           "sessionScope": false,
           "viewScope": false
         },

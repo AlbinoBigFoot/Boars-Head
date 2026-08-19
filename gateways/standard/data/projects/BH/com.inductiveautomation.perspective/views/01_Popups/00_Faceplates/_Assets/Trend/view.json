@@ -3,7 +3,7 @@
     "chartDataAnalog": null,
     "hours": 1,
     "penOptions": [],
-    "selectedPens": []
+    "selectedPens": null
   },
   "params": {
     "hiddenTags": "",
@@ -47,7 +47,15 @@
             "type": "script"
           }
         ],
-        "type": "expr-struct"
+        "type": "expr-struct",
+        "overlays": {
+          "bad": false,
+          "error": false,
+          "pending": false,
+          "stale": false,
+          "unknown": false,
+          "disabled": false
+        }
       },
       "persistent": true
     },
@@ -94,10 +102,13 @@
               "props.value": {
                 "binding": {
                   "config": {
-                    "path": "view.custom.selectedPens",
-                    "bidirectional": true
+                    "expression": "if(try(len({view.custom.selectedPens}), 0) > 0, {view.custom.selectedPens}, null)"
                   },
-                  "type": "property"
+                  "type": "expr"
+                },
+                "onChange": {
+                  "enabled": true,
+                  "script": "\tif str(origin) != 'Browser':\n\t\treturn\n\tv = currentValue.value if currentValue is not None else None\n\tif v is None:\n\t\tself.view.custom.selectedPens = None\n\t\treturn\n\ttry:\n\t\tn = len(v)\n\texcept:\n\t\tn = 0\n\tself.view.custom.selectedPens = None if n == 0 else v\n"
                 }
               }
             },
@@ -145,30 +156,102 @@
                 "classes": "font-label"
               },
               "options": [
-                {"label": "Last 1 Hour", "value": 1},
-                {"label": "Last 2 Hours", "value": 2},
-                {"label": "Last 3 Hours", "value": 3},
-                {"label": "Last 4 Hours", "value": 4},
-                {"label": "Last 5 Hours", "value": 5},
-                {"label": "Last 6 Hours", "value": 6},
-                {"label": "Last 7 Hours", "value": 7},
-                {"label": "Last 8 Hours", "value": 8},
-                {"label": "Last 9 Hours", "value": 9},
-                {"label": "Last 10 Hours", "value": 10},
-                {"label": "Last 11 Hours", "value": 11},
-                {"label": "Last 12 Hours", "value": 12},
-                {"label": "Last 13 Hours", "value": 13},
-                {"label": "Last 14 Hours", "value": 14},
-                {"label": "Last 15 Hours", "value": 15},
-                {"label": "Last 16 Hours", "value": 16},
-                {"label": "Last 17 Hours", "value": 17},
-                {"label": "Last 18 Hours", "value": 18},
-                {"label": "Last 19 Hours", "value": 19},
-                {"label": "Last 20 Hours", "value": 20},
-                {"label": "Last 21 Hours", "value": 21},
-                {"label": "Last 22 Hours", "value": 22},
-                {"label": "Last 23 Hours", "value": 23},
-                {"label": "Last 24 Hours", "value": 24}
+                {
+                  "label": "Last 1 Hour",
+                  "value": 1
+                },
+                {
+                  "label": "Last 2 Hours",
+                  "value": 2
+                },
+                {
+                  "label": "Last 3 Hours",
+                  "value": 3
+                },
+                {
+                  "label": "Last 4 Hours",
+                  "value": 4
+                },
+                {
+                  "label": "Last 5 Hours",
+                  "value": 5
+                },
+                {
+                  "label": "Last 6 Hours",
+                  "value": 6
+                },
+                {
+                  "label": "Last 7 Hours",
+                  "value": 7
+                },
+                {
+                  "label": "Last 8 Hours",
+                  "value": 8
+                },
+                {
+                  "label": "Last 9 Hours",
+                  "value": 9
+                },
+                {
+                  "label": "Last 10 Hours",
+                  "value": 10
+                },
+                {
+                  "label": "Last 11 Hours",
+                  "value": 11
+                },
+                {
+                  "label": "Last 12 Hours",
+                  "value": 12
+                },
+                {
+                  "label": "Last 13 Hours",
+                  "value": 13
+                },
+                {
+                  "label": "Last 14 Hours",
+                  "value": 14
+                },
+                {
+                  "label": "Last 15 Hours",
+                  "value": 15
+                },
+                {
+                  "label": "Last 16 Hours",
+                  "value": 16
+                },
+                {
+                  "label": "Last 17 Hours",
+                  "value": 17
+                },
+                {
+                  "label": "Last 18 Hours",
+                  "value": 18
+                },
+                {
+                  "label": "Last 19 Hours",
+                  "value": 19
+                },
+                {
+                  "label": "Last 20 Hours",
+                  "value": 20
+                },
+                {
+                  "label": "Last 21 Hours",
+                  "value": 21
+                },
+                {
+                  "label": "Last 22 Hours",
+                  "value": 22
+                },
+                {
+                  "label": "Last 23 Hours",
+                  "value": 23
+                },
+                {
+                  "label": "Last 24 Hours",
+                  "value": 24
+                }
               ],
               "search": {
                 "enabled": false
@@ -211,7 +294,7 @@
           "position.display": {
             "binding": {
               "config": {
-                "expression": "len({view.custom.selectedPens}) = 0"
+                "expression": "try(len({view.custom.selectedPens}), 0) = 0"
               },
               "type": "expr"
             }
@@ -238,7 +321,7 @@
           "position.display": {
             "binding": {
               "config": {
-                "expression": "len({view.custom.selectedPens}) > 0"
+                "expression": "try(len({view.custom.selectedPens}), 0) > 0"
               },
               "type": "expr"
             }
@@ -371,7 +454,7 @@
         "binding": {
           "config": {
             "struct": {
-              "tagPath": "\"No TagPath: \""
+              "tagPath": ""
             },
             "waitOnAll": true
           },
@@ -381,7 +464,15 @@
               "type": "script"
             }
           ],
-          "type": "expr-struct"
+          "type": "expr-struct",
+          "overlays": {
+            "bad": false,
+            "error": false,
+            "pending": false,
+            "stale": false,
+            "unknown": false,
+            "disabled": false
+          }
         }
       },
       "meta.contextMenu.enabled": {
