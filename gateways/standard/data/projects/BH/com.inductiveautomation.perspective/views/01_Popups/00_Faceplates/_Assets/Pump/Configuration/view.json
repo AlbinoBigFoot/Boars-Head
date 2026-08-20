@@ -1,0 +1,146 @@
+{
+  "custom": {},
+  "params": {
+    "hiddenTags": "",
+    "tagPath": ""
+  },
+  "propConfig": {
+    "params.hiddenTags": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 480,
+      "width": 420
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Feedback"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.params.tagPath": {
+            "binding": {
+              "config": {
+                "path": "view.params.tagPath"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "params": {
+            "rowsJson": "[{\"leaf\":\"Cfg_HasRunFdbk\",\"kind\":\"checkbox\",\"label\":\"Motor has run feedback\"}]",
+            "title": "Feedback"
+          },
+          "path": "01_Popups/00_Faceplates/_Assets/Configuration/ConfigSection"
+        },
+        "type": "ia.display.view"
+      },
+      {
+        "meta": {
+          "name": "Behavior"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.params.tagPath": {
+            "binding": {
+              "config": {
+                "path": "view.params.tagPath"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "params": {
+            "rowsJson": "[{\"leaf\":\"Cfg_PCmdClear\",\"kind\":\"checkbox\",\"label\":\"Clear Program commands upon receipt\"},{\"leaf\":\"Cfg_OCmdResets\",\"kind\":\"checkbox\",\"label\":\"Operator command resets fault\"},{\"leaf\":\"AutoEN\",\"kind\":\"checkbox\",\"label\":\"Auto enable\"}]",
+            "title": "Behavior"
+          },
+          "path": "01_Popups/00_Faceplates/_Assets/Configuration/ConfigSection"
+        },
+        "type": "ia.display.view"
+      },
+      {
+        "meta": {
+          "name": "ObjectNav"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.params.tagPath": {
+            "binding": {
+              "config": {
+                "path": "view.params.tagPath"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "params": {
+            "rowsJson": "[{\"leaf\":\"Cfg_HasPermObj\",\"kind\":\"checkbox\",\"label\":\"Enable navigation to permissive object\"},{\"leaf\":\"Cfg_HasIntlkObj\",\"kind\":\"checkbox\",\"label\":\"Enable navigation to interlock object\"},{\"leaf\":\"Cfg_HasRunTimeObj\",\"kind\":\"checkbox\",\"label\":\"Enable navigation to runtime object\"}]",
+            "title": "Object Navigation"
+          },
+          "path": "01_Popups/00_Faceplates/_Assets/Configuration/ConfigSection"
+        },
+        "type": "ia.display.view"
+      },
+      {
+        "meta": {
+          "name": "Timing"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.params.tagPath": {
+            "binding": {
+              "config": {
+                "path": "view.params.tagPath"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "params": {
+            "rowsJson": "[{\"leaf\":\"Fail_Timer_PRE\",\"kind\":\"numeric\",\"label\":\"Fail to start delay\"},{\"leaf\":\"Cfg_FailToStopT\",\"kind\":\"numeric\",\"label\":\"Fail to stop delay\"}]",
+            "title": "Timing (sec)"
+          },
+          "path": "01_Popups/00_Faceplates/_Assets/Configuration/ConfigSection"
+        },
+        "type": "ia.display.view"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "gap": "8px",
+        "height": "100%",
+        "minHeight": 0,
+        "overflowX": "hidden",
+        "overflowY": "auto",
+        "padding": "4px"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

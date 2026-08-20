@@ -252,6 +252,12 @@ def _demoValue(name, dataType, tagPath=None):
 		return 10
 	if n == "Cfg_SimFdbkT":
 		return 2
+	if n in ("Min_Runtime_Set",):
+		return 120.0
+	if n in ("Cfg_FailToStartT", "Fail_Timer_PRE"):
+		return 30.0
+	if n == "Cfg_FailToStopT":
+		return 15.0
 
 	# Valve ownership modes (P_ValveSO Sts_Oper/Prog/Maint) — default Operator so
 	# Open/Close are usable; mutual exclusive with PROG/MAINT.
@@ -269,7 +275,7 @@ def _demoValue(name, dataType, tagPath=None):
 		return False
 
 	# Ready / not-ready / perm for Valve Controls (FT Home + Diagnostics).
-	if n in ("PermOK", "Rdy_Open", "Rdy_Close"):
+	if n in ("PermOK", "Rdy_Open", "Rdy_Close", "Rdy_Start", "Rdy_Stop", "Rdy_ResetAckAll"):
 		return True
 	if n.startswith("Nrdy_"):
 		return False
@@ -305,7 +311,8 @@ def _demoValue(name, dataType, tagPath=None):
 	# Discrete alarm bits — all clear for a clean SIM demo.
 	if n in (
 		"Alm", "Failed", "Cutout", "Fault",
-		"Alm_FailToStart", "Alm_IOFault", "Sts_FailToStart",
+		"Alm_FailToStart", "Alm_FailToStop", "Alm_IOFault", "Alm_IntlkTrip",
+		"Sts_FailToStart", "Sts_FailToStop",
 		"HH", "LL", "H", "L", "LSH", "LSL",
 		"Hi", "Lo", "HiHi", "LoLo", "Fail",
 	):
@@ -557,14 +564,14 @@ def toMemory(tagPaths=None):
 	seedPaths = []
 	seedVals = []
 	seedNames = set([
-		"Rung", "Status", "Val_Sts", "Comm", "Started", "AutoEN",
+		"Rung", "Status", "Comm", "Started", "AutoEN",
 		"Alm", "Failed", "Cutout", "Alm_FailToStart", "Alm_IOFault", "Sts_FailToStart",
 		"Amps", "FLA", "SVP", "Level", "Pressure", "Value",
 		"Color", "CP_Mode", "SV_Mode",
 		"Hi", "Lo", "HiHi", "LoLo", "Fail", "LSH", "LSL", "H", "L", "HH", "LL",
 		# Valve faceplate Controls: modes, LS, travel timer, ready / not-ready
 		"OPER", "PROG", "MAINT", "TravelTime", "OpenLS", "ClosedLS",
-		"PermOK", "Rdy_Open", "Rdy_Close",
+		"PermOK", "Rdy_Open", "Rdy_Close", "Rdy_Start", "Rdy_Stop",
 		"Nrdy_Disabled", "Nrdy_CfgErr", "Nrdy_Intlk", "Nrdy_Perm",
 		"Nrdy_IOFault", "Nrdy_Fail", "Nrdy_NoMode",
 		"Cfg_HasClosedLS", "Cfg_HasOpenLS", "Cfg_FailOpen",

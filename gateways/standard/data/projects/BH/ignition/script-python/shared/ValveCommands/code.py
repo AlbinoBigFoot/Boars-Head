@@ -93,6 +93,64 @@ def _simFeedback(base, opened):
 	_write(paths, vals, audit=False)
 
 
+def _simPumpRun(base, running):
+	"""Drive P_Motor status so overview impeller + faceplate banner follow Start/Stop."""
+	# Val_Sts: 1=STOPPED, 2=RUNNING (see Rcp1Simulate._demoValue / Devices/Pump)
+	status = 2 if running else 1
+	_write(
+		[
+			base + "/Val_Sts/Value",
+			base + "/Sts_Running/Value",
+			base + "/Sts_Stopped/Value",
+		],
+		[status, bool(running), not bool(running)],
+		audit=False,
+	)
+
+
+def startPump(tagPath):
+	base = str(tagPath or "").strip()
+	if not base:
+		return
+	_write(
+		[base + "/OCmd_Start/Value", base + "/OCmd_Stop/Value"],
+		[True, False],
+		label="Start pump",
+		viewName="Faceplate/Controls",
+	)
+	_simPumpRun(base, True)
+
+
+def stopPump(tagPath):
+	base = str(tagPath or "").strip()
+	if not base:
+		return
+	_write(
+		[base + "/OCmd_Stop/Value", base + "/OCmd_Start/Value"],
+		[True, False],
+		label="Stop pump",
+		viewName="Faceplate/Controls",
+	)
+	_simPumpRun(base, False)
+
+
+def resetPump(tagPath):
+	base = str(tagPath or "").strip()
+	if not base:
+		return
+	_write([base + "/OCmd_Reset/Value"], [True], label="Reset pump", viewName="Faceplate/Controls")
+	_write(
+		[
+			base + "/Sts_FailToStart/Value",
+			base + "/Sts_FailToStop/Value",
+			base + "/Alm_FailToStart/Value",
+			base + "/Alm_FailToStop/Value",
+		],
+		[False, False, False, False],
+		audit=False,
+	)
+
+
 def openValve(tagPath, valveType="MO"):
 	"""Open command. SO → Cmd + Cmd_Open; MO → pulse Cmd_Open + SIM feedback."""
 	base = str(tagPath or "").strip()
@@ -141,11 +199,12 @@ def writeTag(tagPath, value):
 	_write([path], [value])
 
 
-def _applyDisabled(base, disabled):
+def _applyDisabled(base, disabled, sts_leaf="Disabled"):
 	"""SIM has no PLC enable/disable logic — drive Disabled / Nrdy_Disabled locally."""
 	flag = bool(disabled)
+	leaf = str(sts_leaf or "Disabled").strip() or "Disabled"
 	_write(
-		[base + "/Disabled/Value"],
+		[base + "/" + leaf + "/Value"],
 		[flag],
 		label="Disable device" if flag else "Enable device",
 		viewName="Faceplate/Interlocks",
@@ -160,20 +219,22 @@ def _readBool(path, default=False):
 		return default
 
 
-def enableDevice(tagPath):
+def enableDevice(tagPath, cmd_leaf="Cmd_Enable", sts_leaf="Disabled"):
 	base = str(tagPath or "").strip()
 	if not base:
 		return
-	_write([base + "/Cmd_Enable/Value"], [True], audit=False)
-	_applyDisabled(base, False)
+	cmd = str(cmd_leaf or "Cmd_Enable").strip() or "Cmd_Enable"
+	_write([base + "/" + cmd + "/Value"], [True], audit=False)
+	_applyDisabled(base, False, sts_leaf=sts_leaf)
 
 
-def disableDevice(tagPath):
+def disableDevice(tagPath, cmd_leaf="Cmd_Disable", sts_leaf="Disabled"):
 	base = str(tagPath or "").strip()
 	if not base:
 		return
-	_write([base + "/Cmd_Disable/Value"], [True], audit=False)
-	_applyDisabled(base, True)
+	cmd = str(cmd_leaf or "Cmd_Disable").strip() or "Cmd_Disable"
+	_write([base + "/" + cmd + "/Value"], [True], audit=False)
+	_applyDisabled(base, True, sts_leaf=sts_leaf)
 
 
 def bypassActive(tagPath):
@@ -183,8 +244,8 @@ def bypassActive(tagPath):
 	return _readBool(base + "/Interlock/Sts_BypActive/Value")
 
 
-def bypassDevice(tagPath, active=None):
-	"""Pulse Cmd_Bypass and set Interlock/Sts_BypActive. active=None toggles."""
+def bypassDevice(tagPath, active=None, cmd_leaf="Cmd_Bypass"):
+	"""Pulse Cmd_Bypass (or OCmd_Bypass) and set Interlock/Sts_BypActive. active=None toggles."""
 	base = str(tagPath or "").strip()
 	if not base:
 		return
@@ -192,7 +253,8 @@ def bypassDevice(tagPath, active=None):
 		active = not bypassActive(base)
 	else:
 		active = bool(active)
-	_write([base + "/Cmd_Bypass/Value"], [True], audit=False)
+	cmd = str(cmd_leaf or "Cmd_Bypass").strip() or "Cmd_Bypass"
+	_write([base + "/" + cmd + "/Value"], [True], audit=False)
 	_write(
 		[base + "/Interlock/Sts_BypActive/Value"],
 		[active],

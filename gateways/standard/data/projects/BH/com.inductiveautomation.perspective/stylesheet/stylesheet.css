@@ -3498,6 +3498,39 @@ body:has(.psc-animations-off) .container-fade-in {
 	font-weight: 700;
 }
 
+.psc-faceplate-cmd-row-fill {
+	width: 100%;
+	align-items: stretch;
+}
+.psc-faceplate-cmd-row-fill .ia_button {
+	flex: 1 1 0;
+	min-height: 40px;
+	height: 40px;
+	font-size: 13px;
+	pointer-events: auto !important;
+}
+
+.psc-faceplate-status-banner {
+	align-self: flex-start;
+	width: auto !important;
+	min-width: 112px;
+	min-height: 28px;
+	padding: 4px 12px;
+	font-size: 13px;
+	letter-spacing: 0.04em;
+	text-align: center;
+	box-sizing: border-box;
+}
+.psc-Refridgeration_STS.psc-sts-RUN,
+.psc-Refridgeration_STS.psc-sts-RUNNING {
+	background-color: var(--status-idle);
+	color: #ffffff;
+}
+.psc-Refridgeration_STS.psc-sts-STARTING,
+.psc-Refridgeration_STS.psc-sts-STOPPING {
+	background-color: var(--status-level-warning);
+	color: #212121;
+}
 .psc-faceplate-ls-on {
 	font-weight: 700;
 	color: var(--text);

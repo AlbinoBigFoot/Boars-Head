@@ -452,28 +452,28 @@
         "tags": [
           {
             "metadata": {
-          "shortDescription": "I/O Fault",
-          "longDescription": "P_ValveSO Alm_IOFault",
-          "states": [
-            {
-              "label": "Off",
-              "value": 0
+              "shortDescription": "I/O Fault",
+              "longDescription": "P_ValveSO Alm_IOFault",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
             },
-            {
-              "label": "On",
-              "value": 1
-            }
-          ]
-        },
-        "alarms": [
-          {
-            "mode": "WhenTrue",
-            "name": "IO Fault",
-            "notes": "Alm_IOFault",
-            "priority": "High",
-            "enabled": true
-          }
-        ],
+            "alarms": [
+              {
+                "mode": "WhenTrue",
+                "name": "IO Fault",
+                "notes": "Alm_IOFault",
+                "priority": "High",
+                "enabled": true
+              }
+            ],
             "value": false,
             "name": "Value",
             "tagType": "AtomicTag"
@@ -491,28 +491,28 @@
         "tags": [
           {
             "metadata": {
-          "shortDescription": "Full Stall",
-          "longDescription": "P_ValveSO Alm_FullStall",
-          "states": [
-            {
-              "label": "Off",
-              "value": 0
+              "shortDescription": "Full Stall",
+              "longDescription": "P_ValveSO Alm_FullStall",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
             },
-            {
-              "label": "On",
-              "value": 1
-            }
-          ]
-        },
-        "alarms": [
-          {
-            "mode": "WhenTrue",
-            "name": "Full Stall",
-            "notes": "Alm_FullStall",
-            "priority": "High",
-            "enabled": true
-          }
-        ],
+            "alarms": [
+              {
+                "mode": "WhenTrue",
+                "name": "Full Stall",
+                "notes": "Alm_FullStall",
+                "priority": "High",
+                "enabled": true
+              }
+            ],
             "value": false,
             "name": "Value",
             "tagType": "AtomicTag"
@@ -530,28 +530,28 @@
         "tags": [
           {
             "metadata": {
-          "shortDescription": "Transit Stall",
-          "longDescription": "P_ValveSO Alm_TransitStall",
-          "states": [
-            {
-              "label": "Off",
-              "value": 0
+              "shortDescription": "Transit Stall",
+              "longDescription": "P_ValveSO Alm_TransitStall",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
             },
-            {
-              "label": "On",
-              "value": 1
-            }
-          ]
-        },
-        "alarms": [
-          {
-            "mode": "WhenTrue",
-            "name": "Transit Stall",
-            "notes": "Alm_TransitStall",
-            "priority": "High",
-            "enabled": true
-          }
-        ],
+            "alarms": [
+              {
+                "mode": "WhenTrue",
+                "name": "Transit Stall",
+                "notes": "Alm_TransitStall",
+                "priority": "High",
+                "enabled": true
+              }
+            ],
             "value": false,
             "name": "Value",
             "tagType": "AtomicTag"
@@ -569,28 +569,28 @@
         "tags": [
           {
             "metadata": {
-          "shortDescription": "Interlock Trip",
-          "longDescription": "P_ValveSO Alm_IntlkTrip",
-          "states": [
-            {
-              "label": "Off",
-              "value": 0
+              "shortDescription": "Interlock Trip",
+              "longDescription": "P_ValveSO Alm_IntlkTrip",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
             },
-            {
-              "label": "On",
-              "value": 1
-            }
-          ]
-        },
-        "alarms": [
-          {
-            "mode": "WhenTrue",
-            "name": "Interlock Trip",
-            "notes": "Alm_IntlkTrip",
-            "priority": "Medium",
-            "enabled": true
-          }
-        ],
+            "alarms": [
+              {
+                "mode": "WhenTrue",
+                "name": "Interlock Trip",
+                "notes": "Alm_IntlkTrip",
+                "priority": "Medium",
+                "enabled": true
+              }
+            ],
             "value": false,
             "name": "Value",
             "tagType": "AtomicTag"
@@ -2621,6 +2621,126 @@
     "tags": [
       {
         "metadata": {
+          "shortDescription": "Ack fail to start",
+          "longDescription": "P_Motor Ack_FailToStart"
+        },
+        "name": "Ack_FailToStart",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Ack fail to start",
+              "longDescription": "P_Motor Ack_FailToStart",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Ack fail to stop",
+          "longDescription": "P_Motor Ack_FailToStop"
+        },
+        "name": "Ack_FailToStop",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Ack fail to stop",
+              "longDescription": "P_Motor Ack_FailToStop",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Ack I/O fault",
+          "longDescription": "P_Motor Ack_IOFault"
+        },
+        "name": "Ack_IOFault",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Ack I/O fault",
+              "longDescription": "P_Motor Ack_IOFault",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Ack interlock trip",
+          "longDescription": "P_Motor Ack_IntlkTrip"
+        },
+        "name": "Ack_IntlkTrip",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Ack interlock trip",
+              "longDescription": "P_Motor Ack_IntlkTrip",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
           "shortDescription": "Fail to Start alarm",
           "longDescription": "P_Motor Alm_FailToStart"
         },
@@ -2655,6 +2775,45 @@
             "value": false,
             "name": "Value",
             "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Fail to Stop alarm",
+          "longDescription": "P_Motor Alm_FailToStop"
+        },
+        "name": "Alm_FailToStop",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Fail to Stop alarm",
+              "longDescription": "P_Motor Alm_FailToStop",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "alarms": [
+              {
+                "mode": "WhenTrue",
+                "name": "Fail to Stop",
+                "notes": "Alm_FailToStop",
+                "priority": "High",
+                "enabled": true
+              }
+            ]
           }
         ]
       },
@@ -2699,6 +2858,45 @@
       },
       {
         "metadata": {
+          "shortDescription": "Interlock trip alarm",
+          "longDescription": "P_Motor Alm_IntlkTrip"
+        },
+        "name": "Alm_IntlkTrip",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Interlock trip alarm",
+              "longDescription": "P_Motor Alm_IntlkTrip",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "alarms": [
+              {
+                "mode": "WhenTrue",
+                "name": "Interlock Trip",
+                "notes": "Alm_IntlkTrip",
+                "priority": "High",
+                "enabled": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "metadata": {
           "longDescription": "Auto enable",
           "shortDescription": "Auto enable"
         },
@@ -2722,6 +2920,236 @@
               ]
             },
             "value": true,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Fail to stop delay (s)",
+          "longDescription": "P_Motor Cfg_FailToStopT"
+        },
+        "name": "Cfg_FailToStopT",
+        "typeId": "_Root/Analog",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Fail to stop delay (s)",
+              "longDescription": "P_Motor Cfg_FailToStopT"
+            },
+            "value": 0.0,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Has interlock object",
+          "longDescription": "P_Motor Cfg_HasIntlkObj"
+        },
+        "name": "Cfg_HasIntlkObj",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Has interlock object",
+              "longDescription": "P_Motor Cfg_HasIntlkObj",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Has permissive object",
+          "longDescription": "P_Motor Cfg_HasPermObj"
+        },
+        "name": "Cfg_HasPermObj",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Has permissive object",
+              "longDescription": "P_Motor Cfg_HasPermObj",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Has run feedback",
+          "longDescription": "P_Motor Cfg_HasRunFdbk"
+        },
+        "name": "Cfg_HasRunFdbk",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Has run feedback",
+              "longDescription": "P_Motor Cfg_HasRunFdbk",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Has runtime object",
+          "longDescription": "P_Motor Cfg_HasRunTimeObj"
+        },
+        "name": "Cfg_HasRunTimeObj",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Has runtime object",
+              "longDescription": "P_Motor Cfg_HasRunTimeObj",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Oper cmd resets fault",
+          "longDescription": "P_Motor Cfg_OCmdResets"
+        },
+        "name": "Cfg_OCmdResets",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Oper cmd resets fault",
+              "longDescription": "P_Motor Cfg_OCmdResets",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Override perm/intlk",
+          "longDescription": "P_Motor Cfg_OvrdPermIntlk"
+        },
+        "name": "Cfg_OvrdPermIntlk",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Override perm/intlk",
+              "longDescription": "P_Motor Cfg_OvrdPermIntlk",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Clear program cmds",
+          "longDescription": "P_Motor Cfg_PCmdClear"
+        },
+        "name": "Cfg_PCmdClear",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Clear program cmds",
+              "longDescription": "P_Motor Cfg_PCmdClear",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
             "name": "Value",
             "tagType": "AtomicTag"
           }
@@ -2766,6 +3194,66 @@
       },
       {
         "metadata": {
+          "shortDescription": "Maintenance disable",
+          "longDescription": "P_Motor MCmd_Disable"
+        },
+        "name": "MCmd_Disable",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Maintenance disable",
+              "longDescription": "P_Motor MCmd_Disable",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Maintenance enable",
+          "longDescription": "P_Motor MCmd_Enable"
+        },
+        "name": "MCmd_Enable",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Maintenance enable",
+              "longDescription": "P_Motor MCmd_Enable",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
           "shortDescription": "Min runtime set",
           "longDescription": "Min runtime set"
         },
@@ -2794,6 +3282,246 @@
       },
       {
         "metadata": {
+          "shortDescription": "Not ready: config error",
+          "longDescription": "P_Motor Nrdy_CfgErr"
+        },
+        "name": "Nrdy_CfgErr",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Not ready: config error",
+              "longDescription": "P_Motor Nrdy_CfgErr",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Not ready: disabled",
+          "longDescription": "P_Motor Nrdy_Disabled"
+        },
+        "name": "Nrdy_Disabled",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Not ready: disabled",
+              "longDescription": "P_Motor Nrdy_Disabled",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Not ready: fail",
+          "longDescription": "P_Motor Nrdy_Fail"
+        },
+        "name": "Nrdy_Fail",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Not ready: fail",
+              "longDescription": "P_Motor Nrdy_Fail",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Not ready: I/O fault",
+          "longDescription": "P_Motor Nrdy_IOFault"
+        },
+        "name": "Nrdy_IOFault",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Not ready: I/O fault",
+              "longDescription": "P_Motor Nrdy_IOFault",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Not ready: interlock",
+          "longDescription": "P_Motor Nrdy_Intlk"
+        },
+        "name": "Nrdy_Intlk",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Not ready: interlock",
+              "longDescription": "P_Motor Nrdy_Intlk",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Not ready: no mode",
+          "longDescription": "P_Motor Nrdy_NoMode"
+        },
+        "name": "Nrdy_NoMode",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Not ready: no mode",
+              "longDescription": "P_Motor Nrdy_NoMode",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Not ready: permissive",
+          "longDescription": "P_Motor Nrdy_Perm"
+        },
+        "name": "Nrdy_Perm",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Not ready: permissive",
+              "longDescription": "P_Motor Nrdy_Perm",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Bypass command",
+          "longDescription": "P_Motor OCmd_Bypass"
+        },
+        "name": "OCmd_Bypass",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Bypass command",
+              "longDescription": "P_Motor OCmd_Bypass",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
           "shortDescription": "Operator Reset",
           "longDescription": "P_Motor OCmd_Reset"
         },
@@ -2805,6 +3533,36 @@
             "metadata": {
               "shortDescription": "Operator Reset",
               "longDescription": "P_Motor OCmd_Reset",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Reset / ack all",
+          "longDescription": "P_Motor OCmd_ResetAckAll"
+        },
+        "name": "OCmd_ResetAckAll",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Reset / ack all",
+              "longDescription": "P_Motor OCmd_ResetAckAll",
               "states": [
                 {
                   "label": "Off",
@@ -2884,6 +3642,186 @@
       },
       {
         "metadata": {
+          "shortDescription": "Override input (Inp_Ovrd)",
+          "longDescription": "P_Motor Ovrd"
+        },
+        "name": "Ovrd",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Override input (Inp_Ovrd)",
+              "longDescription": "P_Motor Ovrd",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Permissive OK (Inp_PermOK)",
+          "longDescription": "P_Motor PermOK"
+        },
+        "name": "PermOK",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Permissive OK (Inp_PermOK)",
+              "longDescription": "P_Motor PermOK",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Ready reset-ack-all",
+          "longDescription": "P_Motor Rdy_ResetAckAll"
+        },
+        "name": "Rdy_ResetAckAll",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Ready reset-ack-all",
+              "longDescription": "P_Motor Rdy_ResetAckAll",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Ready to start",
+          "longDescription": "P_Motor Rdy_Start"
+        },
+        "name": "Rdy_Start",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Ready to start",
+              "longDescription": "P_Motor Rdy_Start",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": true,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Ready to stop",
+          "longDescription": "P_Motor Rdy_Stop"
+        },
+        "name": "Rdy_Stop",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Ready to stop",
+              "longDescription": "P_Motor Rdy_Stop",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": true,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Disabled by maintenance",
+          "longDescription": "P_Motor Sts_Disabled"
+        },
+        "name": "Sts_Disabled",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Disabled by maintenance",
+              "longDescription": "P_Motor Sts_Disabled",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
           "shortDescription": "Fail to Start status",
           "longDescription": "P_Motor Sts_FailToStart"
         },
@@ -2915,6 +3853,66 @@
                 "enabled": true
               }
             ],
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Fail to stop status",
+          "longDescription": "P_Motor Sts_FailToStop"
+        },
+        "name": "Sts_FailToStop",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Fail to stop status",
+              "longDescription": "P_Motor Sts_FailToStop",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "I/O fault status",
+          "longDescription": "P_Motor Sts_IOFault"
+        },
+        "name": "Sts_IOFault",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "I/O fault status",
+              "longDescription": "P_Motor Sts_IOFault",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
             "value": false,
             "name": "Value",
             "tagType": "AtomicTag"
@@ -3024,6 +4022,36 @@
             "metadata": {
               "shortDescription": "Running",
               "longDescription": "P_Motor Sts_Running",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "value": false,
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Stopped status",
+          "longDescription": "P_Motor Sts_Stopped"
+        },
+        "name": "Sts_Stopped",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Stopped status",
+              "longDescription": "P_Motor Sts_Stopped",
               "states": [
                 {
                   "label": "Off",

@@ -75,9 +75,11 @@
       "direction": "column",
       "style": {
         "classes": "",
-        "overflow": "auto",
+        "overflow": "hidden",
         "padding": "4px",
-        "gap": "8px"
+        "gap": "8px",
+        "minHeight": 0,
+        "boxSizing": "border-box"
       }
     },
     "children": [
@@ -122,16 +124,25 @@
           "position.display": {
             "binding": {
               "config": {
-                "expression": "qualityOf(tag({view.params.tagPath} + '/Alm_FailToStart/Value')) = 'Good' || qualityOf(tag({view.params.tagPath} + '/Alm_IOFault/Value')) = 'Good' || qualityOf(tag({view.params.tagPath} + '/Sts_FailToStart/Value')) = 'Good'"
+                "expression": "try(isGood(tag({view.params.tagPath} + '/Alm_FailToStart/Value')), false) || try(isGood(tag({view.params.tagPath} + '/Alm_FailToStop/Value')), false) || try(isGood(tag({view.params.tagPath} + '/Alm_IOFault/Value')), false) || try(isGood(tag({view.params.tagPath} + '/Alm_IntlkTrip/Value')), false) || try(isGood(tag({view.params.tagPath} + '/Sts_FailToStart/Value')), false) || try(isGood(tag({view.params.tagPath} + '/Sts_IOFault/Value')), false)"
               },
-              "type": "expr"
+              "type": "expr",
+              "overlays": {
+                "bad": false,
+                "error": false,
+                "pending": false,
+                "stale": false,
+                "unknown": false,
+                "disabled": false
+              }
             }
           }
         },
         "props": {
           "direction": "column",
           "style": {
-            "classes": "faceplate-section faceplate-section-card"
+            "classes": "faceplate-section faceplate-section-card",
+            "overflow": "visible"
           }
         },
         "children": [
@@ -156,8 +167,13 @@
               "direction": "row",
               "style": {
                 "gap": "8px",
-                "flexWrap": "wrap"
-              }
+                "classes": "faceplate-fault-chips",
+                "overflow": "visible",
+                "width": "100%"
+              },
+              "wrap": "wrap",
+              "alignItems": "stretch",
+              "justify": "flex-start"
             },
             "children": [
               {
@@ -166,8 +182,9 @@
                   "name": "FailToStartAlm"
                 },
                 "position": {
-                  "basis": "120px",
-                  "shrink": 0
+                  "basis": "108px",
+                  "shrink": 0,
+                  "grow": 0
                 },
                 "props": {
                   "direction": "column",
@@ -198,17 +215,33 @@
                       "props.text": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(coalesce(tag({view.params.tagPath} + '/Alm_FailToStart/Value'), false),\n\t\t'ACTIVE', 'OK'))"
+                            "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_FailToStart/Value')), null, tag({view.params.tagPath} + '/Alm_FailToStart/Value')), null), false),\n\t\t'ACTIVE', 'OK'))"
                           },
-                          "type": "expr"
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
                         }
                       },
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(tag({view.params.tagPath} + '/Alm_FailToStart/Value'), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok'))"
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_FailToStart/Value')), null, tag({view.params.tagPath} + '/Alm_FailToStart/Value')), null), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok'))"
                           },
-                          "type": "expr"
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
                         }
                       }
                     },
@@ -224,11 +257,90 @@
               {
                 "type": "ia.container.flex",
                 "meta": {
-                  "name": "IOFault"
+                  "name": "FailToStopAlm"
                 },
                 "position": {
-                  "basis": "120px",
-                  "shrink": 0
+                  "basis": "108px",
+                  "shrink": 0,
+                  "grow": 0
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "classes": "faceplate-fault-chip",
+                    "gap": "2px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Code"
+                    },
+                    "props": {
+                      "text": "FTP",
+                      "style": {
+                        "classes": "faceplate-fault-code font-label"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "State"
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_FailToStop/Value')), null, tag({view.params.tagPath} + '/Alm_FailToStop/Value')), null), false),\n\t\t'ACTIVE', 'OK'))"
+                          },
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_FailToStop/Value')), null, tag({view.params.tagPath} + '/Alm_FailToStop/Value')), null), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok'))"
+                          },
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      }
+                    },
+                    "props": {
+                      "text": "OK",
+                      "style": {
+                        "classes": "faceplate-fault-state faceplate-fault-ok"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "IOFaultAlm"
+                },
+                "position": {
+                  "basis": "108px",
+                  "shrink": 0,
+                  "grow": 0
                 },
                 "props": {
                   "direction": "column",
@@ -259,17 +371,111 @@
                       "props.text": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(coalesce(tag({view.params.tagPath} + '/Alm_IOFault/Value'), false),\n\t\t'ACTIVE', 'OK'))"
+                            "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_IOFault/Value')), null, tag({view.params.tagPath} + '/Alm_IOFault/Value')), null), false),\n\t\t'ACTIVE', 'OK'))"
                           },
-                          "type": "expr"
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
                         }
                       },
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(tag({view.params.tagPath} + '/Alm_IOFault/Value'), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok'))"
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_IOFault/Value')), null, tag({view.params.tagPath} + '/Alm_IOFault/Value')), null), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok'))"
                           },
-                          "type": "expr"
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      }
+                    },
+                    "props": {
+                      "text": "OK",
+                      "style": {
+                        "classes": "faceplate-fault-state faceplate-fault-ok"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "IntlkTripAlm"
+                },
+                "position": {
+                  "basis": "108px",
+                  "shrink": 0,
+                  "grow": 0
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "classes": "faceplate-fault-chip",
+                    "gap": "2px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Code"
+                    },
+                    "props": {
+                      "text": "INTLK",
+                      "style": {
+                        "classes": "faceplate-fault-code font-label"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "State"
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_IntlkTrip/Value')), null, tag({view.params.tagPath} + '/Alm_IntlkTrip/Value')), null), false),\n\t\t'ACTIVE', 'OK'))"
+                          },
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_IntlkTrip/Value')), null, tag({view.params.tagPath} + '/Alm_IntlkTrip/Value')), null), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok'))"
+                          },
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
                         }
                       }
                     },
@@ -288,8 +494,9 @@
                   "name": "FailToStartSts"
                 },
                 "position": {
-                  "basis": "120px",
-                  "shrink": 0
+                  "basis": "108px",
+                  "shrink": 0,
+                  "grow": 0
                 },
                 "props": {
                   "direction": "column",
@@ -320,17 +527,111 @@
                       "props.text": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(coalesce(tag({view.params.tagPath} + '/Sts_FailToStart/Value'), false),\n\t\t'ACTIVE', 'OK'))"
+                            "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Sts_FailToStart/Value')), null, tag({view.params.tagPath} + '/Sts_FailToStart/Value')), null), false),\n\t\t'ACTIVE', 'OK'))"
                           },
-                          "type": "expr"
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
                         }
                       },
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(tag({view.params.tagPath} + '/Sts_FailToStart/Value'), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok'))"
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Sts_FailToStart/Value')), null, tag({view.params.tagPath} + '/Sts_FailToStart/Value')), null), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok'))"
                           },
-                          "type": "expr"
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      }
+                    },
+                    "props": {
+                      "text": "OK",
+                      "style": {
+                        "classes": "faceplate-fault-state faceplate-fault-ok"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "IOFaultSts"
+                },
+                "position": {
+                  "basis": "108px",
+                  "shrink": 0,
+                  "grow": 0
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "classes": "faceplate-fault-chip",
+                    "gap": "2px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Code"
+                    },
+                    "props": {
+                      "text": "IO-STS",
+                      "style": {
+                        "classes": "faceplate-fault-code font-label"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "State"
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Sts_IOFault/Value')), null, tag({view.params.tagPath} + '/Sts_IOFault/Value')), null), false),\n\t\t'FAULT', 'OK'))"
+                          },
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Sts_IOFault/Value')), null, tag({view.params.tagPath} + '/Sts_IOFault/Value')), null), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok'))"
+                          },
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
                         }
                       }
                     },
@@ -375,27 +676,53 @@
             }
           },
           {
-            "type": "ia.display.view",
+            "type": "ia.display.label",
             "meta": {
-              "name": "StatusInd"
+              "name": "StatusBanner"
             },
             "position": {
-              "shrink": 0
-            },
-            "props": {
-              "path": "03_Elements/01_Status/StatusIndicator",
-              "params": {
-                "tagPath": ""
-              }
+              "shrink": 0,
+              "grow": 0
             },
             "propConfig": {
-              "props.params.tagPath": {
+              "props.text": {
                 "binding": {
                   "config": {
-                    "expression": "if({view.params.tagPath} = '', '', {view.params.tagPath} + '/Val_Sts')"
+                    "expression": "if({view.params.tagPath} = '', '\u2014',\n\tif(try(isBadOrError(tag({view.params.tagPath} + '/Val_Sts/Value')), true),\n\t\t'COMM LOSS',\n\t\tif(\n\t\t\tcoalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_FailToStart/Value')), null, tag({view.params.tagPath} + '/Alm_FailToStart/Value')), null), false) ||\n\t\t\tcoalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_FailToStop/Value')), null, tag({view.params.tagPath} + '/Alm_FailToStop/Value')), null), false) ||\n\t\t\tcoalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_IOFault/Value')), null, tag({view.params.tagPath} + '/Alm_IOFault/Value')), null), false) ||\n\t\t\tcoalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_IntlkTrip/Value')), null, tag({view.params.tagPath} + '/Alm_IntlkTrip/Value')), null), false) ||\n\t\t\tcoalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Sts_FailToStart/Value')), null, tag({view.params.tagPath} + '/Sts_FailToStart/Value')), null), false) ||\n\t\t\tcoalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Sts_FailToStop/Value')), null, tag({view.params.tagPath} + '/Sts_FailToStop/Value')), null), false),\n\t\t\t'FAULTED',\n\t\t\tcase(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Val_Sts/Value')), null, tag({view.params.tagPath} + '/Val_Sts/Value')), null), 0),\n\t\t\t\t1, 'STOPPED',\n\t\t\t\t2, 'RUNNING',\n\t\t\t\t7, 'STOPPING',\n\t\t\t\t8, 'STARTING',\n\t\t\t\t33, 'DISABLED',\n\t\t\t\t'UNKNOWN'))))"
                   },
-                  "type": "expr"
+                  "type": "expr",
+                  "overlays": {
+                    "bad": false,
+                    "error": false,
+                    "pending": false,
+                    "stale": false,
+                    "unknown": false,
+                    "disabled": false
+                  }
                 }
+              },
+              "props.style.classes": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.tagPath} = '', 'Refridgeration_STS faceplate-status-banner',\n\tif(try(isBadOrError(tag({view.params.tagPath} + '/Val_Sts/Value')), true),\n\t\t'Refridgeration_STS sts-COMMLOSS faceplate-status-banner',\n\t\tif(\n\t\t\tcoalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_FailToStart/Value')), null, tag({view.params.tagPath} + '/Alm_FailToStart/Value')), null), false) ||\n\t\t\tcoalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_FailToStop/Value')), null, tag({view.params.tagPath} + '/Alm_FailToStop/Value')), null), false) ||\n\t\t\tcoalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_IOFault/Value')), null, tag({view.params.tagPath} + '/Alm_IOFault/Value')), null), false) ||\n\t\t\tcoalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_IntlkTrip/Value')), null, tag({view.params.tagPath} + '/Alm_IntlkTrip/Value')), null), false) ||\n\t\t\tcoalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Sts_FailToStart/Value')), null, tag({view.params.tagPath} + '/Sts_FailToStart/Value')), null), false) ||\n\t\t\tcoalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Sts_FailToStop/Value')), null, tag({view.params.tagPath} + '/Sts_FailToStop/Value')), null), false),\n\t\t\t'Refridgeration_STS sts-FAULT faceplate-status-banner',\n\t\t\tcase(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Val_Sts/Value')), null, tag({view.params.tagPath} + '/Val_Sts/Value')), null), 0),\n\t\t\t\t1, 'Refridgeration_STS sts-STOP faceplate-status-banner',\n\t\t\t\t2, 'Refridgeration_STS sts-RUN faceplate-status-banner',\n\t\t\t\t7, 'Refridgeration_STS sts-STOPPING faceplate-status-banner',\n\t\t\t\t8, 'Refridgeration_STS sts-STARTING faceplate-status-banner',\n\t\t\t\t33, 'Refridgeration_STS sts-STOP faceplate-status-banner',\n\t\t\t\t'Refridgeration_STS sts-UNKNOWN faceplate-status-banner'))))"
+                  },
+                  "type": "expr",
+                  "overlays": {
+                    "bad": false,
+                    "error": false,
+                    "pending": false,
+                    "stale": false,
+                    "unknown": false,
+                    "disabled": false
+                  }
+                }
+              }
+            },
+            "props": {
+              "text": "\u2014",
+              "style": {
+                "classes": "Refridgeration_STS faceplate-status-banner",
+                "alignSelf": "flex-start"
               }
             }
           },
@@ -407,11 +734,12 @@
             "props": {
               "direction": "row",
               "style": {
-                "classes": "faceplate-cmd-row",
-                "gap": "6px",
-                "flexWrap": "wrap",
-                "marginTop": "8px"
-              }
+                "classes": "faceplate-cmd-row faceplate-cmd-row-fill",
+                "gap": "8px",
+                "marginTop": "8px",
+                "width": "100%"
+              },
+              "alignItems": "stretch"
             },
             "children": [
               {
@@ -420,14 +748,15 @@
                   "name": "BtnStart"
                 },
                 "position": {
-                  "basis": "72px",
-                  "shrink": 0
+                  "grow": 1,
+                  "shrink": 1,
+                  "basis": "0px"
                 },
                 "events": {
                   "component": {
                     "onActionPerformed": {
                       "config": {
-                        "script": "\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tdef _r(p):\n\t\ttry:\n\t\t\tc = system.tag.getConfiguration(p, False)[0]\n\t\t\ts = c.get('sourceTagPath')\n\t\t\treturn str(s) if s else p\n\t\texcept:\n\t\t\treturn p\n\tsystem.tag.writeBlocking([_r(base + '/OCmd_Start/Value')], [True])\n"
+                        "script": "\tif self.session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tshared.ValveCommands.startPump(base)\n"
                       },
                       "scope": "G",
                       "type": "script"
@@ -440,14 +769,41 @@
                       "config": {
                         "expression": "!{session.custom.ReadOnly}"
                       },
-                      "type": "expr"
+                      "type": "expr",
+                      "overlays": {
+                        "bad": false,
+                        "error": false,
+                        "pending": false,
+                        "stale": false,
+                        "unknown": false,
+                        "disabled": false
+                      }
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.tagPath} = '', 'faceplate-cmd-btn font-label',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Sts_Running/Value')), null, tag({view.params.tagPath} + '/Sts_Running/Value')), null), false),\n\t\t'faceplate-cmd-btn faceplate-cmd-btn-active font-label',\n\t\t'faceplate-cmd-btn font-label'))"
+                      },
+                      "type": "expr",
+                      "overlays": {
+                        "bad": false,
+                        "error": false,
+                        "pending": false,
+                        "stale": false,
+                        "unknown": false,
+                        "disabled": false
+                      }
                     }
                   }
                 },
                 "props": {
                   "text": "Start",
                   "style": {
-                    "classes": "faceplate-cmd-btn font-label"
+                    "classes": "faceplate-cmd-btn font-label",
+                    "width": "100%",
+                    "minHeight": "40px",
+                    "height": "40px"
                   },
                   "primary": false
                 }
@@ -458,14 +814,15 @@
                   "name": "BtnStop"
                 },
                 "position": {
-                  "basis": "72px",
-                  "shrink": 0
+                  "grow": 1,
+                  "shrink": 1,
+                  "basis": "0px"
                 },
                 "events": {
                   "component": {
                     "onActionPerformed": {
                       "config": {
-                        "script": "\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tdef _r(p):\n\t\ttry:\n\t\t\tc = system.tag.getConfiguration(p, False)[0]\n\t\t\ts = c.get('sourceTagPath')\n\t\t\treturn str(s) if s else p\n\t\texcept:\n\t\t\treturn p\n\tsystem.tag.writeBlocking([_r(base + '/OCmd_Stop/Value')], [True])\n"
+                        "script": "\tif self.session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tshared.ValveCommands.stopPump(base)\n"
                       },
                       "scope": "G",
                       "type": "script"
@@ -478,14 +835,41 @@
                       "config": {
                         "expression": "!{session.custom.ReadOnly}"
                       },
-                      "type": "expr"
+                      "type": "expr",
+                      "overlays": {
+                        "bad": false,
+                        "error": false,
+                        "pending": false,
+                        "stale": false,
+                        "unknown": false,
+                        "disabled": false
+                      }
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.tagPath} = '', 'faceplate-cmd-btn font-label',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Sts_Stopped/Value')), null, tag({view.params.tagPath} + '/Sts_Stopped/Value')), null), false),\n\t\t'faceplate-cmd-btn faceplate-cmd-btn-active font-label',\n\t\t'faceplate-cmd-btn font-label'))"
+                      },
+                      "type": "expr",
+                      "overlays": {
+                        "bad": false,
+                        "error": false,
+                        "pending": false,
+                        "stale": false,
+                        "unknown": false,
+                        "disabled": false
+                      }
                     }
                   }
                 },
                 "props": {
                   "text": "Stop",
                   "style": {
-                    "classes": "faceplate-cmd-btn font-label"
+                    "classes": "faceplate-cmd-btn font-label",
+                    "width": "100%",
+                    "minHeight": "40px",
+                    "height": "40px"
                   },
                   "primary": false
                 }
@@ -496,14 +880,15 @@
                   "name": "BtnReset"
                 },
                 "position": {
-                  "basis": "72px",
-                  "shrink": 0
+                  "grow": 1,
+                  "shrink": 1,
+                  "basis": "0px"
                 },
                 "events": {
                   "component": {
                     "onActionPerformed": {
                       "config": {
-                        "script": "\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tdef _r(p):\n\t\ttry:\n\t\t\tc = system.tag.getConfiguration(p, False)[0]\n\t\t\ts = c.get('sourceTagPath')\n\t\t\treturn str(s) if s else p\n\t\texcept:\n\t\t\treturn p\n\tsystem.tag.writeBlocking([_r(base + '/OCmd_Reset/Value')], [True])\n"
+                        "script": "\tif self.session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tshared.ValveCommands.resetPump(base)\n"
                       },
                       "scope": "G",
                       "type": "script"
@@ -523,7 +908,10 @@
                 "props": {
                   "text": "Reset",
                   "style": {
-                    "classes": "faceplate-cmd-btn font-label"
+                    "classes": "faceplate-cmd-btn font-label",
+                    "width": "100%",
+                    "minHeight": "40px",
+                    "height": "40px"
                   },
                   "primary": false
                 }
@@ -735,63 +1123,502 @@
                 }
               }
             ]
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "NotReadySection"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "classes": "faceplate-section faceplate-section-card"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Title"
+            },
+            "props": {
+              "text": "Device Not Ready Reasons",
+              "style": {
+                "classes": "faceplate-section-title font-label"
+              }
+            }
           },
           {
             "type": "ia.container.flex",
             "meta": {
-              "name": "MinRuntime"
-            },
-            "position": {
-              "shrink": 0
+              "name": "Rows"
             },
             "props": {
-              "direction": "row",
-              "alignItems": "center",
+              "direction": "column",
               "style": {
-                "classes": "faceplate-kpi-row"
+                "gap": "2px"
               }
             },
             "children": [
               {
-                "type": "ia.display.label",
+                "type": "ia.container.flex",
                 "meta": {
-                  "name": "MinRuntimeLbl"
-                },
-                "position": {
-                  "basis": "140px",
-                  "shrink": 0
+                  "name": "NrdyDisabled"
                 },
                 "props": {
-                  "text": "Min runtime set",
+                  "direction": "row",
+                  "alignItems": "center",
                   "style": {
-                    "classes": "faceplate-kpi-label font-label"
+                    "gap": "8px",
+                    "padding": "2px 0"
                   }
-                }
-              },
-              {
-                "type": "ia.display.label",
-                "meta": {
-                  "name": "MinRuntimeVal"
                 },
-                "position": {
-                  "grow": 1
-                },
-                "propConfig": {
-                  "props.text": {
-                    "binding": {
-                      "config": {
-                        "expression": "if({view.params.tagPath} = '', '', numberFormat(toFloat(tag({view.params.tagPath} + '/Min_Runtime_Set/Value')), '#0.0'))"
-                      },
-                      "type": "expr"
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Dot"
+                    },
+                    "propConfig": {
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Nrdy_Disabled/Value')), null, tag({view.params.tagPath} + '/Nrdy_Disabled/Value')), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                          },
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      }
+                    },
+                    "props": {
+                      "text": "",
+                      "style": {
+                        "classes": "faceplate-nrdy-dot",
+                        "width": "10px",
+                        "height": "10px",
+                        "borderRadius": "50%"
+                      }
+                    },
+                    "position": {
+                      "basis": "10px",
+                      "shrink": 0
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Label"
+                    },
+                    "props": {
+                      "text": "Device Disabled by Maintenance",
+                      "style": {
+                        "classes": "font-label faceplate-nrdy-label"
+                      }
                     }
                   }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "NrdyCfgErr"
                 },
                 "props": {
+                  "direction": "row",
+                  "alignItems": "center",
                   "style": {
-                    "classes": "font-value"
+                    "gap": "8px",
+                    "padding": "2px 0"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Dot"
+                    },
+                    "propConfig": {
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Nrdy_CfgErr/Value')), null, tag({view.params.tagPath} + '/Nrdy_CfgErr/Value')), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                          },
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      }
+                    },
+                    "props": {
+                      "text": "",
+                      "style": {
+                        "classes": "faceplate-nrdy-dot",
+                        "width": "10px",
+                        "height": "10px",
+                        "borderRadius": "50%"
+                      }
+                    },
+                    "position": {
+                      "basis": "10px",
+                      "shrink": 0
+                    }
                   },
-                  "text": ""
-                }
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Label"
+                    },
+                    "props": {
+                      "text": "Configuration Error",
+                      "style": {
+                        "classes": "font-label faceplate-nrdy-label"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "NrdyIntlk"
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "center",
+                  "style": {
+                    "gap": "8px",
+                    "padding": "2px 0"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Dot"
+                    },
+                    "propConfig": {
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Nrdy_Intlk/Value')), null, tag({view.params.tagPath} + '/Nrdy_Intlk/Value')), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                          },
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      }
+                    },
+                    "props": {
+                      "text": "",
+                      "style": {
+                        "classes": "faceplate-nrdy-dot",
+                        "width": "10px",
+                        "height": "10px",
+                        "borderRadius": "50%"
+                      }
+                    },
+                    "position": {
+                      "basis": "10px",
+                      "shrink": 0
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Label"
+                    },
+                    "props": {
+                      "text": "Device Interlocks Not OK",
+                      "style": {
+                        "classes": "font-label faceplate-nrdy-label"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "NrdyPerm"
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "center",
+                  "style": {
+                    "gap": "8px",
+                    "padding": "2px 0"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Dot"
+                    },
+                    "propConfig": {
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Nrdy_Perm/Value')), null, tag({view.params.tagPath} + '/Nrdy_Perm/Value')), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                          },
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      }
+                    },
+                    "props": {
+                      "text": "",
+                      "style": {
+                        "classes": "faceplate-nrdy-dot",
+                        "width": "10px",
+                        "height": "10px",
+                        "borderRadius": "50%"
+                      }
+                    },
+                    "position": {
+                      "basis": "10px",
+                      "shrink": 0
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Label"
+                    },
+                    "props": {
+                      "text": "Device Permissives Not OK",
+                      "style": {
+                        "classes": "font-label faceplate-nrdy-label"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "NrdyIOFault"
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "center",
+                  "style": {
+                    "gap": "8px",
+                    "padding": "2px 0"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Dot"
+                    },
+                    "propConfig": {
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Nrdy_IOFault/Value')), null, tag({view.params.tagPath} + '/Nrdy_IOFault/Value')), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                          },
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      }
+                    },
+                    "props": {
+                      "text": "",
+                      "style": {
+                        "classes": "faceplate-nrdy-dot",
+                        "width": "10px",
+                        "height": "10px",
+                        "borderRadius": "50%"
+                      }
+                    },
+                    "position": {
+                      "basis": "10px",
+                      "shrink": 0
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Label"
+                    },
+                    "props": {
+                      "text": "I/O Fault (shed requires reset)",
+                      "style": {
+                        "classes": "font-label faceplate-nrdy-label"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "NrdyFail"
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "center",
+                  "style": {
+                    "gap": "8px",
+                    "padding": "2px 0"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Dot"
+                    },
+                    "propConfig": {
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Nrdy_Fail/Value')), null, tag({view.params.tagPath} + '/Nrdy_Fail/Value')), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                          },
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      }
+                    },
+                    "props": {
+                      "text": "",
+                      "style": {
+                        "classes": "faceplate-nrdy-dot",
+                        "width": "10px",
+                        "height": "10px",
+                        "borderRadius": "50%"
+                      }
+                    },
+                    "position": {
+                      "basis": "10px",
+                      "shrink": 0
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Label"
+                    },
+                    "props": {
+                      "text": "Device Failure (shed requires reset)",
+                      "style": {
+                        "classes": "font-label faceplate-nrdy-label"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "NrdyNoMode"
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "center",
+                  "style": {
+                    "gap": "8px",
+                    "padding": "2px 0"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Dot"
+                    },
+                    "propConfig": {
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Nrdy_NoMode/Value')), null, tag({view.params.tagPath} + '/Nrdy_NoMode/Value')), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                          },
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      }
+                    },
+                    "props": {
+                      "text": "",
+                      "style": {
+                        "classes": "faceplate-nrdy-dot",
+                        "width": "10px",
+                        "height": "10px",
+                        "borderRadius": "50%"
+                      }
+                    },
+                    "position": {
+                      "basis": "10px",
+                      "shrink": 0
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Label"
+                    },
+                    "props": {
+                      "text": "Device Logic Disabled/No Mode",
+                      "style": {
+                        "classes": "font-label faceplate-nrdy-label"
+                      }
+                    }
+                  }
+                ]
               }
             ]
           }
