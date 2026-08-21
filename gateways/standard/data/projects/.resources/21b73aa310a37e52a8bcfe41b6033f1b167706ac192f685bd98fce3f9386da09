@@ -1,0 +1,606 @@
+{
+  "custom": {
+    "liveNumeric": 0,
+    "spark": {
+      "series": [],
+      "min": "\u2014",
+      "max": "\u2014",
+      "avg": "\u2014"
+    }
+  },
+  "params": {
+    "title": "Metric",
+    "category": "",
+    "unit": "",
+    "tagPath": "",
+    "value": "\u2014"
+  },
+  "propConfig": {
+    "params.title": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.category": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.unit": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.value": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.liveNumeric": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(len(coalesce({view.params.tagPath}, '')) > 0, coalesce(try(if(isBadOrError(tag({view.params.tagPath})), null, tag({view.params.tagPath})), null), 0), try(toFloat(replace(coalesce({view.params.value}, '0'), ',', '')), 0))"
+        },
+        "overlays": {
+          "bad": false,
+          "error": false,
+          "pending": false,
+          "stale": false,
+          "unknown": false,
+          "disabled": false
+        }
+      }
+    },
+    "custom.spark": {
+      "binding": {
+        "type": "property",
+        "config": {
+          "path": "view.custom.liveNumeric"
+        },
+        "transforms": [
+          {
+            "type": "script",
+            "code": "\t# Placeholder sparkline until historian: ~24 hourly points around live value.\n\traw = value\n\ttry:\n\t\tbase = float(raw)\n\texcept:\n\t\ttry:\n\t\t\ts = str(raw or '0').replace(',', '').replace(u'\\u2014', '').strip()\n\t\t\tbase = float(s) if s else 0.0\n\t\texcept:\n\t\t\tbase = 0.0\n\tnow = int(system.date.toMillis(system.date.now()))\n\thour_ms = 3600 * 1000\n\tseed = abs(hash(str(round(base, 3)))) % 10007\n\tdata = []\n\tvals = []\n\tfor i in range(24):\n\t\t# Deterministic wobble ~+/-8% so refresh does not scramble the series.\n\t\tphase = ((seed + i * 37) % 100) / 100.0\n\t\twobble = 0.92 + 0.16 * phase\n\t\tif abs(base) < 1e-9:\n\t\t\tv = float((seed + i * 13) % 50) / 10.0\n\t\telse:\n\t\t\tv = base * wobble\n\t\tts = now - (23 - i) * hour_ms\n\t\tdata.append([ts, round(v, 2)])\n\t\tvals.append(v)\n\tmn = min(vals) if vals else 0.0\n\tmx = max(vals) if vals else 0.0\n\tavg = (sum(vals) / float(len(vals))) if vals else 0.0\n\tdef fmt(n):\n\t\ttry:\n\t\t\treturn '{:,.1f}'.format(float(n))\n\t\texcept:\n\t\t\treturn u'\\u2014'\n\treturn {\n\t\t'series': [{'name': 'Trend', 'data': data}],\n\t\t'min': fmt(mn),\n\t\t'max': fmt(mx),\n\t\t'avg': fmt(avg),\n\t}\n"
+          }
+        ]
+      }
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 280,
+      "width": 320
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "justify": "flex-start",
+      "style": {
+        "classes": "container-card container-card-border kpi-card",
+        "boxSizing": "border-box",
+        "gap": "8px",
+        "height": "100%",
+        "minHeight": "240px",
+        "overflow": "hidden",
+        "padding": "12px 16px",
+        "width": "100%"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Header"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "classes": "kpi-card-header",
+            "gap": "2px",
+            "width": "100%"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Category"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "font-label",
+                "letterSpacing": "0.04em",
+                "textTransform": "uppercase"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.params.category"
+                  }
+                }
+              },
+              "meta.visible": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "len(coalesce({view.params.category}, '')) > 0"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Title"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "Metric",
+              "style": {
+                "classes": "font-title plant-feature-title"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.params.title"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "ValueRow"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "alignItems": "baseline",
+          "justify": "flex-start",
+          "style": {
+            "gap": "8px",
+            "width": "100%"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Value"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "\u2014",
+              "style": {
+                "classes": "font-livedata-entry kpi-value",
+                "fontSize": "1.85rem",
+                "lineHeight": "1.1"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if(len(coalesce({view.params.tagPath}, '')) > 0, numberFormat(coalesce(try(if(isBadOrError(tag({view.params.tagPath})), null, tag({view.params.tagPath})), null), 0), '#,##0.#'), coalesce({view.params.value}, '\u2014'))"
+                  },
+                  "overlays": {
+                    "bad": false,
+                    "error": false,
+                    "pending": false,
+                    "stale": false,
+                    "unknown": false,
+                    "disabled": false
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Unit"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "font-label",
+                "fontSize": "0.95rem"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.params.unit"
+                  }
+                }
+              },
+              "meta.visible": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "len(coalesce({view.params.unit}, '')) > 0"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "kyvislabs.display.apexchart",
+        "meta": {
+          "name": "Chart"
+        },
+        "position": {
+          "grow": 1,
+          "shrink": 1,
+          "basis": "140px"
+        },
+        "props": {
+          "type": "line",
+          "series": [],
+          "options": {
+            "chart": {
+              "type": "line",
+              "height": 140,
+              "width": "100%",
+              "animations": {
+                "enabled": false
+              },
+              "toolbar": {
+                "show": false
+              },
+              "zoom": {
+                "enabled": false
+              },
+              "selection": {
+                "enabled": false
+              },
+              "redrawOnParentResize": true,
+              "redrawOnWindowResize": true,
+              "events": {
+                "animationEnd": false,
+                "beforeMount": false,
+                "beforeResetZoom": false,
+                "beforeZoom": false,
+                "brushScrolled": false,
+                "click": false,
+                "dataPointMouseEnter": false,
+                "dataPointMouseLeave": false,
+                "dataPointSelection": false,
+                "legendClick": false,
+                "markerClick": false,
+                "mounted": false,
+                "mouseLeave": false,
+                "mouseMove": false,
+                "scrolled": false,
+                "selection": false,
+                "updated": false,
+                "xAxisLabelClick": false,
+                "zoomed": false
+              }
+            },
+            "colors": [
+              "#0C7BB3"
+            ],
+            "dataLabels": {
+              "enabled": false
+            },
+            "fill": {
+              "opacity": 0.15,
+              "type": "solid"
+            },
+            "grid": {
+              "show": false,
+              "padding": {
+                "top": 0,
+                "right": 4,
+                "bottom": 0,
+                "left": 4
+              }
+            },
+            "legend": {
+              "show": false
+            },
+            "markers": {
+              "size": 0
+            },
+            "stroke": {
+              "curve": "stepline",
+              "width": 2
+            },
+            "tooltip": {
+              "enabled": true,
+              "x": {
+                "format": "HH:mm",
+                "show": true
+              }
+            },
+            "xaxis": {
+              "type": "datetime",
+              "labels": {
+                "show": false,
+                "datetimeUTC": false
+              },
+              "axisBorder": {
+                "show": false
+              },
+              "axisTicks": {
+                "show": false
+              },
+              "tooltip": {
+                "enabled": false
+              }
+            },
+            "yaxis": {
+              "labels": {
+                "show": false
+              },
+              "axisBorder": {
+                "show": false
+              },
+              "axisTicks": {
+                "show": false
+              }
+            }
+          },
+          "style": {
+            "classes": "kpi-chart",
+            "height": "140px",
+            "minHeight": "140px",
+            "overflow": "hidden",
+            "width": "100%"
+          }
+        },
+        "propConfig": {
+          "props.series": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "view.custom.spark.series"
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Metrics"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "justify": "space-between",
+          "style": {
+            "classes": "kpi-metrics",
+            "gap": "12px",
+            "width": "100%"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Min"
+            },
+            "position": {
+              "grow": 1,
+              "basis": "0px"
+            },
+            "props": {
+              "direction": "column",
+              "alignItems": "center",
+              "style": {
+                "gap": "2px",
+                "minWidth": "0"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "MinLabel"
+                },
+                "props": {
+                  "text": "Min",
+                  "style": {
+                    "classes": "font-label",
+                    "fontSize": "11px",
+                    "letterSpacing": "0.04em",
+                    "textAlign": "center",
+                    "textTransform": "uppercase"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "MinValue"
+                },
+                "props": {
+                  "text": "\u2014",
+                  "style": {
+                    "classes": "font-value",
+                    "fontSize": "13px",
+                    "fontWeight": "600",
+                    "textAlign": "center"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "view.custom.spark.min"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Max"
+            },
+            "position": {
+              "grow": 1,
+              "basis": "0px"
+            },
+            "props": {
+              "direction": "column",
+              "alignItems": "center",
+              "style": {
+                "gap": "2px",
+                "minWidth": "0"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "MaxLabel"
+                },
+                "props": {
+                  "text": "Max",
+                  "style": {
+                    "classes": "font-label",
+                    "fontSize": "11px",
+                    "letterSpacing": "0.04em",
+                    "textAlign": "center",
+                    "textTransform": "uppercase"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "MaxValue"
+                },
+                "props": {
+                  "text": "\u2014",
+                  "style": {
+                    "classes": "font-value",
+                    "fontSize": "13px",
+                    "fontWeight": "600",
+                    "textAlign": "center"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "view.custom.spark.max"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Avg"
+            },
+            "position": {
+              "grow": 1,
+              "basis": "0px"
+            },
+            "props": {
+              "direction": "column",
+              "alignItems": "center",
+              "style": {
+                "gap": "2px",
+                "minWidth": "0"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "AvgLabel"
+                },
+                "props": {
+                  "text": "Avg",
+                  "style": {
+                    "classes": "font-label",
+                    "fontSize": "11px",
+                    "letterSpacing": "0.04em",
+                    "textAlign": "center",
+                    "textTransform": "uppercase"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "AvgValue"
+                },
+                "props": {
+                  "text": "\u2014",
+                  "style": {
+                    "classes": "font-value",
+                    "fontSize": "13px",
+                    "fontWeight": "600",
+                    "textAlign": "center"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "view.custom.spark.avg"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

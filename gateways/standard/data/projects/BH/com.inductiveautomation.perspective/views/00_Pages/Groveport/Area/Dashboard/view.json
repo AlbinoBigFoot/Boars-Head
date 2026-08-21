@@ -1,0 +1,130 @@
+{
+  "custom": {},
+  "params": {
+    "site": "Groveport",
+    "area": "Freezer",
+    "domain": "Utility"
+  },
+  "propConfig": {
+    "params.site": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.area": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.domain": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 800,
+      "width": 1400
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "bg-page kpi-dashboard-page",
+        "gap": "16px",
+        "height": "100%",
+        "overflow": "hidden",
+        "padding": "20px 24px",
+        "width": "100%"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "Title"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "text": "Groveport KPI",
+          "style": {
+            "classes": "font-title",
+            "fontSize": "22px",
+            "fontWeight": "700"
+          }
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "coalesce({view.params.site}, 'Groveport') + ' — ' + coalesce({view.params.area}, '') + ' — ' + coalesce({view.params.domain}, '')"
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "Subtitle"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "text": "Area domain overview — hero metrics, gauges, and trend cards (Lightspeed-style composition).",
+          "style": {
+            "classes": "font-label"
+          }
+        }
+      },
+      {
+        "type": "ia.display.view",
+        "meta": {
+          "name": "DomainBody"
+        },
+        "position": {
+          "grow": 1,
+          "shrink": 1,
+          "basis": "0px"
+        },
+        "props": {
+          "path": "00_Pages/Groveport/Domains/Utility",
+          "params": {
+            "area": "Freezer"
+          },
+          "style": {
+            "height": "100%",
+            "minHeight": "0",
+            "overflow": "auto",
+            "width": "100%"
+          }
+        },
+        "propConfig": {
+          "props.path": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "case(lower(coalesce({view.params.domain}, 'utility')), 'epms', '00_Pages/Groveport/Domains/EPMS', 'utility', '00_Pages/Groveport/Domains/Utility', 'production', '00_Pages/Groveport/Domains/Production', '00_Pages/Groveport/Domains/Utility')"
+              }
+            }
+          },
+          "props.params.area": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "view.params.area"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

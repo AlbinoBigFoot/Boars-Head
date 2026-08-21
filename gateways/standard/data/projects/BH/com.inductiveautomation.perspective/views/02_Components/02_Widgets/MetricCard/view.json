@@ -1,0 +1,195 @@
+{
+  "custom": {},
+  "params": {
+    "title": "Metric",
+    "value": "\u2014",
+    "unit": "",
+    "category": ""
+  },
+  "propConfig": {
+    "params.title": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.value": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.unit": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.category": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 140,
+      "width": 300
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "justify": "space-between",
+      "style": {
+        "classes": "container-card container-card-border plant-feature-card",
+        "boxSizing": "border-box",
+        "gap": "6px",
+        "height": "100%",
+        "minHeight": "140px",
+        "overflow": "hidden",
+        "width": "100%"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "Category"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "text": "",
+          "style": {
+            "classes": "font-label",
+            "letterSpacing": "0.04em",
+            "textTransform": "uppercase"
+          }
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "view.params.category"
+              }
+            }
+          },
+          "meta.visible": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "len(coalesce({view.params.category}, '')) > 0"
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "Title"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "text": "Metric",
+          "style": {
+            "classes": "font-title plant-feature-title"
+          }
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "view.params.title"
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "ValueRow"
+        },
+        "position": {
+          "grow": 1
+        },
+        "props": {
+          "direction": "row",
+          "alignItems": "baseline",
+          "justify": "flex-start",
+          "style": {
+            "gap": "8px",
+            "marginTop": "auto"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Value"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "\u2014",
+              "style": {
+                "classes": "font-livedata-entry",
+                "fontSize": "1.75rem",
+                "lineHeight": "1.1"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.params.value"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Unit"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "font-label",
+                "fontSize": "0.95rem"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.params.unit"
+                  }
+                }
+              },
+              "meta.visible": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "len(coalesce({view.params.unit}, '')) > 0"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

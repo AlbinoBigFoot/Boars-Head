@@ -1,0 +1,956 @@
+{
+  "custom": {},
+  "params": {
+    "area": "Freezer"
+  },
+  "propConfig": {
+    "params.area": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 720,
+      "width": 1200
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "kpi-dashboard-page",
+        "gap": "16px",
+        "height": "100%",
+        "overflowY": "auto",
+        "padding": "4px",
+        "width": "100%"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "DomainCard"
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "classes": "container-card container-card-border overview-card",
+            "gap": "10px",
+            "height": "100%",
+            "minHeight": "320px",
+            "overflow": "hidden",
+            "padding": "14px 16px",
+            "width": "100%"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "LabelTimeRange"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "alignItems": "center",
+              "justify": "space-between",
+              "style": {
+                "gap": "12px",
+                "width": "100%"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "CardTitle"
+                },
+                "position": {
+                  "grow": 1
+                },
+                "props": {
+                  "text": "Utility — Freezer",
+                  "style": {
+                    "classes": "font-title",
+                    "fontSize": "15px",
+                    "fontWeight": "700"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "'Utility — ' + coalesce({view.params.area}, 'Freezer')"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.input.dropdown",
+                "meta": {
+                  "name": "timeRange"
+                },
+                "position": {
+                  "basis": "150px",
+                  "shrink": 0
+                },
+                "props": {
+                  "value": "24",
+                  "options": [
+                    {
+                      "label": "Last Hour",
+                      "value": "1"
+                    },
+                    {
+                      "label": "Last 24 hours",
+                      "value": "24"
+                    },
+                    {
+                      "label": "Last Week",
+                      "value": "168"
+                    },
+                    {
+                      "label": "Last Month",
+                      "value": "730"
+                    }
+                  ],
+                  "style": {
+                    "width": "100%"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Data"
+            },
+            "position": {
+              "grow": 1
+            },
+            "props": {
+              "direction": "row",
+              "style": {
+                "gap": "8px",
+                "height": "100%",
+                "minHeight": "0",
+                "width": "100%"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Left"
+                },
+                "position": {
+                  "grow": 1,
+                  "basis": "42%"
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "gap": "8px",
+                    "minWidth": "0",
+                    "paddingRight": "8px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Hero"
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "gap": "2px"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "HL"
+                        },
+                        "props": {
+                          "text": "Natural Gas",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "11px",
+                            "textTransform": "uppercase"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.container.flex",
+                        "meta": {
+                          "name": "HV"
+                        },
+                        "props": {
+                          "direction": "row",
+                          "alignItems": "baseline",
+                          "style": {
+                            "gap": "8px"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "Val"
+                            },
+                            "props": {
+                              "text": "—",
+                              "style": {
+                                "classes": "font-livedata-entry kpi-value",
+                                "fontSize": "2rem"
+                              }
+                            },
+                            "propConfig": {
+                              "props.text": {
+                                "binding": {
+                                  "type": "expr",
+                                  "config": {
+                                    "expression": "numberFormat(coalesce(try(if(isBadOrError(tag('[default]KPI/Groveport/' + coalesce({view.params.area}, 'Freezer') + '/Utility/Therm')), null, tag('[default]KPI/Groveport/' + coalesce({view.params.area}, 'Freezer') + '/Utility/Therm')), null), 0), '#,##0.#')"
+                                  },
+                                  "overlays": {
+                                    "bad": false,
+                                    "error": false,
+                                    "pending": false,
+                                    "stale": false,
+                                    "unknown": false,
+                                    "disabled": false
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "U"
+                            },
+                            "props": {
+                              "text": "therm",
+                              "style": {
+                                "classes": "font-label"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "H2O"
+                    },
+                    "position": {
+                      "basis": "28px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "alignItems": "center",
+                      "justify": "space-between",
+                      "style": {
+                        "gap": "8px",
+                        "width": "100%",
+                        "minHeight": "28px"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Lbl"
+                        },
+                        "position": {
+                          "grow": 1
+                        },
+                        "props": {
+                          "text": "Water",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "opacity": "0.85"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Val"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "—",
+                          "style": {
+                            "classes": "font-livedata-entry",
+                            "fontSize": "13px",
+                            "fontWeight": "600",
+                            "textAlign": "right",
+                            "minWidth": "72px"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "numberFormat(coalesce(try(if(isBadOrError(tag('[default]KPI/Groveport/' + coalesce({view.params.area}, 'Freezer') + '/Utility/H2O')), null, tag('[default]KPI/Groveport/' + coalesce({view.params.area}, 'Freezer') + '/Utility/H2O')), null), 0), '#,##0.#')"
+                              },
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              }
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Unit"
+                        },
+                        "position": {
+                          "basis": "42px",
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "H2O",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "11px",
+                            "opacity": "0.7"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "CO2"
+                    },
+                    "position": {
+                      "basis": "28px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "alignItems": "center",
+                      "justify": "space-between",
+                      "style": {
+                        "gap": "8px",
+                        "width": "100%",
+                        "minHeight": "28px"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Lbl"
+                        },
+                        "position": {
+                          "grow": 1
+                        },
+                        "props": {
+                          "text": "CO₂",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "opacity": "0.85"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Val"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "—",
+                          "style": {
+                            "classes": "font-livedata-entry",
+                            "fontSize": "13px",
+                            "fontWeight": "600",
+                            "textAlign": "right",
+                            "minWidth": "72px"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "numberFormat(coalesce(try(if(isBadOrError(tag('[default]KPI/Groveport/' + coalesce({view.params.area}, 'Freezer') + '/Utility/CO2')), null, tag('[default]KPI/Groveport/' + coalesce({view.params.area}, 'Freezer') + '/Utility/CO2')), null), 0), '#,##0.#')"
+                              },
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              }
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Unit"
+                        },
+                        "position": {
+                          "basis": "42px",
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "lb",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "11px",
+                            "opacity": "0.7"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "AmbAvg"
+                    },
+                    "position": {
+                      "basis": "28px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "alignItems": "center",
+                      "justify": "space-between",
+                      "style": {
+                        "gap": "8px",
+                        "width": "100%",
+                        "minHeight": "28px"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Lbl"
+                        },
+                        "position": {
+                          "grow": 1
+                        },
+                        "props": {
+                          "text": "Outdoor Temp (avg)",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "opacity": "0.85"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Val"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "—",
+                          "style": {
+                            "classes": "font-livedata-entry",
+                            "fontSize": "13px",
+                            "fontWeight": "600",
+                            "textAlign": "right",
+                            "minWidth": "72px"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "numberFormat(coalesce(try(if(isBadOrError(tag('[default]KPI/Groveport/' + coalesce({view.params.area}, 'Freezer') + '/Utility/AmbientAvgF')), null, tag('[default]KPI/Groveport/' + coalesce({view.params.area}, 'Freezer') + '/Utility/AmbientAvgF')), null), 0), '#,##0.#')"
+                              },
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              }
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Unit"
+                        },
+                        "position": {
+                          "basis": "42px",
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "°F",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "11px",
+                            "opacity": "0.7"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "AmbMax"
+                    },
+                    "position": {
+                      "basis": "28px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "alignItems": "center",
+                      "justify": "space-between",
+                      "style": {
+                        "gap": "8px",
+                        "width": "100%",
+                        "minHeight": "28px"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Lbl"
+                        },
+                        "position": {
+                          "grow": 1
+                        },
+                        "props": {
+                          "text": "Outdoor Temp (max)",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "opacity": "0.85"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Val"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "—",
+                          "style": {
+                            "classes": "font-livedata-entry",
+                            "fontSize": "13px",
+                            "fontWeight": "600",
+                            "textAlign": "right",
+                            "minWidth": "72px"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "numberFormat(coalesce(try(if(isBadOrError(tag('[default]KPI/Groveport/' + coalesce({view.params.area}, 'Freezer') + '/Utility/AmbientMaxF')), null, tag('[default]KPI/Groveport/' + coalesce({view.params.area}, 'Freezer') + '/Utility/AmbientMaxF')), null), 0), '#,##0.#')"
+                              },
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              }
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Unit"
+                        },
+                        "position": {
+                          "basis": "42px",
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "°F",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "11px",
+                            "opacity": "0.7"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Right"
+                },
+                "position": {
+                  "grow": 1,
+                  "basis": "58%"
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "gap": "4px",
+                    "minHeight": "180px",
+                    "minWidth": "0"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.view",
+                    "meta": {
+                      "name": "PrimarySpark"
+                    },
+                    "position": {
+                      "grow": 1
+                    },
+                    "props": {
+                      "path": "02_Components/02_Widgets/KPI",
+                      "params": {
+                        "title": "Natural Gas trend",
+                        "category": "Utility",
+                        "unit": "therm",
+                        "tagPath": "",
+                        "value": "0"
+                      },
+                      "style": {
+                        "height": "100%",
+                        "minHeight": "240px",
+                        "width": "100%"
+                      }
+                    },
+                    "propConfig": {
+                      "props.params.tagPath": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "'[default]KPI/Groveport/' + coalesce({view.params.area}, 'Freezer') + '/Utility/Therm'"
+                          },
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "position": {
+          "shrink": 0
+        }
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "MetricGrid"
+        },
+        "position": {
+          "grow": 1
+        },
+        "props": {
+          "direction": "row",
+          "wrap": "wrap",
+          "alignContent": "flex-start",
+          "style": {
+            "classes": "kpi-dashboard-grid",
+            "gap": "16px",
+            "width": "100%"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "Therm"
+            },
+            "position": {
+              "basis": "300px",
+              "grow": 1,
+              "shrink": 1
+            },
+            "props": {
+              "path": "02_Components/02_Widgets/KPI",
+              "params": {
+                "title": "Natural Gas",
+                "category": "Utility",
+                "unit": "therm",
+                "tagPath": "",
+                "value": "0"
+              },
+              "style": {
+                "height": "auto",
+                "maxWidth": "420px",
+                "minHeight": "240px",
+                "minWidth": "280px",
+                "width": "100%"
+              }
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "'[default]KPI/Groveport/' + coalesce({view.params.area}, 'Freezer') + '/Utility/Therm'"
+                  },
+                  "overlays": {
+                    "bad": false,
+                    "error": false,
+                    "pending": false,
+                    "stale": false,
+                    "unknown": false,
+                    "disabled": false
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "H2O"
+            },
+            "position": {
+              "basis": "300px",
+              "grow": 1,
+              "shrink": 1
+            },
+            "props": {
+              "path": "02_Components/02_Widgets/KPI",
+              "params": {
+                "title": "Water",
+                "category": "Utility",
+                "unit": "H2O",
+                "tagPath": "",
+                "value": "0"
+              },
+              "style": {
+                "height": "auto",
+                "maxWidth": "420px",
+                "minHeight": "240px",
+                "minWidth": "280px",
+                "width": "100%"
+              }
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "'[default]KPI/Groveport/' + coalesce({view.params.area}, 'Freezer') + '/Utility/H2O'"
+                  },
+                  "overlays": {
+                    "bad": false,
+                    "error": false,
+                    "pending": false,
+                    "stale": false,
+                    "unknown": false,
+                    "disabled": false
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "CO2"
+            },
+            "position": {
+              "basis": "300px",
+              "grow": 1,
+              "shrink": 1
+            },
+            "props": {
+              "path": "02_Components/02_Widgets/KPI",
+              "params": {
+                "title": "CO₂",
+                "category": "Utility",
+                "unit": "lb",
+                "tagPath": "",
+                "value": "0"
+              },
+              "style": {
+                "height": "auto",
+                "maxWidth": "420px",
+                "minHeight": "240px",
+                "minWidth": "280px",
+                "width": "100%"
+              }
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "'[default]KPI/Groveport/' + coalesce({view.params.area}, 'Freezer') + '/Utility/CO2'"
+                  },
+                  "overlays": {
+                    "bad": false,
+                    "error": false,
+                    "pending": false,
+                    "stale": false,
+                    "unknown": false,
+                    "disabled": false
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "AmbAvg"
+            },
+            "position": {
+              "basis": "300px",
+              "grow": 1,
+              "shrink": 1
+            },
+            "props": {
+              "path": "02_Components/02_Widgets/KPI",
+              "params": {
+                "title": "Outdoor Temp (avg)",
+                "category": "Utility",
+                "unit": "°F",
+                "tagPath": "",
+                "value": "0"
+              },
+              "style": {
+                "height": "auto",
+                "maxWidth": "420px",
+                "minHeight": "240px",
+                "minWidth": "280px",
+                "width": "100%"
+              }
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "'[default]KPI/Groveport/' + coalesce({view.params.area}, 'Freezer') + '/Utility/AmbientAvgF'"
+                  },
+                  "overlays": {
+                    "bad": false,
+                    "error": false,
+                    "pending": false,
+                    "stale": false,
+                    "unknown": false,
+                    "disabled": false
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "AmbMax"
+            },
+            "position": {
+              "basis": "300px",
+              "grow": 1,
+              "shrink": 1
+            },
+            "props": {
+              "path": "02_Components/02_Widgets/KPI",
+              "params": {
+                "title": "Outdoor Temp (max)",
+                "category": "Utility",
+                "unit": "°F",
+                "tagPath": "",
+                "value": "0"
+              },
+              "style": {
+                "height": "auto",
+                "maxWidth": "420px",
+                "minHeight": "240px",
+                "minWidth": "280px",
+                "width": "100%"
+              }
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "'[default]KPI/Groveport/' + coalesce({view.params.area}, 'Freezer') + '/Utility/AmbientMaxF'"
+                  },
+                  "overlays": {
+                    "bad": false,
+                    "error": false,
+                    "pending": false,
+                    "stale": false,
+                    "unknown": false,
+                    "disabled": false
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

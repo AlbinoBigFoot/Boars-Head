@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Groveport Site Dashboard — layout vision</title>
+  <style>
+    :root {
+      --ink: #1a2332;
+      --muted: #5c6b7a;
+      --line: #d8dee6;
+      --bg: #eef1f5;
+      --card: #ffffff;
+      --epms: #0c7bb3;
+      --utility: #2a9d8f;
+      --prod: #c45c26;
+      --band: #c5dfc0;
+      --avg: #e67e22;
+      --actual: #2c3e50;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.35;
+    }
+    header.page {
+      padding: 20px 28px 8px;
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+    header.page h1 { margin: 0 0 6px; font-size: 1.35rem; }
+    header.page p { margin: 0; color: var(--muted); font-size: 0.92rem; max-width: 62ch; }
+    .chooser {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 16px 28px 8px;
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+    .chooser button {
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .chooser button.active {
+      border-color: var(--epms);
+      box-shadow: 0 0 0 2px rgba(12,123,179,0.2);
+      color: var(--epms);
+    }
+    .chooser .note {
+      flex: 1 1 100%;
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 4px;
+    }
+    .stage {
+      max-width: 1180px;
+      margin: 0 auto 40px;
+      padding: 8px 28px 28px;
+    }
+    .variant { display: none; }
+    .variant.show { display: block; }
+    .dash {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(26,35,50,0.06);
+    }
+    .dash-title {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+    }
+    .dash-title strong { font-size: 1.05rem; }
+    .dash-title span { color: var(--muted); font-size: 0.8rem; }
+
+    /* —— Option A: three bands —— */
+    .band {
+      border-bottom: 1px solid var(--line);
+      padding: 14px 16px 16px;
+    }
+    .band:last-child { border-bottom: 0; }
+    .band-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .pill {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+    .pill.epms { background: var(--epms); }
+    .pill.utility { background: var(--utility); }
+    .pill.prod { background: var(--prod); }
+    .band-head h2 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+    .band-head .sub {
+      margin-left: auto;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+    .pens {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .pen {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px 10px;
+      background: #fafbfd;
+    }
+    .pen .lbl { font-size: 0.72rem; color: var(--muted); }
+    .pen .val {
+      font-size: 1.15rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: #1b7a3d;
+    }
+    .pen .unit { font-size: 0.72rem; color: var(--muted); margin-left: 4px; font-weight: 500; }
+    .chart {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      height: 160px;
+      background:
+        linear-gradient(180deg, rgba(197,223,192,0.45) 30%, transparent 70%),
+        repeating-linear-gradient(90deg, transparent, transparent 48px, rgba(0,0,0,0.03) 48px, rgba(0,0,0,0.03) 49px),
+        #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .chart svg { width: 100%; height: 100%; display: block; }
+    .chart .caption {
+      position: absolute;
+      left: 10px; top: 8px;
+      font-size: 0.72rem;
+      color: var(--muted);
+      background: rgba(255,255,255,0.85);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .coming {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: #f4f6f9;
+      border: 1px dashed #c5ced8;
+    }
+    .coming h3 {
+      margin: 0 0 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip {
+      font-size: 0.72rem;
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: #fff;
+      border: 1px solid var(--line);
+      color: var(--ink);
+    }
+    .chip em { color: var(--muted); font-style: normal; margin-left: 4px; }
+    .mini-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .mini {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      padding: 8px;
+      min-height: 72px;
+    }
+    .mini strong { display: block; font-size: 0.75rem; margin-bottom: 4px; }
+    .mini .ph {
+      height: 40px;
+      border-radius: 4px;
+      background: repeating-linear-gradient(
+        -45deg,
+        #eef1f5,
+        #eef1f5 6px,
+        #e4e9ef 6px,
+        #e4e9ef 12px
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    /* —— Option B: domain tabs —— */
+    .tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--line);
+      background: #f7f9fb;
+      padding: 0 8px;
+    }
+    .tabs button {
+      border: 0;
+      background: transparent;
+      padding: 12px 16px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--muted);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -1px;
+    }
+    .tabs button.on {
+      color: var(--ink);
+      border-bottom-color: var(--epms);
+    }
+    .tabs button.on.u { border-bottom-color: var(--utility); }
+    .tabs button.on.p { border-bottom-color: var(--prod); }
+    .panel { display: none; padding: 16px; }
+    .panel.on { display: block; }
+
+    .callout {
+      margin-top: 16px;
+      padding: 12px 14px;
+      border-left: 4px solid var(--epms);
+      background: #fff;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.88rem;
+      color: var(--muted);
+      max-width: 70ch;
+    }
+    .callout strong { color: var(--ink); }
+
+    @media (max-width: 800px) {
+      .pens { grid-template-columns: repeat(2, 1fr); }
+      .mini-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="page">
+    <h1>Layout vision — Groveport Site Dashboard</h1>
+    <p>
+      Goal: one clear home for each KPI type. Pens + primary chart live in that domain.
+      “Coming online” is a small dashed strip <em>inside</em> the domain — not a fourth dump at the bottom.
+    </p>
+  </header>
+
+  <div class="chooser">
+    <button type="button" class="active" data-v="a">A — Three stacked domain bands</button>
+    <button type="button" data-v="b">B — Domain tabs (one at a time)</button>
+    <div class="note">
+      Toggle A / B below. Prefer the one that matches what you meant — then we implement only that.
+    </div>
+  </div>
+
+  <div class="stage">
+    <!-- ========== VARIANT A ========== -->
+    <div class="variant show" id="v-a">
+      <div class="dash">
+        <div class="dash-title">
+          <strong>Groveport — Site Dashboard</strong>
+          <span>Option A · scroll page · three domains</span>
+        </div>
+
+        <!-- EPMS -->
+        <section class="band">
+          <div class="band-head">
+            <span class="pill epms">EPMS</span>
+            <h2>Energy</h2>
+            <span class="sub">kWh benchmarks · area metering</span>
+          </div>
+          <div class="pens">
+            <div class="pen"><div class="lbl">kWh (MTD)</div><div><span class="val">595,200</span><span class="unit">kWh</span></div></div>
+            <div class="pen"><div class="lbl">Reactive</div><div><span class="val">444.5</span><span class="unit">kvar</span></div></div>
+            <div class="pen"><div class="lbl">3yr month avg</div><div><span class="val">614,400</span><span class="unit">kWh</span></div></div>
+            <div class="pen"><div class="lbl">Metering coverage</div><div><span class="val">0</span><span class="unit">% areas</span></div></div>
+          </div>
+          <div class="chart">
+            <div class="caption">kWh · 48 mo · 7yr band / 3yr AVG / actual</div>
+            <svg viewBox="0 0 640 160" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M0,90 C80,70 120,100 200,75 C280,50 320,85 400,60 C480,40 560,70 640,55 L640,130 L0,130 Z" fill="rgba(143,191,136,0.35)" />
+              <path d="M0,95 C80,80 160,100 240,85 C320,70 400,90 480,75 C560,65 600,80 640,70" fill="none" stroke="#e67e22" stroke-width="2" />
+              <path d="M0,100 C80,88 160,105 240,92 C320,78 400,95 480,82 C560,72 600,85 640,78" fill="none" stroke="#2c3e50" stroke-width="2.5" />
+            </svg>
+          </div>
+          <div class="coming">
+            <h3>Coming online · EPMS</h3>
+            <div class="chips">
+              <span class="chip">Freezer<em>Planned</em></span>
+              <span class="chip">SuperChill<em>Planned</em></span>
+              <span class="chip">Club<em>Planned</em></span>
+              <span class="chip">… 5 more areas</span>
+            </div>
+            <div class="mini-row">
+              <div class="mini"><strong>kWh YoY</strong><div class="ph">placeholder chart</div></div>
+              <div class="mini"><strong>Installed meters</strong><div class="ph">0 / 8</div></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Utility -->
+        <section class="band">
+          <div class="band-head">
+            <span class="pill utility">Utility</span>
+            <h2>Plant utilities</h2>
+            <span class="sub">gas · water · CO₂ · outdoor temp</span>
+          </div>
+          <div class="pens">
+            <div class="pen"><div class="lbl">Natural Gas</div><div><span class="val">0</span><span class="unit">therm</span></div></div>
+            <div class="pen"><div class="lbl">Water</div><div><span class="val">0</span><span class="unit">H2O</span></div></div>
+            <div class="pen"><div class="lbl">CO₂</div><div><span class="val">0</span><span class="unit">lb</span></div></div>
+            <div class="pen"><div class="lbl">Outdoor Temp</div><div><span class="val">42</span><span class="unit">°F</span></div></div>
+          </div>
+          <div class="chart">
+            <div class="caption">Temperature · 36 mo · 7yr band / 3yr AVG / current</div>
+            <svg viewBox="0 0 640 160" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M0,70 C100,40 140,100 220,55 C300,20 360,90 450,50 C520,25 580,70 640,45 L640,120 L0,120 Z" fill="rgba(143,191,136,0.35)" />
+              <path d="M0,85 C120,70 200,95 300,80 C400,65 500,90 640,75" fill="none" stroke="#e67e22" stroke-width="2" />
+              <path d="M0,90 C120,78 200,100 300,88 C400,72 500,95 640,82" fill="none" stroke="#2c3e50" stroke-width="2.5" />
+            </svg>
+          </div>
+          <div class="coming">
+            <h3>Coming online · Utility</h3>
+            <div class="mini-row">
+              <div class="mini"><strong>Therm YoY</strong><div class="ph">placeholder chart</div></div>
+              <div class="mini"><strong>H2O / CO₂ trends</strong><div class="ph">awaiting meter feed</div></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Production -->
+        <section class="band">
+          <div class="band-head">
+            <span class="pill prod">Production</span>
+            <h2>Throughput</h2>
+            <span class="sub">volume · intensity · line-break ops</span>
+          </div>
+          <div class="pens" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="pen"><div class="lbl">Production</div><div><span class="val">130,031</span><span class="unit">lb</span></div></div>
+            <div class="pen"><div class="lbl">7d avg</div><div><span class="val">125,071</span><span class="unit">lb</span></div></div>
+            <div class="pen"><div class="lbl">Energy intensity</div><div><span class="val">4.8</span><span class="unit">kWh/lb</span></div></div>
+          </div>
+          <div class="coming">
+            <h3>Coming online · Production</h3>
+            <div class="mini-row">
+              <div class="mini"><strong>Production YoY</strong><div class="ph">placeholder chart</div></div>
+              <div class="mini"><strong>Line-break restart</strong><div class="ph">Cascade Oct · Eneroi sites</div></div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="callout">
+        <strong>Option A</strong> keeps everything on one scroll: each domain is a full-width band
+        (pens → primary chart → thin coming-online). Best if operators compare EPMS vs Utility while scrolling.
+      </div>
+    </div>
+
+    <!-- ========== VARIANT B ========== -->
+    <div class="variant" id="v-b">
+      <div class="dash">
+        <div class="dash-title">
+          <strong>Groveport — Site Dashboard</strong>
+          <span>Option B · one domain visible</span>
+        </div>
+        <div class="tabs" id="domain-tabs">
+          <button type="button" class="on" data-p="epms">EPMS</button>
+          <button type="button" data-p="utility">Utility</button>
+          <button type="button" data-p="prod">Production</button>
+        </div>
+
+        <div class="panel on" id="p-epms">
+          <div class="band-head" style="margin-bottom:12px;">
+            <span class="pill epms">EPMS</span>
+            <h2>Energy</h2>
+            <span class="sub">focused view — no other domains competing</span>
+          </div>
+          <div class="pens">
+            <div class="pen"><div class="lbl">kWh (MTD)</div><div><span class="val">595,200</span><span class="unit">kWh</span></div></div>
+            <div class="pen"><div class="lbl">Reactive</div><div><span class="val">444.5</span><span class="unit">kvar</span></div></div>
+            <div class="pen"><div class="lbl">3yr month avg</div><div><span class="val">614,400</span><span class="unit">kWh</span></div></div>
+            <div class="pen"><div class="lbl">Metering coverage</div><div><span class="val">0</span><span class="unit">% areas</span></div></div>
+          </div>
+          <div class="chart" style="height:220px;">
+            <div class="caption">Primary: kWh band chart (room to breathe)</div>
+            <svg viewBox="0 0 640 160" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M0,90 C80,70 120,100 200,75 C280,50 320,85 400,60 C480,40 560,70 640,55 L640,130 L0,130 Z" fill="rgba(143,191,136,0.35)" />
+              <path d="M0,95 C80,80 160,100 240,85 C320,70 400,90 480,75 C560,65 600,80 640,70" fill="none" stroke="#e67e22" stroke-width="2" />
+              <path d="M0,100 C80,88 160,105 240,92 C320,78 400,95 480,82 C560,72 600,85 640,78" fill="none" stroke="#2c3e50" stroke-width="2.5" />
+            </svg>
+          </div>
+          <div class="coming">
+            <h3>Coming online · EPMS only</h3>
+            <div class="chips">
+              <span class="chip">Freezer<em>Planned</em></span>
+              <span class="chip">SuperChill<em>Planned</em></span>
+              <span class="chip">Club<em>Planned</em></span>
+              <span class="chip">Palletizing<em>Planned</em></span>
+              <span class="chip">East PH<em>Planned</em></span>
+              <span class="chip">West PH<em>Planned</em></span>
+              <span class="chip">Dock<em>Planned</em></span>
+              <span class="chip">Machine Room<em>Planned</em></span>
+            </div>
+            <div class="mini-row">
+              <div class="mini"><strong>kWh YoY</strong><div class="ph">placeholder</div></div>
+              <div class="mini"><strong>Installed</strong><div class="ph">0 / 8</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" id="p-utility">
+          <div class="band-head" style="margin-bottom:12px;">
+            <span class="pill utility">Utility</span>
+            <h2>Plant utilities</h2>
+          </div>
+          <div class="pens">
+            <div class="pen"><div class="lbl">Natural Gas</div><div><span class="val">0</span><span class="unit">therm</span></div></div>
+            <div class="pen"><div class="lbl">Water</div><div><span class="val">0</span><span class="unit">H2O</span></div></div>
+            <div class="pen"><div class="lbl">CO₂</div><div><span class="val">0</span><span class="unit">lb</span></div></div>
+            <div class="pen"><div class="lbl">Outdoor Temp</div><div><span class="val">42</span><span class="unit">°F</span></div></div>
+          </div>
+          <div class="chart" style="height:220px;">
+            <div class="caption">Primary: Temperature band chart</div>
+            <svg viewBox="0 0 640 160" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M0,70 C100,40 140,100 220,55 C300,20 360,90 450,50 C520,25 580,70 640,45 L640,120 L0,120 Z" fill="rgba(143,191,136,0.35)" />
+              <path d="M0,85 C120,70 200,95 300,80 C400,65 500,90 640,75" fill="none" stroke="#e67e22" stroke-width="2" />
+              <path d="M0,90 C120,78 200,100 300,88 C400,72 500,95 640,82" fill="none" stroke="#2c3e50" stroke-width="2.5" />
+            </svg>
+          </div>
+          <div class="coming">
+            <h3>Coming online · Utility only</h3>
+            <div class="mini-row">
+              <div class="mini"><strong>Therm YoY</strong><div class="ph">placeholder</div></div>
+              <div class="mini"><strong>H2O / CO₂</strong><div class="ph">awaiting meters</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" id="p-prod">
+          <div class="band-head" style="margin-bottom:12px;">
+            <span class="pill prod">Production</span>
+            <h2>Throughput</h2>
+          </div>
+          <div class="pens" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="pen"><div class="lbl">Production</div><div><span class="val">130,031</span><span class="unit">lb</span></div></div>
+            <div class="pen"><div class="lbl">7d avg</div><div><span class="val">125,071</span><span class="unit">lb</span></div></div>
+            <div class="pen"><div class="lbl">Energy intensity</div><div><span class="val">4.8</span><span class="unit">kWh/lb</span></div></div>
+          </div>
+          <div class="coming">
+            <h3>Coming online · Production only</h3>
+            <div class="mini-row">
+              <div class="mini"><strong>Production YoY</strong><div class="ph">placeholder</div></div>
+              <div class="mini"><strong>Cascade / Eneroi restart</strong><div class="ph">baseline months</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <strong>Option B</strong> uses EPMS / Utility / Production tabs so only one domain is on screen.
+        Same content model as A, but no tall scroll of three charts — usually feels less “messy.”
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const buttons = document.querySelectorAll('.chooser button');
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        buttons.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.variant').forEach((v) => v.classList.remove('show'));
+        document.getElementById('v-' + btn.dataset.v).classList.add('show');
+      });
+    });
+    const tabs = document.querySelectorAll('#domain-tabs button');
+    tabs.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        tabs.forEach((b) => b.classList.remove('on', 'u', 'p'));
+        btn.classList.add('on');
+        if (btn.dataset.p === 'utility') btn.classList.add('u');
+        if (btn.dataset.p === 'prod') btn.classList.add('p');
+        document.querySelectorAll('.panel').forEach((p) => p.classList.remove('on'));
+        document.getElementById('p-' + btn.dataset.p).classList.add('on');
+      });
+    });
+  </script>
+</body>
+</html>

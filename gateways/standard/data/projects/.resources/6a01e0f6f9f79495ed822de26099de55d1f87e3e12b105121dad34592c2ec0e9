@@ -1,0 +1,728 @@
+{
+  "custom": {},
+  "params": {
+    "siteName": "Plant",
+    "region": "",
+    "page": "",
+    "tagRoot": ""
+  },
+  "propConfig": {
+    "params.siteName": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.region": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.page": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tagRoot": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 196,
+      "width": 300
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "events": {
+      "dom": {
+        "onClick": {
+          "config": {
+            "script": "\tpage = str(self.view.params.page or '').strip()\n\tif not page:\n\t\treturn\n\tNavigation.Nav.navigate({'action': 'page', 'page': page})\n"
+          },
+          "scope": "G",
+          "type": "script"
+        }
+      }
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "container-card container-card-border site-card",
+        "boxSizing": "border-box",
+        "cursor": "pointer",
+        "gap": "10px",
+        "height": "100%",
+        "minHeight": "0",
+        "overflow": "visible",
+        "padding": "14px",
+        "width": "100%"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "TitleRow"
+        },
+        "position": {
+          "shrink": 0,
+          "basis": "26px"
+        },
+        "props": {
+          "direction": "row",
+          "alignItems": "baseline",
+          "justify": "space-between",
+          "style": {
+            "gap": "8px",
+            "width": "100%"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "SiteName"
+            },
+            "position": {
+              "grow": 1,
+              "shrink": 1
+            },
+            "props": {
+              "text": "Plant",
+              "style": {
+                "classes": "font-title",
+                "fontSize": "18px",
+                "fontWeight": "700",
+                "overflow": "hidden",
+                "textOverflow": "ellipsis",
+                "whiteSpace": "nowrap"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.params.siteName"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Region"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "font-label",
+                "fontSize": "14px",
+                "opacity": "0.75",
+                "whiteSpace": "nowrap"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.params.region"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Pens"
+        },
+        "position": {
+          "grow": 0,
+          "shrink": 0
+        },
+        "props": {
+          "direction": "column",
+          "justify": "flex-start",
+          "style": {
+            "gap": "6px",
+            "minWidth": "0",
+            "overflow": "visible",
+            "width": "100%"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "PenKwh"
+            },
+            "position": {
+              "basis": "28px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "alignItems": "center",
+              "justify": "space-between",
+              "style": {
+                "classes": "site-card-pen",
+                "gap": "10px",
+                "minHeight": "28px",
+                "overflow": "hidden",
+                "width": "100%"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Lbl"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 1,
+                  "basis": "0%"
+                },
+                "props": {
+                  "text": "kWh (MTD)",
+                  "style": {
+                    "classes": "font-label site-card-pen-label",
+                    "fontSize": "15px",
+                    "opacity": "0.85",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis",
+                    "whiteSpace": "nowrap"
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "ValueUnit"
+                },
+                "position": {
+                  "grow": 0,
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "baseline",
+                  "justify": "flex-start",
+                  "style": {
+                    "gap": "8px",
+                    "flexShrink": "0",
+                    "width": "136px",
+                    "minWidth": "136px",
+                    "maxWidth": "136px",
+                    "overflow": "hidden"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Val"
+                    },
+                    "position": {
+                      "shrink": 0,
+                      "grow": 0,
+                      "basis": "84px"
+                    },
+                    "props": {
+                      "text": "\u2014",
+                      "style": {
+                        "classes": "font-livedata-entry site-card-pen-value",
+                        "fontSize": "18px",
+                        "fontWeight": "600",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "width": "84px",
+                        "minWidth": "84px",
+                        "fontVariantNumeric": "tabular-nums",
+                        "maxWidth": "84px",
+                        "overflow": "hidden"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "numberFormat(coalesce(try(if(isBadOrError(tag(coalesce({view.params.tagRoot}, '') + '/EPMS/kWh')), null, tag(coalesce({view.params.tagRoot}, '') + '/EPMS/kWh')), null), 0), '#,##0')"
+                          },
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Unit"
+                    },
+                    "position": {
+                      "shrink": 0,
+                      "grow": 0,
+                      "basis": "44px"
+                    },
+                    "props": {
+                      "text": "kWh",
+                      "style": {
+                        "classes": "font-label site-card-pen-unit",
+                        "fontSize": "14px",
+                        "opacity": "0.7",
+                        "whiteSpace": "nowrap",
+                        "width": "44px",
+                        "minWidth": "44px",
+                        "textAlign": "left",
+                        "maxWidth": "44px",
+                        "overflow": "hidden"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "PenTherm"
+            },
+            "position": {
+              "basis": "28px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "alignItems": "center",
+              "justify": "space-between",
+              "style": {
+                "classes": "site-card-pen",
+                "gap": "10px",
+                "minHeight": "28px",
+                "overflow": "hidden",
+                "width": "100%"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Lbl"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 1,
+                  "basis": "0%"
+                },
+                "props": {
+                  "text": "Natural Gas",
+                  "style": {
+                    "classes": "font-label site-card-pen-label",
+                    "fontSize": "15px",
+                    "opacity": "0.85",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis",
+                    "whiteSpace": "nowrap"
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "ValueUnit"
+                },
+                "position": {
+                  "grow": 0,
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "baseline",
+                  "justify": "flex-start",
+                  "style": {
+                    "gap": "8px",
+                    "flexShrink": "0",
+                    "width": "136px",
+                    "minWidth": "136px",
+                    "maxWidth": "136px",
+                    "overflow": "hidden"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Val"
+                    },
+                    "position": {
+                      "shrink": 0,
+                      "grow": 0,
+                      "basis": "84px"
+                    },
+                    "props": {
+                      "text": "\u2014",
+                      "style": {
+                        "classes": "font-livedata-entry site-card-pen-value",
+                        "fontSize": "18px",
+                        "fontWeight": "600",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "width": "84px",
+                        "minWidth": "84px",
+                        "fontVariantNumeric": "tabular-nums",
+                        "maxWidth": "84px",
+                        "overflow": "hidden"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "numberFormat(coalesce(try(if(isBadOrError(tag(coalesce({view.params.tagRoot}, '') + '/Utility/Therm')), null, tag(coalesce({view.params.tagRoot}, '') + '/Utility/Therm')), null), 0), '#,##0')"
+                          },
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Unit"
+                    },
+                    "position": {
+                      "shrink": 0,
+                      "grow": 0,
+                      "basis": "44px"
+                    },
+                    "props": {
+                      "text": "therm",
+                      "style": {
+                        "classes": "font-label site-card-pen-unit",
+                        "fontSize": "14px",
+                        "opacity": "0.7",
+                        "whiteSpace": "nowrap",
+                        "width": "44px",
+                        "minWidth": "44px",
+                        "textAlign": "left",
+                        "maxWidth": "44px",
+                        "overflow": "hidden"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "PenProd"
+            },
+            "position": {
+              "basis": "28px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "alignItems": "center",
+              "justify": "space-between",
+              "style": {
+                "classes": "site-card-pen",
+                "gap": "10px",
+                "minHeight": "28px",
+                "overflow": "hidden",
+                "width": "100%"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Lbl"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 1,
+                  "basis": "0%"
+                },
+                "props": {
+                  "text": "Production",
+                  "style": {
+                    "classes": "font-label site-card-pen-label",
+                    "fontSize": "15px",
+                    "opacity": "0.85",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis",
+                    "whiteSpace": "nowrap"
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "ValueUnit"
+                },
+                "position": {
+                  "grow": 0,
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "baseline",
+                  "justify": "flex-start",
+                  "style": {
+                    "gap": "8px",
+                    "flexShrink": "0",
+                    "width": "136px",
+                    "minWidth": "136px",
+                    "maxWidth": "136px",
+                    "overflow": "hidden"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Val"
+                    },
+                    "position": {
+                      "shrink": 0,
+                      "grow": 0,
+                      "basis": "84px"
+                    },
+                    "props": {
+                      "text": "\u2014",
+                      "style": {
+                        "classes": "font-livedata-entry site-card-pen-value",
+                        "fontSize": "18px",
+                        "fontWeight": "600",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "width": "84px",
+                        "minWidth": "84px",
+                        "fontVariantNumeric": "tabular-nums",
+                        "maxWidth": "84px",
+                        "overflow": "hidden"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "numberFormat(coalesce(try(if(isBadOrError(tag(coalesce({view.params.tagRoot}, '') + '/Production/ProdVol')), null, tag(coalesce({view.params.tagRoot}, '') + '/Production/ProdVol')), null), 0), '#,##0')"
+                          },
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Unit"
+                    },
+                    "position": {
+                      "shrink": 0,
+                      "grow": 0,
+                      "basis": "44px"
+                    },
+                    "props": {
+                      "text": "lb",
+                      "style": {
+                        "classes": "font-label site-card-pen-unit",
+                        "fontSize": "14px",
+                        "opacity": "0.7",
+                        "whiteSpace": "nowrap",
+                        "width": "44px",
+                        "minWidth": "44px",
+                        "textAlign": "left",
+                        "maxWidth": "44px",
+                        "overflow": "hidden"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "PenTemp"
+            },
+            "position": {
+              "basis": "28px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "alignItems": "center",
+              "justify": "space-between",
+              "style": {
+                "classes": "site-card-pen",
+                "gap": "10px",
+                "minHeight": "28px",
+                "overflow": "hidden",
+                "width": "100%"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Lbl"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 1,
+                  "basis": "0%"
+                },
+                "props": {
+                  "text": "Outdoor Temp",
+                  "style": {
+                    "classes": "font-label site-card-pen-label",
+                    "fontSize": "15px",
+                    "opacity": "0.85",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis",
+                    "whiteSpace": "nowrap"
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "ValueUnit"
+                },
+                "position": {
+                  "grow": 0,
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "baseline",
+                  "justify": "flex-start",
+                  "style": {
+                    "gap": "8px",
+                    "flexShrink": "0",
+                    "width": "136px",
+                    "minWidth": "136px",
+                    "maxWidth": "136px",
+                    "overflow": "hidden"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Val"
+                    },
+                    "position": {
+                      "shrink": 0,
+                      "grow": 0,
+                      "basis": "84px"
+                    },
+                    "props": {
+                      "text": "\u2014",
+                      "style": {
+                        "classes": "font-livedata-entry site-card-pen-value",
+                        "fontSize": "18px",
+                        "fontWeight": "600",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "width": "84px",
+                        "minWidth": "84px",
+                        "fontVariantNumeric": "tabular-nums",
+                        "maxWidth": "84px",
+                        "overflow": "hidden"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "numberFormat(coalesce(try(if(isBadOrError(tag(coalesce({view.params.tagRoot}, '') + '/Utility/AmbientAvgF')), null, tag(coalesce({view.params.tagRoot}, '') + '/Utility/AmbientAvgF')), null), 0), '#,##0.#')"
+                          },
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Unit"
+                    },
+                    "position": {
+                      "shrink": 0,
+                      "grow": 0,
+                      "basis": "44px"
+                    },
+                    "props": {
+                      "text": "\u00b0F",
+                      "style": {
+                        "classes": "font-label site-card-pen-unit",
+                        "fontSize": "14px",
+                        "opacity": "0.7",
+                        "whiteSpace": "nowrap",
+                        "width": "44px",
+                        "minWidth": "44px",
+                        "textAlign": "left",
+                        "maxWidth": "44px",
+                        "overflow": "hidden"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

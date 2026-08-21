@@ -1,0 +1,4640 @@
+{
+  "custom": {},
+  "params": {
+    "tagRoot": "[default]KPI/Groveport/Site"
+  },
+  "propConfig": {},
+  "props": {
+    "defaultSize": {
+      "width": 1400,
+      "height": 900
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "bg-page kpi-dashboard-page kpi-exec-page",
+        "gap": "12px",
+        "padding": "14px 18px 16px",
+        "overflow": "hidden",
+        "height": "100%",
+        "minHeight": "0"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Header"
+        },
+        "position": {
+          "grow": 0,
+          "shrink": 0
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "classes": "container-card container-card-border",
+            "gap": "8px",
+            "padding": "12px 16px",
+            "width": "100%"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "TitleRow"
+            },
+            "props": {
+              "direction": "row",
+              "justify": "space-between",
+              "alignItems": "center",
+              "wrap": "wrap",
+              "style": {
+                "gap": "10px",
+                "width": "100%"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Titles"
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "gap": "2px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Title"
+                    },
+                    "props": {
+                      "text": "Groveport \u2014 Executive utility & energy",
+                      "style": {
+                        "classes": "font-heading",
+                        "fontSize": "20px",
+                        "fontWeight": "700"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Sub"
+                    },
+                    "props": {
+                      "text": "Canvas-adapted SPoG \u00b7 live pens + Utility Tracker baselines \u00b7 metering roadmap",
+                      "style": {
+                        "classes": "font-label",
+                        "fontSize": "12px",
+                        "opacity": "0.8"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "HeaderActions"
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "center",
+                  "style": {
+                    "gap": "8px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Horizon"
+                    },
+                    "props": {
+                      "text": "Horizon: 12 months",
+                      "style": {
+                        "classes": "font-label",
+                        "fontSize": "12px",
+                        "opacity": "0.75",
+                        "padding": "4px 8px",
+                        "borderRadius": "4px",
+                        "backgroundColor": "rgba(0,0,0,0.04)"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.input.button",
+                    "meta": {
+                      "name": "BtnClassic"
+                    },
+                    "props": {
+                      "text": "Classic domain tabs",
+                      "primary": false,
+                      "style": {
+                        "classes": "font-label",
+                        "fontSize": "12px"
+                      }
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "type": "script",
+                          "scope": "G",
+                          "config": {
+                            "script": "Navigation.Nav.navigate({'action': 'page', 'page': '/plants/groveport/classic'})"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Callout"
+        },
+        "position": {
+          "grow": 0,
+          "shrink": 0
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "classes": "kpi-exec-callout",
+            "gap": "2px",
+            "padding": "10px 14px",
+            "borderRadius": "8px",
+            "backgroundColor": "rgba(12,123,179,0.08)",
+            "borderLeft": "4px solid #0C7BB3",
+            "width": "100%"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "CallTitle"
+            },
+            "props": {
+              "text": "Session context",
+              "style": {
+                "classes": "font-label",
+                "fontSize": "12px",
+                "fontWeight": "700"
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "CallBody"
+            },
+            "props": {
+              "text": "Groveport site dashboard with enterprise matrix placeholders (Cascade / Eneroi / Innovative). Line-break restart baselines from Utility Tracker. Area metering coverage on classic EPMS tab.",
+              "style": {
+                "classes": "font-label",
+                "fontSize": "12px",
+                "opacity": "0.85",
+                "whiteSpace": "normal"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "KpiStrip"
+        },
+        "position": {
+          "grow": 0,
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "wrap": "wrap",
+          "style": {
+            "gap": "10px",
+            "width": "100%"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "StatGwh"
+            },
+            "position": {
+              "grow": 1,
+              "shrink": 1,
+              "basis": "0%"
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "classes": "container-card container-card-border kpi-exec-stat",
+                "gap": "4px",
+                "padding": "12px 14px",
+                "minWidth": "140px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Lbl"
+                },
+                "props": {
+                  "text": "Period consumption",
+                  "style": {
+                    "classes": "font-label",
+                    "fontSize": "12px",
+                    "opacity": "0.75"
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Row"
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "baseline",
+                  "style": {
+                    "gap": "6px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Val"
+                    },
+                    "props": {
+                      "text": "7.96",
+                      "style": {
+                        "classes": "font-livedata-entry",
+                        "fontSize": "20px",
+                        "fontWeight": "700"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Unit"
+                    },
+                    "props": {
+                      "text": "GWh",
+                      "style": {
+                        "classes": "font-label",
+                        "fontSize": "12px",
+                        "opacity": "0.7"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Hint"
+                },
+                "props": {
+                  "text": "12M aggregate (Tracker)",
+                  "style": {
+                    "classes": "font-label",
+                    "fontSize": "11px",
+                    "opacity": "0.65",
+                    "whiteSpace": "normal"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "StatIntensity"
+            },
+            "position": {
+              "grow": 1,
+              "shrink": 1,
+              "basis": "0%"
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "classes": "container-card container-card-border kpi-exec-stat",
+                "gap": "4px",
+                "padding": "12px 14px",
+                "minWidth": "140px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Lbl"
+                },
+                "props": {
+                  "text": "Energy intensity",
+                  "style": {
+                    "classes": "font-label",
+                    "fontSize": "12px",
+                    "opacity": "0.75"
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Row"
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "baseline",
+                  "style": {
+                    "gap": "6px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Val"
+                    },
+                    "props": {
+                      "text": "\u2014",
+                      "style": {
+                        "classes": "font-livedata-entry",
+                        "fontSize": "20px",
+                        "fontWeight": "700"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "numberFormat(coalesce(try(if(isBadOrError(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Production/kWhPerLb')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Production/kWhPerLb')), null), 0), '0.000')"
+                          },
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Unit"
+                    },
+                    "props": {
+                      "text": "kWh/lb",
+                      "style": {
+                        "classes": "font-label",
+                        "fontSize": "12px",
+                        "opacity": "0.7"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Hint"
+                },
+                "props": {
+                  "text": "Live tag \u00b7 target \u2264 0.205",
+                  "style": {
+                    "classes": "font-label",
+                    "fontSize": "11px",
+                    "opacity": "0.65",
+                    "whiteSpace": "normal"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "StatTherm"
+            },
+            "position": {
+              "grow": 1,
+              "shrink": 1,
+              "basis": "0%"
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "classes": "container-card container-card-border kpi-exec-stat",
+                "gap": "4px",
+                "padding": "12px 14px",
+                "minWidth": "140px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Lbl"
+                },
+                "props": {
+                  "text": "Natural gas (MTD)",
+                  "style": {
+                    "classes": "font-label",
+                    "fontSize": "12px",
+                    "opacity": "0.75"
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Row"
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "baseline",
+                  "style": {
+                    "gap": "6px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Val"
+                    },
+                    "props": {
+                      "text": "\u2014",
+                      "style": {
+                        "classes": "font-livedata-entry",
+                        "fontSize": "20px",
+                        "fontWeight": "700"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "numberFormat(coalesce(try(if(isBadOrError(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Utility/Therm')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Utility/Therm')), null), 0), '#,##0')"
+                          },
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Unit"
+                    },
+                    "props": {
+                      "text": "therm",
+                      "style": {
+                        "classes": "font-label",
+                        "fontSize": "12px",
+                        "opacity": "0.7"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Hint"
+                },
+                "props": {
+                  "text": "Awaiting meter feed",
+                  "style": {
+                    "classes": "font-label",
+                    "fontSize": "11px",
+                    "opacity": "0.65",
+                    "whiteSpace": "normal"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "StatProd"
+            },
+            "position": {
+              "grow": 1,
+              "shrink": 1,
+              "basis": "0%"
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "classes": "container-card container-card-border kpi-exec-stat",
+                "gap": "4px",
+                "padding": "12px 14px",
+                "minWidth": "140px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Lbl"
+                },
+                "props": {
+                  "text": "Production (MTD)",
+                  "style": {
+                    "classes": "font-label",
+                    "fontSize": "12px",
+                    "opacity": "0.75"
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Row"
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "baseline",
+                  "style": {
+                    "gap": "6px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Val"
+                    },
+                    "props": {
+                      "text": "\u2014",
+                      "style": {
+                        "classes": "font-livedata-entry",
+                        "fontSize": "20px",
+                        "fontWeight": "700"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "numberFormat(coalesce(try(if(isBadOrError(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Production/ProdVol')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Production/ProdVol')), null), 0), '#,##0')"
+                          },
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Unit"
+                    },
+                    "props": {
+                      "text": "lb",
+                      "style": {
+                        "classes": "font-label",
+                        "fontSize": "12px",
+                        "opacity": "0.7"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Hint"
+                },
+                "props": {
+                  "text": "MES / Tracker seed",
+                  "style": {
+                    "classes": "font-label",
+                    "fontSize": "11px",
+                    "opacity": "0.65",
+                    "whiteSpace": "normal"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "StatPf"
+            },
+            "position": {
+              "grow": 1,
+              "shrink": 1,
+              "basis": "0%"
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "classes": "container-card container-card-border kpi-exec-stat",
+                "gap": "4px",
+                "padding": "12px 14px",
+                "minWidth": "140px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Lbl"
+                },
+                "props": {
+                  "text": "Power factor (est.)",
+                  "style": {
+                    "classes": "font-label",
+                    "fontSize": "12px",
+                    "opacity": "0.75"
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Row"
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "baseline",
+                  "style": {
+                    "gap": "6px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Val"
+                    },
+                    "props": {
+                      "text": "0.89",
+                      "style": {
+                        "classes": "font-livedata-entry",
+                        "fontSize": "20px",
+                        "fontWeight": "700"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Unit"
+                    },
+                    "props": {
+                      "text": "PF",
+                      "style": {
+                        "classes": "font-label",
+                        "fontSize": "12px",
+                        "opacity": "0.7"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Hint"
+                },
+                "props": {
+                  "text": "From latest kWh / kvar",
+                  "style": {
+                    "classes": "font-label",
+                    "fontSize": "11px",
+                    "opacity": "0.65",
+                    "whiteSpace": "normal"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "StatMeter"
+            },
+            "position": {
+              "grow": 1,
+              "shrink": 1,
+              "basis": "0%"
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "classes": "container-card container-card-border kpi-exec-stat",
+                "gap": "4px",
+                "padding": "12px 14px",
+                "minWidth": "140px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Lbl"
+                },
+                "props": {
+                  "text": "Metering coverage",
+                  "style": {
+                    "classes": "font-label",
+                    "fontSize": "12px",
+                    "opacity": "0.75"
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Row"
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "baseline",
+                  "style": {
+                    "gap": "6px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Val"
+                    },
+                    "props": {
+                      "text": "\u2014",
+                      "style": {
+                        "classes": "font-livedata-entry",
+                        "fontSize": "20px",
+                        "fontWeight": "700"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "numberFormat(coalesce(try(if(isBadOrError(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/ComingOnline/MeteringCoveragePct')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/ComingOnline/MeteringCoveragePct')), null), 0), '0')"
+                          },
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Unit"
+                    },
+                    "props": {
+                      "text": "% areas",
+                      "style": {
+                        "classes": "font-label",
+                        "fontSize": "12px",
+                        "opacity": "0.7"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Hint"
+                },
+                "props": {
+                  "text": "Plant metering initiative",
+                  "style": {
+                    "classes": "font-label",
+                    "fontSize": "11px",
+                    "opacity": "0.65",
+                    "whiteSpace": "normal"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "ia.container.tab",
+        "meta": {
+          "name": "ExecTabs"
+        },
+        "position": {
+          "grow": 1,
+          "shrink": 1,
+          "basis": "0%"
+        },
+        "props": {
+          "currentTabIndex": 0,
+          "tabs": [
+            "Executive SPoG",
+            "Plant matrix",
+            "Future innovations"
+          ],
+          "tabSize": {
+            "width": 150,
+            "height": 36
+          },
+          "style": {
+            "classes": "kpi-domain-tabs container-card container-card-border",
+            "flex": "1 1 0%",
+            "minHeight": "0",
+            "height": "100%",
+            "width": "100%",
+            "overflow": "hidden"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "PanelExecutive"
+            },
+            "position": {
+              "tabIndex": 0
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "14px",
+                "padding": "14px 16px 18px",
+                "overflow": "auto",
+                "height": "100%",
+                "minHeight": "0"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "CardPower"
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "classes": "container-card container-card-border",
+                    "gap": "10px",
+                    "padding": "14px 16px",
+                    "width": "100%",
+                    "boxSizing": "border-box",
+                    "overflow": "hidden"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Head"
+                    },
+                    "props": {
+                      "direction": "row",
+                      "justify": "space-between",
+                      "alignItems": "center",
+                      "style": {
+                        "gap": "8px",
+                        "width": "100%"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Title"
+                        },
+                        "props": {
+                          "text": "Primary power \u2014 monthly electricity (k-kWh) vs baselines",
+                          "style": {
+                            "classes": "font-heading",
+                            "fontSize": "15px",
+                            "fontWeight": "600"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Pill"
+                        },
+                        "props": {
+                          "text": "EPMS",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "11px",
+                            "padding": "2px 8px",
+                            "borderRadius": "4px",
+                            "backgroundColor": "rgba(12,123,179,0.12)",
+                            "opacity": "0.9"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Blurb"
+                    },
+                    "props": {
+                      "text": "Actual demand vs 3-yr average and 7-yr high/low envelope (last 12 months from Utility Tracker).",
+                      "style": {
+                        "classes": "font-label",
+                        "fontSize": "12px",
+                        "opacity": "0.8",
+                        "whiteSpace": "normal"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "KwhChart"
+                    },
+                    "position": {
+                      "grow": 0,
+                      "shrink": 0,
+                      "basis": "300px"
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "classes": "kpi-exec-chart",
+                        "width": "100%",
+                        "height": "300px",
+                        "minHeight": "300px",
+                        "maxHeight": "300px",
+                        "overflow": "hidden",
+                        "flexShrink": "0"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "kyvislabs.display.apexchart",
+                        "meta": {
+                          "name": "KwhChartApex"
+                        },
+                        "props": {
+                          "type": "rangeArea",
+                          "series": [
+                            {
+                              "name": "7yr Month High\u2013Low",
+                              "type": "rangeArea",
+                              "data": [
+                                {
+                                  "x": "Feb '23",
+                                  "y": [
+                                    609.6,
+                                    646.1
+                                  ]
+                                },
+                                {
+                                  "x": "Mar '23",
+                                  "y": [
+                                    552.0,
+                                    604.8
+                                  ]
+                                },
+                                {
+                                  "x": "Apr '23",
+                                  "y": [
+                                    618.2,
+                                    699.8
+                                  ]
+                                },
+                                {
+                                  "x": "May '23",
+                                  "y": [
+                                    604.8,
+                                    668.2
+                                  ]
+                                },
+                                {
+                                  "x": "Jun '23",
+                                  "y": [
+                                    630.7,
+                                    777.6
+                                  ]
+                                },
+                                {
+                                  "x": "Jul '23",
+                                  "y": [
+                                    643.2,
+                                    810.2
+                                  ]
+                                },
+                                {
+                                  "x": "Aug '23",
+                                  "y": [
+                                    761.3,
+                                    875.5
+                                  ]
+                                },
+                                {
+                                  "x": "Sep '23",
+                                  "y": [
+                                    793.0,
+                                    879.4
+                                  ]
+                                },
+                                {
+                                  "x": "Oct '23",
+                                  "y": [
+                                    691.2,
+                                    790.1
+                                  ]
+                                },
+                                {
+                                  "x": "Nov '23",
+                                  "y": [
+                                    663.4,
+                                    741.1
+                                  ]
+                                },
+                                {
+                                  "x": "Dec '23",
+                                  "y": [
+                                    614.4,
+                                    677.8
+                                  ]
+                                },
+                                {
+                                  "x": "Jan '24",
+                                  "y": [
+                                    595.2,
+                                    660.5
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "name": "3yr Month AVG",
+                              "type": "line",
+                              "data": [
+                                {
+                                  "x": "Feb '23",
+                                  "y": 609.6
+                                },
+                                {
+                                  "x": "Mar '23",
+                                  "y": 577.0
+                                },
+                                {
+                                  "x": "Apr '23",
+                                  "y": 648.0
+                                },
+                                {
+                                  "x": "May '23",
+                                  "y": 643.2
+                                },
+                                {
+                                  "x": "Jun '23",
+                                  "y": 673.9
+                                },
+                                {
+                                  "x": "Jul '23",
+                                  "y": 684.5
+                                },
+                                {
+                                  "x": "Aug '23",
+                                  "y": 761.3
+                                },
+                                {
+                                  "x": "Sep '23",
+                                  "y": 793.0
+                                },
+                                {
+                                  "x": "Oct '23",
+                                  "y": 691.2
+                                },
+                                {
+                                  "x": "Nov '23",
+                                  "y": 663.4
+                                },
+                                {
+                                  "x": "Dec '23",
+                                  "y": 615.4
+                                },
+                                {
+                                  "x": "Jan '24",
+                                  "y": 614.4
+                                }
+                              ]
+                            },
+                            {
+                              "name": "kWh Actual",
+                              "type": "line",
+                              "data": [
+                                {
+                                  "x": "Feb '23",
+                                  "y": 609.6
+                                },
+                                {
+                                  "x": "Mar '23",
+                                  "y": 577.0
+                                },
+                                {
+                                  "x": "Apr '23",
+                                  "y": 648.0
+                                },
+                                {
+                                  "x": "May '23",
+                                  "y": 643.2
+                                },
+                                {
+                                  "x": "Jun '23",
+                                  "y": 673.9
+                                },
+                                {
+                                  "x": "Jul '23",
+                                  "y": 684.5
+                                },
+                                {
+                                  "x": "Aug '23",
+                                  "y": 761.3
+                                },
+                                {
+                                  "x": "Sep '23",
+                                  "y": 793.0
+                                },
+                                {
+                                  "x": "Oct '23",
+                                  "y": 691.2
+                                },
+                                {
+                                  "x": "Nov '23",
+                                  "y": 663.4
+                                },
+                                {
+                                  "x": "Dec '23",
+                                  "y": 615.4
+                                },
+                                {
+                                  "x": "Jan '24",
+                                  "y": 595.2
+                                }
+                              ]
+                            }
+                          ],
+                          "options": {
+                            "chart": {
+                              "type": "rangeArea",
+                              "height": 300,
+                              "width": "100%",
+                              "animations": {
+                                "enabled": false
+                              },
+                              "toolbar": {
+                                "show": false
+                              },
+                              "zoom": {
+                                "enabled": false
+                              },
+                              "selection": {
+                                "enabled": false
+                              },
+                              "redrawOnParentResize": true,
+                              "redrawOnWindowResize": true,
+                              "events": {
+                                "animationEnd": false,
+                                "beforeMount": false,
+                                "beforeResetZoom": false,
+                                "beforeZoom": false,
+                                "brushScrolled": false,
+                                "click": false,
+                                "dataPointMouseEnter": false,
+                                "dataPointMouseLeave": false,
+                                "dataPointSelection": false,
+                                "legendClick": false,
+                                "markerClick": false,
+                                "mounted": false,
+                                "mouseLeave": false,
+                                "mouseMove": false,
+                                "scrolled": false,
+                                "selection": false,
+                                "updated": false,
+                                "xAxisLabelClick": false,
+                                "zoomed": false
+                              }
+                            },
+                            "colors": [
+                              "#8FBF88",
+                              "#E67E22",
+                              "#2C3E50"
+                            ],
+                            "dataLabels": {
+                              "enabled": false
+                            },
+                            "fill": {
+                              "opacity": [
+                                0.35,
+                                1,
+                                1
+                              ],
+                              "type": [
+                                "solid",
+                                "solid",
+                                "solid"
+                              ]
+                            },
+                            "stroke": {
+                              "curve": "smooth",
+                              "width": [
+                                0,
+                                2,
+                                2.5
+                              ]
+                            },
+                            "legend": {
+                              "show": true,
+                              "position": "top",
+                              "horizontalAlign": "left",
+                              "fontSize": "11px"
+                            },
+                            "grid": {
+                              "borderColor": "rgba(0,0,0,0.08)",
+                              "strokeDashArray": 3,
+                              "padding": {
+                                "left": 8,
+                                "right": 8
+                              }
+                            },
+                            "markers": {
+                              "size": 0
+                            },
+                            "tooltip": {
+                              "shared": true,
+                              "intersect": false
+                            },
+                            "xaxis": {
+                              "type": "category",
+                              "categories": [
+                                "Feb '23",
+                                "Mar '23",
+                                "Apr '23",
+                                "May '23",
+                                "Jun '23",
+                                "Jul '23",
+                                "Aug '23",
+                                "Sep '23",
+                                "Oct '23",
+                                "Nov '23",
+                                "Dec '23",
+                                "Jan '24"
+                              ],
+                              "labels": {
+                                "rotate": -45,
+                                "hideOverlappingLabels": true,
+                                "style": {
+                                  "fontSize": "10px"
+                                }
+                              },
+                              "tickAmount": 8
+                            },
+                            "yaxis": {
+                              "title": {
+                                "text": "k-kWh",
+                                "style": {
+                                  "fontSize": "11px"
+                                }
+                              },
+                              "labels": {
+                                "style": {
+                                  "fontSize": "10px"
+                                }
+                              },
+                              "decimalsInFloat": 0
+                            }
+                          }
+                        },
+                        "position": {
+                          "grow": 0,
+                          "shrink": 0,
+                          "basis": "300px"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "DualCharts"
+                },
+                "props": {
+                  "direction": "row",
+                  "wrap": "wrap",
+                  "style": {
+                    "gap": "14px",
+                    "width": "100%"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "WrapProd"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "shrink": 1,
+                      "basis": "0%"
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "minWidth": "320px"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.container.flex",
+                        "meta": {
+                          "name": "CardProd"
+                        },
+                        "props": {
+                          "direction": "column",
+                          "style": {
+                            "classes": "container-card container-card-border",
+                            "gap": "10px",
+                            "padding": "14px 16px",
+                            "width": "100%",
+                            "boxSizing": "border-box",
+                            "overflow": "hidden"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "ia.container.flex",
+                            "meta": {
+                              "name": "Head"
+                            },
+                            "props": {
+                              "direction": "row",
+                              "justify": "space-between",
+                              "alignItems": "center",
+                              "style": {
+                                "gap": "8px",
+                                "width": "100%"
+                              }
+                            },
+                            "children": [
+                              {
+                                "type": "ia.display.label",
+                                "meta": {
+                                  "name": "Title"
+                                },
+                                "props": {
+                                  "text": "Production volume (placeholder monthly)",
+                                  "style": {
+                                    "classes": "font-heading",
+                                    "fontSize": "15px",
+                                    "fontWeight": "600"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "ia.display.label",
+                                "meta": {
+                                  "name": "Pill"
+                                },
+                                "props": {
+                                  "text": "Production",
+                                  "style": {
+                                    "classes": "font-label",
+                                    "fontSize": "11px",
+                                    "padding": "2px 8px",
+                                    "borderRadius": "4px",
+                                    "backgroundColor": "rgba(12,123,179,0.12)",
+                                    "opacity": "0.9"
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "Blurb"
+                            },
+                            "props": {
+                              "text": "Monthly k-lb series is stubbed until production historian rolls up. Live MTD volume is on the KPI strip.",
+                              "style": {
+                                "classes": "font-label",
+                                "fontSize": "12px",
+                                "opacity": "0.8",
+                                "whiteSpace": "normal"
+                              }
+                            }
+                          },
+                          {
+                            "type": "ia.container.flex",
+                            "meta": {
+                              "name": "ProdChart"
+                            },
+                            "position": {
+                              "grow": 0,
+                              "shrink": 0,
+                              "basis": "240px"
+                            },
+                            "props": {
+                              "direction": "column",
+                              "style": {
+                                "classes": "kpi-exec-chart",
+                                "width": "100%",
+                                "height": "240px",
+                                "minHeight": "240px",
+                                "maxHeight": "240px",
+                                "overflow": "hidden",
+                                "flexShrink": "0"
+                              }
+                            },
+                            "children": [
+                              {
+                                "type": "kyvislabs.display.apexchart",
+                                "meta": {
+                                  "name": "ProdChartApex"
+                                },
+                                "props": {
+                                  "type": "bar",
+                                  "series": [
+                                    {
+                                      "name": "k-lb (stub)",
+                                      "data": [
+                                        120,
+                                        132,
+                                        144,
+                                        144,
+                                        156,
+                                        128,
+                                        128,
+                                        140,
+                                        152,
+                                        152,
+                                        124,
+                                        136
+                                      ]
+                                    }
+                                  ],
+                                  "options": {
+                                    "chart": {
+                                      "type": "bar",
+                                      "height": 240,
+                                      "width": "100%",
+                                      "animations": {
+                                        "enabled": false
+                                      },
+                                      "toolbar": {
+                                        "show": false
+                                      },
+                                      "events": {
+                                        "animationEnd": false,
+                                        "beforeMount": false,
+                                        "beforeResetZoom": false,
+                                        "beforeZoom": false,
+                                        "brushScrolled": false,
+                                        "click": false,
+                                        "dataPointMouseEnter": false,
+                                        "dataPointMouseLeave": false,
+                                        "dataPointSelection": false,
+                                        "legendClick": false,
+                                        "markerClick": false,
+                                        "mounted": false,
+                                        "mouseLeave": false,
+                                        "mouseMove": false,
+                                        "scrolled": false,
+                                        "selection": false,
+                                        "updated": false,
+                                        "xAxisLabelClick": false,
+                                        "zoomed": false
+                                      }
+                                    },
+                                    "colors": [
+                                      "#5C6B7A"
+                                    ],
+                                    "dataLabels": {
+                                      "enabled": false
+                                    },
+                                    "legend": {
+                                      "show": false
+                                    },
+                                    "grid": {
+                                      "borderColor": "rgba(0,0,0,0.08)",
+                                      "strokeDashArray": 3
+                                    },
+                                    "xaxis": {
+                                      "categories": [
+                                        "Feb '23",
+                                        "Mar '23",
+                                        "Apr '23",
+                                        "May '23",
+                                        "Jun '23",
+                                        "Jul '23",
+                                        "Aug '23",
+                                        "Sep '23",
+                                        "Oct '23",
+                                        "Nov '23",
+                                        "Dec '23",
+                                        "Jan '24"
+                                      ],
+                                      "labels": {
+                                        "rotate": -45,
+                                        "style": {
+                                          "fontSize": "10px"
+                                        }
+                                      }
+                                    },
+                                    "yaxis": {
+                                      "title": {
+                                        "text": "k-lb (stub)",
+                                        "style": {
+                                          "fontSize": "11px"
+                                        }
+                                      },
+                                      "labels": {
+                                        "style": {
+                                          "fontSize": "10px"
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "position": {
+                                  "grow": 0,
+                                  "shrink": 0,
+                                  "basis": "240px"
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "WrapTherm"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "shrink": 1,
+                      "basis": "0%"
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "minWidth": "320px"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.container.flex",
+                        "meta": {
+                          "name": "CardTherm"
+                        },
+                        "props": {
+                          "direction": "column",
+                          "style": {
+                            "classes": "container-card container-card-border",
+                            "gap": "10px",
+                            "padding": "14px 16px",
+                            "width": "100%",
+                            "boxSizing": "border-box",
+                            "overflow": "hidden"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "ia.container.flex",
+                            "meta": {
+                              "name": "Head"
+                            },
+                            "props": {
+                              "direction": "row",
+                              "justify": "space-between",
+                              "alignItems": "center",
+                              "style": {
+                                "gap": "8px",
+                                "width": "100%"
+                              }
+                            },
+                            "children": [
+                              {
+                                "type": "ia.display.label",
+                                "meta": {
+                                  "name": "Title"
+                                },
+                                "props": {
+                                  "text": "Thermal load vs ambient temperature",
+                                  "style": {
+                                    "classes": "font-heading",
+                                    "fontSize": "15px",
+                                    "fontWeight": "600"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "ia.display.label",
+                                "meta": {
+                                  "name": "Pill"
+                                },
+                                "props": {
+                                  "text": "Utility",
+                                  "style": {
+                                    "classes": "font-label",
+                                    "fontSize": "11px",
+                                    "padding": "2px 8px",
+                                    "borderRadius": "4px",
+                                    "backgroundColor": "rgba(12,123,179,0.12)",
+                                    "opacity": "0.9"
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "Blurb"
+                            },
+                            "props": {
+                              "text": "Temp from Utility Tracker. Therm series is a weather-shaped stub until gas meters feed.",
+                              "style": {
+                                "classes": "font-label",
+                                "fontSize": "12px",
+                                "opacity": "0.8",
+                                "whiteSpace": "normal"
+                              }
+                            }
+                          },
+                          {
+                            "type": "ia.container.flex",
+                            "meta": {
+                              "name": "ThermTempChart"
+                            },
+                            "position": {
+                              "grow": 0,
+                              "shrink": 0,
+                              "basis": "240px"
+                            },
+                            "props": {
+                              "direction": "column",
+                              "style": {
+                                "classes": "kpi-exec-chart",
+                                "width": "100%",
+                                "height": "240px",
+                                "minHeight": "240px",
+                                "maxHeight": "240px",
+                                "overflow": "hidden",
+                                "flexShrink": "0"
+                              }
+                            },
+                            "children": [
+                              {
+                                "type": "kyvislabs.display.apexchart",
+                                "meta": {
+                                  "name": "ThermTempChartApex"
+                                },
+                                "props": {
+                                  "type": "line",
+                                  "series": [
+                                    {
+                                      "name": "Natural Gas (therm stub)",
+                                      "data": [
+                                        9162,
+                                        8910,
+                                        6840,
+                                        6372,
+                                        5040,
+                                        3564,
+                                        3924,
+                                        4986,
+                                        6840,
+                                        9216,
+                                        9792,
+                                        10440
+                                      ]
+                                    },
+                                    {
+                                      "name": "Mean Temp \u00b0F (\u00d7150)",
+                                      "data": [
+                                        7365.0,
+                                        7575.0,
+                                        9300.0,
+                                        9690.0,
+                                        10800.0,
+                                        12030.0,
+                                        11730.0,
+                                        10845.0,
+                                        9300.0,
+                                        7320.0,
+                                        6840.0,
+                                        6300.0
+                                      ]
+                                    }
+                                  ],
+                                  "options": {
+                                    "chart": {
+                                      "type": "line",
+                                      "height": 240,
+                                      "width": "100%",
+                                      "animations": {
+                                        "enabled": false
+                                      },
+                                      "toolbar": {
+                                        "show": false
+                                      },
+                                      "zoom": {
+                                        "enabled": false
+                                      },
+                                      "events": {
+                                        "animationEnd": false,
+                                        "beforeMount": false,
+                                        "beforeResetZoom": false,
+                                        "beforeZoom": false,
+                                        "brushScrolled": false,
+                                        "click": false,
+                                        "dataPointMouseEnter": false,
+                                        "dataPointMouseLeave": false,
+                                        "dataPointSelection": false,
+                                        "legendClick": false,
+                                        "markerClick": false,
+                                        "mounted": false,
+                                        "mouseLeave": false,
+                                        "mouseMove": false,
+                                        "scrolled": false,
+                                        "selection": false,
+                                        "updated": false,
+                                        "xAxisLabelClick": false,
+                                        "zoomed": false
+                                      }
+                                    },
+                                    "colors": [
+                                      "#C0392B",
+                                      "#E67E22"
+                                    ],
+                                    "stroke": {
+                                      "curve": "smooth",
+                                      "width": 2
+                                    },
+                                    "dataLabels": {
+                                      "enabled": false
+                                    },
+                                    "legend": {
+                                      "show": true,
+                                      "position": "top",
+                                      "fontSize": "11px"
+                                    },
+                                    "grid": {
+                                      "borderColor": "rgba(0,0,0,0.08)",
+                                      "strokeDashArray": 3
+                                    },
+                                    "markers": {
+                                      "size": 0
+                                    },
+                                    "tooltip": {
+                                      "shared": true
+                                    },
+                                    "xaxis": {
+                                      "categories": [
+                                        "Jan '23",
+                                        "Feb '23",
+                                        "Mar '23",
+                                        "Apr '23",
+                                        "May '23",
+                                        "Jun '23",
+                                        "Jul '23",
+                                        "Aug '23",
+                                        "Sep '23",
+                                        "Oct '23",
+                                        "Nov '23",
+                                        "Dec '23"
+                                      ],
+                                      "labels": {
+                                        "rotate": -45,
+                                        "style": {
+                                          "fontSize": "10px"
+                                        }
+                                      }
+                                    },
+                                    "yaxis": {
+                                      "title": {
+                                        "text": "Therm / scaled \u00b0F",
+                                        "style": {
+                                          "fontSize": "11px"
+                                        }
+                                      },
+                                      "labels": {
+                                        "style": {
+                                          "fontSize": "10px"
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "position": {
+                                  "grow": 0,
+                                  "shrink": 0,
+                                  "basis": "240px"
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "PanelMatrix"
+            },
+            "position": {
+              "tabIndex": 1
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "12px",
+                "padding": "14px 16px 18px",
+                "overflow": "auto",
+                "height": "100%",
+                "minHeight": "0"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "MatrixTitle"
+                },
+                "props": {
+                  "text": "Enterprise multi-facility scorecard (placeholder)",
+                  "style": {
+                    "classes": "font-heading",
+                    "fontSize": "16px",
+                    "fontWeight": "700"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "MatrixSub"
+                },
+                "props": {
+                  "text": "Cascade / Eneroi / Innovative matrix from the executive canvas. Groveport row highlighted \u2014 bind to live site tags as metering rolls out.",
+                  "style": {
+                    "classes": "font-label",
+                    "fontSize": "12px",
+                    "opacity": "0.8",
+                    "whiteSpace": "normal"
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "CardTable"
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "classes": "container-card container-card-border",
+                    "gap": "10px",
+                    "padding": "14px 16px",
+                    "width": "100%",
+                    "boxSizing": "border-box",
+                    "overflow": "hidden"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Head"
+                    },
+                    "props": {
+                      "direction": "row",
+                      "justify": "space-between",
+                      "alignItems": "center",
+                      "style": {
+                        "gap": "8px",
+                        "width": "100%"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Title"
+                        },
+                        "props": {
+                          "text": "Plant matrix",
+                          "style": {
+                            "classes": "font-heading",
+                            "fontSize": "15px",
+                            "fontWeight": "600"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "TableHead"
+                    },
+                    "props": {
+                      "direction": "row",
+                      "style": {
+                        "gap": "6px",
+                        "width": "100%",
+                        "padding": "6px 4px",
+                        "borderBottom": "1px solid rgba(0,0,0,0.12)"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "H0"
+                        },
+                        "props": {
+                          "text": "Division",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "11px",
+                            "fontWeight": "700",
+                            "opacity": "0.7",
+                            "flex": "2 1 0%",
+                            "minWidth": "0"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "H1"
+                        },
+                        "props": {
+                          "text": "Plant",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "11px",
+                            "fontWeight": "700",
+                            "opacity": "0.7",
+                            "flex": "2 1 0%",
+                            "minWidth": "0"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "H2"
+                        },
+                        "props": {
+                          "text": "St",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "11px",
+                            "fontWeight": "700",
+                            "opacity": "0.7",
+                            "flex": "1 1 0%",
+                            "minWidth": "0"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "H3"
+                        },
+                        "props": {
+                          "text": "Restart",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "11px",
+                            "fontWeight": "700",
+                            "opacity": "0.7",
+                            "flex": "1 1 0%",
+                            "minWidth": "0"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "H4"
+                        },
+                        "props": {
+                          "text": "kWh",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "11px",
+                            "fontWeight": "700",
+                            "opacity": "0.7",
+                            "flex": "1 1 0%",
+                            "minWidth": "0"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "H5"
+                        },
+                        "props": {
+                          "text": "Therm",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "11px",
+                            "fontWeight": "700",
+                            "opacity": "0.7",
+                            "flex": "1 1 0%",
+                            "minWidth": "0"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "H6"
+                        },
+                        "props": {
+                          "text": "Prod",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "11px",
+                            "fontWeight": "700",
+                            "opacity": "0.7",
+                            "flex": "1 1 0%",
+                            "minWidth": "0"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "H7"
+                        },
+                        "props": {
+                          "text": "kWh/lb",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "11px",
+                            "fontWeight": "700",
+                            "opacity": "0.7",
+                            "flex": "1 1 0%",
+                            "minWidth": "0"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "H8"
+                        },
+                        "props": {
+                          "text": "Peak kW",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "11px",
+                            "fontWeight": "700",
+                            "opacity": "0.7",
+                            "flex": "1 1 0%",
+                            "minWidth": "0"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "H9"
+                        },
+                        "props": {
+                          "text": "PF",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "11px",
+                            "fontWeight": "700",
+                            "opacity": "0.7",
+                            "flex": "1 1 0%",
+                            "minWidth": "0"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "H10"
+                        },
+                        "props": {
+                          "text": "Status",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "11px",
+                            "fontWeight": "700",
+                            "opacity": "0.7",
+                            "flex": "1 1 0%",
+                            "minWidth": "0"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Site0"
+                    },
+                    "props": {
+                      "direction": "row",
+                      "style": {
+                        "gap": "6px",
+                        "width": "100%",
+                        "padding": "7px 4px",
+                        "borderBottom": "1px solid rgba(0,0,0,0.06)",
+                        "backgroundColor": "transparent"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C0"
+                        },
+                        "props": {
+                          "text": "Cascade",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "2 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C1"
+                        },
+                        "props": {
+                          "text": "New York",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "2 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C2"
+                        },
+                        "props": {
+                          "text": "NY",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C3"
+                        },
+                        "props": {
+                          "text": "March",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C4"
+                        },
+                        "props": {
+                          "text": "298k",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C5"
+                        },
+                        "props": {
+                          "text": "5,400",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C6"
+                        },
+                        "props": {
+                          "text": "1,480k",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C7"
+                        },
+                        "props": {
+                          "text": "0.201",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C8"
+                        },
+                        "props": {
+                          "text": "620",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C9"
+                        },
+                        "props": {
+                          "text": "0.94",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C10"
+                        },
+                        "props": {
+                          "text": "Optimal",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Site1"
+                    },
+                    "props": {
+                      "direction": "row",
+                      "style": {
+                        "gap": "6px",
+                        "width": "100%",
+                        "padding": "7px 4px",
+                        "borderBottom": "1px solid rgba(0,0,0,0.06)",
+                        "backgroundColor": "rgba(12,123,179,0.06)"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C0"
+                        },
+                        "props": {
+                          "text": "Cascade",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "600",
+                            "flex": "2 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C1"
+                        },
+                        "props": {
+                          "text": "Groveport",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "600",
+                            "flex": "2 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C2"
+                        },
+                        "props": {
+                          "text": "OH",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "600",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C3"
+                        },
+                        "props": {
+                          "text": "October",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "600",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C4"
+                        },
+                        "props": {
+                          "text": "340k",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "600",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C5"
+                        },
+                        "props": {
+                          "text": "6,800",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "600",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C6"
+                        },
+                        "props": {
+                          "text": "1,520k",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "600",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C7"
+                        },
+                        "props": {
+                          "text": "0.224",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "600",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C8"
+                        },
+                        "props": {
+                          "text": "710",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "600",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C9"
+                        },
+                        "props": {
+                          "text": "0.89",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "600",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C10"
+                        },
+                        "props": {
+                          "text": "PF Alert",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "600",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Site2"
+                    },
+                    "props": {
+                      "direction": "row",
+                      "style": {
+                        "gap": "6px",
+                        "width": "100%",
+                        "padding": "7px 4px",
+                        "borderBottom": "1px solid rgba(0,0,0,0.06)",
+                        "backgroundColor": "transparent"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C0"
+                        },
+                        "props": {
+                          "text": "Cascade",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "2 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C1"
+                        },
+                        "props": {
+                          "text": "Holland",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "2 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C2"
+                        },
+                        "props": {
+                          "text": "MI",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C3"
+                        },
+                        "props": {
+                          "text": "November",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C4"
+                        },
+                        "props": {
+                          "text": "275k",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C5"
+                        },
+                        "props": {
+                          "text": "4,900",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C6"
+                        },
+                        "props": {
+                          "text": "1,350k",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C7"
+                        },
+                        "props": {
+                          "text": "0.204",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C8"
+                        },
+                        "props": {
+                          "text": "580",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C9"
+                        },
+                        "props": {
+                          "text": "0.95",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C10"
+                        },
+                        "props": {
+                          "text": "Optimal",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Site3"
+                    },
+                    "props": {
+                      "direction": "row",
+                      "style": {
+                        "gap": "6px",
+                        "width": "100%",
+                        "padding": "7px 4px",
+                        "borderBottom": "1px solid rgba(0,0,0,0.06)",
+                        "backgroundColor": "transparent"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C0"
+                        },
+                        "props": {
+                          "text": "Eneroi",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "2 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C1"
+                        },
+                        "props": {
+                          "text": "Petersburg",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "2 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C2"
+                        },
+                        "props": {
+                          "text": "VA",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C3"
+                        },
+                        "props": {
+                          "text": "January",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C4"
+                        },
+                        "props": {
+                          "text": "312k",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C5"
+                        },
+                        "props": {
+                          "text": "5,900",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C6"
+                        },
+                        "props": {
+                          "text": "1,410k",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C7"
+                        },
+                        "props": {
+                          "text": "0.221",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C8"
+                        },
+                        "props": {
+                          "text": "660",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C9"
+                        },
+                        "props": {
+                          "text": "0.93",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C10"
+                        },
+                        "props": {
+                          "text": "Optimal",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Site4"
+                    },
+                    "props": {
+                      "direction": "row",
+                      "style": {
+                        "gap": "6px",
+                        "width": "100%",
+                        "padding": "7px 4px",
+                        "borderBottom": "1px solid rgba(0,0,0,0.06)",
+                        "backgroundColor": "transparent"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C0"
+                        },
+                        "props": {
+                          "text": "Eneroi",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "2 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C1"
+                        },
+                        "props": {
+                          "text": "Jarratt",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "2 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C2"
+                        },
+                        "props": {
+                          "text": "VA",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C3"
+                        },
+                        "props": {
+                          "text": "December",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C4"
+                        },
+                        "props": {
+                          "text": "283k",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C5"
+                        },
+                        "props": {
+                          "text": "5,200",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C6"
+                        },
+                        "props": {
+                          "text": "1,290k",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C7"
+                        },
+                        "props": {
+                          "text": "0.219",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C8"
+                        },
+                        "props": {
+                          "text": "590",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C9"
+                        },
+                        "props": {
+                          "text": "0.91",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C10"
+                        },
+                        "props": {
+                          "text": "Optimal",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Site5"
+                    },
+                    "props": {
+                      "direction": "row",
+                      "style": {
+                        "gap": "6px",
+                        "width": "100%",
+                        "padding": "7px 4px",
+                        "borderBottom": "1px solid rgba(0,0,0,0.06)",
+                        "backgroundColor": "transparent"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C0"
+                        },
+                        "props": {
+                          "text": "Eneroi",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "2 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C1"
+                        },
+                        "props": {
+                          "text": "Holland",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "2 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C2"
+                        },
+                        "props": {
+                          "text": "MI",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C3"
+                        },
+                        "props": {
+                          "text": "December",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C4"
+                        },
+                        "props": {
+                          "text": "295k",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C5"
+                        },
+                        "props": {
+                          "text": "5,600",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C6"
+                        },
+                        "props": {
+                          "text": "1,380k",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C7"
+                        },
+                        "props": {
+                          "text": "0.214",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C8"
+                        },
+                        "props": {
+                          "text": "630",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C9"
+                        },
+                        "props": {
+                          "text": "0.92",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C10"
+                        },
+                        "props": {
+                          "text": "Optimal",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Site6"
+                    },
+                    "props": {
+                      "direction": "row",
+                      "style": {
+                        "gap": "6px",
+                        "width": "100%",
+                        "padding": "7px 4px",
+                        "borderBottom": "1px solid rgba(0,0,0,0.06)",
+                        "backgroundColor": "transparent"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C0"
+                        },
+                        "props": {
+                          "text": "Innovative",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "2 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C1"
+                        },
+                        "props": {
+                          "text": "Expansion L1",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "2 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C2"
+                        },
+                        "props": {
+                          "text": "TX",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C3"
+                        },
+                        "props": {
+                          "text": "Q3 future",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C4"
+                        },
+                        "props": {
+                          "text": "380k",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C5"
+                        },
+                        "props": {
+                          "text": "7,200",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C6"
+                        },
+                        "props": {
+                          "text": "1,950k",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C7"
+                        },
+                        "props": {
+                          "text": "0.195",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C8"
+                        },
+                        "props": {
+                          "text": "820",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C9"
+                        },
+                        "props": {
+                          "text": "0.98",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "C10"
+                        },
+                        "props": {
+                          "text": "Model Pilot",
+                          "style": {
+                            "classes": "font-label",
+                            "fontSize": "12px",
+                            "fontWeight": "400",
+                            "flex": "1 1 0%",
+                            "minWidth": "0",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "RestartProtocol"
+                },
+                "props": {
+                  "direction": "row",
+                  "wrap": "wrap",
+                  "style": {
+                    "gap": "12px",
+                    "width": "100%"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "WrapRestart"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0%"
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "minWidth": "280px"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.container.flex",
+                        "meta": {
+                          "name": "CardRestart"
+                        },
+                        "props": {
+                          "direction": "column",
+                          "style": {
+                            "classes": "container-card container-card-border",
+                            "gap": "10px",
+                            "padding": "14px 16px",
+                            "width": "100%",
+                            "boxSizing": "border-box",
+                            "overflow": "hidden"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "ia.container.flex",
+                            "meta": {
+                              "name": "Head"
+                            },
+                            "props": {
+                              "direction": "row",
+                              "justify": "space-between",
+                              "alignItems": "center",
+                              "style": {
+                                "gap": "8px",
+                                "width": "100%"
+                              }
+                            },
+                            "children": [
+                              {
+                                "type": "ia.display.label",
+                                "meta": {
+                                  "name": "Title"
+                                },
+                                "props": {
+                                  "text": "Line restart baseline protocol",
+                                  "style": {
+                                    "classes": "font-heading",
+                                    "fontSize": "15px",
+                                    "fontWeight": "600"
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "R1"
+                            },
+                            "props": {
+                              "text": "Cascade NY \u2014 March",
+                              "style": {
+                                "classes": "font-label",
+                                "fontSize": "13px",
+                                "opacity": "0.85"
+                              }
+                            }
+                          },
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "R2"
+                            },
+                            "props": {
+                              "text": "Cascade Groveport \u2014 October",
+                              "style": {
+                                "classes": "font-label",
+                                "fontSize": "13px",
+                                "fontWeight": "600"
+                              }
+                            }
+                          },
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "R3"
+                            },
+                            "props": {
+                              "text": "Cascade Holland \u2014 November",
+                              "style": {
+                                "classes": "font-label",
+                                "fontSize": "13px",
+                                "opacity": "0.85"
+                              }
+                            }
+                          },
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "R4"
+                            },
+                            "props": {
+                              "text": "Eneroi Petersburg \u2014 January",
+                              "style": {
+                                "classes": "font-label",
+                                "fontSize": "13px",
+                                "opacity": "0.85"
+                              }
+                            }
+                          },
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "R5"
+                            },
+                            "props": {
+                              "text": "Eneroi Jarratt / Holland \u2014 December",
+                              "style": {
+                                "classes": "font-label",
+                                "fontSize": "13px",
+                                "opacity": "0.85"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "PanelInnovations"
+            },
+            "position": {
+              "tabIndex": 2
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "12px",
+                "padding": "14px 16px 18px",
+                "overflow": "auto",
+                "height": "100%",
+                "minHeight": "0"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "InnovTitle"
+                },
+                "props": {
+                  "text": "Future innovations roadmap",
+                  "style": {
+                    "classes": "font-heading",
+                    "fontSize": "16px",
+                    "fontWeight": "700"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "InnovSub"
+                },
+                "props": {
+                  "text": "From the executive canvas \u2014 Ignition Perspective capabilities to close utility gaps.",
+                  "style": {
+                    "classes": "font-label",
+                    "fontSize": "12px",
+                    "opacity": "0.8",
+                    "whiteSpace": "normal"
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "InnovGrid"
+                },
+                "props": {
+                  "direction": "row",
+                  "wrap": "wrap",
+                  "style": {
+                    "gap": "12px",
+                    "width": "100%"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Innov0"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "shrink": 1,
+                      "basis": "0%"
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "minWidth": "280px",
+                        "maxWidth": "100%"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.container.flex",
+                        "meta": {
+                          "name": "CardInnov0"
+                        },
+                        "props": {
+                          "direction": "column",
+                          "style": {
+                            "classes": "container-card container-card-border",
+                            "gap": "10px",
+                            "padding": "14px 16px",
+                            "width": "100%",
+                            "boxSizing": "border-box",
+                            "overflow": "hidden"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "ia.container.flex",
+                            "meta": {
+                              "name": "Head"
+                            },
+                            "props": {
+                              "direction": "row",
+                              "justify": "space-between",
+                              "alignItems": "center",
+                              "style": {
+                                "gap": "8px",
+                                "width": "100%"
+                              }
+                            },
+                            "children": [
+                              {
+                                "type": "ia.display.label",
+                                "meta": {
+                                  "name": "Title"
+                                },
+                                "props": {
+                                  "text": "Weather-normalized EnPI",
+                                  "style": {
+                                    "classes": "font-heading",
+                                    "fontSize": "15px",
+                                    "fontWeight": "600"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "ia.display.label",
+                                "meta": {
+                                  "name": "Pill"
+                                },
+                                "props": {
+                                  "text": "High ROI",
+                                  "style": {
+                                    "classes": "font-label",
+                                    "fontSize": "11px",
+                                    "padding": "2px 8px",
+                                    "borderRadius": "4px",
+                                    "backgroundColor": "rgba(12,123,179,0.12)",
+                                    "opacity": "0.9"
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "B"
+                            },
+                            "props": {
+                              "text": "Subtract HDD/CDD effects so summer/winter spikes don't look like inefficiency.",
+                              "style": {
+                                "classes": "font-label",
+                                "fontSize": "13px",
+                                "opacity": "0.85",
+                                "whiteSpace": "normal"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Innov1"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "shrink": 1,
+                      "basis": "0%"
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "minWidth": "280px",
+                        "maxWidth": "100%"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.container.flex",
+                        "meta": {
+                          "name": "CardInnov1"
+                        },
+                        "props": {
+                          "direction": "column",
+                          "style": {
+                            "classes": "container-card container-card-border",
+                            "gap": "10px",
+                            "padding": "14px 16px",
+                            "width": "100%",
+                            "boxSizing": "border-box",
+                            "overflow": "hidden"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "ia.container.flex",
+                            "meta": {
+                              "name": "Head"
+                            },
+                            "props": {
+                              "direction": "row",
+                              "justify": "space-between",
+                              "alignItems": "center",
+                              "style": {
+                                "gap": "8px",
+                                "width": "100%"
+                              }
+                            },
+                            "children": [
+                              {
+                                "type": "ia.display.label",
+                                "meta": {
+                                  "name": "Title"
+                                },
+                                "props": {
+                                  "text": "15-min peak demand predictor",
+                                  "style": {
+                                    "classes": "font-heading",
+                                    "fontSize": "15px",
+                                    "fontWeight": "600"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "ia.display.label",
+                                "meta": {
+                                  "name": "Pill"
+                                },
+                                "props": {
+                                  "text": "Demand shaving",
+                                  "style": {
+                                    "classes": "font-label",
+                                    "fontSize": "11px",
+                                    "padding": "2px 8px",
+                                    "borderRadius": "4px",
+                                    "backgroundColor": "rgba(12,123,179,0.12)",
+                                    "opacity": "0.9"
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "B"
+                            },
+                            "props": {
+                              "text": "Alert before a new monthly kW peak sets a 12-month ratchet charge.",
+                              "style": {
+                                "classes": "font-label",
+                                "fontSize": "13px",
+                                "opacity": "0.85",
+                                "whiteSpace": "normal"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Innov2"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "shrink": 1,
+                      "basis": "0%"
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "minWidth": "280px",
+                        "maxWidth": "100%"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.container.flex",
+                        "meta": {
+                          "name": "CardInnov2"
+                        },
+                        "props": {
+                          "direction": "column",
+                          "style": {
+                            "classes": "container-card container-card-border",
+                            "gap": "10px",
+                            "padding": "14px 16px",
+                            "width": "100%",
+                            "boxSizing": "border-box",
+                            "overflow": "hidden"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "ia.container.flex",
+                            "meta": {
+                              "name": "Head"
+                            },
+                            "props": {
+                              "direction": "row",
+                              "justify": "space-between",
+                              "alignItems": "center",
+                              "style": {
+                                "gap": "8px",
+                                "width": "100%"
+                              }
+                            },
+                            "children": [
+                              {
+                                "type": "ia.display.label",
+                                "meta": {
+                                  "name": "Title"
+                                },
+                                "props": {
+                                  "text": "Activity-based $/lb costing",
+                                  "style": {
+                                    "classes": "font-heading",
+                                    "fontSize": "15px",
+                                    "fontWeight": "600"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "ia.display.label",
+                                "meta": {
+                                  "name": "Pill"
+                                },
+                                "props": {
+                                  "text": "Activity costing",
+                                  "style": {
+                                    "classes": "font-label",
+                                    "fontSize": "11px",
+                                    "padding": "2px 8px",
+                                    "borderRadius": "4px",
+                                    "backgroundColor": "rgba(12,123,179,0.12)",
+                                    "opacity": "0.9"
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "B"
+                            },
+                            "props": {
+                              "text": "Tie utility cost to MES batches / SKUs instead of P&L overhead.",
+                              "style": {
+                                "classes": "font-label",
+                                "fontSize": "13px",
+                                "opacity": "0.85",
+                                "whiteSpace": "normal"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Innov3"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "shrink": 1,
+                      "basis": "0%"
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "minWidth": "280px",
+                        "maxWidth": "100%"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.container.flex",
+                        "meta": {
+                          "name": "CardInnov3"
+                        },
+                        "props": {
+                          "direction": "column",
+                          "style": {
+                            "classes": "container-card container-card-border",
+                            "gap": "10px",
+                            "padding": "14px 16px",
+                            "width": "100%",
+                            "boxSizing": "border-box",
+                            "overflow": "hidden"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "ia.container.flex",
+                            "meta": {
+                              "name": "Head"
+                            },
+                            "props": {
+                              "direction": "row",
+                              "justify": "space-between",
+                              "alignItems": "center",
+                              "style": {
+                                "gap": "8px",
+                                "width": "100%"
+                              }
+                            },
+                            "children": [
+                              {
+                                "type": "ia.display.label",
+                                "meta": {
+                                  "name": "Title"
+                                },
+                                "props": {
+                                  "text": "Power factor sentinel",
+                                  "style": {
+                                    "classes": "font-heading",
+                                    "fontSize": "15px",
+                                    "fontWeight": "600"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "ia.display.label",
+                                "meta": {
+                                  "name": "Pill"
+                                },
+                                "props": {
+                                  "text": "Power quality",
+                                  "style": {
+                                    "classes": "font-label",
+                                    "fontSize": "11px",
+                                    "padding": "2px 8px",
+                                    "borderRadius": "4px",
+                                    "backgroundColor": "rgba(12,123,179,0.12)",
+                                    "opacity": "0.9"
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "B"
+                            },
+                            "props": {
+                              "text": "Groveport PF alert path \u2014 kVAR monitoring + capacitor bank triggers.",
+                              "style": {
+                                "classes": "font-label",
+                                "fontSize": "13px",
+                                "opacity": "0.85",
+                                "whiteSpace": "normal"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Innov4"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "shrink": 1,
+                      "basis": "0%"
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "minWidth": "280px",
+                        "maxWidth": "100%"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.container.flex",
+                        "meta": {
+                          "name": "CardInnov4"
+                        },
+                        "props": {
+                          "direction": "column",
+                          "style": {
+                            "classes": "container-card container-card-border",
+                            "gap": "10px",
+                            "padding": "14px 16px",
+                            "width": "100%",
+                            "boxSizing": "border-box",
+                            "overflow": "hidden"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "ia.container.flex",
+                            "meta": {
+                              "name": "Head"
+                            },
+                            "props": {
+                              "direction": "row",
+                              "justify": "space-between",
+                              "alignItems": "center",
+                              "style": {
+                                "gap": "8px",
+                                "width": "100%"
+                              }
+                            },
+                            "children": [
+                              {
+                                "type": "ia.display.label",
+                                "meta": {
+                                  "name": "Title"
+                                },
+                                "props": {
+                                  "text": "Scope 1 & 2 GHG accounting",
+                                  "style": {
+                                    "classes": "font-heading",
+                                    "fontSize": "15px",
+                                    "fontWeight": "600"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "ia.display.label",
+                                "meta": {
+                                  "name": "Pill"
+                                },
+                                "props": {
+                                  "text": "ESG",
+                                  "style": {
+                                    "classes": "font-label",
+                                    "fontSize": "11px",
+                                    "padding": "2px 8px",
+                                    "borderRadius": "4px",
+                                    "backgroundColor": "rgba(12,123,179,0.12)",
+                                    "opacity": "0.9"
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "B"
+                            },
+                            "props": {
+                              "text": "eGRID factors \u2192 one-click carbon reports from metered kWh / therms.",
+                              "style": {
+                                "classes": "font-label",
+                                "fontSize": "13px",
+                                "opacity": "0.85",
+                                "whiteSpace": "normal"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Innov5"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "shrink": 1,
+                      "basis": "0%"
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "minWidth": "280px",
+                        "maxWidth": "100%"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.container.flex",
+                        "meta": {
+                          "name": "CardInnov5"
+                        },
+                        "props": {
+                          "direction": "column",
+                          "style": {
+                            "classes": "container-card container-card-border",
+                            "gap": "10px",
+                            "padding": "14px 16px",
+                            "width": "100%",
+                            "boxSizing": "border-box",
+                            "overflow": "hidden"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "ia.container.flex",
+                            "meta": {
+                              "name": "Head"
+                            },
+                            "props": {
+                              "direction": "row",
+                              "justify": "space-between",
+                              "alignItems": "center",
+                              "style": {
+                                "gap": "8px",
+                                "width": "100%"
+                              }
+                            },
+                            "children": [
+                              {
+                                "type": "ia.display.label",
+                                "meta": {
+                                  "name": "Title"
+                                },
+                                "props": {
+                                  "text": "Idle / phantom load detector",
+                                  "style": {
+                                    "classes": "font-heading",
+                                    "fontSize": "15px",
+                                    "fontWeight": "600"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "ia.display.label",
+                                "meta": {
+                                  "name": "Pill"
+                                },
+                                "props": {
+                                  "text": "AI / analytics",
+                                  "style": {
+                                    "classes": "font-label",
+                                    "fontSize": "11px",
+                                    "padding": "2px 8px",
+                                    "borderRadius": "4px",
+                                    "backgroundColor": "rgba(12,123,179,0.12)",
+                                    "opacity": "0.9"
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "B"
+                            },
+                            "props": {
+                              "text": "Historian clustering for weekend baseload and non-op waste.",
+                              "style": {
+                                "classes": "font-label",
+                                "fontSize": "13px",
+                                "opacity": "0.85",
+                                "whiteSpace": "normal"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
