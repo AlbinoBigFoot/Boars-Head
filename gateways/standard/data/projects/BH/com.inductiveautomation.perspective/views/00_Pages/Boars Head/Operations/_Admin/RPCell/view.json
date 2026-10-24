@@ -1,0 +1,217 @@
+{
+  "custom": {},
+  "params": {
+    "canEdit": false,
+    "key": "",
+    "role": "",
+    "state": "off",
+    "tip": ""
+  },
+  "propConfig": {
+    "params.canEdit": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.key": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.role": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.state": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tip": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 47,
+      "width": 100
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Icon"
+        },
+        "position": {
+          "basis": "20px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.basis": {
+            "binding": {
+              "config": {
+                "expression": "if({view.params.state} = 'locked', '15px', '20px')"
+              },
+              "type": "expr"
+            }
+          },
+          "props.path": {
+            "binding": {
+              "config": {
+                "expression": "case({view.params.state}, 'locked', 'material/lock', 'on', 'material/check_box', 'changedOn', 'material/check_box', 'inherited', 'material/check_box', 'roOn', 'material/check_box', 'material/check_box_outline_blank')"
+              },
+              "type": "expr"
+            }
+          },
+          "props.style.classes": {
+            "binding": {
+              "config": {
+                "expression": "case({view.params.state}, 'on', 'admin-ico-on', 'changedOn', 'admin-ico-on', 'changedOff', 'admin-ico-on', 'off', 'admin-ico-off', 'roOff', 'admin-ico-off', 'admin-ico-muted')"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "path": "material/check_box_outline_blank",
+          "style": {
+            "classes": "admin-ico-off"
+          }
+        },
+        "type": "ia.display.icon"
+      },
+      {
+        "meta": {
+          "name": "All"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "{view.params.state} = 'locked'"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "classes": "admin-cell-text admin-cell-text-muted"
+          },
+          "text": "All"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Link"
+        },
+        "position": {
+          "basis": "14px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "{view.params.state} = 'inherited'"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "path": "material/link",
+          "style": {
+            "classes": "admin-ico-muted"
+          }
+        },
+        "type": "ia.display.icon"
+      },
+      {
+        "children": [],
+        "meta": {
+          "name": "Dot"
+        },
+        "position": {
+          "basis": "6px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "{view.params.state} = 'changedOn' || {view.params.state} = 'changedOff'"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "alignItems": "center",
+          "direction": "row",
+          "style": {
+            "classes": "admin-dot",
+            "height": "6px"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "events": {
+      "dom": {
+        "onClick": {
+          "config": {
+            "script": "\tif self.view.params.state in ('on', 'off', 'changedOn', 'changedOff') and self.view.params.canEdit:\n\t\tsystem.perspective.sendMessage('rpToggle', payload={'key': self.view.params.key, 'role': self.view.params.role}, scope='page')\n"
+          },
+          "scope": "G",
+          "type": "script"
+        }
+      }
+    },
+    "meta": {
+      "name": "root"
+    },
+    "position": {
+      "shrink": 0
+    },
+    "propConfig": {
+      "meta.tooltip.enabled": {
+        "binding": {
+          "config": {
+            "expression": "len(coalesce({view.params.tip}, '')) > 0"
+          },
+          "type": "expr"
+        }
+      },
+      "meta.tooltip.text": {
+        "binding": {
+          "config": {
+            "expression": "{view.params.tip}"
+          },
+          "type": "expr"
+        }
+      },
+      "props.style.classes": {
+        "binding": {
+          "config": {
+            "expression": "'admin-cell' + if({view.params.state} = 'changedOn' || {view.params.state} = 'changedOff', ' admin-cell-changed', '') + if({view.params.canEdit} && ({view.params.state} = 'on' || {view.params.state} = 'off' || {view.params.state} = 'changedOn' || {view.params.state} = 'changedOff'), ' admin-cell-click', '')"
+          },
+          "type": "expr"
+        }
+      }
+    },
+    "props": {
+      "alignItems": "center",
+      "direction": "row",
+      "justify": "center",
+      "style": {
+        "gap": "4px",
+        "height": "100%"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

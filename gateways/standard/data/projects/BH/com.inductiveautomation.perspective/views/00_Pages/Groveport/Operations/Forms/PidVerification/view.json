@@ -1,0 +1,3953 @@
+{
+  "custom": {
+    "category": "",
+    "completed": {
+      "id": 0,
+      "year": 0
+    },
+    "cycle": {
+      "allowed": true,
+      "created": "",
+      "cycle_year": "",
+      "drawing_revision": "",
+      "id": 0,
+      "performed_by": "",
+      "reviewed_by": "",
+      "status": "",
+      "suggestYear": 0
+    },
+    "msg": "",
+    "newCycle": {
+      "performed": "",
+      "reviewed": "",
+      "revision": "R-8 rev 04/14/20, R-9 rev 04/15/20, R-10 rev 04/15/20",
+      "year": ""
+    },
+    "operators": [],
+    "refresh": 0,
+    "search": "",
+    "sel": {
+      "function_service": "",
+      "notes": "",
+      "pid": "",
+      "position": "",
+      "size": "",
+      "unit_desc": "",
+      "unit_id": "",
+      "updated": "",
+      "valve_id": "",
+      "valve_pk": 0,
+      "valve_type": "",
+      "verified": false,
+      "verified_by": "",
+      "verified_date": null
+    },
+    "show": "All",
+    "summary": {
+      "all": {
+        "disc": 0,
+        "incomplete": 0,
+        "pct": 0.0,
+        "pctText": "0%",
+        "remaining": 0,
+        "total": 0,
+        "verified": 0
+      },
+      "c0": {
+        "disc": 0,
+        "incomplete": 0,
+        "name": "Compressors",
+        "pct": 0.0,
+        "pctText": "0%",
+        "remaining": 0,
+        "total": 0,
+        "verified": 0
+      },
+      "c1": {
+        "disc": 0,
+        "incomplete": 0,
+        "name": "Recirculators & Pumps",
+        "pct": 0.0,
+        "pctText": "0%",
+        "remaining": 0,
+        "total": 0,
+        "verified": 0
+      },
+      "c2": {
+        "disc": 0,
+        "incomplete": 0,
+        "name": "Receivers & Vessels",
+        "pct": 0.0,
+        "pctText": "0%",
+        "remaining": 0,
+        "total": 0,
+        "verified": 0
+      },
+      "c3": {
+        "disc": 0,
+        "incomplete": 0,
+        "name": "Evaporative Condensers",
+        "pct": 0.0,
+        "pctText": "0%",
+        "remaining": 0,
+        "total": 0,
+        "verified": 0
+      },
+      "c4": {
+        "disc": 0,
+        "incomplete": 0,
+        "name": "Truck Dock & Pallet Air Units",
+        "pct": 0.0,
+        "pctText": "0%",
+        "remaining": 0,
+        "total": 0,
+        "verified": 0
+      },
+      "c5": {
+        "disc": 0,
+        "incomplete": 0,
+        "name": "System & Misc",
+        "pct": 0.0,
+        "pctText": "0%",
+        "remaining": 0,
+        "total": 0,
+        "verified": 0
+      },
+      "units": [
+        {
+          "label": "All Units",
+          "value": ""
+        }
+      ]
+    },
+    "unit": ""
+  },
+  "params": {},
+  "propConfig": {
+    "custom.cycle": {
+      "binding": {
+        "config": {
+          "struct": {
+            "refresh": "{view.custom.refresh}"
+          },
+          "waitOnAll": false
+        },
+        "transforms": [
+          {
+            "code": "\treturn shared.Forms.pidOpenCycle(self.session)\n",
+            "type": "script"
+          }
+        ],
+        "type": "expr-struct"
+      }
+    },
+    "custom.summary": {
+      "binding": {
+        "config": {
+          "struct": {
+            "category": "{view.custom.category}",
+            "cycle": "coalesce({view.custom.cycle.id}, 0)",
+            "refresh": "{view.custom.refresh}"
+          },
+          "waitOnAll": false
+        },
+        "transforms": [
+          {
+            "code": "\treturn shared.Forms.pidSummary(self.session, value.cycle, value.category)\n",
+            "type": "script"
+          }
+        ],
+        "type": "expr-struct"
+      }
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 1000,
+      "width": 1600
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "Title"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "classes": "Fonts/Title fs-20 fw-700"
+              },
+              "text": "Annual P&ID Verification"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "Subtitle"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "classes": "Fonts/Label fs-13",
+                "whiteSpace": "normal"
+              },
+              "text": "Frank Brunckhorst Co. — Groveport, OH. Valve schedule from drawings R-8, R-9, R-10: 725 valves across 54 units. Click a category card to filter; a valve marked verified without an operator is flagged red until completed."
+            },
+            "type": "ia.display.label"
+          }
+        ],
+        "meta": {
+          "name": "Head"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "gap": "2px"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "DeniedMsg"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "classes": "Fonts/Value fs-16 fw-600",
+                "whiteSpace": "normal"
+              },
+              "text": "Access Denied - Annual P&ID Verification Requires The Forms Permission (Maintenance Or Above)."
+            },
+            "type": "ia.display.label"
+          }
+        ],
+        "meta": {
+          "name": "Denied"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "!coalesce({session.custom.Permissions.Forms.Use}, false)"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "classes": "bg-component container-card",
+            "padding": "24px"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "Msg"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 1,
+              "shrink": 1
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "expression": "'Cycle ' + toStr({view.custom.completed.year}) + ' Completed - Print Or Download The Final Record.'"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "classes": "Fonts/Value fs-14 fw-700"
+              },
+              "text": ""
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tself.view.custom.msg = shared.Forms.downloadPdf(self.session, 'PidCycle', self.view.custom.completed.id)\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Pdf"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "image": {
+                "height": 16,
+                "icon": {
+                  "path": "material/print"
+                },
+                "width": 16
+              },
+              "style": {
+                "classes": "container-button Fonts/Button",
+                "height": "32px"
+              },
+              "text": "Print / Download PDF"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tsystem.perspective.navigate('/operations/forms/history')\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "History"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "image": {
+                "height": 16,
+                "icon": {
+                  "path": "material/history"
+                },
+                "width": 16
+              },
+              "style": {
+                "classes": "faceplate-cmd-btn Fonts/Label",
+                "height": "32px"
+              },
+              "text": "View History"
+            },
+            "type": "ia.input.button"
+          }
+        ],
+        "meta": {
+          "name": "Completed"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({view.custom.completed.id}, 0) > 0"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "alignItems": "center",
+          "direction": "row",
+          "style": {
+            "borderLeft": "4px solid var(--accent)",
+            "classes": "faceplate-section faceplate-section-card",
+            "gap": "10px"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "Title"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "classes": "faceplate-section-title Fonts/Label"
+              },
+              "text": "No Open Verification Cycle"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "Hint"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "classes": "Fonts/Label fs-12",
+                "whiteSpace": "normal"
+              },
+              "text": "Start the yearly cycle once; every Maintenance or above user then records valve checks on it over the following weeks. Past cycles are on Form History."
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "meta": {
+                      "name": "Cap"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "Fonts/Label fs-11 fw-600",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis",
+                        "whiteSpace": "nowrap"
+                      },
+                      "text": "Verification Cycle / Year *"
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "V"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "bidirectional": true,
+                            "path": "view.custom.newCycle.year"
+                          },
+                          "type": "property"
+                        }
+                      }
+                    },
+                    "props": {
+                      "placeholder": "",
+                      "style": {
+                        "classes": "bg-component Fonts/Value",
+                        "height": "30px",
+                        "minWidth": "0"
+                      }
+                    },
+                    "type": "ia.input.text-field"
+                  }
+                ],
+                "meta": {
+                  "name": "Year"
+                },
+                "position": {
+                  "basis": "160px",
+                  "grow": 0,
+                  "shrink": 1
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "gap": "2px",
+                    "minWidth": "0"
+                  }
+                },
+                "type": "ia.container.flex"
+              },
+              {
+                "children": [
+                  {
+                    "meta": {
+                      "name": "Cap"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "Fonts/Label fs-11 fw-600",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis",
+                        "whiteSpace": "nowrap"
+                      },
+                      "text": "Verified Against Drawing Revision"
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "V"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "bidirectional": true,
+                            "path": "view.custom.newCycle.revision"
+                          },
+                          "type": "property"
+                        }
+                      }
+                    },
+                    "props": {
+                      "placeholder": "",
+                      "style": {
+                        "classes": "bg-component Fonts/Value",
+                        "height": "30px",
+                        "minWidth": "0"
+                      }
+                    },
+                    "type": "ia.input.text-field"
+                  }
+                ],
+                "meta": {
+                  "name": "Rev"
+                },
+                "position": {
+                  "basis": "0",
+                  "grow": 2,
+                  "shrink": 1
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "gap": "2px",
+                    "minWidth": "0"
+                  }
+                },
+                "type": "ia.container.flex"
+              },
+              {
+                "children": [
+                  {
+                    "meta": {
+                      "name": "Cap"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "Fonts/Label fs-11 fw-600",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis",
+                        "whiteSpace": "nowrap"
+                      },
+                      "text": "Performed By"
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "V"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "bidirectional": true,
+                            "path": "view.custom.newCycle.performed"
+                          },
+                          "type": "property"
+                        }
+                      }
+                    },
+                    "props": {
+                      "placeholder": "",
+                      "style": {
+                        "classes": "bg-component Fonts/Value",
+                        "height": "30px",
+                        "minWidth": "0"
+                      }
+                    },
+                    "type": "ia.input.text-field"
+                  }
+                ],
+                "meta": {
+                  "name": "Perf"
+                },
+                "position": {
+                  "basis": "0",
+                  "grow": 1,
+                  "shrink": 1
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "gap": "2px",
+                    "minWidth": "0"
+                  }
+                },
+                "type": "ia.container.flex"
+              },
+              {
+                "children": [
+                  {
+                    "meta": {
+                      "name": "Cap"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "Fonts/Label fs-11 fw-600",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis",
+                        "whiteSpace": "nowrap"
+                      },
+                      "text": "Reviewed By"
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "V"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "bidirectional": true,
+                            "path": "view.custom.newCycle.reviewed"
+                          },
+                          "type": "property"
+                        }
+                      }
+                    },
+                    "props": {
+                      "placeholder": "",
+                      "style": {
+                        "classes": "bg-component Fonts/Value",
+                        "height": "30px",
+                        "minWidth": "0"
+                      }
+                    },
+                    "type": "ia.input.text-field"
+                  }
+                ],
+                "meta": {
+                  "name": "Rev2"
+                },
+                "position": {
+                  "basis": "0",
+                  "grow": 1,
+                  "shrink": 1
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "gap": "2px",
+                    "minWidth": "0"
+                  }
+                },
+                "type": "ia.container.flex"
+              },
+              {
+                "children": [
+                  {
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "config": {
+                            "script": "\tn = self.view.custom.newCycle\n\tres = shared.Forms.pidStartCycle(self.session, n.year, n.revision, n.performed, n.reviewed)\n\tself.view.custom.msg = res['message']\n\tif res.get('ok'):\n\t\tself.view.custom.completed = {'id': 0, 'year': 0}\n\t\tself.view.custom.refresh += 1\n"
+                          },
+                          "scope": "G",
+                          "type": "script"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "name": "Start"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "image": {
+                        "height": 16,
+                        "icon": {
+                          "path": "material/play_arrow"
+                        },
+                        "width": 16
+                      },
+                      "style": {
+                        "classes": "container-button Fonts/Button",
+                        "height": "32px"
+                      },
+                      "text": "Start New Cycle"
+                    },
+                    "type": "ia.input.button"
+                  }
+                ],
+                "meta": {
+                  "name": "Btn"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "justifyContent": "flex-end"
+                  }
+                },
+                "type": "ia.container.flex"
+              }
+            ],
+            "meta": {
+              "name": "Row"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "alignItems": "center",
+              "direction": "row",
+              "style": {
+                "gap": "4px",
+                "minHeight": "30px"
+              }
+            },
+            "type": "ia.container.flex"
+          }
+        ],
+        "meta": {
+          "name": "NoCycle"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({session.custom.Permissions.Forms.Use}, false) && !(coalesce({view.custom.cycle.id}, 0) > 0)"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "classes": "faceplate-section faceplate-section-card",
+            "gap": "4px",
+            "minWidth": "0"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "Title"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "classes": "faceplate-section-title Fonts/Label"
+              },
+              "text": "Verification Cycle"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Year"
+                },
+                "position": {
+                  "basis": "110px",
+                  "grow": 0,
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "'Cycle ' + toStr(coalesce({view.custom.cycle.cycle_year}, ''))"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Title fs-18 fw-700"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "children": [
+                  {
+                    "meta": {
+                      "name": "Cap"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "Fonts/Label fs-11 fw-600",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis",
+                        "whiteSpace": "nowrap"
+                      },
+                      "text": "Verified Against Drawing Revision"
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "V"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "bidirectional": true,
+                            "path": "view.custom.cycle.drawing_revision"
+                          },
+                          "type": "property"
+                        }
+                      }
+                    },
+                    "props": {
+                      "placeholder": "",
+                      "style": {
+                        "classes": "bg-component Fonts/Value",
+                        "height": "30px",
+                        "minWidth": "0"
+                      }
+                    },
+                    "type": "ia.input.text-field"
+                  }
+                ],
+                "meta": {
+                  "name": "Rev"
+                },
+                "position": {
+                  "basis": "0",
+                  "grow": 3,
+                  "shrink": 1
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "gap": "2px",
+                    "minWidth": "0"
+                  }
+                },
+                "type": "ia.container.flex"
+              },
+              {
+                "children": [
+                  {
+                    "meta": {
+                      "name": "Cap"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "Fonts/Label fs-11 fw-600",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis",
+                        "whiteSpace": "nowrap"
+                      },
+                      "text": "Performed By"
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "V"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "bidirectional": true,
+                            "path": "view.custom.cycle.performed_by"
+                          },
+                          "type": "property"
+                        }
+                      }
+                    },
+                    "props": {
+                      "placeholder": "",
+                      "style": {
+                        "classes": "bg-component Fonts/Value",
+                        "height": "30px",
+                        "minWidth": "0"
+                      }
+                    },
+                    "type": "ia.input.text-field"
+                  }
+                ],
+                "meta": {
+                  "name": "Perf"
+                },
+                "position": {
+                  "basis": "0",
+                  "grow": 1,
+                  "shrink": 1
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "gap": "2px",
+                    "minWidth": "0"
+                  }
+                },
+                "type": "ia.container.flex"
+              },
+              {
+                "children": [
+                  {
+                    "meta": {
+                      "name": "Cap"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "Fonts/Label fs-11 fw-600",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis",
+                        "whiteSpace": "nowrap"
+                      },
+                      "text": "Reviewed By"
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "V"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "bidirectional": true,
+                            "path": "view.custom.cycle.reviewed_by"
+                          },
+                          "type": "property"
+                        }
+                      }
+                    },
+                    "props": {
+                      "placeholder": "",
+                      "style": {
+                        "classes": "bg-component Fonts/Value",
+                        "height": "30px",
+                        "minWidth": "0"
+                      }
+                    },
+                    "type": "ia.input.text-field"
+                  }
+                ],
+                "meta": {
+                  "name": "Rev2"
+                },
+                "position": {
+                  "basis": "0",
+                  "grow": 1,
+                  "shrink": 1
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "gap": "2px",
+                    "minWidth": "0"
+                  }
+                },
+                "type": "ia.container.flex"
+              },
+              {
+                "children": [
+                  {
+                    "meta": {
+                      "name": "Cap"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "Fonts/Label fs-11 fw-600",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis",
+                        "whiteSpace": "nowrap"
+                      },
+                      "text": "Started"
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "V"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "path": "view.custom.cycle.created"
+                          },
+                          "type": "property"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "Fonts/Value"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.display.label"
+                  }
+                ],
+                "meta": {
+                  "name": "Started"
+                },
+                "position": {
+                  "basis": "170px",
+                  "grow": 0,
+                  "shrink": 1
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "gap": "2px",
+                    "minWidth": "0"
+                  }
+                },
+                "type": "ia.container.flex"
+              },
+              {
+                "children": [
+                  {
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "config": {
+                            "script": "\tc = self.view.custom.cycle\n\tres = shared.Forms.pidSaveHeader(self.session, c.id, c.drawing_revision, c.performed_by, c.reviewed_by)\n\tself.view.custom.msg = res['message']\n"
+                          },
+                          "scope": "G",
+                          "type": "script"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "name": "SaveHdr"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "image": {
+                        "height": 16,
+                        "icon": {
+                          "path": "material/save"
+                        },
+                        "width": 16
+                      },
+                      "style": {
+                        "classes": "faceplate-cmd-btn Fonts/Label",
+                        "height": "32px"
+                      },
+                      "text": "Save Header"
+                    },
+                    "type": "ia.input.button"
+                  },
+                  {
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "config": {
+                            "script": "\tself.view.custom.msg = shared.Forms.downloadPdf(self.session, 'PidCycle', self.view.custom.cycle.id)\n"
+                          },
+                          "scope": "G",
+                          "type": "script"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "name": "Pdf"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "image": {
+                        "height": 16,
+                        "icon": {
+                          "path": "material/print"
+                        },
+                        "width": 16
+                      },
+                      "style": {
+                        "classes": "faceplate-cmd-btn Fonts/Label",
+                        "height": "32px"
+                      },
+                      "text": "Progress PDF"
+                    },
+                    "type": "ia.input.button"
+                  },
+                  {
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "config": {
+                            "script": "\ts = self.view.custom.summary.all\n\tc = self.view.custom.cycle\n\tmsg = 'Complete the %s P&ID verification cycle?<br><br>' % c.cycle_year\n\tmsg += '%s of %s valves verified, %s remaining, %s discrepancies' % (s.verified, s.total, s.remaining, s.disc)\n\tif s.incomplete:\n\t\tmsg += ', %s verified without an operator' % s.incomplete\n\tmsg += '.<br>A completed cycle is read only and moves to Form History.'\n\tshared.Alerts.showAlert(state='warning', title='Complete Cycle', message=msg, showCloseBtn=False, btnTextPrimary='Complete', btnTextSecondary='Cancel', btnActionPrimary='opsFormsPidComplete', btnActionSecondary='', payload={'sender': self.view.id}, overlayDismiss=False)\n"
+                          },
+                          "scope": "G",
+                          "type": "script"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "name": "Complete"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "image": {
+                        "height": 16,
+                        "icon": {
+                          "path": "material/check_circle"
+                        },
+                        "width": 16
+                      },
+                      "style": {
+                        "classes": "container-button Fonts/Button",
+                        "height": "32px"
+                      },
+                      "text": "Complete Cycle"
+                    },
+                    "type": "ia.input.button"
+                  }
+                ],
+                "meta": {
+                  "name": "Btns"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "alignItems": "center",
+                  "direction": "row",
+                  "style": {
+                    "alignSelf": "flex-end",
+                    "gap": "8px"
+                  }
+                },
+                "type": "ia.container.flex"
+              }
+            ],
+            "meta": {
+              "name": "Row"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "alignItems": "center",
+              "direction": "row",
+              "style": {
+                "gap": "4px",
+                "minHeight": "30px"
+              }
+            },
+            "type": "ia.container.flex"
+          }
+        ],
+        "meta": {
+          "name": "Cycle"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({session.custom.Permissions.Forms.Use}, false) && coalesce({view.custom.cycle.id}, 0) > 0"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "classes": "faceplate-section faceplate-section-card",
+            "gap": "4px",
+            "minWidth": "0"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Name"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-12 fw-700",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis",
+                    "whiteSpace": "nowrap"
+                  },
+                  "text": "Compressors"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Count"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "toStr(coalesce({view.custom.summary.c0.verified}, 0)) + ' / ' + toStr(coalesce({view.custom.summary.c0.total}, 0))"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Value fs-18 fw-700"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "meta": {
+                      "name": "Fill"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.style.width": {
+                        "binding": {
+                          "config": {
+                            "expression": "toStr(coalesce({view.custom.summary.c0.pct}, 0)) + '%'"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "alignItems": "center",
+                      "direction": "row",
+                      "style": {
+                        "backgroundColor": "var(--accent)",
+                        "borderRadius": "3px",
+                        "height": "6px"
+                      }
+                    },
+                    "type": "ia.container.flex"
+                  }
+                ],
+                "meta": {
+                  "name": "Bar"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "alignItems": "stretch",
+                  "direction": "row",
+                  "style": {
+                    "backgroundColor": "var(--surface-sunken)",
+                    "borderRadius": "3px",
+                    "height": "6px",
+                    "overflow": "hidden"
+                  }
+                },
+                "type": "ia.container.flex"
+              },
+              {
+                "meta": {
+                  "name": "Detail"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "coalesce({view.custom.summary.c0.pctText}, '0%') + ' Complete | ' + toStr(coalesce({view.custom.summary.c0.remaining}, 0)) + ' Remaining'"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-11",
+                    "whiteSpace": "nowrap"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Disc"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.style.color": {
+                    "binding": {
+                      "config": {
+                        "expression": "if(coalesce({view.custom.summary.c0.incomplete}, 0) > 0, 'var(--alarm-critical)', '')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "toStr(coalesce({view.custom.summary.c0.disc}, 0)) + ' Discrepancies' + if(coalesce({view.custom.summary.c0.incomplete}, 0) > 0, ' | ' + toStr({view.custom.summary.c0.incomplete}) + ' No Operator', '')"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-11",
+                    "whiteSpace": "nowrap"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              }
+            ],
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\tself.view.custom.category = 'Compressors'\n\tself.view.custom.unit = ''\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Card0"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 1,
+              "shrink": 1
+            },
+            "propConfig": {
+              "props.style.borderTop": {
+                "binding": {
+                  "config": {
+                    "expression": "if(coalesce({view.custom.category}, '') = 'Compressors', '3px solid var(--accent)', '3px solid transparent')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "borderRadius": "4px",
+                "classes": "faceplate-section-card",
+                "cursor": "pointer",
+                "gap": "4px",
+                "minWidth": "0",
+                "padding": "8px"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Name"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-12 fw-700",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis",
+                    "whiteSpace": "nowrap"
+                  },
+                  "text": "Recirculators & Pumps"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Count"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "toStr(coalesce({view.custom.summary.c1.verified}, 0)) + ' / ' + toStr(coalesce({view.custom.summary.c1.total}, 0))"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Value fs-18 fw-700"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "meta": {
+                      "name": "Fill"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.style.width": {
+                        "binding": {
+                          "config": {
+                            "expression": "toStr(coalesce({view.custom.summary.c1.pct}, 0)) + '%'"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "alignItems": "center",
+                      "direction": "row",
+                      "style": {
+                        "backgroundColor": "var(--accent)",
+                        "borderRadius": "3px",
+                        "height": "6px"
+                      }
+                    },
+                    "type": "ia.container.flex"
+                  }
+                ],
+                "meta": {
+                  "name": "Bar"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "alignItems": "stretch",
+                  "direction": "row",
+                  "style": {
+                    "backgroundColor": "var(--surface-sunken)",
+                    "borderRadius": "3px",
+                    "height": "6px",
+                    "overflow": "hidden"
+                  }
+                },
+                "type": "ia.container.flex"
+              },
+              {
+                "meta": {
+                  "name": "Detail"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "coalesce({view.custom.summary.c1.pctText}, '0%') + ' Complete | ' + toStr(coalesce({view.custom.summary.c1.remaining}, 0)) + ' Remaining'"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-11",
+                    "whiteSpace": "nowrap"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Disc"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.style.color": {
+                    "binding": {
+                      "config": {
+                        "expression": "if(coalesce({view.custom.summary.c1.incomplete}, 0) > 0, 'var(--alarm-critical)', '')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "toStr(coalesce({view.custom.summary.c1.disc}, 0)) + ' Discrepancies' + if(coalesce({view.custom.summary.c1.incomplete}, 0) > 0, ' | ' + toStr({view.custom.summary.c1.incomplete}) + ' No Operator', '')"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-11",
+                    "whiteSpace": "nowrap"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              }
+            ],
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\tself.view.custom.category = 'Recirculators & Pumps'\n\tself.view.custom.unit = ''\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Card1"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 1,
+              "shrink": 1
+            },
+            "propConfig": {
+              "props.style.borderTop": {
+                "binding": {
+                  "config": {
+                    "expression": "if(coalesce({view.custom.category}, '') = 'Recirculators & Pumps', '3px solid var(--accent)', '3px solid transparent')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "borderRadius": "4px",
+                "classes": "faceplate-section-card",
+                "cursor": "pointer",
+                "gap": "4px",
+                "minWidth": "0",
+                "padding": "8px"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Name"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-12 fw-700",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis",
+                    "whiteSpace": "nowrap"
+                  },
+                  "text": "Receivers & Vessels"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Count"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "toStr(coalesce({view.custom.summary.c2.verified}, 0)) + ' / ' + toStr(coalesce({view.custom.summary.c2.total}, 0))"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Value fs-18 fw-700"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "meta": {
+                      "name": "Fill"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.style.width": {
+                        "binding": {
+                          "config": {
+                            "expression": "toStr(coalesce({view.custom.summary.c2.pct}, 0)) + '%'"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "alignItems": "center",
+                      "direction": "row",
+                      "style": {
+                        "backgroundColor": "var(--accent)",
+                        "borderRadius": "3px",
+                        "height": "6px"
+                      }
+                    },
+                    "type": "ia.container.flex"
+                  }
+                ],
+                "meta": {
+                  "name": "Bar"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "alignItems": "stretch",
+                  "direction": "row",
+                  "style": {
+                    "backgroundColor": "var(--surface-sunken)",
+                    "borderRadius": "3px",
+                    "height": "6px",
+                    "overflow": "hidden"
+                  }
+                },
+                "type": "ia.container.flex"
+              },
+              {
+                "meta": {
+                  "name": "Detail"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "coalesce({view.custom.summary.c2.pctText}, '0%') + ' Complete | ' + toStr(coalesce({view.custom.summary.c2.remaining}, 0)) + ' Remaining'"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-11",
+                    "whiteSpace": "nowrap"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Disc"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.style.color": {
+                    "binding": {
+                      "config": {
+                        "expression": "if(coalesce({view.custom.summary.c2.incomplete}, 0) > 0, 'var(--alarm-critical)', '')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "toStr(coalesce({view.custom.summary.c2.disc}, 0)) + ' Discrepancies' + if(coalesce({view.custom.summary.c2.incomplete}, 0) > 0, ' | ' + toStr({view.custom.summary.c2.incomplete}) + ' No Operator', '')"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-11",
+                    "whiteSpace": "nowrap"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              }
+            ],
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\tself.view.custom.category = 'Receivers & Vessels'\n\tself.view.custom.unit = ''\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Card2"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 1,
+              "shrink": 1
+            },
+            "propConfig": {
+              "props.style.borderTop": {
+                "binding": {
+                  "config": {
+                    "expression": "if(coalesce({view.custom.category}, '') = 'Receivers & Vessels', '3px solid var(--accent)', '3px solid transparent')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "borderRadius": "4px",
+                "classes": "faceplate-section-card",
+                "cursor": "pointer",
+                "gap": "4px",
+                "minWidth": "0",
+                "padding": "8px"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Name"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-12 fw-700",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis",
+                    "whiteSpace": "nowrap"
+                  },
+                  "text": "Evaporative Condensers"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Count"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "toStr(coalesce({view.custom.summary.c3.verified}, 0)) + ' / ' + toStr(coalesce({view.custom.summary.c3.total}, 0))"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Value fs-18 fw-700"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "meta": {
+                      "name": "Fill"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.style.width": {
+                        "binding": {
+                          "config": {
+                            "expression": "toStr(coalesce({view.custom.summary.c3.pct}, 0)) + '%'"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "alignItems": "center",
+                      "direction": "row",
+                      "style": {
+                        "backgroundColor": "var(--accent)",
+                        "borderRadius": "3px",
+                        "height": "6px"
+                      }
+                    },
+                    "type": "ia.container.flex"
+                  }
+                ],
+                "meta": {
+                  "name": "Bar"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "alignItems": "stretch",
+                  "direction": "row",
+                  "style": {
+                    "backgroundColor": "var(--surface-sunken)",
+                    "borderRadius": "3px",
+                    "height": "6px",
+                    "overflow": "hidden"
+                  }
+                },
+                "type": "ia.container.flex"
+              },
+              {
+                "meta": {
+                  "name": "Detail"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "coalesce({view.custom.summary.c3.pctText}, '0%') + ' Complete | ' + toStr(coalesce({view.custom.summary.c3.remaining}, 0)) + ' Remaining'"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-11",
+                    "whiteSpace": "nowrap"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Disc"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.style.color": {
+                    "binding": {
+                      "config": {
+                        "expression": "if(coalesce({view.custom.summary.c3.incomplete}, 0) > 0, 'var(--alarm-critical)', '')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "toStr(coalesce({view.custom.summary.c3.disc}, 0)) + ' Discrepancies' + if(coalesce({view.custom.summary.c3.incomplete}, 0) > 0, ' | ' + toStr({view.custom.summary.c3.incomplete}) + ' No Operator', '')"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-11",
+                    "whiteSpace": "nowrap"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              }
+            ],
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\tself.view.custom.category = 'Evaporative Condensers'\n\tself.view.custom.unit = ''\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Card3"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 1,
+              "shrink": 1
+            },
+            "propConfig": {
+              "props.style.borderTop": {
+                "binding": {
+                  "config": {
+                    "expression": "if(coalesce({view.custom.category}, '') = 'Evaporative Condensers', '3px solid var(--accent)', '3px solid transparent')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "borderRadius": "4px",
+                "classes": "faceplate-section-card",
+                "cursor": "pointer",
+                "gap": "4px",
+                "minWidth": "0",
+                "padding": "8px"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Name"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-12 fw-700",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis",
+                    "whiteSpace": "nowrap"
+                  },
+                  "text": "Truck Dock & Pallet Air Units"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Count"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "toStr(coalesce({view.custom.summary.c4.verified}, 0)) + ' / ' + toStr(coalesce({view.custom.summary.c4.total}, 0))"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Value fs-18 fw-700"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "meta": {
+                      "name": "Fill"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.style.width": {
+                        "binding": {
+                          "config": {
+                            "expression": "toStr(coalesce({view.custom.summary.c4.pct}, 0)) + '%'"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "alignItems": "center",
+                      "direction": "row",
+                      "style": {
+                        "backgroundColor": "var(--accent)",
+                        "borderRadius": "3px",
+                        "height": "6px"
+                      }
+                    },
+                    "type": "ia.container.flex"
+                  }
+                ],
+                "meta": {
+                  "name": "Bar"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "alignItems": "stretch",
+                  "direction": "row",
+                  "style": {
+                    "backgroundColor": "var(--surface-sunken)",
+                    "borderRadius": "3px",
+                    "height": "6px",
+                    "overflow": "hidden"
+                  }
+                },
+                "type": "ia.container.flex"
+              },
+              {
+                "meta": {
+                  "name": "Detail"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "coalesce({view.custom.summary.c4.pctText}, '0%') + ' Complete | ' + toStr(coalesce({view.custom.summary.c4.remaining}, 0)) + ' Remaining'"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-11",
+                    "whiteSpace": "nowrap"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Disc"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.style.color": {
+                    "binding": {
+                      "config": {
+                        "expression": "if(coalesce({view.custom.summary.c4.incomplete}, 0) > 0, 'var(--alarm-critical)', '')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "toStr(coalesce({view.custom.summary.c4.disc}, 0)) + ' Discrepancies' + if(coalesce({view.custom.summary.c4.incomplete}, 0) > 0, ' | ' + toStr({view.custom.summary.c4.incomplete}) + ' No Operator', '')"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-11",
+                    "whiteSpace": "nowrap"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              }
+            ],
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\tself.view.custom.category = 'Truck Dock & Pallet Air Units'\n\tself.view.custom.unit = ''\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Card4"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 1,
+              "shrink": 1
+            },
+            "propConfig": {
+              "props.style.borderTop": {
+                "binding": {
+                  "config": {
+                    "expression": "if(coalesce({view.custom.category}, '') = 'Truck Dock & Pallet Air Units', '3px solid var(--accent)', '3px solid transparent')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "borderRadius": "4px",
+                "classes": "faceplate-section-card",
+                "cursor": "pointer",
+                "gap": "4px",
+                "minWidth": "0",
+                "padding": "8px"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Name"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-12 fw-700",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis",
+                    "whiteSpace": "nowrap"
+                  },
+                  "text": "System & Misc"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Count"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "toStr(coalesce({view.custom.summary.c5.verified}, 0)) + ' / ' + toStr(coalesce({view.custom.summary.c5.total}, 0))"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Value fs-18 fw-700"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "meta": {
+                      "name": "Fill"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.style.width": {
+                        "binding": {
+                          "config": {
+                            "expression": "toStr(coalesce({view.custom.summary.c5.pct}, 0)) + '%'"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "alignItems": "center",
+                      "direction": "row",
+                      "style": {
+                        "backgroundColor": "var(--accent)",
+                        "borderRadius": "3px",
+                        "height": "6px"
+                      }
+                    },
+                    "type": "ia.container.flex"
+                  }
+                ],
+                "meta": {
+                  "name": "Bar"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "alignItems": "stretch",
+                  "direction": "row",
+                  "style": {
+                    "backgroundColor": "var(--surface-sunken)",
+                    "borderRadius": "3px",
+                    "height": "6px",
+                    "overflow": "hidden"
+                  }
+                },
+                "type": "ia.container.flex"
+              },
+              {
+                "meta": {
+                  "name": "Detail"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "coalesce({view.custom.summary.c5.pctText}, '0%') + ' Complete | ' + toStr(coalesce({view.custom.summary.c5.remaining}, 0)) + ' Remaining'"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-11",
+                    "whiteSpace": "nowrap"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Disc"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.style.color": {
+                    "binding": {
+                      "config": {
+                        "expression": "if(coalesce({view.custom.summary.c5.incomplete}, 0) > 0, 'var(--alarm-critical)', '')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "toStr(coalesce({view.custom.summary.c5.disc}, 0)) + ' Discrepancies' + if(coalesce({view.custom.summary.c5.incomplete}, 0) > 0, ' | ' + toStr({view.custom.summary.c5.incomplete}) + ' No Operator', '')"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-11",
+                    "whiteSpace": "nowrap"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              }
+            ],
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\tself.view.custom.category = 'System & Misc'\n\tself.view.custom.unit = ''\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Card5"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 1,
+              "shrink": 1
+            },
+            "propConfig": {
+              "props.style.borderTop": {
+                "binding": {
+                  "config": {
+                    "expression": "if(coalesce({view.custom.category}, '') = 'System & Misc', '3px solid var(--accent)', '3px solid transparent')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "borderRadius": "4px",
+                "classes": "faceplate-section-card",
+                "cursor": "pointer",
+                "gap": "4px",
+                "minWidth": "0",
+                "padding": "8px"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Name"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-12 fw-700",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis",
+                    "whiteSpace": "nowrap"
+                  },
+                  "text": "Total"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Count"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "toStr(coalesce({view.custom.summary.all.verified}, 0)) + ' / ' + toStr(coalesce({view.custom.summary.all.total}, 0))"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Value fs-18 fw-700"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "meta": {
+                      "name": "Fill"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.style.width": {
+                        "binding": {
+                          "config": {
+                            "expression": "toStr(coalesce({view.custom.summary.all.pct}, 0)) + '%'"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "alignItems": "center",
+                      "direction": "row",
+                      "style": {
+                        "backgroundColor": "var(--accent)",
+                        "borderRadius": "3px",
+                        "height": "6px"
+                      }
+                    },
+                    "type": "ia.container.flex"
+                  }
+                ],
+                "meta": {
+                  "name": "Bar"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "alignItems": "stretch",
+                  "direction": "row",
+                  "style": {
+                    "backgroundColor": "var(--surface-sunken)",
+                    "borderRadius": "3px",
+                    "height": "6px",
+                    "overflow": "hidden"
+                  }
+                },
+                "type": "ia.container.flex"
+              },
+              {
+                "meta": {
+                  "name": "Detail"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "coalesce({view.custom.summary.all.pctText}, '0%') + ' Complete | ' + toStr(coalesce({view.custom.summary.all.remaining}, 0)) + ' Remaining'"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-11",
+                    "whiteSpace": "nowrap"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Disc"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.style.color": {
+                    "binding": {
+                      "config": {
+                        "expression": "if(coalesce({view.custom.summary.all.incomplete}, 0) > 0, 'var(--alarm-critical)', '')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "toStr(coalesce({view.custom.summary.all.disc}, 0)) + ' Discrepancies' + if(coalesce({view.custom.summary.all.incomplete}, 0) > 0, ' | ' + toStr({view.custom.summary.all.incomplete}) + ' No Operator', '')"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-11",
+                    "whiteSpace": "nowrap"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              }
+            ],
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\tself.view.custom.category = ''\n\tself.view.custom.unit = ''\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Card6"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 1,
+              "shrink": 1
+            },
+            "propConfig": {
+              "props.style.borderTop": {
+                "binding": {
+                  "config": {
+                    "expression": "if(coalesce({view.custom.category}, '') = '', '3px solid var(--accent)', '3px solid transparent')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "borderRadius": "4px",
+                "classes": "faceplate-section-card",
+                "cursor": "pointer",
+                "gap": "4px",
+                "minWidth": "0",
+                "padding": "8px"
+              }
+            },
+            "type": "ia.container.flex"
+          }
+        ],
+        "meta": {
+          "name": "Dashboard"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({session.custom.Permissions.Forms.Use}, false) && coalesce({view.custom.cycle.id}, 0) > 0"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "alignItems": "stretch",
+          "direction": "row",
+          "style": {
+            "gap": "8px"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "Cat"
+            },
+            "position": {
+              "basis": "230px",
+              "grow": 0,
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "expression": "if(len(coalesce({view.custom.category}, '')) > 0, {view.custom.category}, 'All Categories')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "classes": "Fonts/Value fs-14 fw-700"
+              },
+              "text": ""
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "Unit"
+            },
+            "position": {
+              "basis": "320px",
+              "grow": 0,
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.options": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.summary.units"
+                  },
+                  "type": "property"
+                }
+              },
+              "props.value": {
+                "binding": {
+                  "config": {
+                    "bidirectional": true,
+                    "path": "view.custom.unit"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "allowCustomOptions": false,
+              "dropdownOptionStyle": {
+                "classes": "Fonts/Value"
+              },
+              "showClearIcon": true,
+              "style": {
+                "classes": "bg-component Fonts/Value",
+                "height": "30px",
+                "minWidth": "0"
+              }
+            },
+            "type": "ia.input.dropdown"
+          },
+          {
+            "meta": {
+              "name": "Show"
+            },
+            "position": {
+              "basis": "210px",
+              "grow": 0,
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.value": {
+                "binding": {
+                  "config": {
+                    "bidirectional": true,
+                    "path": "view.custom.show"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "allowCustomOptions": false,
+              "dropdownOptionStyle": {
+                "classes": "Fonts/Value"
+              },
+              "options": [
+                {
+                  "label": "All Valves",
+                  "value": "All"
+                },
+                {
+                  "label": "Remaining",
+                  "value": "Remaining"
+                },
+                {
+                  "label": "Verified",
+                  "value": "Verified"
+                },
+                {
+                  "label": "Discrepancies Noted",
+                  "value": "Discrepancies"
+                },
+                {
+                  "label": "Verified Without Operator",
+                  "value": "Incomplete"
+                }
+              ],
+              "showClearIcon": false,
+              "style": {
+                "classes": "bg-component Fonts/Value",
+                "height": "30px",
+                "minWidth": "0"
+              }
+            },
+            "type": "ia.input.dropdown"
+          },
+          {
+            "meta": {
+              "name": "Search"
+            },
+            "position": {
+              "basis": "280px",
+              "grow": 0,
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "bidirectional": true,
+                    "path": "view.custom.search"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "placeholder": "Search Valve, Unit, Function, Notes",
+              "style": {
+                "classes": "bg-component Fonts/Value",
+                "height": "30px"
+              }
+            },
+            "type": "ia.input.text-field"
+          },
+          {
+            "meta": {
+              "name": "Hint"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "classes": "Fonts/Label fs-12 text-muted",
+                "marginLeft": "auto"
+              },
+              "text": "Inline: Verified Checkbox And Notes Save On Edit"
+            },
+            "type": "ia.display.label"
+          }
+        ],
+        "meta": {
+          "name": "Filters"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({session.custom.Permissions.Forms.Use}, false) && coalesce({view.custom.cycle.id}, 0) > 0"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "alignItems": "center",
+          "direction": "row",
+          "style": {
+            "flexWrap": "wrap",
+            "gap": "10px"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "meta": {
+          "name": "Message"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "len(coalesce({view.custom.msg}, '')) > 0"
+              },
+              "type": "expr"
+            }
+          },
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.custom.msg"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "classes": "Fonts/Value fs-12 fw-600",
+            "whiteSpace": "normal"
+          },
+          "text": ""
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "children": [
+          {
+            "events": {
+              "component": {
+                "onEditCellCommit": {
+                  "config": {
+                    "script": "\t# Inline edits save immediately (Verified checkbox: Verified By / Date default to you / today)\n\trow = self.props.data[event.row]\n\tres = shared.Forms.pidSetField(self.session, self.view.custom.cycle.id, row['valve_pk'], event.column, event.value)\n\tself.view.custom.msg = res['message']\n\tif self.view.custom.sel.valve_pk == row['valve_pk']:\n\t\tself.view.custom.sel = shared.Forms.pidCheck(self.session, self.view.custom.cycle.id, row['valve_pk'])\n\tself.view.custom.refresh += 1\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                },
+                "onSelectionChange": {
+                  "config": {
+                    "script": "\trows = self.props.selection.data or []\n\tif not rows:\n\t\treturn\n\tself.view.custom.sel = shared.Forms.pidCheck(self.session, self.view.custom.cycle.id, rows[0]['valve_pk'])\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Table"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 1,
+              "shrink": 1
+            },
+            "propConfig": {
+              "props.data": {
+                "binding": {
+                  "config": {
+                    "struct": {
+                      "category": "{view.custom.category}",
+                      "cycle": "coalesce({view.custom.cycle.id}, 0)",
+                      "refresh": "{view.custom.refresh}",
+                      "search": "{view.custom.search}",
+                      "show": "{view.custom.show}",
+                      "unit": "{view.custom.unit}"
+                    },
+                    "waitOnAll": false
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif not value.cycle:\n\t\treturn []\n\treturn shared.Forms.pidRows(self.session, value.cycle, value.category, value.unit, value.search, value.show)\n",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "expr-struct"
+                }
+              }
+            },
+            "props": {
+              "cells": {
+                "allowEditOn": "single-click",
+                "style": {
+                  "classes": "Fonts/Value fs-12"
+                }
+              },
+              "columns": [
+                {
+                  "align": "center",
+                  "editable": false,
+                  "field": "valve_pk",
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": "Fonts/Label fw-600"
+                    },
+                    "title": "Id"
+                  },
+                  "justify": "left",
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "visible": false
+                },
+                {
+                  "align": "center",
+                  "editable": false,
+                  "field": "pid",
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": "Fonts/Label fw-600"
+                    },
+                    "title": "P&ID"
+                  },
+                  "justify": "left",
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": true,
+                  "style": {
+                    "classes": ""
+                  },
+                  "visible": true,
+                  "width": 50
+                },
+                {
+                  "align": "center",
+                  "editable": false,
+                  "field": "unit_id",
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": "Fonts/Label fw-600"
+                    },
+                    "title": "Unit"
+                  },
+                  "justify": "left",
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": true,
+                  "style": {
+                    "classes": ""
+                  },
+                  "visible": true,
+                  "width": 70
+                },
+                {
+                  "align": "center",
+                  "editable": false,
+                  "field": "valve_id",
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": "Fonts/Label fw-600"
+                    },
+                    "title": "Valve ID"
+                  },
+                  "justify": "left",
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": true,
+                  "style": {
+                    "classes": ""
+                  },
+                  "visible": true,
+                  "width": 80
+                },
+                {
+                  "align": "center",
+                  "editable": false,
+                  "field": "size",
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": "Fonts/Label fw-600"
+                    },
+                    "title": "Size"
+                  },
+                  "justify": "left",
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": true,
+                  "style": {
+                    "classes": ""
+                  },
+                  "visible": true,
+                  "width": 80
+                },
+                {
+                  "align": "center",
+                  "editable": false,
+                  "field": "valve_type",
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": "Fonts/Label fw-600"
+                    },
+                    "title": "Type"
+                  },
+                  "justify": "left",
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": true,
+                  "style": {
+                    "classes": ""
+                  },
+                  "visible": true,
+                  "width": 95
+                },
+                {
+                  "align": "center",
+                  "editable": false,
+                  "field": "position",
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": "Fonts/Label fw-600"
+                    },
+                    "title": "Position"
+                  },
+                  "justify": "left",
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": true,
+                  "style": {
+                    "classes": ""
+                  },
+                  "visible": true,
+                  "width": 70
+                },
+                {
+                  "align": "center",
+                  "editable": false,
+                  "field": "function_service",
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": "Fonts/Label fw-600"
+                    },
+                    "title": "Function / Service"
+                  },
+                  "justify": "left",
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "visible": true,
+                  "width": 300
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "editable": true,
+                  "field": "verified",
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": "Fonts/Label fw-600"
+                    },
+                    "title": "Verified"
+                  },
+                  "justify": "center",
+                  "render": "boolean",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": true,
+                  "style": {
+                    "classes": ""
+                  },
+                  "visible": true,
+                  "width": 70
+                },
+                {
+                  "align": "center",
+                  "editable": false,
+                  "field": "verified_by",
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": "Fonts/Label fw-600"
+                    },
+                    "title": "Verified By"
+                  },
+                  "justify": "left",
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": true,
+                  "style": {
+                    "classes": ""
+                  },
+                  "visible": true,
+                  "width": 130
+                },
+                {
+                  "align": "center",
+                  "editable": false,
+                  "field": "verified_date",
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": "Fonts/Label fw-600"
+                    },
+                    "title": "Date"
+                  },
+                  "justify": "left",
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": true,
+                  "style": {
+                    "classes": ""
+                  },
+                  "visible": true,
+                  "width": 90
+                },
+                {
+                  "align": "center",
+                  "editable": true,
+                  "field": "notes",
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": "Fonts/Label fw-600"
+                    },
+                    "title": "Notes / Discrepancy"
+                  },
+                  "justify": "left",
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "visible": true,
+                  "width": 200
+                }
+              ],
+              "emptyMessage": {
+                "noData": {
+                  "text": "No Valves Match The Filters"
+                }
+              },
+              "pager": {
+                "bottom": true,
+                "initialOption": 100,
+                "top": false
+              },
+              "rows": {
+                "striped": {
+                  "enabled": true
+                }
+              },
+              "selection": {
+                "enableRowSelection": true,
+                "mode": "single"
+              },
+              "style": {
+                "classes": "bg-component",
+                "minWidth": "0"
+              },
+              "virtualized": true
+            },
+            "type": "ia.display.table"
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Empty"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "position.display": {
+                    "binding": {
+                      "config": {
+                        "expression": "coalesce({view.custom.sel.valve_pk}, 0) = 0"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label text-muted",
+                    "padding": "8px",
+                    "whiteSpace": "normal"
+                  },
+                  "text": "Select A Valve To Record Its Check. The Verified Checkbox And Notes Can Also Be Edited In The Table - Every Change Is Saved Immediately."
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "children": [
+                  {
+                    "meta": {
+                      "name": "Title"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "faceplate-section-title Fonts/Label"
+                      },
+                      "text": "Valve Check"
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "Valve"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "coalesce({view.custom.sel.unit_id}, '') + '  ' + coalesce({view.custom.sel.valve_id}, '')"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "Fonts/Title fs-18 fw-700"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "Unit"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "path": "view.custom.sel.unit_desc"
+                          },
+                          "type": "property"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "Fonts/Label fs-12",
+                        "whiteSpace": "normal"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "Func"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "path": "view.custom.sel.function_service"
+                          },
+                          "type": "property"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "Fonts/Value fs-12",
+                        "whiteSpace": "normal"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "Spec"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "'P&ID ' + coalesce({view.custom.sel.pid}, '-') + ' | Size ' + coalesce({view.custom.sel.size}, '-') + ' | ' + coalesce({view.custom.sel.valve_type}, '-') + ' | ' + coalesce({view.custom.sel.position}, '-')"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "Fonts/Label fs-12",
+                        "whiteSpace": "normal"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "Verified"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.selected": {
+                        "binding": {
+                          "config": {
+                            "bidirectional": true,
+                            "path": "view.custom.sel.verified"
+                          },
+                          "type": "property"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "Fonts/Value fw-600"
+                      },
+                      "text": "Verified (✓)"
+                    },
+                    "type": "ia.input.checkbox"
+                  },
+                  {
+                    "children": [
+                      {
+                        "meta": {
+                          "name": "Cap"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "style": {
+                            "classes": "Fonts/Label fs-11 fw-600",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          },
+                          "text": "Verified By"
+                        },
+                        "type": "ia.display.label"
+                      },
+                      {
+                        "meta": {
+                          "name": "V"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "propConfig": {
+                          "props.options": {
+                            "binding": {
+                              "config": {
+                                "path": "view.custom.operators"
+                              },
+                              "type": "property"
+                            }
+                          },
+                          "props.value": {
+                            "binding": {
+                              "config": {
+                                "bidirectional": true,
+                                "path": "view.custom.sel.verified_by"
+                              },
+                              "type": "property"
+                            }
+                          }
+                        },
+                        "props": {
+                          "allowCustomOptions": true,
+                          "dropdownOptionStyle": {
+                            "classes": "Fonts/Value"
+                          },
+                          "showClearIcon": true,
+                          "style": {
+                            "classes": "bg-component Fonts/Value",
+                            "height": "30px",
+                            "minWidth": "0"
+                          }
+                        },
+                        "type": "ia.input.dropdown"
+                      }
+                    ],
+                    "meta": {
+                      "name": "By"
+                    },
+                    "position": {
+                      "basis": "auto",
+                      "grow": 0,
+                      "shrink": 1
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "gap": "2px",
+                        "minWidth": "0"
+                      }
+                    },
+                    "type": "ia.container.flex"
+                  },
+                  {
+                    "children": [
+                      {
+                        "meta": {
+                          "name": "Cap"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "style": {
+                            "classes": "Fonts/Label fs-11 fw-600",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          },
+                          "text": "Date"
+                        },
+                        "type": "ia.display.label"
+                      },
+                      {
+                        "meta": {
+                          "name": "V"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "propConfig": {
+                          "props.value": {
+                            "binding": {
+                              "config": {
+                                "bidirectional": true,
+                                "path": "view.custom.sel.verified_date"
+                              },
+                              "type": "property"
+                            }
+                          }
+                        },
+                        "props": {
+                          "format": "MM/DD/YYYY",
+                          "pickerType": "date",
+                          "style": {
+                            "classes": "bg-component Fonts/Value",
+                            "height": "30px",
+                            "minWidth": "0"
+                          }
+                        },
+                        "type": "ia.input.date-time-input"
+                      }
+                    ],
+                    "meta": {
+                      "name": "Date"
+                    },
+                    "position": {
+                      "basis": "auto",
+                      "grow": 0,
+                      "shrink": 1
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "gap": "2px",
+                        "minWidth": "0"
+                      }
+                    },
+                    "type": "ia.container.flex"
+                  },
+                  {
+                    "children": [
+                      {
+                        "meta": {
+                          "name": "Cap"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "style": {
+                            "classes": "Fonts/Label fs-11 fw-600",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          },
+                          "text": "Notes / Discrepancy"
+                        },
+                        "type": "ia.display.label"
+                      },
+                      {
+                        "meta": {
+                          "name": "V"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "config": {
+                                "bidirectional": true,
+                                "path": "view.custom.sel.notes"
+                              },
+                              "type": "property"
+                            }
+                          }
+                        },
+                        "props": {
+                          "style": {
+                            "border": "1px solid var(--border)",
+                            "borderRadius": "4px",
+                            "classes": "bg-component Fonts/Value",
+                            "height": "90px",
+                            "padding": "6px"
+                          }
+                        },
+                        "type": "ia.input.text-area"
+                      }
+                    ],
+                    "meta": {
+                      "name": "Notes"
+                    },
+                    "position": {
+                      "basis": "auto",
+                      "grow": 0,
+                      "shrink": 1
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "gap": "2px",
+                        "minWidth": "0"
+                      }
+                    },
+                    "type": "ia.container.flex"
+                  },
+                  {
+                    "meta": {
+                      "name": "Flag"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "position.display": {
+                        "binding": {
+                          "config": {
+                            "expression": "coalesce({view.custom.sel.verified}, false) && len(trim(coalesce({view.custom.sel.verified_by}, ''))) = 0"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "Fonts/Value fs-12 fw-700",
+                        "color": "var(--alarm-critical)",
+                        "whiteSpace": "normal"
+                      },
+                      "text": "Verified Without An Operator - Record Is Incomplete"
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "children": [
+                      {
+                        "events": {
+                          "component": {
+                            "onActionPerformed": {
+                              "config": {
+                                "script": "\ts = self.view.custom.sel\n\tres = shared.Forms.pidSaveCheck(self.session, self.view.custom.cycle.id, s.valve_pk, s.verified, s.verified_by, s.verified_date, s.notes)\n\tself.view.custom.msg = res['message']\n\tself.view.custom.sel = shared.Forms.pidCheck(self.session, self.view.custom.cycle.id, s.valve_pk)\n\tself.view.custom.refresh += 1\n"
+                              },
+                              "scope": "G",
+                              "type": "script"
+                            }
+                          }
+                        },
+                        "meta": {
+                          "name": "Save"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "image": {
+                            "height": 16,
+                            "icon": {
+                              "path": "material/save"
+                            },
+                            "width": 16
+                          },
+                          "style": {
+                            "classes": "container-button Fonts/Button",
+                            "height": "32px"
+                          },
+                          "text": "Save Check"
+                        },
+                        "type": "ia.input.button"
+                      },
+                      {
+                        "events": {
+                          "component": {
+                            "onActionPerformed": {
+                              "config": {
+                                "script": "\ts = self.view.custom.sel\n\tres = shared.Forms.pidSaveCheck(self.session, self.view.custom.cycle.id, s.valve_pk, True, s.verified_by, s.verified_date, s.notes, quick=True)\n\tself.view.custom.msg = res['message']\n\tself.view.custom.sel = shared.Forms.pidCheck(self.session, self.view.custom.cycle.id, s.valve_pk)\n\tself.view.custom.refresh += 1\n"
+                              },
+                              "scope": "G",
+                              "type": "script"
+                            }
+                          }
+                        },
+                        "meta": {
+                          "name": "Quick"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "image": {
+                            "height": 16,
+                            "icon": {
+                              "path": "material/done"
+                            },
+                            "width": 16
+                          },
+                          "style": {
+                            "classes": "faceplate-cmd-btn Fonts/Label",
+                            "height": "32px"
+                          },
+                          "text": "Mark Verified By Me"
+                        },
+                        "type": "ia.input.button"
+                      }
+                    ],
+                    "meta": {
+                      "name": "Btns"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "alignItems": "center",
+                      "direction": "row",
+                      "style": {
+                        "flexWrap": "wrap",
+                        "gap": "8px",
+                        "marginTop": "4px"
+                      }
+                    },
+                    "type": "ia.container.flex"
+                  },
+                  {
+                    "meta": {
+                      "name": "Updated"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "if(len(coalesce({view.custom.sel.updated}, '')) > 0, 'Last Saved: ' + {view.custom.sel.updated}, 'Not Recorded Yet')"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "Fonts/Label fs-11 text-muted",
+                        "whiteSpace": "normal"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.display.label"
+                  }
+                ],
+                "meta": {
+                  "name": "Valve"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "position.display": {
+                    "binding": {
+                      "config": {
+                        "expression": "coalesce({view.custom.sel.valve_pk}, 0) > 0"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "classes": "faceplate-section faceplate-section-card",
+                    "gap": "4px",
+                    "minWidth": "0"
+                  }
+                },
+                "type": "ia.container.flex"
+              }
+            ],
+            "meta": {
+              "name": "Editor"
+            },
+            "position": {
+              "basis": "330px",
+              "grow": 0,
+              "shrink": 0
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "8px",
+                "minHeight": "0",
+                "overflowY": "auto"
+              }
+            },
+            "type": "ia.container.flex"
+          }
+        ],
+        "meta": {
+          "name": "Main"
+        },
+        "position": {
+          "basis": "0",
+          "grow": 1,
+          "shrink": 1
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({session.custom.Permissions.Forms.Use}, false) && coalesce({view.custom.cycle.id}, 0) > 0"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "alignItems": "stretch",
+          "direction": "row",
+          "style": {
+            "gap": "12px",
+            "minHeight": "0"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "events": {
+      "system": {
+        "onStartup": {
+          "config": {
+            "script": "\tself.view.custom.operators = shared.Forms.operatorOptions(self.session)\n\tself.view.custom.newCycle = {'year': system.date.getYear(system.date.now()), 'revision': shared.Forms.pidDefaultRevision(), 'performed': shared.Forms.displayName(self.session), 'reviewed': ''}\n"
+          },
+          "scope": "G",
+          "type": "script"
+        }
+      }
+    },
+    "meta": {
+      "contextMenu": {},
+      "name": "root"
+    },
+    "propConfig": {
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "config": {
+            "expression": "len({this.meta.contextMenu.items}) > 0"
+          },
+          "type": "expr"
+        }
+      },
+      "meta.contextMenu.items": {
+        "binding": {
+          "config": {
+            "expression": "coalesce({session.custom.TicketLogAccess}, false)"
+          },
+          "transforms": [
+            {
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = str(self.view.params.tagPath or '')\n\texcept:\n\t\tpass\n\tview_name = self.view.id.split('@')[0]\n\titems = []\n\tif value:\n\t\tlogged = tagPath if tagPath.strip() else 'No TagPath: ' + view_name.split('/')[-1]\n\t\titems.append({\n\t\t\t\"text\": 'Ticket Logger',\n\t\t\t\"icon\": {\"path\": 'material/info', \"color\": \"--neutral-80\", \"style\": {}},\n\t\t\t\"style\": {\"classes\": \"bg-component Fonts/Value\", \"height\": 24, \"width\": 170},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\"type\": 'ticketLog', \"payload\": {'tagPath': logged, 'viewName': view_name, 'sender': self.view.id}, \"scope\": 'page'}\n\t\t})\n\treturn items",
+              "type": "script"
+            }
+          ],
+          "type": "expr"
+        }
+      }
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "bg-page",
+        "gap": "10px",
+        "height": "100%",
+        "padding": "16px"
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "opsFormsPidComplete",
+          "pageScope": true,
+          "script": "\tif payload.get('sender') and payload.get('sender') != self.view.id:\n\t\treturn\n\tc = self.view.custom.cycle\n\tres = shared.Forms.pidComplete(self.session, c.id)\n\tself.view.custom.msg = res['message']\n\tif res.get('ok'):\n\t\tself.view.custom.completed = {'id': c.id, 'year': c.cycle_year}\n\t\tself.view.custom.sel = shared.Forms.pidBlankSel()\n\tself.view.custom.refresh += 1\n",
+          "sessionScope": false,
+          "viewScope": false
+        },
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    },
+    "type": "ia.container.flex"
+  }
+}

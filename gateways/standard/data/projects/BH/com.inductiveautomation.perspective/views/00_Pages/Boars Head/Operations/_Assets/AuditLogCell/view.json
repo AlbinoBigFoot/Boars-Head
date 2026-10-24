@@ -1,0 +1,93 @@
+{
+  "custom": {},
+  "params": {
+    "value": "",
+    "column": "",
+    "rowData": {}
+  },
+  "propConfig": {
+    "params.value": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.column": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.rowData": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 34,
+      "width": 180
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "row",
+      "alignItems": "center",
+      "style": {
+        "paddingLeft": "8px",
+        "paddingRight": "8px",
+        "minWidth": "0",
+        "overflow": "hidden"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "Text"
+        },
+        "position": {
+          "grow": 1,
+          "shrink": 1,
+          "basis": "0"
+        },
+        "props": {
+          "text": "",
+          "style": {
+            "classes": "form-check",
+            "whiteSpace": "nowrap",
+            "overflow": "hidden",
+            "textOverflow": "ellipsis",
+            "minWidth": "0"
+          }
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "toStr(coalesce({view.params.value}, ''))"
+              }
+            }
+          },
+          "meta.tooltip.enabled": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "try(case({view.params.column}, 'actor', coalesce({view.params.rowData.actor_host}, ''), 'action_text', coalesce({view.params.rowData.action}, ''), 'target_text', coalesce({view.params.rowData.target_tip}, ''), 'change_text', coalesce({view.params.rowData.action_value}, ''), 'source_text', coalesce({view.params.rowData.source_tip}, ''), ''), '') != ''"
+              }
+            }
+          },
+          "meta.tooltip.text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "try(case({view.params.column}, 'actor', coalesce({view.params.rowData.actor_host}, ''), 'action_text', coalesce({view.params.rowData.action}, ''), 'target_text', coalesce({view.params.rowData.target_tip}, ''), 'change_text', coalesce({view.params.rowData.action_value}, ''), 'source_text', coalesce({view.params.rowData.source_tip}, ''), ''), '')"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

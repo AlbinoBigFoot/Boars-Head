@@ -1,0 +1,2356 @@
+{
+  "custom": {
+    "fault": null,
+    "faultGood": false,
+    "rack": {},
+    "info": {},
+    "title": ""
+  },
+  "params": {
+    "sitePath": "[default]Boars_Head/GrovePort/Machine Room/PLC/RCP1",
+    "member": "Controller",
+    "inPopup": false
+  },
+  "propConfig": {
+    "params.sitePath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.member": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.inPopup": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.rack": {
+      "binding": {
+        "type": "tag",
+        "config": {
+          "fallbackDelay": 2.5,
+          "mode": "indirect",
+          "references": {
+            "site": "{view.params.sitePath}"
+          },
+          "tagPath": "{site}/Rack"
+        }
+      }
+    },
+    "custom.info": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce(try(where(coalesce({view.custom.rack.slots}, asList()), it()['member'] = coalesce({view.params.member}, ''))[0], null), asMap())"
+        }
+      }
+    },
+    "custom.fault": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/' + coalesce({view.params.member}, '') + '/Fault')), false), false), if(coalesce({view.params.member}, '') = 'Controller' || coalesce({view.params.member}, '') = '', null, try(toInt(tag({view.params.sitePath} + '/' + coalesce({view.params.member}, '') + '/Fault')), null)), null)"
+        }
+      }
+    },
+    "custom.faultGood": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "!(coalesce({view.params.member}, '') = 'Controller' || coalesce({view.params.member}, '') = '') && coalesce(try(isGood(tag({view.params.sitePath} + '/' + coalesce({view.params.member}, '') + '/Fault')), false), false)"
+        }
+      }
+    },
+    "custom.title": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.member}, '') = 'Controller' || coalesce({view.params.member}, '') = '', 'Controller · ' + coalesce(try(toStr({view.custom.rack.controller.name}), null), '') + ' (' + coalesce(try(split({view.params.sitePath}, '/')[len(split({view.params.sitePath}, '/')) - 1, 0], ''), '') + ')', 'Slot ' + if(coalesce(try(toInt({view.custom.info}['slot']), 0), 0) < 10, '0', '') + toStr(coalesce(try(toInt({view.custom.info}['slot']), 0), 0)) + ' · ' + coalesce(try(toStr({view.custom.info}['name']), ''), '') + ' · ' + coalesce(try(toStr({view.custom.info}['catalog']), ''), '') + '/' + coalesce(try(toStr({view.custom.info}['series']), ''), ''))"
+        }
+      }
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "width": 1100,
+      "height": 284
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "padding": "10px 14px",
+        "gap": "4px",
+        "overflow": "hidden",
+        "backgroundColor": "var(--surface-component)",
+        "borderRadius": "4px",
+        "border": "1px solid var(--neutral-30)",
+        "boxSizing": "border-box",
+        "height": "100%"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Header"
+        },
+        "position": {
+          "basis": "46px",
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "style": {
+            "gap": "12px"
+          },
+          "alignItems": "center"
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Titles"
+            },
+            "position": {
+              "grow": 1,
+              "shrink": 1,
+              "basis": "0px"
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "2px",
+                "overflow": "hidden"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Title"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "",
+                  "style": {
+                    "classes": "Fonts/Title fs-14 fw-700",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "view.custom.title"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Sub"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "gap": "10px"
+                  },
+                  "alignItems": "center"
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Status"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "",
+                      "style": {
+                        "classes": "fs-11 fw-700",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(!{view.custom.faultGood}, 'No Data', if({view.custom.fault} = -1, 'Connection Fault · Fault Word -1', if({view.custom.fault} != 0, 'Module Fault · Fault Word ' + toStr({view.custom.fault}), 'Module OK · Fault Word 0')))"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.color": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(!{view.custom.faultGood}, 'var(--neutral-60)', if({view.custom.fault} != 0, 'var(--sts-fault)', 'var(--sts-run)'))"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if({view.custom.faultGood}, 'fs-11 fw-700', 'fs-11 fw-700 value-bad')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "position.display": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "!(coalesce({view.params.member}, '') = 'Controller' || coalesce({view.params.member}, '') = '')"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Desc"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "shrink": 1,
+                      "basis": "0px"
+                    },
+                    "props": {
+                      "text": "",
+                      "style": {
+                        "classes": "fs-11 fw-400 text-muted",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/IPAddress')), false), false), if(coalesce({view.params.member}, '') = 'Controller' || coalesce({view.params.member}, '') = '', 'CompactLogix 5370 L3 · ' + coalesce(try(toStr(tag({view.params.sitePath} + '/IPAddress')), null), ''), coalesce(try(toStr({view.custom.info}['description']), ''), '') + ' · [' + coalesce(try(split({view.params.sitePath}, '/')[len(split({view.params.sitePath}, '/')) - 1, 0], ''), '') + ']Local:' + toStr(coalesce(try(toInt({view.custom.info}['slot']), 0), 0)) + if(coalesce(try(toStr({view.custom.info}['type']), ''), '') = 'DO', ':O.Data / I.ReadBack', if(coalesce(try(toStr({view.custom.info}['type']), ''), '') = 'AI', ':I.Ch0Data - Ch7Data', ':I.Data'))), '—')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "ia.input.button",
+            "meta": {
+              "name": "PopOut"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "Open In Faceplate",
+              "image": {
+                "icon": {
+                  "path": "material/open_in_new"
+                },
+                "width": 16,
+                "height": 16
+              },
+              "style": {
+                "classes": "faceplate-cmd-btn Fonts/Label",
+                "height": "30px"
+              }
+            },
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "!coalesce({view.params.inPopup}, false)"
+                  }
+                }
+              }
+            },
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\t# pop this card's detail out as its own faceplate (one popup per card: several can sit side by side)\n\tinfo = self.view.custom.info\n\ttry:\n\t\tslot = int(info['slot'] or 0)\n\texcept:\n\t\tslot = 0\n\ttry:\n\t\tkind = str(info['type'] or '')\n\texcept:\n\t\tkind = ''\n\tvw, vh = 0, 0\n\ttry:\n\t\tvw = int(self.page.props.dimensions.viewport.width or 0)\n\t\tvh = int(self.page.props.dimensions.viewport.height or 0)\n\texcept:\n\t\tpass\n\tmember = str(self.view.params.member or 'Controller')\n\tshared.PlcRack.openCard(self.view.params.sitePath, member, slot, 'CTRL' if member == 'Controller' else kind,\n\t\tself.view.custom.title, vw, vh)\n"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "ModulePane"
+        },
+        "position": {
+          "grow": 1,
+          "basis": "0px"
+        },
+        "props": {
+          "direction": "row",
+          "style": {
+            "gap": "24px",
+            "overflow": "hidden"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Left"
+            },
+            "position": {
+              "grow": 1,
+              "shrink": 1,
+              "basis": "0px"
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "overflow": "hidden"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Head"
+                },
+                "position": {
+                  "basis": "22px",
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "gap": "8px",
+                    "paddingLeft": "2px",
+                    "borderBottom": "1px solid var(--neutral-60)"
+                  },
+                  "alignItems": "center"
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Point"
+                    },
+                    "position": {
+                      "basis": "26px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Pt",
+                      "style": {
+                        "classes": "fs-11 fw-700",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Led"
+                    },
+                    "position": {
+                      "basis": "10px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "",
+                      "style": {
+                        "classes": "fs-11",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Description"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0px"
+                    },
+                    "props": {
+                      "text": "Description",
+                      "style": {
+                        "classes": "fs-11 fw-700",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "State"
+                    },
+                    "position": {
+                      "basis": "70px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "State",
+                      "style": {
+                        "classes": "fs-11 fw-700",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(toStr({view.custom.info}['type']), ''), '') = 'AI', 'Value', 'State')"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Extra"
+                    },
+                    "position": {
+                      "basis": "64px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "",
+                      "style": {
+                        "classes": "fs-11 fw-700",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(toStr({view.custom.info}['type']), ''), '') = 'DO', 'Command', 'Range · Raw · Config')"
+                          }
+                        }
+                      },
+                      "position.basis": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(toStr({view.custom.info}['type']), ''), '') = 'AI', '200px', '64px')"
+                          }
+                        }
+                      },
+                      "position.display": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "coalesce(try(toStr({view.custom.info}['type']), ''), '') != 'DI'"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.display.flex-repeater",
+                "meta": {
+                  "name": "Points"
+                },
+                "position": {
+                  "grow": 1,
+                  "basis": "0px"
+                },
+                "props": {
+                  "path": "02_Components/03_PLC/PointRow",
+                  "direction": "column",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "elementPosition": {
+                    "basis": "24px",
+                    "shrink": 0,
+                    "grow": 0
+                  },
+                  "instances": [],
+                  "style": {
+                    "overflow": "hidden"
+                  }
+                },
+                "propConfig": {
+                  "props.instances": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "forEach(where(asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15), it() >= 0 && it() < (coalesce(try(toInt({view.custom.info}['points']), 0), 0) / 2)), asMap('tagPath', {view.params.sitePath} + '/' + coalesce({view.params.member}, ''), 'point', it(), 'kind', coalesce(try(toStr({view.custom.info}['type']), ''), ''), 'description', coalesce(try(toStr({view.custom.info}['pointNames'][toStr(it())]), null), 'Not Documented'), 'instanceStyle', asMap('classes', ''), 'instancePosition', asMap('basis', '24px', 'shrink', 0, 'grow', 0)))"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Right"
+            },
+            "position": {
+              "grow": 1,
+              "shrink": 1,
+              "basis": "0px"
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "overflow": "hidden"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Head"
+                },
+                "position": {
+                  "basis": "22px",
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "gap": "8px",
+                    "paddingLeft": "2px",
+                    "borderBottom": "1px solid var(--neutral-60)"
+                  },
+                  "alignItems": "center"
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Point"
+                    },
+                    "position": {
+                      "basis": "26px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Pt",
+                      "style": {
+                        "classes": "fs-11 fw-700",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Led"
+                    },
+                    "position": {
+                      "basis": "10px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "",
+                      "style": {
+                        "classes": "fs-11",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Description"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0px"
+                    },
+                    "props": {
+                      "text": "Description",
+                      "style": {
+                        "classes": "fs-11 fw-700",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "State"
+                    },
+                    "position": {
+                      "basis": "70px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "State",
+                      "style": {
+                        "classes": "fs-11 fw-700",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(toStr({view.custom.info}['type']), ''), '') = 'AI', 'Value', 'State')"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Extra"
+                    },
+                    "position": {
+                      "basis": "64px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "",
+                      "style": {
+                        "classes": "fs-11 fw-700",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(toStr({view.custom.info}['type']), ''), '') = 'DO', 'Command', 'Range · Raw · Config')"
+                          }
+                        }
+                      },
+                      "position.basis": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(toStr({view.custom.info}['type']), ''), '') = 'AI', '200px', '64px')"
+                          }
+                        }
+                      },
+                      "position.display": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "coalesce(try(toStr({view.custom.info}['type']), ''), '') != 'DI'"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.display.flex-repeater",
+                "meta": {
+                  "name": "Points"
+                },
+                "position": {
+                  "grow": 1,
+                  "basis": "0px"
+                },
+                "props": {
+                  "path": "02_Components/03_PLC/PointRow",
+                  "direction": "column",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "elementPosition": {
+                    "basis": "24px",
+                    "shrink": 0,
+                    "grow": 0
+                  },
+                  "instances": [],
+                  "style": {
+                    "overflow": "hidden"
+                  }
+                },
+                "propConfig": {
+                  "props.instances": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "forEach(where(asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15), it() >= (coalesce(try(toInt({view.custom.info}['points']), 0), 0) / 2) && it() < coalesce(try(toInt({view.custom.info}['points']), 0), 0)), asMap('tagPath', {view.params.sitePath} + '/' + coalesce({view.params.member}, ''), 'point', it(), 'kind', coalesce(try(toStr({view.custom.info}['type']), ''), ''), 'description', coalesce(try(toStr({view.custom.info}['pointNames'][toStr(it())]), null), 'Not Documented'), 'instanceStyle', asMap('classes', ''), 'instancePosition', asMap('basis', '24px', 'shrink', 0, 'grow', 0)))"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "!(coalesce({view.params.member}, '') = 'Controller' || coalesce({view.params.member}, '') = '')"
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "ControllerPane"
+        },
+        "position": {
+          "grow": 1,
+          "basis": "0px"
+        },
+        "props": {
+          "direction": "row",
+          "style": {
+            "gap": "24px",
+            "overflow": "hidden"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Left"
+            },
+            "position": {
+              "grow": 1,
+              "shrink": 1,
+              "basis": "0px"
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "overflow": "hidden"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Connected"
+                },
+                "position": {
+                  "basis": "24px",
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "borderBottom": "1px solid var(--neutral-30)"
+                  },
+                  "alignItems": "center"
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Key"
+                    },
+                    "position": {
+                      "basis": "130px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Driver",
+                      "style": {
+                        "classes": "fs-12 fw-400 text-muted",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Value"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0px"
+                    },
+                    "props": {
+                      "text": "--",
+                      "style": {
+                        "classes": "fs-12 fw-700",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/Connected')), false), false), if(toBoolean(tag({view.params.sitePath} + '/Connected')), 'Connected', 'Disconnected'), '--')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/Connected')), false), false), 'fs-12 fw-700', 'fs-12 fw-700 value-bad')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "meta.tooltip.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/Connected')), false), false), toStr(if(toBoolean(tag({view.params.sitePath} + '/Connected')), 'Connected', 'Disconnected')), '')"
+                          }
+                        }
+                      },
+                      "meta.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "true"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Mode"
+                },
+                "position": {
+                  "basis": "24px",
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "borderBottom": "1px solid var(--neutral-30)"
+                  },
+                  "alignItems": "center"
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Key"
+                    },
+                    "position": {
+                      "basis": "130px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Mode",
+                      "style": {
+                        "classes": "fs-12 fw-400 text-muted",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Value"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0px"
+                    },
+                    "props": {
+                      "text": "--",
+                      "style": {
+                        "classes": "fs-12 fw-700",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if((coalesce(try(isGood(tag({view.params.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.params.sitePath} + '/Connected')), false), false)) && coalesce(try(isGood(tag({view.params.sitePath} + '/Mode')), false), false), toStr(tag({view.params.sitePath} + '/Mode')), '--')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if((coalesce(try(isGood(tag({view.params.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.params.sitePath} + '/Connected')), false), false)) && coalesce(try(isGood(tag({view.params.sitePath} + '/Mode')), false), false), 'fs-12 fw-700', 'fs-12 fw-700 value-bad')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "meta.tooltip.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if((coalesce(try(isGood(tag({view.params.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.params.sitePath} + '/Connected')), false), false)) && coalesce(try(isGood(tag({view.params.sitePath} + '/Mode')), false), false), toStr(toStr(tag({view.params.sitePath} + '/Mode'))), '')"
+                          }
+                        }
+                      },
+                      "meta.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "true"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "KeySwitch"
+                },
+                "position": {
+                  "basis": "24px",
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "borderBottom": "1px solid var(--neutral-30)"
+                  },
+                  "alignItems": "center"
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Key"
+                    },
+                    "position": {
+                      "basis": "130px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Mode Switch",
+                      "style": {
+                        "classes": "fs-12 fw-400 text-muted",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Value"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0px"
+                    },
+                    "props": {
+                      "text": "--",
+                      "style": {
+                        "classes": "fs-12 fw-700",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if((coalesce(try(isGood(tag({view.params.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.params.sitePath} + '/Connected')), false), false)) && coalesce(try(isGood(tag({view.params.sitePath} + '/KeySwitch')), false), false), toStr(tag({view.params.sitePath} + '/KeySwitch')), '--')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if((coalesce(try(isGood(tag({view.params.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.params.sitePath} + '/Connected')), false), false)) && coalesce(try(isGood(tag({view.params.sitePath} + '/KeySwitch')), false), false), 'fs-12 fw-700', 'fs-12 fw-700 value-bad')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "meta.tooltip.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if((coalesce(try(isGood(tag({view.params.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.params.sitePath} + '/Connected')), false), false)) && coalesce(try(isGood(tag({view.params.sitePath} + '/KeySwitch')), false), false), toStr(toStr(tag({view.params.sitePath} + '/KeySwitch'))), '')"
+                          }
+                        }
+                      },
+                      "meta.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "true"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "CommLoss"
+                },
+                "position": {
+                  "basis": "24px",
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "borderBottom": "1px solid var(--neutral-30)"
+                  },
+                  "alignItems": "center"
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Key"
+                    },
+                    "position": {
+                      "basis": "130px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Comm Loss",
+                      "style": {
+                        "classes": "fs-12 fw-400 text-muted",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Value"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0px"
+                    },
+                    "props": {
+                      "text": "--",
+                      "style": {
+                        "classes": "fs-12 fw-700",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/CommLoss')), false), false), if(toBoolean(tag({view.params.sitePath} + '/CommLoss')), 'Yes', 'No'), '--')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/CommLoss')), false), false), 'fs-12 fw-700', 'fs-12 fw-700 value-bad')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "meta.tooltip.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/CommLoss')), false), false), toStr(if(toBoolean(tag({view.params.sitePath} + '/CommLoss')), 'Yes', 'No')), '')"
+                          }
+                        }
+                      },
+                      "meta.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "true"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "MajorFault"
+                },
+                "position": {
+                  "basis": "24px",
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "borderBottom": "1px solid var(--neutral-30)"
+                  },
+                  "alignItems": "center"
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Key"
+                    },
+                    "position": {
+                      "basis": "130px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Major Fault",
+                      "style": {
+                        "classes": "fs-12 fw-400 text-muted",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Value"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0px"
+                    },
+                    "props": {
+                      "text": "--",
+                      "style": {
+                        "classes": "fs-12 fw-700",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if((coalesce(try(isGood(tag({view.params.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.params.sitePath} + '/Connected')), false), false)) && coalesce(try(isGood(tag({view.params.sitePath} + '/MajorFault')), false), false), if(toBoolean(tag({view.params.sitePath} + '/MajorFault')), 'Yes', 'No'), '--')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if((coalesce(try(isGood(tag({view.params.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.params.sitePath} + '/Connected')), false), false)) && coalesce(try(isGood(tag({view.params.sitePath} + '/MajorFault')), false), false), 'fs-12 fw-700', 'fs-12 fw-700 value-bad')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "meta.tooltip.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if((coalesce(try(isGood(tag({view.params.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.params.sitePath} + '/Connected')), false), false)) && coalesce(try(isGood(tag({view.params.sitePath} + '/MajorFault')), false), false), toStr(if(toBoolean(tag({view.params.sitePath} + '/MajorFault')), 'Yes', 'No')), '')"
+                          }
+                        }
+                      },
+                      "meta.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "true"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "MinorFault"
+                },
+                "position": {
+                  "basis": "24px",
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "borderBottom": "1px solid var(--neutral-30)"
+                  },
+                  "alignItems": "center"
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Key"
+                    },
+                    "position": {
+                      "basis": "130px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Minor Fault",
+                      "style": {
+                        "classes": "fs-12 fw-400 text-muted",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Value"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0px"
+                    },
+                    "props": {
+                      "text": "--",
+                      "style": {
+                        "classes": "fs-12 fw-700",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if((coalesce(try(isGood(tag({view.params.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.params.sitePath} + '/Connected')), false), false)) && coalesce(try(isGood(tag({view.params.sitePath} + '/MinorFault')), false), false), if(toBoolean(tag({view.params.sitePath} + '/MinorFault')), 'Yes', 'No'), '--')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if((coalesce(try(isGood(tag({view.params.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.params.sitePath} + '/Connected')), false), false)) && coalesce(try(isGood(tag({view.params.sitePath} + '/MinorFault')), false), false), 'fs-12 fw-700', 'fs-12 fw-700 value-bad')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "meta.tooltip.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if((coalesce(try(isGood(tag({view.params.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.params.sitePath} + '/Connected')), false), false)) && coalesce(try(isGood(tag({view.params.sitePath} + '/MinorFault')), false), false), toStr(if(toBoolean(tag({view.params.sitePath} + '/MinorFault')), 'Yes', 'No')), '')"
+                          }
+                        }
+                      },
+                      "meta.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "true"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "IOFault"
+                },
+                "position": {
+                  "basis": "24px",
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "borderBottom": "1px solid var(--neutral-30)"
+                  },
+                  "alignItems": "center"
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Key"
+                    },
+                    "position": {
+                      "basis": "130px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "I/O Fault",
+                      "style": {
+                        "classes": "fs-12 fw-400 text-muted",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Value"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0px"
+                    },
+                    "props": {
+                      "text": "--",
+                      "style": {
+                        "classes": "fs-12 fw-700",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if((coalesce(try(isGood(tag({view.params.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.params.sitePath} + '/Connected')), false), false)) && coalesce(try(isGood(tag({view.params.sitePath} + '/IOFault')), false), false), if(toBoolean(tag({view.params.sitePath} + '/IOFault')), 'Yes', 'No'), '--')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if((coalesce(try(isGood(tag({view.params.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.params.sitePath} + '/Connected')), false), false)) && coalesce(try(isGood(tag({view.params.sitePath} + '/IOFault')), false), false), 'fs-12 fw-700', 'fs-12 fw-700 value-bad')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "meta.tooltip.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if((coalesce(try(isGood(tag({view.params.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.params.sitePath} + '/Connected')), false), false)) && coalesce(try(isGood(tag({view.params.sitePath} + '/IOFault')), false), false), toStr(if(toBoolean(tag({view.params.sitePath} + '/IOFault')), 'Yes', 'No')), '')"
+                          }
+                        }
+                      },
+                      "meta.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "true"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "FaultCode"
+                },
+                "position": {
+                  "basis": "24px",
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "borderBottom": "1px solid var(--neutral-30)"
+                  },
+                  "alignItems": "center"
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Key"
+                    },
+                    "position": {
+                      "basis": "130px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Last Major Fault",
+                      "style": {
+                        "classes": "fs-12 fw-400 text-muted",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Value"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0px"
+                    },
+                    "props": {
+                      "text": "--",
+                      "style": {
+                        "classes": "fs-12 fw-700",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/MajorFaultRecordType')), false), false) && coalesce(try(isGood(tag({view.params.sitePath} + '/MajorFaultRecordCode')), false), false), 'Type ' + toStr(tag({view.params.sitePath} + '/MajorFaultRecordType')) + ' · Code ' + toStr(tag({view.params.sitePath} + '/MajorFaultRecordCode')), '--')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/MajorFaultRecordType')), false), false) && coalesce(try(isGood(tag({view.params.sitePath} + '/MajorFaultRecordCode')), false), false), 'fs-12 fw-700', 'fs-12 fw-700 value-bad')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "meta.tooltip.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/MajorFaultRecordType')), false), false) && coalesce(try(isGood(tag({view.params.sitePath} + '/MajorFaultRecordCode')), false), false), toStr('Type ' + toStr(tag({view.params.sitePath} + '/MajorFaultRecordType')) + ' · Code ' + toStr(tag({view.params.sitePath} + '/MajorFaultRecordCode'))), '')"
+                          }
+                        }
+                      },
+                      "meta.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "true"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Power"
+                },
+                "position": {
+                  "basis": "24px",
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "borderBottom": "1px solid var(--neutral-30)"
+                  },
+                  "alignItems": "center"
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Key"
+                    },
+                    "position": {
+                      "basis": "130px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Power Supply",
+                      "style": {
+                        "classes": "fs-12 fw-400 text-muted",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Value"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0px"
+                    },
+                    "props": {
+                      "text": "--",
+                      "style": {
+                        "classes": "fs-12 fw-700",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/PowerSupply')), false), false), toStr(tag({view.params.sitePath} + '/PowerSupply')), '--')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/PowerSupply')), false), false), 'fs-12 fw-700', 'fs-12 fw-700 value-bad')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "meta.tooltip.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/PowerSupply')), false), false), toStr(toStr(tag({view.params.sitePath} + '/PowerSupply'))), '')"
+                          }
+                        }
+                      },
+                      "meta.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "true"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Right"
+            },
+            "position": {
+              "grow": 1,
+              "shrink": 1,
+              "basis": "0px"
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "overflow": "hidden"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "ProductName"
+                },
+                "position": {
+                  "basis": "24px",
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "borderBottom": "1px solid var(--neutral-30)"
+                  },
+                  "alignItems": "center"
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Key"
+                    },
+                    "position": {
+                      "basis": "130px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Product Name",
+                      "style": {
+                        "classes": "fs-12 fw-400 text-muted",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Value"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0px"
+                    },
+                    "props": {
+                      "text": "--",
+                      "style": {
+                        "classes": "fs-12 fw-700",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/ProductName')), false), false), toStr(tag({view.params.sitePath} + '/ProductName')), '--')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/ProductName')), false), false), 'fs-12 fw-700', 'fs-12 fw-700 value-bad')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "meta.tooltip.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/ProductName')), false), false), toStr(toStr(tag({view.params.sitePath} + '/ProductName'))), '')"
+                          }
+                        }
+                      },
+                      "meta.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "true"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Catalog"
+                },
+                "position": {
+                  "basis": "24px",
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "borderBottom": "1px solid var(--neutral-30)"
+                  },
+                  "alignItems": "center"
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Key"
+                    },
+                    "position": {
+                      "basis": "130px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Configured Catalog",
+                      "style": {
+                        "classes": "fs-12 fw-400 text-muted",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Value"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0px"
+                    },
+                    "props": {
+                      "text": "--",
+                      "style": {
+                        "classes": "fs-12 fw-700",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/CatalogNumber')), false), false), toStr(tag({view.params.sitePath} + '/CatalogNumber')), '--')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/CatalogNumber')), false), false), 'fs-12 fw-700', 'fs-12 fw-700 value-bad')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "meta.tooltip.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/CatalogNumber')), false), false), toStr(toStr(tag({view.params.sitePath} + '/CatalogNumber'))), '')"
+                          }
+                        }
+                      },
+                      "meta.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "true"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Revision"
+                },
+                "position": {
+                  "basis": "24px",
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "borderBottom": "1px solid var(--neutral-30)"
+                  },
+                  "alignItems": "center"
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Key"
+                    },
+                    "position": {
+                      "basis": "130px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Firmware",
+                      "style": {
+                        "classes": "fs-12 fw-400 text-muted",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Value"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0px"
+                    },
+                    "props": {
+                      "text": "--",
+                      "style": {
+                        "classes": "fs-12 fw-700",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/MajorRevision')), false), false) && coalesce(try(isGood(tag({view.params.sitePath} + '/MinorRevision')), false), false), toStr(tag({view.params.sitePath} + '/MajorRevision')) + '.' + toStr(tag({view.params.sitePath} + '/MinorRevision')), '--')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/MajorRevision')), false), false) && coalesce(try(isGood(tag({view.params.sitePath} + '/MinorRevision')), false), false), 'fs-12 fw-700', 'fs-12 fw-700 value-bad')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "meta.tooltip.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/MajorRevision')), false), false) && coalesce(try(isGood(tag({view.params.sitePath} + '/MinorRevision')), false), false), toStr(toStr(tag({view.params.sitePath} + '/MajorRevision')) + '.' + toStr(tag({view.params.sitePath} + '/MinorRevision'))), '')"
+                          }
+                        }
+                      },
+                      "meta.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "true"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "ProductCode"
+                },
+                "position": {
+                  "basis": "24px",
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "borderBottom": "1px solid var(--neutral-30)"
+                  },
+                  "alignItems": "center"
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Key"
+                    },
+                    "position": {
+                      "basis": "130px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Product Code",
+                      "style": {
+                        "classes": "fs-12 fw-400 text-muted",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Value"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0px"
+                    },
+                    "props": {
+                      "text": "--",
+                      "style": {
+                        "classes": "fs-12 fw-700",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/ProductCode')), false), false), toStr(tag({view.params.sitePath} + '/ProductCode')), '--')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/ProductCode')), false), false), 'fs-12 fw-700', 'fs-12 fw-700 value-bad')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "meta.tooltip.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/ProductCode')), false), false), toStr(toStr(tag({view.params.sitePath} + '/ProductCode'))), '')"
+                          }
+                        }
+                      },
+                      "meta.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "true"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Serial"
+                },
+                "position": {
+                  "basis": "24px",
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "borderBottom": "1px solid var(--neutral-30)"
+                  },
+                  "alignItems": "center"
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Key"
+                    },
+                    "position": {
+                      "basis": "130px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Serial Number",
+                      "style": {
+                        "classes": "fs-12 fw-400 text-muted",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Value"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0px"
+                    },
+                    "props": {
+                      "text": "--",
+                      "style": {
+                        "classes": "fs-12 fw-700",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/SerialNumber')), false), false), toStr(tag({view.params.sitePath} + '/SerialNumber')), '--')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/SerialNumber')), false), false), 'fs-12 fw-700', 'fs-12 fw-700 value-bad')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "meta.tooltip.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/SerialNumber')), false), false), toStr(toStr(tag({view.params.sitePath} + '/SerialNumber'))), '')"
+                          }
+                        }
+                      },
+                      "meta.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "true"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "StatusWord"
+                },
+                "position": {
+                  "basis": "24px",
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "borderBottom": "1px solid var(--neutral-30)"
+                  },
+                  "alignItems": "center"
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Key"
+                    },
+                    "position": {
+                      "basis": "130px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Identity Status",
+                      "style": {
+                        "classes": "fs-12 fw-400 text-muted",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Value"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0px"
+                    },
+                    "props": {
+                      "text": "--",
+                      "style": {
+                        "classes": "fs-12 fw-700",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if((coalesce(try(isGood(tag({view.params.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.params.sitePath} + '/Connected')), false), false)) && coalesce(try(isGood(tag({view.params.sitePath} + '/Status')), false), false), toStr(tag({view.params.sitePath} + '/Status')), '--')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if((coalesce(try(isGood(tag({view.params.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.params.sitePath} + '/Connected')), false), false)) && coalesce(try(isGood(tag({view.params.sitePath} + '/Status')), false), false), 'fs-12 fw-700', 'fs-12 fw-700 value-bad')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "meta.tooltip.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if((coalesce(try(isGood(tag({view.params.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.params.sitePath} + '/Connected')), false), false)) && coalesce(try(isGood(tag({view.params.sitePath} + '/Status')), false), false), toStr(toStr(tag({view.params.sitePath} + '/Status'))), '')"
+                          }
+                        }
+                      },
+                      "meta.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "true"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "IP"
+                },
+                "position": {
+                  "basis": "24px",
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "borderBottom": "1px solid var(--neutral-30)"
+                  },
+                  "alignItems": "center"
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Key"
+                    },
+                    "position": {
+                      "basis": "130px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "IP Address",
+                      "style": {
+                        "classes": "fs-12 fw-400 text-muted",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Value"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0px"
+                    },
+                    "props": {
+                      "text": "--",
+                      "style": {
+                        "classes": "fs-12 fw-700",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/IPAddress')), false), false), toStr(tag({view.params.sitePath} + '/IPAddress')), '--')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/IPAddress')), false), false), 'fs-12 fw-700', 'fs-12 fw-700 value-bad')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "meta.tooltip.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try(isGood(tag({view.params.sitePath} + '/IPAddress')), false), false), toStr(toStr(tag({view.params.sitePath} + '/IPAddress'))), '')"
+                          }
+                        }
+                      },
+                      "meta.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "true"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "coalesce({view.params.member}, '') = 'Controller' || coalesce({view.params.member}, '') = ''"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

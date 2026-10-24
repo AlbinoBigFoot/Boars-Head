@@ -1,0 +1,162 @@
+{
+  "custom": {},
+  "params": {
+    "canEdit": false,
+    "cat": "",
+    "role": "",
+    "state": "none",
+    "text": ""
+  },
+  "propConfig": {
+    "params.canEdit": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.cat": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.role": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.state": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.text": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 44,
+      "width": 100
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Icon"
+        },
+        "position": {
+          "basis": "18px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.path": {
+            "binding": {
+              "config": {
+                "expression": "case({view.params.state}, 'all', 'material/check_box', 'some', 'material/indeterminate_check_box', 'locked', 'material/lock', 'material/check_box_outline_blank')"
+              },
+              "type": "expr"
+            }
+          },
+          "props.style.classes": {
+            "binding": {
+              "config": {
+                "expression": "case({view.params.state}, 'all', 'admin-ico-on', 'some', 'admin-ico-on', 'none', 'admin-ico-off', 'admin-ico-muted')"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "path": "material/check_box",
+          "style": {
+            "classes": "admin-ico-on"
+          }
+        },
+        "type": "ia.display.icon"
+      },
+      {
+        "meta": {
+          "name": "Count"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.style.classes": {
+            "binding": {
+              "config": {
+                "expression": "if({view.params.state} = 'none', 'admin-cell-text admin-cell-text-muted', 'admin-cell-text')"
+              },
+              "type": "expr"
+            }
+          },
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.params.text"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "classes": "admin-cell-text"
+          },
+          "text": ""
+        },
+        "type": "ia.display.label"
+      }
+    ],
+    "events": {
+      "dom": {
+        "onClick": {
+          "config": {
+            "script": "\tp = self.view.params\n\tif p.state != 'locked' and p.canEdit:\n\t\tsystem.perspective.sendMessage('rpBulk', payload={'cat': p.cat, 'role': p.role, 'grant': p.state != 'all'}, scope='page')\n"
+          },
+          "scope": "G",
+          "type": "script"
+        }
+      }
+    },
+    "meta": {
+      "name": "root"
+    },
+    "position": {
+      "shrink": 0
+    },
+    "propConfig": {
+      "meta.tooltip.enabled": {
+        "binding": {
+          "config": {
+            "expression": "len(coalesce(if({view.params.state} = 'locked' || !{view.params.canEdit}, '', if({view.params.state} = 'all', 'Revoke All In ' + {view.params.cat} + ' From ' + {view.params.role}, 'Grant All In ' + {view.params.cat} + ' To ' + {view.params.role})), '')) > 0"
+          },
+          "type": "expr"
+        }
+      },
+      "meta.tooltip.text": {
+        "binding": {
+          "config": {
+            "expression": "if({view.params.state} = 'locked' || !{view.params.canEdit}, '', if({view.params.state} = 'all', 'Revoke All In ' + {view.params.cat} + ' From ' + {view.params.role}, 'Grant All In ' + {view.params.cat} + ' To ' + {view.params.role}))"
+          },
+          "type": "expr"
+        }
+      },
+      "props.style.classes": {
+        "binding": {
+          "config": {
+            "expression": "if({view.params.state} != 'locked' && {view.params.canEdit}, 'admin-cell admin-cell-click', 'admin-cell')"
+          },
+          "type": "expr"
+        }
+      }
+    },
+    "props": {
+      "alignItems": "center",
+      "direction": "row",
+      "justify": "center",
+      "style": {
+        "gap": "6px",
+        "height": "100%"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

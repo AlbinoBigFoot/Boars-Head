@@ -1,0 +1,97 @@
+{
+  "custom": {},
+  "params": {},
+  "props": {
+    "defaultSize": {
+      "height": 36,
+      "width": 200
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "wrap"
+    },
+    "props": {
+      "alignItems": "center",
+      "style": {
+        "height": "36px"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "root"
+        },
+        "props": {
+          "alignItems": "center",
+          "justify": "center",
+          "style": {
+            "backgroundColor": "var(--error)",
+            "borderRadius": "14px",
+            "height": "28px",
+            "padding": "0 10px",
+            "gap": "6px",
+            "overflow": "hidden"
+          }
+        },
+        "propConfig": {
+          "meta.tooltip.text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "'PLC writes are UNLOCKED: [default]_Config/PlcWriteLock/Locked = false. Set it back to true in the Designer (Tag Browser) to relock.'"
+              }
+            }
+          },
+          "meta.tooltip.enabled": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "true"
+              }
+            }
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.icon",
+            "meta": {
+              "name": "Icon"
+            },
+            "position": {
+              "basis": "18px",
+              "shrink": 0
+            },
+            "props": {
+              "path": "material/lock_open",
+              "color": "#FFFFFF",
+              "style": {
+                "height": "18px",
+                "width": "18px"
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Text"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "PLC Writes Unlocked",
+              "style": {
+                "classes": "Fonts/Label fw-700",
+                "color": "#FFFFFF",
+                "whiteSpace": "nowrap"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

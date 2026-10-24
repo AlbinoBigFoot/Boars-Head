@@ -1,0 +1,180 @@
+{
+  "custom": {
+    "pax": "",
+    "paxRoot": ""
+  },
+  "params": {
+    "tagPath": "",
+    "title": ""
+  },
+  "propConfig": {
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.title": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.pax": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(right(coalesce({view.params.tagPath}, ''), 10) = '/Interlock', case(toStr(coalesce(try(tag(left({view.params.tagPath}, len({view.params.tagPath}) - 10) + '.TypeId'), ''), '')), 'Devices/Pump', 'Motor', 'Devices/Valve', 'Valve', 'Devices/Tank', 'Tank', 'Devices/Compressor', 'Comp', 'Devices/Evaporator', 'CG', 'Devices/ExhaustFan', 'EF', 'Devices/LTU', 'LTU', 'Devices/SafetyRelay', 'Relay', 'Devices/SuctionSequence', 'Seq', 'Devices/DischargeSequence', 'Dsq', 'Devices/Sensor', if(coalesce(try(toBoolean(tag(left({view.params.tagPath}, len({view.params.tagPath}) - 10) + '/AIn.Enabled')), false), false), 'AIn', if(coalesce(try(toBoolean(tag(left({view.params.tagPath}, len({view.params.tagPath}) - 10) + '/AInRef.Enabled')), false), false), 'AInRef', '')), 'Devices/DiscreteInput', if(coalesce(try(toBoolean(tag(left({view.params.tagPath}, len({view.params.tagPath}) - 10) + '/DIn.Enabled')), false), false), 'DIn', ''), ''), '')"
+        }
+      }
+    },
+    "custom.paxRoot": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(right(coalesce({view.params.tagPath}, ''), 10) = '/Interlock', left({view.params.tagPath}, len({view.params.tagPath}) - 10) + '/Intlk', '')"
+        }
+      }
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 28,
+      "width": 120
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root",
+      "contextMenu": {}
+    },
+    "props": {
+      "direction": "row",
+      "style": {
+        "height": "100%",
+        "width": "100%"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.input.button",
+        "meta": {
+          "name": "Btn"
+        },
+        "position": {
+          "grow": 1,
+          "basis": "0px"
+        },
+        "props": {
+          "text": "Interlocks",
+          "primary": false,
+          "style": {
+            "classes": "faceplate-cmd-btn Fonts/Label fw-700",
+            "color": "#ffffff",
+            "height": "100%",
+            "minHeight": "0px",
+            "padding": "0px 6px",
+            "whiteSpace": "nowrap"
+          }
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "if({view.params.tagPath} != '' && !coalesce(try(isGood(tag({view.custom.paxRoot} + '/Sts_IntlkOK')), false), false), 'COMM LOSS', if({view.params.tagPath} = '', 'Interlocks', if(coalesce(try(if(!isGood(tag({view.custom.paxRoot} + '/Sts_IntlkOK')), null, tag({view.custom.paxRoot} + '/Sts_IntlkOK')), null), false), 'Interlocks OK', 'Interlocked')))"
+              },
+              "type": "expr",
+              "overlays": {
+                "bad": false,
+                "error": false,
+                "pending": false,
+                "stale": false,
+                "unknown": false,
+                "disabled": false
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.style.backgroundColor": {
+            "binding": {
+              "config": {
+                "expression": "if({view.params.tagPath} != '' && !coalesce(try(isGood(tag({view.custom.paxRoot} + '/Sts_IntlkOK')), false), false), 'var(--neutral-30)', if({view.params.tagPath} = '' || try(!isGood(tag({view.custom.paxRoot} + '/Sts_IntlkOK')), true), 'var(--status-off)', if(coalesce(try(if(!isGood(tag({view.custom.paxRoot} + '/Sts_IntlkOK')), null, tag({view.custom.paxRoot} + '/Sts_IntlkOK')), null), false), '#2E7D32', 'var(--status-level-critical)')))"
+              },
+              "type": "expr",
+              "overlays": {
+                "bad": false,
+                "error": false,
+                "pending": false,
+                "stale": false,
+                "unknown": false,
+                "disabled": false
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.enabled": {
+            "binding": {
+              "config": {
+                "expression": "!({view.params.tagPath} = '')"
+              },
+              "type": "expr",
+              "overlays": {
+                "bad": false,
+                "error": false,
+                "pending": false,
+                "stale": false,
+                "unknown": false,
+                "disabled": false
+              }
+            }
+          }
+        },
+        "events": {
+          "component": {
+            "onActionPerformed": {
+              "config": {
+                "script": "\ttp = str(self.view.params.tagPath or '')\n\tif not tp:\n\t\treturn\n\ttitle = str(self.view.params.title or '').strip()\n\tif not title:\n\t\tparts = tp.split('/')\n\t\ttitle = parts[-2] if len(parts) > 1 else parts[-1]\n\tNavigation.Faceplate.openFaceplate('intlk-fp-%s' % tp, tp, '01_Popups/00_Faceplates/Interlock', False, title, 560, 680, {'title': title})\n"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        }
+      }
+    ],
+    "propConfig": {
+      "meta.contextMenu.items": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "coalesce({session.custom.TicketLogAccess}, false)"
+          },
+          "transforms": [
+            {
+              "type": "script",
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = str(self.view.params.tagPath or '')\n\texcept:\n\t\tpass\n\tview_name = self.view.id.split('@')[0]\n\titems = []\n\tif value:\n\t\tlogged = tagPath if tagPath.strip() else 'No TagPath: ' + view_name.split('/')[-1]\n\t\titems.append({\n\t\t\t\"text\": 'Ticket Logger',\n\t\t\t\"icon\": {\"path\": 'material/info', \"color\": \"--neutral-80\", \"style\": {}},\n\t\t\t\"style\": {\"classes\": \"bg-component Fonts/Value\", \"height\": 24, \"width\": 170},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\"type\": 'ticketLog', \"payload\": {'tagPath': logged, 'viewName': view_name, 'sender': self.view.id}, \"scope\": 'page'}\n\t\t})\n\treturn items"
+            }
+          ]
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "len({this.meta.contextMenu.items}) > 0"
+          }
+        }
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    }
+  }
+}

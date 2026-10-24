@@ -1,0 +1,239 @@
+{
+  "custom": {
+    "err": "",
+    "name": ""
+  },
+  "params": {
+    "id": 0,
+    "name": ""
+  },
+  "propConfig": {
+    "params.id": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.name": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 210,
+      "width": 440
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Title"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "style": {
+            "classes": "report-heading"
+          },
+          "text": "Rename Report"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Caption"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "style": {
+            "classes": "form-th"
+          },
+          "text": "Report Name"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "events": {
+          "component": {
+            "onActionPerformed": {
+              "config": {
+                "script": "\tself.view.custom.name = self.props.text\n\tv = self.view.custom\n\tres = shared.Reports.renameTemplate(self.session, self.view.params.id, v.name)\n\tif res['ok']:\n\t\tsystem.perspective.sendMessage('rptSavedChanged', {'message': res['message']}, scope='page')\n\t\tsystem.perspective.closePopup('rptRename')\n\telse:\n\t\tv.err = res['message']\n"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "Name"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "bidirectional": true,
+                "path": "view.custom.name"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "placeholder": "Weekly Alarm Review",
+          "style": {
+            "classes": "form-input",
+            "height": "32px"
+          }
+        },
+        "type": "ia.input.text-field"
+      },
+      {
+        "meta": {
+          "name": "Error"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({view.custom.err}, '')"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "classes": "Fonts/Value fs-12 fw-600"
+          },
+          "text": ""
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "meta": {
+              "name": "Spacer"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 1,
+              "shrink": 1
+            },
+            "props": {
+              "style": {}
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tsystem.perspective.closePopup('rptRename')\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Cancel"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "classes": "form-btn",
+                "height": "36px"
+              },
+              "text": "Cancel"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tv = self.view.custom\n\tres = shared.Reports.renameTemplate(self.session, self.view.params.id, v.name)\n\tif res['ok']:\n\t\tsystem.perspective.sendMessage('rptSavedChanged', {'message': res['message']}, scope='page')\n\t\tsystem.perspective.closePopup('rptRename')\n\telse:\n\t\tv.err = res['message']\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Save"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "primary": true,
+              "style": {
+                "classes": "form-btn-primary",
+                "height": "36px"
+              },
+              "text": "Save"
+            },
+            "type": "ia.input.button"
+          }
+        ],
+        "meta": {
+          "name": "Buttons"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "alignItems": "center",
+          "direction": "row",
+          "style": {
+            "gap": "8px"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "events": {
+      "system": {
+        "onStartup": {
+          "config": {
+            "script": "\tself.view.custom.name = self.view.params.name\n"
+          },
+          "scope": "G",
+          "type": "script"
+        }
+      }
+    },
+    "meta": {
+      "name": "root"
+    },
+    "position": {
+      "shrink": 0
+    },
+    "props": {
+      "alignItems": "stretch",
+      "direction": "column",
+      "style": {
+        "classes": "report-surface",
+        "gap": "8px",
+        "height": "100%",
+        "padding": "20px 24px"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

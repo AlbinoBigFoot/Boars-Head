@@ -1,0 +1,1242 @@
+{
+  "custom": {
+    "end": null,
+    "formType": "",
+    "refresh": 0,
+    "start": null,
+    "user": ""
+  },
+  "params": {},
+  "props": {
+    "defaultSize": {
+      "height": 1000,
+      "width": 1600
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "Title"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "classes": "Fonts/Title fs-20 fw-700"
+              },
+              "text": "Form History"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "Subtitle"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "classes": "Fonts/Label fs-13",
+                "whiteSpace": "normal"
+              },
+              "text": "Submitted Daily Rounds Logs and NH3 Shift Logs, and the Annual P&ID Verification cycles. View shows the form read only; PDF downloads the printable record."
+            },
+            "type": "ia.display.label"
+          }
+        ],
+        "meta": {
+          "name": "Head"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "gap": "2px"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "DeniedMsg"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "classes": "Fonts/Value fs-16 fw-600",
+                "whiteSpace": "normal"
+              },
+              "text": "Access Denied - Form History Requires The Forms Permission (Maintenance Or Above)."
+            },
+            "type": "ia.display.label"
+          }
+        ],
+        "meta": {
+          "name": "Denied"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "!coalesce({session.custom.Permissions.Forms.Use}, false)"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "classes": "bg-component container-card",
+            "padding": "24px"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "meta": {
+                          "name": "Cap"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "style": {
+                            "classes": "Fonts/Label fs-11 fw-600",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          },
+                          "text": "Form"
+                        },
+                        "type": "ia.display.label"
+                      },
+                      {
+                        "meta": {
+                          "name": "V"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "propConfig": {
+                          "props.value": {
+                            "binding": {
+                              "config": {
+                                "bidirectional": true,
+                                "path": "view.custom.formType"
+                              },
+                              "type": "property"
+                            }
+                          }
+                        },
+                        "props": {
+                          "options": [
+                            {
+                              "label": "All Forms",
+                              "value": ""
+                            },
+                            {
+                              "label": "Daily Rounds Log",
+                              "value": "DailyRounds"
+                            },
+                            {
+                              "label": "NH3 Shift Log",
+                              "value": "ShiftLog"
+                            }
+                          ],
+                          "showClearIcon": false,
+                          "style": {
+                            "classes": "bg-component Fonts/Value",
+                            "height": "30px"
+                          }
+                        },
+                        "type": "ia.input.dropdown"
+                      }
+                    ],
+                    "meta": {
+                      "name": "Form"
+                    },
+                    "position": {
+                      "basis": "200px",
+                      "grow": 0,
+                      "shrink": 1
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "gap": "2px",
+                        "minWidth": "0"
+                      }
+                    },
+                    "type": "ia.container.flex"
+                  },
+                  {
+                    "children": [
+                      {
+                        "meta": {
+                          "name": "Cap"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "style": {
+                            "classes": "Fonts/Label fs-11 fw-600",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          },
+                          "text": "From"
+                        },
+                        "type": "ia.display.label"
+                      },
+                      {
+                        "meta": {
+                          "name": "V"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "propConfig": {
+                          "props.value": {
+                            "binding": {
+                              "config": {
+                                "bidirectional": true,
+                                "path": "view.custom.start"
+                              },
+                              "type": "property"
+                            }
+                          }
+                        },
+                        "props": {
+                          "format": "MM/DD/YYYY",
+                          "pickerType": "date",
+                          "style": {
+                            "classes": "bg-component Fonts/Value",
+                            "height": "30px"
+                          }
+                        },
+                        "type": "ia.input.date-time-input"
+                      }
+                    ],
+                    "meta": {
+                      "name": "From"
+                    },
+                    "position": {
+                      "basis": "170px",
+                      "grow": 0,
+                      "shrink": 1
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "gap": "2px",
+                        "minWidth": "0"
+                      }
+                    },
+                    "type": "ia.container.flex"
+                  },
+                  {
+                    "children": [
+                      {
+                        "meta": {
+                          "name": "Cap"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "style": {
+                            "classes": "Fonts/Label fs-11 fw-600",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          },
+                          "text": "To"
+                        },
+                        "type": "ia.display.label"
+                      },
+                      {
+                        "meta": {
+                          "name": "V"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "propConfig": {
+                          "props.value": {
+                            "binding": {
+                              "config": {
+                                "bidirectional": true,
+                                "path": "view.custom.end"
+                              },
+                              "type": "property"
+                            }
+                          }
+                        },
+                        "props": {
+                          "format": "MM/DD/YYYY",
+                          "pickerType": "date",
+                          "style": {
+                            "classes": "bg-component Fonts/Value",
+                            "height": "30px"
+                          }
+                        },
+                        "type": "ia.input.date-time-input"
+                      }
+                    ],
+                    "meta": {
+                      "name": "To"
+                    },
+                    "position": {
+                      "basis": "170px",
+                      "grow": 0,
+                      "shrink": 1
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "gap": "2px",
+                        "minWidth": "0"
+                      }
+                    },
+                    "type": "ia.container.flex"
+                  },
+                  {
+                    "children": [
+                      {
+                        "meta": {
+                          "name": "Cap"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "style": {
+                            "classes": "Fonts/Label fs-11 fw-600",
+                            "overflow": "hidden",
+                            "textOverflow": "ellipsis",
+                            "whiteSpace": "nowrap"
+                          },
+                          "text": "User"
+                        },
+                        "type": "ia.display.label"
+                      },
+                      {
+                        "meta": {
+                          "name": "V"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "propConfig": {
+                          "props.options": {
+                            "binding": {
+                              "config": {
+                                "struct": {
+                                  "viewAll": "coalesce({session.custom.Permissions.Forms.ViewAll}, false)"
+                                },
+                                "waitOnAll": false
+                              },
+                              "transforms": [
+                                {
+                                  "code": "\treturn shared.Forms.historyUsers(self.session)\n",
+                                  "type": "script"
+                                }
+                              ],
+                              "type": "expr-struct"
+                            }
+                          },
+                          "props.value": {
+                            "binding": {
+                              "config": {
+                                "bidirectional": true,
+                                "path": "view.custom.user"
+                              },
+                              "type": "property"
+                            }
+                          }
+                        },
+                        "props": {
+                          "showClearIcon": false,
+                          "style": {
+                            "classes": "bg-component Fonts/Value",
+                            "height": "30px"
+                          }
+                        },
+                        "type": "ia.input.dropdown"
+                      }
+                    ],
+                    "meta": {
+                      "name": "User"
+                    },
+                    "position": {
+                      "basis": "260px",
+                      "grow": 0,
+                      "shrink": 1
+                    },
+                    "propConfig": {
+                      "position.display": {
+                        "binding": {
+                          "config": {
+                            "expression": "coalesce({session.custom.Permissions.Forms.ViewAll}, false)"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "gap": "2px",
+                        "minWidth": "0"
+                      }
+                    },
+                    "type": "ia.container.flex"
+                  },
+                  {
+                    "children": [
+                      {
+                        "events": {
+                          "component": {
+                            "onActionPerformed": {
+                              "config": {
+                                "script": "\tself.view.custom.refresh += 1\n"
+                              },
+                              "scope": "G",
+                              "type": "script"
+                            }
+                          }
+                        },
+                        "meta": {
+                          "name": "Refresh"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "image": {
+                            "height": 16,
+                            "icon": {
+                              "path": "material/refresh"
+                            },
+                            "width": 16
+                          },
+                          "style": {
+                            "classes": "container-button Fonts/Button",
+                            "height": "32px"
+                          },
+                          "text": "Refresh"
+                        },
+                        "type": "ia.input.button"
+                      }
+                    ],
+                    "meta": {
+                      "name": "Btn"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "justifyContent": "flex-end"
+                      }
+                    },
+                    "type": "ia.container.flex"
+                  },
+                  {
+                    "children": [
+                      {
+                        "events": {
+                          "component": {
+                            "onActionPerformed": {
+                              "config": {
+                                "script": "\t# redesign 2026-10-24: Report Builder on the Operations Forms source with this page's filters\n\tft = self.view.custom.formType\n\tshared.Reports.open('forms', {'forms': [ft] if ft else [], 'start': self.view.custom.start, 'end': self.view.custom.end, 'origin': 'Form History'})\n"
+                              },
+                              "scope": "G",
+                              "type": "script"
+                            }
+                          }
+                        },
+                        "meta": {
+                          "name": "GenerateReport"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "propConfig": {
+                          "props.enabled": {
+                            "binding": {
+                              "config": {
+                                "expression": "coalesce({session.custom.Permissions.Reports.Use}, false)"
+                              },
+                              "type": "expr"
+                            }
+                          }
+                        },
+                        "props": {
+                          "image": {
+                            "height": 16,
+                            "icon": {
+                              "path": "material/get_app"
+                            },
+                            "width": 16
+                          },
+                          "style": {
+                            "classes": "container-button Fonts/Button",
+                            "height": "32px"
+                          },
+                          "text": "Generate Report"
+                        },
+                        "type": "ia.input.button"
+                      }
+                    ],
+                    "meta": {
+                      "name": "ReportBtn"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "justifyContent": "flex-end"
+                      }
+                    },
+                    "type": "ia.container.flex"
+                  },
+                  {
+                    "meta": {
+                      "name": "Scope"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "if(coalesce({session.custom.Permissions.Forms.ViewAll}, false), \"Showing Every User's Submissions\", 'Showing Your Submissions Only')"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "alignSelf": "flex-end",
+                        "classes": "Fonts/Label fs-12",
+                        "marginLeft": "auto"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.display.label"
+                  }
+                ],
+                "meta": {
+                  "name": "Filters"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "alignItems": "flex-end",
+                  "direction": "row",
+                  "style": {
+                    "flexWrap": "wrap",
+                    "gap": "10px"
+                  }
+                },
+                "type": "ia.container.flex"
+              },
+              {
+                "events": {
+                  "component": {
+                    "onRowDoubleClick": {
+                      "config": {
+                        "script": "\tkind = self.props.data[event.row]['form_type']\n\trid = self.props.data[event.row]['id']\n\tpaths = {'DailyRounds': '00_Pages/Groveport/Operations/Forms/DailyRounds', 'ShiftLog': '00_Pages/Groveport/Operations/Forms/ShiftLog'}\n\tsystem.perspective.openPopup(id='opsFormView', view=paths[kind], params={'readOnly': True, 'submissionId': rid}, title='', showCloseIcon=True, draggable=True, resizable=True, modal=True, overlayDismiss=True, position={'width': 1560, 'height': 880})\n"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "Table"
+                },
+                "position": {
+                  "basis": "0",
+                  "grow": 1,
+                  "shrink": 1
+                },
+                "propConfig": {
+                  "props.data": {
+                    "binding": {
+                      "config": {
+                        "struct": {
+                          "allowed": "coalesce({session.custom.Permissions.Forms.Use}, false)",
+                          "end": "{view.custom.end}",
+                          "formType": "{view.custom.formType}",
+                          "refresh": "{view.custom.refresh}",
+                          "start": "{view.custom.start}",
+                          "user": "{view.custom.user}"
+                        },
+                        "waitOnAll": false
+                      },
+                      "transforms": [
+                        {
+                          "code": "\treturn shared.Forms.history(self.session, value.formType, value.start, value.end, value.user)\n",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "expr-struct"
+                    }
+                  }
+                },
+                "props": {
+                  "cells": {
+                    "style": {
+                      "classes": "Fonts/Value fs-12"
+                    }
+                  },
+                  "columns": [
+                    {
+                      "align": "center",
+                      "editable": false,
+                      "field": "id",
+                      "header": {
+                        "align": "center",
+                        "justify": "left",
+                        "style": {
+                          "classes": "Fonts/Label fw-600"
+                        },
+                        "title": "Id"
+                      },
+                      "justify": "left",
+                      "render": "auto",
+                      "resizable": true,
+                      "sort": "none",
+                      "sortable": true,
+                      "strictWidth": false,
+                      "style": {
+                        "classes": ""
+                      },
+                      "visible": false
+                    },
+                    {
+                      "align": "center",
+                      "editable": false,
+                      "field": "form_type",
+                      "header": {
+                        "align": "center",
+                        "justify": "left",
+                        "style": {
+                          "classes": "Fonts/Label fw-600"
+                        },
+                        "title": "Type"
+                      },
+                      "justify": "left",
+                      "render": "auto",
+                      "resizable": true,
+                      "sort": "none",
+                      "sortable": true,
+                      "strictWidth": false,
+                      "style": {
+                        "classes": ""
+                      },
+                      "visible": false
+                    },
+                    {
+                      "align": "center",
+                      "editable": false,
+                      "field": "form_date",
+                      "header": {
+                        "align": "center",
+                        "justify": "left",
+                        "style": {
+                          "classes": "Fonts/Label fw-600"
+                        },
+                        "title": "Date"
+                      },
+                      "justify": "left",
+                      "render": "auto",
+                      "resizable": true,
+                      "sort": "none",
+                      "sortable": true,
+                      "strictWidth": true,
+                      "style": {
+                        "classes": ""
+                      },
+                      "visible": true,
+                      "width": 110
+                    },
+                    {
+                      "align": "center",
+                      "editable": false,
+                      "field": "form",
+                      "header": {
+                        "align": "center",
+                        "justify": "left",
+                        "style": {
+                          "classes": "Fonts/Label fw-600"
+                        },
+                        "title": "Form"
+                      },
+                      "justify": "left",
+                      "render": "auto",
+                      "resizable": true,
+                      "sort": "none",
+                      "sortable": true,
+                      "strictWidth": true,
+                      "style": {
+                        "classes": ""
+                      },
+                      "visible": true,
+                      "width": 150
+                    },
+                    {
+                      "align": "center",
+                      "editable": false,
+                      "field": "submitted",
+                      "header": {
+                        "align": "center",
+                        "justify": "left",
+                        "style": {
+                          "classes": "Fonts/Label fw-600"
+                        },
+                        "title": "Submitted By"
+                      },
+                      "justify": "left",
+                      "render": "auto",
+                      "resizable": true,
+                      "sort": "none",
+                      "sortable": true,
+                      "strictWidth": true,
+                      "style": {
+                        "classes": ""
+                      },
+                      "visible": true,
+                      "width": 230
+                    },
+                    {
+                      "align": "center",
+                      "dateFormat": "YYYY-MM-DD HH:mm",
+                      "editable": false,
+                      "field": "submitted_at",
+                      "header": {
+                        "align": "center",
+                        "justify": "left",
+                        "style": {
+                          "classes": "Fonts/Label fw-600"
+                        },
+                        "title": "Submitted At"
+                      },
+                      "justify": "left",
+                      "render": "date",
+                      "resizable": true,
+                      "sort": "none",
+                      "sortable": true,
+                      "strictWidth": true,
+                      "style": {
+                        "classes": ""
+                      },
+                      "visible": true,
+                      "width": 150
+                    },
+                    {
+                      "align": "center",
+                      "editable": false,
+                      "field": "summary",
+                      "header": {
+                        "align": "center",
+                        "justify": "left",
+                        "style": {
+                          "classes": "Fonts/Label fw-600"
+                        },
+                        "title": "Summary"
+                      },
+                      "justify": "left",
+                      "render": "auto",
+                      "resizable": true,
+                      "sort": "none",
+                      "sortable": true,
+                      "strictWidth": false,
+                      "style": {
+                        "classes": ""
+                      },
+                      "visible": true
+                    },
+                    {
+                      "align": "center",
+                      "editable": false,
+                      "field": "actions",
+                      "header": {
+                        "align": "center",
+                        "justify": "left",
+                        "style": {
+                          "classes": "Fonts/Label fw-600"
+                        },
+                        "title": "Actions"
+                      },
+                      "justify": "left",
+                      "render": "view",
+                      "resizable": true,
+                      "sort": "none",
+                      "sortable": false,
+                      "strictWidth": true,
+                      "style": {
+                        "classes": ""
+                      },
+                      "viewPath": "00_Pages/Groveport/Operations/Forms/_Assets/HistoryActions",
+                      "visible": true,
+                      "width": 170
+                    }
+                  ],
+                  "emptyMessage": {
+                    "noData": {
+                      "text": "No Submissions In This Range"
+                    }
+                  },
+                  "pager": {
+                    "bottom": true,
+                    "initialOption": 50
+                  },
+                  "rows": {
+                    "height": 34,
+                    "striped": {
+                      "enabled": true
+                    }
+                  },
+                  "selection": {
+                    "enableRowSelection": true,
+                    "mode": "single"
+                  },
+                  "style": {
+                    "classes": "bg-component"
+                  }
+                },
+                "type": "ia.display.table"
+              }
+            ],
+            "meta": {
+              "name": "Forms"
+            },
+            "position": {
+              "tabIndex": 0
+            },
+            "props": {
+              "alignItems": "stretch",
+              "direction": "column",
+              "style": {
+                "gap": "8px",
+                "minHeight": "0",
+                "padding": "8px 0 0 0"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Hint"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-12",
+                    "whiteSpace": "normal"
+                  },
+                  "text": "Open cycles are visible to every Forms user. Completed cycles: Engineering and above see all, Maintenance sees the cycles they recorded checks in."
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Table"
+                },
+                "position": {
+                  "basis": "0",
+                  "grow": 1,
+                  "shrink": 1
+                },
+                "propConfig": {
+                  "props.data": {
+                    "binding": {
+                      "config": {
+                        "struct": {
+                          "allowed": "coalesce({session.custom.Permissions.Forms.Use}, false)",
+                          "refresh": "{view.custom.refresh}"
+                        },
+                        "waitOnAll": false
+                      },
+                      "transforms": [
+                        {
+                          "code": "\treturn shared.Forms.pidCycles(self.session)\n",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "expr-struct"
+                    }
+                  }
+                },
+                "props": {
+                  "cells": {
+                    "style": {
+                      "classes": "Fonts/Value fs-12"
+                    }
+                  },
+                  "columns": [
+                    {
+                      "align": "center",
+                      "editable": false,
+                      "field": "id",
+                      "header": {
+                        "align": "center",
+                        "justify": "left",
+                        "style": {
+                          "classes": "Fonts/Label fw-600"
+                        },
+                        "title": "Id"
+                      },
+                      "justify": "left",
+                      "render": "auto",
+                      "resizable": true,
+                      "sort": "none",
+                      "sortable": true,
+                      "strictWidth": false,
+                      "style": {
+                        "classes": ""
+                      },
+                      "visible": false
+                    },
+                    {
+                      "align": "center",
+                      "editable": false,
+                      "field": "cycle_year",
+                      "header": {
+                        "align": "center",
+                        "justify": "left",
+                        "style": {
+                          "classes": "Fonts/Label fw-600"
+                        },
+                        "title": "Cycle / Year"
+                      },
+                      "justify": "left",
+                      "render": "auto",
+                      "resizable": true,
+                      "sort": "none",
+                      "sortable": true,
+                      "strictWidth": true,
+                      "style": {
+                        "classes": ""
+                      },
+                      "visible": true,
+                      "width": 110
+                    },
+                    {
+                      "align": "center",
+                      "editable": false,
+                      "field": "status",
+                      "header": {
+                        "align": "center",
+                        "justify": "left",
+                        "style": {
+                          "classes": "Fonts/Label fw-600"
+                        },
+                        "title": "Status"
+                      },
+                      "justify": "left",
+                      "render": "auto",
+                      "resizable": true,
+                      "sort": "none",
+                      "sortable": true,
+                      "strictWidth": true,
+                      "style": {
+                        "classes": ""
+                      },
+                      "visible": true,
+                      "width": 100
+                    },
+                    {
+                      "align": "center",
+                      "editable": false,
+                      "field": "drawing_revision",
+                      "header": {
+                        "align": "center",
+                        "justify": "left",
+                        "style": {
+                          "classes": "Fonts/Label fw-600"
+                        },
+                        "title": "Drawing Revision"
+                      },
+                      "justify": "left",
+                      "render": "auto",
+                      "resizable": true,
+                      "sort": "none",
+                      "sortable": true,
+                      "strictWidth": true,
+                      "style": {
+                        "classes": ""
+                      },
+                      "visible": true,
+                      "width": 300
+                    },
+                    {
+                      "align": "center",
+                      "editable": false,
+                      "field": "performed",
+                      "header": {
+                        "align": "center",
+                        "justify": "left",
+                        "style": {
+                          "classes": "Fonts/Label fw-600"
+                        },
+                        "title": "Performed By / Reviewed By"
+                      },
+                      "justify": "left",
+                      "render": "auto",
+                      "resizable": true,
+                      "sort": "none",
+                      "sortable": true,
+                      "strictWidth": true,
+                      "style": {
+                        "classes": ""
+                      },
+                      "visible": true,
+                      "width": 260
+                    },
+                    {
+                      "align": "center",
+                      "editable": false,
+                      "field": "progress",
+                      "header": {
+                        "align": "center",
+                        "justify": "left",
+                        "style": {
+                          "classes": "Fonts/Label fw-600"
+                        },
+                        "title": "Verified"
+                      },
+                      "justify": "left",
+                      "render": "auto",
+                      "resizable": true,
+                      "sort": "none",
+                      "sortable": true,
+                      "strictWidth": false,
+                      "style": {
+                        "classes": ""
+                      },
+                      "visible": true
+                    },
+                    {
+                      "align": "center",
+                      "editable": false,
+                      "field": "completed",
+                      "header": {
+                        "align": "center",
+                        "justify": "left",
+                        "style": {
+                          "classes": "Fonts/Label fw-600"
+                        },
+                        "title": "Completed"
+                      },
+                      "justify": "left",
+                      "render": "auto",
+                      "resizable": true,
+                      "sort": "none",
+                      "sortable": true,
+                      "strictWidth": true,
+                      "style": {
+                        "classes": ""
+                      },
+                      "visible": true,
+                      "width": 220
+                    },
+                    {
+                      "align": "center",
+                      "editable": false,
+                      "field": "actions",
+                      "header": {
+                        "align": "center",
+                        "justify": "left",
+                        "style": {
+                          "classes": "Fonts/Label fw-600"
+                        },
+                        "title": "Actions"
+                      },
+                      "justify": "left",
+                      "render": "view",
+                      "resizable": true,
+                      "sort": "none",
+                      "sortable": false,
+                      "strictWidth": true,
+                      "style": {
+                        "classes": ""
+                      },
+                      "viewPath": "00_Pages/Groveport/Operations/Forms/_Assets/HistoryActions",
+                      "visible": true,
+                      "width": 170
+                    }
+                  ],
+                  "emptyMessage": {
+                    "noData": {
+                      "text": "No Verification Cycles You Can View Yet"
+                    }
+                  },
+                  "rows": {
+                    "height": 34,
+                    "striped": {
+                      "enabled": true
+                    }
+                  },
+                  "style": {
+                    "classes": "bg-component"
+                  }
+                },
+                "type": "ia.display.table"
+              }
+            ],
+            "meta": {
+              "name": "Cycles"
+            },
+            "position": {
+              "tabIndex": 1
+            },
+            "props": {
+              "alignItems": "stretch",
+              "direction": "column",
+              "style": {
+                "gap": "8px",
+                "minHeight": "0",
+                "padding": "8px 0 0 0"
+              }
+            },
+            "type": "ia.container.flex"
+          }
+        ],
+        "meta": {
+          "name": "Tabs"
+        },
+        "position": {
+          "basis": "0",
+          "grow": 1,
+          "shrink": 1
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({session.custom.Permissions.Forms.Use}, false)"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "currentTabIndex": 0,
+          "menuType": "modern",
+          "style": {
+            "minHeight": "0"
+          },
+          "tabSize": {
+            "height": 34,
+            "width": 260
+          },
+          "tabs": [
+            "Daily Rounds & Shift Logs",
+            "P&ID Verification Cycles"
+          ]
+        },
+        "type": "ia.container.tab"
+      }
+    ],
+    "events": {
+      "system": {
+        "onStartup": {
+          "config": {
+            "script": "\tself.view.custom.start = system.date.addDays(system.date.midnight(system.date.now()), -30)\n\tself.view.custom.end = system.date.now()\n"
+          },
+          "scope": "G",
+          "type": "script"
+        }
+      }
+    },
+    "meta": {
+      "contextMenu": {},
+      "name": "root"
+    },
+    "propConfig": {
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "config": {
+            "expression": "len({this.meta.contextMenu.items}) > 0"
+          },
+          "type": "expr"
+        }
+      },
+      "meta.contextMenu.items": {
+        "binding": {
+          "config": {
+            "expression": "coalesce({session.custom.TicketLogAccess}, false)"
+          },
+          "transforms": [
+            {
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = str(self.view.params.tagPath or '')\n\texcept:\n\t\tpass\n\tview_name = self.view.id.split('@')[0]\n\titems = []\n\tif value:\n\t\tlogged = tagPath if tagPath.strip() else 'No TagPath: ' + view_name.split('/')[-1]\n\t\titems.append({\n\t\t\t\"text\": 'Ticket Logger',\n\t\t\t\"icon\": {\"path\": 'material/info', \"color\": \"--neutral-80\", \"style\": {}},\n\t\t\t\"style\": {\"classes\": \"bg-component Fonts/Value\", \"height\": 24, \"width\": 170},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\"type\": 'ticketLog', \"payload\": {'tagPath': logged, 'viewName': view_name, 'sender': self.view.id}, \"scope\": 'page'}\n\t\t})\n\treturn items",
+              "type": "script"
+            }
+          ],
+          "type": "expr"
+        }
+      }
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "bg-page",
+        "gap": "10px",
+        "height": "100%",
+        "padding": "16px"
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    },
+    "type": "ia.container.flex"
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "custom": {},
+  "params": {
+    "sitePath": "[default]Boars_Head/GrovePort/Machine Room/PLC/RCP1",
+    "member": ""
+  },
+  "propConfig": {
+    "params.sitePath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.member": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "width": 900,
+      "height": 284
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "bg-page",
+        "padding": "6px",
+        "overflow": "hidden"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.display.view",
+        "meta": {
+          "name": "Detail"
+        },
+        "position": {
+          "grow": 1,
+          "basis": "0px"
+        },
+        "props": {
+          "path": "02_Components/03_PLC/ModuleDetail",
+          "useDefaultViewHeight": false,
+          "useDefaultViewWidth": false,
+          "params": {
+            "sitePath": "[default]Boars_Head/GrovePort/Machine Room/PLC/RCP1",
+            "member": "",
+            "inPopup": true
+          },
+          "style": {
+            "width": "100%",
+            "height": "100%"
+          }
+        },
+        "propConfig": {
+          "props.params.sitePath": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "view.params.sitePath"
+              }
+            }
+          },
+          "props.params.member": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "view.params.member"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

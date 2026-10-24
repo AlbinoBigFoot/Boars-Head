@@ -4,7 +4,8 @@
     "format": "00000.00",
     "quality": "Bad_NotFound(\"Path '[default]value.quality' not found.\")",
     "tagPath": "",
-    "value": "00000.00"
+    "value": "00000.00",
+    "valuePath": ""
   },
   "params": {
     "value": ""
@@ -16,9 +17,9 @@
           "fallbackDelay": 2.5,
           "mode": "indirect",
           "references": {
-            "tagPath": "{view.custom.tagPath}"
+            "tagPath": "{view.custom.valuePath}"
           },
-          "tagPath": "{tagPath}/Value.EngUnit"
+          "tagPath": "{tagPath}.EngUnit"
         },
         "transforms": [
           {
@@ -33,40 +34,38 @@
     "custom.format": {
       "binding": {
         "config": {
-          "fallbackDelay": 2.5,
-          "mode": "indirect",
-          "references": {
-            "tagPath": "{view.custom.tagPath}"
-          },
-          "tagPath": "{tagPath}/Value.formatString"
+          "expression": "tag({view.custom.valuePath} + '.formatString')"
         },
         "transforms": [
           {
             "expression": "if(isNull({value}),'00000.00',if(indexOf({value},'#')!=-1,'00000.00',{value}))",
             "type": "expression"
+          },
+          {
+            "type": "expression",
+            "expression": "if(coalesce(try(isGood(tag({view.custom.valuePath} + '.formatString')), false), false), {value}, null)"
           }
         ],
-        "type": "tag"
+        "type": "expr"
       },
       "persistent": true
     },
     "custom.quality": {
       "binding": {
         "config": {
-          "fallbackDelay": 2.5,
-          "mode": "indirect",
-          "references": {
-            "tagPath": "{view.custom.tagPath}"
-          },
-          "tagPath": "{tagPath}/Value.Quality"
+          "expression": "tag({view.custom.valuePath} + '.Quality')"
         },
         "transforms": [
           {
             "expression": "if(isNull({value}),\n\t\"\",\n\t{value}\n\t)",
             "type": "expression"
+          },
+          {
+            "type": "expression",
+            "expression": "if(coalesce(try(isGood(tag({view.custom.valuePath} + '.Quality')), false), false), {value}, null)"
           }
         ],
-        "type": "tag"
+        "type": "expr"
       },
       "persistent": true
     },
@@ -85,13 +84,13 @@
           "fallbackDelay": 2.5,
           "mode": "indirect",
           "references": {
-            "tagPath": "{view.custom.tagPath}"
+            "tagPath": "{view.custom.valuePath}"
           },
-          "tagPath": "{tagPath}/Value.value"
+          "tagPath": "{tagPath}.value"
         },
         "transforms": [
           {
-            "expression": "numberFormat(forceQuality(if(isNull({value}),'',{value})),{view.custom.format})",
+            "expression": "forceQuality(if(isNull({value}) || coalesce({view.custom.quality}, '') != 'Good' || coalesce(try(abs(toFloat({value})) >= 1e30, false), false), '—', numberFormat({value}, {view.custom.format})))",
             "type": "expression"
           }
         ],
@@ -102,6 +101,14 @@
     "params.value": {
       "paramDirection": "input",
       "persistent": true
+    },
+    "custom.valuePath": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(left(coalesce({view.params.value}, ''), 4) = 'pax:', substring({view.params.value}, 4), coalesce({view.params.value}, '') + '/Value')"
+        }
+      }
     }
   },
   "props": {
@@ -127,25 +134,21 @@
               },
               "transforms": [
                 {
-                  "expression": "if(indexOf({value}, \".\") = -1,\n    concat(\n    \t\ttoInt({value}), \n\t\t\trepeat(\"&nbsp;\", 3)\n\t),\n    concat(\n\t\t\ttoInt(left({value}, indexOf({value}, \".\"))),\n\t\t\tright({value}, len({value}) - indexOf({value}, \".\")),\n\t\t\trepeat(\"&nbsp;\", 3 - (len({value}) - indexOf({value}, \".\")))\n\t)\n)\n\n",
+                  "expression": "if({value} = '—' || {value} = '', {value}, if(indexOf({value}, \".\") = -1,\n    concat(\n    \t\ttoInt({value}), \n\t\t\trepeat(\"&nbsp;\", 3)\n\t),\n    concat(\n\t\t\ttoInt(left({value}, indexOf({value}, \".\"))),\n\t\t\tright({value}, len({value}) - indexOf({value}, \".\")),\n\t\t\trepeat(\"&nbsp;\", 3 - (len({value}) - indexOf({value}, \".\")))\n\t)\n))",
                   "type": "expression"
                 }
               ],
-              "type": "property"
+              "type": "property",
+              "overlayOptOut": true
             }
           },
           "props.style.classes": {
             "binding": {
+              "type": "expr",
               "config": {
-                "path": "view.custom.quality"
+                "expression": "if(coalesce({view.custom.quality}, '') = 'Good' && coalesce({view.custom.value}, '') != '—', 'Fonts/LiveData', 'Fonts/LiveData value-bad')"
               },
-              "transforms": [
-                {
-                  "expression": "if({value} = \"Good\",\n\t'font-livedata',\n\t'font-baddata'\n\t)",
-                  "type": "expression"
-                }
-              ],
-              "type": "property"
+              "overlayOptOut": true
             }
           }
         },
@@ -169,18 +172,18 @@
         "propConfig": {
           "props.text": {
             "binding": {
+              "type": "expr",
               "config": {
-                "path": "view.custom.engUnit"
+                "expression": "if(coalesce({view.custom.value}, '') = '—', '', coalesce({view.custom.engUnit}, ''))"
               },
-              "type": "property"
+              "overlayOptOut": true
             }
           }
         },
         "props": {
           "style": {
-            "classes": "font-label",
+            "classes": "Fonts/Label fs-11",
             "color": "--neutral-70",
-            "fontSize": "11px",
             "marginTop": "1.2%"
           }
         },
@@ -190,29 +193,13 @@
     "events": {
       "dom": {
         "onContextMenu": {
+          "type": "script",
+          "scope": "G",
           "config": {
-            "draggable": false,
-            "id": "ContextMenu",
-            "modal": false,
-            "overlayDismiss": false,
-            "position": {
-              "relativeLocation": "bottom-right"
-            },
-            "positionType": "relative",
-            "resizable": false,
-            "showCloseIcon": false,
-            "type": "toggle",
-            "viewParams": {
-              "discrete": "false",
-              "tagPath": "{view.custom.tagPath}"
-            },
-            "viewPath": "01_Popups/00_Faceplates/Alerts/ContextMenu",
-            "viewportBound": true
+            "script": "\tshared.TrendContext.menu(self, event, '{view.custom.tagPath}')"
           },
           "preventDefault": true,
-          "scope": "C",
-          "stopPropagation": true,
-          "type": "popup"
+          "stopPropagation": true
         }
       }
     },

@@ -1,0 +1,742 @@
+{
+  "custom": {
+    "cgOrder": [
+      "CG-A1",
+      "CG-A2",
+      "CG-B1",
+      "CG-B2",
+      "CG-C1",
+      "CG-D1",
+      "CG-E1",
+      "CG-E2",
+      "CG-E3",
+      "CG-E4",
+      "CG-F1",
+      "CG-F2",
+      "CG-F3",
+      "CG-F4",
+      "CG-G1",
+      "CG-G2",
+      "CG-G3",
+      "CG-G4",
+      "CG-G5"
+    ],
+    "hasBleed": true
+  },
+  "params": {
+    "Scale": true,
+    "label": "",
+    "tagPath": "",
+    "bleed": true
+  },
+  "propConfig": {
+    "params.Scale": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.label": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.bleed": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.hasBleed": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_HasBleedValve')), false), false), coalesce(try(toBoolean(tag({view.params.tagPath} + '/CG/Cfg_HasBleedValve')), null), toBoolean(coalesce({view.params.bleed}, true))), toBoolean(coalesce({view.params.bleed}, true)))"
+        }
+      }
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 1110,
+      "width": 1920
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "type": "ia.container.coord",
+            "meta": {
+              "name": "Pid"
+            },
+            "position": {
+              "x": 16,
+              "y": 16,
+              "width": 1060,
+              "height": 518.5
+            },
+            "props": {
+              "pipes": [
+                {
+                  "appearance": "p&id",
+                  "end": "arrowOutward",
+                  "fill": "",
+                  "flanges": true,
+                  "lineVariant": "midArrow",
+                  "name": "MTRS 01",
+                  "origin": {
+                    "connections": [
+                      {
+                        "connections": [
+                          {
+                            "x": 96,
+                            "y": 217
+                          }
+                        ],
+                        "x": 569,
+                        "y": 217
+                      }
+                    ],
+                    "x": 890,
+                    "y": 217
+                  },
+                  "start": "none",
+                  "stroke": "#808080",
+                  "visible": true,
+                  "width": 5
+                },
+                {
+                  "appearance": "p&id",
+                  "end": "none",
+                  "fill": "",
+                  "flanges": true,
+                  "lineVariant": "midArrow",
+                  "name": "MTRS 02",
+                  "origin": {
+                    "connections": [
+                      {
+                        "connections": [
+                          {
+                            "connections": [
+                              {
+                                "x": 268,
+                                "y": 214
+                              }
+                            ],
+                            "x": 268,
+                            "y": 67
+                          }
+                        ],
+                        "x": 643,
+                        "y": 67
+                      }
+                    ],
+                    "x": 643,
+                    "y": 214
+                  },
+                  "start": "none",
+                  "stroke": "#808080",
+                  "visible": true,
+                  "width": 5
+                },
+                {
+                  "appearance": "p&id",
+                  "end": "none",
+                  "fill": "",
+                  "flanges": true,
+                  "lineVariant": "midArrow",
+                  "name": "MTRL",
+                  "origin": {
+                    "connections": [
+                      {
+                        "x": 890,
+                        "y": 450
+                      }
+                    ],
+                    "x": 96,
+                    "y": 450
+                  },
+                  "start": "arrowInward",
+                  "stroke": "#808080",
+                  "visible": true,
+                  "width": 5
+                },
+                {
+                  "appearance": "p&id",
+                  "end": "none",
+                  "fill": "",
+                  "flanges": true,
+                  "lineVariant": "midArrow",
+                  "name": "HGD",
+                  "origin": {
+                    "connections": [
+                      {
+                        "connections": [
+                          {
+                            "x": 765,
+                            "y": 447
+                          }
+                        ],
+                        "x": 765,
+                        "y": 317
+                      }
+                    ],
+                    "x": 267,
+                    "y": 317
+                  },
+                  "start": "arrowInward",
+                  "stroke": "#808080",
+                  "visible": true,
+                  "width": 5
+                }
+              ],
+              "style": {
+                "overflow": "visible",
+                "transformOrigin": "0 0",
+                "transform": "scale(1.257)"
+              }
+            },
+            "children": [
+              {
+                "meta": {
+                  "name": "Evap"
+                },
+                "position": {
+                  "height": 167,
+                  "width": 96,
+                  "x": 923,
+                  "y": 56
+                },
+                "propConfig": {
+                  "props.params.label": {
+                    "binding": {
+                      "config": {
+                        "path": "view.params.label"
+                      },
+                      "type": "property"
+                    }
+                  },
+                  "props.params.tagPath": {
+                    "binding": {
+                      "config": {
+                        "path": "view.params.tagPath"
+                      },
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "params": {
+                    "faceplate": "Evaporator",
+                    "navPage": ""
+                  },
+                  "path": "02_Components/01_Devices/Evaporator"
+                },
+                "type": "ia.display.view"
+              },
+              {
+                "meta": {
+                  "name": "EvapCoil"
+                },
+                "position": {
+                  "height": 250,
+                  "width": 162,
+                  "x": 890,
+                  "y": 207.5
+                },
+                "props": {
+                  "path": "02_Components/01_Devices/EvapCoilSerpentine"
+                },
+                "type": "ia.display.view"
+              },
+              {
+                "meta": {
+                  "name": "Bleed SV"
+                },
+                "position": {
+                  "height": 121,
+                  "width": 110,
+                  "x": 359.0,
+                  "y": 8
+                },
+                "propConfig": {
+                  "props.params.tagPath": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(!toBoolean(coalesce({view.custom.hasBleed}, true)) || {view.params.tagPath} = \"\", \"\", {view.params.tagPath} + \"/Valves/Bleed SV\")"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "meta.visible": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "toBoolean(coalesce({view.custom.hasBleed}, true))"
+                      }
+                    }
+                  },
+                  "props.style.display": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(toBoolean(coalesce({view.custom.hasBleed}, true)), '', 'none')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  }
+                },
+                "props": {
+                  "params": {
+                    "faceplate": "SolenoidValve",
+                    "feedback": true,
+                    "label": "Bleed SV"
+                  },
+                  "path": "02_Components/01_Devices/SolenoidValve"
+                },
+                "type": "ia.display.view"
+              },
+              {
+                "meta": {
+                  "name": "Suction SV"
+                },
+                "position": {
+                  "height": 121,
+                  "width": 110,
+                  "x": 358.99,
+                  "y": 158
+                },
+                "propConfig": {
+                  "props.params.tagPath": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.params.tagPath} = \"\", \"\", {view.params.tagPath} + \"/Valves/Suction SV\")"
+                      }
+                    }
+                  }
+                },
+                "props": {
+                  "params": {
+                    "faceplate": "SolenoidValve",
+                    "feedback": true,
+                    "label": "Suction SV"
+                  },
+                  "path": "02_Components/01_Devices/SolenoidValve"
+                },
+                "type": "ia.display.view"
+              },
+              {
+                "meta": {
+                  "name": "Hot Gas SV"
+                },
+                "position": {
+                  "height": 121,
+                  "width": 110,
+                  "x": 551,
+                  "y": 256
+                },
+                "propConfig": {
+                  "props.params.tagPath": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.params.tagPath} = \"\", \"\", {view.params.tagPath} + \"/Valves/Hot Gas SV\")"
+                      }
+                    }
+                  }
+                },
+                "props": {
+                  "params": {
+                    "faceplate": "SolenoidValve",
+                    "feedback": true,
+                    "label": "Hot Gas SV"
+                  },
+                  "path": "02_Components/01_Devices/SolenoidValve"
+                },
+                "type": "ia.display.view"
+              },
+              {
+                "meta": {
+                  "name": "Liquid SV"
+                },
+                "position": {
+                  "height": 121,
+                  "width": 110,
+                  "x": 358.99,
+                  "y": 389.5
+                },
+                "propConfig": {
+                  "props.params.tagPath": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.params.tagPath} = \"\", \"\", {view.params.tagPath} + \"/Valves/Liquid SV\")"
+                      }
+                    }
+                  }
+                },
+                "props": {
+                  "params": {
+                    "faceplate": "SolenoidValve",
+                    "feedback": true,
+                    "label": "Liquid SV"
+                  },
+                  "path": "02_Components/01_Devices/SolenoidValve"
+                },
+                "type": "ia.display.view"
+              },
+              {
+                "meta": {
+                  "name": "Lbl-MTRS"
+                },
+                "position": {
+                  "height": 22,
+                  "width": 56,
+                  "x": 8,
+                  "y": 204
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-13 fw-700",
+                    "letterSpacing": "0.06em",
+                    "textAlign": "center"
+                  },
+                  "text": "MTRS"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Lbl-HGD"
+                },
+                "position": {
+                  "height": 22,
+                  "width": 48,
+                  "x": 208,
+                  "y": 304
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-13 fw-700",
+                    "letterSpacing": "0.06em",
+                    "textAlign": "center"
+                  },
+                  "text": "HGD"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Lbl-MTRL"
+                },
+                "position": {
+                  "height": 22,
+                  "width": 56,
+                  "x": 8,
+                  "y": 437
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-13 fw-700",
+                    "letterSpacing": "0.06em",
+                    "textAlign": "center"
+                  },
+                  "text": "MTRL"
+                },
+                "type": "ia.display.label"
+              }
+            ],
+            "propConfig": {
+              "props.pipes[1].visible": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "toBoolean(coalesce({view.custom.hasBleed}, true))"
+                  },
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "meta": {
+              "name": "HistoryCard"
+            },
+            "position": {
+              "height": 1057,
+              "width": 487,
+              "x": 1420,
+              "y": 16
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "path": "view.params.tagPath"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "path": "00_Pages/Groveport/_Shared/CG/AhuEvapHistory",
+              "style": {
+                "overflow": "hidden",
+                "height": "100%",
+                "width": "100%"
+              }
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "ControlPanel"
+            },
+            "position": {
+              "height": 392,
+              "width": 1332,
+              "x": 16,
+              "y": 681
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "path": "view.params.tagPath"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "path": "00_Pages/Groveport/_Shared/CG/AhuEvapPanel",
+              "style": {
+                "overflow": "hidden",
+                "height": "100%",
+                "width": "100%"
+              }
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "type": "ia.input.button",
+            "meta": {
+              "name": "BackToOverview",
+              "tooltip": {
+                "enabled": true,
+                "text": "Groveport Utility Overview"
+              }
+            },
+            "position": {
+              "x": 16,
+              "y": 16,
+              "width": 240,
+              "height": 48
+            },
+            "props": {
+              "text": "Back To Overview",
+              "primary": false,
+              "image": {
+                "icon": {
+                  "path": "material/arrow_back"
+                },
+                "position": "left",
+                "width": 24,
+                "height": 24
+              },
+              "style": {
+                "classes": "faceplate-cmd-btn Fonts/Label fs-18 fw-700 cg-nav-btn"
+              }
+            },
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\tsystem.perspective.navigate('/')"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.input.button",
+            "meta": {
+              "name": "PrevCg",
+              "tooltip": {
+                "enabled": true,
+                "text": "Previous CG"
+              }
+            },
+            "position": {
+              "x": 4,
+              "y": 375,
+              "width": 56,
+              "height": 96
+            },
+            "props": {
+              "text": "",
+              "primary": false,
+              "image": {
+                "icon": {
+                  "path": "material/chevron_left"
+                },
+                "position": "left",
+                "width": 44,
+                "height": 44
+              },
+              "style": {
+                "classes": "faceplate-cmd-btn Fonts/Label fs-18 fw-700 cg-nav-btn cg-nav-arrow"
+              }
+            },
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\t# Cycle the CG pages in Utility Overview order (wraps around)\n\torder = [str(c).upper() for c in (self.view.custom.cgOrder or [])]\n\tcur = str(self.view.params.label or '').upper()\n\tif cur not in order:\n\t\treturn\n\tnxt = order[(order.index(cur) + -1) % len(order)]\n\tsystem.perspective.navigate('/' + nxt.lower())"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.input.button",
+            "meta": {
+              "name": "NextCg",
+              "tooltip": {
+                "enabled": true,
+                "text": "Next CG"
+              }
+            },
+            "position": {
+              "x": 1358,
+              "y": 375,
+              "width": 56,
+              "height": 96
+            },
+            "props": {
+              "text": "",
+              "primary": false,
+              "image": {
+                "icon": {
+                  "path": "material/chevron_right"
+                },
+                "position": "left",
+                "width": 44,
+                "height": 44
+              },
+              "style": {
+                "classes": "faceplate-cmd-btn Fonts/Label fs-18 fw-700 cg-nav-btn cg-nav-arrow"
+              }
+            },
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\t# Cycle the CG pages in Utility Overview order (wraps around)\n\torder = [str(c).upper() for c in (self.view.custom.cgOrder or [])]\n\tcur = str(self.view.params.label or '').upper()\n\tif cur not in order:\n\t\treturn\n\tnxt = order[(order.index(cur) + 1) % len(order)]\n\tsystem.perspective.navigate('/' + nxt.lower())"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "meta": {
+          "name": "Canvas"
+        },
+        "propConfig": {
+          "props.style.transform": {
+            "binding": {
+              "config": {
+                "struct": {
+                  "defaultViewHeight": "{view.props.defaultSize.height}",
+                  "defaultViewWidth": "{view.props.defaultSize.width}",
+                  "primaryViewHeight": "{page.props.dimensions.primaryView.height}",
+                  "primaryViewWidth": "{page.props.dimensions.primaryView.width}",
+                  "scale": "{view.params.Scale}"
+                },
+                "waitOnAll": true
+              },
+              "transforms": [
+                {
+                  "code": "\treturn shared.Scale.cssTransform(value)",
+                  "type": "script"
+                }
+              ],
+              "type": "expr-struct"
+            }
+          }
+        },
+        "props": {
+          "pipes": [],
+          "style": {
+            "backgroundColor": "var(--neutral-10)",
+            "height": "1080px",
+            "overflow": "visible",
+            "transformOrigin": "top left",
+            "width": "1920px"
+          }
+        },
+        "type": "ia.container.coord"
+      }
+    ],
+    "meta": {
+      "name": "root",
+      "contextMenu": {}
+    },
+    "props": {
+      "alignItems": "flex-start",
+      "style": {
+        "classes": "bg-page",
+        "height": "100%",
+        "overflow": "hidden",
+        "width": "100%"
+      }
+    },
+    "type": "ia.container.flex",
+    "propConfig": {
+      "meta.contextMenu.items": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "coalesce({session.custom.TicketLogAccess}, false)"
+          },
+          "transforms": [
+            {
+              "type": "script",
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = str(self.view.params.tagPath or '')\n\texcept:\n\t\tpass\n\tview_name = self.view.id.split('@')[0]\n\titems = []\n\tif value:\n\t\tlogged = tagPath if tagPath.strip() else 'No TagPath: ' + view_name.split('/')[-1]\n\t\titems.append({\n\t\t\t\"text\": 'Ticket Logger',\n\t\t\t\"icon\": {\"path\": 'material/info', \"color\": \"--neutral-80\", \"style\": {}},\n\t\t\t\"style\": {\"classes\": \"bg-component Fonts/Value\", \"height\": 24, \"width\": 170},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\"type\": 'ticketLog', \"payload\": {'tagPath': logged, 'viewName': view_name, 'sender': self.view.id}, \"scope\": 'page'}\n\t\t})\n\treturn items"
+            }
+          ]
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "len({this.meta.contextMenu.items}) > 0"
+          }
+        }
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    }
+  }
+}

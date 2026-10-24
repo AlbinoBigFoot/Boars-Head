@@ -1,0 +1,777 @@
+{
+  "custom": {
+    "selected": "Overview",
+    "ok": null,
+    "lvl": null,
+    "sHH": null,
+    "sH": null,
+    "sL": null,
+    "sLL": null,
+    "sFail": null,
+    "tone": null,
+    "state": null,
+    "hasPumps": null
+  },
+  "props": {
+    "defaultSize": {
+      "height": 760,
+      "width": 1100
+    }
+  },
+  "params": {
+    "popupId": "",
+    "tagPath": "",
+    "title": ""
+  },
+  "propConfig": {
+    "params.popupId": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.title": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.ok": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "{view.params.tagPath} != '' && coalesce(try(isGood(tag({view.params.tagPath} + '/LvlAIn/Val')), false), false)"
+        }
+      },
+      "persistent": true
+    },
+    "custom.lvl": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/LvlAIn/Val')), false), false), toFloat(tag({view.params.tagPath} + '/LvlAIn/Val')), null)"
+        }
+      },
+      "persistent": true
+    },
+    "custom.sHH": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/LvlAIn/Sts_HiHi')), false), false), toBoolean(tag({view.params.tagPath} + '/LvlAIn/Sts_HiHi')), null)"
+        }
+      },
+      "persistent": true
+    },
+    "custom.sH": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/LvlAIn/Sts_Hi')), false), false), toBoolean(tag({view.params.tagPath} + '/LvlAIn/Sts_Hi')), null)"
+        }
+      },
+      "persistent": true
+    },
+    "custom.sL": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/LvlAIn/Sts_Lo')), false), false), toBoolean(tag({view.params.tagPath} + '/LvlAIn/Sts_Lo')), null)"
+        }
+      },
+      "persistent": true
+    },
+    "custom.sLL": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/LvlAIn/Sts_LoLo')), false), false), toBoolean(tag({view.params.tagPath} + '/LvlAIn/Sts_LoLo')), null)"
+        }
+      },
+      "persistent": true
+    },
+    "custom.sFail": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/LvlAIn/Sts_Fail')), false), false), toBoolean(tag({view.params.tagPath} + '/LvlAIn/Sts_Fail')), null)"
+        }
+      },
+      "persistent": true
+    },
+    "custom.tone": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(!coalesce({view.custom.ok}, false) || isNull({view.custom.lvl}), 'off', if(coalesce({view.custom.sHH}, false) || coalesce({view.custom.sLL}, false) || coalesce({view.custom.sFail}, false), 'alarm', if(coalesce({view.custom.sH}, false) || coalesce({view.custom.sL}, false), 'warn', 'ok')))"
+        }
+      },
+      "persistent": true
+    },
+    "custom.state": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(!coalesce({view.custom.ok}, false) || isNull({view.custom.lvl}), '\u2014', if(coalesce({view.custom.sFail}, false), 'Input Failure', if(coalesce({view.custom.sHH}, false), 'High-High', if(coalesce({view.custom.sLL}, false), 'Low-Low', if(coalesce({view.custom.sH}, false), 'High', if(coalesce({view.custom.sL}, false), 'Low', 'Normal'))))))"
+        }
+      },
+      "persistent": true
+    },
+    "custom.hasPumps": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "lastIndexOf({view.params.tagPath}, '/Tanks/') >= 0 && coalesce(try(isGood(tag(substring({view.params.tagPath}, 0, lastIndexOf({view.params.tagPath}, '/Tanks/')) + '/Pumps/' + left(substring({view.params.tagPath}, lastIndexOf({view.params.tagPath}, '/') + 1), len(substring({view.params.tagPath}, lastIndexOf({view.params.tagPath}, '/') + 1)) - 1) + 'LR-Pump 1.TypeId')), false), false)"
+        }
+      },
+      "persistent": true
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root",
+      "contextMenu": {}
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "bg-component container-card container-card-border faceplate faceplate-tabs-vertical",
+        "height": "100%",
+        "width": "100%",
+        "minHeight": 0,
+        "overflow": "hidden",
+        "padding": "0px"
+      }
+    },
+    "children": [
+      {
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Title"
+            },
+            "position": {
+              "basis": "auto",
+              "shrink": 1
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "faceplate-title Fonts/Title",
+                "whiteSpace": "nowrap",
+                "overflow": "hidden",
+                "textOverflow": "ellipsis"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if(coalesce({view.params.title}, '') != '', {view.params.title}, substring({view.params.tagPath}, lastIndexOf({view.params.tagPath}, '/') + 1)) + ' Tank'"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Sub"
+            },
+            "position": {
+              "basis": "0px",
+              "grow": 1,
+              "shrink": 1
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "fp-title-sub",
+                "paddingLeft": "10px"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "''"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "State"
+            },
+            "position": {
+              "basis": "auto",
+              "shrink": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "fp-pill"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "'Level ' + {view.custom.state}"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.style.classes": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "'fp-pill fp-tone-' + case({view.custom.tone}, 'ok', 'ok', 'warn', 'warn', 'alarm', 'alarm', 'muted')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "position.display": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "coalesce({view.custom.ok}, false)"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Comm"
+            },
+            "position": {
+              "basis": "auto",
+              "shrink": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "fp-pill"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "'Comm Loss'"
+                  }
+                }
+              },
+              "props.style.classes": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "'fp-pill fp-tone-' + 'alarm'"
+                  }
+                }
+              },
+              "position.display": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "{view.params.tagPath} != '' && !coalesce({view.custom.ok}, false)"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\tpid = str(self.view.params.popupId or '').strip()\n\tif pid:\n\t\tsystem.perspective.closePopup(pid)\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Close"
+            },
+            "position": {
+              "basis": "36px",
+              "shrink": 0
+            },
+            "props": {
+              "path": "material/close",
+              "style": {
+                "classes": "color-icon container-icon faceplate-close",
+                "minHeight": 36,
+                "minWidth": 36,
+                "zIndex": 41,
+                "position": "relative"
+              }
+            },
+            "type": "ia.display.icon"
+          }
+        ],
+        "meta": {
+          "name": "Header"
+        },
+        "position": {
+          "basis": "48px",
+          "shrink": 0
+        },
+        "props": {
+          "alignItems": "center",
+          "justify": "flex-start",
+          "style": {
+            "classes": "faceplate-header bg-header",
+            "pointerEvents": "none",
+            "zIndex": 40,
+            "overflow": "hidden",
+            "position": "relative",
+            "gap": "8px"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Content"
+        },
+        "position": {
+          "basis": "0px",
+          "grow": 1
+        },
+        "props": {
+          "direction": "row",
+          "style": {
+            "classes": "faceplate-content faceplate-tabs-vertical",
+            "minHeight": 0,
+            "overflow": "hidden",
+            "width": "100%",
+            "height": "100%"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Tabs"
+            },
+            "position": {
+              "basis": "144px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "column",
+              "alignItems": "stretch",
+              "style": {
+                "overflow": "visible",
+                "classes": "faceplate-buttons-6 faceplate-tabs-vertical"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.input.button",
+                "meta": {
+                  "name": "Overview"
+                },
+                "position": {
+                  "basis": "68px",
+                  "grow": 0,
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {},
+                  "textStyle": {
+                    "classes": "faceplate-tab-text"
+                  }
+                },
+                "propConfig": {
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
+                      }
+                    }
+                  },
+                  "props.text": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "this.meta.name"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\tself.view.custom.selected = self.meta.name"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.input.button",
+                "meta": {
+                  "name": "Configuration"
+                },
+                "position": {
+                  "basis": "68px",
+                  "grow": 0,
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {},
+                  "textStyle": {
+                    "classes": "faceplate-tab-text"
+                  }
+                },
+                "propConfig": {
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
+                      }
+                    }
+                  },
+                  "props.text": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "this.meta.name"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\tself.view.custom.selected = self.meta.name"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.input.button",
+                "meta": {
+                  "name": "Interlocks"
+                },
+                "position": {
+                  "basis": "68px",
+                  "grow": 0,
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {},
+                  "textStyle": {
+                    "classes": "faceplate-tab-text"
+                  }
+                },
+                "propConfig": {
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
+                      }
+                    }
+                  },
+                  "props.text": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "this.meta.name"
+                      }
+                    }
+                  },
+                  "props.style.display": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce({view.custom.hasPumps}, false), 'flex', 'none')"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\tself.view.custom.selected = self.meta.name"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.input.button",
+                "meta": {
+                  "name": "Trend"
+                },
+                "position": {
+                  "basis": "68px",
+                  "grow": 0,
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {},
+                  "textStyle": {
+                    "classes": "faceplate-tab-text"
+                  }
+                },
+                "propConfig": {
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
+                      }
+                    }
+                  },
+                  "props.text": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "this.meta.name"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\tself.view.custom.selected = self.meta.name"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.input.button",
+                "meta": {
+                  "name": "Alarm Configuration"
+                },
+                "position": {
+                  "basis": "68px",
+                  "grow": 0,
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {},
+                  "textStyle": {
+                    "classes": "faceplate-tab-text"
+                  }
+                },
+                "propConfig": {
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
+                      }
+                    }
+                  },
+                  "props.text": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "this.meta.name"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\tself.view.custom.selected = self.meta.name"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.input.button",
+                "meta": {
+                  "name": "Alarms"
+                },
+                "position": {
+                  "basis": "68px",
+                  "grow": 0,
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {},
+                  "textStyle": {
+                    "classes": "faceplate-tab-text"
+                  }
+                },
+                "propConfig": {
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.custom.selected} = {this.meta.name},\n   'faceplate-button-selected',\n   'faceplate-button')"
+                      }
+                    }
+                  },
+                  "props.text": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "this.meta.name"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\tself.view.custom.selected = self.meta.name"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Body"
+            },
+            "position": {
+              "basis": "0px",
+              "grow": 1
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "classes": "faceplate-body",
+                "minHeight": 0,
+                "minWidth": 0,
+                "overflow": "hidden",
+                "padding": "12px",
+                "boxSizing": "border-box"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "EmbeddedView"
+                },
+                "position": {
+                  "basis": "0px",
+                  "grow": 1
+                },
+                "props": {
+                  "path": "01_Popups/00_Faceplates/_Assets/TankOverview/Overview",
+                  "params": {
+                    "tagPath": "",
+                    "hiddenTags": ""
+                  },
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "style": {
+                    "minHeight": 0,
+                    "height": "100%",
+                    "width": "100%",
+                    "overflow": "hidden"
+                  }
+                },
+                "propConfig": {
+                  "props.path": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "case({view.custom.selected}, 'Overview', '01_Popups/00_Faceplates/_Assets/TankOverview/Overview', 'Configuration', '01_Popups/00_Faceplates/_Assets/Tank/Configuration', 'Interlocks', '01_Popups/00_Faceplates/_Assets/TankOverview/Interlocks', 'Trend', '01_Popups/00_Faceplates/_Assets/Trend', 'Alarm Configuration', '01_Popups/00_Faceplates/_Assets/AlarmConfiguration', 'Alarms', '01_Popups/00_Faceplates/_Assets/Alarms', '01_Popups/00_Faceplates/_Assets/TankOverview/Overview')"
+                      }
+                    }
+                  },
+                  "props.params.tagPath": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "view.params.tagPath"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "propConfig": {
+      "meta.contextMenu.items": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "coalesce({session.custom.TicketLogAccess}, false)"
+          },
+          "transforms": [
+            {
+              "type": "script",
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = str(self.view.params.tagPath or '')\n\texcept:\n\t\tpass\n\tview_name = self.view.id.split('@')[0]\n\titems = []\n\tif value:\n\t\tlogged = tagPath if tagPath.strip() else 'No TagPath: ' + view_name.split('/')[-1]\n\t\titems.append({\n\t\t\t\"text\": 'Ticket Logger',\n\t\t\t\"icon\": {\"path\": 'material/info', \"color\": \"--neutral-80\", \"style\": {}},\n\t\t\t\"style\": {\"classes\": \"bg-component Fonts/Value\", \"height\": 24, \"width\": 170},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\"type\": 'ticketLog', \"payload\": {'tagPath': logged, 'viewName': view_name, 'sender': self.view.id}, \"scope\": 'page'}\n\t\t})\n\treturn items"
+            }
+          ]
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "len({this.meta.contextMenu.items}) > 0"
+          }
+        }
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    }
+  }
+}

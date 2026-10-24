@@ -1,0 +1,133 @@
+{
+  "custom": {},
+  "params": {
+    "item": {
+      "detail": "",
+      "id": "",
+      "kind": "",
+      "label": "",
+      "selected": false
+    }
+  },
+  "propConfig": {
+    "params.item": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 56,
+      "width": 134
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Label"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({view.params.item.label}, '')"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "classes": "report-choice-label",
+            "overflow": "hidden",
+            "textOverflow": "ellipsis",
+            "whiteSpace": "nowrap"
+          },
+          "text": ""
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Detail"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "len(coalesce({view.params.item.detail}, '')) > 0"
+              },
+              "type": "expr"
+            }
+          },
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({view.params.item.detail}, '')"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "classes": "report-choice-detail",
+            "overflow": "hidden",
+            "textOverflow": "ellipsis",
+            "whiteSpace": "nowrap"
+          },
+          "text": ""
+        },
+        "type": "ia.display.label"
+      }
+    ],
+    "events": {
+      "dom": {
+        "onClick": {
+          "config": {
+            "script": "\tit = self.view.params.item\n\tsystem.perspective.sendMessage('rptEdit', {'kind': it.kind, 'id': it.id, 'value': it.id, 'on': True}, scope='page')\n"
+          },
+          "scope": "G",
+          "type": "script"
+        }
+      }
+    },
+    "meta": {
+      "name": "root"
+    },
+    "position": {
+      "shrink": 0
+    },
+    "propConfig": {
+      "props.style.classes": {
+        "binding": {
+          "config": {
+            "expression": "if(coalesce({view.params.item.selected}, false), 'report-choice report-choice-selected', 'report-choice')"
+          },
+          "type": "expr"
+        }
+      }
+    },
+    "props": {
+      "alignItems": "stretch",
+      "direction": "column",
+      "justify": "center",
+      "style": {
+        "classes": "report-choice",
+        "cursor": "pointer",
+        "gap": "2px",
+        "height": "100%",
+        "minWidth": "0",
+        "padding": "0 14px"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

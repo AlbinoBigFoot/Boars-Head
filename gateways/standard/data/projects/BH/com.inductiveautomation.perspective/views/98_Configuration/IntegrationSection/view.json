@@ -1,0 +1,905 @@
+{
+  "custom": {
+    "rev": 0,
+    "detail": {}
+  },
+  "params": {
+    "name": "",
+    "expanded": false
+  },
+  "propConfig": {
+    "params.name": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.expanded": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.detail": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "runScript('shared.Integrations.detail', 10000, coalesce({view.params.name}, ''), {view.custom.rev})"
+        }
+      }
+    },
+    "custom.rev": {
+      "persistent": false
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 560,
+      "width": 560
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "container-card",
+        "margin": "0px",
+        "overflow": "hidden"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Header"
+        },
+        "position": {
+          "basis": "36px",
+          "shrink": 0
+        },
+        "props": {
+          "alignItems": "center",
+          "style": {
+            "classes": "integration-section-header",
+            "gap": "8px",
+            "padding": "0px 10px 0px 6px"
+          }
+        },
+        "events": {
+          "dom": {
+            "onClick": {
+              "type": "script",
+              "scope": "G",
+              "config": {
+                "script": "\tsystem.perspective.sendMessage(\"integrationsToggle\", payload={\"name\": self.view.params.name}, scope=\"page\")\n"
+              }
+            }
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.icon",
+            "meta": {
+              "name": "Chevron"
+            },
+            "position": {
+              "basis": "22px",
+              "shrink": 0
+            },
+            "props": {
+              "path": "material/chevron_right",
+              "style": {
+                "classes": "color-icon",
+                "height": "22px",
+                "width": "22px"
+              }
+            },
+            "propConfig": {
+              "props.path": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if(coalesce({view.params.expanded}, false), 'material/expand_more', 'material/chevron_right')"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Name"
+            },
+            "position": {
+              "basis": "auto",
+              "shrink": 0,
+              "grow": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "Fonts/Value fw-700"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "coalesce({view.params.name}, '')"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Provider"
+            },
+            "position": {
+              "basis": "0px",
+              "shrink": 0,
+              "grow": 1
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "Fonts/Label"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "coalesce({view.custom.detail.provider}, '')"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Dot"
+            },
+            "position": {
+              "basis": "10px",
+              "shrink": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "height": "10px",
+                "borderRadius": "50%"
+              }
+            },
+            "propConfig": {
+              "props.style.backgroundColor": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if(!coalesce({view.custom.detail.enabled}, false), 'var(--status-off)', if(coalesce({view.custom.detail.connected}, false), 'var(--status-idle)', 'var(--alarm-critical)'))"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Status"
+            },
+            "position": {
+              "basis": "auto",
+              "shrink": 0,
+              "grow": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "Fonts/Value"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if(!coalesce({view.custom.detail.enabled}, false), 'Disabled', if(coalesce({view.custom.detail.connected}, false), 'Connected', 'Not Connected'))"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Body"
+        },
+        "position": {
+          "grow": 1,
+          "basis": "0px",
+          "shrink": 1
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "gap": "4px",
+            "padding": "4px 8px 8px",
+            "overflow": "hidden",
+            "borderTop": "1px solid var(--border)"
+          }
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "coalesce({view.params.expanded}, false)"
+              }
+            }
+          }
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "StatusRow"
+            },
+            "position": {
+              "basis": "22px",
+              "shrink": 0
+            },
+            "props": {
+              "alignItems": "center",
+              "style": {
+                "gap": "8px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Checked"
+                },
+                "position": {
+                  "basis": "auto",
+                  "shrink": 0,
+                  "grow": 0
+                },
+                "props": {
+                  "text": "",
+                  "style": {
+                    "classes": "Fonts/Label"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(isNull({view.custom.detail.lastCheck}), 'Never Checked', 'Last Check ' + dateFormat({view.custom.detail.lastCheck}, 'yyyy-MM-dd HH:mm:ss'))"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Error"
+                },
+                "position": {
+                  "basis": "0px",
+                  "shrink": 0,
+                  "grow": 1
+                },
+                "props": {
+                  "text": "",
+                  "style": {
+                    "classes": "Fonts/Label fs-11",
+                    "color": "var(--alarm-critical)",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({view.custom.detail.lastError}, '')"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "EnabledRow"
+            },
+            "position": {
+              "basis": "32px",
+              "shrink": 0
+            },
+            "props": {
+              "alignItems": "center",
+              "style": {
+                "gap": "8px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Label"
+                },
+                "position": {
+                  "basis": "120px",
+                  "shrink": 0,
+                  "grow": 0
+                },
+                "props": {
+                  "text": "Enabled",
+                  "style": {
+                    "classes": "Fonts/Label"
+                  }
+                }
+              },
+              {
+                "type": "ia.input.toggle-switch",
+                "meta": {
+                  "name": "Input"
+                },
+                "position": {
+                  "basis": "60px",
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.selected": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({view.custom.detail.enabled}, false)"
+                      }
+                    }
+                  },
+                  "props.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({session.custom.IntegrationAccess}, false)"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "DescriptionRow"
+            },
+            "position": {
+              "basis": "32px",
+              "shrink": 0
+            },
+            "props": {
+              "alignItems": "center",
+              "style": {
+                "gap": "8px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Label"
+                },
+                "position": {
+                  "basis": "120px",
+                  "shrink": 0,
+                  "grow": 0
+                },
+                "props": {
+                  "text": "Description",
+                  "style": {
+                    "classes": "Fonts/Label"
+                  }
+                }
+              },
+              {
+                "type": "ia.input.text-field",
+                "meta": {
+                  "name": "Input"
+                },
+                "position": {
+                  "grow": 1,
+                  "basis": "0px"
+                },
+                "props": {
+                  "style": {
+                    "classes": "bg-component container-card Fonts/Value",
+                    "height": "28px"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({view.custom.detail.description}, '')"
+                      }
+                    }
+                  },
+                  "props.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({session.custom.IntegrationAccess}, false)"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "UrlRow"
+            },
+            "position": {
+              "basis": "32px",
+              "shrink": 0
+            },
+            "props": {
+              "alignItems": "center",
+              "style": {
+                "gap": "8px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Label"
+                },
+                "position": {
+                  "basis": "120px",
+                  "shrink": 0,
+                  "grow": 0
+                },
+                "props": {
+                  "text": "Endpoint URL",
+                  "style": {
+                    "classes": "Fonts/Label"
+                  }
+                }
+              },
+              {
+                "type": "ia.input.text-field",
+                "meta": {
+                  "name": "Input"
+                },
+                "position": {
+                  "grow": 1,
+                  "basis": "0px"
+                },
+                "props": {
+                  "style": {
+                    "classes": "bg-component container-card Fonts/Value",
+                    "height": "28px"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({view.custom.detail.url}, '')"
+                      }
+                    }
+                  },
+                  "props.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({session.custom.IntegrationAccess}, false)"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "VersionLabel"
+                },
+                "position": {
+                  "basis": "auto",
+                  "shrink": 0,
+                  "grow": 0
+                },
+                "props": {
+                  "text": "API Version",
+                  "style": {
+                    "classes": "Fonts/Label"
+                  }
+                }
+              },
+              {
+                "type": "ia.input.text-field",
+                "meta": {
+                  "name": "Version"
+                },
+                "position": {
+                  "grow": 0,
+                  "basis": "84px"
+                },
+                "props": {
+                  "style": {
+                    "classes": "bg-component container-card Fonts/Value",
+                    "height": "28px"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({view.custom.detail.apiVersion}, '')"
+                      }
+                    }
+                  },
+                  "props.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({session.custom.IntegrationAccess}, false)"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "TokenRow"
+            },
+            "position": {
+              "basis": "32px",
+              "shrink": 0
+            },
+            "props": {
+              "alignItems": "center",
+              "style": {
+                "gap": "8px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Label"
+                },
+                "position": {
+                  "basis": "120px",
+                  "shrink": 0,
+                  "grow": 0
+                },
+                "props": {
+                  "text": "API Token",
+                  "style": {
+                    "classes": "Fonts/Label"
+                  }
+                }
+              },
+              {
+                "type": "ia.input.password-field",
+                "meta": {
+                  "name": "Input"
+                },
+                "position": {
+                  "grow": 1,
+                  "basis": "0px"
+                },
+                "props": {
+                  "style": {
+                    "classes": "bg-component container-card Fonts/Value",
+                    "height": "28px"
+                  }
+                },
+                "propConfig": {
+                  "props.placeholder": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce({view.custom.detail.hasToken}, false), 'Set (hidden) - type to replace', 'Not set')"
+                      }
+                    }
+                  },
+                  "props.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({session.custom.IntegrationAccess}, false)"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.input.button",
+                "meta": {
+                  "name": "Replace"
+                },
+                "position": {
+                  "basis": "120px",
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Replace Token",
+                  "style": {
+                    "classes": "container-button Fonts/Button",
+                    "height": "30px"
+                  }
+                },
+                "propConfig": {
+                  "props.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({view.params.name}, '') != '' && coalesce({session.custom.IntegrationAccess}, false)"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tname = self.view.params.name\n\tif not name or not self.session.custom.IntegrationAccess:\n\t\treturn\n\tbox = self.parent.getChild(\"Input\")\n\ttry:\n\t\tshared.Integrations.setToken(name, box.props.text, self.view.id.split(\"@\")[0])\n\t\tbox.props.text = \"\"\n\t\tself.view.custom.rev += 1\n\t\tshared.Alerts.showAlert(state='success', title='API Token', message='%s token replaced.' % name, showCloseBtn=True, btnTextPrimary='OK', btnTextSecondary='', btnActionPrimary='closeAlert', btnActionSecondary='', payload={})\n\texcept Exception as e:\n\t\tshared.Alerts.showAlert(state='error', title='API Token', message=str(e), showCloseBtn=True, btnTextPrimary='OK', btnTextSecondary='', btnActionPrimary='closeAlert', btnActionSecondary='', payload={})\n"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "SettingsLabel"
+            },
+            "position": {
+              "basis": "20px",
+              "shrink": 0,
+              "grow": 0
+            },
+            "props": {
+              "text": "Provider Settings",
+              "style": {
+                "classes": "Fonts/Value fw-700"
+              }
+            }
+          },
+          {
+            "type": "ia.display.table",
+            "meta": {
+              "name": "Settings"
+            },
+            "position": {
+              "grow": 1,
+              "basis": "0px"
+            },
+            "props": {
+              "headerStyle": {
+                "classes": "Colors/Header"
+              },
+              "cells": {
+                "style": {
+                  "paddingLeft": "5px"
+                }
+              },
+              "rows": {
+                "height": "26px",
+                "style": {
+                  "classes": "bg-component Fonts/Value"
+                }
+              },
+              "pager": {
+                "bottom": false
+              },
+              "style": {
+                "borderStyle": "none"
+              },
+              "columns": [
+                {
+                  "field": "key",
+                  "header": {
+                    "title": "Setting",
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    }
+                  },
+                  "editable": false,
+                  "width": 170,
+                  "strictWidth": false,
+                  "render": "auto",
+                  "justify": "left",
+                  "align": "center",
+                  "sortable": true,
+                  "resizable": true,
+                  "visible": true,
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                {
+                  "field": "value",
+                  "header": {
+                    "title": "Value",
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    }
+                  },
+                  "editable": true,
+                  "width": 250,
+                  "strictWidth": false,
+                  "render": "auto",
+                  "justify": "left",
+                  "align": "center",
+                  "sortable": true,
+                  "resizable": true,
+                  "visible": true,
+                  "style": {
+                    "classes": ""
+                  }
+                }
+              ],
+              "emptyMessage": {
+                "noData": {
+                  "text": "No Data"
+                }
+              }
+            },
+            "propConfig": {
+              "props.data": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "runScript('shared.Integrations.settingsRows', 0, coalesce({view.params.name}, ''), {view.custom.rev})"
+                  }
+                }
+              }
+            },
+            "events": {
+              "component": {
+                "onEditCellCommit": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\tself.props.data[event.row][event.column] = event.value\n"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Buttons"
+            },
+            "position": {
+              "basis": "32px",
+              "shrink": 0
+            },
+            "props": {
+              "alignItems": "center",
+              "style": {
+                "gap": "8px"
+              },
+              "justify": "flex-end"
+            },
+            "children": [
+              {
+                "type": "ia.input.button",
+                "meta": {
+                  "name": "Test"
+                },
+                "position": {
+                  "basis": "130px",
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Test Connection",
+                  "style": {
+                    "classes": "container-button Fonts/Button",
+                    "height": "30px"
+                  }
+                },
+                "propConfig": {
+                  "props.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({view.params.name}, '') != '' && true"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tname = self.view.params.name\n\tif not name:\n\t\treturn\n\tok, msg = shared.Integrations.test(name)\n\tself.view.custom.rev += 1\n\tshared.Alerts.showAlert(state='success' if ok else 'error', title='Test Connection', message='%s: %s' % (name, msg), showCloseBtn=True, btnTextPrimary='OK', btnTextSecondary='', btnActionPrimary='closeAlert', btnActionSecondary='', payload={})\n"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.input.button",
+                "meta": {
+                  "name": "Save"
+                },
+                "position": {
+                  "basis": "130px",
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Save",
+                  "style": {
+                    "classes": "container-button Fonts/Button",
+                    "height": "30px"
+                  }
+                },
+                "propConfig": {
+                  "props.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({view.params.name}, '') != '' && coalesce({session.custom.IntegrationAccess}, false)"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tname = self.view.params.name\n\tif not name or not self.session.custom.IntegrationAccess:\n\t\treturn\n\tb = self.view.rootContainer.getChild(\"Body\")\n\turl = b.getChild(\"UrlRow\")\n\tvalues = {\n\t\t\"enabled\": bool(b.getChild(\"EnabledRow\").getChild(\"Input\").props.selected),\n\t\t\"description\": b.getChild(\"DescriptionRow\").getChild(\"Input\").props.text or \"\",\n\t\t\"url\": url.getChild(\"Input\").props.text or \"\",\n\t\t\"apiVersion\": url.getChild(\"Version\").props.text or \"\",\n\t\t\"settings\": shared.Integrations.unflatten(b.getChild(\"Settings\").props.data),\n\t}\n\ttry:\n\t\tshared.Integrations.save(name, values, self.view.id.split(\"@\")[0])\n\t\tself.view.custom.rev += 1\n\t\tshared.Alerts.showAlert(state='success', title='Saved', message='%s saved.' % name, showCloseBtn=True, btnTextPrimary='OK', btnTextSecondary='', btnActionPrimary='closeAlert', btnActionSecondary='', payload={})\n\texcept Exception as e:\n\t\tshared.Alerts.showAlert(state='error', title='Save Failed', message=str(e), showCloseBtn=True, btnTextPrimary='OK', btnTextSecondary='', btnActionPrimary='closeAlert', btnActionSecondary='', payload={})\n"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

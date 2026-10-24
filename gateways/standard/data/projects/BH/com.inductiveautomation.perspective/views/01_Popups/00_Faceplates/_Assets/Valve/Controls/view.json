@@ -1,5 +1,32 @@
 {
-  "custom": {},
+  "custom": {
+    "pax": "",
+    "qg0": null,
+    "qg1": null,
+    "qg2": null,
+    "qg3": null,
+    "qg4": null,
+    "qg5": null,
+    "qg6": null,
+    "qg7": null,
+    "qg8": null,
+    "qg9": null,
+    "qg10": null,
+    "qg11": null,
+    "qg12": null,
+    "qg13": null,
+    "qg14": null,
+    "qg15": null,
+    "qg16": null,
+    "qg17": null,
+    "qg18": null,
+    "qg19": null,
+    "qg20": null,
+    "qg21": null,
+    "qg22": null,
+    "qg23": null,
+    "qg24": null
+  },
   "params": {
     "tagPath": ""
   },
@@ -7,6 +34,214 @@
     "params.tagPath": {
       "paramDirection": "input",
       "persistent": true
+    },
+    "custom.pax": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', '', case(toStr(coalesce(try(tag({view.params.tagPath} + '.TypeId'), ''), '')), 'Devices/Pump', 'Motor', 'Devices/Valve', 'Valve', 'Devices/Tank', 'Tank', 'Devices/Compressor', 'Comp', 'Devices/Evaporator', 'CG', 'Devices/ExhaustFan', 'EF', 'Devices/LTU', 'LTU', 'Devices/SafetyRelay', 'Relay', 'Devices/SuctionSequence', 'Seq', 'Devices/DischargeSequence', 'Dsq', 'Devices/Sensor', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn.Enabled')), false), false), 'AIn', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AInRef.Enabled')), false), false), 'AInRef', '')), 'Devices/DiscreteInput', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/DIn.Enabled')), false), false), 'DIn', ''), ''))"
+        }
+      }
+    },
+    "custom.qg0": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/Valve/Val_Sts')), tag({view.params.tagPath} + '/Valve/Val_Sts'), null), null)"
+        }
+      }
+    },
+    "custom.qg1": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/Valve/Nrdy_Fail')), tag({view.params.tagPath} + '/Valve/Nrdy_Fail'), null), null)"
+        }
+      }
+    },
+    "custom.qg2": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/Valve/Alm_IOFault')), tag({view.params.tagPath} + '/Valve/Alm_IOFault'), null), null)"
+        }
+      }
+    },
+    "custom.qg3": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/Valve/Alm_FullStall')), tag({view.params.tagPath} + '/Valve/Alm_FullStall'), null), null)"
+        }
+      }
+    },
+    "custom.qg4": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/Valve/Alm_TransitStall')), tag({view.params.tagPath} + '/Valve/Alm_TransitStall'), null), null)"
+        }
+      }
+    },
+    "custom.qg5": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/Valve/Alm_IntlkTrip')), tag({view.params.tagPath} + '/Valve/Alm_IntlkTrip'), null), null)"
+        }
+      }
+    },
+    "custom.qg6": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/Valve/Inp_NBPermOK')), tag({view.params.tagPath} + '/Valve/Inp_NBPermOK'), null), null)"
+        }
+      }
+    },
+    "custom.qg7": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/Valve/Sts_BypActive')), tag({view.params.tagPath} + '/Valve/Sts_BypActive'), null), null)"
+        }
+      }
+    },
+    "custom.qg8": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/Valve/Inp_PermOK')), tag({view.params.tagPath} + '/Valve/Inp_PermOK'), null), null)"
+        }
+      }
+    },
+    "custom.qg9": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/Valve/Inp_NBIntlkOK')), tag({view.params.tagPath} + '/Valve/Inp_NBIntlkOK'), null), null)"
+        }
+      }
+    },
+    "custom.qg10": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/Valve/Inp_IntlkOK')), tag({view.params.tagPath} + '/Valve/Inp_IntlkOK'), null), null)"
+        }
+      }
+    },
+    "custom.qg11": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/Valve/Sts_Bypass')), tag({view.params.tagPath} + '/Valve/Sts_Bypass'), null), null)"
+        }
+      }
+    },
+    "custom.qg12": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/Valve/Cfg_HasOpenLS')), tag({view.params.tagPath} + '/Valve/Cfg_HasOpenLS'), null), null)"
+        }
+      }
+    },
+    "custom.qg13": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/Valve/Inp_OpenLS')), tag({view.params.tagPath} + '/Valve/Inp_OpenLS'), null), null)"
+        }
+      }
+    },
+    "custom.qg14": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/Valve/Cfg_HasClosedLS')), tag({view.params.tagPath} + '/Valve/Cfg_HasClosedLS'), null), null)"
+        }
+      }
+    },
+    "custom.qg15": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/Valve/Inp_ClosedLS')), tag({view.params.tagPath} + '/Valve/Inp_ClosedLS'), null), null)"
+        }
+      }
+    },
+    "custom.qg16": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/Valve/Sts_IOFault')), tag({view.params.tagPath} + '/Valve/Sts_IOFault'), null), null)"
+        }
+      }
+    },
+    "custom.qg17": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/valveType/Value')), tag({view.params.tagPath} + '/valveType/Value'), null), null)"
+        }
+      }
+    },
+    "custom.qg18": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/valveType')), tag({view.params.tagPath} + '/valveType'), null), null)"
+        }
+      }
+    },
+    "custom.qg19": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/Valve/Nrdy_Disabled')), tag({view.params.tagPath} + '/Valve/Nrdy_Disabled'), null), null)"
+        }
+      }
+    },
+    "custom.qg20": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/Valve/Nrdy_CfgErr')), tag({view.params.tagPath} + '/Valve/Nrdy_CfgErr'), null), null)"
+        }
+      }
+    },
+    "custom.qg21": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/Valve/Nrdy_Intlk')), tag({view.params.tagPath} + '/Valve/Nrdy_Intlk'), null), null)"
+        }
+      }
+    },
+    "custom.qg22": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/Valve/Nrdy_Perm')), tag({view.params.tagPath} + '/Valve/Nrdy_Perm'), null), null)"
+        }
+      }
+    },
+    "custom.qg23": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/Valve/Nrdy_IOFault')), tag({view.params.tagPath} + '/Valve/Nrdy_IOFault'), null), null)"
+        }
+      }
+    },
+    "custom.qg24": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/Valve/Nrdy_NoMode')), tag({view.params.tagPath} + '/Valve/Nrdy_NoMode'), null), null)"
+        }
+      }
     }
   },
   "props": {
@@ -32,7 +267,7 @@
           },
           "transforms": [
             {
-              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = self.view.params.tagPath\n\texcept:\n\t\tpass\n\tif tagPath is None or str(tagPath).strip() == '':\n\t\ttagPath = 'No TagPath: ' + self.view.id.split('@')[0].split('/')[-1]\n\titems = [\n\t\t{\n\t\t\t\"text\": \"Ticket Logger\",\n\t\t\t\"icon\": {\n\t\t\t\t\"path\": \"material/info\",\n\t\t\t\t\"color\": \"--neutral-80\",\n\t\t\t\t\"style\": {}\n\t\t\t},\n\t\t\t\"style\": {\n\t\t\t\t\"classes\": \"bg-component font-value\",\n\t\t\t\t\"height\": 24,\n\t\t\t\t\"width\": 120\n\t\t\t},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\n\t\t\t\t\"type\": \"ticketLog\",\n\t\t\t\t\"payload\": {\n\t\t\t\t\t\"tagPath\": tagPath,\n\t\t\t\t\t\"viewName\": self.view.id.split('@')[0]\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t]\n\treturn items",
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = self.view.params.tagPath\n\texcept:\n\t\tpass\n\tif tagPath is None or str(tagPath).strip() == '':\n\t\ttagPath = 'No TagPath: ' + self.view.id.split('@')[0].split('/')[-1]\n\titems = [\n\t\t{\n\t\t\t\"text\": \"Ticket Logger\",\n\t\t\t\"icon\": {\n\t\t\t\t\"path\": \"material/info\",\n\t\t\t\t\"color\": \"--neutral-80\",\n\t\t\t\t\"style\": {}\n\t\t\t},\n\t\t\t\"style\": {\n\t\t\t\t\"classes\": \"bg-component Fonts/Value\",\n\t\t\t\t\"height\": 24,\n\t\t\t\t\"width\": 120\n\t\t\t},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\n\t\t\t\t\"type\": \"ticketLog\",\n\t\t\t\t\"payload\": {\n\t\t\t\t\t\"tagPath\": tagPath,\n\t\t\t\t\t\"viewName\": self.view.id.split('@')[0], 'sender': self.view.id\n\t\t\t\t},\n\t\t\t\t\"scope\": \"page\"\n\t\t\t}\n\t\t}\n\t]\n\treturn items",
               "type": "script"
             }
           ],
@@ -73,7 +308,7 @@
         {
           "messageType": "ticketLog",
           "pageScope": true,
-          "script": "\t# Ticket Logger context-menu opener\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
           "sessionScope": false,
           "viewScope": false
         }
@@ -83,7 +318,7 @@
       "direction": "column",
       "style": {
         "classes": "",
-        "overflow": "hidden",
+        "overflow": "hidden auto",
         "padding": "4px",
         "gap": "8px",
         "minHeight": 0,
@@ -132,6 +367,559 @@
       {
         "type": "ia.container.flex",
         "meta": {
+          "name": "StatusSection"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "classes": "faceplate-section faceplate-section-card"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "StatusTitle"
+            },
+            "props": {
+              "text": "Status",
+              "style": {
+                "classes": "faceplate-section-title Fonts/Label"
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "StatusBanner"
+            },
+            "position": {
+              "shrink": 0,
+              "grow": 0
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.tagPath} = '', '—',\n\tif(try(isNull({view.custom.qg0}), true),\n\t\t'COMM LOSS',\n\t\tif(\n\t\t\tcoalesce(try(if(isNull({view.custom.qg1}), null, {view.custom.qg1}), null), false) ||\n\t\t\tcoalesce(try(if(isNull({view.custom.qg2}), null, {view.custom.qg2}), null), false) ||\n\t\t\tcoalesce(try(if(isNull({view.custom.qg3}), null, {view.custom.qg3}), null), false) ||\n\t\t\tcoalesce(try(if(isNull({view.custom.qg4}), null, {view.custom.qg4}), null), false) ||\n\t\t\tcoalesce(try(if(isNull({view.custom.qg5}), null, {view.custom.qg5}), null), false),\n\t\t\t'FAULTED',\n\t\t\tcase(coalesce(try(if(isNull({view.custom.qg0}), null, {view.custom.qg0}), null), 0),\n\t\t\t\t1, 'CLOSED',\n\t\t\t\t2, 'OPEN',\n\t\t\t\t5, 'CLOSING',\n\t\t\t\t6, 'OPENING',\n\t\t\t\t33, 'DISABLED',\n\t\t\t\t'UNKNOWN'))))"
+                  },
+                  "type": "expr",
+                  "overlays": {
+                    "bad": false,
+                    "error": false,
+                    "pending": false,
+                    "stale": false,
+                    "unknown": false,
+                    "disabled": false
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.style.classes": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.tagPath} = '', 'Refridgeration_STS faceplate-status-banner',\n\tif(try(isNull({view.custom.qg0}), true),\n\t\t'Refridgeration_STS sts-COMMLOSS faceplate-status-banner',\n\t\tif(\n\t\t\tcoalesce(try(if(isNull({view.custom.qg1}), null, {view.custom.qg1}), null), false) ||\n\t\t\tcoalesce(try(if(isNull({view.custom.qg2}), null, {view.custom.qg2}), null), false) ||\n\t\t\tcoalesce(try(if(isNull({view.custom.qg3}), null, {view.custom.qg3}), null), false) ||\n\t\t\tcoalesce(try(if(isNull({view.custom.qg4}), null, {view.custom.qg4}), null), false) ||\n\t\t\tcoalesce(try(if(isNull({view.custom.qg5}), null, {view.custom.qg5}), null), false),\n\t\t\t'Refridgeration_STS sts-FAULT faceplate-status-banner',\n\t\t\tcase(coalesce(try(if(isNull({view.custom.qg0}), null, {view.custom.qg0}), null), 0),\n\t\t\t\t1, 'Refridgeration_STS sts-STOP faceplate-status-banner',\n\t\t\t\t2, 'Refridgeration_STS sts-RUN faceplate-status-banner',\n\t\t\t\t5, 'Refridgeration_STS sts-STOPPING faceplate-status-banner',\n\t\t\t\t6, 'Refridgeration_STS sts-STARTING faceplate-status-banner',\n\t\t\t\t33, 'Refridgeration_STS sts-OFF faceplate-status-banner',\n\t\t\t\t'Refridgeration_STS sts-UNKNOWN faceplate-status-banner'))))"
+                  },
+                  "type": "expr",
+                  "overlays": {
+                    "bad": false,
+                    "error": false,
+                    "pending": false,
+                    "stale": false,
+                    "unknown": false,
+                    "disabled": false
+                  },
+                  "overlayOptOut": true
+                }
+              }
+            },
+            "props": {
+              "text": "—",
+              "style": {
+                "classes": "Refridgeration_STS faceplate-status-banner"
+              }
+            },
+            "events": {
+              "dom": {
+                "onContextMenu": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\tshared.TrendContext.menu(self, event, '{view.params.tagPath}/Valve/Val_Sts')"
+                  },
+                  "preventDefault": true,
+                  "stopPropagation": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "LsChips"
+            },
+            "props": {
+              "direction": "row",
+              "style": {
+                "gap": "8px",
+                "flexWrap": "wrap"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Perm"
+                },
+                "position": {
+                  "basis": "100px",
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "classes": "faceplate-fault-chip",
+                    "gap": "2px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Code"
+                    },
+                    "props": {
+                      "text": "PERM",
+                      "style": {
+                        "classes": "faceplate-fault-code Fonts/Label"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "State"
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} != '' && coalesce(try(isNull({view.custom.qg6}), true), true), '—', if({view.params.tagPath} = '', '—',\n\tif(!coalesce(try(if(isNull({view.custom.qg6}), null, {view.custom.qg6}), null), true), 'NOT OK',\n\t\tif(coalesce(try(if(isNull({view.custom.qg7}), null, {view.custom.qg7}), null), false), 'BYPASSED',\n\t\t\tif(coalesce(try(if(isNull({view.custom.qg8}), null, {view.custom.qg8}), null), true), 'OK', 'NOT OK')))))"
+                          },
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} != '' && coalesce(try(isNull({view.custom.qg6}), true), true), 'faceplate-fault-state value-bad', if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(!coalesce(try(if(isNull({view.custom.qg6}), null, {view.custom.qg6}), null), true), 'faceplate-fault-state faceplate-fault-active',\n\t\tif(coalesce(try(if(isNull({view.custom.qg7}), null, {view.custom.qg7}), null), false), 'faceplate-fault-state faceplate-bypass-banner',\n\t\t\tif(coalesce(try(if(isNull({view.custom.qg8}), null, {view.custom.qg8}), null), true), 'faceplate-fault-state faceplate-fault-ok', 'faceplate-fault-state faceplate-fault-active')))))"
+                          },
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          },
+                          "overlayOptOut": true
+                        }
+                      }
+                    },
+                    "props": {
+                      "text": "OK",
+                      "style": {
+                        "classes": "faceplate-fault-state faceplate-fault-ok"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Intlk"
+                },
+                "position": {
+                  "basis": "100px",
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "classes": "faceplate-fault-chip",
+                    "gap": "2px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Code"
+                    },
+                    "props": {
+                      "text": "INTLK",
+                      "style": {
+                        "classes": "faceplate-fault-code Fonts/Label"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "State"
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} != '' && coalesce(try(isNull({view.custom.qg9}), true), true), '—', if({view.params.tagPath} = '', '—',\n\tif(!coalesce(try(if(isNull({view.custom.qg9}), null, {view.custom.qg9}), null), true), 'NOT OK',\n\t\tif(coalesce(try(if(isNull({view.custom.qg7}), null, {view.custom.qg7}), null), false), 'BYPASSED',\n\t\t\tif(coalesce(try(if(isNull({view.custom.qg10}), null, {view.custom.qg10}), null), true), 'OK', 'NOT OK')))))"
+                          },
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} != '' && coalesce(try(isNull({view.custom.qg9}), true), true), 'faceplate-fault-state value-bad', if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(!coalesce(try(if(isNull({view.custom.qg9}), null, {view.custom.qg9}), null), true), 'faceplate-fault-state faceplate-fault-active',\n\t\tif(coalesce(try(if(isNull({view.custom.qg7}), null, {view.custom.qg7}), null), false), 'faceplate-fault-state faceplate-bypass-banner',\n\t\t\tif(coalesce(try(if(isNull({view.custom.qg10}), null, {view.custom.qg10}), null), true), 'faceplate-fault-state faceplate-fault-ok', 'faceplate-fault-state faceplate-fault-active')))))"
+                          },
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          },
+                          "overlayOptOut": true
+                        }
+                      }
+                    },
+                    "props": {
+                      "text": "OK",
+                      "style": {
+                        "classes": "faceplate-fault-state faceplate-fault-ok"
+                      }
+                    }
+                  }
+                ],
+                "events": {
+                  "dom": {
+                    "onClick": {
+                      "config": {
+                        "script": "\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tqv = system.tag.readBlocking([base + '/Valve/Cfg_HasIntlkObj'])[0]\n\tif qv.quality.isGood() and qv.value:\n\t\tsystem.perspective.sendMessage('faceplateSelectTab', {'tab': 'Interlocks', 'tagPath': base}, scope='page')\n"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Bypass"
+                },
+                "position": {
+                  "basis": "100px",
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "classes": "faceplate-fault-chip",
+                    "gap": "2px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Code"
+                    },
+                    "props": {
+                      "text": "BYPASS",
+                      "style": {
+                        "classes": "faceplate-fault-code Fonts/Label"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "State"
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} != '' && coalesce(try(isNull({view.custom.qg7}), true), true), '—', if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isNull({view.custom.qg7}), null, {view.custom.qg7}), null), false), 'ACTIVE',\n\t\tif(coalesce(try(if(isNull({view.custom.qg11}), null, {view.custom.qg11}), null), false), 'ON', 'OFF'))))"
+                          },
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} != '' && coalesce(try(isNull({view.custom.qg7}), true), true), 'faceplate-fault-state value-bad', if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isNull({view.custom.qg7}), null, {view.custom.qg7}), null), false), 'faceplate-fault-state faceplate-bypass-banner',\n\t\tif(coalesce(try(if(isNull({view.custom.qg11}), null, {view.custom.qg11}), null), false), 'faceplate-fault-state faceplate-bypass-banner', 'faceplate-fault-state faceplate-fault-ok'))))"
+                          },
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          },
+                          "overlayOptOut": true
+                        }
+                      }
+                    },
+                    "props": {
+                      "text": "OK",
+                      "style": {
+                        "classes": "faceplate-fault-state faceplate-fault-ok"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "OpenLs"
+                },
+                "position": {
+                  "basis": "100px",
+                  "shrink": 0,
+                  "display": false
+                },
+                "propConfig": {
+                  "position.display": {
+                    "binding": {
+                      "config": {
+                        "expression": "coalesce(try(if(isNull({view.custom.qg12}), null, {view.custom.qg12}), null), false)"
+                      },
+                      "type": "expr",
+                      "overlays": {
+                        "bad": false,
+                        "error": false,
+                        "pending": false,
+                        "stale": false,
+                        "unknown": false,
+                        "disabled": false
+                      }
+                    }
+                  }
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "classes": "faceplate-fault-chip",
+                    "gap": "2px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Code"
+                    },
+                    "props": {
+                      "text": "OPEN-LS",
+                      "style": {
+                        "classes": "faceplate-fault-code Fonts/Label"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "State"
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} != '' && coalesce(try(isNull({view.custom.qg13}), true), true), '—', if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isNull({view.custom.qg13}), null, {view.custom.qg13}), null), false), 'ON', 'OFF')))"
+                          },
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} != '' && coalesce(try(isNull({view.custom.qg13}), true), true), 'faceplate-fault-state value-bad', if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isNull({view.custom.qg13}), null, {view.custom.qg13}), null), false),\n\t\t'faceplate-fault-state faceplate-ls-on',\n\t\t'faceplate-fault-state faceplate-ls-off')))"
+                          },
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          },
+                          "overlayOptOut": true
+                        }
+                      }
+                    },
+                    "props": {
+                      "text": "OFF",
+                      "style": {
+                        "classes": "faceplate-fault-state faceplate-ls-off"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "ClosedLs"
+                },
+                "position": {
+                  "basis": "100px",
+                  "shrink": 0,
+                  "display": false
+                },
+                "propConfig": {
+                  "position.display": {
+                    "binding": {
+                      "config": {
+                        "expression": "coalesce(try(if(isNull({view.custom.qg14}), null, {view.custom.qg14}), null), false)"
+                      },
+                      "type": "expr",
+                      "overlays": {
+                        "bad": false,
+                        "error": false,
+                        "pending": false,
+                        "stale": false,
+                        "unknown": false,
+                        "disabled": false
+                      }
+                    }
+                  }
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "classes": "faceplate-fault-chip",
+                    "gap": "2px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Code"
+                    },
+                    "props": {
+                      "text": "CLOSED-LS",
+                      "style": {
+                        "classes": "faceplate-fault-code Fonts/Label"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "State"
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} != '' && coalesce(try(isNull({view.custom.qg15}), true), true), '—', if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isNull({view.custom.qg15}), null, {view.custom.qg15}), null), false), 'ON', 'OFF')))"
+                          },
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} != '' && coalesce(try(isNull({view.custom.qg15}), true), true), 'faceplate-fault-state value-bad', if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isNull({view.custom.qg15}), null, {view.custom.qg15}), null), false),\n\t\t'faceplate-fault-state faceplate-ls-on',\n\t\t'faceplate-fault-state faceplate-ls-off')))"
+                          },
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          },
+                          "overlayOptOut": true
+                        }
+                      }
+                    },
+                    "props": {
+                      "text": "OFF",
+                      "style": {
+                        "classes": "faceplate-fault-state faceplate-ls-off"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
           "name": "FaultsSection"
         },
         "position": {
@@ -152,7 +940,7 @@
             "props": {
               "text": "Faults",
               "style": {
-                "classes": "faceplate-section-title font-label"
+                "classes": "faceplate-section-title Fonts/Label"
               }
             }
           },
@@ -194,7 +982,7 @@
                     "props": {
                       "text": "FAILED",
                       "style": {
-                        "classes": "faceplate-fault-code font-label"
+                        "classes": "faceplate-fault-code Fonts/Label"
                       }
                     }
                   },
@@ -207,7 +995,7 @@
                       "props.text": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Failed/Value')), null, tag({view.params.tagPath} + '/Failed/Value')), null), false),\n\t\t'ACTIVE', 'OK'))"
+                            "expression": "if({view.params.tagPath} != '' && coalesce(try(isNull({view.custom.qg1}), true), true), '—', if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isNull({view.custom.qg1}), null, {view.custom.qg1}), null), false),\n\t\t'ACTIVE', 'OK')))"
                           },
                           "type": "expr",
                           "overlays": {
@@ -217,13 +1005,14 @@
                             "stale": false,
                             "unknown": false,
                             "disabled": false
-                          }
+                          },
+                          "overlayOptOut": true
                         }
                       },
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Failed/Value')), null, tag({view.params.tagPath} + '/Failed/Value')), null), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok'))"
+                            "expression": "if({view.params.tagPath} != '' && coalesce(try(isNull({view.custom.qg1}), true), true), 'faceplate-fault-state value-bad', if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isNull({view.custom.qg1}), null, {view.custom.qg1}), null), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok')))"
                           },
                           "type": "expr",
                           "overlays": {
@@ -233,7 +1022,8 @@
                             "stale": false,
                             "unknown": false,
                             "disabled": false
-                          }
+                          },
+                          "overlayOptOut": true
                         }
                       }
                     },
@@ -271,7 +1061,7 @@
                     "props": {
                       "text": "COMM",
                       "style": {
-                        "classes": "faceplate-fault-code font-label"
+                        "classes": "faceplate-fault-code Fonts/Label"
                       }
                     }
                   },
@@ -284,7 +1074,7 @@
                       "props.text": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Comm/Value')), null, tag({view.params.tagPath} + '/Comm/Value')), null), false),\n\t\t'FAULT', 'OK'))"
+                            "expression": "if({view.params.tagPath} != '' && coalesce(try(isNull({view.custom.qg16}), true), true), '—', if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isNull({view.custom.qg16}), null, {view.custom.qg16}), null), false),\n\t\t'FAULT', 'OK')))"
                           },
                           "type": "expr",
                           "overlays": {
@@ -294,13 +1084,14 @@
                             "stale": false,
                             "unknown": false,
                             "disabled": false
-                          }
+                          },
+                          "overlayOptOut": true
                         }
                       },
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Comm/Value')), null, tag({view.params.tagPath} + '/Comm/Value')), null), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok'))"
+                            "expression": "if({view.params.tagPath} != '' && coalesce(try(isNull({view.custom.qg16}), true), true), 'faceplate-fault-state value-bad', if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isNull({view.custom.qg16}), null, {view.custom.qg16}), null), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok')))"
                           },
                           "type": "expr",
                           "overlays": {
@@ -310,7 +1101,8 @@
                             "stale": false,
                             "unknown": false,
                             "disabled": false
-                          }
+                          },
+                          "overlayOptOut": true
                         }
                       }
                     },
@@ -330,7 +1122,7 @@
           "position.display": {
             "binding": {
               "config": {
-                "expression": "try(isGood(tag({view.params.tagPath} + '/Failed/Value')), false) || try(isGood(tag({view.params.tagPath} + '/Comm/Value')), false)"
+                "expression": "try(!isNull({view.custom.qg1}), false) || try(!isNull({view.custom.qg16}), false)"
               },
               "type": "expr",
               "overlays": {
@@ -344,261 +1136,6 @@
             }
           }
         }
-      },
-      {
-        "type": "ia.container.flex",
-        "meta": {
-          "name": "StatusSection"
-        },
-        "position": {
-          "shrink": 0,
-          "display": false
-        },
-        "propConfig": {
-          "position.display": {
-            "binding": {
-              "config": {
-                "expression": "{view.params.tagPath} != '' &&\n(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Cfg_HasOpenLS/Value')), null, tag({view.params.tagPath} + '/Cfg_HasOpenLS/Value')), null), false) ||\n coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Cfg_HasClosedLS/Value')), null, tag({view.params.tagPath} + '/Cfg_HasClosedLS/Value')), null), false))"
-              },
-              "type": "expr",
-              "overlays": {
-                "bad": false,
-                "error": false,
-                "pending": false,
-                "stale": false,
-                "unknown": false,
-                "disabled": false
-              }
-            }
-          }
-        },
-        "props": {
-          "direction": "column",
-          "style": {
-            "classes": "faceplate-section faceplate-section-card"
-          }
-        },
-        "children": [
-          {
-            "type": "ia.display.label",
-            "meta": {
-              "name": "StatusTitle"
-            },
-            "props": {
-              "text": "Status",
-              "style": {
-                "classes": "faceplate-section-title font-label"
-              }
-            }
-          },
-          {
-            "type": "ia.container.flex",
-            "meta": {
-              "name": "LsChips"
-            },
-            "props": {
-              "direction": "row",
-              "style": {
-                "gap": "8px",
-                "flexWrap": "wrap"
-              }
-            },
-            "children": [
-              {
-                "type": "ia.container.flex",
-                "meta": {
-                  "name": "OpenLs"
-                },
-                "position": {
-                  "basis": "100px",
-                  "shrink": 0,
-                  "display": false
-                },
-                "propConfig": {
-                  "position.display": {
-                    "binding": {
-                      "config": {
-                        "expression": "coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Cfg_HasOpenLS/Value')), null, tag({view.params.tagPath} + '/Cfg_HasOpenLS/Value')), null), false)"
-                      },
-                      "type": "expr",
-                      "overlays": {
-                        "bad": false,
-                        "error": false,
-                        "pending": false,
-                        "stale": false,
-                        "unknown": false,
-                        "disabled": false
-                      }
-                    }
-                  }
-                },
-                "props": {
-                  "direction": "column",
-                  "style": {
-                    "classes": "faceplate-fault-chip",
-                    "gap": "2px"
-                  }
-                },
-                "children": [
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "Code"
-                    },
-                    "props": {
-                      "text": "OPEN-LS",
-                      "style": {
-                        "classes": "faceplate-fault-code font-label"
-                      }
-                    }
-                  },
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "State"
-                    },
-                    "propConfig": {
-                      "props.text": {
-                        "binding": {
-                          "config": {
-                            "expression": "if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/OpenLS/Value')), null, tag({view.params.tagPath} + '/OpenLS/Value')), null), false), 'ON', 'OFF'))"
-                          },
-                          "type": "expr",
-                          "overlays": {
-                            "bad": false,
-                            "error": false,
-                            "pending": false,
-                            "stale": false,
-                            "unknown": false,
-                            "disabled": false
-                          }
-                        }
-                      },
-                      "props.style.classes": {
-                        "binding": {
-                          "config": {
-                            "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/OpenLS/Value')), null, tag({view.params.tagPath} + '/OpenLS/Value')), null), false),\n\t\t'faceplate-fault-state faceplate-ls-on',\n\t\t'faceplate-fault-state faceplate-ls-off'))"
-                          },
-                          "type": "expr",
-                          "overlays": {
-                            "bad": false,
-                            "error": false,
-                            "pending": false,
-                            "stale": false,
-                            "unknown": false,
-                            "disabled": false
-                          }
-                        }
-                      }
-                    },
-                    "props": {
-                      "text": "OFF",
-                      "style": {
-                        "classes": "faceplate-fault-state faceplate-ls-off"
-                      }
-                    }
-                  }
-                ]
-              },
-              {
-                "type": "ia.container.flex",
-                "meta": {
-                  "name": "ClosedLs"
-                },
-                "position": {
-                  "basis": "100px",
-                  "shrink": 0,
-                  "display": false
-                },
-                "propConfig": {
-                  "position.display": {
-                    "binding": {
-                      "config": {
-                        "expression": "coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Cfg_HasClosedLS/Value')), null, tag({view.params.tagPath} + '/Cfg_HasClosedLS/Value')), null), false)"
-                      },
-                      "type": "expr",
-                      "overlays": {
-                        "bad": false,
-                        "error": false,
-                        "pending": false,
-                        "stale": false,
-                        "unknown": false,
-                        "disabled": false
-                      }
-                    }
-                  }
-                },
-                "props": {
-                  "direction": "column",
-                  "style": {
-                    "classes": "faceplate-fault-chip",
-                    "gap": "2px"
-                  }
-                },
-                "children": [
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "Code"
-                    },
-                    "props": {
-                      "text": "CLOSED-LS",
-                      "style": {
-                        "classes": "faceplate-fault-code font-label"
-                      }
-                    }
-                  },
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "State"
-                    },
-                    "propConfig": {
-                      "props.text": {
-                        "binding": {
-                          "config": {
-                            "expression": "if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/ClosedLS/Value')), null, tag({view.params.tagPath} + '/ClosedLS/Value')), null), false), 'ON', 'OFF'))"
-                          },
-                          "type": "expr",
-                          "overlays": {
-                            "bad": false,
-                            "error": false,
-                            "pending": false,
-                            "stale": false,
-                            "unknown": false,
-                            "disabled": false
-                          }
-                        }
-                      },
-                      "props.style.classes": {
-                        "binding": {
-                          "config": {
-                            "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/ClosedLS/Value')), null, tag({view.params.tagPath} + '/ClosedLS/Value')), null), false),\n\t\t'faceplate-fault-state faceplate-ls-on',\n\t\t'faceplate-fault-state faceplate-ls-off'))"
-                          },
-                          "type": "expr",
-                          "overlays": {
-                            "bad": false,
-                            "error": false,
-                            "pending": false,
-                            "stale": false,
-                            "unknown": false,
-                            "disabled": false
-                          }
-                        }
-                      }
-                    },
-                    "props": {
-                      "text": "OFF",
-                      "style": {
-                        "classes": "faceplate-fault-state faceplate-ls-off"
-                      }
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        ]
       },
       {
         "type": "ia.container.flex",
@@ -623,7 +1160,7 @@
             "props": {
               "text": "Commands",
               "style": {
-                "classes": "faceplate-section-title font-label"
+                "classes": "faceplate-section-title Fonts/Label"
               }
             }
           },
@@ -664,7 +1201,7 @@
               "props.path": {
                 "binding": {
                   "config": {
-                    "expression": "case(\n\tif({view.params.tagPath} = '', 'SO',\n\t\tupper(coalesce(\n\t\t\ttry(if(isBadOrError(tag({view.params.tagPath} + '/valveType/Value')), null, tag({view.params.tagPath} + '/valveType/Value')), null),\n\t\t\ttry(if(isBadOrError(tag({view.params.tagPath} + '/valveType')), null, tag({view.params.tagPath} + '/valveType')), null),\n\t\t\t'SO'))),\n\t'SO', '01_Popups/00_Faceplates/_Assets/Valve/Cmd_SO',\n\t'MO', '01_Popups/00_Faceplates/_Assets/Valve/Cmd_MO',\n\t'MP', '01_Popups/00_Faceplates/_Assets/Valve/Cmd_Position',\n\t'C', '01_Popups/00_Faceplates/_Assets/Valve/Cmd_Position',\n\t'01_Popups/00_Faceplates/_Assets/Valve/Cmd_SO')"
+                    "expression": "case(\n\tif({view.params.tagPath} = '', 'SO',\n\t\tupper(coalesce(\n\t\t\ttry(if(isNull({view.custom.qg17}), null, {view.custom.qg17}), null),\n\t\t\ttry(if(isNull({view.custom.qg18}), null, {view.custom.qg18}), null),\n\t\t\t'SO'))),\n\t'SO', '01_Popups/00_Faceplates/_Assets/Valve/Cmd_SO',\n\t'MO', '01_Popups/00_Faceplates/_Assets/Valve/Cmd_MO',\n\t'MP', '01_Popups/00_Faceplates/_Assets/Valve/Cmd_Position',\n\t'C', '01_Popups/00_Faceplates/_Assets/Valve/Cmd_Position',\n\t'01_Popups/00_Faceplates/_Assets/Valve/Cmd_SO')"
                   },
                   "type": "expr",
                   "overlays": {
@@ -674,7 +1211,8 @@
                     "stale": false,
                     "unknown": false,
                     "disabled": false
-                  }
+                  },
+                  "overlayOptOut": true
                 }
               }
             }
@@ -704,7 +1242,7 @@
             "props": {
               "text": "Device Not Ready Reasons",
               "style": {
-                "classes": "faceplate-section-title font-label"
+                "classes": "faceplate-section-title Fonts/Label"
               }
             }
           },
@@ -743,7 +1281,7 @@
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Nrdy_Disabled/Value')), null, tag({view.params.tagPath} + '/Nrdy_Disabled/Value')), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isNull({view.custom.qg19}), null, {view.custom.qg19}), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
                           },
                           "type": "expr",
                           "overlays": {
@@ -753,7 +1291,8 @@
                             "stale": false,
                             "unknown": false,
                             "disabled": false
-                          }
+                          },
+                          "overlayOptOut": true
                         }
                       }
                     },
@@ -779,7 +1318,7 @@
                     "props": {
                       "text": "Device Disabled by Maintenance",
                       "style": {
-                        "classes": "font-label faceplate-nrdy-label"
+                        "classes": "Fonts/Label faceplate-nrdy-label"
                       }
                     }
                   }
@@ -808,7 +1347,7 @@
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Nrdy_CfgErr/Value')), null, tag({view.params.tagPath} + '/Nrdy_CfgErr/Value')), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isNull({view.custom.qg20}), null, {view.custom.qg20}), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
                           },
                           "type": "expr",
                           "overlays": {
@@ -818,7 +1357,8 @@
                             "stale": false,
                             "unknown": false,
                             "disabled": false
-                          }
+                          },
+                          "overlayOptOut": true
                         }
                       }
                     },
@@ -844,7 +1384,7 @@
                     "props": {
                       "text": "Configuration Error",
                       "style": {
-                        "classes": "font-label faceplate-nrdy-label"
+                        "classes": "Fonts/Label faceplate-nrdy-label"
                       }
                     }
                   }
@@ -873,7 +1413,7 @@
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Nrdy_Intlk/Value')), null, tag({view.params.tagPath} + '/Nrdy_Intlk/Value')), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isNull({view.custom.qg21}), null, {view.custom.qg21}), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
                           },
                           "type": "expr",
                           "overlays": {
@@ -883,7 +1423,8 @@
                             "stale": false,
                             "unknown": false,
                             "disabled": false
-                          }
+                          },
+                          "overlayOptOut": true
                         }
                       }
                     },
@@ -909,7 +1450,7 @@
                     "props": {
                       "text": "Device Interlocks Not OK",
                       "style": {
-                        "classes": "font-label faceplate-nrdy-label"
+                        "classes": "Fonts/Label faceplate-nrdy-label"
                       }
                     }
                   }
@@ -938,7 +1479,7 @@
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Nrdy_Perm/Value')), null, tag({view.params.tagPath} + '/Nrdy_Perm/Value')), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isNull({view.custom.qg22}), null, {view.custom.qg22}), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
                           },
                           "type": "expr",
                           "overlays": {
@@ -948,7 +1489,8 @@
                             "stale": false,
                             "unknown": false,
                             "disabled": false
-                          }
+                          },
+                          "overlayOptOut": true
                         }
                       }
                     },
@@ -974,7 +1516,7 @@
                     "props": {
                       "text": "Device Permissives Not OK",
                       "style": {
-                        "classes": "font-label faceplate-nrdy-label"
+                        "classes": "Fonts/Label faceplate-nrdy-label"
                       }
                     }
                   }
@@ -1003,7 +1545,7 @@
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Nrdy_IOFault/Value')), null, tag({view.params.tagPath} + '/Nrdy_IOFault/Value')), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isNull({view.custom.qg23}), null, {view.custom.qg23}), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
                           },
                           "type": "expr",
                           "overlays": {
@@ -1013,7 +1555,8 @@
                             "stale": false,
                             "unknown": false,
                             "disabled": false
-                          }
+                          },
+                          "overlayOptOut": true
                         }
                       }
                     },
@@ -1039,7 +1582,7 @@
                     "props": {
                       "text": "I/O Fault (shed requires reset)",
                       "style": {
-                        "classes": "font-label faceplate-nrdy-label"
+                        "classes": "Fonts/Label faceplate-nrdy-label"
                       }
                     }
                   }
@@ -1068,7 +1611,7 @@
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Nrdy_Fail/Value')), null, tag({view.params.tagPath} + '/Nrdy_Fail/Value')), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isNull({view.custom.qg1}), null, {view.custom.qg1}), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
                           },
                           "type": "expr",
                           "overlays": {
@@ -1078,7 +1621,8 @@
                             "stale": false,
                             "unknown": false,
                             "disabled": false
-                          }
+                          },
+                          "overlayOptOut": true
                         }
                       }
                     },
@@ -1104,7 +1648,7 @@
                     "props": {
                       "text": "Device Failure (shed requires reset)",
                       "style": {
-                        "classes": "font-label faceplate-nrdy-label"
+                        "classes": "Fonts/Label faceplate-nrdy-label"
                       }
                     }
                   }
@@ -1133,7 +1677,7 @@
                       "props.style.classes": {
                         "binding": {
                           "config": {
-                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Nrdy_NoMode/Value')), null, tag({view.params.tagPath} + '/Nrdy_NoMode/Value')), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
+                            "expression": "if({view.params.tagPath} = '', 'faceplate-nrdy-dot',\n\tif(coalesce(try(if(isNull({view.custom.qg24}), null, {view.custom.qg24}), null), false),\n\t\t'faceplate-nrdy-dot faceplate-nrdy-active',\n\t\t'faceplate-nrdy-dot'))"
                           },
                           "type": "expr",
                           "overlays": {
@@ -1143,7 +1687,8 @@
                             "stale": false,
                             "unknown": false,
                             "disabled": false
-                          }
+                          },
+                          "overlayOptOut": true
                         }
                       }
                     },
@@ -1169,7 +1714,7 @@
                     "props": {
                       "text": "Device Logic Disabled/No Mode",
                       "style": {
-                        "classes": "font-label faceplate-nrdy-label"
+                        "classes": "Fonts/Label faceplate-nrdy-label"
                       }
                     }
                   }

@@ -1,0 +1,1071 @@
+{
+  "custom": {
+    "pax": "",
+    "sensorPax": "",
+    "levelPax": ""
+  },
+  "params": {
+    "tagPath": ""
+  },
+  "propConfig": {
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.pax": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', '', case(toStr(coalesce(try(tag({view.params.tagPath} + '.TypeId'), ''), '')), 'Devices/Pump', 'Motor', 'Devices/Valve', 'Valve', 'Devices/Tank', 'Tank', 'Devices/Compressor', 'Comp', 'Devices/Evaporator', 'CG', 'Devices/ExhaustFan', 'EF', 'Devices/LTU', 'LTU', 'Devices/SafetyRelay', 'Relay', 'Devices/SuctionSequence', 'Seq', 'Devices/DischargeSequence', 'Dsq', 'Devices/Sensor', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn.Enabled')), false), false), 'AIn', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AInRef.Enabled')), false), false), 'AInRef', '')), 'Devices/DiscreteInput', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/DIn.Enabled')), false), false), 'DIn', ''), ''))"
+        }
+      }
+    },
+    "custom.sensorPax": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(toStr(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), ''), '') = '', '', case(toStr(coalesce(try(tag(coalesce(try(toStr(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), ''), '') + '.TypeId'), ''), '')), 'Devices/Pump', 'Motor', 'Devices/Valve', 'Valve', 'Devices/Tank', 'Tank', 'Devices/Compressor', 'Comp', 'Devices/Evaporator', 'CG', 'Devices/ExhaustFan', 'EF', 'Devices/LTU', 'LTU', 'Devices/SafetyRelay', 'Relay', 'Devices/SuctionSequence', 'Seq', 'Devices/DischargeSequence', 'Dsq', 'Devices/Sensor', if(coalesce(try(toBoolean(tag(coalesce(try(toStr(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), ''), '') + '/AIn.Enabled')), false), false), 'AIn', if(coalesce(try(toBoolean(tag(coalesce(try(toStr(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), ''), '') + '/AInRef.Enabled')), false), false), 'AInRef', '')), 'Devices/DiscreteInput', if(coalesce(try(toBoolean(tag(coalesce(try(toStr(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), ''), '') + '/DIn.Enabled')), false), false), 'DIn', ''), ''))"
+        }
+      }
+    },
+    "custom.levelPax": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(toStr(tag({view.params.tagPath} + '/Cfg_LevelPath/Value')), ''), '') = '', '', case(toStr(coalesce(try(tag(coalesce(try(toStr(tag({view.params.tagPath} + '/Cfg_LevelPath/Value')), ''), '') + '.TypeId'), ''), '')), 'Devices/Pump', 'Motor', 'Devices/Valve', 'Valve', 'Devices/Tank', 'Tank', 'Devices/Compressor', 'Comp', 'Devices/Evaporator', 'CG', 'Devices/ExhaustFan', 'EF', 'Devices/LTU', 'LTU', 'Devices/SafetyRelay', 'Relay', 'Devices/SuctionSequence', 'Seq', 'Devices/DischargeSequence', 'Dsq', 'Devices/Sensor', if(coalesce(try(toBoolean(tag(coalesce(try(toStr(tag({view.params.tagPath} + '/Cfg_LevelPath/Value')), ''), '') + '/AIn.Enabled')), false), false), 'AIn', if(coalesce(try(toBoolean(tag(coalesce(try(toStr(tag({view.params.tagPath} + '/Cfg_LevelPath/Value')), ''), '') + '/AInRef.Enabled')), false), false), 'AInRef', '')), 'Devices/DiscreteInput', if(coalesce(try(toBoolean(tag(coalesce(try(toStr(tag({view.params.tagPath} + '/Cfg_LevelPath/Value')), ''), '') + '/DIn.Enabled')), false), false), 'DIn', ''), ''))"
+        }
+      }
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 560,
+      "width": 660
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root",
+      "contextMenu": {}
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "overflow": "hidden auto",
+        "padding": "4px",
+        "gap": "8px",
+        "boxSizing": "border-box"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Columns"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "style": {
+            "gap": "8px"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Left"
+            },
+            "position": {
+              "grow": 1,
+              "basis": "0px"
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "8px",
+                "minWidth": "0px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "PressureSection"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "classes": "faceplate-section faceplate-section-card"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "PressureSectionTitle"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Pressure SP",
+                      "style": {
+                        "classes": "faceplate-section-title Fonts/Label"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Actual"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "style": {
+                        "classes": "faceplate-kpi-row"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Lbl"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "200px"
+                        },
+                        "props": {
+                          "text": "Actual Pressure",
+                          "style": {
+                            "classes": "faceplate-kpi-label Fonts/Label"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "config": {
+                                "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), '\u2014', 'Actual Pressure (' + coalesce(try(toStr(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), ''), '') + ')')))))))))))))))"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              }
+                            }
+                          },
+                          "props.style.classes": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), 'faceplate-kpi-label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), 'faceplate-kpi-label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), 'faceplate-kpi-label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), 'faceplate-kpi-label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), 'faceplate-kpi-label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), 'faceplate-kpi-label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), 'faceplate-kpi-label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), 'faceplate-kpi-label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), 'faceplate-kpi-label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), 'faceplate-kpi-label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), 'faceplate-kpi-label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), 'faceplate-kpi-label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), 'faceplate-kpi-label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), 'faceplate-kpi-label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorLabel/Value')), true), true), 'faceplate-kpi-label Fonts/Label value-bad', 'faceplate-kpi-label Fonts/Label')))))))))))))))"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Val"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "",
+                          "style": {
+                            "classes": "Fonts/Value"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "config": {
+                                "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && (coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true) || coalesce(try(!isGood(tag(coalesce(try(toStr(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), ''), '') + '/' + {view.custom.sensorPax} + '/Val')), true), true)), '\u2014', if(coalesce(try(toStr(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), ''), '') = '', '\u2014', coalesce(try(numberFormat(tag(coalesce(try(toStr(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), ''), '') + '/' + {view.custom.sensorPax} + '/Val'), '#,##0.0') + ' PSIG', null), '\u2014'))))))))))))))))))"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.classes": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && (coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), true), true) || coalesce(try(!isGood(tag(coalesce(try(toStr(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), ''), '') + '/' + {view.custom.sensorPax} + '/Val')), true), true)), 'Fonts/Value value-bad', 'Fonts/Value'))))))))))))))))"
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "custom.trendPath": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "coalesce(try(toStr(tag({view.params.tagPath} + '/Cfg_SensorPath/Value')), ''), '') + '/' + {view.custom.sensorPax} + '/Val'"
+                              }
+                            }
+                          }
+                        },
+                        "custom": {
+                          "trendPath": ""
+                        },
+                        "events": {
+                          "dom": {
+                            "onContextMenu": {
+                              "type": "script",
+                              "scope": "G",
+                              "config": {
+                                "script": "\tshared.TrendContext.menu(self, event, '{this.custom.trendPath}')"
+                              },
+                              "preventDefault": true,
+                              "stopPropagation": true
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Start"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "style": {
+                        "classes": "faceplate-kpi-row"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Lbl"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "200px"
+                        },
+                        "props": {
+                          "text": "Start Pressure",
+                          "style": {
+                            "classes": "faceplate-kpi-label Fonts/Label"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Val"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "",
+                          "style": {
+                            "classes": "Fonts/Value"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "config": {
+                                "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), '\u2014', if({view.params.tagPath} = '', '\u2014', coalesce(try(numberFormat(tag({view.params.tagPath} + '/Seq/Start_Pressure'), '#,##0.0') + ' ' + coalesce(try(tag({view.params.tagPath} + '/Seq/Start_Pressure' + '.EngUnit'), ''), ''), null), '\u2014')))))))))))))))))"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.classes": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Pressure')), true), true), 'Fonts/Value value-bad', 'Fonts/Value')))))))))))))))"
+                              },
+                              "overlayOptOut": true
+                            }
+                          }
+                        },
+                        "events": {
+                          "dom": {
+                            "onContextMenu": {
+                              "type": "script",
+                              "scope": "G",
+                              "config": {
+                                "script": "\tshared.TrendContext.menu(self, event, '{view.params.tagPath}/Seq/Start_Pressure')"
+                              },
+                              "preventDefault": true,
+                              "stopPropagation": true
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.display.view",
+                    "meta": {
+                      "name": "TargetSet"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.params.tagPath": {
+                        "binding": {
+                          "config": {
+                            "path": "view.params.tagPath"
+                          },
+                          "type": "property"
+                        }
+                      }
+                    },
+                    "props": {
+                      "path": "01_Popups/00_Faceplates/_Assets/Configuration/ConfigSection",
+                      "params": {
+                        "title": "",
+                        "tagPath": "",
+                        "rowsJson": "[{\"leaf\":\"Target_Pressure_Set\",\"kind\":\"numeric\",\"label\":\"Pressure Target Set\"}]"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Stop"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "style": {
+                        "classes": "faceplate-kpi-row"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Lbl"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "200px"
+                        },
+                        "props": {
+                          "text": "Stop Pressure",
+                          "style": {
+                            "classes": "faceplate-kpi-label Fonts/Label"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Val"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "",
+                          "style": {
+                            "classes": "Fonts/Value"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "config": {
+                                "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), '\u2014', if({view.params.tagPath} = '', '\u2014', coalesce(try(numberFormat(tag({view.params.tagPath} + '/Seq/Stop_Pressure'), '#,##0.0') + ' ' + coalesce(try(tag({view.params.tagPath} + '/Seq/Stop_Pressure' + '.EngUnit'), ''), ''), null), '\u2014')))))))))))))))))"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.classes": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Pressure')), true), true), 'Fonts/Value value-bad', 'Fonts/Value')))))))))))))))"
+                              },
+                              "overlayOptOut": true
+                            }
+                          }
+                        },
+                        "events": {
+                          "dom": {
+                            "onContextMenu": {
+                              "type": "script",
+                              "scope": "G",
+                              "config": {
+                                "script": "\tshared.TrendContext.menu(self, event, '{view.params.tagPath}/Seq/Stop_Pressure')"
+                              },
+                              "preventDefault": true,
+                              "stopPropagation": true
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Target"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "style": {
+                        "classes": "faceplate-kpi-row"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Lbl"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "200px"
+                        },
+                        "props": {
+                          "text": "Pressure Target",
+                          "style": {
+                            "classes": "faceplate-kpi-label Fonts/Label"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Val"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "",
+                          "style": {
+                            "classes": "Fonts/Value"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "config": {
+                                "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), '\u2014', if({view.params.tagPath} = '', '\u2014', coalesce(try(numberFormat(tag({view.params.tagPath} + '/Seq/Target_Pressure'), '#,##0.0') + ' ' + coalesce(try(tag({view.params.tagPath} + '/Seq/Target_Pressure' + '.EngUnit'), ''), ''), null), '\u2014')))))))))))))))))"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.classes": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Target_Pressure')), true), true), 'Fonts/Value value-bad', 'Fonts/Value')))))))))))))))"
+                              },
+                              "overlayOptOut": true
+                            }
+                          }
+                        },
+                        "events": {
+                          "dom": {
+                            "onContextMenu": {
+                              "type": "script",
+                              "scope": "G",
+                              "config": {
+                                "script": "\tshared.TrendContext.menu(self, event, '{view.params.tagPath}/Seq/Target_Pressure')"
+                              },
+                              "preventDefault": true,
+                              "stopPropagation": true
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "SequenceSection"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "classes": "faceplate-section faceplate-section-card"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "SequenceSectionTitle"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Compressor Sequence",
+                      "style": {
+                        "classes": "faceplate-section-title Fonts/Label"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.view",
+                    "meta": {
+                      "name": "SequenceRows"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.params.tagPath": {
+                        "binding": {
+                          "config": {
+                            "path": "view.params.tagPath"
+                          },
+                          "type": "property"
+                        }
+                      },
+                      "props.params.rowsJson": {
+                        "binding": {
+                          "config": {
+                            "expression": "if(coalesce(try(toInt(tag({view.params.tagPath} + '/Cfg_Positions/Value')), 4), 4) <= 2, '[{\"leaf\":\"Sequence_Set_1\",\"kind\":\"numeric\",\"label\":\"First Compressor\"},{\"leaf\":\"Sequence_Set_2\",\"kind\":\"numeric\",\"label\":\"Second Compressor\"}]', '[{\"leaf\":\"Sequence_Set_1\",\"kind\":\"numeric\",\"label\":\"First Compressor\"},{\"leaf\":\"Sequence_Set_2\",\"kind\":\"numeric\",\"label\":\"Second Compressor\"},{\"leaf\":\"Sequence_Set_3\",\"kind\":\"numeric\",\"label\":\"Third Compressor\"},{\"leaf\":\"Sequence_Set_4\",\"kind\":\"numeric\",\"label\":\"Fourth Compressor\"}]')"
+                          },
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      }
+                    },
+                    "props": {
+                      "path": "01_Popups/00_Faceplates/_Assets/Configuration/ConfigSection",
+                      "params": {
+                        "title": "",
+                        "tagPath": "",
+                        "rowsJson": "[{\"leaf\":\"Sequence_Set_1\",\"kind\":\"numeric\",\"label\":\"First Compressor\"},{\"leaf\":\"Sequence_Set_2\",\"kind\":\"numeric\",\"label\":\"Second Compressor\"},{\"leaf\":\"Sequence_Set_3\",\"kind\":\"numeric\",\"label\":\"Third Compressor\"},{\"leaf\":\"Sequence_Set_4\",\"kind\":\"numeric\",\"label\":\"Fourth Compressor\"}]"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Right"
+            },
+            "position": {
+              "grow": 1,
+              "basis": "0px"
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "8px",
+                "minWidth": "0px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "StartSection"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "classes": "faceplate-section faceplate-section-card"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "StartSectionTitle"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Start Setpoints",
+                      "style": {
+                        "classes": "faceplate-section-title Fonts/Label"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.view",
+                    "meta": {
+                      "name": "StartRows"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.params.tagPath": {
+                        "binding": {
+                          "config": {
+                            "path": "view.params.tagPath"
+                          },
+                          "type": "property"
+                        }
+                      }
+                    },
+                    "props": {
+                      "path": "01_Popups/00_Faceplates/_Assets/Configuration/ConfigSection",
+                      "params": {
+                        "title": "",
+                        "tagPath": "",
+                        "rowsJson": "[{\"leaf\":\"Start_Pressure_DB\",\"kind\":\"numeric\",\"label\":\"Start DB\"},{\"leaf\":\"Start_Delay_Set\",\"kind\":\"numeric\",\"label\":\"Start Delay\"}]"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "StartLeft"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "style": {
+                        "classes": "faceplate-kpi-row"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Lbl"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "200px"
+                        },
+                        "props": {
+                          "text": "Time Left",
+                          "style": {
+                            "classes": "faceplate-kpi-label Fonts/Label"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Val"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "",
+                          "style": {
+                            "classes": "Fonts/Value"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "config": {
+                                "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), '\u2014', if({view.params.tagPath} = '', '\u2014', coalesce(try(numberFormat(tag({view.params.tagPath} + '/Seq/Start_Time_Left'), '#,##0') + ' ' + coalesce(try(tag({view.params.tagPath} + '/Seq/Start_Time_Left' + '.EngUnit'), ''), ''), null), '\u2014')))))))))))))))))"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.classes": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Start_Time_Left')), true), true), 'Fonts/Value value-bad', 'Fonts/Value')))))))))))))))"
+                              },
+                              "overlayOptOut": true
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "StopSection"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "classes": "faceplate-section faceplate-section-card"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "StopSectionTitle"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Stop Setpoints",
+                      "style": {
+                        "classes": "faceplate-section-title Fonts/Label"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.view",
+                    "meta": {
+                      "name": "StopRows"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.params.tagPath": {
+                        "binding": {
+                          "config": {
+                            "path": "view.params.tagPath"
+                          },
+                          "type": "property"
+                        }
+                      }
+                    },
+                    "props": {
+                      "path": "01_Popups/00_Faceplates/_Assets/Configuration/ConfigSection",
+                      "params": {
+                        "title": "",
+                        "tagPath": "",
+                        "rowsJson": "[{\"leaf\":\"Stop_Pressure_DB\",\"kind\":\"numeric\",\"label\":\"Stop DB\"},{\"leaf\":\"Stop_Delay_Set\",\"kind\":\"numeric\",\"label\":\"Stop Delay\"}]"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "StopLeft"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "style": {
+                        "classes": "faceplate-kpi-row"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Lbl"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "200px"
+                        },
+                        "props": {
+                          "text": "Time Left",
+                          "style": {
+                            "classes": "faceplate-kpi-label Fonts/Label"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Val"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "",
+                          "style": {
+                            "classes": "Fonts/Value"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "config": {
+                                "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), '\u2014', if({view.params.tagPath} = '', '\u2014', coalesce(try(numberFormat(tag({view.params.tagPath} + '/Seq/Stop_Time_Left'), '#,##0') + ' ' + coalesce(try(tag({view.params.tagPath} + '/Seq/Stop_Time_Left' + '.EngUnit'), ''), ''), null), '\u2014')))))))))))))))))"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.classes": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Seq/Stop_Time_Left')), true), true), 'Fonts/Value value-bad', 'Fonts/Value')))))))))))))))"
+                              },
+                              "overlayOptOut": true
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "NotesSection"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "classes": "faceplate-section faceplate-section-card"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "NotesSectionTitle"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Notes",
+                      "style": {
+                        "classes": "faceplate-section-title Fonts/Label"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Notes"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "",
+                      "style": {
+                        "classes": "Fonts/Label",
+                        "whiteSpace": "pre-line",
+                        "lineHeight": "1.5"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), '\u2014', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), '\u2014', coalesce(try(toStr(tag({view.params.tagPath} + '/Cfg_Notes/Value')), ''), ''))))))))))))))))"
+                          },
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), 'Fonts/Label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), 'Fonts/Label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), 'Fonts/Label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), 'Fonts/Label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), 'Fonts/Label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), 'Fonts/Label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), 'Fonts/Label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), 'Fonts/Label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), 'Fonts/Label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), 'Fonts/Label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), 'Fonts/Label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), 'Fonts/Label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), 'Fonts/Label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), 'Fonts/Label value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/Cfg_Notes/Value')), true), true), 'Fonts/Label value-bad', 'Fonts/Label')))))))))))))))"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.view",
+                    "meta": {
+                      "name": "EnableRow"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.params.tagPath": {
+                        "binding": {
+                          "config": {
+                            "path": "view.params.tagPath"
+                          },
+                          "type": "property"
+                        }
+                      },
+                      "meta.visible": {
+                        "binding": {
+                          "config": {
+                            "expression": "coalesce(try(toBoolean(tag({view.params.tagPath} + '/Cfg_HasEnable/Value')), false), false)"
+                          },
+                          "type": "expr",
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      }
+                    },
+                    "props": {
+                      "path": "01_Popups/00_Faceplates/_Assets/Configuration/ConfigSection",
+                      "params": {
+                        "title": "",
+                        "tagPath": "",
+                        "rowsJson": "[{\"leaf\":\"HMI_Enable\",\"kind\":\"checkbox\",\"label\":\"LSS Enabled\"}]"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "propConfig": {
+      "meta.contextMenu.items": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "coalesce({session.custom.TicketLogAccess}, false)"
+          },
+          "transforms": [
+            {
+              "type": "script",
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = str(self.view.params.tagPath or '')\n\texcept:\n\t\tpass\n\tview_name = self.view.id.split('@')[0]\n\titems = []\n\tif value:\n\t\tlogged = tagPath if tagPath.strip() else 'No TagPath: ' + view_name.split('/')[-1]\n\t\titems.append({\n\t\t\t\"text\": 'Ticket Logger',\n\t\t\t\"icon\": {\"path\": 'material/info', \"color\": \"--neutral-80\", \"style\": {}},\n\t\t\t\"style\": {\"classes\": \"bg-component Fonts/Value\", \"height\": 24, \"width\": 170},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\"type\": 'ticketLog', \"payload\": {'tagPath': logged, 'viewName': view_name, 'sender': self.view.id}, \"scope\": 'page'}\n\t\t})\n\treturn items"
+            }
+          ]
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "len({this.meta.contextMenu.items}) > 0"
+          }
+        }
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    }
+  }
+}

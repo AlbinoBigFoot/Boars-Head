@@ -3,9 +3,9 @@
     "liveNumeric": 0,
     "spark": {
       "series": [],
-      "min": "\u2014",
-      "max": "\u2014",
-      "avg": "\u2014"
+      "min": "—",
+      "max": "—",
+      "avg": "—"
     }
   },
   "params": {
@@ -13,7 +13,7 @@
     "category": "",
     "unit": "",
     "tagPath": "",
-    "value": "\u2014"
+    "value": "—"
   },
   "propConfig": {
     "params.title": {
@@ -40,7 +40,7 @@
       "binding": {
         "type": "expr",
         "config": {
-          "expression": "if(len(coalesce({view.params.tagPath}, '')) > 0, coalesce(try(if(isBadOrError(tag({view.params.tagPath})), null, tag({view.params.tagPath})), null), 0), try(toFloat(replace(coalesce({view.params.value}, '0'), ',', '')), 0))"
+          "expression": "if(len(coalesce({view.params.tagPath}, '')) > 0, coalesce(try(if(!isGood(tag({view.params.tagPath})), null, tag({view.params.tagPath})), null), 0), try(toFloat(replace(coalesce({view.params.value}, '0'), ',', '')), 0))"
         },
         "overlays": {
           "bad": false,
@@ -61,7 +61,7 @@
         "transforms": [
           {
             "type": "script",
-            "code": "\t# Placeholder sparkline until historian: ~24 hourly points around live value.\n\traw = value\n\ttry:\n\t\tbase = float(raw)\n\texcept:\n\t\ttry:\n\t\t\ts = str(raw or '0').replace(',', '').replace(u'\\u2014', '').strip()\n\t\t\tbase = float(s) if s else 0.0\n\t\texcept:\n\t\t\tbase = 0.0\n\tnow = int(system.date.toMillis(system.date.now()))\n\thour_ms = 3600 * 1000\n\tseed = abs(hash(str(round(base, 3)))) % 10007\n\tdata = []\n\tvals = []\n\tfor i in range(24):\n\t\t# Deterministic wobble ~+/-8% so refresh does not scramble the series.\n\t\tphase = ((seed + i * 37) % 100) / 100.0\n\t\twobble = 0.92 + 0.16 * phase\n\t\tif abs(base) < 1e-9:\n\t\t\tv = float((seed + i * 13) % 50) / 10.0\n\t\telse:\n\t\t\tv = base * wobble\n\t\tts = now - (23 - i) * hour_ms\n\t\tdata.append([ts, round(v, 2)])\n\t\tvals.append(v)\n\tmn = min(vals) if vals else 0.0\n\tmx = max(vals) if vals else 0.0\n\tavg = (sum(vals) / float(len(vals))) if vals else 0.0\n\tdef fmt(n):\n\t\ttry:\n\t\t\treturn '{:,.1f}'.format(float(n))\n\t\texcept:\n\t\t\treturn u'\\u2014'\n\treturn {\n\t\t'series': [{'name': 'Trend', 'data': data}],\n\t\t'min': fmt(mn),\n\t\t'max': fmt(mx),\n\t\t'avg': fmt(avg),\n\t}\n"
+            "code": "\t# Real data only: no historian series is wired for the KPI widget (enterprise-only views): flat No Data.\n\treturn {'series': [], 'min': u'\\u2014', 'max': u'\\u2014', 'avg': u'\\u2014'}\n"
           }
         ]
       }
@@ -76,19 +76,16 @@
   "root": {
     "type": "ia.container.flex",
     "meta": {
-      "name": "root"
+      "name": "root",
+      "contextMenu": {}
     },
     "props": {
       "direction": "column",
       "justify": "flex-start",
       "style": {
         "classes": "container-card container-card-border kpi-card",
-        "boxSizing": "border-box",
-        "gap": "8px",
         "height": "100%",
-        "minHeight": "240px",
         "overflow": "hidden",
-        "padding": "12px 16px",
         "width": "100%"
       }
     },
@@ -121,7 +118,7 @@
             "props": {
               "text": "",
               "style": {
-                "classes": "font-label",
+                "classes": "Fonts/Label",
                 "letterSpacing": "0.04em",
                 "textTransform": "uppercase"
               }
@@ -156,7 +153,7 @@
             "props": {
               "text": "Metric",
               "style": {
-                "classes": "font-title plant-feature-title"
+                "classes": "Fonts/Title plant-feature-title"
               }
             },
             "propConfig": {
@@ -199,9 +196,9 @@
               "shrink": 0
             },
             "props": {
-              "text": "\u2014",
+              "text": "—",
               "style": {
-                "classes": "font-livedata-entry kpi-value",
+                "classes": "Fonts/LiveDataEntry kpi-value",
                 "fontSize": "1.85rem",
                 "lineHeight": "1.1"
               }
@@ -211,7 +208,7 @@
                 "binding": {
                   "type": "expr",
                   "config": {
-                    "expression": "if(len(coalesce({view.params.tagPath}, '')) > 0, numberFormat(coalesce(try(if(isBadOrError(tag({view.params.tagPath})), null, tag({view.params.tagPath})), null), 0), '#,##0.#'), coalesce({view.params.value}, '\u2014'))"
+                    "expression": "if(len(coalesce({view.params.tagPath}, '')) > 0, numberFormat(coalesce(try(if(!isGood(tag({view.params.tagPath})), null, tag({view.params.tagPath})), null), 0), '#,##0.#'), coalesce({view.params.value}, '—'))"
                   },
                   "overlays": {
                     "bad": false,
@@ -220,7 +217,8 @@
                     "stale": false,
                     "unknown": false,
                     "disabled": false
-                  }
+                  },
+                  "overlayOptOut": true
                 }
               }
             }
@@ -236,7 +234,7 @@
             "props": {
               "text": "",
               "style": {
-                "classes": "font-label",
+                "classes": "Fonts/Label",
                 "fontSize": "0.95rem"
               }
             },
@@ -377,14 +375,22 @@
               "axisTicks": {
                 "show": false
               }
+            },
+            "noData": {
+              "text": "No Data",
+              "align": "center",
+              "verticalAlign": "middle",
+              "style": {
+                "color": "#90A4AE",
+                "fontSize": "14px"
+              }
             }
           },
           "style": {
             "classes": "kpi-chart",
-            "height": "140px",
-            "minHeight": "140px",
             "overflow": "hidden",
-            "width": "100%"
+            "width": "100%",
+            "height": "140px"
           }
         },
         "propConfig": {
@@ -393,7 +399,14 @@
               "type": "property",
               "config": {
                 "path": "view.custom.spark.series"
-              }
+              },
+              "transforms": [
+                {
+                  "type": "script",
+                  "code": "\treturn list(value or [])\n"
+                }
+              ],
+              "overlayOptOut": true
             }
           }
         }
@@ -411,7 +424,6 @@
           "justify": "space-between",
           "style": {
             "classes": "kpi-metrics",
-            "gap": "12px",
             "width": "100%"
           }
         },
@@ -442,7 +454,7 @@
                 "props": {
                   "text": "Min",
                   "style": {
-                    "classes": "font-label",
+                    "classes": "Fonts/Label",
                     "fontSize": "11px",
                     "letterSpacing": "0.04em",
                     "textAlign": "center",
@@ -456,11 +468,9 @@
                   "name": "MinValue"
                 },
                 "props": {
-                  "text": "\u2014",
+                  "text": "—",
                   "style": {
-                    "classes": "font-value",
-                    "fontSize": "13px",
-                    "fontWeight": "600",
+                    "classes": "Fonts/Value fs-13 fw-600",
                     "textAlign": "center"
                   }
                 },
@@ -470,7 +480,8 @@
                       "type": "property",
                       "config": {
                         "path": "view.custom.spark.min"
-                      }
+                      },
+                      "overlayOptOut": true
                     }
                   }
                 }
@@ -503,7 +514,7 @@
                 "props": {
                   "text": "Max",
                   "style": {
-                    "classes": "font-label",
+                    "classes": "Fonts/Label",
                     "fontSize": "11px",
                     "letterSpacing": "0.04em",
                     "textAlign": "center",
@@ -517,11 +528,9 @@
                   "name": "MaxValue"
                 },
                 "props": {
-                  "text": "\u2014",
+                  "text": "—",
                   "style": {
-                    "classes": "font-value",
-                    "fontSize": "13px",
-                    "fontWeight": "600",
+                    "classes": "Fonts/Value fs-13 fw-600",
                     "textAlign": "center"
                   }
                 },
@@ -531,7 +540,8 @@
                       "type": "property",
                       "config": {
                         "path": "view.custom.spark.max"
-                      }
+                      },
+                      "overlayOptOut": true
                     }
                   }
                 }
@@ -564,7 +574,7 @@
                 "props": {
                   "text": "Avg",
                   "style": {
-                    "classes": "font-label",
+                    "classes": "Fonts/Label",
                     "fontSize": "11px",
                     "letterSpacing": "0.04em",
                     "textAlign": "center",
@@ -578,11 +588,9 @@
                   "name": "AvgValue"
                 },
                 "props": {
-                  "text": "\u2014",
+                  "text": "—",
                   "style": {
-                    "classes": "font-value",
-                    "fontSize": "13px",
-                    "fontWeight": "600",
+                    "classes": "Fonts/Value fs-13 fw-600",
                     "textAlign": "center"
                   }
                 },
@@ -592,7 +600,8 @@
                       "type": "property",
                       "config": {
                         "path": "view.custom.spark.avg"
-                      }
+                      },
+                      "overlayOptOut": true
                     }
                   }
                 }
@@ -601,6 +610,43 @@
           }
         ]
       }
-    ]
+    ],
+    "propConfig": {
+      "meta.contextMenu.items": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "coalesce({session.custom.TicketLogAccess}, false)"
+          },
+          "transforms": [
+            {
+              "type": "script",
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = str(self.view.params.tagPath or '')\n\texcept:\n\t\tpass\n\tview_name = self.view.id.split('@')[0]\n\titems = []\n\tif value:\n\t\tlogged = tagPath if tagPath.strip() else 'No TagPath: ' + view_name.split('/')[-1]\n\t\titems.append({\n\t\t\t\"text\": 'Ticket Logger',\n\t\t\t\"icon\": {\"path\": 'material/info', \"color\": \"--neutral-80\", \"style\": {}},\n\t\t\t\"style\": {\"classes\": \"bg-component Fonts/Value\", \"height\": 24, \"width\": 170},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\"type\": 'ticketLog', \"payload\": {'tagPath': logged, 'viewName': view_name, 'sender': self.view.id}, \"scope\": 'page'}\n\t\t})\n\treturn items"
+            }
+          ]
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "len({this.meta.contextMenu.items}) > 0"
+          }
+        }
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    }
   }
 }

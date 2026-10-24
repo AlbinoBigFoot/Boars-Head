@@ -1,0 +1,144 @@
+{
+  "custom": {},
+  "params": {},
+  "props": {
+    "defaultSize": {
+      "height": 1080,
+      "width": 1920
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "bg-page",
+        "height": "100%",
+        "width": "100%",
+        "overflow": "hidden",
+        "padding": "16px 24px 24px 24px",
+        "boxSizing": "border-box",
+        "gap": "10px"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Header"
+        },
+        "position": {
+          "shrink": 0,
+          "basis": "36px"
+        },
+        "props": {
+          "direction": "row",
+          "alignItems": "center",
+          "style": {
+            "gap": "12px"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Title"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "HLCO Safety Relay 3D",
+              "style": {
+                "classes": "fs-18 fw-700"
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Note"
+            },
+            "position": {
+              "grow": 1,
+              "basis": "0px"
+            },
+            "props": {
+              "text": "Read Only · Drag To Orbit, Scroll To Zoom, Click The Relay To Zoom, Hover A Terminal",
+              "style": {
+                "classes": "fs-12 fw-400 text-muted"
+              }
+            }
+          },
+          {
+            "type": "ia.input.button",
+            "meta": {
+              "name": "View2d"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "2D View",
+              "image": {
+                "icon": {
+                  "path": "material/view_module"
+                },
+                "width": 16,
+                "height": 16
+              },
+              "style": {
+                "classes": "faceplate-cmd-btn Fonts/Label",
+                "height": "30px"
+              }
+            },
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\t# UI navigation only: back to the 2D safety relay page\n\tsystem.perspective.navigate('/safety-relay')"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ia.display.iframe",
+        "meta": {
+          "name": "Relay3d"
+        },
+        "position": {
+          "grow": 1,
+          "basis": "0px"
+        },
+        "props": {
+          "allowFullScreen": true,
+          "style": {
+            "width": "100%",
+            "height": "100%",
+            "border": "1px solid var(--neutral-30)",
+            "borderRadius": "4px",
+            "overflow": "hidden"
+          }
+        },
+        "propConfig": {
+          "props.src": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "'/system/webdev/BH/relay3d/view?plc=RCP1&device=HLCO%20Safety%20Relay&theme=' + if(indexOf(lower(coalesce({session.props.theme}, '')), 'dark') = 0, 'dark', 'light')"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,163 @@
+{
+  "custom": {},
+  "params": {},
+  "props": {
+    "defaultSize": {
+      "height": 1080,
+      "width": 1920
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "bg-page",
+        "height": "100%",
+        "width": "100%",
+        "overflow": "hidden",
+        "padding": "16px 24px",
+        "boxSizing": "border-box",
+        "gap": "8px"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Header"
+        },
+        "position": {
+          "basis": "36px",
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "alignItems": "center",
+          "style": {
+            "gap": "12px"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Spacer"
+            },
+            "position": {
+              "shrink": 0,
+              "basis": "120px"
+            },
+            "props": {
+              "direction": "row"
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Title"
+            },
+            "position": {
+              "grow": 1,
+              "basis": "0px"
+            },
+            "props": {
+              "text": "Safety Relay",
+              "style": {
+                "classes": "Fonts/Title fs-20 fw-700",
+                "textAlign": "center"
+              }
+            }
+          },
+          {
+            "type": "ia.input.button",
+            "meta": {
+              "name": "View3d"
+            },
+            "position": {
+              "shrink": 0,
+              "basis": "120px"
+            },
+            "props": {
+              "text": "3D View",
+              "image": {
+                "icon": {
+                  "path": "material/3d_rotation"
+                },
+                "width": 16,
+                "height": 16
+              },
+              "style": {
+                "classes": "faceplate-cmd-btn Fonts/Label",
+                "height": "30px"
+              }
+            },
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\t# UI navigation only: the read-only 3D safety relay page\n\tsystem.perspective.navigate('/safety-relay/3d')"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Body"
+        },
+        "position": {
+          "grow": 1,
+          "basis": "0px"
+        },
+        "props": {
+          "direction": "column",
+          "justify": "center",
+          "alignItems": "center",
+          "style": {
+            "overflow": "hidden",
+            "minHeight": "0px",
+            "paddingBottom": "clamp(0px, 6vh, 80px)"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "SafetyRelay"
+            },
+            "position": {
+              "basis": "404px",
+              "shrink": 0
+            },
+            "props": {
+              "path": "02_Components/01_Devices/SafetyRelay",
+              "useDefaultViewWidth": false,
+              "useDefaultViewHeight": false,
+              "params": {
+                "tagPath": "[default]Boars_Head/GrovePort/Machine Room/SafetyRelays/HLCO Safety Relay",
+                "label": "",
+                "state": "Normal",
+                "input0Name": "In 0: LSS HLCO",
+                "input1Name": "In 1: HSS HLCO"
+              },
+              "style": {
+                "classes": "safety-relay-zoom",
+                "width": "536px",
+                "overflow": "visible"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

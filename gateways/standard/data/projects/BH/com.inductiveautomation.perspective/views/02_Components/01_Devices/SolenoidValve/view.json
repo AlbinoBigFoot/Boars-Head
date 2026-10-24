@@ -7,13 +7,22 @@
     },
     "label": "",
     "metadata": "",
-    "values": {}
+    "values": {},
+    "oos": false,
+    "orientation": "vertical",
+    "pax": ""
   },
   "params": {
     "faceplate": null,
     "feedback": true,
     "label": "",
-    "tagPath": ""
+    "tagPath": "",
+    "orientation": {
+      "horizontal": false,
+      "horizontalReverse": false,
+      "vertical": true,
+      "verticalReverse": false
+    }
   },
   "propConfig": {
     "custom.alarm": {
@@ -103,7 +112,7 @@
     "custom.values.analog": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} \u003d \u0027\u0027,\n\t\u0027\u0027,\n\t{view.params.tagPath} + \u0027/TravelTime/Value\u0027)"
+          "expression": "if({view.params.tagPath} \u003d \u0027\u0027,\n\t\u0027\u0027,\n\t{view.params.tagPath} + \u0027/Valve/Cfg_TransitStallT\u0027)"
         },
         "type": "expr"
       }
@@ -111,7 +120,7 @@
     "custom.values.commLoss": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} \u003d \u0027\u0027,\n\tfalse,\n\tisBad(tag({view.params.tagPath} + \u0027/Status/Value\u0027)))"
+          "expression": "if(coalesce({view.custom.oos}, false),\n\tfalse,\n\t(if({view.params.tagPath} \u003d \u0027\u0027,\n\tfalse,\n\tif(isGood(tag({view.params.tagPath} + \u0027/Valve/Sts_IOFault\u0027)),\n\t\ttag({view.params.tagPath} + \u0027/Valve/Sts_IOFault\u0027) \u003d true,\n\t\tif(isGood(tag({view.params.tagPath} + \u0027/Valve/Val_Sts\u0027)),\n\t\t\tfalse,\n\t\t\tfalse)))))"
         },
         "type": "expr"
       }
@@ -119,7 +128,7 @@
     "custom.values.status": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} \u003d \u0027\u0027,\n\t\u0027\u0027,\n\t{view.params.tagPath} + \u0027/Status/Value\u0027)"
+          "expression": "if({view.params.tagPath} \u003d \u0027\u0027,\n\t\u0027\u0027,\n\t{view.params.tagPath} + \u0027/Valve/Val_Sts\u0027)"
         },
         "type": "expr"
       }
@@ -139,6 +148,60 @@
     "params.tagPath": {
       "paramDirection": "input",
       "persistent": true
+    },
+    "custom.oos": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, \u0027\u0027) \u003d \u0027\u0027, false, !coalesce(try(toBoolean(tag({view.params.tagPath} + \u0027.Enabled\u0027)), true), true))"
+        }
+      },
+      "persistent": true
+    },
+    "params.orientation": {
+      "paramDirection": "inout",
+      "persistent": true
+    },
+    "params.orientation.horizontal": {
+      "onChange": {
+        "enabled": null,
+        "script": "\tif currentValue.value:\n\t\tself.params.orientation.horizontalReverse \u003d False\n\t\tself.params.orientation.vertical \u003d False\n\t\tself.params.orientation.verticalReverse \u003d False\n\telif not self.params.orientation.vertical and not self.params.orientation.horizontalReverse and not self.params.orientation.verticalReverse:\n\t\tself.params.orientation.vertical \u003d True"
+      }
+    },
+    "params.orientation.horizontalReverse": {
+      "onChange": {
+        "enabled": null,
+        "script": "\tif currentValue.value:\n\t\tself.params.orientation.horizontal \u003d False\n\t\tself.params.orientation.vertical \u003d False\n\t\tself.params.orientation.verticalReverse \u003d False\n\telif not self.params.orientation.vertical and not self.params.orientation.horizontal and not self.params.orientation.verticalReverse:\n\t\tself.params.orientation.vertical \u003d True"
+      }
+    },
+    "params.orientation.vertical": {
+      "onChange": {
+        "enabled": null,
+        "script": "\tif currentValue.value:\n\t\tself.params.orientation.horizontal \u003d False\n\t\tself.params.orientation.horizontalReverse \u003d False\n\t\tself.params.orientation.verticalReverse \u003d False\n\telif not self.params.orientation.horizontalReverse and not self.params.orientation.horizontal and not self.params.orientation.verticalReverse:\n\t\tself.params.orientation.horizontal \u003d True"
+      }
+    },
+    "params.orientation.verticalReverse": {
+      "onChange": {
+        "enabled": null,
+        "script": "\tif currentValue.value:\n\t\tself.params.orientation.horizontalReverse \u003d False\n\t\tself.params.orientation.horizontal \u003d False\n\t\tself.params.orientation.vertical \u003d False\n\telif not self.params.orientation.vertical and not self.params.orientation.horizontalReverse and not self.params.orientation.horizontal:\n\t\tself.params.orientation.vertical \u003d True"
+      }
+    },
+    "custom.orientation": {
+      "binding": {
+        "config": {
+          "expression": "if({view.params.orientation.horizontal},\n   \u0027horizontal\u0027,\n   if({view.params.orientation.horizontalReverse},\n      \u0027horizontal-reverse\u0027,\n      if({view.params.orientation.verticalReverse},\n         \u0027vertical-reverse\u0027,\n         \u0027vertical\u0027)))"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "custom.pax": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, \u0027\u0027) \u003d \u0027\u0027, \u0027\u0027, case(toStr(coalesce(try(tag({view.params.tagPath} + \u0027.TypeId\u0027), \u0027\u0027), \u0027\u0027)), \u0027Devices/Pump\u0027, \u0027Motor\u0027, \u0027Devices/Valve\u0027, \u0027Valve\u0027, \u0027Devices/Tank\u0027, \u0027Tank\u0027, \u0027Devices/Compressor\u0027, \u0027Comp\u0027, \u0027Devices/Evaporator\u0027, \u0027CG\u0027, \u0027Devices/ExhaustFan\u0027, \u0027EF\u0027, \u0027Devices/LTU\u0027, \u0027LTU\u0027, \u0027Devices/SafetyRelay\u0027, \u0027Relay\u0027, \u0027Devices/SuctionSequence\u0027, \u0027Seq\u0027, \u0027Devices/DischargeSequence\u0027, \u0027Dsq\u0027, \u0027Devices/Sensor\u0027, if(coalesce(try(toBoolean(tag({view.params.tagPath} + \u0027/AIn.Enabled\u0027)), false), false), \u0027AIn\u0027, if(coalesce(try(toBoolean(tag({view.params.tagPath} + \u0027/AInRef.Enabled\u0027)), false), false), \u0027AInRef\u0027, \u0027\u0027)), \u0027Devices/DiscreteInput\u0027, if(coalesce(try(toBoolean(tag({view.params.tagPath} + \u0027/DIn.Enabled\u0027)), false), false), \u0027DIn\u0027, \u0027\u0027), \u0027\u0027))"
+        }
+      }
     }
   },
   "props": {
@@ -204,7 +267,7 @@
             "props": {
               "align": "center",
               "style": {
-                "classes": "font-value",
+                "classes": "Fonts/Value",
                 "cursor": "pointer",
                 "fontSize": "11px",
                 "fontWeight": "700",
@@ -227,7 +290,7 @@
               "meta.visible": {
                 "binding": {
                   "config": {
-                    "expression": "!(isNull({view.params.faceplate}) || {view.params.faceplate} \u003d \u0027\u0027)"
+                    "expression": "coalesce({session.custom.CanOpenFaceplates}, false) \u0026\u0026 (!(isNull({view.params.faceplate}) || {view.params.faceplate} \u003d \u0027\u0027))"
                   },
                   "type": "expr"
                 }
@@ -265,7 +328,8 @@
           "justify": "center",
           "style": {
             "minHeight": "20px",
-            "width": "100%"
+            "width": "100%",
+            "classes": "valve-label"
           }
         },
         "type": "ia.container.flex"
@@ -339,7 +403,17 @@
               },
               "viewBox": "0 0 50 50"
             },
-            "type": "ia.shapes.svg"
+            "type": "ia.shapes.svg",
+            "propConfig": {
+              "props.style.transform": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "case(coalesce({view.custom.orientation}, \u0027vertical\u0027),\n\t\u0027vertical-reverse\u0027, \u0027scaleY(-1)\u0027,\n\t\u0027horizontal\u0027, \u0027rotate(-90deg)\u0027,\n\t\u0027horizontal-reverse\u0027, \u0027rotate(90deg)\u0027,\n\t\u0027none\u0027)"
+                  }
+                }
+              }
+            }
           },
           {
             "meta": {
@@ -361,9 +435,10 @@
               "props.style.classes": {
                 "binding": {
                   "config": {
-                    "expression": "if(coalesce({view.custom.values.commLoss}, false),\n\t\u0027\u0027,\n\tif(coalesce({view.custom.alarm.active}, false),\n\t\t\u0027alarm-frame alarm-border alarm-priority-\u0027 +\n\t\t\tcase(coalesce({view.custom.alarm.priority}, 10),\n\t\t\t\t1, \u0027critical\u0027,\n\t\t\t\t2, \u0027high\u0027,\n\t\t\t\t3, \u0027medium\u0027,\n\t\t\t\t4, \u0027low\u0027,\n\t\t\t\t\u0027critical\u0027),\n\t\t\u0027alarm-frame\u0027))"
+                    "expression": "if(coalesce({view.custom.values.commLoss}, false),\n\t\u0027\u0027,\n\tif(coalesce({view.custom.alarm.active}, false),\n\t\t\u0027alarm-frame alarm-border alarm-priority-\u0027 +\n\t\t\tcase(coalesce({view.custom.alarm.priority}, 10),\n\t\t\t\t4, \u0027critical\u0027,\n\t\t\t\t3, \u0027high\u0027,\n\t\t\t\t2, \u0027medium\u0027,\n\t\t\t\t1, \u0027low\u0027,\n\t\t\t\t\u0027low\u0027),\n\t\t\u0027alarm-frame\u0027))"
                   },
-                  "type": "expr"
+                  "type": "expr",
+                  "overlayOptOut": true
                 }
               }
             },
@@ -429,9 +504,10 @@
           "props.style.classes": {
             "binding": {
               "config": {
-                "expression": "if(coalesce({view.custom.values.commLoss}, false),\n\t\u0027device-graphic device-comm-loss\u0027,\n\t\u0027device-graphic\u0027)"
+                "expression": "((if(coalesce({view.custom.values.commLoss}, false),\n\t\u0027device-graphic device-comm-loss\u0027,\n\t\u0027device-graphic\u0027)) + if(coalesce({view.custom.oos}, false), \u0027 device-oos\u0027, \u0027\u0027)) + if(coalesce({session.custom.CanOpenFaceplates}, false) \u0026\u0026 (len(trim(coalesce({view.params.faceplate}, \u0027\u0027))) \u003e 0), \u0027 faceplate-hover\u0027, \u0027\u0027)"
               },
-              "type": "expr"
+              "type": "expr",
+              "overlayOptOut": true
             }
           }
         },
@@ -469,6 +545,14 @@
               },
               "type": "expr"
             }
+          },
+          "props.style.visibility": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if(coalesce({view.custom.oos}, false), \u0027hidden\u0027, \u0027visible\u0027)"
+              }
+            }
           }
         },
         "props": {
@@ -485,7 +569,8 @@
             "height": "18px",
             "minHeight": "18px",
             "overflow": "visible",
-            "width": "100%"
+            "width": "100%",
+            "classes": "valve-value"
           },
           "useDefaultViewHeight": true
         },
@@ -515,6 +600,14 @@
               },
               "type": "expr"
             }
+          },
+          "props.params.outOfService": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "view.custom.oos"
+              }
+            }
           }
         },
         "props": {
@@ -524,9 +617,13 @@
             "height": "22px",
             "minHeight": "22px",
             "overflow": "visible",
-            "width": "100%"
+            "width": "100%",
+            "classes": "valve-status"
           },
-          "useDefaultViewHeight": true
+          "useDefaultViewHeight": true,
+          "params": {
+            "outOfService": false
+          }
         },
         "type": "ia.display.view"
       }
@@ -554,6 +651,71 @@
         "width": "100%"
       }
     },
-    "type": "ia.container.flex"
+    "type": "ia.container.flex",
+    "propConfig": {
+      "meta.contextMenu.items": {
+        "binding": {
+          "type": "expr-struct",
+          "config": {
+            "struct": {
+              "ticket": "coalesce({session.custom.TicketLogAccess}, false)",
+              "admin": "coalesce({session.custom.Permissions.OutOfService.Set}, false)",
+              "history": "coalesce({session.custom.Permissions.OutOfService.View}, false)",
+              "oos": "coalesce({view.custom.oos}, false)"
+            },
+            "waitOnAll": false
+          },
+          "transforms": [
+            {
+              "type": "script",
+              "code": "\ttagPath \u003d \u0027\u0027\n\ttry:\n\t\ttagPath \u003d str(self.view.params.tagPath or \u0027\u0027)\n\texcept:\n\t\tpass\n\tview_name \u003d self.view.id.split(\u0027@\u0027)[0]\n\tdef item(text, icon, msg_type, payload, scope):\n\t\treturn {\n\t\t\t\"text\": text,\n\t\t\t\"icon\": {\"path\": icon, \"color\": \"--neutral-80\", \"style\": {}},\n\t\t\t\"style\": {\"classes\": \"bg-component Fonts/Value\", \"height\": 24, \"width\": 170},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\"type\": msg_type, \"payload\": payload, \"scope\": scope}\n\t\t}\n\titems \u003d []\n\tif value[\u0027ticket\u0027]:\n\t\tlogged \u003d tagPath if tagPath.strip() else \u0027No TagPath: \u0027 + view_name.split(\u0027/\u0027)[-1]\n\t\titems.append(item(\u0027Ticket Logger\u0027, \u0027material/info\u0027, \u0027ticketLog\u0027,\n\t\t\t{\u0027tagPath\u0027: logged, \u0027viewName\u0027: view_name, \u0027sender\u0027: self.view.id}, \u0027page\u0027))\n\tif value[\u0027admin\u0027] and tagPath.strip():\n\t\tif value[\u0027oos\u0027]:\n\t\t\titems.append(item(\u0027Return To Service\u0027, \u0027material/info\u0027, \u0027oosToggle\u0027, {\u0027tagPath\u0027: tagPath, \u0027sender\u0027: self.view.id}, \u0027page\u0027))\n\t\telse:\n\t\t\titems.append(item(\u0027Take Out Of Service\u0027, \u0027material/info\u0027, \u0027oosToggle\u0027,\n\t\t\t\t{\u0027tagPath\u0027: tagPath, \u0027sender\u0027: self.view.id}, \u0027page\u0027))\n\tif value[\u0027history\u0027] and tagPath.strip():\n\t\titems.append(item(\u0027Out Of Service History\u0027, \u0027material/info\u0027, \u0027oosHistory\u0027,\n\t\t\t{\u0027tagPath\u0027: tagPath, \u0027sender\u0027: self.view.id}, \u0027page\u0027))\n\treturn items"
+            }
+          ]
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "len({this.meta.contextMenu.items}) \u003e 0"
+          }
+        }
+      },
+      "props.style.classes": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "\u0027valve-component valve-\u0027 + coalesce({view.custom.orientation}, \u0027vertical\u0027)"
+          }
+        }
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender \u003d payload.get(\u0027sender\u0027)\n\tif sender and sender !\u003d self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload[\u0027tagPath\u0027], payload[\u0027viewName\u0027])",
+          "sessionScope": false,
+          "viewScope": false
+        },
+        {
+          "messageType": "oosToggle",
+          "pageScope": true,
+          "script": "\t# HMI Out Of Service (OutOfService/Set permission) - memo dialog; shared.OutOfService logs + audits the change\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender \u003d payload.get(\u0027sender\u0027)\n\tif sender and sender !\u003d self.view.id:\n\t\treturn\n\tif not shared.Security.allowed(self.session, \u0027OutOfService\u0027, \u0027Set\u0027):\n\t\treturn\n\ttp \u003d str(self.view.params.tagPath or \u0027\u0027)\n\t# page-scoped: every component on the page hears it - only the one that was right-clicked acts\n\tif not tp or str(payload.get(\u0027tagPath\u0027) or \u0027\u0027) !\u003d tp:\n\t\treturn\n\t# required memo (+ reason when taking it out): the dialog\u0027s Confirm calls shared.OutOfService.setOutOfService\n\tshared.OutOfService.openDialog(tp, self.view.id.split(\u0027@\u0027)[0])",
+          "sessionScope": false,
+          "viewScope": false
+        },
+        {
+          "messageType": "oosHistory",
+          "pageScope": true,
+          "script": "\t# Out Of Service History (OutOfService/View permission) - OOS log page filtered to this device\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender \u003d payload.get(\u0027sender\u0027)\n\tif sender and sender !\u003d self.view.id:\n\t\treturn\n\tif not shared.Security.allowed(self.session, \u0027OutOfService\u0027, \u0027View\u0027):\n\t\treturn\n\ttp \u003d str(self.view.params.tagPath or \u0027\u0027)\n\tif not tp or str(payload.get(\u0027tagPath\u0027) or \u0027\u0027) !\u003d tp:\n\t\treturn\n\tshared.OutOfService.openHistory(tp)",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    }
   }
 }

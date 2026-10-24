@@ -1,0 +1,714 @@
+{
+  "custom": {},
+  "params": {
+    "tagPath": "",
+    "label": "",
+    "historized": false,
+    "inTrend": false,
+    "ticketLog": false,
+    "viewName": ""
+  },
+  "props": {
+    "defaultSize": {
+      "width": 236,
+      "height": 260
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "position": {},
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "trend-ctx-menu"
+      }
+    },
+    "events": {
+      "dom": {
+        "onKeyDown": {
+          "type": "script",
+          "scope": "G",
+          "config": {
+            "script": "\tif str(getattr(event, 'key', '')) == 'Escape':\n\t\tshared.TrendContext.close_menu()"
+          }
+        }
+      },
+      "system": {
+        "onStartup": {
+          "type": "script",
+          "scope": "G",
+          "config": {
+            "script": "\ttry:\n\t\tself.getChild('CopyTagPath').focus()\n\texcept:\n\t\tpass"
+          }
+        }
+      }
+    },
+    "children": [
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Header"
+        },
+        "position": {
+          "basis": "44px",
+          "shrink": 0
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "classes": "trend-ctx-head"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Title"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "Fonts/Label trend-ctx-title"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.params.label"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Path"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "trend-ctx-path"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.params.tagPath"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Sep0"
+        },
+        "position": {
+          "basis": "9px",
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "style": {
+            "classes": "trend-ctx-sep"
+          }
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "true"
+              }
+            }
+          }
+        },
+        "children": []
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "AddToTrend"
+        },
+        "position": {
+          "basis": "30px",
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "alignItems": "center",
+          "style": {
+            "classes": "trend-ctx-row"
+          }
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "coalesce({view.params.historized}, false) && !coalesce({view.params.inTrend}, false)"
+              }
+            }
+          }
+        },
+        "events": {
+          "dom": {
+            "onClick": {
+              "type": "script",
+              "scope": "G",
+              "config": {
+                "script": "\tshared.TrendContext.menu_action(self, 'add')"
+              }
+            }
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.icon",
+            "meta": {
+              "name": "Icon"
+            },
+            "position": {
+              "basis": "16px",
+              "shrink": 0
+            },
+            "props": {
+              "path": "material/add",
+              "style": {
+                "classes": "trend-ctx-icon",
+                "height": "16px",
+                "width": "16px"
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Text"
+            },
+            "position": {
+              "grow": 1,
+              "shrink": 1,
+              "basis": "0px"
+            },
+            "props": {
+              "text": "Add To Trend",
+              "style": {
+                "classes": "Fonts/Value trend-ctx-text"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "RemoveFromTrend"
+        },
+        "position": {
+          "basis": "30px",
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "alignItems": "center",
+          "style": {
+            "classes": "trend-ctx-row"
+          }
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "coalesce({view.params.historized}, false) && coalesce({view.params.inTrend}, false)"
+              }
+            }
+          }
+        },
+        "events": {
+          "dom": {
+            "onClick": {
+              "type": "script",
+              "scope": "G",
+              "config": {
+                "script": "\tshared.TrendContext.menu_action(self, 'remove')"
+              }
+            }
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.icon",
+            "meta": {
+              "name": "Icon"
+            },
+            "position": {
+              "basis": "16px",
+              "shrink": 0
+            },
+            "props": {
+              "path": "material/remove",
+              "style": {
+                "classes": "trend-ctx-icon",
+                "height": "16px",
+                "width": "16px"
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Text"
+            },
+            "position": {
+              "grow": 1,
+              "shrink": 1,
+              "basis": "0px"
+            },
+            "props": {
+              "text": "Remove From Trend",
+              "style": {
+                "classes": "Fonts/Value trend-ctx-text"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "NotHistorized"
+        },
+        "position": {
+          "basis": "30px",
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "alignItems": "center",
+          "style": {
+            "classes": "trend-ctx-row trend-ctx-row-muted"
+          }
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "!coalesce({view.params.historized}, false)"
+              }
+            }
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.icon",
+            "meta": {
+              "name": "Icon"
+            },
+            "position": {
+              "basis": "16px",
+              "shrink": 0
+            },
+            "props": {
+              "path": "material/block",
+              "style": {
+                "classes": "trend-ctx-icon trend-ctx-muted",
+                "height": "16px",
+                "width": "16px"
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Text"
+            },
+            "position": {
+              "grow": 1,
+              "shrink": 1,
+              "basis": "0px"
+            },
+            "props": {
+              "text": "Not Historized",
+              "style": {
+                "classes": "Fonts/Value trend-ctx-text trend-ctx-muted"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "OpenTrend"
+        },
+        "position": {
+          "basis": "30px",
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "alignItems": "center",
+          "style": {
+            "classes": "trend-ctx-row"
+          }
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "coalesce({view.params.historized}, false)"
+              }
+            }
+          }
+        },
+        "events": {
+          "dom": {
+            "onClick": {
+              "type": "script",
+              "scope": "G",
+              "config": {
+                "script": "\tshared.TrendContext.menu_action(self, 'open')"
+              }
+            }
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.icon",
+            "meta": {
+              "name": "Icon"
+            },
+            "position": {
+              "basis": "16px",
+              "shrink": 0
+            },
+            "props": {
+              "path": "material/show_chart",
+              "style": {
+                "classes": "trend-ctx-icon",
+                "height": "16px",
+                "width": "16px"
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Text"
+            },
+            "position": {
+              "grow": 1,
+              "shrink": 1,
+              "basis": "0px"
+            },
+            "props": {
+              "text": "Open Trend",
+              "style": {
+                "classes": "Fonts/Value trend-ctx-text"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "QuickHistory"
+        },
+        "position": {
+          "basis": "30px",
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "alignItems": "center",
+          "style": {
+            "classes": "trend-ctx-row"
+          }
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "coalesce({view.params.historized}, false)"
+              }
+            }
+          }
+        },
+        "events": {
+          "dom": {
+            "onClick": {
+              "type": "script",
+              "scope": "G",
+              "config": {
+                "script": "\tshared.TrendContext.menu_action(self, 'quick')"
+              }
+            }
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.icon",
+            "meta": {
+              "name": "Icon"
+            },
+            "position": {
+              "basis": "16px",
+              "shrink": 0
+            },
+            "props": {
+              "path": "material/history",
+              "style": {
+                "classes": "trend-ctx-icon",
+                "height": "16px",
+                "width": "16px"
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Text"
+            },
+            "position": {
+              "grow": 1,
+              "shrink": 1,
+              "basis": "0px"
+            },
+            "props": {
+              "text": "Quick History",
+              "style": {
+                "classes": "Fonts/Value trend-ctx-text"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Sep1"
+        },
+        "position": {
+          "basis": "9px",
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "style": {
+            "classes": "trend-ctx-sep"
+          }
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "true"
+              }
+            }
+          }
+        },
+        "children": []
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "CopyTagPath"
+        },
+        "position": {
+          "basis": "30px",
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "alignItems": "center",
+          "style": {
+            "classes": "trend-ctx-row"
+          }
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "true"
+              }
+            }
+          }
+        },
+        "events": {
+          "dom": {
+            "onClick": {
+              "type": "script",
+              "scope": "G",
+              "config": {
+                "script": "\tshared.TrendContext.menu_action(self, 'copy')"
+              }
+            }
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.icon",
+            "meta": {
+              "name": "Icon"
+            },
+            "position": {
+              "basis": "16px",
+              "shrink": 0
+            },
+            "props": {
+              "path": "material/content_copy",
+              "style": {
+                "classes": "trend-ctx-icon",
+                "height": "16px",
+                "width": "16px"
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Text"
+            },
+            "position": {
+              "grow": 1,
+              "shrink": 1,
+              "basis": "0px"
+            },
+            "props": {
+              "text": "Copy Tag Path",
+              "style": {
+                "classes": "Fonts/Value trend-ctx-text"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "TicketLogger"
+        },
+        "position": {
+          "basis": "30px",
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "alignItems": "center",
+          "style": {
+            "classes": "trend-ctx-row"
+          }
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "coalesce({view.params.ticketLog}, false)"
+              }
+            }
+          }
+        },
+        "events": {
+          "dom": {
+            "onClick": {
+              "type": "script",
+              "scope": "G",
+              "config": {
+                "script": "\tshared.TrendContext.menu_action(self, 'ticket')"
+              }
+            }
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.icon",
+            "meta": {
+              "name": "Icon"
+            },
+            "position": {
+              "basis": "16px",
+              "shrink": 0
+            },
+            "props": {
+              "path": "material/info",
+              "style": {
+                "classes": "trend-ctx-icon",
+                "height": "16px",
+                "width": "16px"
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Text"
+            },
+            "position": {
+              "grow": 1,
+              "shrink": 1,
+              "basis": "0px"
+            },
+            "props": {
+              "text": "Ticket Logger",
+              "style": {
+                "classes": "Fonts/Value trend-ctx-text"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "propConfig": {
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.label": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.historized": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.inTrend": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.ticketLog": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.viewName": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  }
+}

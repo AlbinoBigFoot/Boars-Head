@@ -1,0 +1,420 @@
+{
+  "custom": {},
+  "params": {
+    "sec": {
+      "first": false,
+      "hint": "",
+      "label": "",
+      "last": false,
+      "n": 10,
+      "on": false,
+      "orderBy": "",
+      "orderOptions": [],
+      "topN": "",
+      "topNOptions": [],
+      "type": ""
+    }
+  },
+  "propConfig": {
+    "params.sec": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 44,
+      "width": 420
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\ts = self.view.params.sec\n\tsystem.perspective.sendMessage('rptEdit', {'kind': 'section', 'type': s.type, 'on': bool(self.props.selected)}, scope='page')\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "On"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 1,
+              "shrink": 1
+            },
+            "propConfig": {
+              "props.selected": {
+                "binding": {
+                  "config": {
+                    "expression": "coalesce({view.params.sec.on}, false)"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "expression": "coalesce({view.params.sec.label}, '')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "classes": "form-check",
+                "whiteSpace": "nowrap"
+              },
+              "text": ""
+            },
+            "type": "ia.input.checkbox"
+          },
+          {
+            "meta": {
+              "name": "Hint"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "config": {
+                    "expression": "!(coalesce({view.params.sec.type}, '') = 'topn')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "expression": "coalesce({view.params.sec.hint}, '')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "classes": "report-choice-detail"
+              },
+              "text": ""
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\ts = self.view.params.sec\n\tsystem.perspective.sendMessage('rptEdit', {'kind': 'move', 'type': s.type, 'dir': -1}, scope='page')\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Up"
+            },
+            "position": {
+              "basis": "18px",
+              "grow": 0,
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.style.opacity": {
+                "binding": {
+                  "config": {
+                    "expression": "if(coalesce({view.params.sec.first}, false), 0.25, 1)"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "color": "var(--text-muted)",
+              "path": "material/arrow_upward",
+              "style": {
+                "cursor": "pointer",
+                "height": "18px",
+                "width": "18px"
+              }
+            },
+            "type": "ia.display.icon"
+          },
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\ts = self.view.params.sec\n\tsystem.perspective.sendMessage('rptEdit', {'kind': 'move', 'type': s.type, 'dir': 1}, scope='page')\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Down"
+            },
+            "position": {
+              "basis": "18px",
+              "grow": 0,
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.style.opacity": {
+                "binding": {
+                  "config": {
+                    "expression": "if(coalesce({view.params.sec.last}, false), 0.25, 1)"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "color": "var(--text-muted)",
+              "path": "material/arrow_downward",
+              "style": {
+                "cursor": "pointer",
+                "height": "18px",
+                "width": "18px"
+              }
+            },
+            "type": "ia.display.icon"
+          }
+        ],
+        "meta": {
+          "name": "Line1"
+        },
+        "position": {
+          "basis": "40px",
+          "grow": 0,
+          "shrink": 0
+        },
+        "props": {
+          "alignItems": "center",
+          "direction": "row",
+          "style": {
+            "gap": "8px",
+            "minWidth": "0"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "Show"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "classes": "report-choice-detail"
+              },
+              "text": "Show"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "N"
+            },
+            "position": {
+              "basis": "64px",
+              "grow": 0,
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.value": {
+                "binding": {
+                  "config": {
+                    "expression": "coalesce({view.params.sec.n}, 10)"
+                  },
+                  "type": "expr"
+                },
+                "onChange": {
+                  "enabled": null,
+                  "script": "\tif str(origin) != 'Browser':\n\t\treturn\n\ts = self.view.params.sec\n\tsystem.perspective.sendMessage('rptEdit', {'kind': 'sectionSet', 'type': s.type, 'key': 'n', 'value': int(currentValue.value or 10)}, scope='page')\n"
+                }
+              }
+            },
+            "props": {
+              "format": "0",
+              "inputBounds": {
+                "maximum": 100,
+                "minimum": 1
+              },
+              "spinner": {
+                "enabled": true
+              },
+              "style": {
+                "classes": "form-input",
+                "height": "28px",
+                "minWidth": "0"
+              }
+            },
+            "type": "ia.input.numeric-entry-field"
+          },
+          {
+            "meta": {
+              "name": "TopN"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 3,
+              "shrink": 1
+            },
+            "propConfig": {
+              "props.options": {
+                "binding": {
+                  "config": {
+                    "path": "view.params.sec.topNOptions"
+                  },
+                  "type": "property"
+                }
+              },
+              "props.value": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.sec.topN}"
+                  },
+                  "type": "expr"
+                },
+                "onChange": {
+                  "enabled": null,
+                  "script": "\tif str(origin) != 'Browser':\n\t\treturn\n\ts = self.view.params.sec\n\tsystem.perspective.sendMessage('rptEdit', {'kind': 'sectionSet', 'type': s.type, 'key': 'topN', 'value': currentValue.value}, scope='page')\n"
+                }
+              }
+            },
+            "props": {
+              "showClearIcon": false,
+              "style": {
+                "classes": "form-input",
+                "height": "28px",
+                "minWidth": "0"
+              }
+            },
+            "type": "ia.input.dropdown"
+          },
+          {
+            "meta": {
+              "name": "By"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "classes": "report-choice-detail"
+              },
+              "text": "By"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "OrderBy"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 2,
+              "shrink": 1
+            },
+            "propConfig": {
+              "props.options": {
+                "binding": {
+                  "config": {
+                    "path": "view.params.sec.orderOptions"
+                  },
+                  "type": "property"
+                }
+              },
+              "props.value": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.sec.orderBy}"
+                  },
+                  "type": "expr"
+                },
+                "onChange": {
+                  "enabled": null,
+                  "script": "\tif str(origin) != 'Browser':\n\t\treturn\n\ts = self.view.params.sec\n\tsystem.perspective.sendMessage('rptEdit', {'kind': 'sectionSet', 'type': s.type, 'key': 'orderBy', 'value': currentValue.value}, scope='page')\n"
+                }
+              }
+            },
+            "props": {
+              "showClearIcon": false,
+              "style": {
+                "classes": "form-input",
+                "height": "28px",
+                "minWidth": "0"
+              }
+            },
+            "type": "ia.input.dropdown"
+          }
+        ],
+        "meta": {
+          "name": "TopNSettings"
+        },
+        "position": {
+          "basis": "32px",
+          "grow": 0,
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({view.params.sec.type}, '') = 'topn'"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "alignItems": "center",
+          "direction": "row",
+          "style": {
+            "gap": "8px",
+            "minWidth": "0",
+            "paddingLeft": "28px"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "position": {
+      "shrink": 0
+    },
+    "props": {
+      "alignItems": "stretch",
+      "direction": "column",
+      "style": {
+        "borderBottomColor": "var(--border)",
+        "borderBottomStyle": "solid",
+        "borderBottomWidth": "1px",
+        "minWidth": "0",
+        "overflow": "visible",
+        "paddingBottom": "4px"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

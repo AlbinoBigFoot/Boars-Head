@@ -1,0 +1,1594 @@
+{
+  "custom": {
+    "rev": 0,
+    "data": null,
+    "draft": null,
+    "sel": -1,
+    "edit": {
+      "type": "",
+      "area": "",
+      "destination": "Monday",
+      "boardId": "",
+      "groupId": ""
+    },
+    "error": "",
+    "note": "",
+    "dirty": false
+  },
+  "params": {
+    "rev": 0
+  },
+  "propConfig": {
+    "params.rev": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.data": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "runScript('shared.TicketLogger.routingForView', 0, {view.custom.rev}, {view.params.rev})"
+        }
+      }
+    },
+    "custom.draft": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try({view.custom.data.routing}, null)"
+        }
+      }
+    },
+    "custom.dirty": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce(try(runScript('shared.TicketLogger.isDirty', 0, {view.custom.draft}, {view.custom.data.routing}), false), false)"
+        }
+      }
+    },
+    "custom.edit": {
+      "persistent": false
+    },
+    "custom.sel": {
+      "persistent": false
+    },
+    "custom.error": {
+      "persistent": false
+    },
+    "custom.note": {
+      "persistent": false
+    },
+    "custom.rev": {
+      "persistent": false
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "width": 552,
+      "height": 640
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "position": {
+      "shrink": 0
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "overflow": "hidden"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "Denied"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "text": "Ticket Logger Settings Needs The Ticket Logger Settings Permission (OneShot).",
+          "style": {
+            "classes": "form-note",
+            "whiteSpace": "normal",
+            "lineHeight": "1.35"
+          }
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "!(!isNull(try({view.custom.data.routing}, null)))"
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Content"
+        },
+        "position": {
+          "grow": 1,
+          "basis": "0",
+          "shrink": 1
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "gap": "10px"
+          }
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "!isNull(try({view.custom.data.routing}, null))"
+              }
+            }
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Intro"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "The most specific rule wins: Type + Area, then Type, then Area (the area comes from the ticket's tag path). Unmatched tickets use the default destination.",
+              "style": {
+                "classes": "form-hint",
+                "whiteSpace": "normal",
+                "lineHeight": "1.35"
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "DryRun"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "Dry Run Is On: Tickets Are Recorded In The Outbox, Nothing Is Sent",
+              "style": {
+                "classes": "form-banner"
+              }
+            },
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "coalesce(try({view.custom.data.dryRun}, false), false)"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.table",
+            "meta": {
+              "name": "Rules"
+            },
+            "position": {
+              "grow": 1,
+              "basis": "0",
+              "shrink": 1
+            },
+            "props": {
+              "columns": [
+                {
+                  "field": "idx",
+                  "visible": true,
+                  "editable": false,
+                  "render": "auto",
+                  "justify": "left",
+                  "align": "center",
+                  "resizable": false,
+                  "sortable": false,
+                  "sort": "none",
+                  "boolean": "checkbox",
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "dateFormat": "MM/DD/YYYY",
+                  "width": 34,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "header": {
+                    "title": "#",
+                    "justify": "left",
+                    "align": "center",
+                    "style": {
+                      "classes": "form-th"
+                    }
+                  },
+                  "footer": {
+                    "title": "",
+                    "justify": "left",
+                    "align": "center",
+                    "style": {
+                      "classes": ""
+                    }
+                  },
+                  "viewPath": "",
+                  "viewParams": {},
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "progressBar": {
+                    "max": 100,
+                    "min": 0,
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  }
+                },
+                {
+                  "field": "type",
+                  "visible": true,
+                  "editable": false,
+                  "render": "auto",
+                  "justify": "left",
+                  "align": "center",
+                  "resizable": false,
+                  "sortable": false,
+                  "sort": "none",
+                  "boolean": "checkbox",
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "dateFormat": "MM/DD/YYYY",
+                  "width": 90,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "header": {
+                    "title": "Type",
+                    "justify": "left",
+                    "align": "center",
+                    "style": {
+                      "classes": "form-th"
+                    }
+                  },
+                  "footer": {
+                    "title": "",
+                    "justify": "left",
+                    "align": "center",
+                    "style": {
+                      "classes": ""
+                    }
+                  },
+                  "viewPath": "",
+                  "viewParams": {},
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "progressBar": {
+                    "max": 100,
+                    "min": 0,
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  }
+                },
+                {
+                  "field": "area",
+                  "visible": true,
+                  "editable": false,
+                  "render": "auto",
+                  "justify": "left",
+                  "align": "center",
+                  "resizable": false,
+                  "sortable": false,
+                  "sort": "none",
+                  "boolean": "checkbox",
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "dateFormat": "MM/DD/YYYY",
+                  "width": 110,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "header": {
+                    "title": "Area",
+                    "justify": "left",
+                    "align": "center",
+                    "style": {
+                      "classes": "form-th"
+                    }
+                  },
+                  "footer": {
+                    "title": "",
+                    "justify": "left",
+                    "align": "center",
+                    "style": {
+                      "classes": ""
+                    }
+                  },
+                  "viewPath": "",
+                  "viewParams": {},
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "progressBar": {
+                    "max": 100,
+                    "min": 0,
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  }
+                },
+                {
+                  "field": "destination",
+                  "visible": true,
+                  "editable": false,
+                  "render": "auto",
+                  "justify": "left",
+                  "align": "center",
+                  "resizable": false,
+                  "sortable": false,
+                  "sort": "none",
+                  "boolean": "checkbox",
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "dateFormat": "MM/DD/YYYY",
+                  "width": 96,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "header": {
+                    "title": "Destination",
+                    "justify": "left",
+                    "align": "center",
+                    "style": {
+                      "classes": "form-th"
+                    }
+                  },
+                  "footer": {
+                    "title": "",
+                    "justify": "left",
+                    "align": "center",
+                    "style": {
+                      "classes": ""
+                    }
+                  },
+                  "viewPath": "",
+                  "viewParams": {},
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "progressBar": {
+                    "max": 100,
+                    "min": 0,
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  }
+                },
+                {
+                  "field": "boardGroup",
+                  "visible": true,
+                  "editable": false,
+                  "render": "auto",
+                  "justify": "left",
+                  "align": "center",
+                  "resizable": false,
+                  "sortable": false,
+                  "sort": "none",
+                  "boolean": "checkbox",
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "dateFormat": "MM/DD/YYYY",
+                  "width": 170,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "header": {
+                    "title": "Board / Group",
+                    "justify": "left",
+                    "align": "center",
+                    "style": {
+                      "classes": "form-th"
+                    }
+                  },
+                  "footer": {
+                    "title": "",
+                    "justify": "left",
+                    "align": "center",
+                    "style": {
+                      "classes": ""
+                    }
+                  },
+                  "viewPath": "",
+                  "viewParams": {},
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "progressBar": {
+                    "max": 100,
+                    "min": 0,
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  }
+                }
+              ],
+              "selection": {
+                "mode": "single",
+                "enableRowSelection": true,
+                "enableColumnSelection": false
+              },
+              "pager": {
+                "top": false,
+                "bottom": false
+              },
+              "virtualized": false,
+              "rows": {
+                "striped": {
+                  "enabled": false
+                }
+              },
+              "emptyMessage": {
+                "noData": {
+                  "text": "No Rules - Every Ticket Uses The Default Destination"
+                }
+              },
+              "headerStyle": {
+                "classes": "form-th"
+              },
+              "bodyStyle": {
+                "classes": "form-check"
+              },
+              "style": {
+                "classes": "form-card"
+              }
+            },
+            "propConfig": {
+              "props.data": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "try(runScript('shared.TicketLogger.ruleRows', 0, {view.custom.draft.rules}), null)"
+                  }
+                }
+              },
+              "props.selection.selectedRow": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.sel} >= 0, {view.custom.sel}, null)"
+                  }
+                }
+              }
+            },
+            "events": {
+              "component": {
+                "onRowClick": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\t# routing editor: load the clicked rule into the editor (nothing is saved until Save Routing)\n\ttry:\n\t\ti = int(event.value['idx']) - 1\n\texcept Exception:\n\t\ti = int(event.rowIndex)\n\td = shared.TicketLogger.normalize(self.view.custom.draft)\n\tif 0 <= i < len(d['rules']):\n\t\tself.view.custom.sel = i\n\t\tself.view.custom.edit = d['rules'][i]\n\t\tself.view.custom.error = ''\n\t\tself.view.custom.note = ''\n"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Editor"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "classes": "form-card",
+                "gap": "10px",
+                "padding": "12px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Title"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "",
+                  "style": {
+                    "classes": "form-section-title"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.custom.sel} >= 0, 'Edit Rule ' + toStr({view.custom.sel} + 1), 'New Rule')"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Row1"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "gap": "10px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Type"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0",
+                      "shrink": 1
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "gap": "4px"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Label"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "Type",
+                          "style": {
+                            "classes": "form-label"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.input.dropdown",
+                        "meta": {
+                          "name": "Input"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "options": [],
+                          "placeholder": {
+                            "text": "Any Type"
+                          },
+                          "showClearIcon": false,
+                          "allowCustomOptions": false,
+                          "style": {
+                            "classes": "form-input",
+                            "height": "32px"
+                          }
+                        },
+                        "propConfig": {
+                          "props.options": {
+                            "binding": {
+                              "type": "property",
+                              "config": {
+                                "path": "view.custom.data.typeOptions"
+                              }
+                            }
+                          },
+                          "props.value": {
+                            "binding": {
+                              "type": "property",
+                              "config": {
+                                "path": "view.custom.edit.type",
+                                "bidirectional": true
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Area"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0",
+                      "shrink": 1
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "gap": "4px"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Label"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "Area",
+                          "style": {
+                            "classes": "form-label"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.input.dropdown",
+                        "meta": {
+                          "name": "Input"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "options": [],
+                          "placeholder": {
+                            "text": "Any Area"
+                          },
+                          "showClearIcon": false,
+                          "allowCustomOptions": false,
+                          "style": {
+                            "classes": "form-input",
+                            "height": "32px"
+                          }
+                        },
+                        "propConfig": {
+                          "props.options": {
+                            "binding": {
+                              "type": "property",
+                              "config": {
+                                "path": "view.custom.data.areaOptions"
+                              }
+                            }
+                          },
+                          "props.value": {
+                            "binding": {
+                              "type": "property",
+                              "config": {
+                                "path": "view.custom.edit.area",
+                                "bidirectional": true
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Destination"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0",
+                      "shrink": 1
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "gap": "4px"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Label"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "Destination",
+                          "style": {
+                            "classes": "form-label"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.input.dropdown",
+                        "meta": {
+                          "name": "Input"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "options": [],
+                          "placeholder": {
+                            "text": "Select Destination"
+                          },
+                          "showClearIcon": false,
+                          "allowCustomOptions": false,
+                          "style": {
+                            "classes": "form-input",
+                            "height": "32px"
+                          }
+                        },
+                        "propConfig": {
+                          "props.options": {
+                            "binding": {
+                              "type": "property",
+                              "config": {
+                                "path": "view.custom.data.destOptions"
+                              }
+                            }
+                          },
+                          "props.value": {
+                            "binding": {
+                              "type": "property",
+                              "config": {
+                                "path": "view.custom.edit.destination",
+                                "bidirectional": true
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Row2"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "gap": "10px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Board"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0",
+                      "shrink": 1
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "gap": "4px"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Label"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "Monday Board Id",
+                          "style": {
+                            "classes": "form-label"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.input.text-field",
+                        "meta": {
+                          "name": "Input"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "placeholder": "Integration Default",
+                          "enabled": true,
+                          "style": {
+                            "classes": "form-input",
+                            "height": "32px",
+                            "paddingLeft": "8px"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "type": "property",
+                              "config": {
+                                "path": "view.custom.edit.boardId",
+                                "bidirectional": true
+                              }
+                            }
+                          },
+                          "props.enabled": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "coalesce({view.custom.edit.destination}, '') = 'Monday'"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Group"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0",
+                      "shrink": 1
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "gap": "4px"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Label"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "Monday Group Id",
+                          "style": {
+                            "classes": "form-label"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.input.text-field",
+                        "meta": {
+                          "name": "Input"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "placeholder": "Integration Default",
+                          "enabled": true,
+                          "style": {
+                            "classes": "form-input",
+                            "height": "32px",
+                            "paddingLeft": "8px"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "type": "property",
+                              "config": {
+                                "path": "view.custom.edit.groupId",
+                                "bidirectional": true
+                              }
+                            }
+                          },
+                          "props.enabled": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "coalesce({view.custom.edit.destination}, '') = 'Monday'"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Buttons"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "gap": "8px"
+                  },
+                  "alignItems": "center"
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Error"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0"
+                    },
+                    "props": {
+                      "text": "",
+                      "style": {
+                        "classes": "form-status-error",
+                        "whiteSpace": "normal"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "property",
+                          "config": {
+                            "path": "view.custom.error"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.input.button",
+                    "meta": {
+                      "name": "New"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "New Rule",
+                      "style": {
+                        "classes": "form-btn",
+                        "height": "32px"
+                      }
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "type": "script",
+                          "scope": "G",
+                          "config": {
+                            "script": "\tself.view.custom.sel = -1\n\tself.view.custom.edit = {'type': '', 'area': '', 'destination': 'Monday', 'boardId': '', 'groupId': ''}\n\tself.view.custom.error = ''\n\tself.view.custom.note = ''\n"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.input.button",
+                    "meta": {
+                      "name": "Remove"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Remove Rule",
+                      "style": {
+                        "classes": "form-btn",
+                        "height": "32px"
+                      }
+                    },
+                    "propConfig": {
+                      "props.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "{view.custom.sel} >= 0"
+                          }
+                        }
+                      }
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "type": "script",
+                          "scope": "G",
+                          "config": {
+                            "script": "\tself.view.custom.draft = shared.TicketLogger.removeRule(self.view.custom.draft, self.view.custom.sel)\n\tself.view.custom.sel = -1\n\tself.view.custom.edit = {'type': '', 'area': '', 'destination': 'Monday', 'boardId': '', 'groupId': ''}\n\tself.view.custom.error = ''\n\tself.view.custom.note = 'Rule Removed - Save Routing To Apply'\n"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.input.button",
+                    "meta": {
+                      "name": "Apply"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "",
+                      "style": {
+                        "classes": "form-btn-primary",
+                        "height": "32px"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if({view.custom.sel} >= 0, 'Apply To Rule', 'Add Rule')"
+                          }
+                        }
+                      }
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "type": "script",
+                          "scope": "G",
+                          "config": {
+                            "script": "\tres = shared.TicketLogger.applyRule(self.view.custom.draft, self.view.custom.sel, self.view.custom.edit)\n\tself.view.custom.error = res[2]\n\tif not res[2]:\n\t\tself.view.custom.draft = res[0]\n\t\tself.view.custom.sel = res[1]\n\t\tself.view.custom.note = 'Rule %d Updated - Save Routing To Apply' % (res[1] + 1)\n"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Default"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "classes": "form-card",
+                "gap": "10px",
+                "padding": "12px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Title"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Default Destination (Unmatched Selections)",
+                  "style": {
+                    "classes": "form-section-title"
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Row"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "gap": "10px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Destination"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0",
+                      "shrink": 1
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "gap": "4px"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Label"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "Destination",
+                          "style": {
+                            "classes": "form-label"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.input.dropdown",
+                        "meta": {
+                          "name": "Input"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "options": [],
+                          "placeholder": {
+                            "text": "Monday"
+                          },
+                          "showClearIcon": false,
+                          "allowCustomOptions": false,
+                          "style": {
+                            "classes": "form-input",
+                            "height": "32px"
+                          }
+                        },
+                        "propConfig": {
+                          "props.options": {
+                            "binding": {
+                              "type": "property",
+                              "config": {
+                                "path": "view.custom.data.destOptions"
+                              }
+                            }
+                          },
+                          "props.value": {
+                            "binding": {
+                              "type": "property",
+                              "config": {
+                                "path": "view.custom.draft.default.destination",
+                                "bidirectional": true
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Board"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0",
+                      "shrink": 1
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "gap": "4px"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Label"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "Monday Board Id",
+                          "style": {
+                            "classes": "form-label"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.input.text-field",
+                        "meta": {
+                          "name": "Input"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "placeholder": "Integration Default",
+                          "enabled": true,
+                          "style": {
+                            "classes": "form-input",
+                            "height": "32px",
+                            "paddingLeft": "8px"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "type": "property",
+                              "config": {
+                                "path": "view.custom.draft.default.boardId",
+                                "bidirectional": true
+                              }
+                            }
+                          },
+                          "props.enabled": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "coalesce({view.custom.draft.default.destination}, '') = 'Monday'"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Group"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "basis": "0",
+                      "shrink": 1
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "gap": "4px"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Label"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "Monday Group Id",
+                          "style": {
+                            "classes": "form-label"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.input.text-field",
+                        "meta": {
+                          "name": "Input"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "placeholder": "Integration Default",
+                          "enabled": true,
+                          "style": {
+                            "classes": "form-input",
+                            "height": "32px",
+                            "paddingLeft": "8px"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "type": "property",
+                              "config": {
+                                "path": "view.custom.draft.default.groupId",
+                                "bidirectional": true
+                              }
+                            }
+                          },
+                          "props.enabled": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "coalesce({view.custom.draft.default.destination}, '') = 'Monday'"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "ActionBar"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "style": {
+                "gap": "8px"
+              },
+              "alignItems": "center"
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Status"
+                },
+                "position": {
+                  "grow": 1,
+                  "basis": "0"
+                },
+                "props": {
+                  "text": "",
+                  "style": {
+                    "classes": "form-status"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce({view.custom.dirty}, false), 'Unsaved Changes', coalesce({view.custom.note}, ''))"
+                      }
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce({view.custom.dirty}, false), 'form-status-error', 'form-status')"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.input.button",
+                "meta": {
+                  "name": "Discard"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Discard Changes",
+                  "style": {
+                    "classes": "form-btn",
+                    "height": "32px"
+                  }
+                },
+                "propConfig": {
+                  "props.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({view.custom.dirty}, false)"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tself.view.custom.draft = shared.TicketLogger.plain(self.view.custom.data['routing'])\n\tself.view.custom.sel = -1\n\tself.view.custom.edit = {'type': '', 'area': '', 'destination': 'Monday', 'boardId': '', 'groupId': ''}\n\tself.view.custom.error = ''\n\tself.view.custom.note = ''\n"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.input.button",
+                "meta": {
+                  "name": "Save"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Save Routing",
+                  "style": {
+                    "classes": "form-btn-primary",
+                    "height": "32px"
+                  }
+                },
+                "propConfig": {
+                  "props.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({view.custom.dirty}, false)"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\td = shared.TicketLogger.normalize(self.view.custom.draft)\n\tshared.Alerts.showAlert(state='info', title='Save Ticket Routing',\n\t\tmessage='Save %d Routing Rules With Default Destination %s? Tickets Submitted After This Use The New '\n\t\t'Routing.' % (len(d['rules']), d['default']['destination']), showCloseBtn=False, btnTextPrimary='Save',\n\t\tbtnTextSecondary='Cancel', btnActionPrimary='tlRoutingSave', btnActionSecondary='', payload={},\n\t\toverlayDismiss=False)\n"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "tlRoutingSave",
+          "pageScope": true,
+          "sessionScope": false,
+          "viewScope": false,
+          "script": "\t# confirmed in the alert: shared.TicketLogger.saveRouting re-checks TicketLogger/Settings, validates, writes the\n\t# Routing tag and the OpsAudit entry\n\ttry:\n\t\tres = shared.TicketLogger.saveRouting(self.view.custom.draft, self.view.id)\n\texcept Exception as e:\n\t\tres = [False, str(e)]\n\tif res[0]:\n\t\tself.view.custom.error = ''\n\t\tself.view.custom.note = res[1]\n\t\tself.view.custom.rev = (self.view.custom.rev or 0) + 1\n\t\tself.view.custom.sel = -1\n\t\tself.view.custom.edit = {'type': '', 'area': '', 'destination': 'Monday', 'boardId': '', 'groupId': ''}\n\telse:\n\t\tself.view.custom.error = res[1]\n"
+        }
+      ]
+    }
+  }
+}

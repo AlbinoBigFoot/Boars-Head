@@ -1,0 +1,1120 @@
+{
+  "custom": {},
+  "params": {
+    "Scale": true,
+    "tagPath": "[default]Boars_Head/GrovePort/Condensers"
+  },
+  "propConfig": {
+    "params.Scale": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 791,
+      "width": 1920
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "HSD-PT3"
+            },
+            "position": {
+              "height": 69,
+              "width": 113,
+              "x": 172,
+              "y": -17
+            },
+            "props": {
+              "params": {
+                "faceplate": "Sensor",
+                "feedback": true,
+                "label": "HSD-PT3",
+                "orientation": {
+                  "horizontal": false,
+                  "horizontalReverse": false,
+                  "vertical": true,
+                  "verticalReverse": false
+                },
+                "tagPath": "[default]Boars_Head/GrovePort/Machine Room/Sensors/HSD-Discharge Pressure",
+                "valuePosition": "top"
+              },
+              "path": "02_Components/01_Devices/Sensor"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Label"
+                },
+                "position": {
+                  "basis": "14px",
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-9 fw-700",
+                    "color": "var(--neutral-90)",
+                    "overflow": "hidden",
+                    "textAlign": "center",
+                    "whiteSpace": "nowrap"
+                  },
+                  "text": "OUTSIDE AIR TEMP"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Value"
+                },
+                "position": {
+                  "basis": "22px",
+                  "grow": 1
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "if(!isGood(tag(\u0027[default]Boars_Head/GrovePort/Condensers/Sensors/Outside Air Temp/AIn/Val\u0027)),\n\t\u0027— °F\u0027,\n\tnumberFormat(coalesce(tag(\u0027[default]Boars_Head/GrovePort/Condensers/Sensors/Outside Air Temp/AIn/Val\u0027), 0), \u00270.0\u0027) + \u0027 °F\u0027)"
+                      },
+                      "type": "expr",
+                      "overlayOptOut": true
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "backgroundColor": "var(--neutral-30)",
+                    "classes": "Fonts/Value fs-12 fw-600",
+                    "color": "var(--neutral-90)",
+                    "padding": "2px 4px",
+                    "textAlign": "center"
+                  }
+                },
+                "type": "ia.display.label",
+                "events": {
+                  "dom": {
+                    "onContextMenu": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tshared.TrendContext.menu(self, event, \u0027[default]Boars_Head/GrovePort/Condensers/Sensors/Outside Air Temp/AIn/Val\u0027)"
+                      },
+                      "preventDefault": true,
+                      "stopPropagation": true
+                    }
+                  }
+                }
+              }
+            ],
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\ttagPath \u003d \u0027[default]Boars_Head/GrovePort/Condensers/Sensors/Outside Air Temp\u0027\n\ttitle \u003d \u0027OUTSIDE AIR TEMP\u0027\n\tparams \u003d {\u0027tagPath\u0027: tagPath, \u0027deviceType\u0027: \u0027Sensor\u0027, \u0027webGuiUrl\u0027: \u0027\u0027, \u0027showControls\u0027: True,\n\t\t\u0027showConfiguration\u0027: True, \u0027showInterlocks\u0027: False, \u0027showTrend\u0027: True, \u0027showAlarmConfiguration\u0027: True,\n\t\t\u0027showAlarms\u0027: True, \u0027title\u0027: title}\n\tNavigation.Faceplate.openFaceplate(\u0027sensor-fp-%s\u0027 % tagPath, tagPath, \u002701_Popups/00_Faceplates/Faceplate\u0027,\n\t\tFalse, title, 560, 640, params)\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "OAT"
+            },
+            "position": {
+              "height": 48,
+              "width": 126,
+              "x": 214,
+              "y": 112.5
+            },
+            "props": {
+              "direction": "column",
+              "justify": "center",
+              "style": {
+                "backgroundColor": "var(--neutral-10)",
+                "borderColor": "var(--neutral-50)",
+                "borderStyle": "solid",
+                "borderWidth": "1px",
+                "classes": "faceplate-hover",
+                "cursor": "pointer",
+                "gap": "2px",
+                "overflow": "visible",
+                "padding": "2px 4px"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "meta": {
+              "name": "EC-1A"
+            },
+            "position": {
+              "height": 190,
+              "width": 320,
+              "x": 620,
+              "y": 44
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.tagPath} + \"/Condensers/EC-1A\""
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "analog": false,
+                "faceplate": "Pump",
+                "fanLabels": [
+                  "CD1A-FAN#1",
+                  "CD1A-FAN#1",
+                  "CD1A-FAN#2"
+                ],
+                "fanMap": [
+                  "Fan 1",
+                  "Fan 1",
+                  "Fan 2"
+                ],
+                "fans": 3,
+                "label": "EC-1A",
+                "state": "Unknown"
+              },
+              "path": "02_Components/01_Devices/Condenser"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "EC-1B"
+            },
+            "position": {
+              "height": 190,
+              "width": 320,
+              "x": 1350,
+              "y": 44
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.tagPath} + \"/Condensers/EC-1B\""
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "analog": false,
+                "faceplate": "Pump",
+                "fanMap": [
+                  "Fan 1",
+                  "Fan 1",
+                  "Fan 2"
+                ],
+                "fans": 3,
+                "label": "EC-1B",
+                "state": "Unknown",
+                "fanLabels": [
+                  "CD1B-FAN#1",
+                  "CD1B-FAN#1",
+                  "CD1B-FAN#2"
+                ]
+              },
+              "path": "02_Components/01_Devices/Condenser"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "MAIN HG CV6"
+            },
+            "position": {
+              "height": 121,
+              "width": 110,
+              "x": 230,
+              "y": 347.5
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.tagPath} + \"/Valves/Main HG CV6\""
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "faceplate": "SolenoidValve",
+                "label": "MAIN HG SV"
+              },
+              "path": "02_Components/01_Devices/SolenoidValve"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "BACKUP MW CV26"
+            },
+            "position": {
+              "height": 121,
+              "width": 110,
+              "x": 1090,
+              "y": 286
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.tagPath} + \"/Valves/Backup MW CV26\""
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "faceplate": "SolenoidValve",
+                "label": "CSV MAKEUP BACKUP SV"
+              },
+              "path": "02_Components/01_Devices/SolenoidValve"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "MAIN MW CV25"
+            },
+            "position": {
+              "height": 121,
+              "width": 110,
+              "x": 1090,
+              "y": 398.5
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.tagPath} + \"/Valves/Main MW CV25\""
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "faceplate": "SolenoidValve",
+                "feedback": true,
+                "label": "CSV MAKEUP SV",
+                "orientation": {
+                  "horizontal": false,
+                  "horizontalReverse": false,
+                  "vertical": false,
+                  "verticalReverse": true
+                }
+              },
+              "path": "02_Components/01_Devices/SolenoidValve"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "CSV"
+            },
+            "position": {
+              "height": 191,
+              "width": 207,
+              "x": 1249,
+              "y": 388
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.tagPath} + \"/Tanks/CSV\""
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "faceplate": "TankOverview"
+              },
+              "path": "02_Components/01_Devices/Tank"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "DI-RS-LVL-OL2"
+            },
+            "position": {
+              "height": 44,
+              "width": 120,
+              "x": 1441,
+              "y": 368.5
+            },
+            "props": {
+              "params": {
+                "alarmText": "ALARM",
+                "diPath": "[default]Boars_Head/GrovePort/Condensers/LevelSwitches/RS-LVL-OL2",
+                "label": "RS-LVL-OL2",
+                "okValue": false,
+                "tagPath": "[default]Boars_Head/GrovePort/Condensers/LevelSwitches/RS-LVL-OL2/DIn/Sts"
+              },
+              "path": "00_Pages/Groveport/Utility/OverviewStatusTile"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "DI-RS-LVL-OL3"
+            },
+            "position": {
+              "height": 44,
+              "width": 120,
+              "x": 1441,
+              "y": 458.5
+            },
+            "props": {
+              "params": {
+                "alarmText": "ALARM",
+                "diPath": "[default]Boars_Head/GrovePort/Condensers/LevelSwitches/RS-LVL-OL3",
+                "label": "RS-LVL-OL3",
+                "okValue": false,
+                "tagPath": "[default]Boars_Head/GrovePort/Condensers/LevelSwitches/RS-LVL-OL3/DIn/Sts"
+              },
+              "path": "00_Pages/Groveport/Utility/OverviewStatusTile"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "DI-RS-LLCO2"
+            },
+            "position": {
+              "height": 44,
+              "width": 120,
+              "x": 1441,
+              "y": 508.5
+            },
+            "props": {
+              "params": {
+                "alarmText": "ALARM",
+                "diPath": "[default]Boars_Head/GrovePort/Condensers/LevelSwitches/RS-LLCO2",
+                "label": "RS-LLCO2",
+                "okValue": false,
+                "tagPath": "[default]Boars_Head/GrovePort/Condensers/LevelSwitches/RS-LLCO2/DIn/Sts"
+              },
+              "path": "00_Pages/Groveport/Utility/OverviewStatusTile"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "Sump Pump 1"
+            },
+            "position": {
+              "height": 175,
+              "width": 88,
+              "x": 1180,
+              "y": 618
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.tagPath} + \"/Pumps/Sump Pump 1\""
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "analog": false,
+                "direction": {
+                  "default": true,
+                  "rotated180": false,
+                  "rotated270": false,
+                  "rotated90": false
+                },
+                "faceplate": "Pump",
+                "orientation": {
+                  "horizontal": false,
+                  "horizontalReverse": false,
+                  "vertical": true
+                }
+              },
+              "path": "02_Components/01_Devices/Pump"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "Sump Pump 2"
+            },
+            "position": {
+              "height": 175,
+              "width": 88,
+              "x": 1374,
+              "y": 618
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.tagPath} + \"/Pumps/Sump Pump 2\""
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "analog": false,
+                "direction": {
+                  "default": true,
+                  "rotated180": false,
+                  "rotated270": false,
+                  "rotated90": false
+                },
+                "faceplate": "Pump",
+                "orientation": {
+                  "horizontal": false,
+                  "horizontalReverse": false,
+                  "vertical": true
+                }
+              },
+              "path": "02_Components/01_Devices/Pump"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "Sump Pump 3"
+            },
+            "position": {
+              "height": 175,
+              "width": 88,
+              "x": 1560,
+              "y": 618
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.tagPath} + \"/Pumps/Sump Pump 3\""
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "analog": false,
+                "direction": {
+                  "default": true,
+                  "rotated180": false,
+                  "rotated270": false,
+                  "rotated90": false
+                },
+                "faceplate": "Pump",
+                "orientation": {
+                  "horizontal": false,
+                  "horizontalReverse": false,
+                  "vertical": true
+                }
+              },
+              "path": "02_Components/01_Devices/Pump"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\ttagPath \u003d \u0027[default]Boars_Head/GrovePort/Condensers/Sequences/HSD\u0027\n\ttitle \u003d \u0027High Stage Discharge\u0027\n\tNavigation.Faceplate.openFaceplate(\u0027seq-fp-%s\u0027 % tagPath, tagPath, \u002701_Popups/00_Faceplates/DischargeSequence\u0027, False, title, 1180, 740,\n\t\t{\u0027title\u0027: title})\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Discharge-SP"
+            },
+            "position": {
+              "height": 34,
+              "width": 170,
+              "x": 936,
+              "y": 688.5
+            },
+            "props": {
+              "style": {
+                "classes": "faceplate-cmd-btn"
+              },
+              "text": "Discharge SP"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "meta": {
+              "name": "Lbl-TSR"
+            },
+            "position": {
+              "height": 23,
+              "width": 40,
+              "x": 824,
+              "y": 334
+            },
+            "props": {
+              "text": "TSR"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "Lbl-TSS"
+            },
+            "position": {
+              "height": 23,
+              "width": 40,
+              "x": 858,
+              "y": 397
+            },
+            "props": {
+              "text": "TSS"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "Lbl-HPL"
+            },
+            "position": {
+              "height": 23,
+              "width": 40,
+              "x": 672,
+              "y": 496
+            },
+            "props": {
+              "text": "HPL"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "Lbl-HSD"
+            },
+            "position": {
+              "height": 23,
+              "width": 40,
+              "x": 187,
+              "y": 689
+            },
+            "props": {
+              "text": "HSD"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "Lbl-CWR"
+            },
+            "position": {
+              "height": 23,
+              "width": 40,
+              "x": 1323,
+              "y": 310.5
+            },
+            "props": {
+              "text": "CWR"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "Lbl-WATER"
+            },
+            "position": {
+              "height": 23,
+              "width": 58,
+              "x": 1012,
+              "y": 369
+            },
+            "props": {
+              "text": "WATER"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "VesselGeneric"
+            },
+            "position": {
+              "height": 80,
+              "width": 160,
+              "x": 606,
+              "y": 310
+            },
+            "props": {
+              "params": {
+                "label": "TSV",
+                "orientation": "horizontal",
+                "tagPath": ""
+              },
+              "path": "02_Components/01_Devices/VesselGeneric"
+            },
+            "type": "ia.display.view"
+          }
+        ],
+        "meta": {
+          "name": "Canvas"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.style.transform": {
+            "binding": {
+              "config": {
+                "struct": {
+                  "contentHeight": "751",
+                  "contentWidth": "1703",
+                  "contentX": "55",
+                  "contentY": "0",
+                  "defaultViewHeight": "{view.props.defaultSize.height}",
+                  "defaultViewWidth": "{view.props.defaultSize.width}",
+                  "primaryViewHeight": "{page.props.dimensions.primaryView.height}",
+                  "primaryViewWidth": "{page.props.dimensions.primaryView.width}",
+                  "scale": "{view.params.Scale}"
+                },
+                "waitOnAll": true
+              },
+              "transforms": [
+                {
+                  "code": "\treturn shared.Scale.cssTransform(value)",
+                  "type": "script"
+                }
+              ],
+              "type": "expr-struct"
+            }
+          }
+        },
+        "props": {
+          "pipes": [
+            {
+              "appearance": "p\u0026id",
+              "end": "none",
+              "fill": "",
+              "flanges": true,
+              "lineVariant": "solid",
+              "name": "pipe",
+              "origin": {
+                "connections": [
+                  {
+                    "x": 918,
+                    "y": 92
+                  }
+                ],
+                "x": 1355,
+                "y": 92
+              },
+              "start": "none",
+              "stroke": "#FF8C00",
+              "visible": true,
+              "width": 3
+            },
+            {
+              "appearance": "p\u0026id",
+              "end": "none",
+              "fill": "",
+              "flanges": true,
+              "lineVariant": "solid",
+              "name": "pipe_0",
+              "origin": {
+                "connections": [
+                  {
+                    "x": 913,
+                    "y": 156
+                  }
+                ],
+                "x": 1350,
+                "y": 156
+              },
+              "start": "none",
+              "stroke": "#FF8C00",
+              "width": 3
+            },
+            {
+              "appearance": "p\u0026id",
+              "end": "arrowOutward",
+              "fill": "",
+              "flanges": true,
+              "lineVariant": "midArrow",
+              "name": "pipe_1",
+              "origin": {
+                "connections": [
+                  {
+                    "connections": [
+                      {
+                        "connections": [
+                          {
+                            "x": 686,
+                            "y": 499.5
+                          }
+                        ],
+                        "x": 686,
+                        "y": 273
+                      }
+                    ],
+                    "x": 1165,
+                    "y": 273
+                  }
+                ],
+                "x": 1165,
+                "y": 156
+              },
+              "start": "none",
+              "stroke": "#FF8C00",
+              "visible": true,
+              "width": 3
+            },
+            {
+              "appearance": "p\u0026id",
+              "end": "arrowOutward",
+              "fill": "",
+              "flanges": true,
+              "lineVariant": "solid",
+              "name": "pipe_2",
+              "origin": {
+                "connections": [
+                  {
+                    "connections": [
+                      {
+                        "connections": [
+                          {
+                            "x": 855,
+                            "y": 408.5
+                          }
+                        ],
+                        "x": 723,
+                        "y": 408.5
+                      }
+                    ],
+                    "x": 723,
+                    "y": 346
+                  }
+                ],
+                "x": 824,
+                "y": 346
+              },
+              "start": "arrowInward",
+              "stroke": "#FF8C00",
+              "visible": true,
+              "width": 3
+            },
+            {
+              "appearance": "p\u0026id",
+              "end": "none",
+              "fill": "",
+              "flanges": true,
+              "lineVariant": "midArrow",
+              "name": "pipe_4",
+              "origin": {
+                "connections": [
+                  {
+                    "connections": [
+                      {
+                        "connections": [],
+                        "x": 620,
+                        "y": 102
+                      }
+                    ],
+                    "x": 202,
+                    "y": 102
+                  }
+                ],
+                "x": 202,
+                "y": 692
+              },
+              "start": "arrowInward",
+              "stroke": "#FF8C00",
+              "visible": true,
+              "width": 3
+            },
+            {
+              "appearance": "p\u0026id",
+              "end": "arrowOutward",
+              "fill": "",
+              "flanges": true,
+              "lineVariant": "solid",
+              "name": "pipe_3",
+              "origin": {
+                "connections": [
+                  {
+                    "x": 400,
+                    "y": 409
+                  }
+                ],
+                "x": 201,
+                "y": 409
+              },
+              "start": "none",
+              "stroke": "#FF8C00",
+              "visible": true,
+              "width": 3
+            },
+            {
+              "appearance": "p\u0026id",
+              "end": "none",
+              "fill": "",
+              "flanges": true,
+              "lineVariant": "solid",
+              "name": "pipe_5",
+              "origin": {
+                "connections": [
+                  {
+                    "connections": [
+                      {
+                        "x": 1313,
+                        "y": 420
+                      }
+                    ],
+                    "x": 1313,
+                    "y": 345
+                  }
+                ],
+                "x": 995,
+                "y": 345
+              },
+              "start": "arrowInward",
+              "stroke": "#019363",
+              "visible": true,
+              "width": 3
+            },
+            {
+              "appearance": "auto",
+              "end": "none",
+              "fill": "",
+              "flanges": true,
+              "lineVariant": "solid",
+              "name": "pipe_6",
+              "origin": {
+                "x": 995,
+                "y": 468.5
+              },
+              "start": "none",
+              "stroke": "",
+              "visible": true,
+              "width": 10
+            },
+            {
+              "appearance": "p\u0026id",
+              "end": "none",
+              "fill": "",
+              "flanges": true,
+              "lineVariant": "solid",
+              "name": "pipe_7",
+              "origin": {
+                "connections": [
+                  {
+                    "connections": [],
+                    "x": 1315,
+                    "y": 414
+                  }
+                ],
+                "x": 997,
+                "y": 414
+              },
+              "start": "arrowInward",
+              "stroke": "#019363",
+              "width": 3
+            },
+            {
+              "appearance": "p\u0026id",
+              "end": "none",
+              "fill": "",
+              "flanges": true,
+              "lineVariant": "midArrow",
+              "name": "pipe_8",
+              "origin": {
+                "connections": [
+                  {
+                    "connections": [
+                      {
+                        "connections": [
+                          {
+                            "connections": [
+                              {
+                                "x": 653,
+                                "y": 205
+                              }
+                            ],
+                            "x": 653,
+                            "y": 249
+                          }
+                        ],
+                        "x": 1696,
+                        "y": 249
+                      }
+                    ],
+                    "x": 1696,
+                    "y": 689
+                  }
+                ],
+                "x": 1248,
+                "y": 689
+              },
+              "start": "none",
+              "stroke": "#008000",
+              "visible": true,
+              "width": 3
+            },
+            {
+              "appearance": "simple",
+              "end": "none",
+              "fill": "#008000",
+              "flanges": true,
+              "lineVariant": "solid",
+              "name": "pipe_9",
+              "origin": {
+                "connections": [
+                  {
+                    "x": 1337,
+                    "y": 685.5
+                  }
+                ],
+                "x": 1337,
+                "y": 579
+              },
+              "start": "none",
+              "stroke": "#008000",
+              "visible": true,
+              "width": 3
+            },
+            {
+              "appearance": "simple",
+              "end": "none",
+              "fill": "#008000",
+              "flanges": true,
+              "lineVariant": "solid",
+              "name": "pipe_10",
+              "origin": {
+                "connections": [
+                  {
+                    "x": 1394,
+                    "y": 248
+                  }
+                ],
+                "x": 1394,
+                "y": 188
+              },
+              "start": "none",
+              "stroke": "#008000",
+              "width": 3
+            },
+            {
+              "appearance": "p\u0026id",
+              "end": "none",
+              "fill": "#008000",
+              "flanges": true,
+              "lineVariant": "solid",
+              "name": "pipe_11",
+              "origin": {
+                "connections": [
+                  {
+                    "x": 1341,
+                    "y": 387.5
+                  }
+                ],
+                "x": 1341,
+                "y": 331.5
+              },
+              "start": "arrowInward",
+              "stroke": "#008000",
+              "width": 3
+            }
+          ],
+          "style": {
+            "classes": "bg-page",
+            "height": "791px",
+            "overflow": "visible",
+            "transformOrigin": "top left",
+            "width": "1920px"
+          }
+        },
+        "type": "ia.container.coord"
+      }
+    ],
+    "meta": {
+      "contextMenu": {},
+      "name": "root"
+    },
+    "propConfig": {
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "config": {
+            "expression": "len({this.meta.contextMenu.items}) \u003e 0"
+          },
+          "type": "expr"
+        }
+      },
+      "meta.contextMenu.items": {
+        "binding": {
+          "config": {
+            "expression": "coalesce({session.custom.TicketLogAccess}, false)"
+          },
+          "transforms": [
+            {
+              "code": "\ttagPath \u003d \u0027\u0027\n\ttry:\n\t\ttagPath \u003d str(self.view.params.tagPath or \u0027\u0027)\n\texcept:\n\t\tpass\n\tview_name \u003d self.view.id.split(\u0027@\u0027)[0]\n\titems \u003d []\n\tif value:\n\t\tlogged \u003d tagPath if tagPath.strip() else \u0027No TagPath: \u0027 + view_name.split(\u0027/\u0027)[-1]\n\t\titems.append({\n\t\t\t\"text\": \u0027Ticket Logger\u0027,\n\t\t\t\"icon\": {\"path\": \u0027material/info\u0027, \"color\": \"--neutral-80\", \"style\": {}},\n\t\t\t\"style\": {\"classes\": \"bg-component Fonts/Value\", \"height\": 24, \"width\": 170},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\"type\": \u0027ticketLog\u0027, \"payload\": {\u0027tagPath\u0027: logged, \u0027viewName\u0027: view_name, \u0027sender\u0027: self.view.id}, \"scope\": \u0027page\u0027}\n\t\t})\n\treturn items",
+              "type": "script"
+            }
+          ],
+          "type": "expr"
+        }
+      }
+    },
+    "props": {
+      "alignItems": "flex-start",
+      "style": {
+        "height": "100%",
+        "overflow": "hidden",
+        "width": "100%"
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender \u003d payload.get(\u0027sender\u0027)\n\tif sender and sender !\u003d self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload[\u0027tagPath\u0027], payload[\u0027viewName\u0027])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    },
+    "type": "ia.container.flex"
+  }
+}

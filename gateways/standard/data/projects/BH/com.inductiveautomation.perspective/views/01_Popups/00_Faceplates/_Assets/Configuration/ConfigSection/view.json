@@ -3,7 +3,8 @@
   "params": {
     "rowsJson": "[]",
     "tagPath": "",
-    "title": ""
+    "title": "",
+    "engineering": false
   },
   "propConfig": {
     "params.rowsJson": {
@@ -15,6 +16,10 @@
       "persistent": true
     },
     "params.title": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.engineering": {
       "paramDirection": "input",
       "persistent": true
     }
@@ -43,7 +48,7 @@
         },
         "props": {
           "style": {
-            "classes": "faceplate-section-title font-label"
+            "classes": "faceplate-section-title Fonts/Label"
           }
         },
         "type": "ia.display.label"
@@ -58,13 +63,14 @@
               "config": {
                 "struct": {
                   "base": "{view.params.tagPath}",
-                  "rowsJson": "{view.params.rowsJson}"
+                  "rowsJson": "{view.params.rowsJson}",
+                  "engineering": "coalesce({view.params.engineering}, false)"
                 },
                 "waitOnAll": true
               },
               "transforms": [
                 {
-                  "code": "\timport json\n\tbase \u003d \u0027\u0027\n\traw \u003d \u0027[]\u0027\n\ttry:\n\t\tbase \u003d str((value or {}).get(\u0027base\u0027) or \u0027\u0027).strip()\n\texcept:\n\t\tbase \u003d \u0027\u0027\n\tif not base:\n\t\treturn []\n\ttry:\n\t\traw \u003d (value or {}).get(\u0027rowsJson\u0027)\n\texcept:\n\t\traw \u003d None\n\tif raw is None or raw \u003d\u003d \u0027\u0027:\n\t\traw \u003d \u0027[]\u0027\n\telif not isinstance(raw, basestring):\n\t\ttry:\n\t\t\traw \u003d json.dumps(raw)\n\t\texcept:\n\t\t\traw \u003d \u0027[]\u0027\n\ttry:\n\t\trows \u003d json.loads(raw)\n\texcept:\n\t\trows \u003d []\n\tout \u003d []\n\tfor r in rows or []:\n\t\tif not isinstance(r, dict):\n\t\t\tcontinue\n\t\tleaf \u003d str(r.get(\u0027leaf\u0027) or r.get(\u0027tag\u0027) or \u0027\u0027).strip().strip(\u0027/\u0027)\n\t\tkind \u003d str(r.get(\u0027kind\u0027) or r.get(\u0027inputKind\u0027) or \u0027checkbox\u0027).strip().lower() or \u0027checkbox\u0027\n\t\tlabel \u003d r.get(\u0027label\u0027) or leaf\n\t\tpath \u003d str(r.get(\u0027tagPath\u0027) or \u0027\u0027).strip()\n\t\tif not path and leaf:\n\t\t\tpath \u003d base.rstrip(\u0027/\u0027) + \u0027/\u0027 + leaf\n\t\t\tif not path.endswith(\u0027/Value\u0027):\n\t\t\t\tpath \u003d path + \u0027/Value\u0027\n\t\tif not path:\n\t\t\tcontinue\n\t\tout.append({\n\t\t\t\u0027instanceStyle\u0027: {\u0027classes\u0027: \u0027\u0027},\n\t\t\t\u0027instancePosition\u0027: {\u0027basis\u0027: \u002748px\u0027, \u0027grow\u0027: 0, \u0027shrink\u0027: 0},\n\t\t\t\u0027label\u0027: label,\n\t\t\t\u0027inputKind\u0027: kind,\n\t\t\t\u0027tagPath\u0027: path\n\t\t})\n\treturn out\n",
+                  "code": "\timport json\n\tbase \u003d \u0027\u0027\n\traw \u003d \u0027[]\u0027\n\ttry:\n\t\tbase \u003d str((value or {}).get(\u0027base\u0027) or \u0027\u0027).strip()\n\texcept:\n\t\tbase \u003d \u0027\u0027\n\tif not base:\n\t\treturn []\n\ttry:\n\t\traw \u003d (value or {}).get(\u0027rowsJson\u0027)\n\texcept:\n\t\traw \u003d None\n\tif raw is None or raw \u003d\u003d \u0027\u0027:\n\t\traw \u003d \u0027[]\u0027\n\telif not isinstance(raw, basestring):\n\t\ttry:\n\t\t\traw \u003d json.dumps(raw)\n\t\texcept:\n\t\t\traw \u003d \u0027[]\u0027\n\ttry:\n\t\trows \u003d json.loads(raw)\n\texcept:\n\t\trows \u003d []\n\tpax \u003d shared.Pax.part(shared.Pax.device(base))\n\tout \u003d []\n\tfor r in rows or []:\n\t\tif not isinstance(r, dict):\n\t\t\tcontinue\n\t\tleaf \u003d str(r.get(\u0027leaf\u0027) or r.get(\u0027tag\u0027) or \u0027\u0027).strip().strip(\u0027/\u0027)\n\t\tkind \u003d str(r.get(\u0027kind\u0027) or r.get(\u0027inputKind\u0027) or \u0027checkbox\u0027).strip().lower() or \u0027checkbox\u0027\n\t\tlabel \u003d r.get(\u0027label\u0027) or leaf\n\t\tpath \u003d str(r.get(\u0027tagPath\u0027) or \u0027\u0027).strip()\n\t\tpaxPath \u003d None\n\t\tif not path and leaf:\n\t\t\tpaxPath \u003d shared.Pax.resolve(base, leaf, pax)   # mapped device: the live PAX member, read only\n\t\t\tpath \u003d paxPath or (base.rstrip(\u0027/\u0027) + \u0027/\u0027 + leaf)\n\t\t\tif not paxPath and not path.endswith(\u0027/Value\u0027):\n\t\t\t\tpath \u003d path + \u0027/Value\u0027\n\t\tif not path:\n\t\t\tcontinue\n\t\tout.append({\n\t\t\t\u0027instanceStyle\u0027: {\u0027classes\u0027: \u0027\u0027},\n\t\t\t\u0027instancePosition\u0027: {\u0027basis\u0027: \u002748px\u0027, \u0027grow\u0027: 0, \u0027shrink\u0027: 0},\n\t\t\t\u0027label\u0027: label,\n\t\t\t\u0027inputKind\u0027: kind,\n\t\t\t\u0027enumPath\u0027: str(r.get(\u0027enum\u0027) or r.get(\u0027enumPath\u0027) or \u0027\u0027).strip(),\n\t\t\t\u0027tagPath\u0027: path,\n\t\t\t\u0027engineering\u0027: bool((value or {}).get(\u0027engineering\u0027)),\n\t\t\t\u0027readOnly\u0027: bool(paxPath)\n\t\t})\n\treturn out\n",
                   "type": "script"
                 }
               ],
@@ -90,7 +96,8 @@
       }
     ],
     "meta": {
-      "name": "root"
+      "name": "root",
+      "contextMenu": {}
     },
     "position": {
       "shrink": 0
@@ -103,6 +110,28 @@
           },
           "type": "expr"
         }
+      },
+      "meta.contextMenu.items": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "coalesce({session.custom.TicketLogAccess}, false)"
+          },
+          "transforms": [
+            {
+              "type": "script",
+              "code": "\ttagPath \u003d \u0027\u0027\n\ttry:\n\t\ttagPath \u003d str(self.view.params.tagPath or \u0027\u0027)\n\texcept:\n\t\tpass\n\tview_name \u003d self.view.id.split(\u0027@\u0027)[0]\n\titems \u003d []\n\tif value:\n\t\tlogged \u003d tagPath if tagPath.strip() else \u0027No TagPath: \u0027 + view_name.split(\u0027/\u0027)[-1]\n\t\titems.append({\n\t\t\t\"text\": \u0027Ticket Logger\u0027,\n\t\t\t\"icon\": {\"path\": \u0027material/info\u0027, \"color\": \"--neutral-80\", \"style\": {}},\n\t\t\t\"style\": {\"classes\": \"bg-component Fonts/Value\", \"height\": 24, \"width\": 170},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\"type\": \u0027ticketLog\u0027, \"payload\": {\u0027tagPath\u0027: logged, \u0027viewName\u0027: view_name, \u0027sender\u0027: self.view.id}, \"scope\": \u0027page\u0027}\n\t\t})\n\treturn items"
+            }
+          ]
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "len({this.meta.contextMenu.items}) \u003e 0"
+          }
+        }
       }
     },
     "props": {
@@ -112,6 +141,19 @@
         "width": "100%"
       }
     },
-    "type": "ia.container.flex"
+    "type": "ia.container.flex",
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender \u003d payload.get(\u0027sender\u0027)\n\tif sender and sender !\u003d self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload[\u0027tagPath\u0027], payload[\u0027viewName\u0027])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    }
   }
 }

@@ -48,40 +48,135 @@
       "trendId": "",
       "trendName": "",
       "username": ""
-    }
+    },
+    "ReadOnly": true,
+    "CanOpenFaceplates": false,
+    "EngineeringView": false,
+    "EngineeringReadOnly": true,
+    "AlarmConfigReadOnly": true,
+    "trend": {
+      "pens": [],
+      "count": 0,
+      "key": "||"
+    },
+    "trendTools": {
+      "dragMode": "time",
+      "autoScaleY": false,
+      "zoomMin": null,
+      "zoomMax": null,
+      "zoomResetAt": null,
+      "zoomKind": null,
+      "zoomSrc": null,
+      "zoomHoldMin": null,
+      "zoomHoldMax": null
+    },
+    "TicketLogSettings": false
   },
   "propConfig": {
     "custom.Administrator": {
+      "access": "PROTECTED",
       "binding": {
         "config": {
-          "expression": "try(\n\thasRole(\u0027Administrator\u0027,{session.props.auth.user.userName},{session.props.auth.idp})\n\t|| hasRole(\u0027Admin\u0027,{session.props.auth.user.userName},{session.props.auth.idp})\n\t|| hasRole(\u0027Admins\u0027,{session.props.auth.user.userName},{session.props.auth.idp}),\n\tfalse)"
-        },
-        "type": "expr"
-      }
-    },
-    "custom.ReadOnly": {
-      "binding": {
-        "config": {
-          "expression": "try(hasRole(\u0027ReadOnly\u0027,{session.props.auth.user.userName},{session.props.auth.idp}), false)"
-        },
-        "type": "expr"
-      }
-    },
-    "custom.TicketLogAccess": {
-      "binding": {
-        "config": {
-          "fallbackDelay": 2.5,
-          "mode": "direct",
-          "tagPath": "[default]_Config/Monday/Connected"
+          "struct": {
+            "list": "tag(\u0027[default]_Config/Security/AdminRoles\u0027)",
+            "roles": "{session.props.auth.user.roles}"
+          },
+          "waitOnAll": false
         },
         "transforms": [
           {
-            "expression": "try(hasRole(\u0027OneShot\u0027,{session.props.auth.user.userName},{session.props.auth.idp}), false) \u0026\u0026 coalesce({value}, false)",
-            "type": "expression"
+            "code": "\treturn shared.Security.hasAnyRole(value.roles, value.list)",
+            "type": "script"
           }
         ],
-        "type": "tag"
+        "type": "expr-struct"
       }
+    },
+    "custom.AlarmConfigReadOnly": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({session.custom.ReadOnly}, true) || !coalesce({session.custom.Permissions.AlarmConfiguration.Edit}, false)"
+        }
+      },
+      "access": "PROTECTED"
+    },
+    "custom.CanOpenFaceplates": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({session.custom.Permissions.Faceplates.Open}, false)"
+        }
+      },
+      "access": "PROTECTED"
+    },
+    "custom.EngineeringReadOnly": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({session.custom.ReadOnly}, true) || !coalesce({session.custom.Permissions.Engineering.Edit}, false)"
+        }
+      },
+      "access": "PROTECTED"
+    },
+    "custom.EngineeringView": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({session.custom.Permissions.Engineering.View}, false)"
+        }
+      },
+      "access": "PROTECTED"
+    },
+    "custom.IntegrationAccess": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({session.custom.Permissions.TicketLogger.Settings}, false)"
+        }
+      },
+      "access": "PROTECTED"
+    },
+    "custom.Permissions": {
+      "binding": {
+        "type": "expr-struct",
+        "config": {
+          "struct": {
+            "matrix": "tag(\u0027[default]_Config/RolesPermissions\u0027)",
+            "roles": "{session.props.auth.user.roles}",
+            "full": "tag(\u0027[default]_Config/Security/FullPermissionRoles\u0027)",
+            "inherits": "tag(\u0027[default]_Config/Security/RoleInherits\u0027)",
+            "restricted": "tag(\u0027[default]_Config/Security/RestrictedRows\u0027)",
+            "defaults": "tag(\u0027[default]_Config/Security/NewRoleDefaults\u0027)"
+          },
+          "waitOnAll": false
+        },
+        "transforms": [
+          {
+            "type": "script",
+            "code": "\t# {Device: {Action: bool}} for the logged-in user from [default]_Config/RolesPermissions (one column per\n\t# role, union over the user\u0027s roles + _Config/Security/RoleInherits; FullPermissionRoles hold every\n\t# action). Struct so it re-evaluates on login / role change as well as on matrix edits.\n\t# RestrictedRows (Ticket Logger) are not implied by FullPermissionRoles (device-perms 2026-10-24).\n\t# A role without a matrix column yet holds _Config/Security/NewRoleDefaults (role-wizard 2026-10-24).\n\treturn shared.Security.permissions(value.roles, value.matrix, value.full, value.inherits,\n\t\tvalue.restricted, value.defaults)\n"
+          }
+        ]
+      },
+      "access": "PROTECTED"
+    },
+    "custom.ReadOnly": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "!coalesce({session.custom.Permissions.Faceplates.Operate}, false)"
+        }
+      },
+      "access": "PROTECTED"
+    },
+    "custom.TicketLogAccess": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({session.custom.Permissions.TicketLogger.Use}, false)"
+        }
+      },
+      "access": "PROTECTED"
     },
     "props.auth": {
       "access": "PRIVATE",
@@ -142,15 +237,46 @@
     "props.offline.lastSynced": {
       "access": "SYSTEM",
       "persistent": false
+    },
+    "custom.trend": {
+      "binding": {
+        "type": "property",
+        "config": {
+          "path": "session.custom.AdhocTrend"
+        },
+        "transforms": [
+          {
+            "type": "script",
+            "code": "\t# read-only basket summary for the header badge / menus (docs/trending.md)\n\treturn shared.TrendContext.summary(value)"
+          }
+        ]
+      },
+      "persistent": true
+    },
+    "custom.trendTools": {
+      "persistent": true
+    },
+    "custom.TicketLogSettings": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({session.custom.Permissions.TicketLogger.Settings}, false)"
+        }
+      },
+      "access": "PROTECTED"
     }
   },
   "props": {
     "address": "172.19.0.1",
     "animations": true,
+    "appBar": {
+      "togglePosition": "hidden"
+    },
     "device": {},
     "geolocation": {},
     "locale": "en-US",
     "offline": {},
+    "theme": "light-cool",
     "timeZoneId": "America/New_York"
   }
 }

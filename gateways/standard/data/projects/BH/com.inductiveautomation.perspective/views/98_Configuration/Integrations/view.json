@@ -1,0 +1,242 @@
+{
+  "custom": {
+    "expanded": "",
+    "rev": 0,
+    "items": []
+  },
+  "propConfig": {
+    "custom.items": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "runScript('shared.Integrations.listForView', 10000, {view.custom.rev})"
+        }
+      }
+    },
+    "custom.expanded": {
+      "persistent": false
+    },
+    "custom.rev": {
+      "persistent": false
+    }
+  },
+  "params": {},
+  "props": {
+    "defaultSize": {
+      "height": 660,
+      "width": 580
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "gap": "8px",
+        "padding": "4px 4px 8px",
+        "overflow": "hidden"
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "integrationsToggle",
+          "pageScope": true,
+          "script": "\tname = str(payload.get(\"name\") or \"\")\n\tself.view.custom.expanded = \"\" if self.view.custom.expanded == name else name\n",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    },
+    "children": [
+      {
+        "type": "ia.display.flex-repeater",
+        "meta": {
+          "name": "Sections"
+        },
+        "position": {
+          "grow": 1,
+          "basis": "0px",
+          "shrink": 1
+        },
+        "props": {
+          "path": "98_Configuration/IntegrationSection",
+          "direction": "column",
+          "wrap": "nowrap",
+          "alignItems": "stretch",
+          "justify": "flex-start",
+          "useDefaultViewWidth": false,
+          "useDefaultViewHeight": false,
+          "elementPosition": {
+            "grow": 0,
+            "shrink": 0,
+            "basis": "38px"
+          },
+          "style": {
+            "gap": "6px",
+            "overflow": "hidden"
+          }
+        },
+        "propConfig": {
+          "props.instances": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "forEach(coalesce({view.custom.items}, asList()),\n\tasMap('name', coalesce(it()['name'], ''),\n\t\t'expanded', coalesce({view.custom.expanded}, '') = coalesce(it()['name'], ''),\n\t\t'instanceStyle', asMap('classes', ''),\n\t\t'instancePosition', if(coalesce({view.custom.expanded}, '') = coalesce(it()['name'], ''),\n\t\t\tasMap('grow', 1, 'shrink', 1, 'basis', '0px'),\n\t\t\tasMap('grow', 0, 'shrink', 0, 'basis', '38px'))))"
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "AddRow"
+        },
+        "position": {
+          "basis": "36px",
+          "shrink": 0
+        },
+        "props": {
+          "alignItems": "center",
+          "style": {
+            "gap": "8px"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Label"
+            },
+            "position": {
+              "basis": "auto",
+              "shrink": 0,
+              "grow": 0
+            },
+            "props": {
+              "text": "New Integration",
+              "style": {
+                "classes": "Fonts/Label"
+              }
+            }
+          },
+          {
+            "type": "ia.input.text-field",
+            "meta": {
+              "name": "NewName"
+            },
+            "position": {
+              "grow": 1,
+              "basis": "0px"
+            },
+            "props": {
+              "placeholder": "Name (e.g. Oracle)",
+              "style": {
+                "classes": "bg-component container-card Fonts/Value",
+                "height": "30px"
+              }
+            },
+            "propConfig": {
+              "props.enabled": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "coalesce({session.custom.IntegrationAccess}, false)"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.input.dropdown",
+            "meta": {
+              "name": "NewProvider"
+            },
+            "position": {
+              "basis": "110px",
+              "shrink": 0
+            },
+            "props": {
+              "value": "Oracle",
+              "options": [
+                {
+                  "value": "Monday",
+                  "label": "Monday"
+                },
+                {
+                  "value": "Oracle",
+                  "label": "Oracle"
+                },
+                {
+                  "value": "HTTP",
+                  "label": "HTTP"
+                }
+              ],
+              "dropdownOptionStyle": {
+                "classes": "bg-component Fonts/Value dropdown-subtle"
+              },
+              "style": {
+                "classes": "bg-component container-card Fonts/Value",
+                "height": "30px"
+              }
+            },
+            "propConfig": {
+              "props.enabled": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "coalesce({session.custom.IntegrationAccess}, false)"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.input.button",
+            "meta": {
+              "name": "Add"
+            },
+            "position": {
+              "basis": "70px",
+              "shrink": 0
+            },
+            "props": {
+              "text": "Add",
+              "style": {
+                "classes": "container-button Fonts/Button",
+                "height": "30px"
+              }
+            },
+            "propConfig": {
+              "props.enabled": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "coalesce({session.custom.IntegrationAccess}, false)"
+                  }
+                }
+              }
+            },
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\tif not self.session.custom.IntegrationAccess:\n\t\treturn\n\tr = self.parent\n\tname = str(r.getChild(\"NewName\").props.text or \"\").strip()\n\tprovider = r.getChild(\"NewProvider\").props.value or \"HTTP\"\n\ttry:\n\t\tshared.Integrations.add(name, provider, self.view.id.split(\"@\")[0])\n\t\tr.getChild(\"NewName\").props.text = \"\"\n\t\tself.view.custom.expanded = name\n\t\tself.view.custom.rev += 1\n\texcept Exception as e:\n\t\tshared.Alerts.showAlert(state='error', title='Add Integration', message=str(e), showCloseBtn=True, btnTextPrimary='OK', btnTextSecondary='', btnActionPrimary='closeAlert', btnActionSecondary='', payload={})\n"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

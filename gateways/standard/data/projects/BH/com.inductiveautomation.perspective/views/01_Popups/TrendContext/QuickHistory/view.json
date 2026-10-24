@@ -1,0 +1,1831 @@
+{
+  "custom": {
+    "hours": 8,
+    "live": true,
+    "pausedAt": null,
+    "dragMode": "time",
+    "autoY": false,
+    "zoomMin": null,
+    "zoomMax": null,
+    "zoomKind": null,
+    "zoomHoldMin": null,
+    "zoomHoldMax": null,
+    "zoomResetAt": null,
+    "key": [],
+    "realTimeDataset": null,
+    "historicalDataset": null,
+    "startDate": null,
+    "dataset": null
+  },
+  "params": {
+    "tagPath": "",
+    "label": "",
+    "units": "",
+    "hours": 8
+  },
+  "props": {
+    "defaultSize": {
+      "width": 780,
+      "height": 520
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "position": {},
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "trend-ctx-menu trend-ctx-quick"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Header"
+        },
+        "position": {
+          "basis": "32px",
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "alignItems": "center",
+          "style": {
+            "gap": "8px"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.icon",
+            "meta": {
+              "name": "Icon"
+            },
+            "position": {
+              "basis": "20px",
+              "shrink": 0
+            },
+            "props": {
+              "path": "material/history",
+              "style": {
+                "classes": "trend-ctx-icon",
+                "height": "20px",
+                "width": "20px"
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Title"
+            },
+            "position": {
+              "grow": 1,
+              "shrink": 1,
+              "basis": "0px"
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "Fonts/Label trend-ctx-title"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "'Quick History \u00b7 ' + coalesce({view.params.label}, '')"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.input.button",
+            "meta": {
+              "name": "Trend"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "Add To Trend",
+              "style": {
+                "classes": "faceplate-cmd-btn Fonts/Label",
+                "height": "26px",
+                "paddingLeft": "8px",
+                "paddingRight": "8px",
+                "minHeight": "26px"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if(indexOf(coalesce({session.custom.trend.key}, ''), '|' + {view.params.tagPath} + '|') >= 0, 'Remove From Trend', 'Add To Trend')"
+                  }
+                }
+              }
+            },
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\tok, msg = shared.TrendContext.toggle(self.session, self.view.params.tagPath, self.view.params.label)\n\tshared.TrendContext.toast(msg, 'ok' if ok else 'warn')"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.input.button",
+            "meta": {
+              "name": "OpenTrend"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "Open Trend",
+              "style": {
+                "classes": "faceplate-cmd-btn Fonts/Label",
+                "height": "26px",
+                "paddingLeft": "8px",
+                "paddingRight": "8px",
+                "minHeight": "26px"
+              }
+            },
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\tshared.TrendContext.open_trend()"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Close",
+              "tooltip": {
+                "enabled": true,
+                "text": "Close"
+              }
+            },
+            "position": {
+              "basis": "32px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "alignItems": "center",
+              "justify": "center",
+              "style": {
+                "classes": "trend-ctx-close-btn"
+              }
+            },
+            "events": {
+              "dom": {
+                "onClick": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\tsystem.perspective.closePopup('TrendQuickHistory')"
+                  }
+                }
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.icon",
+                "meta": {
+                  "name": "Icon"
+                },
+                "position": {
+                  "basis": "18px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "material/close",
+                  "style": {
+                    "classes": "trend-ctx-icon",
+                    "height": "18px",
+                    "width": "18px"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Tools"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "alignItems": "center",
+          "style": {
+            "gap": "6px"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "RangeLbl"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "Range",
+              "style": {
+                "classes": "Fonts/Label trend-ctx-path"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Ranges"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "alignItems": "center",
+              "style": {
+                "classes": "trend-seg-group"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.input.button",
+                "meta": {
+                  "name": "H1",
+                  "tooltip": {
+                    "enabled": true,
+                    "text": "Live, last hour"
+                  }
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "1H",
+                  "primary": false,
+                  "style": {
+                    "classes": "trend-seg"
+                  }
+                },
+                "propConfig": {
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.custom.hours} = 1, 'trend-seg trend-seg-on', 'trend-seg')"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tself.view.custom.hours = 1\n\tself.view.custom.live = True\n\tself.view.custom.zoomMin = None\n\tself.view.custom.zoomMax = None\n"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.input.button",
+                "meta": {
+                  "name": "H8",
+                  "tooltip": {
+                    "enabled": true,
+                    "text": "Live, last 8 hours"
+                  }
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "8H",
+                  "primary": false,
+                  "style": {
+                    "classes": "trend-seg"
+                  }
+                },
+                "propConfig": {
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.custom.hours} = 8, 'trend-seg trend-seg-on', 'trend-seg')"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tself.view.custom.hours = 8\n\tself.view.custom.live = True\n\tself.view.custom.zoomMin = None\n\tself.view.custom.zoomMax = None\n"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.input.button",
+                "meta": {
+                  "name": "H24",
+                  "tooltip": {
+                    "enabled": true,
+                    "text": "Live, last 24 hours"
+                  }
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "24H",
+                  "primary": false,
+                  "style": {
+                    "classes": "trend-seg"
+                  }
+                },
+                "propConfig": {
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.custom.hours} = 24, 'trend-seg trend-seg-on', 'trend-seg')"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tself.view.custom.hours = 24\n\tself.view.custom.live = True\n\tself.view.custom.zoomMin = None\n\tself.view.custom.zoomMax = None\n"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.input.button",
+                "meta": {
+                  "name": "H168",
+                  "tooltip": {
+                    "enabled": true,
+                    "text": "Live, last week"
+                  }
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "7D",
+                  "primary": false,
+                  "style": {
+                    "classes": "trend-seg"
+                  }
+                },
+                "propConfig": {
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.custom.hours} = 168, 'trend-seg trend-seg-on', 'trend-seg')"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tself.view.custom.hours = 168\n\tself.view.custom.live = True\n\tself.view.custom.zoomMin = None\n\tself.view.custom.zoomMax = None\n"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.input.button",
+            "meta": {
+              "name": "Live",
+              "tooltip": {
+                "enabled": true,
+                "text": "Live updates every 5 s. A zoom or pan pauses it"
+              }
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "Live",
+              "primary": false,
+              "style": {
+                "classes": "trend-tool-btn"
+              },
+              "image": {
+                "icon": {
+                  "path": "material/fiber_manual_record"
+                },
+                "position": "left",
+                "width": 16,
+                "height": 16
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.live}, 'Live', 'Paused')"
+                  }
+                }
+              },
+              "props.image.icon.path": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.live}, 'material/fiber_manual_record', 'material/pause')"
+                  }
+                }
+              },
+              "props.style.classes": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.live}, 'trend-tool-btn trend-live-on', 'trend-tool-btn')"
+                  }
+                }
+              }
+            },
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\tif self.view.custom.live:\n\t\tself.view.custom.pausedAt = system.date.now()\n\telse:\n\t\tself.view.custom.zoomMin = None\n\t\tself.view.custom.zoomMax = None\n\tself.view.custom.live = not self.view.custom.live"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "ChartTools"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "classes": "trend-tools trend-tools-compact"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Row"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "alignItems": "center",
+              "wrap": "wrap",
+              "style": {
+                "classes": "trend-tools-row"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "DragMode"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "center",
+                  "style": {
+                    "classes": "trend-seg-group"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.input.button",
+                    "meta": {
+                      "name": "ModeZoomTime",
+                      "tooltip": {
+                        "enabled": true,
+                        "text": "Drag across the chart to zoom into that time range"
+                      }
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Zoom Time",
+                      "primary": false,
+                      "style": {
+                        "classes": "trend-seg"
+                      },
+                      "image": {
+                        "icon": {
+                          "path": "material/settings_ethernet"
+                        },
+                        "position": "left",
+                        "width": 16,
+                        "height": 16
+                      }
+                    },
+                    "propConfig": {
+                      "props.style.classes": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'area', 'area', if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'pan', 'pan', 'time')) = 'time', 'trend-seg trend-seg-on', 'trend-seg')"
+                          }
+                        }
+                      }
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "type": "script",
+                          "scope": "G",
+                          "config": {
+                            "script": "\tself.view.custom.dragMode = 'time'\n\tself.view.custom.zoomKind = 'time'\n\tif 'time' == 'area' and self.view.custom.live:\n\t\tself.view.custom.pausedAt = system.date.now()\n\t\tself.view.custom.live = False\n"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.input.button",
+                    "meta": {
+                      "name": "ModeZoomArea",
+                      "tooltip": {
+                        "enabled": true,
+                        "text": "Drag a box to zoom into that time and value range. Pauses live updates"
+                      }
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Zoom Area",
+                      "primary": false,
+                      "style": {
+                        "classes": "trend-seg"
+                      },
+                      "image": {
+                        "icon": {
+                          "path": "material/crop_free"
+                        },
+                        "position": "left",
+                        "width": 16,
+                        "height": 16
+                      }
+                    },
+                    "propConfig": {
+                      "props.style.classes": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'area', 'area', if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'pan', 'pan', 'time')) = 'area', 'trend-seg trend-seg-on', 'trend-seg')"
+                          }
+                        }
+                      }
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "type": "script",
+                          "scope": "G",
+                          "config": {
+                            "script": "\tself.view.custom.dragMode = 'area'\n\tself.view.custom.zoomKind = 'time'\n\tif 'area' == 'area' and self.view.custom.live:\n\t\tself.view.custom.pausedAt = system.date.now()\n\t\tself.view.custom.live = False\n"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.input.button",
+                    "meta": {
+                      "name": "ModePan",
+                      "tooltip": {
+                        "enabled": true,
+                        "text": "Drag the chart left or right to move through time"
+                      }
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Pan",
+                      "primary": false,
+                      "style": {
+                        "classes": "trend-seg"
+                      },
+                      "image": {
+                        "icon": {
+                          "path": "material/pan_tool"
+                        },
+                        "position": "left",
+                        "width": 16,
+                        "height": 16
+                      }
+                    },
+                    "propConfig": {
+                      "props.style.classes": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'area', 'area', if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'pan', 'pan', 'time')) = 'pan', 'trend-seg trend-seg-on', 'trend-seg')"
+                          }
+                        }
+                      }
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "type": "script",
+                          "scope": "G",
+                          "config": {
+                            "script": "\tself.view.custom.dragMode = 'pan'\n\tself.view.custom.zoomKind = 'time'\n\tif 'pan' == 'area' and self.view.custom.live:\n\t\tself.view.custom.pausedAt = system.date.now()\n\t\tself.view.custom.live = False\n"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Div1"
+                },
+                "position": {
+                  "basis": "1px",
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "classes": "trend-divider"
+                  }
+                },
+                "children": []
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "AutoScale",
+                  "tooltip": {
+                    "enabled": true,
+                    "text": "On: every plot fits its value axis to the visible data. Off: the value axis covers the whole time range"
+                  }
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "center",
+                  "style": {
+                    "classes": "trend-switch-box"
+                  }
+                },
+                "events": {
+                  "dom": {
+                    "onClick": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tself.view.custom.autoY = not bool(self.view.custom.autoY)\n"
+                      }
+                    }
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.input.toggle-switch",
+                    "meta": {
+                      "name": "Switch"
+                    },
+                    "position": {
+                      "basis": "36px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "trend-switch"
+                      }
+                    },
+                    "propConfig": {
+                      "props.selected": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "coalesce(try({view.custom.autoY}, false), false)"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Label"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Auto-Scale Y",
+                      "style": {
+                        "classes": "trend-switch-label"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "State"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Off",
+                      "style": {
+                        "classes": "trend-switch-state"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try({view.custom.autoY}, false), false), 'On', 'Off')"
+                          }
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try({view.custom.autoY}, false), false), 'trend-switch-state trend-switch-state-on', 'trend-switch-state')"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Div2"
+                },
+                "position": {
+                  "basis": "1px",
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "classes": "trend-divider"
+                  }
+                },
+                "children": []
+              },
+              {
+                "type": "ia.input.button",
+                "meta": {
+                  "name": "ResetZoom",
+                  "tooltip": {
+                    "enabled": true,
+                    "text": "Show the full time range"
+                  }
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Reset Zoom",
+                  "primary": false,
+                  "style": {
+                    "classes": "trend-tool-btn"
+                  },
+                  "image": {
+                    "icon": {
+                      "path": "material/settings_backup_restore"
+                    },
+                    "position": "left",
+                    "width": 16,
+                    "height": 16
+                  }
+                },
+                "propConfig": {
+                  "props.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "!isNull(try({view.custom.zoomMin}, null)) && !isNull(try({view.custom.zoomMax}, null))"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tshared.TrendContext.chart_reset(self.view, ['Chart', 'ChartPan'])\n"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "ZoomChip",
+                  "tooltip": {
+                    "enabled": true,
+                    "text": "Click to reset the zoom"
+                  }
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "center",
+                  "style": {
+                    "classes": "trend-zoom-chip"
+                  }
+                },
+                "propConfig": {
+                  "meta.visible": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "!isNull(try({view.custom.zoomMin}, null)) && !isNull(try({view.custom.zoomMax}, null))"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "dom": {
+                    "onClick": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tshared.TrendContext.chart_reset(self.view, ['Chart', 'ChartPan'])\n"
+                      }
+                    }
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Range"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "",
+                      "style": {
+                        "classes": "trend-zoom-chip-text"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(!isNull(try({view.custom.zoomMin}, null)) && !isNull(try({view.custom.zoomMax}, null)), 'Zoomed: ' + dateFormat(fromMillis(try({view.custom.zoomMin}, null)), if(try({view.custom.zoomMax}, null) - try({view.custom.zoomMin}, null) < 86400000, 'HH:mm', 'MMM d HH:mm')) + ' - ' + dateFormat(fromMillis(try({view.custom.zoomMax}, null)), if(try({view.custom.zoomMax}, null) - try({view.custom.zoomMin}, null) < 86400000, 'HH:mm', 'MMM d HH:mm')), '')"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Dot"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "\u00b7",
+                      "style": {
+                        "classes": "trend-zoom-chip-text"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Reset"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Reset",
+                      "style": {
+                        "classes": "trend-zoom-chip-link"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Hint"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "trend-hint"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "case(if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'area', 'area', if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'pan', 'pan', 'time')), 'area', 'Drag a box on a chart to zoom into that time and value range', 'pan', 'Drag a chart left or right to move through time', 'Drag across a chart to zoom into that time range') + ' \u00b7 Scroll to zoom \u00b7 Double-click to reset'"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "kyvislabs.display.apexchart",
+        "meta": {
+          "name": "Chart"
+        },
+        "position": {
+          "grow": 1,
+          "shrink": 1,
+          "basis": "0px"
+        },
+        "props": {
+          "type": "line",
+          "options": {
+            "chart": {
+              "events": {
+                "animationEnd": false,
+                "beforeMount": false,
+                "beforeResetZoom": false,
+                "beforeZoom": false,
+                "brushScrolled": false,
+                "click": false,
+                "dataPointMouseEnter": false,
+                "dataPointMouseLeave": false,
+                "dataPointSelection": true,
+                "legendClick": false,
+                "markerClick": true,
+                "mounted": false,
+                "mouseLeave": false,
+                "mouseMove": false,
+                "scrolled": true,
+                "selection": false,
+                "updated": false,
+                "xAxisLabelClick": false,
+                "zoomed": true
+              },
+              "fontFamily": "sans-serif",
+              "height": "100%",
+              "redrawOnParentResize": true,
+              "redrawOnWindowResize": true,
+              "stacked": false,
+              "toolbar": {
+                "export": {
+                  "csv": {
+                    "categoryFormatter": "function (x) {return new Date(x)}",
+                    "filename": "export"
+                  }
+                },
+                "show": true,
+                "offsetX": 0,
+                "offsetY": 0,
+                "autoSelected": "zoom",
+                "tools": {
+                  "download": true,
+                  "selection": false,
+                  "zoom": true,
+                  "zoomin": false,
+                  "zoomout": false,
+                  "pan": true,
+                  "reset": false
+                }
+              },
+              "type": "line",
+              "zoom": {
+                "enabled": true,
+                "type": "x",
+                "autoScaleYaxis": false,
+                "allowMouseWheelZoom": true
+              },
+              "offsetY": 0,
+              "id": "trend-quick-history",
+              "width": "100%",
+              "selection": {
+                "enabled": false
+              },
+              "animations": {
+                "enabled": false
+              },
+              "group": "trend-quick-solo"
+            },
+            "dataLabels": {
+              "enabled": false
+            },
+            "fill": {
+              "opacity": 1
+            },
+            "grid": {
+              "show": false,
+              "padding": {
+                "bottom": 0,
+                "top": 0,
+                "left": 8,
+                "right": 8
+              }
+            },
+            "legend": {
+              "labels": {
+                "useSeriesColors": false,
+                "colors": "var(--neutral-90)"
+              },
+              "position": "top",
+              "show": true,
+              "showForSingleSeries": true,
+              "horizontalAlign": "left",
+              "fontSize": "11px",
+              "onItemClick": {
+                "toggleDataSeries": true
+              },
+              "onItemHover": {
+                "highlightDataSeries": true
+              }
+            },
+            "markers": {
+              "size": 0
+            },
+            "stroke": {
+              "curve": "straight",
+              "width": 1.2
+            },
+            "tooltip": {
+              "enabled": true,
+              "style": {
+                "fontFamily": "sans-serif",
+                "fontSize": "12px"
+              },
+              "x": {
+                "format": "dd MMM yyyy HH:mm:ss",
+                "show": true
+              },
+              "shared": true,
+              "intersect": false,
+              "followCursor": false
+            },
+            "xaxis": {
+              "axisBorder": {
+                "offsetY": 0,
+                "show": true
+              },
+              "labels": {
+                "datetimeFormatter": {
+                  "day": "dd MMM",
+                  "hour": "HH:mm",
+                  "month": "MMM yy",
+                  "year": "yyyy"
+                },
+                "datetimeUTC": false,
+                "offsetY": 0,
+                "style": {
+                  "colors": "var(--neutral-90)",
+                  "fontFamily": "sans-serif",
+                  "fontSize": "12px"
+                }
+              },
+              "type": "datetime",
+              "crosshairs": {
+                "show": true,
+                "width": 1,
+                "position": "back",
+                "opacity": 0.9,
+                "stroke": {
+                  "color": "#b6b6b6",
+                  "width": 1,
+                  "dashArray": 0
+                }
+              }
+            },
+            "yaxis": {
+              "axisBorder": {
+                "show": false
+              },
+              "labels": {
+                "formatter": "function(val) { return val == null ? '-' : val.toLocaleString(); }",
+                "style": {
+                  "colors": "var(--neutral-90)",
+                  "fontFamily": "sans-serif",
+                  "fontSize": "12px"
+                },
+                "minWidth": 48,
+                "maxWidth": 48
+              },
+              "title": {
+                "text": ""
+              }
+            },
+            "colors": [
+              "#008FFB",
+              "#34C759",
+              "#FFA726",
+              "#FF4560",
+              "#775DD0",
+              "#1C4E80",
+              "#008080",
+              "#26C6DA",
+              "#4F4F4F",
+              "#6C757D"
+            ],
+            "noData": {
+              "text": "No Data",
+              "align": "center",
+              "verticalAlign": "middle",
+              "style": {
+                "color": "#90A4AE",
+                "fontSize": "14px"
+              }
+            }
+          },
+          "series": [],
+          "style": {
+            "classes": "adhoc-trend-apex trend-chart",
+            "overflow": "hidden",
+            "width": "100%",
+            "minHeight": 0,
+            "maxHeight": "none",
+            "minWidth": 0,
+            "marginBottom": "0px",
+            "paddingBottom": "0px"
+          }
+        },
+        "propConfig": {
+          "props.series": {
+            "binding": {
+              "type": "expr-struct",
+              "config": {
+                "struct": {
+                  "dataset": "{view.custom.dataset}",
+                  "label": "{view.params.label}"
+                },
+                "waitOnAll": true
+              },
+              "transforms": [
+                {
+                  "type": "script",
+                  "code": "\treturn shared.TrendContext.quick_series(value.dataset, value.label)"
+                }
+              ],
+              "overlayOptOut": true
+            }
+          },
+          "props.options.tooltip.theme": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "session.props.theme"
+              }
+            }
+          },
+          "props.options.chart.zoom.type": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if(if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'area', 'area', if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'pan', 'pan', 'time')) = 'area', 'xy', 'x')"
+              }
+            }
+          },
+          "props.options.chart.zoom.autoScaleYaxis": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "coalesce({view.custom.autoY}, false)"
+              }
+            }
+          },
+          "props.options.yaxis.title.text": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "view.params.units"
+              }
+            }
+          },
+          "props.options.xaxis.min": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if(coalesce({view.custom.zoomKind}, '') = 'area', {view.custom.zoomHoldMin}, coalesce({view.custom.zoomMin}, if(coalesce({view.custom.live}, true), toMillis(addHours(now(5000), -coalesce({view.custom.hours}, 8))), toMillis({view.custom.startDate}))))"
+              }
+            }
+          },
+          "props.options.xaxis.max": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if(coalesce({view.custom.zoomKind}, '') = 'area', {view.custom.zoomHoldMax}, coalesce({view.custom.zoomMax}, if(coalesce({view.custom.live}, true), toMillis(now(5000)), toMillis(coalesce({view.custom.pausedAt}, now(0))))))"
+              }
+            }
+          },
+          "props.options.chart.toolbar.tools.download": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "this.props.series"
+              },
+              "transforms": [
+                {
+                  "type": "script",
+                  "code": "\t# trend-context: download (export) only with at least one good point (quality rule, docs/trending.md)\n\ttry:\n\t\tfor s in value or []:\n\t\t\tfor p in (s['data'] or []):\n\t\t\t\ttry:\n\t\t\t\t\ty = p['y']\n\t\t\t\texcept:\n\t\t\t\t\ty = p[1]\n\t\t\t\tif y is not None:\n\t\t\t\t\treturn True\n\texcept:\n\t\tpass\n\treturn False\n"
+                }
+              ]
+            }
+          },
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "(true) && if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'area', 'area', if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'pan', 'pan', 'time')) != 'pan'"
+              }
+            }
+          }
+        },
+        "events": {
+          "component": {
+            "zoomedHandler": {
+              "type": "script",
+              "scope": "G",
+              "config": {
+                "script": "\tshared.TrendContext.chart_zoomed(self.view, event, True, self)\n"
+              }
+            },
+            "scrolledHandler": {
+              "type": "script",
+              "scope": "G",
+              "config": {
+                "script": "\tshared.TrendContext.chart_zoomed(self.view, event, True, self)\n"
+              }
+            }
+          },
+          "dom": {
+            "onDoubleClick": {
+              "type": "script",
+              "scope": "G",
+              "config": {
+                "script": "\tshared.TrendContext.chart_reset(self.view, ['Chart', 'ChartPan'])\n"
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "kyvislabs.display.apexchart",
+        "meta": {
+          "name": "ChartPan"
+        },
+        "position": {
+          "grow": 1,
+          "shrink": 1,
+          "basis": "0px"
+        },
+        "props": {
+          "type": "line",
+          "options": {
+            "chart": {
+              "events": {
+                "animationEnd": false,
+                "beforeMount": false,
+                "beforeResetZoom": false,
+                "beforeZoom": false,
+                "brushScrolled": false,
+                "click": false,
+                "dataPointMouseEnter": false,
+                "dataPointMouseLeave": false,
+                "dataPointSelection": true,
+                "legendClick": false,
+                "markerClick": true,
+                "mounted": false,
+                "mouseLeave": false,
+                "mouseMove": false,
+                "scrolled": true,
+                "selection": false,
+                "updated": false,
+                "xAxisLabelClick": false,
+                "zoomed": true
+              },
+              "fontFamily": "sans-serif",
+              "height": "100%",
+              "redrawOnParentResize": true,
+              "redrawOnWindowResize": true,
+              "stacked": false,
+              "toolbar": {
+                "export": {
+                  "csv": {
+                    "categoryFormatter": "function (x) {return new Date(x)}",
+                    "filename": "export"
+                  }
+                },
+                "show": true,
+                "offsetX": 0,
+                "offsetY": 0,
+                "autoSelected": "pan",
+                "tools": {
+                  "download": true,
+                  "selection": false,
+                  "zoom": true,
+                  "zoomin": false,
+                  "zoomout": false,
+                  "pan": true,
+                  "reset": false
+                }
+              },
+              "type": "line",
+              "zoom": {
+                "enabled": true,
+                "type": "x",
+                "autoScaleYaxis": false,
+                "allowMouseWheelZoom": true
+              },
+              "offsetY": 0,
+              "id": "trend-quick-history",
+              "width": "100%",
+              "selection": {
+                "enabled": false
+              },
+              "animations": {
+                "enabled": false
+              },
+              "group": "trend-quick-solo"
+            },
+            "dataLabels": {
+              "enabled": false
+            },
+            "fill": {
+              "opacity": 1
+            },
+            "grid": {
+              "show": false,
+              "padding": {
+                "bottom": 0,
+                "top": 0,
+                "left": 8,
+                "right": 8
+              }
+            },
+            "legend": {
+              "labels": {
+                "useSeriesColors": false,
+                "colors": "var(--neutral-90)"
+              },
+              "position": "top",
+              "show": true,
+              "showForSingleSeries": true,
+              "horizontalAlign": "left",
+              "fontSize": "11px",
+              "onItemClick": {
+                "toggleDataSeries": true
+              },
+              "onItemHover": {
+                "highlightDataSeries": true
+              }
+            },
+            "markers": {
+              "size": 0
+            },
+            "stroke": {
+              "curve": "straight",
+              "width": 1.2
+            },
+            "tooltip": {
+              "enabled": true,
+              "style": {
+                "fontFamily": "sans-serif",
+                "fontSize": "12px"
+              },
+              "x": {
+                "format": "dd MMM yyyy HH:mm:ss",
+                "show": true
+              },
+              "shared": true,
+              "intersect": false,
+              "followCursor": false
+            },
+            "xaxis": {
+              "axisBorder": {
+                "offsetY": 0,
+                "show": true
+              },
+              "labels": {
+                "datetimeFormatter": {
+                  "day": "dd MMM",
+                  "hour": "HH:mm",
+                  "month": "MMM yy",
+                  "year": "yyyy"
+                },
+                "datetimeUTC": false,
+                "offsetY": 0,
+                "style": {
+                  "colors": "var(--neutral-90)",
+                  "fontFamily": "sans-serif",
+                  "fontSize": "12px"
+                }
+              },
+              "type": "datetime",
+              "crosshairs": {
+                "show": true,
+                "width": 1,
+                "position": "back",
+                "opacity": 0.9,
+                "stroke": {
+                  "color": "#b6b6b6",
+                  "width": 1,
+                  "dashArray": 0
+                }
+              }
+            },
+            "yaxis": {
+              "axisBorder": {
+                "show": false
+              },
+              "labels": {
+                "formatter": "function(val) { return val == null ? '-' : val.toLocaleString(); }",
+                "style": {
+                  "colors": "var(--neutral-90)",
+                  "fontFamily": "sans-serif",
+                  "fontSize": "12px"
+                },
+                "minWidth": 48,
+                "maxWidth": 48
+              },
+              "title": {
+                "text": ""
+              }
+            },
+            "colors": [
+              "#008FFB",
+              "#34C759",
+              "#FFA726",
+              "#FF4560",
+              "#775DD0",
+              "#1C4E80",
+              "#008080",
+              "#26C6DA",
+              "#4F4F4F",
+              "#6C757D"
+            ],
+            "noData": {
+              "text": "No Data",
+              "align": "center",
+              "verticalAlign": "middle",
+              "style": {
+                "color": "#90A4AE",
+                "fontSize": "14px"
+              }
+            }
+          },
+          "series": [],
+          "style": {
+            "classes": "adhoc-trend-apex trend-chart",
+            "overflow": "hidden",
+            "width": "100%",
+            "minHeight": 0,
+            "maxHeight": "none",
+            "minWidth": 0,
+            "marginBottom": "0px",
+            "paddingBottom": "0px"
+          }
+        },
+        "propConfig": {
+          "props.series": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "../Chart.props.series"
+              },
+              "transforms": [
+                {
+                  "type": "script",
+                  "code": "\treturn list(value or [])\n"
+                }
+              ]
+            }
+          },
+          "props.options.tooltip.theme": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "session.props.theme"
+              }
+            }
+          },
+          "props.options.chart.zoom.autoScaleYaxis": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "coalesce({view.custom.autoY}, false)"
+              }
+            }
+          },
+          "props.options.yaxis.title.text": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "view.params.units"
+              }
+            }
+          },
+          "props.options.xaxis.min": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if(coalesce({view.custom.zoomKind}, '') = 'area', {view.custom.zoomHoldMin}, coalesce({view.custom.zoomMin}, if(coalesce({view.custom.live}, true), toMillis(addHours(now(5000), -coalesce({view.custom.hours}, 8))), toMillis({view.custom.startDate}))))"
+              }
+            }
+          },
+          "props.options.xaxis.max": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if(coalesce({view.custom.zoomKind}, '') = 'area', {view.custom.zoomHoldMax}, coalesce({view.custom.zoomMax}, if(coalesce({view.custom.live}, true), toMillis(now(5000)), toMillis(coalesce({view.custom.pausedAt}, now(0))))))"
+              }
+            }
+          },
+          "props.options.chart.toolbar.tools.download": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "this.props.series"
+              },
+              "transforms": [
+                {
+                  "type": "script",
+                  "code": "\t# trend-context: download (export) only with at least one good point (quality rule, docs/trending.md)\n\ttry:\n\t\tfor s in value or []:\n\t\t\tfor p in (s['data'] or []):\n\t\t\t\ttry:\n\t\t\t\t\ty = p['y']\n\t\t\t\texcept:\n\t\t\t\t\ty = p[1]\n\t\t\t\tif y is not None:\n\t\t\t\t\treturn True\n\texcept:\n\t\tpass\n\treturn False\n"
+                }
+              ]
+            }
+          },
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "(true) && if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'area', 'area', if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'pan', 'pan', 'time')) = 'pan'"
+              }
+            }
+          }
+        },
+        "events": {
+          "component": {
+            "zoomedHandler": {
+              "type": "script",
+              "scope": "G",
+              "config": {
+                "script": "\tshared.TrendContext.chart_zoomed(self.view, event, True, self)\n"
+              }
+            },
+            "scrolledHandler": {
+              "type": "script",
+              "scope": "G",
+              "config": {
+                "script": "\tshared.TrendContext.chart_zoomed(self.view, event, True, self)\n"
+              }
+            }
+          },
+          "dom": {
+            "onDoubleClick": {
+              "type": "script",
+              "scope": "G",
+              "config": {
+                "script": "\tshared.TrendContext.chart_reset(self.view, ['Chart', 'ChartPan'])\n"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "events": {
+      "system": {
+        "onStartup": {
+          "type": "script",
+          "scope": "G",
+          "config": {
+            "script": "\ttry:\n\t\th = int(self.view.params.hours or 8)\n\texcept:\n\t\th = 8\n\tself.view.custom.hours = h"
+          }
+        }
+      }
+    }
+  },
+  "propConfig": {
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.label": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.units": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.hours": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.hours": {
+      "persistent": true
+    },
+    "custom.live": {
+      "persistent": true,
+      "onChange": {
+        "enabled": null,
+        "script": "\tif currentValue is not None and currentValue.value and previousValue is not None:\n\t\tshared.TrendContext.chart_reset(self, ['Chart', 'ChartPan'])"
+      }
+    },
+    "custom.pausedAt": {
+      "persistent": true
+    },
+    "custom.dragMode": {
+      "persistent": true
+    },
+    "custom.autoY": {
+      "persistent": true
+    },
+    "custom.zoomMin": {
+      "persistent": true
+    },
+    "custom.zoomMax": {
+      "persistent": true
+    },
+    "custom.zoomKind": {
+      "persistent": true
+    },
+    "custom.zoomHoldMin": {
+      "persistent": true
+    },
+    "custom.zoomHoldMax": {
+      "persistent": true
+    },
+    "custom.zoomResetAt": {
+      "persistent": true
+    },
+    "custom.key": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "asList(asMap('aggregate', 'Average', 'alias', 'pen', 'path', coalesce({view.params.tagPath}, '')))"
+        }
+      },
+      "persistent": true
+    },
+    "custom.realTimeDataset": {
+      "binding": {
+        "type": "tag-history",
+        "config": {
+          "aggregate": "Average",
+          "avoidScanClassValidation": true,
+          "enableValueCache": true,
+          "ignoreBadQuality": false,
+          "preventInterpolation": false,
+          "returnFormat": "Tall",
+          "returnSize": {
+            "numRows": "300",
+            "type": "FIXED"
+          },
+          "tags": "{view.custom.key}",
+          "valueFormat": "DATASET",
+          "dateRange": {
+            "mostRecent": "{view.custom.hours}",
+            "mostRecentUnits": "HOUR"
+          },
+          "polling": {
+            "enabled": true,
+            "rate": "5"
+          }
+        }
+      },
+      "persistent": true
+    },
+    "custom.historicalDataset": {
+      "binding": {
+        "type": "tag-history",
+        "config": {
+          "aggregate": "Average",
+          "avoidScanClassValidation": true,
+          "enableValueCache": true,
+          "ignoreBadQuality": false,
+          "preventInterpolation": false,
+          "returnFormat": "Tall",
+          "returnSize": {
+            "numRows": "300",
+            "type": "FIXED"
+          },
+          "tags": "{view.custom.key}",
+          "valueFormat": "DATASET",
+          "dateRange": {
+            "startDate": "{view.custom.startDate}",
+            "endDate": "{view.custom.pausedAt}"
+          }
+        }
+      },
+      "persistent": true
+    },
+    "custom.startDate": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "dateArithmetic(coalesce({view.custom.pausedAt}, now(0)), -coalesce({view.custom.hours}, 8), 'hour')"
+        }
+      },
+      "persistent": true
+    },
+    "custom.dataset": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.custom.live}, true), {view.custom.realTimeDataset}, {view.custom.historicalDataset})"
+        }
+      },
+      "persistent": true
+    }
+  }
+}

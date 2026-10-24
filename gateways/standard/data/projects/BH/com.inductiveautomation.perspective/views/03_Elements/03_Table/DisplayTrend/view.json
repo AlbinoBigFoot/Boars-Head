@@ -1,0 +1,152 @@
+{
+  "custom": {
+    "tagPath": ""
+  },
+  "params": {
+    "row": "",
+    "rowData": {},
+    "value": ""
+  },
+  "propConfig": {
+    "custom.tagPath": {
+      "binding": {
+        "config": {
+          "path": "view.params.rowData.tempTagPath"
+        },
+        "transforms": [
+          {
+            "expression": "coalesce({value}, '')",
+            "type": "expression"
+          }
+        ],
+        "type": "property"
+      },
+      "persistent": true
+    },
+    "params.row": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.rowData": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.value": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 28,
+      "width": 88
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Value"
+        },
+        "position": {
+          "grow": 1
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.params.value"
+              },
+              "transforms": [
+                {
+                  "expression": "if(isNull({value}), '\u2014', numberFormat({value}, '0.0'))",
+                  "type": "expression"
+                }
+              ],
+              "type": "property"
+            }
+          },
+          "props.style.classes": {
+            "binding": {
+              "config": {
+                "path": "view.custom.tagPath"
+              },
+              "transforms": [
+                {
+                  "expression": "if(len({value}) > 0, 'Fonts/LiveData', 'Fonts/BadData')",
+                  "type": "expression"
+                }
+              ],
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "fontSize": "12px",
+            "overflow": "hidden",
+            "paddingRight": "4%",
+            "textAlign": "right",
+            "width": "100%"
+          }
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Unit"
+        },
+        "position": {
+          "basis": "28%",
+          "shrink": 0
+        },
+        "props": {
+          "text": "\u00b0F",
+          "style": {
+            "classes": "Fonts/Label fs-11",
+            "color": "--neutral-70",
+            "marginTop": "1.2%"
+          }
+        },
+        "type": "ia.display.label"
+      }
+    ],
+    "events": {
+      "dom": {
+        "onContextMenu": {
+          "type": "script",
+          "scope": "G",
+          "config": {
+            "script": "\tshared.TrendContext.menu(self, event, '{view.custom.tagPath}')"
+          },
+          "preventDefault": true,
+          "stopPropagation": true
+        }
+      }
+    },
+    "meta": {
+      "name": "root"
+    },
+    "propConfig": {
+      "meta.visible": {
+        "binding": {
+          "config": {
+            "expression": "len(coalesce({view.custom.tagPath}, '')) > 0"
+          },
+          "type": "expr"
+        }
+      }
+    },
+    "props": {
+      "alignItems": "center",
+      "style": {
+        "cursor": "pointer",
+        "height": "100%",
+        "minHeight": 20,
+        "overflow": "hidden",
+        "width": "100%"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

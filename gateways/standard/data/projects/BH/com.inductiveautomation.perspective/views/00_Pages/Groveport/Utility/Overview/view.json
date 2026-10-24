@@ -1,0 +1,1927 @@
+{
+  "custom": {
+    "highlightStatus": "",
+    "highlightCg": "",
+    "highlightArea": ""
+  },
+  "params": {
+    "Scale": true
+  },
+  "propConfig": {
+    "params.Scale": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.highlightStatus": {
+      "persistent": false
+    },
+    "custom.highlightCg": {
+      "persistent": false
+    },
+    "custom.highlightArea": {
+      "persistent": false
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 1080,
+      "width": 1920
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root",
+      "contextMenu": {}
+    },
+    "props": {
+      "alignItems": "flex-start",
+      "justify": "flex-start",
+      "style": {
+        "height": "100%",
+        "width": "100%",
+        "classes": "bg-page",
+        "overflow": "hidden"
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "UtilityOverviewHighlight",
+          "pageScope": true,
+          "sessionScope": false,
+          "viewScope": false,
+          "script": "\n\taction = ''\n\ttry:\n\t\taction = str(payload.get('action') or '')\n\texcept:\n\t\taction = ''\n\tstatus = ''\n\tcg = ''\n\tarea = ''\n\ttry:\n\t\tstatus = str(payload.get('status') or '')\n\texcept:\n\t\tstatus = ''\n\ttry:\n\t\tcg = str(payload.get('cg') or '')\n\texcept:\n\t\tcg = ''\n\ttry:\n\t\tarea = str(payload.get('area') or '')\n\texcept:\n\t\tarea = ''\n\tif action == 'select':\n\t\tcur = ''\n\t\ttry:\n\t\t\tcur = str(self.view.custom.highlightCg or '')\n\t\texcept:\n\t\t\tcur = ''\n\t\tif cg and cur == cg:\n\t\t\tself.view.custom.highlightCg = ''\n\t\telse:\n\t\t\tself.view.custom.highlightCg = cg\n\t\t# CG focus wins — drop area filter (status left alone; opacity prefers cg)\n\t\tself.view.custom.highlightArea = ''\n\telif action == 'clear':\n\t\t# CG + area plant focus — leave status-mix filter alone\n\t\tself.view.custom.highlightCg = ''\n\t\tself.view.custom.highlightArea = ''\n\telif action == 'statusToggle':\n\t\tcur = ''\n\t\ttry:\n\t\t\tcur = str(self.view.custom.highlightStatus or '')\n\t\texcept:\n\t\t\tcur = ''\n\t\tif cur == status:\n\t\t\tself.view.custom.highlightStatus = ''\n\t\telse:\n\t\t\tself.view.custom.highlightStatus = status\n\t\tself.view.custom.highlightCg = ''\n\t\tself.view.custom.highlightArea = ''\n\telif action == 'selectArea':\n\t\tcur = ''\n\t\ttry:\n\t\t\tcur = str(self.view.custom.highlightArea or '')\n\t\texcept:\n\t\t\tcur = ''\n\t\tif area and cur == area:\n\t\t\tself.view.custom.highlightArea = ''\n\t\telse:\n\t\t\tself.view.custom.highlightArea = area\n\t\tself.view.custom.highlightCg = ''\n\t\tself.view.custom.highlightStatus = ''\n\telif action == 'selectAreaStatus':\n\t\tcur_a = ''\n\t\tcur_s = ''\n\t\ttry:\n\t\t\tcur_a = str(self.view.custom.highlightArea or '')\n\t\texcept:\n\t\t\tcur_a = ''\n\t\ttry:\n\t\t\tcur_s = str(self.view.custom.highlightStatus or '')\n\t\texcept:\n\t\t\tcur_s = ''\n\t\tif area and status and cur_a == area and cur_s == status:\n\t\t\tself.view.custom.highlightArea = ''\n\t\t\tself.view.custom.highlightStatus = ''\n\t\telse:\n\t\t\tself.view.custom.highlightArea = area\n\t\t\tself.view.custom.highlightStatus = status\n\t\tself.view.custom.highlightCg = ''\n"
+        },
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    },
+    "children": [
+      {
+        "type": "ia.container.coord",
+        "meta": {
+          "name": "Draw"
+        },
+        "props": {
+          "style": {
+            "backgroundColor": "var(--neutral-10)",
+            "height": "1080px",
+            "width": "1920px",
+            "overflow": "visible",
+            "transformOrigin": "top left"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "FillMain"
+            },
+            "position": {
+              "x": 190,
+              "y": 64,
+              "width": 1100,
+              "height": 920
+            },
+            "props": {
+              "style": {
+                "backgroundColor": "var(--neutral-20)",
+                "overflow": "visible"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "FillEast"
+            },
+            "position": {
+              "x": 1290,
+              "y": 64,
+              "width": 88,
+              "height": 920
+            },
+            "props": {
+              "style": {
+                "backgroundColor": "var(--neutral-30)",
+                "overflow": "visible"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "FillNorth"
+            },
+            "position": {
+              "x": 610,
+              "y": 16,
+              "width": 180,
+              "height": 48
+            },
+            "props": {
+              "style": {
+                "backgroundColor": "var(--neutral-20)",
+                "overflow": "visible"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "FillSouth"
+            },
+            "position": {
+              "x": 890,
+              "y": 984,
+              "width": 260,
+              "height": 72
+            },
+            "props": {
+              "style": {
+                "backgroundColor": "var(--neutral-20)",
+                "overflow": "visible"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "OL_TopLeft"
+            },
+            "position": {
+              "x": 190,
+              "y": 64,
+              "width": 423,
+              "height": 3
+            },
+            "props": {
+              "style": {
+                "backgroundColor": "var(--neutral-70)"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "OL_NBumpLeft"
+            },
+            "position": {
+              "x": 610,
+              "y": 16,
+              "width": 3,
+              "height": 51
+            },
+            "props": {
+              "style": {
+                "backgroundColor": "var(--neutral-70)"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "OL_NBumpTop"
+            },
+            "position": {
+              "x": 610,
+              "y": 16,
+              "width": 180,
+              "height": 3
+            },
+            "props": {
+              "style": {
+                "backgroundColor": "var(--neutral-70)"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "OL_NBumpRight"
+            },
+            "position": {
+              "x": 787,
+              "y": 16,
+              "width": 3,
+              "height": 51
+            },
+            "props": {
+              "style": {
+                "backgroundColor": "var(--neutral-70)"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "OL_TopRight"
+            },
+            "position": {
+              "x": 787,
+              "y": 64,
+              "width": 591,
+              "height": 3
+            },
+            "props": {
+              "style": {
+                "backgroundColor": "var(--neutral-70)"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "OL_Right"
+            },
+            "position": {
+              "x": 1375,
+              "y": 64,
+              "width": 3,
+              "height": 920
+            },
+            "props": {
+              "style": {
+                "backgroundColor": "var(--neutral-70)"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "OL_Left"
+            },
+            "position": {
+              "x": 190,
+              "y": 64,
+              "width": 3,
+              "height": 920
+            },
+            "props": {
+              "style": {
+                "backgroundColor": "var(--neutral-70)"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "OL_BotLeft"
+            },
+            "position": {
+              "x": 190,
+              "y": 981,
+              "width": 703,
+              "height": 3
+            },
+            "props": {
+              "style": {
+                "backgroundColor": "var(--neutral-70)"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "OL_SBumpLeft"
+            },
+            "position": {
+              "x": 890,
+              "y": 981,
+              "width": 3,
+              "height": 75
+            },
+            "props": {
+              "style": {
+                "backgroundColor": "var(--neutral-70)"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "OL_SBumpBottom"
+            },
+            "position": {
+              "x": 890,
+              "y": 1053,
+              "width": 260,
+              "height": 3
+            },
+            "props": {
+              "style": {
+                "backgroundColor": "var(--neutral-70)"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "OL_SBumpRight"
+            },
+            "position": {
+              "x": 1147,
+              "y": 981,
+              "width": 3,
+              "height": 75
+            },
+            "props": {
+              "style": {
+                "backgroundColor": "var(--neutral-70)"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "OL_BotRight"
+            },
+            "position": {
+              "x": 1147,
+              "y": 981,
+              "width": 231,
+              "height": 3
+            },
+            "props": {
+              "style": {
+                "backgroundColor": "var(--neutral-70)"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "DivEast"
+            },
+            "position": {
+              "x": 1290,
+              "y": 64,
+              "width": 3,
+              "height": 920
+            },
+            "props": {
+              "style": {
+                "backgroundColor": "var(--neutral-70)"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "DivEastH1"
+            },
+            "position": {
+              "x": 1290,
+              "y": 184,
+              "width": 88,
+              "height": 3
+            },
+            "props": {
+              "style": {
+                "backgroundColor": "var(--neutral-70)"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "DivEastH2"
+            },
+            "position": {
+              "x": 1290,
+              "y": 320,
+              "width": 88,
+              "height": 3
+            },
+            "props": {
+              "style": {
+                "backgroundColor": "var(--neutral-70)"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "DivEastH3"
+            },
+            "position": {
+              "x": 1290,
+              "y": 690,
+              "width": 88,
+              "height": 3
+            },
+            "props": {
+              "style": {
+                "backgroundColor": "var(--neutral-70)"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "DivEastH4"
+            },
+            "position": {
+              "x": 1290,
+              "y": 867,
+              "width": 88,
+              "height": 3
+            },
+            "props": {
+              "style": {
+                "backgroundColor": "var(--neutral-70)"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Room_MachineRoom",
+              "tooltip": {
+                "enabled": true,
+                "text": "Open Machine Room"
+              }
+            },
+            "position": {
+              "x": 1293,
+              "y": 187,
+              "width": 82,
+              "height": 133
+            },
+            "props": {
+              "justify": "center",
+              "alignItems": "center",
+              "style": {
+                "cursor": "pointer",
+                "overflow": "visible"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Label"
+                },
+                "position": {
+                  "grow": 1,
+                  "basis": "0"
+                },
+                "props": {
+                  "text": "MACHINE ROOM",
+                  "style": {
+                    "classes": "fs-15 fw-600",
+                    "color": "var(--neutral-90)",
+                    "textAlign": "center",
+                    "lineHeight": "1.25",
+                    "letterSpacing": "0.04em",
+                    "whiteSpace": "normal"
+                  }
+                }
+              }
+            ],
+            "events": {
+              "dom": {
+                "onClick": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\tNavigation.Nav.navigate({'action': 'page', 'page': '/machine-room'})\n"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "StatusStack"
+            },
+            "position": {
+              "x": 10,
+              "y": 184,
+              "width": 168,
+              "height": 712
+            },
+            "props": {
+              "path": "00_Pages/Groveport/Utility/OverviewStatuses",
+              "params": {},
+              "style": {
+                "width": "168px",
+                "height": "900px",
+                "overflow": "visible"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Zone_Dock"
+            },
+            "position": {
+              "x": 202,
+              "y": 796,
+              "width": 709,
+              "height": 168
+            },
+            "props": {
+              "style": {
+                "backgroundColor": "transparent",
+                "borderStyle": "dashed",
+                "borderWidth": "2px",
+                "borderColor": "var(--neutral-70)",
+                "overflow": "visible"
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Lbl_Dock"
+            },
+            "position": {
+              "x": 205,
+              "y": 798,
+              "width": 46,
+              "height": 18
+            },
+            "props": {
+              "text": "Dock",
+              "style": {
+                "classes": "Fonts/Label",
+                "color": "var(--neutral-90)"
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "CG-F2"
+            },
+            "position": {
+              "x": 210,
+              "y": 81,
+              "width": 128,
+              "height": 128
+            },
+            "props": {
+              "path": "02_Components/01_Devices/Evaporator",
+              "params": {
+                "faceplate": "",
+                "tagPath": "[default]Boars_Head/GrovePort/West PH/Utility/CG-F2",
+                "label": "CG-F2",
+                "navPage": "/cg-f2"
+              },
+              "style": {
+                "overflow": "visible",
+                "width": "128px",
+                "height": "128px",
+                "transition": "opacity 120ms ease"
+              }
+            },
+            "propConfig": {
+              "props.style.opacity": {
+                "binding": {
+                  "type": "expr-struct",
+                  "config": {
+                    "struct": {
+                      "statusFilter": "{view.custom.highlightStatus}",
+                      "cgFilter": "{view.custom.highlightCg}",
+                      "areaFilter": "{view.custom.highlightArea}",
+                      "myCg": "'CG-F2'",
+                      "myArea": "'West PH'",
+                      "myStatus": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/West PH/Utility/CG-F2/HmiStatus')), false), false), try(tag('[default]Boars_Head/GrovePort/West PH/Utility/CG-F2/HmiStatus'), null), null)"
+                    },
+                    "waitOnAll": false
+                  },
+                  "transforms": [
+                    {
+                      "type": "script",
+                      "code": "\n\t# Priority: highlightCg > highlightArea+status > highlightArea > highlightStatus > none\n\tstatus_f = value.get('statusFilter') or ''\n\tcg_f = value.get('cgFilter') or ''\n\tarea_f = value.get('areaFilter') or ''\n\tmy_cg = value.get('myCg') or ''\n\tmy_area = value.get('myArea') or ''\n\traw = value.get('myStatus')\n\ttry:\n\t\ts = int(raw) if raw is not None else None\n\texcept:\n\t\ts = None\n\n\tdef coarse_code(sv):\n\t\tif sv == 1:\n\t\t\treturn 'CLG'\n\t\tif sv in (2, 6, 7, 8, 9):\n\t\t\treturn 'DFT'\n\t\tif sv == 3:\n\t\t\treturn 'FLT'\n\t\tif sv == 5:\n\t\t\treturn 'IDLE'\n\t\treturn 'STOP'\n\n\tdef status_match(filt, sv):\n\t\tf = str(filt or '').strip().upper()\n\t\tif not f:\n\t\t\treturn True\n\t\t# Stage-accurate dwell rows (StatusIndicator DFT PD/HG/BLD/FD)\n\t\tif f == 'DFT PD':\n\t\t\treturn sv == 6\n\t\tif f == 'DFT HG':\n\t\t\treturn sv == 7\n\t\tif f == 'DFT BLD':\n\t\t\treturn sv == 8\n\t\tif f == 'DFT FD':\n\t\t\treturn sv == 9\n\t\t# Coarse DFT (donut / stack) includes base + all stages\n\t\tif f == 'DFT':\n\t\t\treturn sv in (2, 6, 7, 8, 9)\n\t\treturn coarse_code(sv) == f\n\n\tif cg_f:\n\t\treturn 1.0 if str(my_cg) == str(cg_f) else 0.22\n\tif area_f and status_f:\n\t\tok = (str(my_area) == str(area_f)) and status_match(status_f, s)\n\t\treturn 1.0 if ok else 0.22\n\tif area_f:\n\t\treturn 1.0 if str(my_area) == str(area_f) else 0.22\n\tif status_f:\n\t\treturn 1.0 if status_match(status_f, s) else 0.22\n\treturn 1.0\n"
+                    },
+                    {
+                      "type": "expression",
+                      "expression": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/West PH/Utility/CG-F2/HmiStatus')), false), false), {value}, 0.5)"
+                    }
+                  ],
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "CG-F3"
+            },
+            "position": {
+              "x": 366,
+              "y": 81,
+              "width": 128,
+              "height": 128
+            },
+            "props": {
+              "path": "02_Components/01_Devices/Evaporator",
+              "params": {
+                "faceplate": "",
+                "tagPath": "[default]Boars_Head/GrovePort/West PH/Utility/CG-F3",
+                "label": "CG-F3",
+                "navPage": "/cg-f3"
+              },
+              "style": {
+                "overflow": "visible",
+                "width": "128px",
+                "height": "128px",
+                "transition": "opacity 120ms ease"
+              }
+            },
+            "propConfig": {
+              "props.style.opacity": {
+                "binding": {
+                  "type": "expr-struct",
+                  "config": {
+                    "struct": {
+                      "statusFilter": "{view.custom.highlightStatus}",
+                      "cgFilter": "{view.custom.highlightCg}",
+                      "areaFilter": "{view.custom.highlightArea}",
+                      "myCg": "'CG-F3'",
+                      "myArea": "'West PH'",
+                      "myStatus": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/West PH/Utility/CG-F3/HmiStatus')), false), false), try(tag('[default]Boars_Head/GrovePort/West PH/Utility/CG-F3/HmiStatus'), null), null)"
+                    },
+                    "waitOnAll": false
+                  },
+                  "transforms": [
+                    {
+                      "type": "script",
+                      "code": "\n\t# Priority: highlightCg > highlightArea+status > highlightArea > highlightStatus > none\n\tstatus_f = value.get('statusFilter') or ''\n\tcg_f = value.get('cgFilter') or ''\n\tarea_f = value.get('areaFilter') or ''\n\tmy_cg = value.get('myCg') or ''\n\tmy_area = value.get('myArea') or ''\n\traw = value.get('myStatus')\n\ttry:\n\t\ts = int(raw) if raw is not None else None\n\texcept:\n\t\ts = None\n\n\tdef coarse_code(sv):\n\t\tif sv == 1:\n\t\t\treturn 'CLG'\n\t\tif sv in (2, 6, 7, 8, 9):\n\t\t\treturn 'DFT'\n\t\tif sv == 3:\n\t\t\treturn 'FLT'\n\t\tif sv == 5:\n\t\t\treturn 'IDLE'\n\t\treturn 'STOP'\n\n\tdef status_match(filt, sv):\n\t\tf = str(filt or '').strip().upper()\n\t\tif not f:\n\t\t\treturn True\n\t\t# Stage-accurate dwell rows (StatusIndicator DFT PD/HG/BLD/FD)\n\t\tif f == 'DFT PD':\n\t\t\treturn sv == 6\n\t\tif f == 'DFT HG':\n\t\t\treturn sv == 7\n\t\tif f == 'DFT BLD':\n\t\t\treturn sv == 8\n\t\tif f == 'DFT FD':\n\t\t\treturn sv == 9\n\t\t# Coarse DFT (donut / stack) includes base + all stages\n\t\tif f == 'DFT':\n\t\t\treturn sv in (2, 6, 7, 8, 9)\n\t\treturn coarse_code(sv) == f\n\n\tif cg_f:\n\t\treturn 1.0 if str(my_cg) == str(cg_f) else 0.22\n\tif area_f and status_f:\n\t\tok = (str(my_area) == str(area_f)) and status_match(status_f, s)\n\t\treturn 1.0 if ok else 0.22\n\tif area_f:\n\t\treturn 1.0 if str(my_area) == str(area_f) else 0.22\n\tif status_f:\n\t\treturn 1.0 if status_match(status_f, s) else 0.22\n\treturn 1.0\n"
+                    },
+                    {
+                      "type": "expression",
+                      "expression": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/West PH/Utility/CG-F3/HmiStatus')), false), false), {value}, 0.5)"
+                    }
+                  ],
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "CG-E2"
+            },
+            "position": {
+              "x": 578,
+              "y": 81,
+              "width": 128,
+              "height": 128
+            },
+            "props": {
+              "path": "02_Components/01_Devices/Evaporator",
+              "params": {
+                "faceplate": "",
+                "tagPath": "[default]Boars_Head/GrovePort/East PH/Utility/CG-E2",
+                "label": "CG-E2",
+                "navPage": "/cg-e2"
+              },
+              "style": {
+                "overflow": "visible",
+                "width": "128px",
+                "height": "128px",
+                "transition": "opacity 120ms ease"
+              }
+            },
+            "propConfig": {
+              "props.style.opacity": {
+                "binding": {
+                  "type": "expr-struct",
+                  "config": {
+                    "struct": {
+                      "statusFilter": "{view.custom.highlightStatus}",
+                      "cgFilter": "{view.custom.highlightCg}",
+                      "areaFilter": "{view.custom.highlightArea}",
+                      "myCg": "'CG-E2'",
+                      "myArea": "'East PH'",
+                      "myStatus": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/East PH/Utility/CG-E2/HmiStatus')), false), false), try(tag('[default]Boars_Head/GrovePort/East PH/Utility/CG-E2/HmiStatus'), null), null)"
+                    },
+                    "waitOnAll": false
+                  },
+                  "transforms": [
+                    {
+                      "type": "script",
+                      "code": "\n\t# Priority: highlightCg > highlightArea+status > highlightArea > highlightStatus > none\n\tstatus_f = value.get('statusFilter') or ''\n\tcg_f = value.get('cgFilter') or ''\n\tarea_f = value.get('areaFilter') or ''\n\tmy_cg = value.get('myCg') or ''\n\tmy_area = value.get('myArea') or ''\n\traw = value.get('myStatus')\n\ttry:\n\t\ts = int(raw) if raw is not None else None\n\texcept:\n\t\ts = None\n\n\tdef coarse_code(sv):\n\t\tif sv == 1:\n\t\t\treturn 'CLG'\n\t\tif sv in (2, 6, 7, 8, 9):\n\t\t\treturn 'DFT'\n\t\tif sv == 3:\n\t\t\treturn 'FLT'\n\t\tif sv == 5:\n\t\t\treturn 'IDLE'\n\t\treturn 'STOP'\n\n\tdef status_match(filt, sv):\n\t\tf = str(filt or '').strip().upper()\n\t\tif not f:\n\t\t\treturn True\n\t\t# Stage-accurate dwell rows (StatusIndicator DFT PD/HG/BLD/FD)\n\t\tif f == 'DFT PD':\n\t\t\treturn sv == 6\n\t\tif f == 'DFT HG':\n\t\t\treturn sv == 7\n\t\tif f == 'DFT BLD':\n\t\t\treturn sv == 8\n\t\tif f == 'DFT FD':\n\t\t\treturn sv == 9\n\t\t# Coarse DFT (donut / stack) includes base + all stages\n\t\tif f == 'DFT':\n\t\t\treturn sv in (2, 6, 7, 8, 9)\n\t\treturn coarse_code(sv) == f\n\n\tif cg_f:\n\t\treturn 1.0 if str(my_cg) == str(cg_f) else 0.22\n\tif area_f and status_f:\n\t\tok = (str(my_area) == str(area_f)) and status_match(status_f, s)\n\t\treturn 1.0 if ok else 0.22\n\tif area_f:\n\t\treturn 1.0 if str(my_area) == str(area_f) else 0.22\n\tif status_f:\n\t\treturn 1.0 if status_match(status_f, s) else 0.22\n\treturn 1.0\n"
+                    },
+                    {
+                      "type": "expression",
+                      "expression": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/East PH/Utility/CG-E2/HmiStatus')), false), false), {value}, 0.5)"
+                    }
+                  ],
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "CG-E3"
+            },
+            "position": {
+              "x": 734,
+              "y": 81,
+              "width": 128,
+              "height": 128
+            },
+            "props": {
+              "path": "02_Components/01_Devices/Evaporator",
+              "params": {
+                "faceplate": "",
+                "tagPath": "[default]Boars_Head/GrovePort/East PH/Utility/CG-E3",
+                "label": "CG-E3",
+                "navPage": "/cg-e3"
+              },
+              "style": {
+                "overflow": "visible",
+                "width": "128px",
+                "height": "128px",
+                "transition": "opacity 120ms ease"
+              }
+            },
+            "propConfig": {
+              "props.style.opacity": {
+                "binding": {
+                  "type": "expr-struct",
+                  "config": {
+                    "struct": {
+                      "statusFilter": "{view.custom.highlightStatus}",
+                      "cgFilter": "{view.custom.highlightCg}",
+                      "areaFilter": "{view.custom.highlightArea}",
+                      "myCg": "'CG-E3'",
+                      "myArea": "'East PH'",
+                      "myStatus": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/East PH/Utility/CG-E3/HmiStatus')), false), false), try(tag('[default]Boars_Head/GrovePort/East PH/Utility/CG-E3/HmiStatus'), null), null)"
+                    },
+                    "waitOnAll": false
+                  },
+                  "transforms": [
+                    {
+                      "type": "script",
+                      "code": "\n\t# Priority: highlightCg > highlightArea+status > highlightArea > highlightStatus > none\n\tstatus_f = value.get('statusFilter') or ''\n\tcg_f = value.get('cgFilter') or ''\n\tarea_f = value.get('areaFilter') or ''\n\tmy_cg = value.get('myCg') or ''\n\tmy_area = value.get('myArea') or ''\n\traw = value.get('myStatus')\n\ttry:\n\t\ts = int(raw) if raw is not None else None\n\texcept:\n\t\ts = None\n\n\tdef coarse_code(sv):\n\t\tif sv == 1:\n\t\t\treturn 'CLG'\n\t\tif sv in (2, 6, 7, 8, 9):\n\t\t\treturn 'DFT'\n\t\tif sv == 3:\n\t\t\treturn 'FLT'\n\t\tif sv == 5:\n\t\t\treturn 'IDLE'\n\t\treturn 'STOP'\n\n\tdef status_match(filt, sv):\n\t\tf = str(filt or '').strip().upper()\n\t\tif not f:\n\t\t\treturn True\n\t\t# Stage-accurate dwell rows (StatusIndicator DFT PD/HG/BLD/FD)\n\t\tif f == 'DFT PD':\n\t\t\treturn sv == 6\n\t\tif f == 'DFT HG':\n\t\t\treturn sv == 7\n\t\tif f == 'DFT BLD':\n\t\t\treturn sv == 8\n\t\tif f == 'DFT FD':\n\t\t\treturn sv == 9\n\t\t# Coarse DFT (donut / stack) includes base + all stages\n\t\tif f == 'DFT':\n\t\t\treturn sv in (2, 6, 7, 8, 9)\n\t\treturn coarse_code(sv) == f\n\n\tif cg_f:\n\t\treturn 1.0 if str(my_cg) == str(cg_f) else 0.22\n\tif area_f and status_f:\n\t\tok = (str(my_area) == str(area_f)) and status_match(status_f, s)\n\t\treturn 1.0 if ok else 0.22\n\tif area_f:\n\t\treturn 1.0 if str(my_area) == str(area_f) else 0.22\n\tif status_f:\n\t\treturn 1.0 if status_match(status_f, s) else 0.22\n\treturn 1.0\n"
+                    },
+                    {
+                      "type": "expression",
+                      "expression": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/East PH/Utility/CG-E3/HmiStatus')), false), false), {value}, 0.5)"
+                    }
+                  ],
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "CG-F1"
+            },
+            "position": {
+              "x": 210,
+              "y": 273,
+              "width": 128,
+              "height": 128
+            },
+            "props": {
+              "path": "02_Components/01_Devices/Evaporator",
+              "params": {
+                "faceplate": "",
+                "tagPath": "[default]Boars_Head/GrovePort/West PH/Utility/CG-F1",
+                "label": "CG-F1",
+                "navPage": "/cg-f1"
+              },
+              "style": {
+                "overflow": "visible",
+                "width": "128px",
+                "height": "128px",
+                "transition": "opacity 120ms ease"
+              }
+            },
+            "propConfig": {
+              "props.style.opacity": {
+                "binding": {
+                  "type": "expr-struct",
+                  "config": {
+                    "struct": {
+                      "statusFilter": "{view.custom.highlightStatus}",
+                      "cgFilter": "{view.custom.highlightCg}",
+                      "areaFilter": "{view.custom.highlightArea}",
+                      "myCg": "'CG-F1'",
+                      "myArea": "'West PH'",
+                      "myStatus": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/West PH/Utility/CG-F1/HmiStatus')), false), false), try(tag('[default]Boars_Head/GrovePort/West PH/Utility/CG-F1/HmiStatus'), null), null)"
+                    },
+                    "waitOnAll": false
+                  },
+                  "transforms": [
+                    {
+                      "type": "script",
+                      "code": "\n\t# Priority: highlightCg > highlightArea+status > highlightArea > highlightStatus > none\n\tstatus_f = value.get('statusFilter') or ''\n\tcg_f = value.get('cgFilter') or ''\n\tarea_f = value.get('areaFilter') or ''\n\tmy_cg = value.get('myCg') or ''\n\tmy_area = value.get('myArea') or ''\n\traw = value.get('myStatus')\n\ttry:\n\t\ts = int(raw) if raw is not None else None\n\texcept:\n\t\ts = None\n\n\tdef coarse_code(sv):\n\t\tif sv == 1:\n\t\t\treturn 'CLG'\n\t\tif sv in (2, 6, 7, 8, 9):\n\t\t\treturn 'DFT'\n\t\tif sv == 3:\n\t\t\treturn 'FLT'\n\t\tif sv == 5:\n\t\t\treturn 'IDLE'\n\t\treturn 'STOP'\n\n\tdef status_match(filt, sv):\n\t\tf = str(filt or '').strip().upper()\n\t\tif not f:\n\t\t\treturn True\n\t\t# Stage-accurate dwell rows (StatusIndicator DFT PD/HG/BLD/FD)\n\t\tif f == 'DFT PD':\n\t\t\treturn sv == 6\n\t\tif f == 'DFT HG':\n\t\t\treturn sv == 7\n\t\tif f == 'DFT BLD':\n\t\t\treturn sv == 8\n\t\tif f == 'DFT FD':\n\t\t\treturn sv == 9\n\t\t# Coarse DFT (donut / stack) includes base + all stages\n\t\tif f == 'DFT':\n\t\t\treturn sv in (2, 6, 7, 8, 9)\n\t\treturn coarse_code(sv) == f\n\n\tif cg_f:\n\t\treturn 1.0 if str(my_cg) == str(cg_f) else 0.22\n\tif area_f and status_f:\n\t\tok = (str(my_area) == str(area_f)) and status_match(status_f, s)\n\t\treturn 1.0 if ok else 0.22\n\tif area_f:\n\t\treturn 1.0 if str(my_area) == str(area_f) else 0.22\n\tif status_f:\n\t\treturn 1.0 if status_match(status_f, s) else 0.22\n\treturn 1.0\n"
+                    },
+                    {
+                      "type": "expression",
+                      "expression": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/West PH/Utility/CG-F1/HmiStatus')), false), false), {value}, 0.5)"
+                    }
+                  ],
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "CG-F4"
+            },
+            "position": {
+              "x": 366,
+              "y": 273,
+              "width": 128,
+              "height": 128
+            },
+            "props": {
+              "path": "02_Components/01_Devices/Evaporator",
+              "params": {
+                "faceplate": "",
+                "tagPath": "[default]Boars_Head/GrovePort/West PH/Utility/CG-F4",
+                "label": "CG-F4",
+                "navPage": "/cg-f4"
+              },
+              "style": {
+                "overflow": "visible",
+                "width": "128px",
+                "height": "128px",
+                "transition": "opacity 120ms ease"
+              }
+            },
+            "propConfig": {
+              "props.style.opacity": {
+                "binding": {
+                  "type": "expr-struct",
+                  "config": {
+                    "struct": {
+                      "statusFilter": "{view.custom.highlightStatus}",
+                      "cgFilter": "{view.custom.highlightCg}",
+                      "areaFilter": "{view.custom.highlightArea}",
+                      "myCg": "'CG-F4'",
+                      "myArea": "'West PH'",
+                      "myStatus": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/West PH/Utility/CG-F4/HmiStatus')), false), false), try(tag('[default]Boars_Head/GrovePort/West PH/Utility/CG-F4/HmiStatus'), null), null)"
+                    },
+                    "waitOnAll": false
+                  },
+                  "transforms": [
+                    {
+                      "type": "script",
+                      "code": "\n\t# Priority: highlightCg > highlightArea+status > highlightArea > highlightStatus > none\n\tstatus_f = value.get('statusFilter') or ''\n\tcg_f = value.get('cgFilter') or ''\n\tarea_f = value.get('areaFilter') or ''\n\tmy_cg = value.get('myCg') or ''\n\tmy_area = value.get('myArea') or ''\n\traw = value.get('myStatus')\n\ttry:\n\t\ts = int(raw) if raw is not None else None\n\texcept:\n\t\ts = None\n\n\tdef coarse_code(sv):\n\t\tif sv == 1:\n\t\t\treturn 'CLG'\n\t\tif sv in (2, 6, 7, 8, 9):\n\t\t\treturn 'DFT'\n\t\tif sv == 3:\n\t\t\treturn 'FLT'\n\t\tif sv == 5:\n\t\t\treturn 'IDLE'\n\t\treturn 'STOP'\n\n\tdef status_match(filt, sv):\n\t\tf = str(filt or '').strip().upper()\n\t\tif not f:\n\t\t\treturn True\n\t\t# Stage-accurate dwell rows (StatusIndicator DFT PD/HG/BLD/FD)\n\t\tif f == 'DFT PD':\n\t\t\treturn sv == 6\n\t\tif f == 'DFT HG':\n\t\t\treturn sv == 7\n\t\tif f == 'DFT BLD':\n\t\t\treturn sv == 8\n\t\tif f == 'DFT FD':\n\t\t\treturn sv == 9\n\t\t# Coarse DFT (donut / stack) includes base + all stages\n\t\tif f == 'DFT':\n\t\t\treturn sv in (2, 6, 7, 8, 9)\n\t\treturn coarse_code(sv) == f\n\n\tif cg_f:\n\t\treturn 1.0 if str(my_cg) == str(cg_f) else 0.22\n\tif area_f and status_f:\n\t\tok = (str(my_area) == str(area_f)) and status_match(status_f, s)\n\t\treturn 1.0 if ok else 0.22\n\tif area_f:\n\t\treturn 1.0 if str(my_area) == str(area_f) else 0.22\n\tif status_f:\n\t\treturn 1.0 if status_match(status_f, s) else 0.22\n\treturn 1.0\n"
+                    },
+                    {
+                      "type": "expression",
+                      "expression": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/West PH/Utility/CG-F4/HmiStatus')), false), false), {value}, 0.5)"
+                    }
+                  ],
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "CG-E1"
+            },
+            "position": {
+              "x": 578,
+              "y": 273,
+              "width": 128,
+              "height": 128
+            },
+            "props": {
+              "path": "02_Components/01_Devices/Evaporator",
+              "params": {
+                "faceplate": "",
+                "tagPath": "[default]Boars_Head/GrovePort/East PH/Utility/CG-E1",
+                "label": "CG-E1",
+                "navPage": "/cg-e1"
+              },
+              "style": {
+                "overflow": "visible",
+                "width": "128px",
+                "height": "128px",
+                "transition": "opacity 120ms ease"
+              }
+            },
+            "propConfig": {
+              "props.style.opacity": {
+                "binding": {
+                  "type": "expr-struct",
+                  "config": {
+                    "struct": {
+                      "statusFilter": "{view.custom.highlightStatus}",
+                      "cgFilter": "{view.custom.highlightCg}",
+                      "areaFilter": "{view.custom.highlightArea}",
+                      "myCg": "'CG-E1'",
+                      "myArea": "'East PH'",
+                      "myStatus": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/East PH/Utility/CG-E1/HmiStatus')), false), false), try(tag('[default]Boars_Head/GrovePort/East PH/Utility/CG-E1/HmiStatus'), null), null)"
+                    },
+                    "waitOnAll": false
+                  },
+                  "transforms": [
+                    {
+                      "type": "script",
+                      "code": "\n\t# Priority: highlightCg > highlightArea+status > highlightArea > highlightStatus > none\n\tstatus_f = value.get('statusFilter') or ''\n\tcg_f = value.get('cgFilter') or ''\n\tarea_f = value.get('areaFilter') or ''\n\tmy_cg = value.get('myCg') or ''\n\tmy_area = value.get('myArea') or ''\n\traw = value.get('myStatus')\n\ttry:\n\t\ts = int(raw) if raw is not None else None\n\texcept:\n\t\ts = None\n\n\tdef coarse_code(sv):\n\t\tif sv == 1:\n\t\t\treturn 'CLG'\n\t\tif sv in (2, 6, 7, 8, 9):\n\t\t\treturn 'DFT'\n\t\tif sv == 3:\n\t\t\treturn 'FLT'\n\t\tif sv == 5:\n\t\t\treturn 'IDLE'\n\t\treturn 'STOP'\n\n\tdef status_match(filt, sv):\n\t\tf = str(filt or '').strip().upper()\n\t\tif not f:\n\t\t\treturn True\n\t\t# Stage-accurate dwell rows (StatusIndicator DFT PD/HG/BLD/FD)\n\t\tif f == 'DFT PD':\n\t\t\treturn sv == 6\n\t\tif f == 'DFT HG':\n\t\t\treturn sv == 7\n\t\tif f == 'DFT BLD':\n\t\t\treturn sv == 8\n\t\tif f == 'DFT FD':\n\t\t\treturn sv == 9\n\t\t# Coarse DFT (donut / stack) includes base + all stages\n\t\tif f == 'DFT':\n\t\t\treturn sv in (2, 6, 7, 8, 9)\n\t\treturn coarse_code(sv) == f\n\n\tif cg_f:\n\t\treturn 1.0 if str(my_cg) == str(cg_f) else 0.22\n\tif area_f and status_f:\n\t\tok = (str(my_area) == str(area_f)) and status_match(status_f, s)\n\t\treturn 1.0 if ok else 0.22\n\tif area_f:\n\t\treturn 1.0 if str(my_area) == str(area_f) else 0.22\n\tif status_f:\n\t\treturn 1.0 if status_match(status_f, s) else 0.22\n\treturn 1.0\n"
+                    },
+                    {
+                      "type": "expression",
+                      "expression": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/East PH/Utility/CG-E1/HmiStatus')), false), false), {value}, 0.5)"
+                    }
+                  ],
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "CG-E4"
+            },
+            "position": {
+              "x": 734,
+              "y": 273,
+              "width": 128,
+              "height": 128
+            },
+            "props": {
+              "path": "02_Components/01_Devices/Evaporator",
+              "params": {
+                "faceplate": "",
+                "tagPath": "[default]Boars_Head/GrovePort/East PH/Utility/CG-E4",
+                "label": "CG-E4",
+                "navPage": "/cg-e4"
+              },
+              "style": {
+                "overflow": "visible",
+                "width": "128px",
+                "height": "128px",
+                "transition": "opacity 120ms ease"
+              }
+            },
+            "propConfig": {
+              "props.style.opacity": {
+                "binding": {
+                  "type": "expr-struct",
+                  "config": {
+                    "struct": {
+                      "statusFilter": "{view.custom.highlightStatus}",
+                      "cgFilter": "{view.custom.highlightCg}",
+                      "areaFilter": "{view.custom.highlightArea}",
+                      "myCg": "'CG-E4'",
+                      "myArea": "'East PH'",
+                      "myStatus": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/East PH/Utility/CG-E4/HmiStatus')), false), false), try(tag('[default]Boars_Head/GrovePort/East PH/Utility/CG-E4/HmiStatus'), null), null)"
+                    },
+                    "waitOnAll": false
+                  },
+                  "transforms": [
+                    {
+                      "type": "script",
+                      "code": "\n\t# Priority: highlightCg > highlightArea+status > highlightArea > highlightStatus > none\n\tstatus_f = value.get('statusFilter') or ''\n\tcg_f = value.get('cgFilter') or ''\n\tarea_f = value.get('areaFilter') or ''\n\tmy_cg = value.get('myCg') or ''\n\tmy_area = value.get('myArea') or ''\n\traw = value.get('myStatus')\n\ttry:\n\t\ts = int(raw) if raw is not None else None\n\texcept:\n\t\ts = None\n\n\tdef coarse_code(sv):\n\t\tif sv == 1:\n\t\t\treturn 'CLG'\n\t\tif sv in (2, 6, 7, 8, 9):\n\t\t\treturn 'DFT'\n\t\tif sv == 3:\n\t\t\treturn 'FLT'\n\t\tif sv == 5:\n\t\t\treturn 'IDLE'\n\t\treturn 'STOP'\n\n\tdef status_match(filt, sv):\n\t\tf = str(filt or '').strip().upper()\n\t\tif not f:\n\t\t\treturn True\n\t\t# Stage-accurate dwell rows (StatusIndicator DFT PD/HG/BLD/FD)\n\t\tif f == 'DFT PD':\n\t\t\treturn sv == 6\n\t\tif f == 'DFT HG':\n\t\t\treturn sv == 7\n\t\tif f == 'DFT BLD':\n\t\t\treturn sv == 8\n\t\tif f == 'DFT FD':\n\t\t\treturn sv == 9\n\t\t# Coarse DFT (donut / stack) includes base + all stages\n\t\tif f == 'DFT':\n\t\t\treturn sv in (2, 6, 7, 8, 9)\n\t\treturn coarse_code(sv) == f\n\n\tif cg_f:\n\t\treturn 1.0 if str(my_cg) == str(cg_f) else 0.22\n\tif area_f and status_f:\n\t\tok = (str(my_area) == str(area_f)) and status_match(status_f, s)\n\t\treturn 1.0 if ok else 0.22\n\tif area_f:\n\t\treturn 1.0 if str(my_area) == str(area_f) else 0.22\n\tif status_f:\n\t\treturn 1.0 if status_match(status_f, s) else 0.22\n\treturn 1.0\n"
+                    },
+                    {
+                      "type": "expression",
+                      "expression": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/East PH/Utility/CG-E4/HmiStatus')), false), false), {value}, 0.5)"
+                    }
+                  ],
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "CG-G5"
+            },
+            "position": {
+              "x": 199,
+              "y": 809,
+              "width": 128,
+              "height": 128
+            },
+            "props": {
+              "path": "02_Components/01_Devices/Evaporator",
+              "params": {
+                "faceplate": "",
+                "tagPath": "[default]Boars_Head/GrovePort/Dock/Utility/CG-G5",
+                "label": "CG-G5",
+                "navPage": "/cg-g5"
+              },
+              "style": {
+                "overflow": "visible",
+                "width": "128px",
+                "height": "128px",
+                "transition": "opacity 120ms ease"
+              }
+            },
+            "propConfig": {
+              "props.style.opacity": {
+                "binding": {
+                  "type": "expr-struct",
+                  "config": {
+                    "struct": {
+                      "statusFilter": "{view.custom.highlightStatus}",
+                      "cgFilter": "{view.custom.highlightCg}",
+                      "areaFilter": "{view.custom.highlightArea}",
+                      "myCg": "'CG-G5'",
+                      "myArea": "'Dock'",
+                      "myStatus": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/Dock/Utility/CG-G5/HmiStatus')), false), false), try(tag('[default]Boars_Head/GrovePort/Dock/Utility/CG-G5/HmiStatus'), null), null)"
+                    },
+                    "waitOnAll": false
+                  },
+                  "transforms": [
+                    {
+                      "type": "script",
+                      "code": "\n\t# Priority: highlightCg > highlightArea+status > highlightArea > highlightStatus > none\n\tstatus_f = value.get('statusFilter') or ''\n\tcg_f = value.get('cgFilter') or ''\n\tarea_f = value.get('areaFilter') or ''\n\tmy_cg = value.get('myCg') or ''\n\tmy_area = value.get('myArea') or ''\n\traw = value.get('myStatus')\n\ttry:\n\t\ts = int(raw) if raw is not None else None\n\texcept:\n\t\ts = None\n\n\tdef coarse_code(sv):\n\t\tif sv == 1:\n\t\t\treturn 'CLG'\n\t\tif sv in (2, 6, 7, 8, 9):\n\t\t\treturn 'DFT'\n\t\tif sv == 3:\n\t\t\treturn 'FLT'\n\t\tif sv == 5:\n\t\t\treturn 'IDLE'\n\t\treturn 'STOP'\n\n\tdef status_match(filt, sv):\n\t\tf = str(filt or '').strip().upper()\n\t\tif not f:\n\t\t\treturn True\n\t\t# Stage-accurate dwell rows (StatusIndicator DFT PD/HG/BLD/FD)\n\t\tif f == 'DFT PD':\n\t\t\treturn sv == 6\n\t\tif f == 'DFT HG':\n\t\t\treturn sv == 7\n\t\tif f == 'DFT BLD':\n\t\t\treturn sv == 8\n\t\tif f == 'DFT FD':\n\t\t\treturn sv == 9\n\t\t# Coarse DFT (donut / stack) includes base + all stages\n\t\tif f == 'DFT':\n\t\t\treturn sv in (2, 6, 7, 8, 9)\n\t\treturn coarse_code(sv) == f\n\n\tif cg_f:\n\t\treturn 1.0 if str(my_cg) == str(cg_f) else 0.22\n\tif area_f and status_f:\n\t\tok = (str(my_area) == str(area_f)) and status_match(status_f, s)\n\t\treturn 1.0 if ok else 0.22\n\tif area_f:\n\t\treturn 1.0 if str(my_area) == str(area_f) else 0.22\n\tif status_f:\n\t\treturn 1.0 if status_match(status_f, s) else 0.22\n\treturn 1.0\n"
+                    },
+                    {
+                      "type": "expression",
+                      "expression": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/Dock/Utility/CG-G5/HmiStatus')), false), false), {value}, 0.5)"
+                    }
+                  ],
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "CG-G4"
+            },
+            "position": {
+              "x": 343,
+              "y": 809,
+              "width": 128,
+              "height": 128
+            },
+            "props": {
+              "path": "02_Components/01_Devices/Evaporator",
+              "params": {
+                "faceplate": "",
+                "tagPath": "[default]Boars_Head/GrovePort/Dock/Utility/CG-G4",
+                "label": "CG-G4",
+                "navPage": "/cg-g4"
+              },
+              "style": {
+                "overflow": "visible",
+                "width": "128px",
+                "height": "128px",
+                "transition": "opacity 120ms ease"
+              }
+            },
+            "propConfig": {
+              "props.style.opacity": {
+                "binding": {
+                  "type": "expr-struct",
+                  "config": {
+                    "struct": {
+                      "statusFilter": "{view.custom.highlightStatus}",
+                      "cgFilter": "{view.custom.highlightCg}",
+                      "areaFilter": "{view.custom.highlightArea}",
+                      "myCg": "'CG-G4'",
+                      "myArea": "'Dock'",
+                      "myStatus": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/Dock/Utility/CG-G4/HmiStatus')), false), false), try(tag('[default]Boars_Head/GrovePort/Dock/Utility/CG-G4/HmiStatus'), null), null)"
+                    },
+                    "waitOnAll": false
+                  },
+                  "transforms": [
+                    {
+                      "type": "script",
+                      "code": "\n\t# Priority: highlightCg > highlightArea+status > highlightArea > highlightStatus > none\n\tstatus_f = value.get('statusFilter') or ''\n\tcg_f = value.get('cgFilter') or ''\n\tarea_f = value.get('areaFilter') or ''\n\tmy_cg = value.get('myCg') or ''\n\tmy_area = value.get('myArea') or ''\n\traw = value.get('myStatus')\n\ttry:\n\t\ts = int(raw) if raw is not None else None\n\texcept:\n\t\ts = None\n\n\tdef coarse_code(sv):\n\t\tif sv == 1:\n\t\t\treturn 'CLG'\n\t\tif sv in (2, 6, 7, 8, 9):\n\t\t\treturn 'DFT'\n\t\tif sv == 3:\n\t\t\treturn 'FLT'\n\t\tif sv == 5:\n\t\t\treturn 'IDLE'\n\t\treturn 'STOP'\n\n\tdef status_match(filt, sv):\n\t\tf = str(filt or '').strip().upper()\n\t\tif not f:\n\t\t\treturn True\n\t\t# Stage-accurate dwell rows (StatusIndicator DFT PD/HG/BLD/FD)\n\t\tif f == 'DFT PD':\n\t\t\treturn sv == 6\n\t\tif f == 'DFT HG':\n\t\t\treturn sv == 7\n\t\tif f == 'DFT BLD':\n\t\t\treturn sv == 8\n\t\tif f == 'DFT FD':\n\t\t\treturn sv == 9\n\t\t# Coarse DFT (donut / stack) includes base + all stages\n\t\tif f == 'DFT':\n\t\t\treturn sv in (2, 6, 7, 8, 9)\n\t\treturn coarse_code(sv) == f\n\n\tif cg_f:\n\t\treturn 1.0 if str(my_cg) == str(cg_f) else 0.22\n\tif area_f and status_f:\n\t\tok = (str(my_area) == str(area_f)) and status_match(status_f, s)\n\t\treturn 1.0 if ok else 0.22\n\tif area_f:\n\t\treturn 1.0 if str(my_area) == str(area_f) else 0.22\n\tif status_f:\n\t\treturn 1.0 if status_match(status_f, s) else 0.22\n\treturn 1.0\n"
+                    },
+                    {
+                      "type": "expression",
+                      "expression": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/Dock/Utility/CG-G4/HmiStatus')), false), false), {value}, 0.5)"
+                    }
+                  ],
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "CG-G3"
+            },
+            "position": {
+              "x": 487,
+              "y": 809,
+              "width": 128,
+              "height": 128
+            },
+            "props": {
+              "path": "02_Components/01_Devices/Evaporator",
+              "params": {
+                "faceplate": "",
+                "tagPath": "[default]Boars_Head/GrovePort/Dock/Utility/CG-G3",
+                "label": "CG-G3",
+                "navPage": "/cg-g3"
+              },
+              "style": {
+                "overflow": "visible",
+                "width": "128px",
+                "height": "128px",
+                "transition": "opacity 120ms ease"
+              }
+            },
+            "propConfig": {
+              "props.style.opacity": {
+                "binding": {
+                  "type": "expr-struct",
+                  "config": {
+                    "struct": {
+                      "statusFilter": "{view.custom.highlightStatus}",
+                      "cgFilter": "{view.custom.highlightCg}",
+                      "areaFilter": "{view.custom.highlightArea}",
+                      "myCg": "'CG-G3'",
+                      "myArea": "'Dock'",
+                      "myStatus": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/Dock/Utility/CG-G3/HmiStatus')), false), false), try(tag('[default]Boars_Head/GrovePort/Dock/Utility/CG-G3/HmiStatus'), null), null)"
+                    },
+                    "waitOnAll": false
+                  },
+                  "transforms": [
+                    {
+                      "type": "script",
+                      "code": "\n\t# Priority: highlightCg > highlightArea+status > highlightArea > highlightStatus > none\n\tstatus_f = value.get('statusFilter') or ''\n\tcg_f = value.get('cgFilter') or ''\n\tarea_f = value.get('areaFilter') or ''\n\tmy_cg = value.get('myCg') or ''\n\tmy_area = value.get('myArea') or ''\n\traw = value.get('myStatus')\n\ttry:\n\t\ts = int(raw) if raw is not None else None\n\texcept:\n\t\ts = None\n\n\tdef coarse_code(sv):\n\t\tif sv == 1:\n\t\t\treturn 'CLG'\n\t\tif sv in (2, 6, 7, 8, 9):\n\t\t\treturn 'DFT'\n\t\tif sv == 3:\n\t\t\treturn 'FLT'\n\t\tif sv == 5:\n\t\t\treturn 'IDLE'\n\t\treturn 'STOP'\n\n\tdef status_match(filt, sv):\n\t\tf = str(filt or '').strip().upper()\n\t\tif not f:\n\t\t\treturn True\n\t\t# Stage-accurate dwell rows (StatusIndicator DFT PD/HG/BLD/FD)\n\t\tif f == 'DFT PD':\n\t\t\treturn sv == 6\n\t\tif f == 'DFT HG':\n\t\t\treturn sv == 7\n\t\tif f == 'DFT BLD':\n\t\t\treturn sv == 8\n\t\tif f == 'DFT FD':\n\t\t\treturn sv == 9\n\t\t# Coarse DFT (donut / stack) includes base + all stages\n\t\tif f == 'DFT':\n\t\t\treturn sv in (2, 6, 7, 8, 9)\n\t\treturn coarse_code(sv) == f\n\n\tif cg_f:\n\t\treturn 1.0 if str(my_cg) == str(cg_f) else 0.22\n\tif area_f and status_f:\n\t\tok = (str(my_area) == str(area_f)) and status_match(status_f, s)\n\t\treturn 1.0 if ok else 0.22\n\tif area_f:\n\t\treturn 1.0 if str(my_area) == str(area_f) else 0.22\n\tif status_f:\n\t\treturn 1.0 if status_match(status_f, s) else 0.22\n\treturn 1.0\n"
+                    },
+                    {
+                      "type": "expression",
+                      "expression": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/Dock/Utility/CG-G3/HmiStatus')), false), false), {value}, 0.5)"
+                    }
+                  ],
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "CG-G2"
+            },
+            "position": {
+              "x": 631,
+              "y": 809,
+              "width": 128,
+              "height": 128
+            },
+            "props": {
+              "path": "02_Components/01_Devices/Evaporator",
+              "params": {
+                "faceplate": "",
+                "tagPath": "[default]Boars_Head/GrovePort/Dock/Utility/CG-G2",
+                "label": "CG-G2",
+                "navPage": "/cg-g2"
+              },
+              "style": {
+                "overflow": "visible",
+                "width": "128px",
+                "height": "128px",
+                "transition": "opacity 120ms ease"
+              }
+            },
+            "propConfig": {
+              "props.style.opacity": {
+                "binding": {
+                  "type": "expr-struct",
+                  "config": {
+                    "struct": {
+                      "statusFilter": "{view.custom.highlightStatus}",
+                      "cgFilter": "{view.custom.highlightCg}",
+                      "areaFilter": "{view.custom.highlightArea}",
+                      "myCg": "'CG-G2'",
+                      "myArea": "'Dock'",
+                      "myStatus": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/Dock/Utility/CG-G2/HmiStatus')), false), false), try(tag('[default]Boars_Head/GrovePort/Dock/Utility/CG-G2/HmiStatus'), null), null)"
+                    },
+                    "waitOnAll": false
+                  },
+                  "transforms": [
+                    {
+                      "type": "script",
+                      "code": "\n\t# Priority: highlightCg > highlightArea+status > highlightArea > highlightStatus > none\n\tstatus_f = value.get('statusFilter') or ''\n\tcg_f = value.get('cgFilter') or ''\n\tarea_f = value.get('areaFilter') or ''\n\tmy_cg = value.get('myCg') or ''\n\tmy_area = value.get('myArea') or ''\n\traw = value.get('myStatus')\n\ttry:\n\t\ts = int(raw) if raw is not None else None\n\texcept:\n\t\ts = None\n\n\tdef coarse_code(sv):\n\t\tif sv == 1:\n\t\t\treturn 'CLG'\n\t\tif sv in (2, 6, 7, 8, 9):\n\t\t\treturn 'DFT'\n\t\tif sv == 3:\n\t\t\treturn 'FLT'\n\t\tif sv == 5:\n\t\t\treturn 'IDLE'\n\t\treturn 'STOP'\n\n\tdef status_match(filt, sv):\n\t\tf = str(filt or '').strip().upper()\n\t\tif not f:\n\t\t\treturn True\n\t\t# Stage-accurate dwell rows (StatusIndicator DFT PD/HG/BLD/FD)\n\t\tif f == 'DFT PD':\n\t\t\treturn sv == 6\n\t\tif f == 'DFT HG':\n\t\t\treturn sv == 7\n\t\tif f == 'DFT BLD':\n\t\t\treturn sv == 8\n\t\tif f == 'DFT FD':\n\t\t\treturn sv == 9\n\t\t# Coarse DFT (donut / stack) includes base + all stages\n\t\tif f == 'DFT':\n\t\t\treturn sv in (2, 6, 7, 8, 9)\n\t\treturn coarse_code(sv) == f\n\n\tif cg_f:\n\t\treturn 1.0 if str(my_cg) == str(cg_f) else 0.22\n\tif area_f and status_f:\n\t\tok = (str(my_area) == str(area_f)) and status_match(status_f, s)\n\t\treturn 1.0 if ok else 0.22\n\tif area_f:\n\t\treturn 1.0 if str(my_area) == str(area_f) else 0.22\n\tif status_f:\n\t\treturn 1.0 if status_match(status_f, s) else 0.22\n\treturn 1.0\n"
+                    },
+                    {
+                      "type": "expression",
+                      "expression": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/Dock/Utility/CG-G2/HmiStatus')), false), false), {value}, 0.5)"
+                    }
+                  ],
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "CG-G1"
+            },
+            "position": {
+              "x": 775,
+              "y": 809,
+              "width": 128,
+              "height": 128
+            },
+            "props": {
+              "path": "02_Components/01_Devices/Evaporator",
+              "params": {
+                "faceplate": "",
+                "tagPath": "[default]Boars_Head/GrovePort/Dock/Utility/CG-G1",
+                "label": "CG-G1",
+                "navPage": "/cg-g1"
+              },
+              "style": {
+                "overflow": "visible",
+                "width": "128px",
+                "height": "128px",
+                "transition": "opacity 120ms ease"
+              }
+            },
+            "propConfig": {
+              "props.style.opacity": {
+                "binding": {
+                  "type": "expr-struct",
+                  "config": {
+                    "struct": {
+                      "statusFilter": "{view.custom.highlightStatus}",
+                      "cgFilter": "{view.custom.highlightCg}",
+                      "areaFilter": "{view.custom.highlightArea}",
+                      "myCg": "'CG-G1'",
+                      "myArea": "'Dock'",
+                      "myStatus": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/Dock/Utility/CG-G1/HmiStatus')), false), false), try(tag('[default]Boars_Head/GrovePort/Dock/Utility/CG-G1/HmiStatus'), null), null)"
+                    },
+                    "waitOnAll": false
+                  },
+                  "transforms": [
+                    {
+                      "type": "script",
+                      "code": "\n\t# Priority: highlightCg > highlightArea+status > highlightArea > highlightStatus > none\n\tstatus_f = value.get('statusFilter') or ''\n\tcg_f = value.get('cgFilter') or ''\n\tarea_f = value.get('areaFilter') or ''\n\tmy_cg = value.get('myCg') or ''\n\tmy_area = value.get('myArea') or ''\n\traw = value.get('myStatus')\n\ttry:\n\t\ts = int(raw) if raw is not None else None\n\texcept:\n\t\ts = None\n\n\tdef coarse_code(sv):\n\t\tif sv == 1:\n\t\t\treturn 'CLG'\n\t\tif sv in (2, 6, 7, 8, 9):\n\t\t\treturn 'DFT'\n\t\tif sv == 3:\n\t\t\treturn 'FLT'\n\t\tif sv == 5:\n\t\t\treturn 'IDLE'\n\t\treturn 'STOP'\n\n\tdef status_match(filt, sv):\n\t\tf = str(filt or '').strip().upper()\n\t\tif not f:\n\t\t\treturn True\n\t\t# Stage-accurate dwell rows (StatusIndicator DFT PD/HG/BLD/FD)\n\t\tif f == 'DFT PD':\n\t\t\treturn sv == 6\n\t\tif f == 'DFT HG':\n\t\t\treturn sv == 7\n\t\tif f == 'DFT BLD':\n\t\t\treturn sv == 8\n\t\tif f == 'DFT FD':\n\t\t\treturn sv == 9\n\t\t# Coarse DFT (donut / stack) includes base + all stages\n\t\tif f == 'DFT':\n\t\t\treturn sv in (2, 6, 7, 8, 9)\n\t\treturn coarse_code(sv) == f\n\n\tif cg_f:\n\t\treturn 1.0 if str(my_cg) == str(cg_f) else 0.22\n\tif area_f and status_f:\n\t\tok = (str(my_area) == str(area_f)) and status_match(status_f, s)\n\t\treturn 1.0 if ok else 0.22\n\tif area_f:\n\t\treturn 1.0 if str(my_area) == str(area_f) else 0.22\n\tif status_f:\n\t\treturn 1.0 if status_match(status_f, s) else 0.22\n\treturn 1.0\n"
+                    },
+                    {
+                      "type": "expression",
+                      "expression": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/Dock/Utility/CG-G1/HmiStatus')), false), false), {value}, 0.5)"
+                    }
+                  ],
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "CG-B2"
+            },
+            "position": {
+              "x": 1156,
+              "y": 69,
+              "width": 128,
+              "height": 128
+            },
+            "props": {
+              "path": "02_Components/01_Devices/Evaporator",
+              "params": {
+                "faceplate": "",
+                "tagPath": "[default]Boars_Head/GrovePort/SuperChill/Utility/CG-B2",
+                "label": "CG-B2",
+                "navPage": "/cg-b2"
+              },
+              "style": {
+                "overflow": "visible",
+                "width": "128px",
+                "height": "128px",
+                "transition": "opacity 120ms ease"
+              }
+            },
+            "propConfig": {
+              "props.style.opacity": {
+                "binding": {
+                  "type": "expr-struct",
+                  "config": {
+                    "struct": {
+                      "statusFilter": "{view.custom.highlightStatus}",
+                      "cgFilter": "{view.custom.highlightCg}",
+                      "areaFilter": "{view.custom.highlightArea}",
+                      "myCg": "'CG-B2'",
+                      "myArea": "'SuperChill'",
+                      "myStatus": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/SuperChill/Utility/CG-B2/HmiStatus')), false), false), try(tag('[default]Boars_Head/GrovePort/SuperChill/Utility/CG-B2/HmiStatus'), null), null)"
+                    },
+                    "waitOnAll": false
+                  },
+                  "transforms": [
+                    {
+                      "type": "script",
+                      "code": "\n\t# Priority: highlightCg > highlightArea+status > highlightArea > highlightStatus > none\n\tstatus_f = value.get('statusFilter') or ''\n\tcg_f = value.get('cgFilter') or ''\n\tarea_f = value.get('areaFilter') or ''\n\tmy_cg = value.get('myCg') or ''\n\tmy_area = value.get('myArea') or ''\n\traw = value.get('myStatus')\n\ttry:\n\t\ts = int(raw) if raw is not None else None\n\texcept:\n\t\ts = None\n\n\tdef coarse_code(sv):\n\t\tif sv == 1:\n\t\t\treturn 'CLG'\n\t\tif sv in (2, 6, 7, 8, 9):\n\t\t\treturn 'DFT'\n\t\tif sv == 3:\n\t\t\treturn 'FLT'\n\t\tif sv == 5:\n\t\t\treturn 'IDLE'\n\t\treturn 'STOP'\n\n\tdef status_match(filt, sv):\n\t\tf = str(filt or '').strip().upper()\n\t\tif not f:\n\t\t\treturn True\n\t\t# Stage-accurate dwell rows (StatusIndicator DFT PD/HG/BLD/FD)\n\t\tif f == 'DFT PD':\n\t\t\treturn sv == 6\n\t\tif f == 'DFT HG':\n\t\t\treturn sv == 7\n\t\tif f == 'DFT BLD':\n\t\t\treturn sv == 8\n\t\tif f == 'DFT FD':\n\t\t\treturn sv == 9\n\t\t# Coarse DFT (donut / stack) includes base + all stages\n\t\tif f == 'DFT':\n\t\t\treturn sv in (2, 6, 7, 8, 9)\n\t\treturn coarse_code(sv) == f\n\n\tif cg_f:\n\t\treturn 1.0 if str(my_cg) == str(cg_f) else 0.22\n\tif area_f and status_f:\n\t\tok = (str(my_area) == str(area_f)) and status_match(status_f, s)\n\t\treturn 1.0 if ok else 0.22\n\tif area_f:\n\t\treturn 1.0 if str(my_area) == str(area_f) else 0.22\n\tif status_f:\n\t\treturn 1.0 if status_match(status_f, s) else 0.22\n\treturn 1.0\n"
+                    },
+                    {
+                      "type": "expression",
+                      "expression": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/SuperChill/Utility/CG-B2/HmiStatus')), false), false), {value}, 0.5)"
+                    }
+                  ],
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "CG-C1"
+            },
+            "position": {
+              "x": 1156,
+              "y": 221,
+              "width": 128,
+              "height": 128
+            },
+            "props": {
+              "path": "02_Components/01_Devices/Evaporator",
+              "params": {
+                "faceplate": "",
+                "tagPath": "[default]Boars_Head/GrovePort/Club/Utility/CG-C1",
+                "label": "CG-C1",
+                "navPage": "/cg-c1"
+              },
+              "style": {
+                "overflow": "visible",
+                "width": "128px",
+                "height": "128px",
+                "transition": "opacity 120ms ease"
+              }
+            },
+            "propConfig": {
+              "props.style.opacity": {
+                "binding": {
+                  "type": "expr-struct",
+                  "config": {
+                    "struct": {
+                      "statusFilter": "{view.custom.highlightStatus}",
+                      "cgFilter": "{view.custom.highlightCg}",
+                      "areaFilter": "{view.custom.highlightArea}",
+                      "myCg": "'CG-C1'",
+                      "myArea": "'Club'",
+                      "myStatus": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/Club/Utility/CG-C1/HmiStatus')), false), false), try(tag('[default]Boars_Head/GrovePort/Club/Utility/CG-C1/HmiStatus'), null), null)"
+                    },
+                    "waitOnAll": false
+                  },
+                  "transforms": [
+                    {
+                      "type": "script",
+                      "code": "\n\t# Priority: highlightCg > highlightArea+status > highlightArea > highlightStatus > none\n\tstatus_f = value.get('statusFilter') or ''\n\tcg_f = value.get('cgFilter') or ''\n\tarea_f = value.get('areaFilter') or ''\n\tmy_cg = value.get('myCg') or ''\n\tmy_area = value.get('myArea') or ''\n\traw = value.get('myStatus')\n\ttry:\n\t\ts = int(raw) if raw is not None else None\n\texcept:\n\t\ts = None\n\n\tdef coarse_code(sv):\n\t\tif sv == 1:\n\t\t\treturn 'CLG'\n\t\tif sv in (2, 6, 7, 8, 9):\n\t\t\treturn 'DFT'\n\t\tif sv == 3:\n\t\t\treturn 'FLT'\n\t\tif sv == 5:\n\t\t\treturn 'IDLE'\n\t\treturn 'STOP'\n\n\tdef status_match(filt, sv):\n\t\tf = str(filt or '').strip().upper()\n\t\tif not f:\n\t\t\treturn True\n\t\t# Stage-accurate dwell rows (StatusIndicator DFT PD/HG/BLD/FD)\n\t\tif f == 'DFT PD':\n\t\t\treturn sv == 6\n\t\tif f == 'DFT HG':\n\t\t\treturn sv == 7\n\t\tif f == 'DFT BLD':\n\t\t\treturn sv == 8\n\t\tif f == 'DFT FD':\n\t\t\treturn sv == 9\n\t\t# Coarse DFT (donut / stack) includes base + all stages\n\t\tif f == 'DFT':\n\t\t\treturn sv in (2, 6, 7, 8, 9)\n\t\treturn coarse_code(sv) == f\n\n\tif cg_f:\n\t\treturn 1.0 if str(my_cg) == str(cg_f) else 0.22\n\tif area_f and status_f:\n\t\tok = (str(my_area) == str(area_f)) and status_match(status_f, s)\n\t\treturn 1.0 if ok else 0.22\n\tif area_f:\n\t\treturn 1.0 if str(my_area) == str(area_f) else 0.22\n\tif status_f:\n\t\treturn 1.0 if status_match(status_f, s) else 0.22\n\treturn 1.0\n"
+                    },
+                    {
+                      "type": "expression",
+                      "expression": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/Club/Utility/CG-C1/HmiStatus')), false), false), {value}, 0.5)"
+                    }
+                  ],
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "CG-B1"
+            },
+            "position": {
+              "x": 1156,
+              "y": 373,
+              "width": 128,
+              "height": 128
+            },
+            "props": {
+              "path": "02_Components/01_Devices/Evaporator",
+              "params": {
+                "faceplate": "",
+                "tagPath": "[default]Boars_Head/GrovePort/SuperChill/Utility/CG-B1",
+                "label": "CG-B1",
+                "navPage": "/cg-b1"
+              },
+              "style": {
+                "overflow": "visible",
+                "width": "128px",
+                "height": "128px",
+                "transition": "opacity 120ms ease"
+              }
+            },
+            "propConfig": {
+              "props.style.opacity": {
+                "binding": {
+                  "type": "expr-struct",
+                  "config": {
+                    "struct": {
+                      "statusFilter": "{view.custom.highlightStatus}",
+                      "cgFilter": "{view.custom.highlightCg}",
+                      "areaFilter": "{view.custom.highlightArea}",
+                      "myCg": "'CG-B1'",
+                      "myArea": "'SuperChill'",
+                      "myStatus": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/SuperChill/Utility/CG-B1/HmiStatus')), false), false), try(tag('[default]Boars_Head/GrovePort/SuperChill/Utility/CG-B1/HmiStatus'), null), null)"
+                    },
+                    "waitOnAll": false
+                  },
+                  "transforms": [
+                    {
+                      "type": "script",
+                      "code": "\n\t# Priority: highlightCg > highlightArea+status > highlightArea > highlightStatus > none\n\tstatus_f = value.get('statusFilter') or ''\n\tcg_f = value.get('cgFilter') or ''\n\tarea_f = value.get('areaFilter') or ''\n\tmy_cg = value.get('myCg') or ''\n\tmy_area = value.get('myArea') or ''\n\traw = value.get('myStatus')\n\ttry:\n\t\ts = int(raw) if raw is not None else None\n\texcept:\n\t\ts = None\n\n\tdef coarse_code(sv):\n\t\tif sv == 1:\n\t\t\treturn 'CLG'\n\t\tif sv in (2, 6, 7, 8, 9):\n\t\t\treturn 'DFT'\n\t\tif sv == 3:\n\t\t\treturn 'FLT'\n\t\tif sv == 5:\n\t\t\treturn 'IDLE'\n\t\treturn 'STOP'\n\n\tdef status_match(filt, sv):\n\t\tf = str(filt or '').strip().upper()\n\t\tif not f:\n\t\t\treturn True\n\t\t# Stage-accurate dwell rows (StatusIndicator DFT PD/HG/BLD/FD)\n\t\tif f == 'DFT PD':\n\t\t\treturn sv == 6\n\t\tif f == 'DFT HG':\n\t\t\treturn sv == 7\n\t\tif f == 'DFT BLD':\n\t\t\treturn sv == 8\n\t\tif f == 'DFT FD':\n\t\t\treturn sv == 9\n\t\t# Coarse DFT (donut / stack) includes base + all stages\n\t\tif f == 'DFT':\n\t\t\treturn sv in (2, 6, 7, 8, 9)\n\t\treturn coarse_code(sv) == f\n\n\tif cg_f:\n\t\treturn 1.0 if str(my_cg) == str(cg_f) else 0.22\n\tif area_f and status_f:\n\t\tok = (str(my_area) == str(area_f)) and status_match(status_f, s)\n\t\treturn 1.0 if ok else 0.22\n\tif area_f:\n\t\treturn 1.0 if str(my_area) == str(area_f) else 0.22\n\tif status_f:\n\t\treturn 1.0 if status_match(status_f, s) else 0.22\n\treturn 1.0\n"
+                    },
+                    {
+                      "type": "expression",
+                      "expression": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/SuperChill/Utility/CG-B1/HmiStatus')), false), false), {value}, 0.5)"
+                    }
+                  ],
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "CG-A2"
+            },
+            "position": {
+              "x": 1156,
+              "y": 525,
+              "width": 128,
+              "height": 128
+            },
+            "props": {
+              "path": "02_Components/01_Devices/Evaporator",
+              "params": {
+                "faceplate": "",
+                "tagPath": "[default]Boars_Head/GrovePort/Freezer/Utility/CG-A2",
+                "label": "CG-A2",
+                "navPage": "/cg-a2"
+              },
+              "style": {
+                "overflow": "visible",
+                "width": "128px",
+                "height": "128px",
+                "transition": "opacity 120ms ease"
+              }
+            },
+            "propConfig": {
+              "props.style.opacity": {
+                "binding": {
+                  "type": "expr-struct",
+                  "config": {
+                    "struct": {
+                      "statusFilter": "{view.custom.highlightStatus}",
+                      "cgFilter": "{view.custom.highlightCg}",
+                      "areaFilter": "{view.custom.highlightArea}",
+                      "myCg": "'CG-A2'",
+                      "myArea": "'Freezer'",
+                      "myStatus": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/Freezer/Utility/CG-A2/HmiStatus')), false), false), try(tag('[default]Boars_Head/GrovePort/Freezer/Utility/CG-A2/HmiStatus'), null), null)"
+                    },
+                    "waitOnAll": false
+                  },
+                  "transforms": [
+                    {
+                      "type": "script",
+                      "code": "\n\t# Priority: highlightCg > highlightArea+status > highlightArea > highlightStatus > none\n\tstatus_f = value.get('statusFilter') or ''\n\tcg_f = value.get('cgFilter') or ''\n\tarea_f = value.get('areaFilter') or ''\n\tmy_cg = value.get('myCg') or ''\n\tmy_area = value.get('myArea') or ''\n\traw = value.get('myStatus')\n\ttry:\n\t\ts = int(raw) if raw is not None else None\n\texcept:\n\t\ts = None\n\n\tdef coarse_code(sv):\n\t\tif sv == 1:\n\t\t\treturn 'CLG'\n\t\tif sv in (2, 6, 7, 8, 9):\n\t\t\treturn 'DFT'\n\t\tif sv == 3:\n\t\t\treturn 'FLT'\n\t\tif sv == 5:\n\t\t\treturn 'IDLE'\n\t\treturn 'STOP'\n\n\tdef status_match(filt, sv):\n\t\tf = str(filt or '').strip().upper()\n\t\tif not f:\n\t\t\treturn True\n\t\t# Stage-accurate dwell rows (StatusIndicator DFT PD/HG/BLD/FD)\n\t\tif f == 'DFT PD':\n\t\t\treturn sv == 6\n\t\tif f == 'DFT HG':\n\t\t\treturn sv == 7\n\t\tif f == 'DFT BLD':\n\t\t\treturn sv == 8\n\t\tif f == 'DFT FD':\n\t\t\treturn sv == 9\n\t\t# Coarse DFT (donut / stack) includes base + all stages\n\t\tif f == 'DFT':\n\t\t\treturn sv in (2, 6, 7, 8, 9)\n\t\treturn coarse_code(sv) == f\n\n\tif cg_f:\n\t\treturn 1.0 if str(my_cg) == str(cg_f) else 0.22\n\tif area_f and status_f:\n\t\tok = (str(my_area) == str(area_f)) and status_match(status_f, s)\n\t\treturn 1.0 if ok else 0.22\n\tif area_f:\n\t\treturn 1.0 if str(my_area) == str(area_f) else 0.22\n\tif status_f:\n\t\treturn 1.0 if status_match(status_f, s) else 0.22\n\treturn 1.0\n"
+                    },
+                    {
+                      "type": "expression",
+                      "expression": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/Freezer/Utility/CG-A2/HmiStatus')), false), false), {value}, 0.5)"
+                    }
+                  ],
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "CG-A1"
+            },
+            "position": {
+              "x": 1156,
+              "y": 677,
+              "width": 128,
+              "height": 128
+            },
+            "props": {
+              "path": "02_Components/01_Devices/Evaporator",
+              "params": {
+                "faceplate": "",
+                "tagPath": "[default]Boars_Head/GrovePort/Freezer/Utility/CG-A1",
+                "label": "CG-A1",
+                "navPage": "/cg-a1"
+              },
+              "style": {
+                "overflow": "visible",
+                "width": "128px",
+                "height": "128px",
+                "transition": "opacity 120ms ease"
+              }
+            },
+            "propConfig": {
+              "props.style.opacity": {
+                "binding": {
+                  "type": "expr-struct",
+                  "config": {
+                    "struct": {
+                      "statusFilter": "{view.custom.highlightStatus}",
+                      "cgFilter": "{view.custom.highlightCg}",
+                      "areaFilter": "{view.custom.highlightArea}",
+                      "myCg": "'CG-A1'",
+                      "myArea": "'Freezer'",
+                      "myStatus": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/Freezer/Utility/CG-A1/HmiStatus')), false), false), try(tag('[default]Boars_Head/GrovePort/Freezer/Utility/CG-A1/HmiStatus'), null), null)"
+                    },
+                    "waitOnAll": false
+                  },
+                  "transforms": [
+                    {
+                      "type": "script",
+                      "code": "\n\t# Priority: highlightCg > highlightArea+status > highlightArea > highlightStatus > none\n\tstatus_f = value.get('statusFilter') or ''\n\tcg_f = value.get('cgFilter') or ''\n\tarea_f = value.get('areaFilter') or ''\n\tmy_cg = value.get('myCg') or ''\n\tmy_area = value.get('myArea') or ''\n\traw = value.get('myStatus')\n\ttry:\n\t\ts = int(raw) if raw is not None else None\n\texcept:\n\t\ts = None\n\n\tdef coarse_code(sv):\n\t\tif sv == 1:\n\t\t\treturn 'CLG'\n\t\tif sv in (2, 6, 7, 8, 9):\n\t\t\treturn 'DFT'\n\t\tif sv == 3:\n\t\t\treturn 'FLT'\n\t\tif sv == 5:\n\t\t\treturn 'IDLE'\n\t\treturn 'STOP'\n\n\tdef status_match(filt, sv):\n\t\tf = str(filt or '').strip().upper()\n\t\tif not f:\n\t\t\treturn True\n\t\t# Stage-accurate dwell rows (StatusIndicator DFT PD/HG/BLD/FD)\n\t\tif f == 'DFT PD':\n\t\t\treturn sv == 6\n\t\tif f == 'DFT HG':\n\t\t\treturn sv == 7\n\t\tif f == 'DFT BLD':\n\t\t\treturn sv == 8\n\t\tif f == 'DFT FD':\n\t\t\treturn sv == 9\n\t\t# Coarse DFT (donut / stack) includes base + all stages\n\t\tif f == 'DFT':\n\t\t\treturn sv in (2, 6, 7, 8, 9)\n\t\treturn coarse_code(sv) == f\n\n\tif cg_f:\n\t\treturn 1.0 if str(my_cg) == str(cg_f) else 0.22\n\tif area_f and status_f:\n\t\tok = (str(my_area) == str(area_f)) and status_match(status_f, s)\n\t\treturn 1.0 if ok else 0.22\n\tif area_f:\n\t\treturn 1.0 if str(my_area) == str(area_f) else 0.22\n\tif status_f:\n\t\treturn 1.0 if status_match(status_f, s) else 0.22\n\treturn 1.0\n"
+                    },
+                    {
+                      "type": "expression",
+                      "expression": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/Freezer/Utility/CG-A1/HmiStatus')), false), false), {value}, 0.5)"
+                    }
+                  ],
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "CG-D1"
+            },
+            "position": {
+              "x": 1156,
+              "y": 829,
+              "width": 128,
+              "height": 128
+            },
+            "props": {
+              "path": "02_Components/01_Devices/Evaporator",
+              "params": {
+                "faceplate": "",
+                "tagPath": "[default]Boars_Head/GrovePort/Palletizing/Utility/CG-D1",
+                "label": "CG-D1",
+                "navPage": "/cg-d1"
+              },
+              "style": {
+                "overflow": "visible",
+                "width": "128px",
+                "height": "128px",
+                "transition": "opacity 120ms ease"
+              }
+            },
+            "propConfig": {
+              "props.style.opacity": {
+                "binding": {
+                  "type": "expr-struct",
+                  "config": {
+                    "struct": {
+                      "statusFilter": "{view.custom.highlightStatus}",
+                      "cgFilter": "{view.custom.highlightCg}",
+                      "areaFilter": "{view.custom.highlightArea}",
+                      "myCg": "'CG-D1'",
+                      "myArea": "'Palletizing'",
+                      "myStatus": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/Palletizing/Utility/CG-D1/HmiStatus')), false), false), try(tag('[default]Boars_Head/GrovePort/Palletizing/Utility/CG-D1/HmiStatus'), null), null)"
+                    },
+                    "waitOnAll": false
+                  },
+                  "transforms": [
+                    {
+                      "type": "script",
+                      "code": "\n\t# Priority: highlightCg > highlightArea+status > highlightArea > highlightStatus > none\n\tstatus_f = value.get('statusFilter') or ''\n\tcg_f = value.get('cgFilter') or ''\n\tarea_f = value.get('areaFilter') or ''\n\tmy_cg = value.get('myCg') or ''\n\tmy_area = value.get('myArea') or ''\n\traw = value.get('myStatus')\n\ttry:\n\t\ts = int(raw) if raw is not None else None\n\texcept:\n\t\ts = None\n\n\tdef coarse_code(sv):\n\t\tif sv == 1:\n\t\t\treturn 'CLG'\n\t\tif sv in (2, 6, 7, 8, 9):\n\t\t\treturn 'DFT'\n\t\tif sv == 3:\n\t\t\treturn 'FLT'\n\t\tif sv == 5:\n\t\t\treturn 'IDLE'\n\t\treturn 'STOP'\n\n\tdef status_match(filt, sv):\n\t\tf = str(filt or '').strip().upper()\n\t\tif not f:\n\t\t\treturn True\n\t\t# Stage-accurate dwell rows (StatusIndicator DFT PD/HG/BLD/FD)\n\t\tif f == 'DFT PD':\n\t\t\treturn sv == 6\n\t\tif f == 'DFT HG':\n\t\t\treturn sv == 7\n\t\tif f == 'DFT BLD':\n\t\t\treturn sv == 8\n\t\tif f == 'DFT FD':\n\t\t\treturn sv == 9\n\t\t# Coarse DFT (donut / stack) includes base + all stages\n\t\tif f == 'DFT':\n\t\t\treturn sv in (2, 6, 7, 8, 9)\n\t\treturn coarse_code(sv) == f\n\n\tif cg_f:\n\t\treturn 1.0 if str(my_cg) == str(cg_f) else 0.22\n\tif area_f and status_f:\n\t\tok = (str(my_area) == str(area_f)) and status_match(status_f, s)\n\t\treturn 1.0 if ok else 0.22\n\tif area_f:\n\t\treturn 1.0 if str(my_area) == str(area_f) else 0.22\n\tif status_f:\n\t\treturn 1.0 if status_match(status_f, s) else 0.22\n\treturn 1.0\n"
+                    },
+                    {
+                      "type": "expression",
+                      "expression": "if(coalesce(try(isGood(tag('[default]Boars_Head/GrovePort/Palletizing/Utility/CG-D1/HmiStatus')), false), false), {value}, 0.5)"
+                    }
+                  ],
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "UndSuperchill"
+            },
+            "events": {
+              "dom": {
+                "onClick": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\ttagPath = '[default]Boars_Head/GrovePort/SuperChill/Sensors/Underfloor Temp'\n\ttitle = 'SUPERCHILL UND.FLOOR'\n\tparams = {'tagPath': tagPath, 'deviceType': 'Sensor', 'webGuiUrl': '', 'showControls': True,\n\t\t'showConfiguration': True, 'showInterlocks': True, 'showTrend': True, 'showAlarmConfiguration': True,\n\t\t'showAlarms': True, 'title': title}\n\tNavigation.Faceplate.openFaceplate('sensor-fp-%s' % tagPath, tagPath, '01_Popups/00_Faceplates/Faceplate',\n\t\tFalse, title, 560, 640, params)\n"
+                  }
+                }
+              }
+            },
+            "position": {
+              "x": 1026,
+              "y": 736.0,
+              "width": 126,
+              "height": 48
+            },
+            "props": {
+              "direction": "column",
+              "justify": "center",
+              "style": {
+                "cursor": "pointer",
+                "gap": "2px",
+                "overflow": "visible",
+                "backgroundColor": "var(--neutral-10)",
+                "borderStyle": "solid",
+                "borderWidth": "1px",
+                "borderColor": "var(--neutral-50)",
+                "padding": "2px 4px",
+                "classes": ""
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Label"
+                },
+                "position": {
+                  "basis": "14px",
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "SUPERCHILL UND.FLOOR",
+                  "style": {
+                    "classes": "Fonts/Label fs-9 fw-700",
+                    "textAlign": "center",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "color": "var(--neutral-90)"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Value"
+                },
+                "position": {
+                  "grow": 1,
+                  "basis": "22px"
+                },
+                "props": {
+                  "text": "— °F",
+                  "style": {
+                    "classes": "Fonts/Value fs-12 fw-600",
+                    "textAlign": "center",
+                    "backgroundColor": "var(--neutral-30)",
+                    "color": "var(--neutral-90)",
+                    "padding": "2px 4px"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(!isGood(tag('[default]Boars_Head/GrovePort/SuperChill/Sensors/Underfloor Temp/AIn/Val')),\n\t'— °F',\n\tnumberFormat(coalesce(tag('[default]Boars_Head/GrovePort/SuperChill/Sensors/Underfloor Temp/AIn/Val'), 0), '0.00') + ' °F')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  }
+                },
+                "events": {
+                  "dom": {
+                    "onContextMenu": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tshared.TrendContext.menu(self, event, '[default]Boars_Head/GrovePort/SuperChill/Sensors/Underfloor Temp/AIn/Val')"
+                      },
+                      "preventDefault": true,
+                      "stopPropagation": true
+                    }
+                  }
+                }
+              }
+            ],
+            "propConfig": {
+              "props.style.classes": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "trim(if(coalesce({session.custom.CanOpenFaceplates}, false), ' faceplate-hover', ''))"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "UndFreezer"
+            },
+            "events": {
+              "dom": {
+                "onClick": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\ttagPath = '[default]Boars_Head/GrovePort/Freezer/Sensors/Underfloor Temp'\n\ttitle = 'FREEZER UND.FLOOR'\n\tparams = {'tagPath': tagPath, 'deviceType': 'Sensor', 'webGuiUrl': '', 'showControls': True,\n\t\t'showConfiguration': True, 'showInterlocks': True, 'showTrend': True, 'showAlarmConfiguration': True,\n\t\t'showAlarms': True, 'title': title}\n\tNavigation.Faceplate.openFaceplate('sensor-fp-%s' % tagPath, tagPath, '01_Popups/00_Faceplates/Faceplate',\n\t\tFalse, title, 560, 640, params)\n"
+                  }
+                }
+              }
+            },
+            "position": {
+              "x": 1026,
+              "y": 280.0,
+              "width": 126,
+              "height": 48
+            },
+            "props": {
+              "direction": "column",
+              "justify": "center",
+              "style": {
+                "cursor": "pointer",
+                "gap": "2px",
+                "overflow": "visible",
+                "backgroundColor": "var(--neutral-10)",
+                "borderStyle": "solid",
+                "borderWidth": "1px",
+                "borderColor": "var(--neutral-50)",
+                "padding": "2px 4px",
+                "classes": ""
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Label"
+                },
+                "position": {
+                  "basis": "14px",
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "FREEZER UND.FLOOR",
+                  "style": {
+                    "classes": "Fonts/Label fs-9 fw-700",
+                    "textAlign": "center",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "color": "var(--neutral-90)"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Value"
+                },
+                "position": {
+                  "grow": 1,
+                  "basis": "22px"
+                },
+                "props": {
+                  "text": "— °F",
+                  "style": {
+                    "classes": "Fonts/Value fs-12 fw-600",
+                    "textAlign": "center",
+                    "backgroundColor": "var(--neutral-30)",
+                    "color": "var(--neutral-90)",
+                    "padding": "2px 4px"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(!isGood(tag('[default]Boars_Head/GrovePort/Freezer/Sensors/Underfloor Temp/AIn/Val')),\n\t'— °F',\n\tnumberFormat(coalesce(tag('[default]Boars_Head/GrovePort/Freezer/Sensors/Underfloor Temp/AIn/Val'), 0), '0.00') + ' °F')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  }
+                },
+                "events": {
+                  "dom": {
+                    "onContextMenu": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tshared.TrendContext.menu(self, event, '[default]Boars_Head/GrovePort/Freezer/Sensors/Underfloor Temp/AIn/Val')"
+                      },
+                      "preventDefault": true,
+                      "stopPropagation": true
+                    }
+                  }
+                }
+              }
+            ],
+            "propConfig": {
+              "props.style.classes": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "trim(if(coalesce({session.custom.CanOpenFaceplates}, false), ' faceplate-hover', ''))"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "KpiRail"
+            },
+            "position": {
+              "x": 1400,
+              "y": 37,
+              "width": 500,
+              "height": 1016
+            },
+            "props": {
+              "path": "00_Pages/Groveport/Utility/OverviewKpis",
+              "params": {},
+              "style": {
+                "width": "500px",
+                "height": "1016px",
+                "overflow": "visible"
+              }
+            }
+          }
+        ],
+        "propConfig": {
+          "props.style.transform": {
+            "binding": {
+              "type": "expr-struct",
+              "config": {
+                "struct": {
+                  "scale": "{view.params.Scale}",
+                  "defaultViewHeight": "{view.props.defaultSize.height}",
+                  "defaultViewWidth": "{view.props.defaultSize.width}",
+                  "primaryViewHeight": "{page.props.dimensions.primaryView.height}",
+                  "primaryViewWidth": "{page.props.dimensions.primaryView.width}"
+                },
+                "waitOnAll": true
+              },
+              "transforms": [
+                {
+                  "code": "\treturn shared.Scale.cssTransform(value)",
+                  "type": "script"
+                }
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "propConfig": {
+      "meta.contextMenu.items": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "coalesce({session.custom.TicketLogAccess}, false)"
+          },
+          "transforms": [
+            {
+              "type": "script",
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = str(self.view.params.tagPath or '')\n\texcept:\n\t\tpass\n\tview_name = self.view.id.split('@')[0]\n\titems = []\n\tif value:\n\t\tlogged = tagPath if tagPath.strip() else 'No TagPath: ' + view_name.split('/')[-1]\n\t\titems.append({\n\t\t\t\"text\": 'Ticket Logger',\n\t\t\t\"icon\": {\"path\": 'material/info', \"color\": \"--neutral-80\", \"style\": {}},\n\t\t\t\"style\": {\"classes\": \"bg-component Fonts/Value\", \"height\": 24, \"width\": 170},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\"type\": 'ticketLog', \"payload\": {'tagPath': logged, 'viewName': view_name, 'sender': self.view.id}, \"scope\": 'page'}\n\t\t})\n\treturn items"
+            }
+          ]
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "len({this.meta.contextMenu.items}) > 0"
+          }
+        }
+      }
+    }
+  }
+}

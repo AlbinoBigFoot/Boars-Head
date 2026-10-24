@@ -1,5 +1,14 @@
 {
-  "custom": {},
+  "custom": {
+    "pax": "",
+    "qg0": null,
+    "qg1": null,
+    "qg2": null,
+    "qg3": null,
+    "permDevice": "",
+    "roCommand": true,
+    "tipCommand": ""
+  },
   "params": {
     "tagPath": ""
   },
@@ -7,6 +16,72 @@
     "params.tagPath": {
       "paramDirection": "input",
       "persistent": true
+    },
+    "custom.pax": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', '', case(toStr(coalesce(try(tag({view.params.tagPath} + '.TypeId'), ''), '')), 'Devices/Pump', 'Motor', 'Devices/Valve', 'Valve', 'Devices/Tank', 'Tank', 'Devices/Compressor', 'Comp', 'Devices/Evaporator', 'CG', 'Devices/ExhaustFan', 'EF', 'Devices/LTU', 'LTU', 'Devices/SafetyRelay', 'Relay', 'Devices/SuctionSequence', 'Seq', 'Devices/DischargeSequence', 'Dsq', 'Devices/Sensor', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn.Enabled')), false), false), 'AIn', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AInRef.Enabled')), false), false), 'AInRef', '')), 'Devices/DiscreteInput', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/DIn.Enabled')), false), false), 'DIn', ''), ''))"
+        }
+      }
+    },
+    "custom.qg0": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/Valve/Alm_IOFault')), tag({view.params.tagPath} + '/Valve/Alm_IOFault'), null), null)"
+        }
+      }
+    },
+    "custom.qg1": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/Valve/Alm_FullStall')), tag({view.params.tagPath} + '/Valve/Alm_FullStall'), null), null)"
+        }
+      }
+    },
+    "custom.qg2": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/Valve/Alm_TransitStall')), tag({view.params.tagPath} + '/Valve/Alm_TransitStall'), null), null)"
+        }
+      }
+    },
+    "custom.qg3": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.tagPath} + '/Valve/Alm_IntlkTrip')), tag({view.params.tagPath} + '/Valve/Alm_IntlkTrip'), null), null)"
+        }
+      }
+    },
+    "custom.permDevice": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', '', coalesce(try(lookup(tag('[default]_Config/Security/DeviceTypes'), toStr(coalesce(try(tag({view.params.tagPath} + '.TypeId'), ''), '')), null, 'TypeId', 'Device'), null), try(lookup(tag('[default]_Config/Security/DeviceTypes'), toStr(coalesce(try(tag(left({view.params.tagPath}, lastIndexOf({view.params.tagPath}, '/')) + '.TypeId'), ''), '')), null, 'TypeId', 'Device'), null), try(lookup(tag('[default]_Config/Security/DeviceTypes'), toStr(coalesce(try(tag(left(left({view.params.tagPath}, lastIndexOf({view.params.tagPath}, '/')), lastIndexOf(left({view.params.tagPath}, lastIndexOf({view.params.tagPath}, '/')), '/')) + '.TypeId'), ''), '')), null, 'TypeId', 'Device'), null), ''))"
+        }
+      },
+      "access": "PROTECTED"
+    },
+    "custom.roCommand": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({session.custom.ReadOnly}, true) || !coalesce(try({session.custom.Permissions}[{view.custom.permDevice}]['Command'], null), true)"
+        }
+      },
+      "access": "PROTECTED"
+    },
+    "custom.tipCommand": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(!coalesce({session.custom.ReadOnly}, true) && coalesce({view.custom.roCommand}, false), 'Not Permitted: ' + {view.custom.permDevice} + ' / ' + 'Command' + ' (Roles & Permissions)', '')"
+        }
+      }
     }
   },
   "props": {
@@ -56,7 +131,7 @@
             "props": {
               "text": "Valve Alarms",
               "style": {
-                "classes": "faceplate-section-title font-label"
+                "classes": "faceplate-section-title Fonts/Label"
               }
             }
           },
@@ -117,7 +192,7 @@
                         "props": {
                           "text": "I/O FAULT",
                           "style": {
-                            "classes": "faceplate-fault-code font-label"
+                            "classes": "faceplate-fault-code Fonts/Label"
                           }
                         }
                       },
@@ -130,7 +205,7 @@
                           "props.text": {
                             "binding": {
                               "config": {
-                                "expression": "if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_IOFault/Value')), null, tag({view.params.tagPath} + '/Alm_IOFault/Value')), null), false),\n\t\t'ACTIVE', 'OK'))"
+                                "expression": "if({view.params.tagPath} != '' && coalesce(try(isNull({view.custom.qg0}), true), true), '—', if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isNull({view.custom.qg0}), null, {view.custom.qg0}), null), false),\n\t\t'ACTIVE', 'OK')))"
                               },
                               "type": "expr",
                               "overlays": {
@@ -140,13 +215,14 @@
                                 "stale": false,
                                 "unknown": false,
                                 "disabled": false
-                              }
+                              },
+                              "overlayOptOut": true
                             }
                           },
                           "props.style.classes": {
                             "binding": {
                               "config": {
-                                "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_IOFault/Value')), null, tag({view.params.tagPath} + '/Alm_IOFault/Value')), null), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok'))"
+                                "expression": "if({view.params.tagPath} != '' && coalesce(try(isNull({view.custom.qg0}), true), true), 'faceplate-fault-state value-bad', if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isNull({view.custom.qg0}), null, {view.custom.qg0}), null), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok')))"
                               },
                               "type": "expr",
                               "overlays": {
@@ -156,7 +232,8 @@
                                 "stale": false,
                                 "unknown": false,
                                 "disabled": false
-                              }
+                              },
+                              "overlayOptOut": true
                             }
                           }
                         },
@@ -195,7 +272,7 @@
                         "props": {
                           "text": "FULL STALL",
                           "style": {
-                            "classes": "faceplate-fault-code font-label"
+                            "classes": "faceplate-fault-code Fonts/Label"
                           }
                         }
                       },
@@ -208,7 +285,7 @@
                           "props.text": {
                             "binding": {
                               "config": {
-                                "expression": "if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_FullStall/Value')), null, tag({view.params.tagPath} + '/Alm_FullStall/Value')), null), false),\n\t\t'ACTIVE', 'OK'))"
+                                "expression": "if({view.params.tagPath} != '' && coalesce(try(isNull({view.custom.qg1}), true), true), '—', if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isNull({view.custom.qg1}), null, {view.custom.qg1}), null), false),\n\t\t'ACTIVE', 'OK')))"
                               },
                               "type": "expr",
                               "overlays": {
@@ -218,13 +295,14 @@
                                 "stale": false,
                                 "unknown": false,
                                 "disabled": false
-                              }
+                              },
+                              "overlayOptOut": true
                             }
                           },
                           "props.style.classes": {
                             "binding": {
                               "config": {
-                                "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_FullStall/Value')), null, tag({view.params.tagPath} + '/Alm_FullStall/Value')), null), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok'))"
+                                "expression": "if({view.params.tagPath} != '' && coalesce(try(isNull({view.custom.qg1}), true), true), 'faceplate-fault-state value-bad', if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isNull({view.custom.qg1}), null, {view.custom.qg1}), null), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok')))"
                               },
                               "type": "expr",
                               "overlays": {
@@ -234,7 +312,8 @@
                                 "stale": false,
                                 "unknown": false,
                                 "disabled": false
-                              }
+                              },
+                              "overlayOptOut": true
                             }
                           }
                         },
@@ -273,7 +352,7 @@
                         "props": {
                           "text": "TRANSIT STALL",
                           "style": {
-                            "classes": "faceplate-fault-code font-label"
+                            "classes": "faceplate-fault-code Fonts/Label"
                           }
                         }
                       },
@@ -286,7 +365,7 @@
                           "props.text": {
                             "binding": {
                               "config": {
-                                "expression": "if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_TransitStall/Value')), null, tag({view.params.tagPath} + '/Alm_TransitStall/Value')), null), false),\n\t\t'ACTIVE', 'OK'))"
+                                "expression": "if({view.params.tagPath} != '' && coalesce(try(isNull({view.custom.qg2}), true), true), '—', if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isNull({view.custom.qg2}), null, {view.custom.qg2}), null), false),\n\t\t'ACTIVE', 'OK')))"
                               },
                               "type": "expr",
                               "overlays": {
@@ -296,13 +375,14 @@
                                 "stale": false,
                                 "unknown": false,
                                 "disabled": false
-                              }
+                              },
+                              "overlayOptOut": true
                             }
                           },
                           "props.style.classes": {
                             "binding": {
                               "config": {
-                                "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_TransitStall/Value')), null, tag({view.params.tagPath} + '/Alm_TransitStall/Value')), null), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok'))"
+                                "expression": "if({view.params.tagPath} != '' && coalesce(try(isNull({view.custom.qg2}), true), true), 'faceplate-fault-state value-bad', if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isNull({view.custom.qg2}), null, {view.custom.qg2}), null), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok')))"
                               },
                               "type": "expr",
                               "overlays": {
@@ -312,7 +392,8 @@
                                 "stale": false,
                                 "unknown": false,
                                 "disabled": false
-                              }
+                              },
+                              "overlayOptOut": true
                             }
                           }
                         },
@@ -351,7 +432,7 @@
                         "props": {
                           "text": "INTLK TRIP",
                           "style": {
-                            "classes": "faceplate-fault-code font-label"
+                            "classes": "faceplate-fault-code Fonts/Label"
                           }
                         }
                       },
@@ -364,7 +445,7 @@
                           "props.text": {
                             "binding": {
                               "config": {
-                                "expression": "if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_IntlkTrip/Value')), null, tag({view.params.tagPath} + '/Alm_IntlkTrip/Value')), null), false),\n\t\t'ACTIVE', 'OK'))"
+                                "expression": "if({view.params.tagPath} != '' && coalesce(try(isNull({view.custom.qg3}), true), true), '—', if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isNull({view.custom.qg3}), null, {view.custom.qg3}), null), false),\n\t\t'ACTIVE', 'OK')))"
                               },
                               "type": "expr",
                               "overlays": {
@@ -374,13 +455,14 @@
                                 "stale": false,
                                 "unknown": false,
                                 "disabled": false
-                              }
+                              },
+                              "overlayOptOut": true
                             }
                           },
                           "props.style.classes": {
                             "binding": {
                               "config": {
-                                "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Alm_IntlkTrip/Value')), null, tag({view.params.tagPath} + '/Alm_IntlkTrip/Value')), null), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok'))"
+                                "expression": "if({view.params.tagPath} != '' && coalesce(try(isNull({view.custom.qg3}), true), true), 'faceplate-fault-state value-bad', if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isNull({view.custom.qg3}), null, {view.custom.qg3}), null), false),\n\t\t'faceplate-fault-state faceplate-fault-active',\n\t\t'faceplate-fault-state faceplate-fault-ok')))"
                               },
                               "type": "expr",
                               "overlays": {
@@ -390,7 +472,8 @@
                                 "stale": false,
                                 "unknown": false,
                                 "disabled": false
-                              }
+                              },
+                              "overlayOptOut": true
                             }
                           }
                         },
@@ -419,7 +502,7 @@
                   "component": {
                     "onActionPerformed": {
                       "config": {
-                        "script": "\tif self.session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tdef _r(p):\n\t\ttry:\n\t\t\tc = system.tag.getConfiguration(p, False)[0]\n\t\t\ts = c.get('sourceTagPath')\n\t\t\treturn str(s) if s else p\n\t\texcept:\n\t\t\treturn p\n\tpaths = [base + '/' + n + '/Value' for n in ('Ack_IOFault','Ack_FullStall','Ack_TransitStall','Ack_IntlkTrip','Cmd_ResetAckAll')]\n\tvals = [True] * len(paths)\n\tsystem.tag.writeBlocking([_r(p) for p in paths], vals)\n\tuser = ''\n\ttry:\n\t\tuser = str(self.session.props.auth.user.userName or '')\n\texcept:\n\t\tpass\n\ttry:\n\t\tshared.Alarms.acknowledgeForTag(base, user, 'Faceplate Ack / Reset')\n\texcept:\n\t\tsystem.util.getLogger('ValveAlarms').warn('Ignition alarm ack failed for %s' % base)\n\ttry:\n\t\tviewName = self.view.id.split('@')[0]\n\t\tshared.Audit.logEvent('alarm ack/reset', base, 'Ack / Reset', tagPath=base, viewName=viewName)\n\texcept:\n\t\tsystem.util.getLogger('ValveAlarms').warn('OpsAudit ack/reset failed for %s' % base)\n"
+                        "script": "\tif self.view.custom.pax:\n\t\treturn  # pax-bindings: live PLC object, read only\n\tif self.view.custom.roCommand:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tdef _r(p):\n\t\ttry:\n\t\t\tc = system.tag.getConfiguration(p, False)[0]\n\t\t\ts = c.get('sourceTagPath')\n\t\t\treturn str(s) if s else p\n\t\texcept:\n\t\t\treturn p\n\tpaths = [base + '/' + n + '/Value' for n in ('Ack_IOFault','Ack_FullStall','Ack_TransitStall','Ack_IntlkTrip','Cmd_ResetAckAll')]\n\tvals = [True] * len(paths)\n\tsystem.tag.writeBlocking([_r(p) for p in paths], vals)\n\tuser = ''\n\ttry:\n\t\tuser = str(self.session.props.auth.user.userName or '')\n\texcept:\n\t\tpass\n\ttry:\n\t\tshared.Alarms.acknowledgeForTag(base, user, 'Faceplate Ack / Reset')\n\texcept:\n\t\tsystem.util.getLogger('ValveAlarms').warn('Ignition alarm ack failed for %s' % base)\n\ttry:\n\t\tviewName = self.view.id.split('@')[0]\n\t\tshared.Audit.logEvent('alarm ack/reset', base, 'Ack / Reset', tagPath=base, viewName=viewName)\n\texcept:\n\t\tsystem.util.getLogger('ValveAlarms').warn('OpsAudit ack/reset failed for %s' % base)\n"
                       },
                       "scope": "G",
                       "type": "script"
@@ -430,16 +513,32 @@
                   "props.enabled": {
                     "binding": {
                       "config": {
-                        "expression": "!{session.custom.ReadOnly}"
+                        "expression": "(!{view.custom.roCommand}) && coalesce({view.custom.pax}, '') = ''"
                       },
                       "type": "expr"
+                    }
+                  },
+                  "meta.tooltip.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "{view.custom.tipCommand} != ''"
+                      }
+                    }
+                  },
+                  "meta.tooltip.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "{view.custom.tipCommand}"
+                      }
                     }
                   }
                 },
                 "props": {
                   "text": "Ack / Reset",
                   "style": {
-                    "classes": "faceplate-cmd-btn font-label",
+                    "classes": "faceplate-cmd-btn Fonts/Label",
                     "alignSelf": "center",
                     "width": "auto",
                     "minWidth": "108px",
@@ -490,6 +589,43 @@
           }
         }
       }
-    ]
+    ],
+    "propConfig": {
+      "meta.contextMenu.items": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "coalesce({session.custom.TicketLogAccess}, false)"
+          },
+          "transforms": [
+            {
+              "type": "script",
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = str(self.view.params.tagPath or '')\n\texcept:\n\t\tpass\n\tview_name = self.view.id.split('@')[0]\n\titems = []\n\tif value:\n\t\tlogged = tagPath if tagPath.strip() else 'No TagPath: ' + view_name.split('/')[-1]\n\t\titems.append({\n\t\t\t\"text\": 'Ticket Logger',\n\t\t\t\"icon\": {\"path\": 'material/info', \"color\": \"--neutral-80\", \"style\": {}},\n\t\t\t\"style\": {\"classes\": \"bg-component Fonts/Value\", \"height\": 24, \"width\": 170},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\"type\": 'ticketLog', \"payload\": {'tagPath': logged, 'viewName': view_name, 'sender': self.view.id}, \"scope\": 'page'}\n\t\t})\n\treturn items"
+            }
+          ]
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "len({this.meta.contextMenu.items}) > 0"
+          }
+        }
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    }
   }
 }

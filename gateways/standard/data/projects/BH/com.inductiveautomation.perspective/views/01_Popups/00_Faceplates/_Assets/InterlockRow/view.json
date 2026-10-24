@@ -1,7 +1,12 @@
 {
   "custom": {
     "channel": 0,
-    "nn": "00"
+    "nn": "00",
+    "qg0": null,
+    "permDevice": "",
+    "roInterlocks": true,
+    "tipInterlocks": "",
+    "qg1": null
   },
   "params": {
     "interlockPath": "",
@@ -22,6 +27,48 @@
           "expression": "if({view.params.channel} < 10, '0' + toStr({view.params.channel}), toStr({view.params.channel}))"
         },
         "type": "expr"
+      }
+    },
+    "custom.qg0": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag({view.params.interlockPath} + '/Cfg_CondTxt' + {view.custom.nn} + '/Value')), tag({view.params.interlockPath} + '/Cfg_CondTxt' + {view.custom.nn} + '/Value'), null), null)"
+        }
+      }
+    },
+    "custom.permDevice": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.interlockPath}, '') = '', '', coalesce(try(lookup({view.custom.qg1}, toStr(coalesce(try(tag({view.params.interlockPath} + '.TypeId'), ''), '')), null, 'TypeId', 'Device'), null), try(lookup({view.custom.qg1}, toStr(coalesce(try(tag(left({view.params.interlockPath}, lastIndexOf({view.params.interlockPath}, '/')) + '.TypeId'), ''), '')), null, 'TypeId', 'Device'), null), try(lookup({view.custom.qg1}, toStr(coalesce(try(tag(left(left({view.params.interlockPath}, lastIndexOf({view.params.interlockPath}, '/')), lastIndexOf(left({view.params.interlockPath}, lastIndexOf({view.params.interlockPath}, '/')), '/')) + '.TypeId'), ''), '')), null, 'TypeId', 'Device'), null), ''))"
+        }
+      },
+      "access": "PROTECTED"
+    },
+    "custom.roInterlocks": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({session.custom.ReadOnly}, true) || !coalesce(try({session.custom.Permissions}[{view.custom.permDevice}]['Interlocks'], null), true)"
+        }
+      },
+      "access": "PROTECTED"
+    },
+    "custom.tipInterlocks": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(!coalesce({session.custom.ReadOnly}, true) && coalesce({view.custom.roInterlocks}, false), 'Not Permitted: ' + {view.custom.permDevice} + ' / ' + 'Interlocks' + ' (Roles & Permissions)', '')"
+        }
+      }
+    },
+    "custom.qg1": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "try(if(isGood(tag('[default]_Config/Security/DeviceTypes')), tag('[default]_Config/Security/DeviceTypes'), null), null)"
+        }
       }
     }
   },
@@ -85,17 +132,17 @@
           "props.text": {
             "binding": {
               "config": {
-                "expression": "coalesce(tag({view.params.interlockPath} + '/Cfg_CondTxt' + {view.custom.nn} + '/Value'), 'Interlock ' + {view.custom.nn})"
+                "expression": "coalesce({view.custom.qg0}, 'Interlock ' + {view.custom.nn})"
               },
-              "type": "expr"
+              "type": "expr",
+              "overlayOptOut": true
             }
           }
         },
         "props": {
           "style": {
-            "classes": "font-label faceplate-interlock-cond",
-            "overflow": "auto",
-            "minWidth": "0px"
+            "classes": "Fonts/Label faceplate-interlock-cond",
+            "overflow": "auto"
           },
           "text": ""
         }
@@ -132,9 +179,8 @@
         },
         "props": {
           "style": {
-            "classes": "font-value faceplate-interlock-sts",
-            "overflow": "auto",
-            "textAlign": "center"
+            "classes": "Fonts/Value faceplate-interlock-sts",
+            "overflow": "auto"
           },
           "text": "\u2014"
         }
@@ -171,7 +217,7 @@
                 "struct": {
                   "path": "{view.params.interlockPath}",
                   "ch": "{view.params.channel}",
-                  "ro": "{session.custom.ReadOnly}"
+                  "ro": "{view.custom.roInterlocks}"
                 },
                 "waitOnAll": true
               },
@@ -190,6 +236,22 @@
                 "expression": "''"
               },
               "type": "expr"
+            }
+          },
+          "meta.tooltip.enabled": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "{view.custom.tipInterlocks} != ''"
+              }
+            }
+          },
+          "meta.tooltip.text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "{view.custom.tipInterlocks}"
+              }
             }
           }
         },

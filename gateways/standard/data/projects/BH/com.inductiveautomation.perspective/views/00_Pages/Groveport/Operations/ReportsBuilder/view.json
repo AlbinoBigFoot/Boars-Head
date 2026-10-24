@@ -1,0 +1,429 @@
+{
+  "custom": {
+    "model": {
+      "denied": true,
+      "quick": [],
+      "sources": []
+    }
+  },
+  "params": {},
+  "propConfig": {
+    "custom.model": {
+      "binding": {
+        "config": {
+          "struct": {
+            "ok": "coalesce({session.custom.Permissions.Reports.Use}, false)"
+          },
+          "waitOnAll": false
+        },
+        "transforms": [
+          {
+            "code": "\tif not value.ok:\n\t\treturn {'sources': [], 'quick': [], 'denied': True}\n\treturn shared.Reports.startModel(self.session)\n",
+            "type": "script"
+          }
+        ],
+        "type": "expr-struct"
+      }
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 1000,
+      "width": 1600
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Title"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Title fs-20 fw-700"
+                  },
+                  "text": "Report Builder"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Subtitle"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-13",
+                    "whiteSpace": "normal"
+                  },
+                  "text": "Pick What To Report On. The Builder Opens With Smart Defaults You Can Change, And You Can Save The Result To Run Again Under Saved Reports."
+                },
+                "type": "ia.display.label"
+              }
+            ],
+            "meta": {
+              "name": "TitleBox"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 1,
+              "shrink": 1
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "2px",
+                "minWidth": "0"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tsystem.perspective.navigate('/operations/reports/saved')\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Saved"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "image": {
+                "height": 16,
+                "icon": {
+                  "path": "material/bookmarks"
+                },
+                "width": 16
+              },
+              "style": {
+                "classes": "form-btn",
+                "height": "34px"
+              },
+              "text": "Saved Reports"
+            },
+            "type": "ia.input.button"
+          }
+        ],
+        "meta": {
+          "name": "Head"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "alignItems": "center",
+          "direction": "row",
+          "style": {
+            "gap": "12px"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "SourceCap"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "classes": "form-th"
+                  },
+                  "text": "Data Sources"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Sources"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.instances": {
+                    "binding": {
+                      "config": {
+                        "path": "view.custom.model.sources"
+                      },
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "alignContent": "flex-start",
+                  "direction": "row",
+                  "elementPosition": {
+                    "basis": "calc((100% - 32px) / 3)",
+                    "grow": 0,
+                    "shrink": 0
+                  },
+                  "elementStyle": {
+                    "height": "120px"
+                  },
+                  "instances": [],
+                  "path": "01_Popups/Reports/_Assets/StartCard",
+                  "style": {
+                    "gap": "16px",
+                    "minWidth": "0"
+                  },
+                  "useDefaultViewHeight": false,
+                  "useDefaultViewWidth": false,
+                  "wrap": "wrap"
+                },
+                "type": "ia.display.flex-repeater"
+              },
+              {
+                "meta": {
+                  "name": "QuickCap"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "classes": "form-th"
+                  },
+                  "text": "Quick Reports · One Click"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Quick"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.instances": {
+                    "binding": {
+                      "config": {
+                        "path": "view.custom.model.quick"
+                      },
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "alignContent": "flex-start",
+                  "direction": "row",
+                  "elementPosition": {
+                    "basis": "calc((100% - 36px) / 4)",
+                    "grow": 0,
+                    "shrink": 0
+                  },
+                  "elementStyle": {
+                    "height": "56px"
+                  },
+                  "instances": [],
+                  "path": "01_Popups/Reports/_Assets/StartTile",
+                  "style": {
+                    "gap": "12px",
+                    "minWidth": "0"
+                  },
+                  "useDefaultViewHeight": false,
+                  "useDefaultViewWidth": false,
+                  "wrap": "wrap"
+                },
+                "type": "ia.display.flex-repeater"
+              }
+            ],
+            "meta": {
+              "name": "Main"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 1,
+              "shrink": 1
+            },
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "config": {
+                    "expression": "!coalesce({view.custom.model.denied}, true)"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "alignItems": "stretch",
+              "direction": "column",
+              "style": {
+                "gap": "14px",
+                "minWidth": "0",
+                "overflowX": "hidden",
+                "overflowY": "auto",
+                "padding": "20px 24px"
+              }
+            },
+            "type": "ia.container.flex"
+          }
+        ],
+        "meta": {
+          "name": "Card"
+        },
+        "position": {
+          "basis": "0",
+          "grow": 1,
+          "shrink": 1
+        },
+        "props": {
+          "alignItems": "stretch",
+          "direction": "column",
+          "style": {
+            "classes": "form-card",
+            "minHeight": "0",
+            "overflow": "hidden"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "Icon"
+            },
+            "position": {
+              "basis": "40px",
+              "grow": 0,
+              "shrink": 0
+            },
+            "props": {
+              "color": "var(--text-muted)",
+              "path": "material/lock",
+              "style": {
+                "height": "40px",
+                "width": "40px"
+              }
+            },
+            "type": "ia.display.icon"
+          },
+          {
+            "meta": {
+              "name": "Msg"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "expression": "if(coalesce({session.custom.Permissions.Reports.Use}, false), 'No Report Sources Available', \"You Don't Have Access To Reports\")"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "classes": "report-heading",
+                "textAlign": "center"
+              },
+              "text": ""
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "Text"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "classes": "report-hint",
+                "overflow": "hidden",
+                "textAlign": "center",
+                "whiteSpace": "normal"
+              },
+              "text": "Ask An Administrator To Grant The Reports Permissions On Admin > Roles & Permissions."
+            },
+            "type": "ia.display.label"
+          }
+        ],
+        "meta": {
+          "name": "Denied"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({view.custom.model.denied}, true)"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "alignItems": "center",
+          "direction": "column",
+          "justify": "center",
+          "style": {
+            "classes": "form-card",
+            "gap": "8px",
+            "padding": "32px"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "alignItems": "stretch",
+      "direction": "column",
+      "style": {
+        "classes": "bg-page",
+        "gap": "12px",
+        "height": "100%",
+        "padding": "16px 24px"
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "rptStart",
+          "pageScope": true,
+          "script": "\t# a source card / quick report: open the builder (own message name: the popup's rptEdit stays its own)\n\tif payload.get('kind') == 'preset':\n\t\tshared.Reports.open(None, {'preset': payload.get('id'), 'origin': 'Report Builder'}, self.session)\n\telse:\n\t\tshared.Reports.open(payload.get('value'), {'origin': 'Report Builder'}, self.session)\n",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    },
+    "type": "ia.container.flex"
+  }
+}

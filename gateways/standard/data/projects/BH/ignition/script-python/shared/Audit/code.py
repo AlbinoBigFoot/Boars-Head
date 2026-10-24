@@ -6,6 +6,7 @@ ops_audit_events with every configured column populated.
 """
 
 OPS_AUDIT_PROFILE = "OpsAudit"
+REBUILD_TAG = "[default]_Config/Rebuild"   # shared.Overview tag-change trigger
 
 import threading
 import time
@@ -53,6 +54,13 @@ def valuesEqual(a, b):
 		return str(a) == str(b)
 
 
+def _describe(tagPath, value):
+	try:
+		return shared.Enums.describe(tagPath, value)
+	except Exception:
+		return "%s" % (value,)
+
+
 def _target_from_tag_path(tagPath):
 	"""Build a short target label from a tag path, e.g. EV-01 Temp SP."""
 	path = str(tagPath or "").strip()
@@ -70,6 +78,36 @@ def _target_from_tag_path(tagPath):
 	if len(parts) >= 3:
 		return " ".join(parts[-3:])
 	return " ".join(parts)
+
+
+def _sessionMayWrite(tagPath):
+	"""security-tiers: server-side write gate for Perspective sessions (gateway scripts pass).
+
+	Writes need Faceplates/Operate; Out Of Service (<device>.Enabled) needs OutOfService/Set. Ticket Logger
+	integration settings (_Config/Integrations) are gated by session.custom.IntegrationAccess at the caller.
+	"""
+	p = str(tagPath or '')
+	if '_Config/Integrations/' in p:
+		return True
+	if p.endswith('.Enabled'):
+		# oos-log: Out Of Service only through shared.OutOfService (required memo, Out Of Service log, audit);
+		# a session may not flip <device>.Enabled directly (the old confirmApplyWrite path). Gateway scripts pass.
+		if shared.Security._currentSession() is not None:
+			system.util.getLogger('shared.Audit').info('Refused direct %s write - use shared.OutOfService' % p)
+			return False
+		return True
+	# device-perms: Faceplates/Operate AND the device-type row (Pump/Command, Evaporator/Setpoint, ...)
+	return shared.Security.requireWrite(p)
+
+
+def _plcWriteBlocked(tagPath):
+	"""plc-write-lock: True when shared.PlcWriteLock refuses the write (an error blocks only paths naming RCP1)."""
+	try:
+		return not shared.PlcWriteLock.writeAllowed(tagPath)
+	except Exception as e:
+		system.util.getLogger('shared.Audit').warn('PlcWriteLock check failed for %s: %s' % (tagPath, e))
+		p = str(tagPath or '')
+		return '_RCP1_' in p or '[RCP1]' in p
 
 
 def writeTag(tagPath, value, label=None, viewName=None):
@@ -95,6 +133,14 @@ def writeTag(tagPath, value, label=None, viewName=None):
 	tagPath = str(tagPath or "").strip()
 	if not tagPath:
 		raise ValueError("tagPath is required")
+	if not _sessionMayWrite(tagPath):
+		return {"ok": False, "skipped": True, "denied": True, "oldValue": None, "newValue": value,
+			"quality": None, "statusCode": 0}
+	# plc-write-lock (.cursor/tasks/plc-write-lock): no HMI write reaches the RCP1 controller (an [RCP1] OPC item,
+	# through references too) while PLC writes are locked, or outside the one unlocked scope
+	if _plcWriteBlocked(tagPath):
+		return {"ok": False, "skipped": True, "denied": True, "plcLocked": True, "oldValue": None,
+			"newValue": value, "quality": None, "statusCode": 0}
 
 	# Prefer OPC/Memory source when Digitals leaf is a reference.
 	# Do not follow references for UDT params (Instance.almPriority) or alarm props.
@@ -108,11 +154,6 @@ def writeTag(tagPath, value, label=None, viewName=None):
 				writePath = str(src)
 		except Exception:
 			pass
-
-	try:
-		shared.Rcp1Simulate.ensureApplied()
-	except Exception:
-		pass
 
 	old_qv = system.tag.readBlocking([writePath])[0]
 	old_value = old_qv.value
@@ -161,7 +202,8 @@ def writeTag(tagPath, value, label=None, viewName=None):
 	status = _status_code(quality) if quality is not None else 0
 	leaf = tagPath.split("/")[-1]
 	target = _target_from_tag_path(tagPath) or (label if label not in (None, "") else tagPath)
-	action_value = "%s -> %s" % (old_value, after_value)
+	# enum-backed members log words: 'Time Of Day (0) -> Runtime (2)' (shared.Enums); others / any error: raw values
+	action_value = "%s -> %s" % (_describe(tagPath, old_value), _describe(tagPath, after_value))
 
 	origin = ["tagPath", tagPath, "tagName", leaf]
 	if viewName:
@@ -181,6 +223,14 @@ def writeTag(tagPath, value, label=None, viewName=None):
 		system.util.getLogger("shared.Audit").warn(
 			"OpsAudit write failed for %s: %s" % (tagPath, ex)
 		)
+
+	# Out Of Service / Return To Service flips a device instance's Enabled: rebuild the Overview tables (and the
+	# auto-built nav) right away so the device drops out / comes back without Designer (user 2026-10-01)
+	if tagPath.endswith(".Enabled"):
+		try:
+			system.tag.writeBlocking([REBUILD_TAG], [True])
+		except Exception as ex:
+			system.util.getLogger("shared.Audit").warn("Rebuild trigger failed after %s: %s" % (tagPath, ex))
 
 	return {
 		"ok": ok,

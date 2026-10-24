@@ -1,5 +1,10 @@
 {
-  "custom": {},
+  "custom": {
+    "pax": "",
+    "permDevice": "",
+    "roCommand": true,
+    "tipCommand": ""
+  },
   "params": {
     "tagPath": ""
   },
@@ -7,6 +12,40 @@
     "params.tagPath": {
       "paramDirection": "input",
       "persistent": true
+    },
+    "custom.pax": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', '', case(toStr(coalesce(try(tag({view.params.tagPath} + '.TypeId'), ''), '')), 'Devices/Pump', 'Motor', 'Devices/Valve', 'Valve', 'Devices/Tank', 'Tank', 'Devices/Compressor', 'Comp', 'Devices/Evaporator', 'CG', 'Devices/ExhaustFan', 'EF', 'Devices/LTU', 'LTU', 'Devices/SafetyRelay', 'Relay', 'Devices/SuctionSequence', 'Seq', 'Devices/DischargeSequence', 'Dsq', 'Devices/Sensor', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn.Enabled')), false), false), 'AIn', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AInRef.Enabled')), false), false), 'AInRef', '')), 'Devices/DiscreteInput', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/DIn.Enabled')), false), false), 'DIn', ''), ''))"
+        }
+      }
+    },
+    "custom.permDevice": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', '', coalesce(try(lookup(tag('[default]_Config/Security/DeviceTypes'), toStr(coalesce(try(tag({view.params.tagPath} + '.TypeId'), ''), '')), null, 'TypeId', 'Device'), null), try(lookup(tag('[default]_Config/Security/DeviceTypes'), toStr(coalesce(try(tag(left({view.params.tagPath}, lastIndexOf({view.params.tagPath}, '/')) + '.TypeId'), ''), '')), null, 'TypeId', 'Device'), null), try(lookup(tag('[default]_Config/Security/DeviceTypes'), toStr(coalesce(try(tag(left(left({view.params.tagPath}, lastIndexOf({view.params.tagPath}, '/')), lastIndexOf(left({view.params.tagPath}, lastIndexOf({view.params.tagPath}, '/')), '/')) + '.TypeId'), ''), '')), null, 'TypeId', 'Device'), null), ''))"
+        }
+      },
+      "access": "PROTECTED"
+    },
+    "custom.roCommand": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({session.custom.ReadOnly}, true) || !coalesce(try({session.custom.Permissions}[{view.custom.permDevice}]['Command'], null), true)"
+        }
+      },
+      "access": "PROTECTED"
+    },
+    "custom.tipCommand": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(!coalesce({session.custom.ReadOnly}, true) && coalesce({view.custom.roCommand}, false), 'Not Permitted: ' + {view.custom.permDevice} + ' / ' + 'Command' + ' (Roles & Permissions)', '')"
+        }
+      }
     }
   },
   "props": {
@@ -32,7 +71,7 @@
           },
           "transforms": [
             {
-              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = self.view.params.tagPath\n\texcept:\n\t\tpass\n\tif tagPath is None or str(tagPath).strip() == '':\n\t\ttagPath = 'No TagPath: ' + self.view.id.split('@')[0].split('/')[-1]\n\titems = [\n\t\t{\n\t\t\t\"text\": \"Ticket Logger\",\n\t\t\t\"icon\": {\n\t\t\t\t\"path\": \"material/info\",\n\t\t\t\t\"color\": \"--neutral-80\",\n\t\t\t\t\"style\": {}\n\t\t\t},\n\t\t\t\"style\": {\n\t\t\t\t\"classes\": \"bg-component font-value\",\n\t\t\t\t\"height\": 24,\n\t\t\t\t\"width\": 120\n\t\t\t},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\n\t\t\t\t\"type\": \"ticketLog\",\n\t\t\t\t\"payload\": {\n\t\t\t\t\t\"tagPath\": tagPath,\n\t\t\t\t\t\"viewName\": self.view.id.split('@')[0]\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t]\n\treturn items",
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = self.view.params.tagPath\n\texcept:\n\t\tpass\n\tif tagPath is None or str(tagPath).strip() == '':\n\t\ttagPath = 'No TagPath: ' + self.view.id.split('@')[0].split('/')[-1]\n\titems = [\n\t\t{\n\t\t\t\"text\": \"Ticket Logger\",\n\t\t\t\"icon\": {\n\t\t\t\t\"path\": \"material/info\",\n\t\t\t\t\"color\": \"--neutral-80\",\n\t\t\t\t\"style\": {}\n\t\t\t},\n\t\t\t\"style\": {\n\t\t\t\t\"classes\": \"bg-component Fonts/Value\",\n\t\t\t\t\"height\": 24,\n\t\t\t\t\"width\": 120\n\t\t\t},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\n\t\t\t\t\"type\": \"ticketLog\",\n\t\t\t\t\"payload\": {\n\t\t\t\t\t\"tagPath\": tagPath,\n\t\t\t\t\t\"viewName\": self.view.id.split('@')[0], 'sender': self.view.id\n\t\t\t\t},\n\t\t\t\t\"scope\": \"page\"\n\t\t\t}\n\t\t}\n\t]\n\treturn items",
               "type": "script"
             }
           ],
@@ -73,7 +112,7 @@
         {
           "messageType": "ticketLog",
           "pageScope": true,
-          "script": "\t# Ticket Logger context-menu opener\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
           "sessionScope": false,
           "viewScope": false
         }
@@ -114,7 +153,7 @@
             "props": {
               "text": "CMD",
               "style": {
-                "classes": "faceplate-fault-code font-label"
+                "classes": "faceplate-fault-code Fonts/Label"
               }
             }
           },
@@ -127,7 +166,7 @@
               "props.text": {
                 "binding": {
                   "config": {
-                    "expression": "if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Cmd/Value')), null, tag({view.params.tagPath} + '/Cmd/Value')), null),\n\t\ttry(if(isBadOrError(tag({view.params.tagPath} + '/Cmd_Open/Value')), null, tag({view.params.tagPath} + '/Cmd_Open/Value')), null), false),\n\t\t'ON', 'OFF'))"
+                    "expression": "if({view.params.tagPath} = '', '—',\n\tif(coalesce(try(if(!isGood(tag({view.params.tagPath} + '/Valve/Out')), null, tag({view.params.tagPath} + '/Valve/Out')), null),\n\t\ttry(if(!isGood(tag({view.params.tagPath} + '/Valve/OCmd_Open')), null, tag({view.params.tagPath} + '/Valve/OCmd_Open')), null), false),\n\t\t'ON', 'OFF'))"
                   },
                   "type": "expr",
                   "overlays": {
@@ -137,13 +176,14 @@
                     "stale": false,
                     "unknown": false,
                     "disabled": false
-                  }
+                  },
+                  "overlayOptOut": true
                 }
               },
               "props.style.classes": {
                 "binding": {
                   "config": {
-                    "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Cmd/Value')), null, tag({view.params.tagPath} + '/Cmd/Value')), null),\n\t\ttry(if(isBadOrError(tag({view.params.tagPath} + '/Cmd_Open/Value')), null, tag({view.params.tagPath} + '/Cmd_Open/Value')), null), false),\n\t\t'faceplate-fault-state faceplate-ls-on',\n\t\t'faceplate-fault-state faceplate-ls-off'))"
+                    "expression": "if({view.params.tagPath} = '', 'faceplate-fault-state',\n\tif(coalesce(try(if(!isGood(tag({view.params.tagPath} + '/Valve/Out')), null, tag({view.params.tagPath} + '/Valve/Out')), null),\n\t\ttry(if(!isGood(tag({view.params.tagPath} + '/Valve/OCmd_Open')), null, tag({view.params.tagPath} + '/Valve/OCmd_Open')), null), false),\n\t\t'faceplate-fault-state faceplate-ls-on',\n\t\t'faceplate-fault-state faceplate-ls-off'))"
                   },
                   "type": "expr",
                   "overlays": {
@@ -153,7 +193,8 @@
                     "stale": false,
                     "unknown": false,
                     "disabled": false
-                  }
+                  },
+                  "overlayOptOut": true
                 }
               }
             },
@@ -179,7 +220,7 @@
           "component": {
             "onActionPerformed": {
               "config": {
-                "script": "\tif self.session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tshared.ValveCommands.openValve(base, 'SO')\n"
+                "script": "\tif self.view.custom.pax:\n\t\treturn  # pax-bindings: live PLC object, read only\n\tif self.view.custom.roCommand:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tshared.ValveCommands.openValve(base, 'SO')\n"
               },
               "scope": "G",
               "type": "script"
@@ -190,7 +231,7 @@
           "props.enabled": {
             "binding": {
               "config": {
-                "expression": "!{session.custom.ReadOnly} &&\n({view.params.tagPath} = '' ||\n try(isBadOrError(tag({view.params.tagPath} + '/Rdy_Open/Value')), true) ||\n coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Rdy_Open/Value')), null, tag({view.params.tagPath} + '/Rdy_Open/Value')), null), true))"
+                "expression": "(!{view.custom.roCommand} &&\n({view.params.tagPath} = '' ||\n try(!isGood(tag({view.params.tagPath} + '/Valve/Rdy_Open')), true) ||\n coalesce(try(if(!isGood(tag({view.params.tagPath} + '/Valve/Rdy_Open')), null, tag({view.params.tagPath} + '/Valve/Rdy_Open')), null), true))) && coalesce({view.custom.pax}, '') = ''"
               },
               "type": "expr",
               "overlays": {
@@ -200,13 +241,14 @@
                 "stale": false,
                 "unknown": false,
                 "disabled": false
-              }
+              },
+              "overlayOptOut": true
             }
           },
           "props.style.classes": {
             "binding": {
               "config": {
-                "expression": "if({view.params.tagPath} = '', 'faceplate-cmd-btn font-label',\n\tif(if(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Cfg_HasOpenLS/Value')), null, tag({view.params.tagPath} + '/Cfg_HasOpenLS/Value')), null), false),\n\t\tcoalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/OpenLS/Value')), null, tag({view.params.tagPath} + '/OpenLS/Value')), null), false),\n\t\tcoalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Cmd/Value')), null, tag({view.params.tagPath} + '/Cmd/Value')), null),\n\t\t\ttry(if(isBadOrError(tag({view.params.tagPath} + '/Cmd_Open/Value')), null, tag({view.params.tagPath} + '/Cmd_Open/Value')), null), false)),\n\t\t'faceplate-cmd-btn faceplate-cmd-btn-active font-label',\n\t\t'faceplate-cmd-btn font-label'))"
+                "expression": "if({view.params.tagPath} = '', 'faceplate-cmd-btn Fonts/Label',\n\tif(if(coalesce(try(if(!isGood(tag({view.params.tagPath} + '/Valve/Cfg_HasOpenLS')), null, tag({view.params.tagPath} + '/Valve/Cfg_HasOpenLS')), null), false),\n\t\tcoalesce(try(if(!isGood(tag({view.params.tagPath} + '/Valve/Inp_OpenLS')), null, tag({view.params.tagPath} + '/Valve/Inp_OpenLS')), null), false),\n\t\tcoalesce(try(if(!isGood(tag({view.params.tagPath} + '/Valve/Out')), null, tag({view.params.tagPath} + '/Valve/Out')), null),\n\t\t\ttry(if(!isGood(tag({view.params.tagPath} + '/Valve/OCmd_Open')), null, tag({view.params.tagPath} + '/Valve/OCmd_Open')), null), false)),\n\t\t'faceplate-cmd-btn faceplate-cmd-btn-active Fonts/Label',\n\t\t'faceplate-cmd-btn Fonts/Label'))"
               },
               "type": "expr",
               "overlays": {
@@ -216,6 +258,23 @@
                 "stale": false,
                 "unknown": false,
                 "disabled": false
+              },
+              "overlayOptOut": true
+            }
+          },
+          "meta.tooltip.enabled": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "{view.custom.tipCommand} != ''"
+              }
+            }
+          },
+          "meta.tooltip.text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "{view.custom.tipCommand}"
               }
             }
           }
@@ -223,7 +282,7 @@
         "props": {
           "text": "Open",
           "style": {
-            "classes": "faceplate-cmd-btn font-label"
+            "classes": "faceplate-cmd-btn Fonts/Label"
           },
           "primary": false
         }
@@ -241,7 +300,7 @@
           "component": {
             "onActionPerformed": {
               "config": {
-                "script": "\tif self.session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tshared.ValveCommands.closeValve(base, 'SO')\n"
+                "script": "\tif self.view.custom.pax:\n\t\treturn  # pax-bindings: live PLC object, read only\n\tif self.view.custom.roCommand:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tshared.ValveCommands.closeValve(base, 'SO')\n"
               },
               "scope": "G",
               "type": "script"
@@ -252,7 +311,7 @@
           "props.enabled": {
             "binding": {
               "config": {
-                "expression": "!{session.custom.ReadOnly} &&\n({view.params.tagPath} = '' ||\n try(isBadOrError(tag({view.params.tagPath} + '/Rdy_Close/Value')), true) ||\n coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Rdy_Close/Value')), null, tag({view.params.tagPath} + '/Rdy_Close/Value')), null), true))"
+                "expression": "(!{view.custom.roCommand} &&\n({view.params.tagPath} = '' ||\n try(!isGood(tag({view.params.tagPath} + '/Valve/Rdy_Close')), true) ||\n coalesce(try(if(!isGood(tag({view.params.tagPath} + '/Valve/Rdy_Close')), null, tag({view.params.tagPath} + '/Valve/Rdy_Close')), null), true))) && coalesce({view.custom.pax}, '') = ''"
               },
               "type": "expr",
               "overlays": {
@@ -262,13 +321,14 @@
                 "stale": false,
                 "unknown": false,
                 "disabled": false
-              }
+              },
+              "overlayOptOut": true
             }
           },
           "props.style.classes": {
             "binding": {
               "config": {
-                "expression": "if({view.params.tagPath} = '', 'faceplate-cmd-btn font-label',\n\tif(if(coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Cfg_HasClosedLS/Value')), null, tag({view.params.tagPath} + '/Cfg_HasClosedLS/Value')), null), false),\n\t\tcoalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/ClosedLS/Value')), null, tag({view.params.tagPath} + '/ClosedLS/Value')), null), false),\n\t\t!coalesce(try(if(isBadOrError(tag({view.params.tagPath} + '/Cmd/Value')), null, tag({view.params.tagPath} + '/Cmd/Value')), null),\n\t\t\ttry(if(isBadOrError(tag({view.params.tagPath} + '/Cmd_Open/Value')), null, tag({view.params.tagPath} + '/Cmd_Open/Value')), null), false)),\n\t\t'faceplate-cmd-btn faceplate-cmd-btn-active font-label',\n\t\t'faceplate-cmd-btn font-label'))"
+                "expression": "if({view.params.tagPath} = '', 'faceplate-cmd-btn Fonts/Label',\n\tif(if(coalesce(try(if(!isGood(tag({view.params.tagPath} + '/Valve/Cfg_HasClosedLS')), null, tag({view.params.tagPath} + '/Valve/Cfg_HasClosedLS')), null), false),\n\t\tcoalesce(try(if(!isGood(tag({view.params.tagPath} + '/Valve/Inp_ClosedLS')), null, tag({view.params.tagPath} + '/Valve/Inp_ClosedLS')), null), false),\n\t\t!coalesce(try(if(!isGood(tag({view.params.tagPath} + '/Valve/Out')), null, tag({view.params.tagPath} + '/Valve/Out')), null),\n\t\t\ttry(if(!isGood(tag({view.params.tagPath} + '/Valve/OCmd_Open')), null, tag({view.params.tagPath} + '/Valve/OCmd_Open')), null), false)),\n\t\t'faceplate-cmd-btn faceplate-cmd-btn-active Fonts/Label',\n\t\t'faceplate-cmd-btn Fonts/Label'))"
               },
               "type": "expr",
               "overlays": {
@@ -278,6 +338,23 @@
                 "stale": false,
                 "unknown": false,
                 "disabled": false
+              },
+              "overlayOptOut": true
+            }
+          },
+          "meta.tooltip.enabled": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "{view.custom.tipCommand} != ''"
+              }
+            }
+          },
+          "meta.tooltip.text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "{view.custom.tipCommand}"
               }
             }
           }
@@ -285,7 +362,7 @@
         "props": {
           "text": "Close",
           "style": {
-            "classes": "faceplate-cmd-btn font-label"
+            "classes": "faceplate-cmd-btn Fonts/Label"
           },
           "primary": false
         }
@@ -303,7 +380,7 @@
           "component": {
             "onActionPerformed": {
               "config": {
-                "script": "\tif self.session.custom.ReadOnly:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tshared.ValveCommands.resetValve(base)\n"
+                "script": "\tif self.view.custom.pax:\n\t\treturn  # pax-bindings: live PLC object, read only\n\tif self.view.custom.roCommand:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tshared.ValveCommands.resetValve(base)\n"
               },
               "scope": "G",
               "type": "script"
@@ -314,16 +391,32 @@
           "props.enabled": {
             "binding": {
               "config": {
-                "expression": "!{session.custom.ReadOnly}"
+                "expression": "(!{view.custom.roCommand}) && coalesce({view.custom.pax}, '') = ''"
               },
               "type": "expr"
+            }
+          },
+          "meta.tooltip.enabled": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "{view.custom.tipCommand} != ''"
+              }
+            }
+          },
+          "meta.tooltip.text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "{view.custom.tipCommand}"
+              }
             }
           }
         },
         "props": {
           "text": "Reset",
           "style": {
-            "classes": "faceplate-cmd-btn font-label"
+            "classes": "faceplate-cmd-btn Fonts/Label"
           },
           "primary": false
         }

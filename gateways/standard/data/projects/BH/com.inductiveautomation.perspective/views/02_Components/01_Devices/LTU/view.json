@@ -1,0 +1,483 @@
+{
+  "custom": {
+    "oos": false,
+    "pax": "",
+    "permDevice": "",
+    "roCommand": true,
+    "tipCommand": ""
+  },
+  "params": {
+    "tagPath": ""
+  },
+  "propConfig": {
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.oos": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', false, !coalesce(try(toBoolean(tag({view.params.tagPath} + '.Enabled')), true), true))"
+        }
+      },
+      "persistent": true
+    },
+    "custom.pax": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', '', case(toStr(coalesce(try(tag({view.params.tagPath} + '.TypeId'), ''), '')), 'Devices/Pump', 'Motor', 'Devices/Valve', 'Valve', 'Devices/Tank', 'Tank', 'Devices/Compressor', 'Comp', 'Devices/Evaporator', 'CG', 'Devices/ExhaustFan', 'EF', 'Devices/LTU', 'LTU', 'Devices/SafetyRelay', 'Relay', 'Devices/SuctionSequence', 'Seq', 'Devices/DischargeSequence', 'Dsq', 'Devices/Sensor', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn.Enabled')), false), false), 'AIn', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AInRef.Enabled')), false), false), 'AInRef', '')), 'Devices/DiscreteInput', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/DIn.Enabled')), false), false), 'DIn', ''), ''))"
+        }
+      }
+    },
+    "custom.permDevice": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', '', coalesce(try(lookup(tag('[default]_Config/Security/DeviceTypes'), toStr(coalesce(try(tag({view.params.tagPath} + '.TypeId'), ''), '')), null, 'TypeId', 'Device'), null), try(lookup(tag('[default]_Config/Security/DeviceTypes'), toStr(coalesce(try(tag(left({view.params.tagPath}, lastIndexOf({view.params.tagPath}, '/')) + '.TypeId'), ''), '')), null, 'TypeId', 'Device'), null), try(lookup(tag('[default]_Config/Security/DeviceTypes'), toStr(coalesce(try(tag(left(left({view.params.tagPath}, lastIndexOf({view.params.tagPath}, '/')), lastIndexOf(left({view.params.tagPath}, lastIndexOf({view.params.tagPath}, '/')), '/')) + '.TypeId'), ''), '')), null, 'TypeId', 'Device'), null), ''))"
+        }
+      },
+      "access": "PROTECTED"
+    },
+    "custom.roCommand": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({session.custom.ReadOnly}, true) || !coalesce(try({session.custom.Permissions}[{view.custom.permDevice}]['Command'], null), true)"
+        }
+      },
+      "access": "PROTECTED"
+    },
+    "custom.tipCommand": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(!coalesce({session.custom.ReadOnly}, true) && coalesce({view.custom.roCommand}, false), 'Not Permitted: ' + {view.custom.permDevice} + ' / ' + 'Command' + ' (Roles & Permissions)', '')"
+        }
+      }
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 126,
+      "width": 227
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "safetys-widget",
+        "gap": "8px",
+        "height": "100%",
+        "width": "100%",
+        "padding": "8px 10px",
+        "justifyContent": "center",
+        "boxSizing": "border-box",
+        "overflow": "hidden"
+      }
+    },
+    "propConfig": {
+      "props.style.classes": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "(if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/_Alarms/_Active')), false), false), 'safetys-widget alarm-border alarm-priority-' + case(coalesce(try(toInt(tag({view.params.tagPath} + '/_Alarms/_ActiveHighPriority')), 0), 0), 4, 'critical', 3, 'high', 2, 'medium', 1, 'low', 'low'), 'safetys-widget')) + if(coalesce({view.custom.oos}, false), ' device-oos', '')"
+          }
+        }
+      },
+      "meta.contextMenu.items": {
+        "binding": {
+          "type": "expr-struct",
+          "config": {
+            "struct": {
+              "ticket": "coalesce({session.custom.TicketLogAccess}, false)",
+              "admin": "coalesce({session.custom.Permissions.OutOfService.Set}, false)",
+              "history": "coalesce({session.custom.Permissions.OutOfService.View}, false)",
+              "oos": "coalesce({view.custom.oos}, false)"
+            },
+            "waitOnAll": false
+          },
+          "transforms": [
+            {
+              "type": "script",
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = str(self.view.params.tagPath or '')\n\texcept:\n\t\tpass\n\tview_name = self.view.id.split('@')[0]\n\tdef item(text, icon, msg_type, payload, scope):\n\t\treturn {\n\t\t\t\"text\": text,\n\t\t\t\"icon\": {\"path\": icon, \"color\": \"--neutral-80\", \"style\": {}},\n\t\t\t\"style\": {\"classes\": \"bg-component Fonts/Value\", \"height\": 24, \"width\": 170},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\"type\": msg_type, \"payload\": payload, \"scope\": scope}\n\t\t}\n\titems = []\n\tif value['ticket']:\n\t\tlogged = tagPath if tagPath.strip() else 'No TagPath: ' + view_name.split('/')[-1]\n\t\titems.append(item('Ticket Logger', 'material/info', 'ticketLog',\n\t\t\t{'tagPath': logged, 'viewName': view_name, 'sender': self.view.id}, 'page'))\n\tif value['admin'] and tagPath.strip():\n\t\tif value['oos']:\n\t\t\titems.append(item('Return To Service', 'material/info', 'oosToggle', {'tagPath': tagPath, 'sender': self.view.id}, 'page'))\n\t\telse:\n\t\t\titems.append(item('Take Out Of Service', 'material/info', 'oosToggle',\n\t\t\t\t{'tagPath': tagPath, 'sender': self.view.id}, 'page'))\n\tif value['history'] and tagPath.strip():\n\t\titems.append(item('Out Of Service History', 'material/info', 'oosHistory',\n\t\t\t{'tagPath': tagPath, 'sender': self.view.id}, 'page'))\n\treturn items"
+            }
+          ]
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "len({this.meta.contextMenu.items}) > 0"
+          }
+        }
+      }
+    },
+    "children": [
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Header"
+        },
+        "position": {
+          "basis": "24px",
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "alignItems": "center",
+          "justify": "flex-start",
+          "style": {
+            "gap": "6px",
+            "overflow": "visible",
+            "position": "relative"
+          }
+        },
+        "children": [
+          {
+            "meta": {
+              "name": "Title"
+            },
+            "position": {
+              "grow": 1,
+              "shrink": 0
+            },
+            "props": {
+              "align": "center",
+              "style": {
+                "classes": "Fonts/Value safetys-title fs-15 fw-700",
+                "height": "24px",
+                "letterSpacing": "0.04em",
+                "textAlign": "center",
+                "textDecoration": "underline",
+                "width": "auto",
+                "alignSelf": "flex-start"
+              },
+              "text": "LTU"
+            },
+            "type": "ia.display.label"
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "CountRow"
+        },
+        "position": {
+          "basis": "34px",
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "alignItems": "center",
+          "justify": "flex-start",
+          "style": {
+            "gap": "6px",
+            "overflow": "visible"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "CountLabel"
+            },
+            "position": {
+              "basis": "auto",
+              "grow": 1,
+              "shrink": 0
+            },
+            "props": {
+              "text": "Transfer Counts",
+              "style": {
+                "classes": "Fonts/Label fs-13 fw-600",
+                "whiteSpace": "nowrap"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "CountSlot"
+            },
+            "position": {
+              "basis": "148px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "alignItems": "center",
+              "justify": "flex-start",
+              "style": {
+                "overflow": "visible"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Count"
+                },
+                "position": {
+                  "basis": "64px",
+                  "grow": 0,
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "0",
+                  "style": {
+                    "classes": "Fonts/Value fs-16 fw-700",
+                    "whiteSpace": "nowrap",
+                    "textAlign": "right"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/PlcCount')), true), true), '—', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/PlcCount')), true), true), '—', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/PlcCount')), true), true), '—', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/PlcCount')), true), true), '—', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/PlcCount')), true), true), '—', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/PlcCount')), true), true), '—', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/PlcCount')), true), true), '—', numberFormat(coalesce(try(toFloat(tag({view.params.tagPath} + '/PlcCount')), 0), 0), '#,##0'))))))))"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.color": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/PlcCountAlarm')), false), false), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/PlcCountAlarm')), false), false), 'var(--status-level-critical)', 'var(--text)'), 'var(--neutral-60)')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/PlcCount')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/PlcCount')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/PlcCount')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/PlcCount')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/PlcCount')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/PlcCount')), true), true), 'Fonts/Value value-bad', if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/PlcCount')), true), true), 'Fonts/Value fs-16 fw-700 value-bad', 'Fonts/Value fs-16 fw-700')))))))"
+                      },
+                      "overlayOptOut": true
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "SetpointRow"
+        },
+        "position": {
+          "basis": "34px",
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "alignItems": "center",
+          "justify": "flex-start",
+          "style": {
+            "gap": "6px",
+            "overflow": "visible"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "SPLabel"
+            },
+            "position": {
+              "basis": "auto",
+              "grow": 1,
+              "shrink": 0
+            },
+            "props": {
+              "text": "Alarm Setpoint",
+              "style": {
+                "classes": "Fonts/Label fs-13 fw-600",
+                "whiteSpace": "nowrap"
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "AlarmSP"
+            },
+            "position": {
+              "basis": "148px",
+              "shrink": 0
+            },
+            "props": {
+              "path": "03_Elements/00_Control/AnalogInput",
+              "useDefaultViewWidth": false,
+              "useDefaultViewHeight": false,
+              "params": {
+                "label": "Null",
+                "permission": true,
+                "tagPath": "",
+                "Basis": {
+                  "eu": "none",
+                  "input": "",
+                  "label": ""
+                }
+              },
+              "style": {
+                "classes": "ltu-sp",
+                "minHeight": "30px",
+                "overflow": "visible"
+              }
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.params.tagPath} = '', '', {view.params.tagPath} + '/PlcCountAlarmSP')"
+                  }
+                }
+              },
+              "props.params.permission": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "(!coalesce({view.custom.roCommand}, false)) && coalesce({view.custom.pax}, '') = ''"
+                  }
+                }
+              },
+              "meta.tooltip.enabled": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "{view.custom.tipCommand} != ''"
+                  }
+                }
+              },
+              "meta.tooltip.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "{view.custom.tipCommand}"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "ResetRow"
+        },
+        "position": {
+          "basis": "30px",
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "alignItems": "center",
+          "justify": "center",
+          "style": {
+            "overflow": "visible"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.input.button",
+            "meta": {
+              "name": "ResetCount",
+              "tooltip": {
+                "enabled": false
+              }
+            },
+            "position": {
+              "basis": "150px",
+              "shrink": 0
+            },
+            "props": {
+              "text": "Reset Count",
+              "tooltip": {
+                "enabled": true,
+                "text": ""
+              },
+              "style": {
+                "classes": "faceplate-cmd-btn",
+                "height": "26px"
+              }
+            },
+            "propConfig": {
+              "props.enabled": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "({view.params.tagPath} != '' && !coalesce({view.custom.roCommand}, false) && coalesce(try(isGood(tag({view.params.tagPath} + '/PlcCount')) && isGood(tag({view.params.tagPath} + '/PlcResetCount')), false), false)) && coalesce({view.custom.pax}, '') = ''"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.tooltip.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.params.tagPath} = '', '', if(coalesce({view.custom.tipCommand}, '') != '', {view.custom.tipCommand}, if(coalesce({view.custom.roCommand}, false), 'Your Role Cannot Operate Equipment', if(!coalesce(try(isGood(tag({view.params.tagPath} + '/PlcCount')) && isGood(tag({view.params.tagPath} + '/PlcResetCount')), false), false), 'PLC Link Lost - Reset Unavailable', 'Reset The NH3 LTU Transfer Count'))))"
+                  },
+                  "overlayOptOut": true
+                }
+              }
+            },
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\tif self.view.custom.pax:\n\t\treturn  # pax-bindings: live PLC object, read only\n\ttp = str(self.view.params.tagPath or '')\n\tif not tp or self.view.custom.roCommand:\n\t\treturn\n\tpath = tp + '/PlcResetCount'\n\t# FT setToOne: one click, no confirm. Guards in order: PLC write lock, then permissions (Faceplates/Operate +\n\t# LTU/Command, 'Not Permitted' dialog); shared.Audit.writeTag re-checks both and logs to OpsAudit.\n\tif not shared.PlcWriteLock.writeAllowed(path):\n\t\tshared.Alerts.showAlert(state='warning', title='PLC Writes Locked',\n\t\t\tmessage='This value is in the RCP1 controller (production PLC) and PLC writes are locked.',\n\t\t\tshowCloseBtn=True, overlayDismiss=True)\n\t\treturn\n\tif not shared.Security.requireWrite(path, 'LTU Transfer Count Reset'):\n\t\treturn\n\tshared.Audit.writeTag(path, True, label='LTU Transfer Count Reset', viewName=self.view.id.split('@')[0])\n"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        },
+        {
+          "messageType": "oosToggle",
+          "pageScope": true,
+          "script": "\t# HMI Out Of Service (OutOfService/Set permission) - memo dialog; shared.OutOfService logs + audits the change\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tif not shared.Security.allowed(self.session, 'OutOfService', 'Set'):\n\t\treturn\n\ttp = str(self.view.params.tagPath or '')\n\t# page-scoped: every component on the page hears it - only the one that was right-clicked acts\n\tif not tp or str(payload.get('tagPath') or '') != tp:\n\t\treturn\n\t# required memo (+ reason when taking it out): the dialog's Confirm calls shared.OutOfService.setOutOfService\n\tshared.OutOfService.openDialog(tp, self.view.id.split('@')[0])",
+          "sessionScope": false,
+          "viewScope": false
+        },
+        {
+          "messageType": "oosHistory",
+          "pageScope": true,
+          "script": "\t# Out Of Service History (OutOfService/View permission) - OOS log page filtered to this device\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tif not shared.Security.allowed(self.session, 'OutOfService', 'View'):\n\t\treturn\n\ttp = str(self.view.params.tagPath or '')\n\tif not tp or str(payload.get('tagPath') or '') != tp:\n\t\treturn\n\tshared.OutOfService.openHistory(tp)",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    }
+  }
+}

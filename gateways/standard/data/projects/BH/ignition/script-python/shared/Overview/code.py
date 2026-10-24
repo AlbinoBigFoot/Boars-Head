@@ -299,10 +299,17 @@ def _columnKind(fieldName, valueTagPath):
 def discoverPointFields(templatePath):
 	"""Return ordered list of (fieldName, kind) from a device UDT template."""
 	fields = []
+	# PLC device (flat-member cleanup 2026-10-23): its columns are the device fields mapped to PLC members
+	# (shared.Pax.FIELDS; fields without a PLC object are left out) plus the HMI-owned members browsed below
+	key = shared.Pax.part(templatePath)
+	for name, rel in sorted((shared.Pax.FIELDS.get(key) or {}).items()):
+		if "/" in name or rel.startswith("_NoPlc/") or not _includeChild(name):
+			continue
+		fields.append((name, _columnKind(name, templatePath + "/" + rel)))
 	results = system.tag.browse(templatePath, {"recursive": False}).getResults()
 	for br in results:
 		name = _browseName(br)
-		if not _includeChild(name):
+		if not _includeChild(name) or name in [f[0] for f in fields]:
 			continue
 		childPath = templatePath + "/" + name
 		valuePath = childPath + "/Value"
@@ -331,12 +338,14 @@ def _isEquipmentDeviceType(typeId):
 	return True
 
 
-def findDevices(folderPath, typeIdFilter=None):
+def findDevices(folderPath, typeIdFilter=None, _nested=False):
 	"""
 	Enabled device UDT instances that are direct children of the equipment folder.
 	Requires typeId under Devices/* (excludes Overview, nested Fans/VFDs, point UDTs).
 
 	typeIdFilter: optional exact typeId (e.g. 'Devices/Tank') or suffix ('Tank').
+	With a typeIdFilter and no direct match, devices one sub-folder down are used instead, named '<folder>/<device>'
+	(Condensers/Condensers/EC-1A/Fan 1: condenser fans grouped per condenser, 2026-10-01).
 	"""
 	devices = []
 	folderNorm = str(folderPath).rstrip("/")
@@ -350,7 +359,8 @@ def findDevices(folderPath, typeIdFilter=None):
 		path = _browseFullPath(br)
 		if not name or not path:
 			continue
-		if not _includeChild(name):
+		# 'Fan*' children are evaporator sub-fans; under a sub-folder (condenser fans) they are the devices
+		if not _includeChild(name) and not (_nested and name not in EXCLUDE_NAMES):
 			continue
 		# Direct children only (belt-and-suspenders if browse ignores recursive:False)
 		if not _pathsEqual(_parentPath(path), folderNorm):
@@ -365,6 +375,18 @@ def findDevices(folderPath, typeIdFilter=None):
 		if not _isEnabled(path):
 			continue
 		devices.append((name, path))
+	if not devices and filterNorm and not _nested:
+		try:
+			folders = system.tag.browse(folderPath).getResults()   # a tagType filter can come back empty
+		except:
+			folders = []
+		for br in folders:
+			fname = _browseName(br)
+			fpath = _browseFullPath(br)
+			if not fname or not fpath or not _includeChild(fname) or _browseTagType(br) != "Folder":
+				continue
+			for name, path in findDevices(str(fpath), typeIdFilter, True):
+				devices.append((fname + "/" + name, path))
 	devices.sort(key=lambda t: _naturalSortKey(t[0]))
 	return devices
 
@@ -389,9 +411,14 @@ def buildInstancesPayload(folderPath, templatePath=None, typeIdFilter=None):
 	data = []
 	for name, path in devices:
 		row = {"tagPath": path}
+		pax = shared.Pax.part(path)   # mapped device: cells read the live PAX member ('pax:' path, table cell views)
 		for fieldName, kind in fields:
 			childPath = path + "/" + fieldName
-			if system.tag.exists(childPath) and _isEnabled(childPath):
+			paxPath = shared.Pax.member(path, fieldName, pax) if pax else None
+			if paxPath:
+				# a part without a PLC object on this instance (HPR has no pressure transmitter): empty, hidden cell
+				row[fieldName] = ("pax:" + paxPath) if shared.Pax.configured(path, paxPath[len(path) + 1:]) else ""
+			elif system.tag.exists(childPath) and _isEnabled(childPath):
 				row[fieldName] = childPath
 		data.append(row)
 

@@ -13,7 +13,8 @@
   "root": {
     "type": "ia.container.flex",
     "meta": {
-      "name": "root"
+      "name": "root",
+      "contextMenu": {}
     },
     "props": {
       "direction": "column",
@@ -22,8 +23,7 @@
         "gap": "12px",
         "padding": "14px 18px 16px",
         "overflow": "hidden",
-        "height": "100%",
-        "minHeight": "0"
+        "height": "100%"
       }
     },
     "children": [
@@ -82,9 +82,7 @@
                     "props": {
                       "text": "Groveport \u2014 Executive utility & energy",
                       "style": {
-                        "classes": "font-heading",
-                        "fontSize": "20px",
-                        "fontWeight": "700"
+                        "classes": "Fonts/Heading fs-20 fw-700"
                       }
                     }
                   },
@@ -96,8 +94,7 @@
                     "props": {
                       "text": "Canvas-adapted SPoG \u00b7 live pens + Utility Tracker baselines \u00b7 metering roadmap",
                       "style": {
-                        "classes": "font-label",
-                        "fontSize": "12px",
+                        "classes": "Fonts/Label fs-12",
                         "opacity": "0.8"
                       }
                     }
@@ -125,8 +122,7 @@
                     "props": {
                       "text": "Horizon: 12 months",
                       "style": {
-                        "classes": "font-label",
-                        "fontSize": "12px",
+                        "classes": "Fonts/Label fs-12",
                         "opacity": "0.75",
                         "padding": "4px 8px",
                         "borderRadius": "4px",
@@ -143,8 +139,7 @@
                       "text": "Classic domain tabs",
                       "primary": false,
                       "style": {
-                        "classes": "font-label",
-                        "fontSize": "12px"
+                        "classes": "Fonts/Label fs-12"
                       }
                     },
                     "events": {
@@ -153,7 +148,7 @@
                           "type": "script",
                           "scope": "G",
                           "config": {
-                            "script": "Navigation.Nav.navigate({'action': 'page', 'page': '/plants/groveport/classic'})"
+                            "script": "\tNavigation.Nav.navigate({'action': 'page', 'page': '/plants/groveport/classic'})"
                           }
                         }
                       }
@@ -195,9 +190,7 @@
             "props": {
               "text": "Session context",
               "style": {
-                "classes": "font-label",
-                "fontSize": "12px",
-                "fontWeight": "700"
+                "classes": "Fonts/Label fs-12 fw-700"
               }
             }
           },
@@ -209,8 +202,7 @@
             "props": {
               "text": "Groveport site dashboard with enterprise matrix placeholders (Cascade / Eneroi / Innovative). Line-break restart baselines from Utility Tracker. Area metering coverage on classic EPMS tab.",
               "style": {
-                "classes": "font-label",
-                "fontSize": "12px",
+                "classes": "Fonts/Label fs-12",
                 "opacity": "0.85",
                 "whiteSpace": "normal"
               }
@@ -251,8 +243,7 @@
               "style": {
                 "classes": "container-card container-card-border kpi-exec-stat",
                 "gap": "4px",
-                "padding": "12px 14px",
-                "minWidth": "140px"
+                "padding": "12px 14px"
               }
             },
             "children": [
@@ -264,8 +255,7 @@
                 "props": {
                   "text": "Period consumption",
                   "style": {
-                    "classes": "font-label",
-                    "fontSize": "12px",
+                    "classes": "Fonts/Label fs-12",
                     "opacity": "0.75"
                   }
                 }
@@ -291,9 +281,7 @@
                     "props": {
                       "text": "7.96",
                       "style": {
-                        "classes": "font-livedata-entry",
-                        "fontSize": "20px",
-                        "fontWeight": "700"
+                        "classes": "Fonts/LiveDataEntry fs-20 fw-700"
                       }
                     }
                   },
@@ -305,8 +293,7 @@
                     "props": {
                       "text": "GWh",
                       "style": {
-                        "classes": "font-label",
-                        "fontSize": "12px",
+                        "classes": "Fonts/Label fs-12",
                         "opacity": "0.7"
                       }
                     }
@@ -321,8 +308,7 @@
                 "props": {
                   "text": "12M aggregate (Tracker)",
                   "style": {
-                    "classes": "font-label",
-                    "fontSize": "11px",
+                    "classes": "Fonts/Label fs-11",
                     "opacity": "0.65",
                     "whiteSpace": "normal"
                   }
@@ -345,8 +331,7 @@
               "style": {
                 "classes": "container-card container-card-border kpi-exec-stat",
                 "gap": "4px",
-                "padding": "12px 14px",
-                "minWidth": "140px"
+                "padding": "12px 14px"
               }
             },
             "children": [
@@ -358,8 +343,7 @@
                 "props": {
                   "text": "Energy intensity",
                   "style": {
-                    "classes": "font-label",
-                    "fontSize": "12px",
+                    "classes": "Fonts/Label fs-12",
                     "opacity": "0.75"
                   }
                 }
@@ -385,9 +369,7 @@
                     "props": {
                       "text": "\u2014",
                       "style": {
-                        "classes": "font-livedata-entry",
-                        "fontSize": "20px",
-                        "fontWeight": "700"
+                        "classes": "Fonts/LiveDataEntry fs-20 fw-700"
                       }
                     },
                     "propConfig": {
@@ -395,7 +377,7 @@
                         "binding": {
                           "type": "expr",
                           "config": {
-                            "expression": "numberFormat(coalesce(try(if(isBadOrError(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Production/kWhPerLb')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Production/kWhPerLb')), null), 0), '0.000')"
+                            "expression": "numberFormat(coalesce(try(if(!isGood(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Production/kWhPerLb')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Production/kWhPerLb')), null), 0), '0.000')"
                           },
                           "overlays": {
                             "bad": false,
@@ -417,8 +399,7 @@
                     "props": {
                       "text": "kWh/lb",
                       "style": {
-                        "classes": "font-label",
-                        "fontSize": "12px",
+                        "classes": "Fonts/Label fs-12",
                         "opacity": "0.7"
                       }
                     }
@@ -433,8 +414,7 @@
                 "props": {
                   "text": "Live tag \u00b7 target \u2264 0.205",
                   "style": {
-                    "classes": "font-label",
-                    "fontSize": "11px",
+                    "classes": "Fonts/Label fs-11",
                     "opacity": "0.65",
                     "whiteSpace": "normal"
                   }
@@ -457,8 +437,7 @@
               "style": {
                 "classes": "container-card container-card-border kpi-exec-stat",
                 "gap": "4px",
-                "padding": "12px 14px",
-                "minWidth": "140px"
+                "padding": "12px 14px"
               }
             },
             "children": [
@@ -470,8 +449,7 @@
                 "props": {
                   "text": "Natural gas (MTD)",
                   "style": {
-                    "classes": "font-label",
-                    "fontSize": "12px",
+                    "classes": "Fonts/Label fs-12",
                     "opacity": "0.75"
                   }
                 }
@@ -497,9 +475,7 @@
                     "props": {
                       "text": "\u2014",
                       "style": {
-                        "classes": "font-livedata-entry",
-                        "fontSize": "20px",
-                        "fontWeight": "700"
+                        "classes": "Fonts/LiveDataEntry fs-20 fw-700"
                       }
                     },
                     "propConfig": {
@@ -507,7 +483,7 @@
                         "binding": {
                           "type": "expr",
                           "config": {
-                            "expression": "numberFormat(coalesce(try(if(isBadOrError(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Utility/Therm')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Utility/Therm')), null), 0), '#,##0')"
+                            "expression": "numberFormat(coalesce(try(if(!isGood(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Utility/Therm')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Utility/Therm')), null), 0), '#,##0')"
                           },
                           "overlays": {
                             "bad": false,
@@ -529,8 +505,7 @@
                     "props": {
                       "text": "therm",
                       "style": {
-                        "classes": "font-label",
-                        "fontSize": "12px",
+                        "classes": "Fonts/Label fs-12",
                         "opacity": "0.7"
                       }
                     }
@@ -545,8 +520,7 @@
                 "props": {
                   "text": "Awaiting meter feed",
                   "style": {
-                    "classes": "font-label",
-                    "fontSize": "11px",
+                    "classes": "Fonts/Label fs-11",
                     "opacity": "0.65",
                     "whiteSpace": "normal"
                   }
@@ -569,8 +543,7 @@
               "style": {
                 "classes": "container-card container-card-border kpi-exec-stat",
                 "gap": "4px",
-                "padding": "12px 14px",
-                "minWidth": "140px"
+                "padding": "12px 14px"
               }
             },
             "children": [
@@ -582,8 +555,7 @@
                 "props": {
                   "text": "Production (MTD)",
                   "style": {
-                    "classes": "font-label",
-                    "fontSize": "12px",
+                    "classes": "Fonts/Label fs-12",
                     "opacity": "0.75"
                   }
                 }
@@ -609,9 +581,7 @@
                     "props": {
                       "text": "\u2014",
                       "style": {
-                        "classes": "font-livedata-entry",
-                        "fontSize": "20px",
-                        "fontWeight": "700"
+                        "classes": "Fonts/LiveDataEntry fs-20 fw-700"
                       }
                     },
                     "propConfig": {
@@ -619,7 +589,7 @@
                         "binding": {
                           "type": "expr",
                           "config": {
-                            "expression": "numberFormat(coalesce(try(if(isBadOrError(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Production/ProdVol')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Production/ProdVol')), null), 0), '#,##0')"
+                            "expression": "numberFormat(coalesce(try(if(!isGood(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Production/ProdVol')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Production/ProdVol')), null), 0), '#,##0')"
                           },
                           "overlays": {
                             "bad": false,
@@ -641,8 +611,7 @@
                     "props": {
                       "text": "lb",
                       "style": {
-                        "classes": "font-label",
-                        "fontSize": "12px",
+                        "classes": "Fonts/Label fs-12",
                         "opacity": "0.7"
                       }
                     }
@@ -657,8 +626,7 @@
                 "props": {
                   "text": "MES / Tracker seed",
                   "style": {
-                    "classes": "font-label",
-                    "fontSize": "11px",
+                    "classes": "Fonts/Label fs-11",
                     "opacity": "0.65",
                     "whiteSpace": "normal"
                   }
@@ -681,8 +649,7 @@
               "style": {
                 "classes": "container-card container-card-border kpi-exec-stat",
                 "gap": "4px",
-                "padding": "12px 14px",
-                "minWidth": "140px"
+                "padding": "12px 14px"
               }
             },
             "children": [
@@ -694,8 +661,7 @@
                 "props": {
                   "text": "Power factor (est.)",
                   "style": {
-                    "classes": "font-label",
-                    "fontSize": "12px",
+                    "classes": "Fonts/Label fs-12",
                     "opacity": "0.75"
                   }
                 }
@@ -721,9 +687,7 @@
                     "props": {
                       "text": "0.89",
                       "style": {
-                        "classes": "font-livedata-entry",
-                        "fontSize": "20px",
-                        "fontWeight": "700"
+                        "classes": "Fonts/LiveDataEntry fs-20 fw-700"
                       }
                     }
                   },
@@ -735,8 +699,7 @@
                     "props": {
                       "text": "PF",
                       "style": {
-                        "classes": "font-label",
-                        "fontSize": "12px",
+                        "classes": "Fonts/Label fs-12",
                         "opacity": "0.7"
                       }
                     }
@@ -751,8 +714,7 @@
                 "props": {
                   "text": "From latest kWh / kvar",
                   "style": {
-                    "classes": "font-label",
-                    "fontSize": "11px",
+                    "classes": "Fonts/Label fs-11",
                     "opacity": "0.65",
                     "whiteSpace": "normal"
                   }
@@ -775,8 +737,7 @@
               "style": {
                 "classes": "container-card container-card-border kpi-exec-stat",
                 "gap": "4px",
-                "padding": "12px 14px",
-                "minWidth": "140px"
+                "padding": "12px 14px"
               }
             },
             "children": [
@@ -788,8 +749,7 @@
                 "props": {
                   "text": "Metering coverage",
                   "style": {
-                    "classes": "font-label",
-                    "fontSize": "12px",
+                    "classes": "Fonts/Label fs-12",
                     "opacity": "0.75"
                   }
                 }
@@ -815,9 +775,7 @@
                     "props": {
                       "text": "\u2014",
                       "style": {
-                        "classes": "font-livedata-entry",
-                        "fontSize": "20px",
-                        "fontWeight": "700"
+                        "classes": "Fonts/LiveDataEntry fs-20 fw-700"
                       }
                     },
                     "propConfig": {
@@ -825,7 +783,7 @@
                         "binding": {
                           "type": "expr",
                           "config": {
-                            "expression": "numberFormat(coalesce(try(if(isBadOrError(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/ComingOnline/MeteringCoveragePct')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/ComingOnline/MeteringCoveragePct')), null), 0), '0')"
+                            "expression": "numberFormat(coalesce(try(if(!isGood(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/ComingOnline/MeteringCoveragePct')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/ComingOnline/MeteringCoveragePct')), null), 0), '0')"
                           },
                           "overlays": {
                             "bad": false,
@@ -847,8 +805,7 @@
                     "props": {
                       "text": "% areas",
                       "style": {
-                        "classes": "font-label",
-                        "fontSize": "12px",
+                        "classes": "Fonts/Label fs-12",
                         "opacity": "0.7"
                       }
                     }
@@ -863,8 +820,7 @@
                 "props": {
                   "text": "Plant metering initiative",
                   "style": {
-                    "classes": "font-label",
-                    "fontSize": "11px",
+                    "classes": "Fonts/Label fs-11",
                     "opacity": "0.65",
                     "whiteSpace": "normal"
                   }
@@ -964,9 +920,7 @@
                         "props": {
                           "text": "Primary power \u2014 monthly electricity (k-kWh) vs baselines",
                           "style": {
-                            "classes": "font-heading",
-                            "fontSize": "15px",
-                            "fontWeight": "600"
+                            "classes": "Fonts/Heading fs-15 fw-600"
                           }
                         }
                       },
@@ -978,8 +932,7 @@
                         "props": {
                           "text": "EPMS",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "11px",
+                            "classes": "Fonts/Label fs-11",
                             "padding": "2px 8px",
                             "borderRadius": "4px",
                             "backgroundColor": "rgba(12,123,179,0.12)",
@@ -997,8 +950,7 @@
                     "props": {
                       "text": "Actual demand vs 3-yr average and 7-yr high/low envelope (last 12 months from Utility Tracker).",
                       "style": {
-                        "classes": "font-label",
-                        "fontSize": "12px",
+                        "classes": "Fonts/Label fs-12",
                         "opacity": "0.8",
                         "whiteSpace": "normal"
                       }
@@ -1362,6 +1314,15 @@
                                 }
                               },
                               "decimalsInFloat": 0
+                            },
+                            "noData": {
+                              "text": "No Data",
+                              "align": "center",
+                              "verticalAlign": "middle",
+                              "style": {
+                                "color": "#90A4AE",
+                                "fontSize": "14px"
+                              }
                             }
                           }
                         },
@@ -1446,9 +1407,7 @@
                                 "props": {
                                   "text": "Production volume (placeholder monthly)",
                                   "style": {
-                                    "classes": "font-heading",
-                                    "fontSize": "15px",
-                                    "fontWeight": "600"
+                                    "classes": "Fonts/Heading fs-15 fw-600"
                                   }
                                 }
                               },
@@ -1460,8 +1419,7 @@
                                 "props": {
                                   "text": "Production",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "11px",
+                                    "classes": "Fonts/Label fs-11",
                                     "padding": "2px 8px",
                                     "borderRadius": "4px",
                                     "backgroundColor": "rgba(12,123,179,0.12)",
@@ -1479,8 +1437,7 @@
                             "props": {
                               "text": "Monthly k-lb series is stubbed until production historian rolls up. Live MTD volume is on the KPI strip.",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "12px",
+                                "classes": "Fonts/Label fs-12",
                                 "opacity": "0.8",
                                 "whiteSpace": "normal"
                               }
@@ -1615,6 +1572,15 @@
                                           "fontSize": "10px"
                                         }
                                       }
+                                    },
+                                    "noData": {
+                                      "text": "No Data",
+                                      "align": "center",
+                                      "verticalAlign": "middle",
+                                      "style": {
+                                        "color": "#90A4AE",
+                                        "fontSize": "14px"
+                                      }
                                     }
                                   }
                                 },
@@ -1687,9 +1653,7 @@
                                 "props": {
                                   "text": "Thermal load vs ambient temperature",
                                   "style": {
-                                    "classes": "font-heading",
-                                    "fontSize": "15px",
-                                    "fontWeight": "600"
+                                    "classes": "Fonts/Heading fs-15 fw-600"
                                   }
                                 }
                               },
@@ -1701,8 +1665,7 @@
                                 "props": {
                                   "text": "Utility",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "11px",
+                                    "classes": "Fonts/Label fs-11",
                                     "padding": "2px 8px",
                                     "borderRadius": "4px",
                                     "backgroundColor": "rgba(12,123,179,0.12)",
@@ -1720,8 +1683,7 @@
                             "props": {
                               "text": "Temp from Utility Tracker. Therm series is a weather-shaped stub until gas meters feed.",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "12px",
+                                "classes": "Fonts/Label fs-12",
                                 "opacity": "0.8",
                                 "whiteSpace": "normal"
                               }
@@ -1889,6 +1851,15 @@
                                           "fontSize": "10px"
                                         }
                                       }
+                                    },
+                                    "noData": {
+                                      "text": "No Data",
+                                      "align": "center",
+                                      "verticalAlign": "middle",
+                                      "style": {
+                                        "color": "#90A4AE",
+                                        "fontSize": "14px"
+                                      }
                                     }
                                   }
                                 },
@@ -1935,9 +1906,7 @@
                 "props": {
                   "text": "Enterprise multi-facility scorecard (placeholder)",
                   "style": {
-                    "classes": "font-heading",
-                    "fontSize": "16px",
-                    "fontWeight": "700"
+                    "classes": "Fonts/Heading fs-16 fw-700"
                   }
                 }
               },
@@ -1949,8 +1918,7 @@
                 "props": {
                   "text": "Cascade / Eneroi / Innovative matrix from the executive canvas. Groveport row highlighted \u2014 bind to live site tags as metering rolls out.",
                   "style": {
-                    "classes": "font-label",
-                    "fontSize": "12px",
+                    "classes": "Fonts/Label fs-12",
                     "opacity": "0.8",
                     "whiteSpace": "normal"
                   }
@@ -1996,9 +1964,7 @@
                         "props": {
                           "text": "Plant matrix",
                           "style": {
-                            "classes": "font-heading",
-                            "fontSize": "15px",
-                            "fontWeight": "600"
+                            "classes": "Fonts/Heading fs-15 fw-600"
                           }
                         }
                       }
@@ -2027,9 +1993,7 @@
                         "props": {
                           "text": "Division",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "11px",
-                            "fontWeight": "700",
+                            "classes": "Fonts/Label fs-11 fw-700",
                             "opacity": "0.7",
                             "flex": "2 1 0%",
                             "minWidth": "0"
@@ -2044,9 +2008,7 @@
                         "props": {
                           "text": "Plant",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "11px",
-                            "fontWeight": "700",
+                            "classes": "Fonts/Label fs-11 fw-700",
                             "opacity": "0.7",
                             "flex": "2 1 0%",
                             "minWidth": "0"
@@ -2061,9 +2023,7 @@
                         "props": {
                           "text": "St",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "11px",
-                            "fontWeight": "700",
+                            "classes": "Fonts/Label fs-11 fw-700",
                             "opacity": "0.7",
                             "flex": "1 1 0%",
                             "minWidth": "0"
@@ -2078,9 +2038,7 @@
                         "props": {
                           "text": "Restart",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "11px",
-                            "fontWeight": "700",
+                            "classes": "Fonts/Label fs-11 fw-700",
                             "opacity": "0.7",
                             "flex": "1 1 0%",
                             "minWidth": "0"
@@ -2095,9 +2053,7 @@
                         "props": {
                           "text": "kWh",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "11px",
-                            "fontWeight": "700",
+                            "classes": "Fonts/Label fs-11 fw-700",
                             "opacity": "0.7",
                             "flex": "1 1 0%",
                             "minWidth": "0"
@@ -2112,9 +2068,7 @@
                         "props": {
                           "text": "Therm",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "11px",
-                            "fontWeight": "700",
+                            "classes": "Fonts/Label fs-11 fw-700",
                             "opacity": "0.7",
                             "flex": "1 1 0%",
                             "minWidth": "0"
@@ -2129,9 +2083,7 @@
                         "props": {
                           "text": "Prod",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "11px",
-                            "fontWeight": "700",
+                            "classes": "Fonts/Label fs-11 fw-700",
                             "opacity": "0.7",
                             "flex": "1 1 0%",
                             "minWidth": "0"
@@ -2146,9 +2098,7 @@
                         "props": {
                           "text": "kWh/lb",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "11px",
-                            "fontWeight": "700",
+                            "classes": "Fonts/Label fs-11 fw-700",
                             "opacity": "0.7",
                             "flex": "1 1 0%",
                             "minWidth": "0"
@@ -2163,9 +2113,7 @@
                         "props": {
                           "text": "Peak kW",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "11px",
-                            "fontWeight": "700",
+                            "classes": "Fonts/Label fs-11 fw-700",
                             "opacity": "0.7",
                             "flex": "1 1 0%",
                             "minWidth": "0"
@@ -2180,9 +2128,7 @@
                         "props": {
                           "text": "PF",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "11px",
-                            "fontWeight": "700",
+                            "classes": "Fonts/Label fs-11 fw-700",
                             "opacity": "0.7",
                             "flex": "1 1 0%",
                             "minWidth": "0"
@@ -2197,9 +2143,7 @@
                         "props": {
                           "text": "Status",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "11px",
-                            "fontWeight": "700",
+                            "classes": "Fonts/Label fs-11 fw-700",
                             "opacity": "0.7",
                             "flex": "1 1 0%",
                             "minWidth": "0"
@@ -2232,9 +2176,7 @@
                         "props": {
                           "text": "Cascade",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "2 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2251,9 +2193,7 @@
                         "props": {
                           "text": "New York",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "2 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2270,9 +2210,7 @@
                         "props": {
                           "text": "NY",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2289,9 +2227,7 @@
                         "props": {
                           "text": "March",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2308,9 +2244,7 @@
                         "props": {
                           "text": "298k",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2327,9 +2261,7 @@
                         "props": {
                           "text": "5,400",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2346,9 +2278,7 @@
                         "props": {
                           "text": "1,480k",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2365,9 +2295,7 @@
                         "props": {
                           "text": "0.201",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2384,9 +2312,7 @@
                         "props": {
                           "text": "620",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2403,9 +2329,7 @@
                         "props": {
                           "text": "0.94",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2422,9 +2346,7 @@
                         "props": {
                           "text": "Optimal",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2459,9 +2381,7 @@
                         "props": {
                           "text": "Cascade",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "600",
+                            "classes": "Fonts/Label fs-12 fw-600",
                             "flex": "2 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2478,9 +2398,7 @@
                         "props": {
                           "text": "Groveport",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "600",
+                            "classes": "Fonts/Label fs-12 fw-600",
                             "flex": "2 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2497,9 +2415,7 @@
                         "props": {
                           "text": "OH",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "600",
+                            "classes": "Fonts/Label fs-12 fw-600",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2516,9 +2432,7 @@
                         "props": {
                           "text": "October",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "600",
+                            "classes": "Fonts/Label fs-12 fw-600",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2535,9 +2449,7 @@
                         "props": {
                           "text": "340k",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "600",
+                            "classes": "Fonts/Label fs-12 fw-600",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2554,9 +2466,7 @@
                         "props": {
                           "text": "6,800",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "600",
+                            "classes": "Fonts/Label fs-12 fw-600",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2573,9 +2483,7 @@
                         "props": {
                           "text": "1,520k",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "600",
+                            "classes": "Fonts/Label fs-12 fw-600",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2592,9 +2500,7 @@
                         "props": {
                           "text": "0.224",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "600",
+                            "classes": "Fonts/Label fs-12 fw-600",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2611,9 +2517,7 @@
                         "props": {
                           "text": "710",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "600",
+                            "classes": "Fonts/Label fs-12 fw-600",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2630,9 +2534,7 @@
                         "props": {
                           "text": "0.89",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "600",
+                            "classes": "Fonts/Label fs-12 fw-600",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2649,9 +2551,7 @@
                         "props": {
                           "text": "PF Alert",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "600",
+                            "classes": "Fonts/Label fs-12 fw-600",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2686,9 +2586,7 @@
                         "props": {
                           "text": "Cascade",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "2 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2705,9 +2603,7 @@
                         "props": {
                           "text": "Holland",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "2 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2724,9 +2620,7 @@
                         "props": {
                           "text": "MI",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2743,9 +2637,7 @@
                         "props": {
                           "text": "November",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2762,9 +2654,7 @@
                         "props": {
                           "text": "275k",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2781,9 +2671,7 @@
                         "props": {
                           "text": "4,900",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2800,9 +2688,7 @@
                         "props": {
                           "text": "1,350k",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2819,9 +2705,7 @@
                         "props": {
                           "text": "0.204",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2838,9 +2722,7 @@
                         "props": {
                           "text": "580",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2857,9 +2739,7 @@
                         "props": {
                           "text": "0.95",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2876,9 +2756,7 @@
                         "props": {
                           "text": "Optimal",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2913,9 +2791,7 @@
                         "props": {
                           "text": "Eneroi",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "2 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2932,9 +2808,7 @@
                         "props": {
                           "text": "Petersburg",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "2 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2951,9 +2825,7 @@
                         "props": {
                           "text": "VA",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2970,9 +2842,7 @@
                         "props": {
                           "text": "January",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -2989,9 +2859,7 @@
                         "props": {
                           "text": "312k",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3008,9 +2876,7 @@
                         "props": {
                           "text": "5,900",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3027,9 +2893,7 @@
                         "props": {
                           "text": "1,410k",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3046,9 +2910,7 @@
                         "props": {
                           "text": "0.221",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3065,9 +2927,7 @@
                         "props": {
                           "text": "660",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3084,9 +2944,7 @@
                         "props": {
                           "text": "0.93",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3103,9 +2961,7 @@
                         "props": {
                           "text": "Optimal",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3140,9 +2996,7 @@
                         "props": {
                           "text": "Eneroi",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "2 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3159,9 +3013,7 @@
                         "props": {
                           "text": "Jarratt",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "2 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3178,9 +3030,7 @@
                         "props": {
                           "text": "VA",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3197,9 +3047,7 @@
                         "props": {
                           "text": "December",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3216,9 +3064,7 @@
                         "props": {
                           "text": "283k",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3235,9 +3081,7 @@
                         "props": {
                           "text": "5,200",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3254,9 +3098,7 @@
                         "props": {
                           "text": "1,290k",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3273,9 +3115,7 @@
                         "props": {
                           "text": "0.219",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3292,9 +3132,7 @@
                         "props": {
                           "text": "590",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3311,9 +3149,7 @@
                         "props": {
                           "text": "0.91",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3330,9 +3166,7 @@
                         "props": {
                           "text": "Optimal",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3367,9 +3201,7 @@
                         "props": {
                           "text": "Eneroi",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "2 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3386,9 +3218,7 @@
                         "props": {
                           "text": "Holland",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "2 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3405,9 +3235,7 @@
                         "props": {
                           "text": "MI",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3424,9 +3252,7 @@
                         "props": {
                           "text": "December",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3443,9 +3269,7 @@
                         "props": {
                           "text": "295k",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3462,9 +3286,7 @@
                         "props": {
                           "text": "5,600",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3481,9 +3303,7 @@
                         "props": {
                           "text": "1,380k",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3500,9 +3320,7 @@
                         "props": {
                           "text": "0.214",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3519,9 +3337,7 @@
                         "props": {
                           "text": "630",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3538,9 +3354,7 @@
                         "props": {
                           "text": "0.92",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3557,9 +3371,7 @@
                         "props": {
                           "text": "Optimal",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3594,9 +3406,7 @@
                         "props": {
                           "text": "Innovative",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "2 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3613,9 +3423,7 @@
                         "props": {
                           "text": "Expansion L1",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "2 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3632,9 +3440,7 @@
                         "props": {
                           "text": "TX",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3651,9 +3457,7 @@
                         "props": {
                           "text": "Q3 future",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3670,9 +3474,7 @@
                         "props": {
                           "text": "380k",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3689,9 +3491,7 @@
                         "props": {
                           "text": "7,200",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3708,9 +3508,7 @@
                         "props": {
                           "text": "1,950k",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3727,9 +3525,7 @@
                         "props": {
                           "text": "0.195",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3746,9 +3542,7 @@
                         "props": {
                           "text": "820",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3765,9 +3559,7 @@
                         "props": {
                           "text": "0.98",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3784,9 +3576,7 @@
                         "props": {
                           "text": "Model Pilot",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
-                            "fontWeight": "400",
+                            "classes": "Fonts/Label fs-12 fw-400",
                             "flex": "1 1 0%",
                             "minWidth": "0",
                             "overflow": "hidden",
@@ -3869,9 +3659,7 @@
                                 "props": {
                                   "text": "Line restart baseline protocol",
                                   "style": {
-                                    "classes": "font-heading",
-                                    "fontSize": "15px",
-                                    "fontWeight": "600"
+                                    "classes": "Fonts/Heading fs-15 fw-600"
                                   }
                                 }
                               }
@@ -3885,8 +3673,7 @@
                             "props": {
                               "text": "Cascade NY \u2014 March",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "13px",
+                                "classes": "Fonts/Label fs-13",
                                 "opacity": "0.85"
                               }
                             }
@@ -3899,9 +3686,7 @@
                             "props": {
                               "text": "Cascade Groveport \u2014 October",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "13px",
-                                "fontWeight": "600"
+                                "classes": "Fonts/Label fs-13 fw-600"
                               }
                             }
                           },
@@ -3913,8 +3698,7 @@
                             "props": {
                               "text": "Cascade Holland \u2014 November",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "13px",
+                                "classes": "Fonts/Label fs-13",
                                 "opacity": "0.85"
                               }
                             }
@@ -3927,8 +3711,7 @@
                             "props": {
                               "text": "Eneroi Petersburg \u2014 January",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "13px",
+                                "classes": "Fonts/Label fs-13",
                                 "opacity": "0.85"
                               }
                             }
@@ -3941,8 +3724,7 @@
                             "props": {
                               "text": "Eneroi Jarratt / Holland \u2014 December",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "13px",
+                                "classes": "Fonts/Label fs-13",
                                 "opacity": "0.85"
                               }
                             }
@@ -3982,9 +3764,7 @@
                 "props": {
                   "text": "Future innovations roadmap",
                   "style": {
-                    "classes": "font-heading",
-                    "fontSize": "16px",
-                    "fontWeight": "700"
+                    "classes": "Fonts/Heading fs-16 fw-700"
                   }
                 }
               },
@@ -3996,8 +3776,7 @@
                 "props": {
                   "text": "From the executive canvas \u2014 Ignition Perspective capabilities to close utility gaps.",
                   "style": {
-                    "classes": "font-label",
-                    "fontSize": "12px",
+                    "classes": "Fonts/Label fs-12",
                     "opacity": "0.8",
                     "whiteSpace": "normal"
                   }
@@ -4075,9 +3854,7 @@
                                 "props": {
                                   "text": "Weather-normalized EnPI",
                                   "style": {
-                                    "classes": "font-heading",
-                                    "fontSize": "15px",
-                                    "fontWeight": "600"
+                                    "classes": "Fonts/Heading fs-15 fw-600"
                                   }
                                 }
                               },
@@ -4089,8 +3866,7 @@
                                 "props": {
                                   "text": "High ROI",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "11px",
+                                    "classes": "Fonts/Label fs-11",
                                     "padding": "2px 8px",
                                     "borderRadius": "4px",
                                     "backgroundColor": "rgba(12,123,179,0.12)",
@@ -4108,8 +3884,7 @@
                             "props": {
                               "text": "Subtract HDD/CDD effects so summer/winter spikes don't look like inefficiency.",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "13px",
+                                "classes": "Fonts/Label fs-13",
                                 "opacity": "0.85",
                                 "whiteSpace": "normal"
                               }
@@ -4177,9 +3952,7 @@
                                 "props": {
                                   "text": "15-min peak demand predictor",
                                   "style": {
-                                    "classes": "font-heading",
-                                    "fontSize": "15px",
-                                    "fontWeight": "600"
+                                    "classes": "Fonts/Heading fs-15 fw-600"
                                   }
                                 }
                               },
@@ -4191,8 +3964,7 @@
                                 "props": {
                                   "text": "Demand shaving",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "11px",
+                                    "classes": "Fonts/Label fs-11",
                                     "padding": "2px 8px",
                                     "borderRadius": "4px",
                                     "backgroundColor": "rgba(12,123,179,0.12)",
@@ -4210,8 +3982,7 @@
                             "props": {
                               "text": "Alert before a new monthly kW peak sets a 12-month ratchet charge.",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "13px",
+                                "classes": "Fonts/Label fs-13",
                                 "opacity": "0.85",
                                 "whiteSpace": "normal"
                               }
@@ -4279,9 +4050,7 @@
                                 "props": {
                                   "text": "Activity-based $/lb costing",
                                   "style": {
-                                    "classes": "font-heading",
-                                    "fontSize": "15px",
-                                    "fontWeight": "600"
+                                    "classes": "Fonts/Heading fs-15 fw-600"
                                   }
                                 }
                               },
@@ -4293,8 +4062,7 @@
                                 "props": {
                                   "text": "Activity costing",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "11px",
+                                    "classes": "Fonts/Label fs-11",
                                     "padding": "2px 8px",
                                     "borderRadius": "4px",
                                     "backgroundColor": "rgba(12,123,179,0.12)",
@@ -4312,8 +4080,7 @@
                             "props": {
                               "text": "Tie utility cost to MES batches / SKUs instead of P&L overhead.",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "13px",
+                                "classes": "Fonts/Label fs-13",
                                 "opacity": "0.85",
                                 "whiteSpace": "normal"
                               }
@@ -4381,9 +4148,7 @@
                                 "props": {
                                   "text": "Power factor sentinel",
                                   "style": {
-                                    "classes": "font-heading",
-                                    "fontSize": "15px",
-                                    "fontWeight": "600"
+                                    "classes": "Fonts/Heading fs-15 fw-600"
                                   }
                                 }
                               },
@@ -4395,8 +4160,7 @@
                                 "props": {
                                   "text": "Power quality",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "11px",
+                                    "classes": "Fonts/Label fs-11",
                                     "padding": "2px 8px",
                                     "borderRadius": "4px",
                                     "backgroundColor": "rgba(12,123,179,0.12)",
@@ -4414,8 +4178,7 @@
                             "props": {
                               "text": "Groveport PF alert path \u2014 kVAR monitoring + capacitor bank triggers.",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "13px",
+                                "classes": "Fonts/Label fs-13",
                                 "opacity": "0.85",
                                 "whiteSpace": "normal"
                               }
@@ -4483,9 +4246,7 @@
                                 "props": {
                                   "text": "Scope 1 & 2 GHG accounting",
                                   "style": {
-                                    "classes": "font-heading",
-                                    "fontSize": "15px",
-                                    "fontWeight": "600"
+                                    "classes": "Fonts/Heading fs-15 fw-600"
                                   }
                                 }
                               },
@@ -4497,8 +4258,7 @@
                                 "props": {
                                   "text": "ESG",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "11px",
+                                    "classes": "Fonts/Label fs-11",
                                     "padding": "2px 8px",
                                     "borderRadius": "4px",
                                     "backgroundColor": "rgba(12,123,179,0.12)",
@@ -4516,8 +4276,7 @@
                             "props": {
                               "text": "eGRID factors \u2192 one-click carbon reports from metered kWh / therms.",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "13px",
+                                "classes": "Fonts/Label fs-13",
                                 "opacity": "0.85",
                                 "whiteSpace": "normal"
                               }
@@ -4585,9 +4344,7 @@
                                 "props": {
                                   "text": "Idle / phantom load detector",
                                   "style": {
-                                    "classes": "font-heading",
-                                    "fontSize": "15px",
-                                    "fontWeight": "600"
+                                    "classes": "Fonts/Heading fs-15 fw-600"
                                   }
                                 }
                               },
@@ -4599,8 +4356,7 @@
                                 "props": {
                                   "text": "AI / analytics",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "11px",
+                                    "classes": "Fonts/Label fs-11",
                                     "padding": "2px 8px",
                                     "borderRadius": "4px",
                                     "backgroundColor": "rgba(12,123,179,0.12)",
@@ -4618,8 +4374,7 @@
                             "props": {
                               "text": "Historian clustering for weekend baseload and non-op waste.",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "13px",
+                                "classes": "Fonts/Label fs-13",
                                 "opacity": "0.85",
                                 "whiteSpace": "normal"
                               }
@@ -4635,6 +4390,43 @@
           }
         ]
       }
-    ]
+    ],
+    "propConfig": {
+      "meta.contextMenu.items": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "coalesce({session.custom.TicketLogAccess}, false)"
+          },
+          "transforms": [
+            {
+              "type": "script",
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = str(self.view.params.tagPath or '')\n\texcept:\n\t\tpass\n\tview_name = self.view.id.split('@')[0]\n\titems = []\n\tif value:\n\t\tlogged = tagPath if tagPath.strip() else 'No TagPath: ' + view_name.split('/')[-1]\n\t\titems.append({\n\t\t\t\"text\": 'Ticket Logger',\n\t\t\t\"icon\": {\"path\": 'material/info', \"color\": \"--neutral-80\", \"style\": {}},\n\t\t\t\"style\": {\"classes\": \"bg-component Fonts/Value\", \"height\": 24, \"width\": 170},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\"type\": 'ticketLog', \"payload\": {'tagPath': logged, 'viewName': view_name, 'sender': self.view.id}, \"scope\": 'page'}\n\t\t})\n\treturn items"
+            }
+          ]
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "len({this.meta.contextMenu.items}) > 0"
+          }
+        }
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    }
   }
 }

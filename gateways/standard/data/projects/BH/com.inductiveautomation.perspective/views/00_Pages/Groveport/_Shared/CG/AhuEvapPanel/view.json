@@ -1,0 +1,3825 @@
+{
+  "custom": {
+    "pax": "",
+    "permDevice": "",
+    "roCommand": true,
+    "tipCommand": "",
+    "roSetpoint": true,
+    "tipSetpoint": ""
+  },
+  "params": {
+    "tagPath": ""
+  },
+  "propConfig": {
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.pax": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', '', case(toStr(coalesce(try(tag({view.params.tagPath} + '.TypeId'), ''), '')), 'Devices/Pump', 'Motor', 'Devices/Valve', 'Valve', 'Devices/Tank', 'Tank', 'Devices/Compressor', 'Comp', 'Devices/Evaporator', 'CG', 'Devices/ExhaustFan', 'EF', 'Devices/LTU', 'LTU', 'Devices/SafetyRelay', 'Relay', 'Devices/SuctionSequence', 'Seq', 'Devices/DischargeSequence', 'Dsq', 'Devices/Sensor', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn.Enabled')), false), false), 'AIn', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AInRef.Enabled')), false), false), 'AInRef', '')), 'Devices/DiscreteInput', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/DIn.Enabled')), false), false), 'DIn', ''), ''))"
+        }
+      }
+    },
+    "custom.permDevice": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', '', coalesce(try(lookup(tag('[default]_Config/Security/DeviceTypes'), toStr(coalesce(try(tag({view.params.tagPath} + '.TypeId'), ''), '')), null, 'TypeId', 'Device'), null), try(lookup(tag('[default]_Config/Security/DeviceTypes'), toStr(coalesce(try(tag(left({view.params.tagPath}, lastIndexOf({view.params.tagPath}, '/')) + '.TypeId'), ''), '')), null, 'TypeId', 'Device'), null), try(lookup(tag('[default]_Config/Security/DeviceTypes'), toStr(coalesce(try(tag(left(left({view.params.tagPath}, lastIndexOf({view.params.tagPath}, '/')), lastIndexOf(left({view.params.tagPath}, lastIndexOf({view.params.tagPath}, '/')), '/')) + '.TypeId'), ''), '')), null, 'TypeId', 'Device'), null), ''))"
+        }
+      },
+      "access": "PROTECTED"
+    },
+    "custom.roCommand": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({session.custom.ReadOnly}, true) || !coalesce(try({session.custom.Permissions}[{view.custom.permDevice}]['Command'], null), true)"
+        }
+      },
+      "access": "PROTECTED"
+    },
+    "custom.tipCommand": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(!coalesce({session.custom.ReadOnly}, true) && coalesce({view.custom.roCommand}, false), 'Not Permitted: ' + {view.custom.permDevice} + ' / ' + 'Command' + ' (Roles & Permissions)', '')"
+        }
+      }
+    },
+    "custom.roSetpoint": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({session.custom.ReadOnly}, true) || !coalesce(coalesce(try({session.custom.Permissions}[{view.custom.permDevice}]['Setpoint'], null), try({session.custom.Permissions}[{view.custom.permDevice}]['Configuration'], null)), true)"
+        }
+      },
+      "access": "PROTECTED"
+    },
+    "custom.tipSetpoint": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(!coalesce({session.custom.ReadOnly}, true) && coalesce({view.custom.roSetpoint}, false), 'Not Permitted: ' + {view.custom.permDevice} + ' / ' + if(isNull(try({session.custom.Permissions}[{view.custom.permDevice}]['Setpoint'], null)), 'Configuration', 'Setpoint') + ' (Roles & Permissions)', '')"
+        }
+      }
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "width": 1332,
+      "height": 392
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "row",
+      "alignItems": "stretch",
+      "style": {
+        "classes": "bg-page cg-panel",
+        "gap": "12px",
+        "padding": "6px",
+        "height": "100%",
+        "width": "100%",
+        "overflow": "hidden"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "CardControls"
+        },
+        "position": {
+          "basis": "280px",
+          "shrink": 0,
+          "grow": 0
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "classes": "faceplate-section faceplate-section-card",
+            "gap": "8px",
+            "height": "100%",
+            "overflow": "hidden"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Title"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "Controls",
+              "style": {
+                "classes": "faceplate-section-title Fonts/Label",
+                "fontSize": "13px"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "State"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "alignItems": "center",
+              "style": {
+                "gap": "8px",
+                "minHeight": "36px",
+                "overflow": "visible"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Lbl"
+                },
+                "position": {
+                  "shrink": 0,
+                  "basis": "72px"
+                },
+                "props": {
+                  "text": "State",
+                  "style": {
+                    "classes": "Fonts/Label",
+                    "fontSize": "15px",
+                    "fontWeight": "500",
+                    "whiteSpace": "nowrap"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "StatePill"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 0,
+                  "basis": "0px"
+                },
+                "props": {
+                  "text": "",
+                  "textStyle": {
+                    "textAlign": "center"
+                  },
+                  "style": {
+                    "classes": "Fonts/Label",
+                    "fontSize": "16px",
+                    "fontWeight": "700",
+                    "color": "#ffffff",
+                    "borderRadius": "6px",
+                    "padding": "8px 10px",
+                    "textAlign": "center",
+                    "whiteSpace": "nowrap"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/HmiStatus')), true), true), '\u2014', case(if({view.params.tagPath} = '', -1, try(toInt(tag({view.params.tagPath} + '/HmiStatus')), -1)), 0, 'Off', 1, 'Cooling', 2, 'Defrost', 3, 'Fault', 4, 'Manual', 5, 'Idle', 6, 'Defrost \u00b7 Pump Down', 7, 'Defrost \u00b7 Hot Gas', 8, 'Defrost \u00b7 Bleed', 9, 'Defrost \u00b7 Fan Delay', 'Unknown'))"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.backgroundColor": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce({view.params.tagPath}, '') = '' || coalesce(try(isGood(tag({view.params.tagPath} + '/HmiStatus')), false), false), if((if({view.params.tagPath} = '', -1, try(toInt(tag({view.params.tagPath} + '/HmiStatus')), -1)) = 2 || (if({view.params.tagPath} = '', -1, try(toInt(tag({view.params.tagPath} + '/HmiStatus')), -1)) >= 6 && if({view.params.tagPath} = '', -1, try(toInt(tag({view.params.tagPath} + '/HmiStatus')), -1)) <= 9)), 'var(--status-defrost)', case(if({view.params.tagPath} = '', -1, try(toInt(tag({view.params.tagPath} + '/HmiStatus')), -1)), 1, 'var(--status-cooling)', 5, 'var(--status-idle)', 3, 'var(--status-level-critical)', 'var(--status-off)')), 'var(--neutral-30)')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/HmiStatus')), true), true), 'Fonts/Label value-bad', 'Fonts/Label')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Enable"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "alignItems": "center",
+              "style": {
+                "gap": "8px",
+                "minHeight": "38px",
+                "overflow": "visible"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.input.button",
+                "meta": {
+                  "name": "BtnEnable"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 0,
+                  "basis": "0px"
+                },
+                "props": {
+                  "text": "Evaporator Disabled",
+                  "primary": false,
+                  "tooltip": {
+                    "enabled": false,
+                    "text": "Comm Loss - Command Unavailable"
+                  },
+                  "style": {
+                    "classes": "faceplate-cmd-btn Fonts/Label",
+                    "fontSize": "15px",
+                    "minHeight": "40px",
+                    "padding": "4px 10px"
+                  }
+                },
+                "propConfig": {
+                  "props.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "((!{view.custom.roCommand} && !({view.params.tagPath} = '')) && coalesce(try(isGood(tag({view.params.tagPath} + '/CG/HMIEnable')), false), false)) && coalesce({view.custom.pax}, '') = ''"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.tooltip.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "!({view.params.tagPath} = '') && !coalesce(try(isGood(tag({view.params.tagPath} + '/CG/HMIEnable')), false), false)"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/CG/HMIEnable')), true), true), '\u2014', if(if({view.params.tagPath} = '', false, coalesce(try(toBoolean(tag({view.params.tagPath} + '/CG/HMIEnable')), false), false)), 'Evaporator Enabled', 'Evaporator Disabled'))"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.backgroundColor": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce({view.params.tagPath}, '') = '' || coalesce(try(isGood(tag({view.params.tagPath} + '/CG/HMIEnable')), false), false), if(if({view.params.tagPath} = '', false, coalesce(try(toBoolean(tag({view.params.tagPath} + '/CG/HMIEnable')), false), false)), '#2E7D32', 'var(--surface-container)'), 'var(--surface-container)')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.color": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce({view.params.tagPath}, '') = '' || coalesce(try(isGood(tag({view.params.tagPath} + '/CG/HMIEnable')), false), false), if(if({view.params.tagPath} = '', false, coalesce(try(toBoolean(tag({view.params.tagPath} + '/CG/HMIEnable')), false), false)), '#ffffff', 'var(--text)'), 'var(--neutral-60)')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/CG/HMIEnable')), true), true), 'faceplate-cmd-btn Fonts/Label value-bad', 'faceplate-cmd-btn Fonts/Label')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "meta.tooltip.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "{view.custom.tipCommand} != ''"
+                      }
+                    }
+                  },
+                  "meta.tooltip.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "{view.custom.tipCommand}"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tif self.view.custom.pax:\n\t\treturn  # pax-bindings: live PLC object, read only\n\tif self.view.custom.roCommand:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpath = base + '/CG/HMIEnable'\n\tcur = system.tag.readBlocking([path])[0].value\n\tshared.Alerts.confirmApplyWrite(\n\t\tlabel='Enable Evaporator',\n\t\ttagPath=path,\n\t\tnewValue=not bool(cur),\n\t\toldValue=bool(cur),\n\t\textraPayload={'viewName': self.view.id.split('@')[0]},\n\t)\n"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "DefrostLbl"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "DEFROST",
+              "style": {
+                "classes": "Fonts/Label fw-700",
+                "fontSize": "12px",
+                "whiteSpace": "nowrap",
+                "color": "var(--text-muted)"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Defrost"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "alignItems": "center",
+              "style": {
+                "gap": "8px",
+                "minHeight": "38px",
+                "overflow": "visible"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.input.button",
+                "meta": {
+                  "name": "BtnStartDefrost"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 0,
+                  "basis": "0px"
+                },
+                "props": {
+                  "text": "Start Defrost",
+                  "primary": false,
+                  "tooltip": {
+                    "enabled": false,
+                    "text": "Comm Loss - Command Unavailable"
+                  },
+                  "style": {
+                    "classes": "faceplate-cmd-btn Fonts/Label",
+                    "fontSize": "15px",
+                    "minHeight": "40px",
+                    "padding": "4px 10px"
+                  }
+                },
+                "propConfig": {
+                  "props.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "((!{view.custom.roCommand} && !({view.params.tagPath} = '') && !(if({view.params.tagPath} = '', -1, try(toInt(tag({view.params.tagPath} + '/HmiStatus')), -1)) = 2 || (if({view.params.tagPath} = '', -1, try(toInt(tag({view.params.tagPath} + '/HmiStatus')), -1)) >= 6 && if({view.params.tagPath} = '', -1, try(toInt(tag({view.params.tagPath} + '/HmiStatus')), -1)) <= 9))) && coalesce(try(isGood(tag({view.params.tagPath} + '/HmiStatus')), false), false)) && coalesce({view.custom.pax}, '') = ''"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.tooltip.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "!({view.params.tagPath} = '') && !coalesce(try(isGood(tag({view.params.tagPath} + '/HmiStatus')), false), false)"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "meta.tooltip.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "{view.custom.tipCommand} != ''"
+                      }
+                    }
+                  },
+                  "meta.tooltip.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "{view.custom.tipCommand}"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tif self.view.custom.pax:\n\t\treturn  # pax-bindings: live PLC object, read only\n\tif self.view.custom.roCommand:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpath = base + '/CG/HMIStartDefrost'\n\tcur = system.tag.readBlocking([path])[0].value\n\tshared.Alerts.confirmApplyWrite(\n\t\tlabel='Start Defrost',\n\t\ttagPath=path,\n\t\tnewValue=True,\n\t\toldValue=False,\n\t\textraPayload={'viewName': self.view.id.split('@')[0]},\n\t)\n"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.input.button",
+                "meta": {
+                  "name": "BtnStopDefrost"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 0,
+                  "basis": "0px"
+                },
+                "props": {
+                  "text": "Stop Defrost",
+                  "primary": false,
+                  "tooltip": {
+                    "enabled": false,
+                    "text": "Comm Loss - Command Unavailable"
+                  },
+                  "style": {
+                    "classes": "faceplate-cmd-btn Fonts/Label",
+                    "fontSize": "15px",
+                    "minHeight": "40px",
+                    "padding": "4px 10px"
+                  }
+                },
+                "propConfig": {
+                  "props.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "((!{view.custom.roCommand} && !({view.params.tagPath} = '') && (if({view.params.tagPath} = '', -1, try(toInt(tag({view.params.tagPath} + '/HmiStatus')), -1)) = 2 || (if({view.params.tagPath} = '', -1, try(toInt(tag({view.params.tagPath} + '/HmiStatus')), -1)) >= 6 && if({view.params.tagPath} = '', -1, try(toInt(tag({view.params.tagPath} + '/HmiStatus')), -1)) <= 9))) && coalesce(try(isGood(tag({view.params.tagPath} + '/HmiStatus')), false), false)) && coalesce({view.custom.pax}, '') = ''"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.tooltip.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "!({view.params.tagPath} = '') && !coalesce(try(isGood(tag({view.params.tagPath} + '/HmiStatus')), false), false)"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "meta.tooltip.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "{view.custom.tipCommand} != ''"
+                      }
+                    }
+                  },
+                  "meta.tooltip.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "{view.custom.tipCommand}"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tif self.view.custom.pax:\n\t\treturn  # pax-bindings: live PLC object, read only\n\tif self.view.custom.roCommand:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpath = base + '/CG/HMIStopDefrost'\n\tcur = system.tag.readBlocking([path])[0].value\n\tshared.Alerts.confirmApplyWrite(\n\t\tlabel='Stop Defrost',\n\t\ttagPath=path,\n\t\tnewValue=True,\n\t\toldValue=False,\n\t\textraPayload={'viewName': self.view.id.split('@')[0]},\n\t)\n"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "SetBack"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "alignItems": "center",
+              "style": {
+                "gap": "8px",
+                "minHeight": "38px",
+                "overflow": "visible"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.input.button",
+                "meta": {
+                  "name": "BtnSetback"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 0,
+                  "basis": "0px"
+                },
+                "props": {
+                  "text": "Set Back Disabled",
+                  "primary": false,
+                  "tooltip": {
+                    "enabled": false,
+                    "text": "Comm Loss - Command Unavailable"
+                  },
+                  "style": {
+                    "classes": "faceplate-cmd-btn Fonts/Label",
+                    "fontSize": "15px",
+                    "minHeight": "40px",
+                    "padding": "4px 10px"
+                  }
+                },
+                "propConfig": {
+                  "props.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "((!{view.custom.roCommand} && !({view.params.tagPath} = '')) && coalesce(try(isGood(tag({view.params.tagPath} + '/CG/SB_Enable')), false), false)) && coalesce({view.custom.pax}, '') = ''"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.tooltip.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "!({view.params.tagPath} = '') && !coalesce(try(isGood(tag({view.params.tagPath} + '/CG/SB_Enable')), false), false)"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/CG/SB_Enable')), true), true), '\u2014', if(if({view.params.tagPath} = '', false, coalesce(try(toBoolean(tag({view.params.tagPath} + '/CG/SB_Enable')), false), false)), 'Set Back Enabled', 'Set Back Disabled'))"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.backgroundColor": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce({view.params.tagPath}, '') = '' || coalesce(try(isGood(tag({view.params.tagPath} + '/CG/SB_Enable')), false), false), if(if({view.params.tagPath} = '', false, coalesce(try(toBoolean(tag({view.params.tagPath} + '/CG/SB_Enable')), false), false)), '#2E7D32', 'var(--surface-container)'), 'var(--surface-container)')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.color": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce({view.params.tagPath}, '') = '' || coalesce(try(isGood(tag({view.params.tagPath} + '/CG/SB_Enable')), false), false), if(if({view.params.tagPath} = '', false, coalesce(try(toBoolean(tag({view.params.tagPath} + '/CG/SB_Enable')), false), false)), '#ffffff', 'var(--text)'), 'var(--neutral-60)')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/CG/SB_Enable')), true), true), 'faceplate-cmd-btn Fonts/Label value-bad', 'faceplate-cmd-btn Fonts/Label')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "meta.tooltip.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "{view.custom.tipCommand} != ''"
+                      }
+                    }
+                  },
+                  "meta.tooltip.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "{view.custom.tipCommand}"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tif self.view.custom.pax:\n\t\treturn  # pax-bindings: live PLC object, read only\n\tif self.view.custom.roCommand:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpath = base + '/CG/SB_Enable'\n\tcur = system.tag.readBlocking([path])[0].value\n\tshared.Alerts.confirmApplyWrite(\n\t\tlabel='Set Back',\n\t\ttagPath=path,\n\t\tnewValue=not bool(cur),\n\t\toldValue=bool(cur),\n\t\textraPayload={'viewName': self.view.id.split('@')[0]},\n\t)\n"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "InterlockLbl"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "INTERLOCKS",
+              "style": {
+                "classes": "Fonts/Label fw-700",
+                "fontSize": "12px",
+                "whiteSpace": "nowrap",
+                "color": "var(--text-muted)"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Interlock"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "alignItems": "center",
+              "style": {
+                "gap": "8px",
+                "minHeight": "38px",
+                "overflow": "visible"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "InterlockBtn"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 0,
+                  "basis": "0px"
+                },
+                "props": {
+                  "path": "02_Components/00_Controls/InterlockButton",
+                  "params": {
+                    "tagPath": "",
+                    "title": ""
+                  },
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "style": {
+                    "height": "38px"
+                  }
+                },
+                "propConfig": {
+                  "props.params.tagPath": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.params.tagPath} = \"\", \"\", {view.params.tagPath} + \"/Interlock\")"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "CardDefrost"
+        },
+        "position": {
+          "basis": "600px",
+          "shrink": 0,
+          "grow": 0
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "classes": "faceplate-section faceplate-section-card",
+            "gap": "8px",
+            "height": "100%",
+            "overflow": "hidden"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Title"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "Defrost",
+              "style": {
+                "classes": "faceplate-section-title Fonts/Label",
+                "fontSize": "13px"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Mode"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "alignItems": "center",
+              "style": {
+                "gap": "8px",
+                "minHeight": "36px",
+                "overflow": "visible"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Lbl"
+                },
+                "position": {
+                  "shrink": 0,
+                  "basis": "104px"
+                },
+                "props": {
+                  "text": "Defrost Mode",
+                  "style": {
+                    "classes": "Fonts/Label",
+                    "fontSize": "15px",
+                    "fontWeight": "500",
+                    "whiteSpace": "nowrap"
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "ModeSeg"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 0,
+                  "basis": "0px"
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "gap": "4px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.input.button",
+                    "meta": {
+                      "name": "Opt0"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "shrink": 0,
+                      "basis": "0px"
+                    },
+                    "props": {
+                      "text": "ToD",
+                      "primary": false,
+                      "tooltip": {
+                        "enabled": false,
+                        "text": "Comm Loss - Command Unavailable"
+                      },
+                      "style": {
+                        "classes": "faceplate-cmd-btn Fonts/Label",
+                        "fontSize": "15px",
+                        "minHeight": "40px",
+                        "padding": "4px 10px"
+                      }
+                    },
+                    "propConfig": {
+                      "props.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "((!{view.custom.roSetpoint} && !({view.params.tagPath} = '')) && coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), false), false)) && coalesce({view.custom.pax}, '') = ''"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "!({view.params.tagPath} = '') && !coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), false), false)"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.backgroundColor": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce({view.params.tagPath}, '') = '' || coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), false), false), if(if({view.params.tagPath} = '', -1, try(toInt(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), -1)) = 0, '#1E88E5', 'var(--surface-container)'), 'var(--surface-container)')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.color": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce({view.params.tagPath}, '') = '' || coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), false), false), if(if({view.params.tagPath} = '', -1, try(toInt(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), -1)) = 0, '#ffffff', 'var(--text)'), 'var(--neutral-60)')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "try(lookup({[default]_Config/Enums/Evaporator/DefrostStartMode}, toInt(0), 'ToD', 'value', 'short'), 'ToD')"
+                          },
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      },
+                      "meta.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "{view.custom.tipSetpoint} != ''"
+                          }
+                        }
+                      },
+                      "meta.tooltip.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "{view.custom.tipSetpoint}"
+                          }
+                        }
+                      }
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "type": "script",
+                          "scope": "G",
+                          "config": {
+                            "script": "\tif self.view.custom.pax:\n\t\treturn  # pax-bindings: live PLC object, read only\n\tif self.view.custom.roSetpoint:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpath = base + '/CG/Cfg_DefrostStartMode'\n\tcur = system.tag.readBlocking([path])[0].value\n\tshared.Alerts.confirmApplyWrite(\n\t\tlabel='Defrost Mode',\n\t\ttagPath=path,\n\t\tnewValue=0,\n\t\toldValue=cur,\n\t\textraPayload={'viewName': self.view.id.split('@')[0]},\n\t)\n"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.input.button",
+                    "meta": {
+                      "name": "Opt1"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "shrink": 0,
+                      "basis": "0px"
+                    },
+                    "props": {
+                      "text": "Cooling",
+                      "primary": false,
+                      "tooltip": {
+                        "enabled": false,
+                        "text": "Comm Loss - Command Unavailable"
+                      },
+                      "style": {
+                        "classes": "faceplate-cmd-btn Fonts/Label",
+                        "fontSize": "15px",
+                        "minHeight": "40px",
+                        "padding": "4px 10px"
+                      }
+                    },
+                    "propConfig": {
+                      "props.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "((!{view.custom.roSetpoint} && !({view.params.tagPath} = '')) && coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), false), false)) && coalesce({view.custom.pax}, '') = ''"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "!({view.params.tagPath} = '') && !coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), false), false)"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.backgroundColor": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce({view.params.tagPath}, '') = '' || coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), false), false), if(if({view.params.tagPath} = '', -1, try(toInt(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), -1)) = 1, '#1E88E5', 'var(--surface-container)'), 'var(--surface-container)')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.color": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce({view.params.tagPath}, '') = '' || coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), false), false), if(if({view.params.tagPath} = '', -1, try(toInt(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), -1)) = 1, '#ffffff', 'var(--text)'), 'var(--neutral-60)')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "try(lookup({[default]_Config/Enums/Evaporator/DefrostStartMode}, toInt(1), 'Cooling', 'value', 'short'), 'Cooling')"
+                          },
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      },
+                      "meta.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "{view.custom.tipSetpoint} != ''"
+                          }
+                        }
+                      },
+                      "meta.tooltip.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "{view.custom.tipSetpoint}"
+                          }
+                        }
+                      }
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "type": "script",
+                          "scope": "G",
+                          "config": {
+                            "script": "\tif self.view.custom.pax:\n\t\treturn  # pax-bindings: live PLC object, read only\n\tif self.view.custom.roSetpoint:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpath = base + '/CG/Cfg_DefrostStartMode'\n\tcur = system.tag.readBlocking([path])[0].value\n\tshared.Alerts.confirmApplyWrite(\n\t\tlabel='Defrost Mode',\n\t\ttagPath=path,\n\t\tnewValue=1,\n\t\toldValue=cur,\n\t\textraPayload={'viewName': self.view.id.split('@')[0]},\n\t)\n"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.input.button",
+                    "meta": {
+                      "name": "Opt2"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "shrink": 0,
+                      "basis": "0px"
+                    },
+                    "props": {
+                      "text": "Runtime",
+                      "primary": false,
+                      "tooltip": {
+                        "enabled": false,
+                        "text": "Comm Loss - Command Unavailable"
+                      },
+                      "style": {
+                        "classes": "faceplate-cmd-btn Fonts/Label",
+                        "fontSize": "15px",
+                        "minHeight": "40px",
+                        "padding": "4px 10px"
+                      }
+                    },
+                    "propConfig": {
+                      "props.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "((!{view.custom.roSetpoint} && !({view.params.tagPath} = '')) && coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), false), false)) && coalesce({view.custom.pax}, '') = ''"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "!({view.params.tagPath} = '') && !coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), false), false)"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.backgroundColor": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce({view.params.tagPath}, '') = '' || coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), false), false), if(if({view.params.tagPath} = '', -1, try(toInt(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), -1)) = 2, '#1E88E5', 'var(--surface-container)'), 'var(--surface-container)')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.color": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce({view.params.tagPath}, '') = '' || coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), false), false), if(if({view.params.tagPath} = '', -1, try(toInt(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), -1)) = 2, '#ffffff', 'var(--text)'), 'var(--neutral-60)')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "try(lookup({[default]_Config/Enums/Evaporator/DefrostStartMode}, toInt(2), 'Runtime', 'value', 'short'), 'Runtime')"
+                          },
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      },
+                      "meta.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "{view.custom.tipSetpoint} != ''"
+                          }
+                        }
+                      },
+                      "meta.tooltip.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "{view.custom.tipSetpoint}"
+                          }
+                        }
+                      }
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "type": "script",
+                          "scope": "G",
+                          "config": {
+                            "script": "\tif self.view.custom.pax:\n\t\treturn  # pax-bindings: live PLC object, read only\n\tif self.view.custom.roSetpoint:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpath = base + '/CG/Cfg_DefrostStartMode'\n\tcur = system.tag.readBlocking([path])[0].value\n\tshared.Alerts.confirmApplyWrite(\n\t\tlabel='Defrost Mode',\n\t\ttagPath=path,\n\t\tnewValue=2,\n\t\toldValue=cur,\n\t\textraPayload={'viewName': self.view.id.split('@')[0]},\n\t)\n"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "CurrentMode"
+                },
+                "position": {
+                  "shrink": 0,
+                  "display": false
+                },
+                "props": {
+                  "text": "",
+                  "style": {
+                    "classes": "Fonts/Label fs-13 fw-600",
+                    "whiteSpace": "nowrap",
+                    "padding": "4px 8px",
+                    "borderRadius": "6px",
+                    "border": "1px solid var(--border)"
+                  },
+                  "tooltip": {
+                    "enabled": true,
+                    "text": "Set By The PLC - Not Selectable Here"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), true), true), '\u2014', if({view.params.tagPath} = '', '', try('Current Mode: ' + lookup({[default]_Config/Enums/Evaporator/DefrostStartMode}, toInt(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), toStr(toInt(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode'))), 'value', 'label'), '')))"
+                      },
+                      "overlays": {
+                        "bad": false,
+                        "error": false,
+                        "pending": false,
+                        "stale": false,
+                        "unknown": false,
+                        "disabled": false
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "position.display": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce({view.params.tagPath}, '') = '' || coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), false), false), if({view.params.tagPath} = '', false, try(!toBoolean(lookup({[default]_Config/Enums/Evaporator/DefrostStartMode}, toInt(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), false, 'value', 'selectable')), false)), false)"
+                      }
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), true), true), 'Fonts/Label fs-13 fw-600 value-bad', 'Fonts/Label fs-13 fw-600')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Fans"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "alignItems": "center",
+              "style": {
+                "gap": "8px",
+                "minHeight": "36px",
+                "overflow": "visible"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Lbl"
+                },
+                "position": {
+                  "shrink": 0,
+                  "basis": "104px"
+                },
+                "props": {
+                  "text": "Cycle Fans",
+                  "style": {
+                    "classes": "Fonts/Label",
+                    "fontSize": "15px",
+                    "fontWeight": "500",
+                    "whiteSpace": "nowrap"
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "FansSeg"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 0,
+                  "basis": "0px"
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "gap": "4px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.input.button",
+                    "meta": {
+                      "name": "Opt0"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "shrink": 0,
+                      "basis": "0px"
+                    },
+                    "props": {
+                      "text": "Off",
+                      "primary": false,
+                      "tooltip": {
+                        "enabled": false,
+                        "text": "Comm Loss - Command Unavailable"
+                      },
+                      "style": {
+                        "classes": "faceplate-cmd-btn Fonts/Label",
+                        "fontSize": "15px",
+                        "minHeight": "40px",
+                        "padding": "4px 10px"
+                      }
+                    },
+                    "propConfig": {
+                      "props.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "((!{view.custom.roSetpoint} && !({view.params.tagPath} = '')) && coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_CycFans')), false), false)) && coalesce({view.custom.pax}, '') = ''"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "!({view.params.tagPath} = '') && !coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_CycFans')), false), false)"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.backgroundColor": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce({view.params.tagPath}, '') = '' || coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_CycFans')), false), false), if(if({view.params.tagPath} = '', -1, try(toInt(tag({view.params.tagPath} + '/CG/Cfg_CycFans')), -1)) = 0, '#1E88E5', 'var(--surface-container)'), 'var(--surface-container)')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.color": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce({view.params.tagPath}, '') = '' || coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_CycFans')), false), false), if(if({view.params.tagPath} = '', -1, try(toInt(tag({view.params.tagPath} + '/CG/Cfg_CycFans')), -1)) = 0, '#ffffff', 'var(--text)'), 'var(--neutral-60)')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "try(lookup({[default]_Config/Enums/Evaporator/CycleFans}, toInt(0), 'Off', 'value', 'short'), 'Off')"
+                          },
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      },
+                      "meta.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "{view.custom.tipSetpoint} != ''"
+                          }
+                        }
+                      },
+                      "meta.tooltip.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "{view.custom.tipSetpoint}"
+                          }
+                        }
+                      }
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "type": "script",
+                          "scope": "G",
+                          "config": {
+                            "script": "\tif self.view.custom.pax:\n\t\treturn  # pax-bindings: live PLC object, read only\n\tif self.view.custom.roSetpoint:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpath = base + '/CG/Cfg_CycFans'\n\tcur = system.tag.readBlocking([path])[0].value\n\tshared.Alerts.confirmApplyWrite(\n\t\tlabel='Cycle Fans',\n\t\ttagPath=path,\n\t\tnewValue=0,\n\t\toldValue=cur,\n\t\textraPayload={'viewName': self.view.id.split('@')[0]},\n\t)\n"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.input.button",
+                    "meta": {
+                      "name": "Opt1"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "shrink": 0,
+                      "basis": "0px"
+                    },
+                    "props": {
+                      "text": "Cycle",
+                      "primary": false,
+                      "tooltip": {
+                        "enabled": false,
+                        "text": "Comm Loss - Command Unavailable"
+                      },
+                      "style": {
+                        "classes": "faceplate-cmd-btn Fonts/Label",
+                        "fontSize": "15px",
+                        "minHeight": "40px",
+                        "padding": "4px 10px"
+                      }
+                    },
+                    "propConfig": {
+                      "props.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "((!{view.custom.roSetpoint} && !({view.params.tagPath} = '')) && coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_CycFans')), false), false)) && coalesce({view.custom.pax}, '') = ''"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "!({view.params.tagPath} = '') && !coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_CycFans')), false), false)"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.backgroundColor": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce({view.params.tagPath}, '') = '' || coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_CycFans')), false), false), if(if({view.params.tagPath} = '', -1, try(toInt(tag({view.params.tagPath} + '/CG/Cfg_CycFans')), -1)) = 1, '#1E88E5', 'var(--surface-container)'), 'var(--surface-container)')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.color": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce({view.params.tagPath}, '') = '' || coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_CycFans')), false), false), if(if({view.params.tagPath} = '', -1, try(toInt(tag({view.params.tagPath} + '/CG/Cfg_CycFans')), -1)) = 1, '#ffffff', 'var(--text)'), 'var(--neutral-60)')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "try(lookup({[default]_Config/Enums/Evaporator/CycleFans}, toInt(1), 'Cycle', 'value', 'short'), 'Cycle')"
+                          },
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      },
+                      "meta.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "{view.custom.tipSetpoint} != ''"
+                          }
+                        }
+                      },
+                      "meta.tooltip.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "{view.custom.tipSetpoint}"
+                          }
+                        }
+                      }
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "type": "script",
+                          "scope": "G",
+                          "config": {
+                            "script": "\tif self.view.custom.pax:\n\t\treturn  # pax-bindings: live PLC object, read only\n\tif self.view.custom.roSetpoint:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpath = base + '/CG/Cfg_CycFans'\n\tcur = system.tag.readBlocking([path])[0].value\n\tshared.Alerts.confirmApplyWrite(\n\t\tlabel='Cycle Fans',\n\t\ttagPath=path,\n\t\tnewValue=1,\n\t\toldValue=cur,\n\t\textraPayload={'viewName': self.view.id.split('@')[0]},\n\t)\n"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.input.button",
+                    "meta": {
+                      "name": "Opt2"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "shrink": 0,
+                      "basis": "0px"
+                    },
+                    "props": {
+                      "text": "On",
+                      "primary": false,
+                      "tooltip": {
+                        "enabled": false,
+                        "text": "Comm Loss - Command Unavailable"
+                      },
+                      "style": {
+                        "classes": "faceplate-cmd-btn Fonts/Label",
+                        "fontSize": "15px",
+                        "minHeight": "40px",
+                        "padding": "4px 10px"
+                      }
+                    },
+                    "propConfig": {
+                      "props.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "((!{view.custom.roSetpoint} && !({view.params.tagPath} = '')) && coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_CycFans')), false), false)) && coalesce({view.custom.pax}, '') = ''"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "!({view.params.tagPath} = '') && !coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_CycFans')), false), false)"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.backgroundColor": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce({view.params.tagPath}, '') = '' || coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_CycFans')), false), false), if(if({view.params.tagPath} = '', -1, try(toInt(tag({view.params.tagPath} + '/CG/Cfg_CycFans')), -1)) = 2, '#1E88E5', 'var(--surface-container)'), 'var(--surface-container)')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.color": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce({view.params.tagPath}, '') = '' || coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_CycFans')), false), false), if(if({view.params.tagPath} = '', -1, try(toInt(tag({view.params.tagPath} + '/CG/Cfg_CycFans')), -1)) = 2, '#ffffff', 'var(--text)'), 'var(--neutral-60)')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "try(lookup({[default]_Config/Enums/Evaporator/CycleFans}, toInt(2), 'On', 'value', 'short'), 'On')"
+                          },
+                          "overlays": {
+                            "bad": false,
+                            "error": false,
+                            "pending": false,
+                            "stale": false,
+                            "unknown": false,
+                            "disabled": false
+                          }
+                        }
+                      },
+                      "meta.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "{view.custom.tipSetpoint} != ''"
+                          }
+                        }
+                      },
+                      "meta.tooltip.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "{view.custom.tipSetpoint}"
+                          }
+                        }
+                      }
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "type": "script",
+                          "scope": "G",
+                          "config": {
+                            "script": "\tif self.view.custom.pax:\n\t\treturn  # pax-bindings: live PLC object, read only\n\tif self.view.custom.roSetpoint:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tpath = base + '/CG/Cfg_CycFans'\n\tcur = system.tag.readBlocking([path])[0].value\n\tshared.Alerts.confirmApplyWrite(\n\t\tlabel='Cycle Fans',\n\t\ttagPath=path,\n\t\tnewValue=2,\n\t\toldValue=cur,\n\t\textraPayload={'viewName': self.view.id.split('@')[0]},\n\t)\n"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Groups"
+            },
+            "position": {
+              "grow": 0,
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "style": {
+                "gap": "10px",
+                "overflow": "hidden"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "ToDSchedule"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 0,
+                  "basis": "0px"
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "gap": "4px",
+                    "overflow": "hidden"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Header"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "alignItems": "center",
+                      "justify": "space-between",
+                      "style": {
+                        "textTransform": "uppercase",
+                        "letterSpacing": "0.05em",
+                        "minHeight": "26px",
+                        "marginBottom": "2px",
+                        "borderBottom": "1px solid var(--border)"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Title"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "grow": 1
+                        },
+                        "props": {
+                          "text": "ToD Schedule",
+                          "style": {
+                            "classes": "Fonts/Label fw-700",
+                            "fontSize": "12px",
+                            "whiteSpace": "nowrap",
+                            "color": "var(--text-muted)"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Def1stTOD"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "alignItems": "center",
+                      "style": {
+                        "gap": "8px",
+                        "minHeight": "36px",
+                        "overflow": "visible"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Lbl"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "48px"
+                        },
+                        "props": {
+                          "text": "1st",
+                          "style": {
+                            "classes": "Fonts/Label",
+                            "fontSize": "15px",
+                            "fontWeight": "500",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.view",
+                        "meta": {
+                          "name": "Val"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "172px"
+                        },
+                        "props": {
+                          "path": "03_Elements/00_Control/TimeInput",
+                          "params": {
+                            "tagPath": "",
+                            "label": "Null",
+                            "permission": true
+                          },
+                          "useDefaultViewWidth": false,
+                          "useDefaultViewHeight": false,
+                          "style": {
+                            "height": "32px",
+                            "overflow": "visible"
+                          }
+                        },
+                        "propConfig": {
+                          "props.params.tagPath": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "if({view.params.tagPath} = \"\", \"\", {view.params.tagPath} + '/CG/Cfg_Def1stTOD')"
+                              }
+                            }
+                          },
+                          "props.params.permission": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "(!{view.custom.roSetpoint}) && coalesce({view.custom.pax}, '') = ''"
+                              }
+                            }
+                          },
+                          "meta.tooltip.enabled": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "{view.custom.tipSetpoint} != ''"
+                              }
+                            }
+                          },
+                          "meta.tooltip.text": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "{view.custom.tipSetpoint}"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Def2ndTOD"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "alignItems": "center",
+                      "style": {
+                        "gap": "8px",
+                        "minHeight": "36px",
+                        "overflow": "visible"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Lbl"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "48px"
+                        },
+                        "props": {
+                          "text": "2nd",
+                          "style": {
+                            "classes": "Fonts/Label",
+                            "fontSize": "15px",
+                            "fontWeight": "500",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.view",
+                        "meta": {
+                          "name": "Val"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "172px"
+                        },
+                        "props": {
+                          "path": "03_Elements/00_Control/TimeInput",
+                          "params": {
+                            "tagPath": "",
+                            "label": "Null",
+                            "permission": true
+                          },
+                          "useDefaultViewWidth": false,
+                          "useDefaultViewHeight": false,
+                          "style": {
+                            "height": "32px",
+                            "overflow": "visible"
+                          }
+                        },
+                        "propConfig": {
+                          "props.params.tagPath": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "if({view.params.tagPath} = \"\", \"\", {view.params.tagPath} + '/CG/Cfg_Def2ndTOD')"
+                              }
+                            }
+                          },
+                          "props.params.permission": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "(!{view.custom.roSetpoint}) && coalesce({view.custom.pax}, '') = ''"
+                              }
+                            }
+                          },
+                          "meta.tooltip.enabled": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "{view.custom.tipSetpoint} != ''"
+                              }
+                            }
+                          },
+                          "meta.tooltip.text": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "{view.custom.tipSetpoint}"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Def3rdTOD"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "alignItems": "center",
+                      "style": {
+                        "gap": "8px",
+                        "minHeight": "36px",
+                        "overflow": "visible"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Lbl"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "48px"
+                        },
+                        "props": {
+                          "text": "3rd",
+                          "style": {
+                            "classes": "Fonts/Label",
+                            "fontSize": "15px",
+                            "fontWeight": "500",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.view",
+                        "meta": {
+                          "name": "Val"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "172px"
+                        },
+                        "props": {
+                          "path": "03_Elements/00_Control/TimeInput",
+                          "params": {
+                            "tagPath": "",
+                            "label": "Null",
+                            "permission": true
+                          },
+                          "useDefaultViewWidth": false,
+                          "useDefaultViewHeight": false,
+                          "style": {
+                            "height": "32px",
+                            "overflow": "visible"
+                          }
+                        },
+                        "propConfig": {
+                          "props.params.tagPath": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "if({view.params.tagPath} = \"\", \"\", {view.params.tagPath} + '/CG/Cfg_Def3rdTOD')"
+                              }
+                            }
+                          },
+                          "props.params.permission": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "(!{view.custom.roSetpoint}) && coalesce({view.custom.pax}, '') = ''"
+                              }
+                            }
+                          },
+                          "meta.tooltip.enabled": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "{view.custom.tipSetpoint} != ''"
+                              }
+                            }
+                          },
+                          "meta.tooltip.text": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "{view.custom.tipSetpoint}"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Def4thTOD"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "alignItems": "center",
+                      "style": {
+                        "gap": "8px",
+                        "minHeight": "36px",
+                        "overflow": "visible"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Lbl"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "48px"
+                        },
+                        "props": {
+                          "text": "4th",
+                          "style": {
+                            "classes": "Fonts/Label",
+                            "fontSize": "15px",
+                            "fontWeight": "500",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.view",
+                        "meta": {
+                          "name": "Val"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "172px"
+                        },
+                        "props": {
+                          "path": "03_Elements/00_Control/TimeInput",
+                          "params": {
+                            "tagPath": "",
+                            "label": "Null",
+                            "permission": true
+                          },
+                          "useDefaultViewWidth": false,
+                          "useDefaultViewHeight": false,
+                          "style": {
+                            "height": "32px",
+                            "overflow": "visible"
+                          }
+                        },
+                        "propConfig": {
+                          "props.params.tagPath": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "if({view.params.tagPath} = \"\", \"\", {view.params.tagPath} + '/CG/Cfg_Def4thTOD')"
+                              }
+                            }
+                          },
+                          "props.params.permission": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "(!{view.custom.roSetpoint}) && coalesce({view.custom.pax}, '') = ''"
+                              }
+                            }
+                          },
+                          "meta.tooltip.enabled": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "{view.custom.tipSetpoint} != ''"
+                              }
+                            }
+                          },
+                          "meta.tooltip.text": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "{view.custom.tipSetpoint}"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "propConfig": {
+                  "position.display": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce({view.params.tagPath}, '') = '' || coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), false), false), {view.params.tagPath} = '' || if({view.params.tagPath} = '', -1, try(toInt(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), -1)) = 0 || if({view.params.tagPath} = '', -1, try(toInt(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), -1)) = -1, false)"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "CoolingSchedule"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 0,
+                  "basis": "0px"
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "gap": "4px",
+                    "overflow": "hidden"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Header"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "alignItems": "center",
+                      "justify": "space-between",
+                      "style": {
+                        "textTransform": "uppercase",
+                        "letterSpacing": "0.05em",
+                        "minHeight": "26px",
+                        "marginBottom": "2px",
+                        "borderBottom": "1px solid var(--border)"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Title"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "grow": 1
+                        },
+                        "props": {
+                          "text": "Cooling Defrost",
+                          "style": {
+                            "classes": "Fonts/Label fw-700",
+                            "fontSize": "12px",
+                            "whiteSpace": "nowrap",
+                            "color": "var(--text-muted)"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "CoolingLeft"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "alignItems": "center",
+                      "style": {
+                        "gap": "8px",
+                        "minHeight": "36px",
+                        "overflow": "visible"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Lbl"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "84px"
+                        },
+                        "props": {
+                          "text": "Time Left",
+                          "style": {
+                            "classes": "Fonts/Label",
+                            "fontSize": "15px",
+                            "fontWeight": "500",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Val"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "172px"
+                        },
+                        "props": {
+                          "text": "",
+                          "textStyle": {
+                            "textAlign": "right"
+                          },
+                          "style": {
+                            "classes": "Fonts/Value",
+                            "fontSize": "15px",
+                            "fontWeight": "600",
+                            "textAlign": "right",
+                            "paddingRight": "28px",
+                            "whiteSpace": "nowrap"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/CG/Val_CoolingTime')), true), true), '\u2014', if({view.params.tagPath} = '', '--', if(try(isGood(tag({view.params.tagPath} + '/CG/Val_CoolingTime')), false), numberFormat(toFloat(tag({view.params.tagPath} + '/CG/Val_CoolingTime')), '#,##0.0') + ' min', '--')))"
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.classes": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/CG/Val_CoolingTime')), true), true), 'Fonts/Value value-bad', 'Fonts/Value')"
+                              },
+                              "overlayOptOut": true
+                            }
+                          }
+                        },
+                        "events": {
+                          "dom": {
+                            "onContextMenu": {
+                              "type": "script",
+                              "scope": "G",
+                              "config": {
+                                "script": "\tshared.TrendContext.menu(self, event, '{view.params.tagPath}/CG/Val_CoolingTime')"
+                              },
+                              "preventDefault": true,
+                              "stopPropagation": true
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "CoolingSP"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "alignItems": "center",
+                      "style": {
+                        "gap": "8px",
+                        "minHeight": "36px",
+                        "overflow": "visible"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Lbl"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "84px"
+                        },
+                        "props": {
+                          "text": "Cooling SP",
+                          "style": {
+                            "classes": "Fonts/Label",
+                            "fontSize": "15px",
+                            "fontWeight": "500",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.view",
+                        "meta": {
+                          "name": "Val"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "172px"
+                        },
+                        "props": {
+                          "path": "03_Elements/00_Control/AnalogInput",
+                          "params": {
+                            "tagPath": "",
+                            "label": "Null",
+                            "permission": true
+                          },
+                          "useDefaultViewWidth": false,
+                          "useDefaultViewHeight": false,
+                          "style": {
+                            "height": "32px",
+                            "overflow": "visible"
+                          }
+                        },
+                        "propConfig": {
+                          "props.params.tagPath": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "if({view.params.tagPath} = \"\", \"\", {view.params.tagPath} + '/CG/Cfg_CoolingTime')"
+                              }
+                            }
+                          },
+                          "props.params.permission": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "(!{view.custom.roSetpoint}) && coalesce({view.custom.pax}, '') = ''"
+                              }
+                            }
+                          },
+                          "meta.tooltip.enabled": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "{view.custom.tipSetpoint} != ''"
+                              }
+                            }
+                          },
+                          "meta.tooltip.text": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "{view.custom.tipSetpoint}"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "propConfig": {
+                  "position.display": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce({view.params.tagPath}, '') = '' || coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), false), false), !({view.params.tagPath} = '') && if({view.params.tagPath} = '', -1, try(toInt(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), -1)) = 1, false)"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "RuntimeSchedule"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 0,
+                  "basis": "0px"
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "gap": "4px",
+                    "overflow": "hidden"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Header"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "alignItems": "center",
+                      "justify": "space-between",
+                      "style": {
+                        "textTransform": "uppercase",
+                        "letterSpacing": "0.05em",
+                        "minHeight": "26px",
+                        "marginBottom": "2px",
+                        "borderBottom": "1px solid var(--border)"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Title"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "grow": 1
+                        },
+                        "props": {
+                          "text": "Runtime Defrost",
+                          "style": {
+                            "classes": "Fonts/Label fw-700",
+                            "fontSize": "12px",
+                            "whiteSpace": "nowrap",
+                            "color": "var(--text-muted)"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "RuntimeLeft"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "alignItems": "center",
+                      "style": {
+                        "gap": "8px",
+                        "minHeight": "36px",
+                        "overflow": "visible"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Lbl"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "84px"
+                        },
+                        "props": {
+                          "text": "Time Left",
+                          "style": {
+                            "classes": "Fonts/Label",
+                            "fontSize": "15px",
+                            "fontWeight": "500",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Val"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "172px"
+                        },
+                        "props": {
+                          "text": "",
+                          "textStyle": {
+                            "textAlign": "right"
+                          },
+                          "style": {
+                            "classes": "Fonts/Value",
+                            "fontSize": "15px",
+                            "fontWeight": "600",
+                            "textAlign": "right",
+                            "paddingRight": "28px",
+                            "whiteSpace": "nowrap"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/CG/Val_RunTime')), true), true), '\u2014', if({view.params.tagPath} = '', '--', if(try(isGood(tag({view.params.tagPath} + '/CG/Val_RunTime')), false), numberFormat(toFloat(tag({view.params.tagPath} + '/CG/Val_RunTime')), '#,##0.0') + ' min', '--')))"
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.classes": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/CG/Val_RunTime')), true), true), 'Fonts/Value value-bad', 'Fonts/Value')"
+                              },
+                              "overlayOptOut": true
+                            }
+                          }
+                        },
+                        "events": {
+                          "dom": {
+                            "onContextMenu": {
+                              "type": "script",
+                              "scope": "G",
+                              "config": {
+                                "script": "\tshared.TrendContext.menu(self, event, '{view.params.tagPath}/CG/Val_RunTime')"
+                              },
+                              "preventDefault": true,
+                              "stopPropagation": true
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "RuntimeSP"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "alignItems": "center",
+                      "style": {
+                        "gap": "8px",
+                        "minHeight": "36px",
+                        "overflow": "visible"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Lbl"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "84px"
+                        },
+                        "props": {
+                          "text": "Runtime SP",
+                          "style": {
+                            "classes": "Fonts/Label",
+                            "fontSize": "15px",
+                            "fontWeight": "500",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.view",
+                        "meta": {
+                          "name": "Val"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "172px"
+                        },
+                        "props": {
+                          "path": "03_Elements/00_Control/AnalogInput",
+                          "params": {
+                            "tagPath": "",
+                            "label": "Null",
+                            "permission": true
+                          },
+                          "useDefaultViewWidth": false,
+                          "useDefaultViewHeight": false,
+                          "style": {
+                            "height": "32px",
+                            "overflow": "visible"
+                          }
+                        },
+                        "propConfig": {
+                          "props.params.tagPath": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "if({view.params.tagPath} = \"\", \"\", {view.params.tagPath} + '/CG/Cfg_RunTime')"
+                              }
+                            }
+                          },
+                          "props.params.permission": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "(!{view.custom.roSetpoint}) && coalesce({view.custom.pax}, '') = ''"
+                              }
+                            }
+                          },
+                          "meta.tooltip.enabled": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "{view.custom.tipSetpoint} != ''"
+                              }
+                            }
+                          },
+                          "meta.tooltip.text": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "{view.custom.tipSetpoint}"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "propConfig": {
+                  "position.display": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce({view.params.tagPath}, '') = '' || coalesce(try(isGood(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), false), false), !({view.params.tagPath} = '') && if({view.params.tagPath} = '', -1, try(toInt(tag({view.params.tagPath} + '/CG/Cfg_DefrostStartMode')), -1)) = 2, false)"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "StepTimers"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 0,
+                  "basis": "0px"
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "gap": "4px",
+                    "overflow": "hidden"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Header"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "alignItems": "center",
+                      "justify": "space-between",
+                      "style": {
+                        "textTransform": "uppercase",
+                        "letterSpacing": "0.05em",
+                        "minHeight": "26px",
+                        "marginBottom": "2px",
+                        "borderBottom": "1px solid var(--border)"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Title"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "grow": 1
+                        },
+                        "props": {
+                          "text": "Step Timers",
+                          "style": {
+                            "classes": "Fonts/Label fw-700",
+                            "fontSize": "12px",
+                            "whiteSpace": "nowrap",
+                            "color": "var(--text-muted)"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "PumpOut"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "alignItems": "center",
+                      "style": {
+                        "gap": "8px",
+                        "minHeight": "36px",
+                        "overflow": "visible"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Lbl"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "76px"
+                        },
+                        "props": {
+                          "text": "Pump Out",
+                          "style": {
+                            "classes": "Fonts/Label",
+                            "fontSize": "15px",
+                            "fontWeight": "500",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.view",
+                        "meta": {
+                          "name": "Val"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "172px"
+                        },
+                        "props": {
+                          "path": "03_Elements/00_Control/AnalogInput",
+                          "params": {
+                            "tagPath": "",
+                            "label": "Null",
+                            "permission": true
+                          },
+                          "useDefaultViewWidth": false,
+                          "useDefaultViewHeight": false,
+                          "style": {
+                            "height": "32px",
+                            "overflow": "visible"
+                          }
+                        },
+                        "propConfig": {
+                          "props.params.tagPath": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "if({view.params.tagPath} = \"\", \"\", {view.params.tagPath} + '/CG/Cfg_PumpOut')"
+                              }
+                            }
+                          },
+                          "props.params.permission": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "(!{view.custom.roSetpoint}) && coalesce({view.custom.pax}, '') = ''"
+                              }
+                            }
+                          },
+                          "meta.tooltip.enabled": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "{view.custom.tipSetpoint} != ''"
+                              }
+                            }
+                          },
+                          "meta.tooltip.text": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "{view.custom.tipSetpoint}"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "MainHotGas"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "alignItems": "center",
+                      "style": {
+                        "gap": "8px",
+                        "minHeight": "36px",
+                        "overflow": "visible"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Lbl"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "76px"
+                        },
+                        "props": {
+                          "text": "Hot Gas",
+                          "style": {
+                            "classes": "Fonts/Label",
+                            "fontSize": "15px",
+                            "fontWeight": "500",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.view",
+                        "meta": {
+                          "name": "Val"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "172px"
+                        },
+                        "props": {
+                          "path": "03_Elements/00_Control/AnalogInput",
+                          "params": {
+                            "tagPath": "",
+                            "label": "Null",
+                            "permission": true
+                          },
+                          "useDefaultViewWidth": false,
+                          "useDefaultViewHeight": false,
+                          "style": {
+                            "height": "32px",
+                            "overflow": "visible"
+                          }
+                        },
+                        "propConfig": {
+                          "props.params.tagPath": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "if({view.params.tagPath} = \"\", \"\", {view.params.tagPath} + '/CG/Cfg_MainHotGas')"
+                              }
+                            }
+                          },
+                          "props.params.permission": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "(!{view.custom.roSetpoint}) && coalesce({view.custom.pax}, '') = ''"
+                              }
+                            }
+                          },
+                          "meta.tooltip.enabled": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "{view.custom.tipSetpoint} != ''"
+                              }
+                            }
+                          },
+                          "meta.tooltip.text": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "{view.custom.tipSetpoint}"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Bleed"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "alignItems": "center",
+                      "style": {
+                        "gap": "8px",
+                        "minHeight": "36px",
+                        "overflow": "visible"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Lbl"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "76px"
+                        },
+                        "props": {
+                          "text": "Bleed",
+                          "style": {
+                            "classes": "Fonts/Label",
+                            "fontSize": "15px",
+                            "fontWeight": "500",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.view",
+                        "meta": {
+                          "name": "Val"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "172px"
+                        },
+                        "props": {
+                          "path": "03_Elements/00_Control/AnalogInput",
+                          "params": {
+                            "tagPath": "",
+                            "label": "Null",
+                            "permission": true
+                          },
+                          "useDefaultViewWidth": false,
+                          "useDefaultViewHeight": false,
+                          "style": {
+                            "height": "32px",
+                            "overflow": "visible"
+                          }
+                        },
+                        "propConfig": {
+                          "props.params.tagPath": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "if({view.params.tagPath} = \"\", \"\", {view.params.tagPath} + '/CG/Cfg_Bleed')"
+                              }
+                            }
+                          },
+                          "props.params.permission": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "(!{view.custom.roSetpoint}) && coalesce({view.custom.pax}, '') = ''"
+                              }
+                            }
+                          },
+                          "meta.tooltip.enabled": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "{view.custom.tipSetpoint} != ''"
+                              }
+                            }
+                          },
+                          "meta.tooltip.text": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "{view.custom.tipSetpoint}"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "FanDelay"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "alignItems": "center",
+                      "style": {
+                        "gap": "8px",
+                        "minHeight": "36px",
+                        "overflow": "visible"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Lbl"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "76px"
+                        },
+                        "props": {
+                          "text": "Fan Delay",
+                          "style": {
+                            "classes": "Fonts/Label",
+                            "fontSize": "15px",
+                            "fontWeight": "500",
+                            "whiteSpace": "nowrap"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.view",
+                        "meta": {
+                          "name": "Val"
+                        },
+                        "position": {
+                          "shrink": 0,
+                          "basis": "172px"
+                        },
+                        "props": {
+                          "path": "03_Elements/00_Control/AnalogInput",
+                          "params": {
+                            "tagPath": "",
+                            "label": "Null",
+                            "permission": true
+                          },
+                          "useDefaultViewWidth": false,
+                          "useDefaultViewHeight": false,
+                          "style": {
+                            "height": "32px",
+                            "overflow": "visible"
+                          }
+                        },
+                        "propConfig": {
+                          "props.params.tagPath": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "if({view.params.tagPath} = \"\", \"\", {view.params.tagPath} + '/CG/Cfg_FanDelay')"
+                              }
+                            }
+                          },
+                          "props.params.permission": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "(!{view.custom.roSetpoint}) && coalesce({view.custom.pax}, '') = ''"
+                              }
+                            }
+                          },
+                          "meta.tooltip.enabled": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "{view.custom.tipSetpoint} != ''"
+                              }
+                            }
+                          },
+                          "meta.tooltip.text": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "{view.custom.tipSetpoint}"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "CardTemperature"
+        },
+        "position": {
+          "basis": "416px",
+          "shrink": 0,
+          "grow": 0
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "classes": "faceplate-section faceplate-section-card",
+            "gap": "8px",
+            "height": "100%",
+            "overflow": "hidden"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Title"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "Temperature",
+              "style": {
+                "classes": "faceplate-section-title Fonts/Label",
+                "fontSize": "13px"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "ZoneAirTemp"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "alignItems": "center",
+              "style": {
+                "gap": "8px",
+                "minHeight": "44px",
+                "overflow": "visible"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Lbl"
+                },
+                "position": {
+                  "shrink": 0,
+                  "basis": "120px"
+                },
+                "props": {
+                  "text": "Zone Air Temp",
+                  "style": {
+                    "classes": "Fonts/Label",
+                    "fontSize": "15px",
+                    "fontWeight": "500",
+                    "whiteSpace": "nowrap"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Val"
+                },
+                "position": {
+                  "shrink": 0,
+                  "basis": "172px"
+                },
+                "props": {
+                  "text": "",
+                  "textStyle": {
+                    "textAlign": "right"
+                  },
+                  "style": {
+                    "classes": "Fonts/Value",
+                    "fontSize": "26px",
+                    "fontWeight": "700",
+                    "textAlign": "right",
+                    "paddingRight": "28px",
+                    "whiteSpace": "nowrap"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/ZAT/Val')), true), true), '\u2014', if({view.params.tagPath} = '', '--', if(try(isGood(tag({view.params.tagPath} + '/ZAT/Val')), false), numberFormat(toFloat(tag({view.params.tagPath} + '/ZAT/Val')), '#,##0.0') + ' \u00b0F', '--')))"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.params.tagPath} != '' && coalesce(try(!isGood(tag({view.params.tagPath} + '/ZAT/Val')), true), true), 'Fonts/Value value-bad', if((coalesce(try(toBoolean(tag({view.params.tagPath} + '/CG/TooHot')), false), false) || coalesce(try(toBoolean(tag({view.params.tagPath} + '/CG/TooCold')), false), false)), 'Fonts/Value value-alarm', 'Fonts/Value'))"
+                      },
+                      "overlayOptOut": true
+                    }
+                  }
+                },
+                "events": {
+                  "dom": {
+                    "onContextMenu": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tshared.TrendContext.menu(self, event, '{view.params.tagPath}/ZAT/Val')"
+                      },
+                      "preventDefault": true,
+                      "stopPropagation": true
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "TargetSP"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "alignItems": "center",
+              "style": {
+                "gap": "8px",
+                "minHeight": "36px",
+                "overflow": "visible"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Lbl"
+                },
+                "position": {
+                  "shrink": 0,
+                  "basis": "120px"
+                },
+                "props": {
+                  "text": "Target SP",
+                  "style": {
+                    "classes": "Fonts/Label",
+                    "fontSize": "15px",
+                    "fontWeight": "500",
+                    "whiteSpace": "nowrap"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "Val"
+                },
+                "position": {
+                  "shrink": 0,
+                  "basis": "172px"
+                },
+                "props": {
+                  "path": "03_Elements/00_Control/AnalogInput",
+                  "params": {
+                    "tagPath": "",
+                    "label": "Null",
+                    "permission": true
+                  },
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "style": {
+                    "height": "32px",
+                    "overflow": "visible"
+                  }
+                },
+                "propConfig": {
+                  "props.params.tagPath": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.params.tagPath} = \"\", \"\", {view.params.tagPath} + '/CG/Cfg_ZoneAirTemp')"
+                      }
+                    }
+                  },
+                  "props.params.permission": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "(!{view.custom.roSetpoint}) && coalesce({view.custom.pax}, '') = ''"
+                      }
+                    }
+                  },
+                  "meta.tooltip.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "{view.custom.tipSetpoint} != ''"
+                      }
+                    }
+                  },
+                  "meta.tooltip.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "{view.custom.tipSetpoint}"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Deadband"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "alignItems": "center",
+              "style": {
+                "gap": "8px",
+                "minHeight": "36px",
+                "overflow": "visible"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Lbl"
+                },
+                "position": {
+                  "shrink": 0,
+                  "basis": "120px"
+                },
+                "props": {
+                  "text": "Deadband",
+                  "style": {
+                    "classes": "Fonts/Label",
+                    "fontSize": "15px",
+                    "fontWeight": "500",
+                    "whiteSpace": "nowrap"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "Val"
+                },
+                "position": {
+                  "shrink": 0,
+                  "basis": "172px"
+                },
+                "props": {
+                  "path": "03_Elements/00_Control/AnalogInput",
+                  "params": {
+                    "tagPath": "",
+                    "label": "Null",
+                    "permission": true
+                  },
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "style": {
+                    "height": "32px",
+                    "overflow": "visible"
+                  }
+                },
+                "propConfig": {
+                  "props.params.tagPath": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.params.tagPath} = \"\", \"\", {view.params.tagPath} + '/CG/Cfg_ZoneAirTempDB')"
+                      }
+                    }
+                  },
+                  "props.params.permission": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "(!{view.custom.roSetpoint}) && coalesce({view.custom.pax}, '') = ''"
+                      }
+                    }
+                  },
+                  "meta.tooltip.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "{view.custom.tipSetpoint} != ''"
+                      }
+                    }
+                  },
+                  "meta.tooltip.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "{view.custom.tipSetpoint}"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Setback"
+            },
+            "position": {
+              "grow": 0,
+              "shrink": 0,
+              "basis": "auto"
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "4px",
+                "overflow": "hidden"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Header"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "center",
+                  "justify": "space-between",
+                  "style": {
+                    "textTransform": "uppercase",
+                    "letterSpacing": "0.05em",
+                    "minHeight": "26px",
+                    "marginBottom": "2px",
+                    "borderBottom": "1px solid var(--border)"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Title"
+                    },
+                    "position": {
+                      "shrink": 0,
+                      "grow": 1
+                    },
+                    "props": {
+                      "text": "Set Back",
+                      "style": {
+                        "classes": "Fonts/Label fw-700",
+                        "fontSize": "12px",
+                        "whiteSpace": "nowrap",
+                        "color": "var(--text-muted)"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "SBMin"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "center",
+                  "style": {
+                    "gap": "8px",
+                    "minHeight": "36px",
+                    "overflow": "visible"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Lbl"
+                    },
+                    "position": {
+                      "shrink": 0,
+                      "basis": "120px"
+                    },
+                    "props": {
+                      "text": "Min",
+                      "style": {
+                        "classes": "Fonts/Label",
+                        "fontSize": "15px",
+                        "fontWeight": "500",
+                        "whiteSpace": "nowrap"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.view",
+                    "meta": {
+                      "name": "Val"
+                    },
+                    "position": {
+                      "shrink": 0,
+                      "basis": "172px"
+                    },
+                    "props": {
+                      "path": "03_Elements/00_Control/AnalogInput",
+                      "params": {
+                        "tagPath": "",
+                        "label": "Null",
+                        "permission": true
+                      },
+                      "useDefaultViewWidth": false,
+                      "useDefaultViewHeight": false,
+                      "style": {
+                        "height": "32px",
+                        "overflow": "visible"
+                      }
+                    },
+                    "propConfig": {
+                      "props.params.tagPath": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if({view.params.tagPath} = \"\", \"\", {view.params.tagPath} + '/CG/ZAT_MinSet')"
+                          }
+                        }
+                      },
+                      "props.params.permission": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "(!{view.custom.roSetpoint}) && coalesce({view.custom.pax}, '') = ''"
+                          }
+                        }
+                      },
+                      "meta.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "{view.custom.tipSetpoint} != ''"
+                          }
+                        }
+                      },
+                      "meta.tooltip.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "{view.custom.tipSetpoint}"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "SBMax"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "center",
+                  "style": {
+                    "gap": "8px",
+                    "minHeight": "36px",
+                    "overflow": "visible"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Lbl"
+                    },
+                    "position": {
+                      "shrink": 0,
+                      "basis": "120px"
+                    },
+                    "props": {
+                      "text": "Max",
+                      "style": {
+                        "classes": "Fonts/Label",
+                        "fontSize": "15px",
+                        "fontWeight": "500",
+                        "whiteSpace": "nowrap"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.view",
+                    "meta": {
+                      "name": "Val"
+                    },
+                    "position": {
+                      "shrink": 0,
+                      "basis": "172px"
+                    },
+                    "props": {
+                      "path": "03_Elements/00_Control/AnalogInput",
+                      "params": {
+                        "tagPath": "",
+                        "label": "Null",
+                        "permission": true
+                      },
+                      "useDefaultViewWidth": false,
+                      "useDefaultViewHeight": false,
+                      "style": {
+                        "height": "32px",
+                        "overflow": "visible"
+                      }
+                    },
+                    "propConfig": {
+                      "props.params.tagPath": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if({view.params.tagPath} = \"\", \"\", {view.params.tagPath} + '/CG/ZAT_MaxSet')"
+                          }
+                        }
+                      },
+                      "props.params.permission": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "(!{view.custom.roSetpoint}) && coalesce({view.custom.pax}, '') = ''"
+                          }
+                        }
+                      },
+                      "meta.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "{view.custom.tipSetpoint} != ''"
+                          }
+                        }
+                      },
+                      "meta.tooltip.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "{view.custom.tipSetpoint}"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "SBStart"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "center",
+                  "style": {
+                    "gap": "8px",
+                    "minHeight": "36px",
+                    "overflow": "visible"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Lbl"
+                    },
+                    "position": {
+                      "shrink": 0,
+                      "basis": "120px"
+                    },
+                    "props": {
+                      "text": "Start",
+                      "style": {
+                        "classes": "Fonts/Label",
+                        "fontSize": "15px",
+                        "fontWeight": "500",
+                        "whiteSpace": "nowrap"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.view",
+                    "meta": {
+                      "name": "Val"
+                    },
+                    "position": {
+                      "shrink": 0,
+                      "basis": "172px"
+                    },
+                    "props": {
+                      "path": "03_Elements/00_Control/TimeInput",
+                      "params": {
+                        "tagPath": "",
+                        "label": "Null",
+                        "permission": true
+                      },
+                      "useDefaultViewWidth": false,
+                      "useDefaultViewHeight": false,
+                      "style": {
+                        "height": "32px",
+                        "overflow": "visible"
+                      }
+                    },
+                    "propConfig": {
+                      "props.params.tagPath": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if({view.params.tagPath} = \"\", \"\", {view.params.tagPath} + '/CG/SB_StartTime')"
+                          }
+                        }
+                      },
+                      "props.params.permission": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "(!{view.custom.roSetpoint}) && coalesce({view.custom.pax}, '') = ''"
+                          }
+                        }
+                      },
+                      "meta.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "{view.custom.tipSetpoint} != ''"
+                          }
+                        }
+                      },
+                      "meta.tooltip.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "{view.custom.tipSetpoint}"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "SBStop"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "center",
+                  "style": {
+                    "gap": "8px",
+                    "minHeight": "36px",
+                    "overflow": "visible"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Lbl"
+                    },
+                    "position": {
+                      "shrink": 0,
+                      "basis": "120px"
+                    },
+                    "props": {
+                      "text": "Stop",
+                      "style": {
+                        "classes": "Fonts/Label",
+                        "fontSize": "15px",
+                        "fontWeight": "500",
+                        "whiteSpace": "nowrap"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.view",
+                    "meta": {
+                      "name": "Val"
+                    },
+                    "position": {
+                      "shrink": 0,
+                      "basis": "172px"
+                    },
+                    "props": {
+                      "path": "03_Elements/00_Control/TimeInput",
+                      "params": {
+                        "tagPath": "",
+                        "label": "Null",
+                        "permission": true
+                      },
+                      "useDefaultViewWidth": false,
+                      "useDefaultViewHeight": false,
+                      "style": {
+                        "height": "32px",
+                        "overflow": "visible"
+                      }
+                    },
+                    "propConfig": {
+                      "props.params.tagPath": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if({view.params.tagPath} = \"\", \"\", {view.params.tagPath} + '/CG/SB_StopTime')"
+                          }
+                        }
+                      },
+                      "props.params.permission": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "(!{view.custom.roSetpoint}) && coalesce({view.custom.pax}, '') = ''"
+                          }
+                        }
+                      },
+                      "meta.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "{view.custom.tipSetpoint} != ''"
+                          }
+                        }
+                      },
+                      "meta.tooltip.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "{view.custom.tipSetpoint}"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "custom": {},
+  "params": {},
+  "props": {},
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "padding": "8px"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "L0"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "style": {
+            "fontSize": "11px"
+          }
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "'00 | ' + toStr({session.custom.Permissions._Test.Verify})"
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "L1"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "style": {
+            "fontSize": "11px"
+          }
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "'01 | ' + toStr(runScript(\"shared.Security.permissions\", 0, asList('ReadOnly'), tag('[default]_Config/RolesPermissions'), tag('[default]_Config/Security/FullPermissionRoles'), tag('[default]_Config/Security/RoleInherits'))['_Test']['Verify'])"
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "L2"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "style": {
+            "fontSize": "11px"
+          }
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "'02 | ' + toStr(runScript(\"shared.Security.permissions\", 0, asList('Maintenance'), tag('[default]_Config/RolesPermissions'), tag('[default]_Config/Security/FullPermissionRoles'), tag('[default]_Config/Security/RoleInherits'))['_Test']['Verify'])"
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "L3"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "style": {
+            "fontSize": "11px"
+          }
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "'03 | ' + toStr(len(forEach({session.custom.Permissions}, 1)))"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

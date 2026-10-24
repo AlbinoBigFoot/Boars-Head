@@ -1,0 +1,277 @@
+{
+  "custom": {},
+  "params": {
+    "item": {
+      "description": "",
+      "icon": "",
+      "id": "",
+      "label": "",
+      "meta": "",
+      "selected": false
+    }
+  },
+  "propConfig": {
+    "params.item": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 120,
+      "width": 280
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Icon"
+                },
+                "position": {
+                  "basis": "20px",
+                  "grow": 0,
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.color": {
+                    "binding": {
+                      "config": {
+                        "expression": "if(coalesce({view.params.item.selected}, false), 'var(--neutral-10)', 'var(--callToAction)')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.path": {
+                    "binding": {
+                      "config": {
+                        "expression": "coalesce({view.params.item.icon}, 'material/assessment')"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "color": "var(--callToAction)",
+                  "path": "material/assessment",
+                  "style": {
+                    "height": "20px",
+                    "width": "20px"
+                  }
+                },
+                "type": "ia.display.icon"
+              }
+            ],
+            "meta": {
+              "name": "IconBox"
+            },
+            "position": {
+              "basis": "32px",
+              "grow": 0,
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.style.classes": {
+                "binding": {
+                  "config": {
+                    "expression": "if(coalesce({view.params.item.selected}, false), 'report-icon-box report-icon-box-selected', 'report-icon-box')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "alignItems": "center",
+              "direction": "row",
+              "justify": "center",
+              "style": {
+                "classes": "report-icon-box",
+                "height": "32px",
+                "width": "32px"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "meta": {
+              "name": "Title"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 1,
+              "shrink": 1
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "expression": "coalesce({view.params.item.label}, '')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "classes": "report-tile-title",
+                "overflow": "hidden",
+                "textOverflow": "ellipsis",
+                "whiteSpace": "nowrap"
+              },
+              "text": ""
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "Check"
+            },
+            "position": {
+              "basis": "20px",
+              "grow": 0,
+              "shrink": 0
+            },
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "config": {
+                    "expression": "coalesce({view.params.item.selected}, false)"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "color": "var(--callToAction)",
+              "path": "material/check_circle",
+              "style": {
+                "height": "20px",
+                "width": "20px"
+              }
+            },
+            "type": "ia.display.icon"
+          }
+        ],
+        "meta": {
+          "name": "Top"
+        },
+        "position": {
+          "basis": "32px",
+          "grow": 0,
+          "shrink": 0
+        },
+        "props": {
+          "alignItems": "center",
+          "direction": "row",
+          "style": {
+            "gap": "10px",
+            "minWidth": "0"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "meta": {
+          "name": "Desc"
+        },
+        "position": {
+          "basis": "0",
+          "grow": 1,
+          "shrink": 1
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({view.params.item.description}, '')"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "classes": "report-tile-desc",
+            "lineHeight": "1.35",
+            "overflow": "hidden",
+            "whiteSpace": "normal"
+          },
+          "text": ""
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Meta"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({view.params.item.meta}, '')"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "classes": "report-tile-meta",
+            "overflow": "hidden",
+            "textOverflow": "ellipsis",
+            "whiteSpace": "nowrap"
+          },
+          "text": ""
+        },
+        "type": "ia.display.label"
+      }
+    ],
+    "events": {
+      "dom": {
+        "onClick": {
+          "config": {
+            "script": "\tit = self.view.params.item\n\tsystem.perspective.sendMessage('rptStart', {'kind': 'source', 'value': it.id}, scope='page')\n"
+          },
+          "scope": "G",
+          "type": "script"
+        }
+      }
+    },
+    "meta": {
+      "name": "root"
+    },
+    "position": {
+      "shrink": 0
+    },
+    "propConfig": {
+      "props.style.classes": {
+        "binding": {
+          "config": {
+            "expression": "if(coalesce({view.params.item.selected}, false), 'report-tile report-tile-selected', 'report-tile')"
+          },
+          "type": "expr"
+        }
+      }
+    },
+    "props": {
+      "alignItems": "stretch",
+      "direction": "column",
+      "style": {
+        "classes": "report-tile",
+        "cursor": "pointer",
+        "gap": "8px",
+        "height": "100%",
+        "minWidth": "0",
+        "padding": "14px 16px"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

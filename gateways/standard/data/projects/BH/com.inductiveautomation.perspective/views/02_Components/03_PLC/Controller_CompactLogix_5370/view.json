@@ -1,0 +1,971 @@
+{
+  "custom": {
+    "preview": "normal",
+    "conn": false,
+    "statusGood": false,
+    "run": false,
+    "major": false,
+    "mode": "NO COMM",
+    "catalog": "1769-L36ERM",
+    "state": "bad",
+    "ip": "",
+    "name": ""
+  },
+  "params": {
+    "tagPath": "",
+    "member": "Controller",
+    "selected": false,
+    "state": "Normal",
+    "label": "BoarsHead",
+    "name": ""
+  },
+  "propConfig": {
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.member": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.selected": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.state": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.label": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.name": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.ip": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/IPAddress')), false), false), if(coalesce({view.params.tagPath}, '') = '', '10.80.31.60', coalesce(try(toStr(tag({view.params.tagPath} + '/IPAddress')), null), '')), null)"
+        }
+      }
+    },
+    "custom.name": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/ControllerName')), false), false), if(coalesce({view.params.name}, '') != '', {view.params.name}, if(coalesce({view.params.tagPath}, '') = '', coalesce({view.params.label}, 'BoarsHead'), coalesce(try(toStr(tag({view.params.tagPath} + '/ControllerName')), null), ''))), null)"
+        }
+      }
+    },
+    "custom.preview": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "lower(trim(coalesce({view.params.state}, 'normal')))"
+        }
+      }
+    },
+    "custom.conn": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', {view.custom.preview} != 'comm loss', coalesce(try(isGood(tag({view.params.tagPath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.params.tagPath} + '/Connected')), false), false))"
+        }
+      }
+    },
+    "custom.statusGood": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', {view.custom.conn}, {view.custom.conn} && coalesce(try(isGood(tag({view.params.tagPath} + '/Status')), false), false))"
+        }
+      }
+    },
+    "custom.run": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', {view.custom.preview} = 'normal', {view.custom.statusGood} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/Run')), false), false))"
+        }
+      }
+    },
+    "custom.major": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', {view.custom.preview} = 'fault', {view.custom.statusGood} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/MajorFault')), false), false))"
+        }
+      }
+    },
+    "custom.mode": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(!{view.custom.conn}, 'NO COMM', if(coalesce({view.params.tagPath}, '') = '', if({view.custom.major}, 'MAJOR FAULT', 'REMOTE RUN'), if(!{view.custom.statusGood}, 'NO DATA', upper(coalesce(try(toStr(tag({view.params.tagPath} + '/Mode')), null), 'Unknown')))))"
+        }
+      }
+    },
+    "custom.catalog": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce(if(coalesce({view.params.tagPath}, '') = '', null, try(if(isGood(tag({view.params.tagPath} + '/ProductName')) && len(trim(toStr(tag({view.params.tagPath} + '/ProductName')))) > 0, split(trim(toStr(tag({view.params.tagPath} + '/ProductName'))), ' ')[0, 0], null), null)), if(coalesce({view.params.tagPath}, '') = '', null, try(toStr(tag({view.params.tagPath} + '/CatalogNumber')), null)), '1769-L36ERM')"
+        }
+      }
+    },
+    "custom.state": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(!{view.custom.conn}, 'bad', if({view.custom.major}, 'fault', if({view.custom.statusGood}, 'ok', 'bad')))"
+        }
+      }
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "width": 114,
+      "height": 280
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root",
+      "contextMenu": {}
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "overflow": "visible",
+        "cursor": "pointer",
+        "width": "100%",
+        "height": "100%"
+      }
+    },
+    "propConfig": {
+      "meta.contextMenu.items": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "coalesce({session.custom.TicketLogAccess}, false)"
+          },
+          "transforms": [
+            {
+              "type": "script",
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = str(self.view.params.tagPath or '')\n\texcept:\n\t\tpass\n\tview_name = self.view.id.split('@')[0]\n\titems = []\n\tif value:\n\t\tlogged = tagPath if tagPath.strip() else 'No TagPath: ' + view_name.split('/')[-1]\n\t\titems.append({\n\t\t\t\"text\": 'Ticket Logger',\n\t\t\t\"icon\": {\"path\": 'material/info', \"color\": \"--neutral-80\", \"style\": {}},\n\t\t\t\"style\": {\"classes\": \"bg-component Fonts/Value\", \"height\": 24, \"width\": 170},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\"type\": 'ticketLog', \"payload\": {'tagPath': logged, 'viewName': view_name, 'sender': self.view.id}, \"scope\": 'page'}\n\t\t})\n\treturn items"
+            }
+          ]
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "len({this.meta.contextMenu.items}) > 0"
+          }
+        }
+      },
+      "props.style.classes": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "if(coalesce({view.params.member}, '') != '', 'faceplate-hover', '')"
+          }
+        }
+      }
+    },
+    "events": {
+      "dom": {
+        "onClick": {
+          "type": "script",
+          "scope": "G",
+          "config": {
+            "script": "\t# read-only rack: a click only selects the module for the detail panel (page message)\n\tmember = str(self.view.params.member or '')\n\tif member:\n\t\tsystem.perspective.sendMessage('plcRackSelect', payload={'member': member}, scope='page')\n"
+          }
+        },
+        "onMouseEnter": {
+          "type": "script",
+          "scope": "G",
+          "config": {
+            "script": "\t# hover popover over the rack (UI state only; the page clears it on leave)\n\tm = str(self.view.params.member or '')\n\tif m:\n\t\tsystem.perspective.sendMessage('plcRackHover', payload={'member': m, 'leave': False}, scope='page')\n"
+          }
+        },
+        "onMouseLeave": {
+          "type": "script",
+          "scope": "G",
+          "config": {
+            "script": "\t# hover popover over the rack (UI state only; the page clears it on leave)\n\tm = str(self.view.params.member or '')\n\tif m:\n\t\tsystem.perspective.sendMessage('plcRackHover', payload={'member': m, 'leave': True}, scope='page')\n"
+          }
+        }
+      }
+    },
+    "children": [
+      {
+        "type": "ia.shapes.svg",
+        "meta": {
+          "name": "Controller"
+        },
+        "position": {
+          "grow": 1,
+          "shrink": 1,
+          "basis": "0px"
+        },
+        "props": {
+          "viewBox": "-1 0 114 280",
+          "elements": [
+            {
+              "type": "rect",
+              "name": "body",
+              "fill": {
+                "paint": "var(--deviceFill-running)"
+              },
+              "style": {},
+              "x": 0.25,
+              "y": 0.25,
+              "width": 111.5,
+              "height": 259.5,
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "rx": 2
+            },
+            {
+              "type": "text",
+              "name": "family",
+              "text": "CompactLogix 5370",
+              "x": 56.0,
+              "y": 10.6,
+              "textAnchor": "middle",
+              "fontSize": 6,
+              "fontWeight": "400",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "text",
+              "name": "catalog",
+              "text": "1769-L36ERM",
+              "x": 56.0,
+              "y": 21.8,
+              "textAnchor": "middle",
+              "fontSize": 8,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "rect",
+              "name": "status-window",
+              "fill": {
+                "paint": "var(--neutral-30)"
+              },
+              "style": {},
+              "x": 6,
+              "y": 28,
+              "width": 100,
+              "height": 76,
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "rx": 1
+            },
+            {
+              "type": "rect",
+              "name": "led-RUN",
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "style": {},
+              "x": 10.25,
+              "y": 34.25,
+              "width": 8.5,
+              "height": 8.5,
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "rx": 1.5
+            },
+            {
+              "type": "text",
+              "name": "lbl-RUN",
+              "text": "RUN",
+              "x": 22,
+              "y": 42.0,
+              "textAnchor": "start",
+              "fontSize": 8,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "rect",
+              "name": "led-FORCE",
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "style": {},
+              "x": 10.25,
+              "y": 51.25,
+              "width": 8.5,
+              "height": 8.5,
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "rx": 1.5
+            },
+            {
+              "type": "text",
+              "name": "lbl-FORCE",
+              "text": "FORCE",
+              "x": 22,
+              "y": 59.0,
+              "textAnchor": "start",
+              "fontSize": 8,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "rect",
+              "name": "led-SD",
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "style": {},
+              "x": 10.25,
+              "y": 68.25,
+              "width": 8.5,
+              "height": 8.5,
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "rx": 1.5
+            },
+            {
+              "type": "text",
+              "name": "lbl-SD",
+              "text": "SD",
+              "x": 22,
+              "y": 76.0,
+              "textAnchor": "start",
+              "fontSize": 8,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "rect",
+              "name": "led-OK",
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "style": {},
+              "x": 10.25,
+              "y": 85.25,
+              "width": 8.5,
+              "height": 8.5,
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "rx": 1.5
+            },
+            {
+              "type": "text",
+              "name": "lbl-OK",
+              "text": "OK",
+              "x": 22,
+              "y": 93.0,
+              "textAnchor": "start",
+              "fontSize": 8,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "rect",
+              "name": "led-NS",
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "style": {},
+              "x": 60.25,
+              "y": 34.25,
+              "width": 8.5,
+              "height": 8.5,
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "rx": 1.5
+            },
+            {
+              "type": "text",
+              "name": "lbl-NS",
+              "text": "NS",
+              "x": 72,
+              "y": 42.0,
+              "textAnchor": "start",
+              "fontSize": 8,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "rect",
+              "name": "led-LNK1",
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "style": {},
+              "x": 60.25,
+              "y": 51.25,
+              "width": 8.5,
+              "height": 8.5,
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "rx": 1.5
+            },
+            {
+              "type": "text",
+              "name": "lbl-LNK1",
+              "text": "LNK1",
+              "x": 72,
+              "y": 59.0,
+              "textAnchor": "start",
+              "fontSize": 8,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "rect",
+              "name": "led-LNK2",
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "style": {},
+              "x": 60.25,
+              "y": 68.25,
+              "width": 8.5,
+              "height": 8.5,
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "rx": 1.5
+            },
+            {
+              "type": "text",
+              "name": "lbl-LNK2",
+              "text": "LNK2",
+              "x": 72,
+              "y": 76.0,
+              "textAnchor": "start",
+              "fontSize": 8,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "rect",
+              "name": "mode-window",
+              "fill": {
+                "paint": "var(--neutral-30)"
+              },
+              "style": {},
+              "x": 6.25,
+              "y": 108.25,
+              "width": 99.5,
+              "height": 21.5,
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "rx": 1
+            },
+            {
+              "type": "text",
+              "name": "mode",
+              "text": "NO DATA",
+              "x": 56.0,
+              "y": 121.35,
+              "textAnchor": "middle",
+              "fontSize": 8.5,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "rect",
+              "name": "sd-slot",
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "style": {},
+              "x": 10.25,
+              "y": 137.25,
+              "width": 29.5,
+              "height": 5.5,
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "rx": 1
+            },
+            {
+              "type": "text",
+              "name": "sd",
+              "text": "SD",
+              "x": 44,
+              "y": 142.7,
+              "textAnchor": "start",
+              "fontSize": 7,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "rect",
+              "name": "port1",
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "style": {},
+              "x": 10.25,
+              "y": 148.25,
+              "width": 21.5,
+              "height": 19.5,
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "rx": 1
+            },
+            {
+              "type": "rect",
+              "name": "port2",
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "style": {},
+              "x": 38.25,
+              "y": 148.25,
+              "width": 21.5,
+              "height": 19.5,
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "rx": 1
+            },
+            {
+              "type": "text",
+              "name": "p1",
+              "text": "1",
+              "x": 21,
+              "y": 175.6,
+              "textAnchor": "middle",
+              "fontSize": 6,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "text",
+              "name": "p2",
+              "text": "2",
+              "x": 49,
+              "y": 175.6,
+              "textAnchor": "middle",
+              "fontSize": 6,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "text",
+              "name": "ip",
+              "text": "10.80.31.60",
+              "x": 64,
+              "y": 160.7,
+              "textAnchor": "start",
+              "fontSize": 7,
+              "fontWeight": "400",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "text",
+              "name": "rcp",
+              "text": "BoarsHead",
+              "x": 56.0,
+              "y": 214.9,
+              "textAnchor": "middle",
+              "fontSize": 9,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "text",
+              "name": "status",
+              "text": "",
+              "x": 56.0,
+              "y": 272.8,
+              "textAnchor": "middle",
+              "fontSize": 8,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "rect",
+              "name": "selected",
+              "x": -0.4,
+              "y": -0.4,
+              "width": 112.8,
+              "height": 260.8,
+              "rx": 2.5,
+              "fill": {
+                "paint": "none"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "1.6",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "style": {}
+            }
+          ],
+          "style": {
+            "overflow": "visible",
+            "userSelect": "none",
+            "width": "100%",
+            "height": "100%"
+          }
+        },
+        "propConfig": {
+          "props.elements[2].text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "{view.custom.catalog}"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[4].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.run}, 'var(--sts-run)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[10].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.major}, 'var(--sts-fault)', if({view.custom.conn}, 'var(--sts-run)', 'var(--neutral-60)'))"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[12].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.conn}, 'var(--sts-run)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[14].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.conn}, 'var(--sts-run)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[19].text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "{view.custom.mode}"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[19].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.run}, 'var(--sts-run)', if({view.custom.major} || !{view.custom.conn}, 'var(--sts-fault)', if({view.custom.statusGood}, 'var(--text)', 'var(--neutral-60)')))"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[19].style.fontStyle": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.conn} && !{view.custom.statusGood}, 'italic', 'normal')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[26].text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "{view.custom.ip}"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[27].text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "{view.custom.name}"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[28].text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "case({view.custom.state}, 'ok', if({view.custom.run}, 'RUN', 'NOT RUN'), 'fault', 'MAJOR FAULT', if({view.custom.conn}, 'NO DATA', 'COMM LOSS'))"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[28].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "case({view.custom.state}, 'ok', if({view.custom.run}, 'var(--sts-run)', 'var(--status-off)'), 'fault', 'var(--sts-fault)', if({view.custom.conn}, 'var(--neutral-60)', 'var(--sts-fault)'))"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[28].style.fontStyle": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.conn} && {view.custom.state} = 'bad', 'italic', 'normal')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[29].stroke.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if(coalesce({view.params.selected}, false), 'var(--sts-run)', 'none')"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "sessionScope": false,
+          "viewScope": false,
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])"
+        }
+      ]
+    }
+  }
+}

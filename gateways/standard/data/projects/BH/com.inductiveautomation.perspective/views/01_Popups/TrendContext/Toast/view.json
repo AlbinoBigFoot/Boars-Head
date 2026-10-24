@@ -1,0 +1,139 @@
+{
+  "custom": {
+    "age": 0
+  },
+  "params": {
+    "text": "",
+    "kind": "ok",
+    "openedAt": null
+  },
+  "props": {
+    "defaultSize": {
+      "width": 420,
+      "height": 44
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "position": {},
+    "props": {
+      "direction": "row",
+      "alignItems": "center",
+      "style": {
+        "classes": "trend-ctx-toast"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Dot"
+        },
+        "position": {
+          "basis": "8px",
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "style": {
+            "classes": "trend-ctx-toast-dot"
+          }
+        },
+        "propConfig": {
+          "props.style.classes": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "'trend-ctx-toast-dot trend-ctx-toast-' + coalesce({view.params.kind}, 'ok')"
+              }
+            }
+          }
+        },
+        "children": []
+      },
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "Text"
+        },
+        "position": {
+          "grow": 1,
+          "shrink": 1,
+          "basis": "0px"
+        },
+        "props": {
+          "text": "",
+          "style": {
+            "classes": "Fonts/Value trend-ctx-toast-text"
+          }
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "view.params.text"
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "Open"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "text": "Open Trend",
+          "style": {
+            "classes": "Fonts/Label trend-ctx-link"
+          }
+        },
+        "events": {
+          "dom": {
+            "onClick": {
+              "type": "script",
+              "scope": "G",
+              "config": {
+                "script": "\tsystem.perspective.closePopup('TrendToast')\n\tshared.TrendContext.open_trend()"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "propConfig": {
+    "params.text": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.kind": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.openedAt": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.age": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(isNull({view.params.openedAt}), 0, dateDiff({view.params.openedAt}, now(500), 'second'))"
+        }
+      },
+      "onChange": {
+        "enabled": null,
+        "script": "\tif currentValue is not None and currentValue.value is not None and currentValue.value >= 3:\n\t\tsystem.perspective.closePopup('TrendToast')"
+      },
+      "persistent": true
+    }
+  }
+}

@@ -15,6 +15,56 @@ DEVICE_TYPE_FOLDERS = (
 )
 
 
+# Tag path fragments per Device Type (CG evaporators live under <Area>/Utility/CG-*, not an Evaporators folder).
+DEVICE_TYPE_PATTERNS = {
+	"Evaporators": ["Evaporators", "Utility/CG-"],
+}
+# Plant areas = folder names in the tag paths (Boars_Head/GrovePort/<Area>/..., Plant/Machine Room/...).
+AREAS = ("Freezer", "SuperChill", "Club", "Palletizing", "East PH", "West PH", "Dock", "Machine Room")
+
+
+def _selection(selected):
+	"""Multi-select dropdown value -> list of non-empty strings."""
+	if selected is None or selected == "":
+		return []
+	if isinstance(selected, basestring):
+		return [str(selected).strip()] if str(selected).strip() else []
+	out = []
+	try:
+		for item in selected:
+			if item is not None and str(item).strip():
+				out.append(str(item).strip())
+	except TypeError:
+		if str(selected).strip():
+			out = [str(selected).strip()]
+	return out
+
+
+def sourceFilter(deviceTypes=None, areas=None):
+	"""
+	Alarm Status / Alarm Journal source filter from the Device Type and Area multi-selects.
+
+	Within one dropdown the selections are OR'd; across the two dropdowns they are AND'd (an alarm must be
+	in a selected area AND of a selected type). Nothing selected in either => '*' (all alarms).
+	The filter is a comma list of wildcards (OR), so the AND is built from area x type combinations:
+	  area only -> '*/<Area>/*'   type only -> '*<fragment>*'   both -> '*/<Area>/*<fragment>*'
+	"""
+	types = _selection(deviceTypes)
+	places = _selection(areas)
+	fragments = []
+	for t in types:
+		for frag in DEVICE_TYPE_PATTERNS.get(t, [t]):
+			if frag not in fragments:
+				fragments.append(frag)
+	if not places and not fragments:
+		return "*"
+	if not places:
+		return ",".join(["*%s*" % f for f in fragments])
+	if not fragments:
+		return ",".join(["*/%s/*" % a for a in places])
+	return ",".join(["*/%s/*%s*" % (a, f) for a in places for f in fragments])
+
+
 def deviceTypeSourceFilter(selected):
 	"""
 	Build Alarm Status / Alarm Journal source filter from a multi-select Device Type list.
@@ -22,31 +72,9 @@ def deviceTypeSourceFilter(selected):
 	Empty / None selection => '*' (show all device types).
 	One or more selections => comma-delimited '*Folder*' wildcards (OR match).
 	Device types map to tag path folders under [default], e.g. Evaporators → *Evaporators*.
+	Kept for callers without an Area filter; see sourceFilter().
 	"""
-	if selected is None or selected == "":
-		return "*"
-
-	items = []
-	if isinstance(selected, basestring):
-		if str(selected).strip():
-			items = [str(selected).strip()]
-	else:
-		try:
-			for item in selected:
-				if item is None:
-					continue
-				text = str(item).strip()
-				if text:
-					items.append(text)
-		except TypeError:
-			text = str(selected).strip()
-			if text:
-				items = [text]
-
-	if not items:
-		return "*"
-
-	return ",".join(["*%s*" % folder for folder in items])
+	return sourceFilter(selected, None)
 
 
 def sourceWildcard(tagPath):

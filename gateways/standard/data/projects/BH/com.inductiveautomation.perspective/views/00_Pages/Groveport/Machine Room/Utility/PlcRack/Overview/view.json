@@ -1,0 +1,819 @@
+{
+  "custom": {
+    "plcs": {},
+    "sitePath": "[default]Boars_Head/GrovePort/Machine Room/PLC/RCP1",
+    "selected": "Controller",
+    "hover": "",
+    "rack": {},
+    "alarms": null
+  },
+  "params": {
+    "plc": "RCP1"
+  },
+  "propConfig": {
+    "params.plc": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.plcs": {
+      "binding": {
+        "type": "tag",
+        "config": {
+          "fallbackDelay": 2.5,
+          "mode": "direct",
+          "tagPath": "[default]_Config/PLCs/List"
+        }
+      }
+    },
+    "custom.sitePath": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce(try(toStr(where(coalesce({view.custom.plcs.plcs}, asList()), it()['name'] = if(coalesce({view.params.plc}, '') = '', 'RCP1', {view.params.plc}))[0]['path']), null), '[default]Boars_Head/GrovePort/Machine Room/PLC/' + if(coalesce({view.params.plc}, '') = '', 'RCP1', {view.params.plc}))"
+        }
+      }
+    },
+    "custom.alarms": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "now(10000)"
+        },
+        "transforms": [
+          {
+            "type": "script",
+            "code": "\t# active alarms of this PLC (sources under its site instance) - an expression cannot query alarms by path.\n\t# {count, top}: top = the highest-priority active alarm's name\n\tpath = str(self.view.custom.sitePath or '')\n\tif not path:\n\t\treturn None\n\ttry:\n\t\trel = path.split(']', 1)[-1]\n\t\tres = list(system.alarm.queryStatus(source=['*' + rel + '/*'], state=['ActiveUnacked', 'ActiveAcked']))\n\t\ttop = ''\n\t\tif res:\n\t\t\tbest = sorted(res, key=lambda a: -a.getPriority().ordinal())[0]\n\t\t\ttop = str(best.getName())\n\t\treturn {'count': len(res), 'top': top}\n\texcept:\n\t\treturn None"
+          }
+        ]
+      }
+    },
+    "custom.rack": {
+      "binding": {
+        "type": "tag",
+        "config": {
+          "fallbackDelay": 2.5,
+          "mode": "indirect",
+          "references": {
+            "site": "{view.custom.sitePath}"
+          },
+          "tagPath": "{site}/Rack"
+        }
+      }
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 1080,
+      "width": 1920
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "bg-page",
+        "height": "100%",
+        "width": "100%",
+        "overflowX": "hidden",
+        "overflowY": "auto",
+        "padding": "16px 24px 24px 24px",
+        "boxSizing": "border-box",
+        "gap": "10px"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Summary"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "style": {
+            "gap": "8px"
+          },
+          "wrap": "wrap",
+          "alignItems": "center"
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "ChipController"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "padding": "6px 12px",
+                "gap": "2px",
+                "minWidth": "120px",
+                "borderRadius": "4px",
+                "backgroundColor": "var(--surface-component)",
+                "border": "1px solid var(--neutral-30)"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Label"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Controller",
+                  "style": {
+                    "classes": "fs-11 fw-400 text-muted",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Value"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "--",
+                  "style": {
+                    "classes": "fs-14 fw-700",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(!(coalesce(try(isGood(tag({view.custom.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.custom.sitePath} + '/Connected')), false), false)), '—', if(!(coalesce(try(isGood(tag({view.custom.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.custom.sitePath} + '/Connected')), false), false)) && coalesce(try(isGood(tag({view.custom.sitePath} + '/Mode')), false), false), if((coalesce(try(isGood(tag({view.custom.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.custom.sitePath} + '/Connected')), false), false)), 'No Data', 'Comm Loss'), toStr(tag({view.custom.sitePath} + '/Mode'))))"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.color": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(!(coalesce(try(isGood(tag({view.custom.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.custom.sitePath} + '/Connected')), false), false)), 'var(--neutral-60)', if(!(coalesce(try(isGood(tag({view.custom.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.custom.sitePath} + '/Connected')), false), false)) && coalesce(try(isGood(tag({view.custom.sitePath} + '/Mode')), false), false), if((coalesce(try(isGood(tag({view.custom.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.custom.sitePath} + '/Connected')), false), false)), 'var(--neutral-60)', 'var(--sts-fault)'), if(coalesce(try(toBoolean(tag({view.custom.sitePath} + '/Run')), false), false), 'var(--sts-run)', 'var(--text)')))"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(!(coalesce(try(isGood(tag({view.custom.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.custom.sitePath} + '/Connected')), false), false)), 'fs-14 fw-700 value-bad', if((coalesce(try(isGood(tag({view.custom.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.custom.sitePath} + '/Connected')), false), false)) && coalesce(try(isGood(tag({view.custom.sitePath} + '/Mode')), false), false) || !(coalesce(try(isGood(tag({view.custom.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.custom.sitePath} + '/Connected')), false), false)), 'fs-14 fw-700', 'fs-14 fw-700 value-bad'))"
+                      },
+                      "overlayOptOut": true
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "ChipDriver"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "padding": "6px 12px",
+                "gap": "2px",
+                "minWidth": "120px",
+                "borderRadius": "4px",
+                "backgroundColor": "var(--surface-component)",
+                "border": "1px solid var(--neutral-30)"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Label"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Driver",
+                  "style": {
+                    "classes": "fs-11 fw-400 text-muted",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Value"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "--",
+                  "style": {
+                    "classes": "fs-14 fw-700",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(!coalesce(try(isGood(tag({view.custom.sitePath} + '/Connected')), false), false), 'No Data', if((coalesce(try(isGood(tag({view.custom.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.custom.sitePath} + '/Connected')), false), false)), 'Connected', 'Disconnected'))"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.color": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if((coalesce(try(isGood(tag({view.custom.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.custom.sitePath} + '/Connected')), false), false)), 'var(--sts-run)', if(coalesce(try(isGood(tag({view.custom.sitePath} + '/Connected')), false), false), 'var(--sts-fault)', 'var(--neutral-60)'))"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try(isGood(tag({view.custom.sitePath} + '/Connected')), false), false), 'fs-14 fw-700', 'fs-14 fw-700 value-bad')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "ChipFaulted"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "padding": "6px 12px",
+                "gap": "2px",
+                "minWidth": "120px",
+                "borderRadius": "4px",
+                "backgroundColor": "var(--surface-component)",
+                "border": "1px solid var(--neutral-30)"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Label"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Modules Faulted",
+                  "style": {
+                    "classes": "fs-11 fw-400 text-muted",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Value"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "--",
+                  "style": {
+                    "classes": "fs-14 fw-700",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(!(coalesce(try(isGood(tag({view.custom.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.custom.sitePath} + '/Connected')), false), false)), '—', if(!coalesce(try(isGood(tag({view.custom.sitePath} + '/ModulesFaulted')), false), false), 'No Data', toStr(coalesce(try(toInt(tag({view.custom.sitePath} + '/ModulesFaulted')), 0), 0)) + ' / ' + toStr(coalesce(try(toInt(tag({view.custom.sitePath} + '/ModuleCount')), len(coalesce({view.custom.rack.slots}, asList()))), len(coalesce({view.custom.rack.slots}, asList()))))))"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.color": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(!(coalesce(try(isGood(tag({view.custom.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.custom.sitePath} + '/Connected')), false), false)), 'var(--neutral-60)', if(!coalesce(try(isGood(tag({view.custom.sitePath} + '/ModulesFaulted')), false), false), 'var(--neutral-60)', if(coalesce(try(toInt(tag({view.custom.sitePath} + '/ModulesFaulted')), 0), 0) > 0, 'var(--sts-fault)', 'var(--sts-run)')))"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(!(coalesce(try(isGood(tag({view.custom.sitePath} + '/Connected')), false), false) && coalesce(try(toBoolean(tag({view.custom.sitePath} + '/Connected')), false), false)), 'fs-14 fw-700 value-bad', if(coalesce(try(isGood(tag({view.custom.sitePath} + '/ModulesFaulted')), false), false), 'fs-14 fw-700', 'fs-14 fw-700 value-bad'))"
+                      },
+                      "overlayOptOut": true
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "ChipAlarms"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "padding": "6px 12px",
+                "gap": "2px",
+                "minWidth": "120px",
+                "borderRadius": "4px",
+                "backgroundColor": "var(--surface-component)",
+                "border": "1px solid var(--neutral-30)"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Label"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Active Alarms",
+                  "style": {
+                    "classes": "fs-11 fw-400 text-muted",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Value"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "--",
+                  "style": {
+                    "classes": "fs-14 fw-700",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(isNull(try({view.custom.alarms.count}, null)), '--', toStr({view.custom.alarms.count}) + if(coalesce(try({view.custom.alarms.top}, null), '') = '', '', ' · ' + {view.custom.alarms.top}))"
+                      }
+                    }
+                  },
+                  "props.style.color": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try({view.custom.alarms.count}, null), 0) > 0, 'var(--sts-fault)', 'var(--sts-run)')"
+                      }
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(isNull(try({view.custom.alarms.count}, null)), 'fs-14 fw-700 value-bad', 'fs-14 fw-700')"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "ChipFaultCode"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "padding": "6px 12px",
+                "gap": "2px",
+                "minWidth": "120px",
+                "borderRadius": "4px",
+                "backgroundColor": "var(--surface-component)",
+                "border": "1px solid var(--neutral-30)"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Label"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Last Major Fault Code",
+                  "style": {
+                    "classes": "fs-11 fw-400 text-muted",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Value"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "--",
+                  "style": {
+                    "classes": "fs-14 fw-700",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce(try(if(isGood(tag({view.custom.sitePath} + '/MajorFaultRecordCode')), toStr(tag({view.custom.sitePath} + '/MajorFaultRecordCode')), null), null), '--')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.color": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "'var(--text)'"
+                      }
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try(isGood(tag({view.custom.sitePath} + '/MajorFaultRecordCode')), false), false), 'fs-14 fw-700', 'fs-14 fw-700 value-bad')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Spacer"
+            },
+            "position": {
+              "grow": 1,
+              "basis": "0px"
+            },
+            "props": {
+              "direction": "row"
+            }
+          },
+          {
+            "type": "ia.input.button",
+            "meta": {
+              "name": "View3d"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "3D View",
+              "image": {
+                "icon": {
+                  "path": "material/3d_rotation"
+                },
+                "width": 16,
+                "height": 16
+              },
+              "style": {
+                "classes": "faceplate-cmd-btn Fonts/Label",
+                "height": "30px"
+              }
+            },
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\t# UI navigation only: the read-only 3D rack page for this PLC\n\tplc = self.view.params.plc or 'RCP1'\n\tsystem.perspective.navigate('/operations/plcs/%s/3d' % plc)"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "RackHost"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "classes": "plcrack-host",
+            "position": "relative",
+            "padding": "10px",
+            "borderRadius": "3px",
+            "backgroundColor": "var(--neutral-30)",
+            "border": "1px solid var(--neutral-100)",
+            "boxSizing": "border-box",
+            "maxWidth": "1827px"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.flex-repeater",
+            "meta": {
+              "name": "Rack"
+            },
+            "position": {
+              "shrink": 0,
+              "basis": "auto"
+            },
+            "props": {
+              "path": "02_Components/03_PLC/RackSlot",
+              "direction": "row",
+              "wrap": "wrap",
+              "alignContent": "stretch",
+              "useDefaultViewWidth": false,
+              "useDefaultViewHeight": false,
+              "elementPosition": {
+                "basis": "4%",
+                "shrink": 0,
+                "grow": 0
+              },
+              "instances": [],
+              "style": {
+                "classes": "plcrack-rack",
+                "width": "100%",
+                "aspectRatio": "1260 / 280",
+                "overflow": "visible"
+              }
+            },
+            "propConfig": {
+              "props.style.aspectRatio": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "toStr(coalesce(try(toFloat({view.custom.rack.units}), 1260.0), 1260.0)) + ' / 280'"
+                  }
+                }
+              },
+              "props.instances": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "forEach(coalesce({view.custom.rack.items}, asList()), asMap('tagPath', if(it()['kind'] = 'card', {view.custom.sitePath} + '/' + it()['member'], if(it()['kind'] = 'controller', {view.custom.sitePath}, '')), 'kind', it()['kind'], 'catalog', coalesce(it()['catalog'], ''), 'slot', coalesce(it()['slot'], 0), 'member', coalesce(it()['member'], ''), 'name', coalesce(it()['name'], ''), 'selected', coalesce(it()['member'], '-') = coalesce({view.custom.selected}, ''), 'instanceStyle', asMap('classes', 'plcrack-u' + toStr(it()['units'])), 'instancePosition', asMap('basis', toStr(floor(toFloat(it()['units']) * 1000000 / coalesce(try(toFloat({view.custom.rack.units}), 1260.0), 1260.0)) / 10000.0) + '%', 'shrink', 0, 'grow', 0)))"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "Hover"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "path": "02_Components/03_PLC/ModuleHover",
+              "useDefaultViewHeight": false,
+              "useDefaultViewWidth": false,
+              "params": {
+                "tagPath": "",
+                "kind": "",
+                "title": ""
+              },
+              "style": {
+                "position": "absolute",
+                "top": "12px",
+                "left": "0px",
+                "width": "340px",
+                "height": "156px",
+                "zIndex": 20,
+                "pointerEvents": "none"
+              }
+            },
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "coalesce({view.custom.hover}, '') != ''"
+                  }
+                }
+              },
+              "props.style.height": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "case(if(coalesce({view.custom.hover}, '') = 'Controller', 'CTRL', coalesce(try(toStr(coalesce(try(where(coalesce({view.custom.rack.items}, asList()), coalesce(it()['member'], '') = coalesce({view.custom.hover}, '-'))[0], null), asMap())['type']), ''), '')), 'AI', '178px', 'CTRL', '154px', '156px')"
+                  }
+                }
+              },
+              "props.params.tagPath": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if(coalesce({view.custom.hover}, '') = 'Controller', {view.custom.sitePath}, {view.custom.sitePath} + '/' + coalesce({view.custom.hover}, ''))"
+                  }
+                }
+              },
+              "props.params.kind": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if(coalesce({view.custom.hover}, '') = 'Controller', 'CTRL', coalesce(try(toStr(coalesce(try(where(coalesce({view.custom.rack.items}, asList()), coalesce(it()['member'], '') = coalesce({view.custom.hover}, '-'))[0], null), asMap())['type']), ''), ''))"
+                  }
+                }
+              },
+              "props.params.title": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if(coalesce({view.custom.hover}, '') = 'Controller', 'Controller · ' + coalesce(try(toStr({view.custom.rack.controller.name}), null), '') + ' · 1769-L36ERM', 'Slot ' + if(coalesce(try(toInt(coalesce(try(where(coalesce({view.custom.rack.items}, asList()), coalesce(it()['member'], '') = coalesce({view.custom.hover}, '-'))[0], null), asMap())['slot']), 0), 0) < 10, '0', '') + toStr(coalesce(try(toInt(coalesce(try(where(coalesce({view.custom.rack.items}, asList()), coalesce(it()['member'], '') = coalesce({view.custom.hover}, '-'))[0], null), asMap())['slot']), 0), 0)) + ' · ' + coalesce(try(toStr(coalesce(try(where(coalesce({view.custom.rack.items}, asList()), coalesce(it()['member'], '') = coalesce({view.custom.hover}, '-'))[0], null), asMap())['name']), ''), '') + ' · ' + coalesce(try(toStr(coalesce(try(where(coalesce({view.custom.rack.items}, asList()), coalesce(it()['member'], '') = coalesce({view.custom.hover}, '-'))[0], null), asMap())['catalog']), ''), ''))"
+                  }
+                }
+              },
+              "props.style.left": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if((coalesce(try(toFloat(coalesce(try(where(coalesce({view.custom.rack.items}, asList()), coalesce(it()['member'], '') = coalesce({view.custom.hover}, '-'))[0], null), asMap())['x']), 0.0), 0.0) + coalesce(try(toFloat(coalesce(try(where(coalesce({view.custom.rack.items}, asList()), coalesce(it()['member'], '') = coalesce({view.custom.hover}, '-'))[0], null), asMap())['units']), 0.0), 0.0) / 2) / coalesce(try(toFloat({view.custom.rack.units}), 1260.0), 1260.0) < 0.5, 'clamp(0px, calc(' + toStr((coalesce(try(toFloat(coalesce(try(where(coalesce({view.custom.rack.items}, asList()), coalesce(it()['member'], '') = coalesce({view.custom.hover}, '-'))[0], null), asMap())['x']), 0.0), 0.0) + coalesce(try(toFloat(coalesce(try(where(coalesce({view.custom.rack.items}, asList()), coalesce(it()['member'], '') = coalesce({view.custom.hover}, '-'))[0], null), asMap())['units']), 0.0), 0.0)) * 100 / coalesce(try(toFloat({view.custom.rack.units}), 1260.0), 1260.0)) + '% + 16px), calc(100% - 340px))', 'clamp(0px, calc(' + toStr(coalesce(try(toFloat(coalesce(try(where(coalesce({view.custom.rack.items}, asList()), coalesce(it()['member'], '') = coalesce({view.custom.hover}, '-'))[0], null), asMap())['x']), 0.0), 0.0) * 100 / coalesce(try(toFloat({view.custom.rack.units}), 1260.0), 1260.0)) + '% - 346px), calc(100% - 340px))')"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ia.display.view",
+        "meta": {
+          "name": "Detail"
+        },
+        "position": {
+          "shrink": 0,
+          "basis": "auto"
+        },
+        "props": {
+          "path": "02_Components/03_PLC/ModuleDetail",
+          "useDefaultViewHeight": false,
+          "useDefaultViewWidth": false,
+          "params": {
+            "sitePath": "[default]Boars_Head/GrovePort/Machine Room/PLC/RCP1",
+            "member": "Controller",
+            "inPopup": false
+          },
+          "style": {
+            "height": "284px",
+            "width": "100%",
+            "maxWidth": "1827px"
+          }
+        },
+        "propConfig": {
+          "props.params.sitePath": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "view.custom.sitePath"
+              }
+            }
+          },
+          "props.params.member": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "view.custom.selected"
+              }
+            }
+          },
+          "props.style.height": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "case(if(coalesce({view.custom.selected}, '') = 'Controller', 'CTRL', coalesce(try(toStr(where(coalesce({view.custom.rack.slots}, asList()), it()['member'] = coalesce({view.custom.selected}, ''))[0]['type']), 'CTRL'), 'CTRL')), 'AI', '188px', 'CTRL', '286px', '284px')"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "plcRackSelect",
+          "pageScope": true,
+          "sessionScope": false,
+          "viewScope": false,
+          "script": "\t# module / controller click in the rack -> detail panel (UI state only)\n\tself.view.custom.selected = str(payload.get('member') or 'Controller')"
+        },
+        {
+          "messageType": "plcRackHover",
+          "pageScope": true,
+          "sessionScope": false,
+          "viewScope": false,
+          "script": "\t# hover popover (UI state only): enter shows it, leave clears it unless another card took over\n\tm = str(payload.get('member') or '')\n\tif payload.get('leave'):\n\t\tif self.view.custom.hover == m:\n\t\t\tself.view.custom.hover = ''\n\telse:\n\t\tself.view.custom.hover = m"
+        }
+      ]
+    }
+  }
+}

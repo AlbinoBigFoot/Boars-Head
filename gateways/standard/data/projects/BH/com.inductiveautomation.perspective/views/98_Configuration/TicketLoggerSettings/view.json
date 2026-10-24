@@ -1,0 +1,739 @@
+{
+  "custom": {
+    "tab": "Destinations",
+    "rev": 0,
+    "data": null
+  },
+  "params": {},
+  "propConfig": {
+    "custom.data": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "runScript('shared.TicketLogger.routingForView', 0, {view.custom.rev})"
+        }
+      }
+    },
+    "custom.tab": {
+      "persistent": false
+    },
+    "custom.rev": {
+      "persistent": false
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "width": 552,
+      "height": 660
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "position": {
+      "shrink": 0
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "overflow": "hidden",
+        "padding": "2px"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "Denied"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "text": "Ticket Logger Settings Needs The Ticket Logger Settings Permission (OneShot).",
+          "style": {
+            "classes": "form-note",
+            "whiteSpace": "normal",
+            "lineHeight": "1.35"
+          }
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "!(coalesce({session.custom.TicketLogSettings}, false))"
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Content"
+        },
+        "position": {
+          "grow": 1,
+          "basis": "0",
+          "shrink": 1
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "gap": "10px"
+          }
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "coalesce({session.custom.TicketLogSettings}, false)"
+              }
+            }
+          }
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Tabs"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "style": {
+                "classes": "admin-tabs"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "TabDestinations"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Destinations",
+                  "style": {
+                    "classes": "admin-tab"
+                  }
+                },
+                "propConfig": {
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.custom.tab} = 'Destinations', 'admin-tab admin-tab-active', 'admin-tab')"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "dom": {
+                    "onClick": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tself.view.custom.tab = 'Destinations'\n"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "TabRouting"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Routing",
+                  "style": {
+                    "classes": "admin-tab"
+                  }
+                },
+                "propConfig": {
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.custom.tab} = 'Routing', 'admin-tab admin-tab-active', 'admin-tab')"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "dom": {
+                    "onClick": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tself.view.custom.tab = 'Routing'\n"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Destinations"
+            },
+            "position": {
+              "grow": 1,
+              "basis": "0",
+              "shrink": 1
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "10px"
+              }
+            },
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "{view.custom.tab} = 'Destinations'"
+                  }
+                }
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "Integrations"
+                },
+                "position": {
+                  "grow": 1,
+                  "basis": "0",
+                  "shrink": 1
+                },
+                "props": {
+                  "path": "98_Configuration/Integrations",
+                  "style": {
+                    "overflow": "hidden"
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Oracle"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "classes": "form-card",
+                    "gap": "10px",
+                    "padding": "12px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Head"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "style": {
+                        "gap": "8px"
+                      },
+                      "alignItems": "center"
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Name"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "Oracle",
+                          "style": {
+                            "classes": "form-section-title"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Sub"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "Client Ticketing",
+                          "style": {
+                            "classes": "form-hint"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.container.flex",
+                        "meta": {
+                          "name": "Spacer"
+                        },
+                        "position": {
+                          "grow": 1,
+                          "basis": "0"
+                        },
+                        "props": {
+                          "direction": "row",
+                          "style": {}
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Badge"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "Coming Soon",
+                          "style": {
+                            "classes": "form-hint fw-700",
+                            "backgroundColor": "var(--surface-page)",
+                            "borderRadius": "10px",
+                            "padding": "2px 8px"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Note"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "",
+                      "style": {
+                        "classes": "form-hint",
+                        "whiteSpace": "normal",
+                        "lineHeight": "1.35"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "'Tickets routed to Oracle are queued in the local outbox (' + toStr(coalesce(try({view.custom.data.oraclePending}, 0), 0)) + ' Pending) until the client integration is connected.'"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Row"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "style": {
+                        "gap": "10px"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.container.flex",
+                        "meta": {
+                          "name": "Endpoint"
+                        },
+                        "position": {
+                          "grow": 1,
+                          "basis": "0",
+                          "shrink": 1
+                        },
+                        "props": {
+                          "direction": "column",
+                          "style": {
+                            "gap": "4px"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "Label"
+                            },
+                            "position": {
+                              "shrink": 0
+                            },
+                            "props": {
+                              "text": "Endpoint URL",
+                              "style": {
+                                "classes": "form-label"
+                              }
+                            }
+                          },
+                          {
+                            "type": "ia.input.text-field",
+                            "meta": {
+                              "name": "Input"
+                            },
+                            "position": {
+                              "shrink": 0
+                            },
+                            "props": {
+                              "placeholder": "Coming Soon",
+                              "enabled": false,
+                              "style": {
+                                "classes": "form-input",
+                                "height": "32px",
+                                "paddingLeft": "8px"
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "type": "ia.container.flex",
+                        "meta": {
+                          "name": "Client"
+                        },
+                        "position": {
+                          "grow": 1,
+                          "basis": "0",
+                          "shrink": 1
+                        },
+                        "props": {
+                          "direction": "column",
+                          "style": {
+                            "gap": "4px"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "Label"
+                            },
+                            "position": {
+                              "shrink": 0
+                            },
+                            "props": {
+                              "text": "Client Id",
+                              "style": {
+                                "classes": "form-label"
+                              }
+                            }
+                          },
+                          {
+                            "type": "ia.input.text-field",
+                            "meta": {
+                              "name": "Input"
+                            },
+                            "position": {
+                              "shrink": 0
+                            },
+                            "props": {
+                              "placeholder": "Coming Soon",
+                              "enabled": false,
+                              "style": {
+                                "classes": "form-input",
+                                "height": "32px",
+                                "paddingLeft": "8px"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Credential"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "gap": "4px"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Label"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "API Credential",
+                          "style": {
+                            "classes": "form-label"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.input.text-field",
+                        "meta": {
+                          "name": "Input"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "placeholder": "Coming Soon",
+                          "enabled": false,
+                          "style": {
+                            "classes": "form-input",
+                            "height": "32px",
+                            "paddingLeft": "8px"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "DryRun"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "classes": "form-card",
+                    "gap": "10px",
+                    "padding": "12px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Head"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "style": {
+                        "gap": "10px"
+                      },
+                      "alignItems": "center"
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Name"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "Dry Run",
+                          "style": {
+                            "classes": "form-section-title"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "State"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "",
+                          "style": {
+                            "classes": "form-status"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "if(coalesce(try({view.custom.data.dryRun}, false), false), 'On - Nothing Is Sent', 'Off - Tickets Go To Their Destinations')"
+                              }
+                            }
+                          },
+                          "props.style.classes": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "if(coalesce(try({view.custom.data.dryRun}, false), false), 'form-status-error', 'form-status')"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.container.flex",
+                        "meta": {
+                          "name": "Spacer"
+                        },
+                        "position": {
+                          "grow": 1,
+                          "basis": "0"
+                        },
+                        "props": {
+                          "direction": "row",
+                          "style": {}
+                        },
+                        "children": []
+                      },
+                      {
+                        "type": "ia.input.button",
+                        "meta": {
+                          "name": "Toggle"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "",
+                          "style": {
+                            "classes": "form-btn",
+                            "height": "32px"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "if(coalesce(try({view.custom.data.dryRun}, false), false), 'Turn Dry Run Off', 'Turn Dry Run On')"
+                              }
+                            }
+                          }
+                        },
+                        "events": {
+                          "component": {
+                            "onActionPerformed": {
+                              "type": "script",
+                              "scope": "G",
+                              "config": {
+                                "script": "\ttry:\n\t\tshared.TicketLogger.setDryRun(not bool(self.view.custom.data['dryRun']), self.view.id)\n\texcept Exception as e:\n\t\tshared.Alerts.showAlert(state='error', title='Dry Run', message=str(e), showCloseBtn=True,\n\t\t\tbtnTextPrimary='OK', btnTextSecondary='', btnActionPrimary='closeAlert', btnActionSecondary='',\n\t\t\tpayload={})\n\tself.view.custom.rev = (self.view.custom.rev or 0) + 1\n"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Note"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "",
+                      "style": {
+                        "classes": "form-hint",
+                        "whiteSpace": "normal",
+                        "lineHeight": "1.35"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "'On: no Monday item is created and nothing is queued for Oracle; every ticket is recorded in the outbox ' + 'as Dry Run with its routed destination (' + toStr(coalesce(try({view.custom.data.dryRunCount}, 0), 0)) + ' Recorded). Use it to test routing.'"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "ia.display.view",
+            "meta": {
+              "name": "Routing"
+            },
+            "position": {
+              "grow": 1,
+              "basis": "0",
+              "shrink": 1
+            },
+            "props": {
+              "path": "98_Configuration/TicketRouting",
+              "params": {
+                "rev": 0
+              },
+              "style": {
+                "overflow": "hidden"
+              }
+            },
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "{view.custom.tab} = 'Routing'"
+                  }
+                }
+              },
+              "props.params.rev": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.custom.rev"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,563 @@
+{
+  "custom": {
+    "memo": "",
+    "reason": null,
+    "error": ""
+  },
+  "params": {
+    "tagPath": "",
+    "deviceName": "",
+    "takeOut": true,
+    "viewName": ""
+  },
+  "propConfig": {
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.deviceName": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.takeOut": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.viewName": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.memo": {
+      "persistent": true
+    },
+    "custom.reason": {
+      "persistent": true
+    },
+    "custom.error": {
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 470,
+      "width": 460
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "dialog",
+      "contextMenu": {}
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "bg-component container-card container-card-border",
+        "borderStyle": "solid",
+        "overflow": "hidden"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "body"
+        },
+        "position": {
+          "grow": 1,
+          "shrink": 1
+        },
+        "props": {
+          "direction": "row",
+          "style": {
+            "padding": "12px",
+            "borderTopStyle": "solid",
+            "borderTopWidth": "4px",
+            "overflowY": "auto"
+          },
+          "alignItems": "flex-start"
+        },
+        "propConfig": {
+          "props.style.borderTopColor": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if(coalesce({view.params.takeOut}, true), 'var(--warning)', 'var(--success)')"
+              }
+            }
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.icon",
+            "meta": {
+              "name": "Icon"
+            },
+            "position": {
+              "basis": "32px",
+              "shrink": 0
+            },
+            "props": {
+              "path": "material/sticky_note_2",
+              "style": {
+                "classes": "",
+                "marginRight": "12px"
+              }
+            },
+            "propConfig": {
+              "props.color": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if(coalesce({view.params.takeOut}, true), 'var(--warning)', 'var(--success)')"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "content"
+            },
+            "position": {
+              "grow": 1,
+              "shrink": 1,
+              "basis": "0"
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "4px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Title"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "",
+                  "style": {
+                    "classes": "Fonts/Header",
+                    "lineHeight": "24px"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce({view.params.takeOut}, true), 'Take ' + {view.params.deviceName} + ' Out Of Service', 'Return ' + {view.params.deviceName} + ' To Service')"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "TagPath"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "",
+                  "style": {
+                    "classes": "Fonts/Label fs-11 text-muted",
+                    "whiteSpace": "normal",
+                    "overflowWrap": "anywhere"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "view.params.tagPath"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "ReasonRow"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "gap": "8px",
+                    "marginTop": "10px"
+                  },
+                  "alignItems": "center"
+                },
+                "propConfig": {
+                  "position.display": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({view.params.takeOut}, true)"
+                      }
+                    }
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Lbl"
+                    },
+                    "position": {
+                      "basis": "70px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Reason",
+                      "style": {
+                        "classes": "Fonts/Label"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.input.dropdown",
+                    "meta": {
+                      "name": "Reason"
+                    },
+                    "position": {
+                      "basis": "220px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "options": [
+                        {
+                          "value": "Maintenance",
+                          "label": "Maintenance"
+                        },
+                        {
+                          "value": "Repair",
+                          "label": "Repair"
+                        },
+                        {
+                          "value": "Awaiting Parts",
+                          "label": "Awaiting Parts"
+                        },
+                        {
+                          "value": "Seasonal",
+                          "label": "Seasonal"
+                        },
+                        {
+                          "value": "Safety Lockout",
+                          "label": "Safety Lockout"
+                        },
+                        {
+                          "value": "Other",
+                          "label": "Other"
+                        }
+                      ],
+                      "placeholder": {
+                        "text": "Select A Reason"
+                      },
+                      "showClearIcon": false,
+                      "style": {
+                        "classes": "bg-component Fonts/Value",
+                        "height": "32px"
+                      }
+                    },
+                    "propConfig": {
+                      "props.value": {
+                        "binding": {
+                          "type": "property",
+                          "config": {
+                            "path": "view.custom.reason",
+                            "bidirectional": true
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "MemoLbl"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "",
+                  "style": {
+                    "classes": "Fonts/Label",
+                    "marginTop": "10px"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce({view.params.takeOut}, true), 'Memo - Why Is It Being Taken Out Of Service?', 'Memo - What Was Done? Is It Ready To Run?')"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.input.text-area",
+                "meta": {
+                  "name": "Memo"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "placeholder": "Required, at least 10 characters",
+                  "deferUpdates": false,
+                  "resize": "none",
+                  "style": {
+                    "classes": "bg-component Fonts/Value",
+                    "height": "120px",
+                    "padding": "6px",
+                    "borderRadius": "4px",
+                    "border": "1px solid var(--border)"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "view.custom.memo",
+                        "bidirectional": true
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Count"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "",
+                  "style": {
+                    "classes": "Fonts/Label fs-11 text-muted"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(len(trim(coalesce({view.custom.memo}, ''))) >= 10, toStr(len(trim(coalesce({view.custom.memo}, '')))) + ' Characters', toStr(len(trim(coalesce({view.custom.memo}, '')))) + ' / 10 Characters Minimum')"
+                      }
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(len(trim(coalesce({view.custom.memo}, ''))) >= 10, 'Fonts/Label fs-11 text-ok', 'Fonts/Label fs-11 text-muted')"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Error"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "",
+                  "style": {
+                    "classes": "Fonts/Value fs-12 fw-600",
+                    "color": "var(--error)",
+                    "whiteSpace": "normal"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "view.custom.error"
+                      }
+                    }
+                  },
+                  "position.display": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({view.custom.error}, '') != ''"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "footer"
+        },
+        "position": {
+          "basis": "50px",
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "style": {
+            "backgroundColor": "var(--neutral-30)",
+            "borderTop": "1px solid var(--neutral-50)",
+            "padding": "8px"
+          },
+          "justify": "flex-end"
+        },
+        "children": [
+          {
+            "type": "ia.input.button",
+            "meta": {
+              "name": "Cancel"
+            },
+            "position": {
+              "basis": "96px",
+              "shrink": 0
+            },
+            "props": {
+              "text": "Cancel",
+              "style": {
+                "classes": "alert-btn alert-btn-secondary",
+                "height": "32px",
+                "marginRight": "8px"
+              }
+            },
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\tsystem.perspective.closePopup('oosDialog')\n"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.input.button",
+            "meta": {
+              "name": "Confirm"
+            },
+            "position": {
+              "basis": "190px",
+              "shrink": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "alert-btn alert-btn-primary",
+                "height": "32px"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if(coalesce({view.params.takeOut}, true), 'Take Out Of Service', 'Return To Service')"
+                  }
+                }
+              },
+              "props.enabled": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "len(trim(coalesce({view.custom.memo}, ''))) >= 10 && (!coalesce({view.params.takeOut}, true) || coalesce({view.custom.reason}, '') != '')"
+                  }
+                }
+              },
+              "props.style.classes": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "'alert-btn alert-btn-primary alert-btn-' + if(coalesce({view.params.takeOut}, true), 'warning', 'success')"
+                  }
+                }
+              }
+            },
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\t# one-shot command: shared.OutOfService re-checks the permission, memo, reason and device state server side,\n\t# writes the Out Of Service log + <device>.Enabled + the OpsAudit entry (username / time from the session)\n\tself.view.custom.error = ''\n\tres = shared.OutOfService.setOutOfService(self.session, self.view.params.tagPath, self.view.params.takeOut,\n\t\tself.view.custom.reason, self.view.custom.memo, self.view.params.viewName)\n\tif res.get('ok'):\n\t\tsystem.perspective.closePopup('oosDialog')\n\telse:\n\t\tself.view.custom.error = res.get('error') or 'Not Saved'\n"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "propConfig": {
+      "meta.contextMenu.items": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "coalesce({session.custom.TicketLogAccess}, false)"
+          },
+          "transforms": [
+            {
+              "type": "script",
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = str(self.view.params.tagPath or '')\n\texcept:\n\t\tpass\n\tview_name = self.view.id.split('@')[0]\n\titems = []\n\tif value:\n\t\tlogged = tagPath if tagPath.strip() else 'No TagPath: ' + view_name.split('/')[-1]\n\t\titems.append({\n\t\t\t\"text\": 'Ticket Logger',\n\t\t\t\"icon\": {\"path\": 'material/info', \"color\": \"--neutral-80\", \"style\": {}},\n\t\t\t\"style\": {\"classes\": \"bg-component Fonts/Value\", \"height\": 24, \"width\": 170},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\"type\": 'ticketLog', \"payload\": {'tagPath': logged, 'viewName': view_name, 'sender': self.view.id}, \"scope\": 'page'}\n\t\t})\n\treturn items"
+            }
+          ]
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "len({this.meta.contextMenu.items}) > 0"
+          }
+        }
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    }
+  }
+}

@@ -8,7 +8,9 @@
       "active": false,
       "priority": 10,
       "unack": false
-    }
+    },
+    "oos": false,
+    "pax": ""
   },
   "params": {
     "faceplate": null,
@@ -20,7 +22,8 @@
       "verticalReverse": false
     },
     "feedback": true,
-    "label": "SNS"
+    "label": "SNS",
+    "valuePosition": "auto"
   },
   "propConfig": {
     "custom.label": {
@@ -56,7 +59,7 @@
     "custom.values.status": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '',\n\t'',\n\t{view.params.tagPath} + '/Status/Value')"
+          "expression": "if({view.params.tagPath} = '',\n\t'',\n\t{view.params.tagPath} + '/AIn/Val_Fault')"
         },
         "type": "expr"
       }
@@ -64,17 +67,17 @@
     "custom.values.analog": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '',\n\t'',\n\t{view.params.tagPath} + '/Value/Value')"
+          "expression": "if({view.params.tagPath} = '',\n\t'',\n\t{view.params.tagPath} + '/AIn/Val')"
         },
         "type": "expr"
       }
     },
     "custom.values.commLoss": {
       "binding": {
+        "type": "expr",
         "config": {
-          "expression": "if({view.params.tagPath} = '',\n\tfalse,\n\tisBad(tag({view.params.tagPath} + '/Value/Value')))"
-        },
-        "type": "expr"
+          "expression": "if(coalesce({view.params.tagPath}, '') = '' || coalesce({view.custom.oos}, false),\n\tfalse,\n\t!isGood(tag({view.params.tagPath} + '/AIn/Val')))"
+        }
       }
     },
     "params.faceplate": {
@@ -183,6 +186,27 @@
     "params.label": {
       "paramDirection": "input",
       "persistent": true
+    },
+    "params.valuePosition": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.oos": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', false, !coalesce(try(toBoolean(tag({view.params.tagPath} + '.Enabled')), true), true))"
+        }
+      },
+      "persistent": true
+    },
+    "custom.pax": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', '', case(toStr(coalesce(try(tag({view.params.tagPath} + '.TypeId'), ''), '')), 'Devices/Pump', 'Motor', 'Devices/Valve', 'Valve', 'Devices/Tank', 'Tank', 'Devices/Compressor', 'Comp', 'Devices/Evaporator', 'CG', 'Devices/ExhaustFan', 'EF', 'Devices/LTU', 'LTU', 'Devices/SafetyRelay', 'Relay', 'Devices/SuctionSequence', 'Seq', 'Devices/DischargeSequence', 'Dsq', 'Devices/Sensor', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn.Enabled')), false), false), 'AIn', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AInRef.Enabled')), false), false), 'AInRef', '')), 'Devices/DiscreteInput', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/DIn.Enabled')), false), false), 'DIn', ''), ''))"
+        }
+      }
     }
   },
   "props": {
@@ -211,6 +235,14 @@
                   },
                   "type": "property"
                 }
+              },
+              "props.params.statusPath": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.custom.values.analog"
+                  }
+                }
               }
             },
             "props": {
@@ -218,11 +250,14 @@
               "style": {
                 "classes": "icon-header",
                 "height": "20px",
-                "overflow": "visible",
-                "width": "20px"
+                "width": "20px",
+                "overflow": "visible"
               },
               "useDefaultViewHeight": true,
-              "useDefaultViewWidth": true
+              "useDefaultViewWidth": true,
+              "params": {
+                "statusPath": ""
+              }
             },
             "type": "ia.display.view"
           }
@@ -236,49 +271,227 @@
         "props": {
           "style": {
             "classes": "notification-wrapper",
-            "overflow": "visible"
-          }
+            "overflow": "visible",
+            "gap": "4px"
+          },
+          "direction": "row"
         },
         "type": "ia.container.flex"
       },
       {
         "children": [
           {
+            "type": "ia.container.flex",
             "meta": {
-              "name": "Badge"
+              "name": "BadgeBox"
             },
             "position": {
               "shrink": 0
             },
-            "propConfig": {
-              "props.text": {
-                "binding": {
-                  "config": {
-                    "path": "view.custom.label"
-                  },
-                  "type": "property"
-                }
-              },
-              "props.style.cursor": {
-                "binding": {
-                  "config": {
-                    "expression": "if(isNull({view.params.faceplate}) || {view.params.faceplate} = '',\n   '',\n   'pointer')"
-                  },
-                  "type": "expr"
-                }
+            "props": {
+              "direction": "row",
+              "alignItems": "center",
+              "style": {
+                "classes": "sensor-badge-box",
+                "overflow": "visible"
               }
             },
-            "props": {
-              "align": "center",
-              "style": {
-                "classes": "tag-label sensor-badge font-value",
-                "fontSize": "11px",
-                "fontWeight": "700",
-                "textAlign": "center"
+            "children": [
+              {
+                "meta": {
+                  "name": "Badge"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "path": "view.custom.label"
+                      },
+                      "type": "property"
+                    }
+                  },
+                  "props.style.cursor": {
+                    "binding": {
+                      "config": {
+                        "expression": "if(isNull({view.params.faceplate}) || {view.params.faceplate} = '',\n   '',\n   'pointer')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce({view.custom.values.commLoss}, false), 'tag-label sensor-badge Fonts/Value fs-11 fw-700 device-comm-loss', if(coalesce({view.custom.alarm.active}, false), 'tag-label sensor-badge Fonts/Value fs-11 fw-700 alarm-border alarm-priority-' + case(coalesce({view.custom.alarm.priority}, -1), 4, 'critical', 3, 'high', 2, 'medium', 1, 'low', 'low'), 'tag-label sensor-badge Fonts/Value fs-11 fw-700'))"
+                      },
+                      "overlayOptOut": true
+                    }
+                  }
+                },
+                "props": {
+                  "align": "center",
+                  "style": {
+                    "classes": "tag-label sensor-badge Fonts/Value fs-11 fw-700",
+                    "textAlign": "center"
+                  },
+                  "text": "SNS"
+                },
+                "type": "ia.display.label"
               },
-              "text": "SNS"
-            },
-            "type": "ia.display.label"
+              {
+                "type": "ia.display.icon",
+                "meta": {
+                  "name": "FaceplateIcon"
+                },
+                "position": {
+                  "basis": "16px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "material/fullscreen",
+                  "style": {
+                    "classes": "sensor-faceplate-icon sensor-faceplate-icon-side",
+                    "cursor": "pointer",
+                    "height": "16px",
+                    "minHeight": "16px",
+                    "minWidth": "16px",
+                    "width": "16px"
+                  }
+                },
+                "propConfig": {
+                  "meta.visible": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({session.custom.CanOpenFaceplates}, false) && (len(trim(coalesce({view.params.faceplate}, ''))) > 0)"
+                      }
+                    }
+                  },
+                  "props.style.opacity": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(len(trim(coalesce({view.params.faceplate}, ''))) > 0, 1, 0)"
+                      }
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "'sensor-faceplate-icon ' + if((coalesce({view.params.orientation.horizontal}, false) || lower(coalesce({view.params.valuePosition}, 'auto')) = 'right' || (coalesce({view.params.orientation.horizontalReverse}, false) && lower(coalesce({view.params.valuePosition}, 'auto')) = 'auto')), if(lower(coalesce({view.params.valuePosition}, 'auto')) = 'bottom', 'sensor-faceplate-icon-raised', 'sensor-faceplate-icon-lowered'), 'sensor-faceplate-icon-side')"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "meta": {
+                  "name": "AlarmHeader"
+                },
+                "position": {
+                  "basis": "20px",
+                  "shrink": 0,
+                  "grow": 0
+                },
+                "propConfig": {
+                  "props.params.tagPath": {
+                    "binding": {
+                      "config": {
+                        "path": "view.params.tagPath"
+                      },
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "path": "03_Elements/01_Status/AlarmHeader",
+                  "style": {
+                    "classes": "sensor-alarm-badge",
+                    "height": "20px",
+                    "width": "20px",
+                    "overflow": "visible",
+                    "pointerEvents": "none"
+                  },
+                  "useDefaultViewHeight": true,
+                  "useDefaultViewWidth": true
+                },
+                "type": "ia.display.view"
+              },
+              {
+                "meta": {
+                  "name": "BadgeValue"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.params.tagPath": {
+                    "binding": {
+                      "config": {
+                        "expression": "{view.custom.values.analog}"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "meta.visible": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({view.params.feedback}, true) && (lower(coalesce({view.params.valuePosition}, 'auto')) = 'top' || lower(coalesce({view.params.valuePosition}, 'auto')) = 'bottom' || lower(coalesce({view.params.valuePosition}, 'auto')) = 'left' || lower(coalesce({view.params.valuePosition}, 'auto')) = 'right')"
+                      }
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "'sensor-badge-value sensor-badge-value-' + lower(coalesce({view.params.valuePosition}, 'auto'))"
+                      }
+                    }
+                  },
+                  "props.style.visibility": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce({view.custom.oos}, false), 'hidden', 'visible')"
+                      }
+                    }
+                  }
+                },
+                "props": {
+                  "params": {
+                    "spacing": {
+                      "center": true,
+                      "data": 0,
+                      "engUnit": 30
+                    }
+                  },
+                  "path": "03_Elements/01_Status/AnalogValue",
+                  "style": {
+                    "classes": "sensor-badge-value",
+                    "cursor": "pointer",
+                    "height": "18px",
+                    "overflow": "visible"
+                  },
+                  "useDefaultViewHeight": true
+                },
+                "type": "ia.display.view"
+              }
+            ],
+            "propConfig": {
+              "props.style.classes": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "(if(lower(coalesce({view.params.valuePosition}, 'auto')) = 'left', 'sensor-badge-box sensor-badge-box-value-left', 'sensor-badge-box')) + if(coalesce({view.custom.oos}, false), ' device-oos', '')"
+                  }
+                }
+              }
+            }
           },
           {
             "meta": {
@@ -363,10 +576,10 @@
           },
           "props.style.classes": {
             "binding": {
+              "type": "expr",
               "config": {
-                "expression": "if(coalesce({view.custom.values.commLoss}, false),\n\t'stem device-comm-loss',\n\t'stem')"
-              },
-              "type": "expr"
+                "expression": "'stem' + if(coalesce({session.custom.CanOpenFaceplates}, false) && (len(trim(coalesce({view.params.faceplate}, ''))) > 0), ' faceplate-hover', '')"
+              }
             }
           }
         },
@@ -406,6 +619,14 @@
               },
               "type": "expr"
             }
+          },
+          "props.style.visibility": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if(coalesce({view.custom.oos}, false), 'hidden', if((lower(coalesce({view.params.valuePosition}, 'auto')) = 'top' || lower(coalesce({view.params.valuePosition}, 'auto')) = 'bottom' || lower(coalesce({view.params.valuePosition}, 'auto')) = 'left' || lower(coalesce({view.params.valuePosition}, 'auto')) = 'right'), 'hidden', 'visible'))"
+              }
+            }
           }
         },
         "props": {
@@ -427,53 +648,13 @@
           "useDefaultViewHeight": true
         },
         "type": "ia.display.view"
-      },
-      {
-        "meta": {
-          "name": "Status",
-          "visible": false
-        },
-        "position": {
-          "basis": "22px",
-          "shrink": 0
-        },
-        "propConfig": {
-          "props.params.tagPath": {
-            "binding": {
-              "config": {
-                "expression": "{view.custom.values.analog}"
-              },
-              "type": "expr"
-            }
-          },
-          "meta.visible": {
-            "binding": {
-              "config": {
-                "expression": "coalesce({view.params.feedback}, true) && coalesce({view.custom.values.commLoss}, false)"
-              },
-              "type": "expr"
-            }
-          }
-        },
-        "props": {
-          "path": "03_Elements/01_Status/StatusIndicator",
-          "style": {
-            "classes": "status nut",
-            "cursor": "pointer",
-            "height": "22px",
-            "minHeight": "22px",
-            "overflow": "visible"
-          },
-          "useDefaultViewHeight": true
-        },
-        "type": "ia.display.view"
       }
     ],
     "events": {
       "dom": {
         "onClick": {
           "config": {
-            "script": "\tfaceplate = self.view.params.faceplate\n\tif faceplate is None or str(faceplate).strip() == '':\n\t\treturn\n\ttagPath = str(self.view.params.tagPath or '')\n\ttitle = str(self.view.custom.label or '')\n\tif title in (None, '', 'nn', 'SNS'):\n\t\ttitle = tagPath.split('/')[-1] if tagPath else self.view.name\n\t# Unified tabbed Faceplate. show* are hints; tagFlags hide empty tabs.\n\tparams = {\n\t\t'tagPath': tagPath,\n\t\t'deviceType': 'Sensor',\n\t\t'webGuiUrl': '',\n\t\t'showControls': True,\n\t\t'showConfiguration': True,\n\t\t'showInterlocks': True,\n\t\t'showTrend': True,\n\t\t'showAlarmConfiguration': True,\n\t\t'showAlarms': True\n\t}\n\tNavigation.Faceplate.openFaceplate(\n\t\t'sensor-fp-%s' % (tagPath or title),\n\t\ttagPath,\n\t\t'01_Popups/00_Faceplates/Faceplate',\n\t\tFalse,\n\t\ttitle,\n\t\t560,\n\t\t640,\n\t\tparams\n\t)\n"
+            "script": "\tfaceplate = self.view.params.faceplate\n\tif faceplate is None or str(faceplate).strip() == '':\n\t\treturn\n\ttagPath = str(self.view.params.tagPath or '')\n\ttitle = str(self.view.custom.label or '')\n\tif title in (None, '', 'nn', 'SNS'):\n\t\ttitle = tagPath.split('/')[-1] if tagPath else self.view.name\n\t# Unified tabbed Faceplate. show* are hints; tagFlags hide empty tabs.\n\tparams = {\n\t\t'tagPath': tagPath,\n\t\t'deviceType': 'Sensor',\n\t\t'webGuiUrl': '',\n\t\t'showControls': True,\n\t\t'showConfiguration': True,\n\t\t'showInterlocks': False,   # P_AIn has no interlocks\n\t\t'showTrend': True,\n\t\t'showAlarmConfiguration': True,\n\t\t'showAlarms': True\n\t}\n\tNavigation.Faceplate.openFaceplate(\n\t\t'sensor-fp-%s' % (tagPath or title),\n\t\ttagPath,\n\t\t'01_Popups/00_Faceplates/Faceplate',\n\t\tFalse,\n\t\ttitle,\n\t\t560,\n\t\t640,\n\t\tparams\n\t)\n"
           },
           "scope": "G",
           "type": "script"
@@ -503,9 +684,38 @@
       "props.style.classes": {
         "binding": {
           "config": {
-            "expression": "if({view.params.orientation.horizontal},\n   'sensor-horizontal sensor-component',\n   if({view.params.orientation.horizontalReverse},\n      'sensor-horizontal-reverse sensor-component',\n      if({view.params.orientation.vertical},\n         'sensor-vertical sensor-component',\n         'sensor-vertical-reverse sensor-component')))"
+            "expression": "((if({view.params.orientation.horizontal},\n   'sensor-horizontal sensor-component',\n   if({view.params.orientation.horizontalReverse},\n      'sensor-horizontal-reverse sensor-component',\n      if({view.params.orientation.vertical},\n         'sensor-vertical sensor-component',\n         'sensor-vertical-reverse sensor-component'))))) + if(coalesce({view.custom.values.commLoss}, false) || indexOf(case(coalesce({view.custom.orientation}, 'vertical'), 'horizontal', '', 'horizontal-reverse', '', 'vertical-reverse', ',left,right,top,', ',left,right,bottom,'), ',' + lower(coalesce({view.params.valuePosition}, 'auto')) + ',') >= 0, ' sensor-value-away', if(lower(coalesce({view.params.valuePosition}, 'auto')) = 'bottom' && indexOf(coalesce({view.custom.orientation}, 'vertical'), 'horizontal') = 0, ' sensor-value-under', ''))"
           },
-          "type": "expr"
+          "type": "expr",
+          "overlayOptOut": true
+        }
+      },
+      "meta.contextMenu.items": {
+        "binding": {
+          "type": "expr-struct",
+          "config": {
+            "struct": {
+              "ticket": "coalesce({session.custom.TicketLogAccess}, false)",
+              "admin": "coalesce({session.custom.Permissions.OutOfService.Set}, false)",
+              "history": "coalesce({session.custom.Permissions.OutOfService.View}, false)",
+              "oos": "coalesce({view.custom.oos}, false)"
+            },
+            "waitOnAll": false
+          },
+          "transforms": [
+            {
+              "type": "script",
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = str(self.view.params.tagPath or '')\n\texcept:\n\t\tpass\n\tview_name = self.view.id.split('@')[0]\n\tdef item(text, icon, msg_type, payload, scope):\n\t\treturn {\n\t\t\t\"text\": text,\n\t\t\t\"icon\": {\"path\": icon, \"color\": \"--neutral-80\", \"style\": {}},\n\t\t\t\"style\": {\"classes\": \"bg-component Fonts/Value\", \"height\": 24, \"width\": 170},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\"type\": msg_type, \"payload\": payload, \"scope\": scope}\n\t\t}\n\titems = []\n\tif value['ticket']:\n\t\tlogged = tagPath if tagPath.strip() else 'No TagPath: ' + view_name.split('/')[-1]\n\t\titems.append(item('Ticket Logger', 'material/info', 'ticketLog',\n\t\t\t{'tagPath': logged, 'viewName': view_name, 'sender': self.view.id}, 'page'))\n\tif value['admin'] and tagPath.strip():\n\t\tif value['oos']:\n\t\t\titems.append(item('Return To Service', 'material/info', 'oosToggle', {'tagPath': tagPath, 'sender': self.view.id}, 'page'))\n\t\telse:\n\t\t\titems.append(item('Take Out Of Service', 'material/info', 'oosToggle',\n\t\t\t\t{'tagPath': tagPath, 'sender': self.view.id}, 'page'))\n\tif value['history'] and tagPath.strip():\n\t\titems.append(item('Out Of Service History', 'material/info', 'oosHistory',\n\t\t\t{'tagPath': tagPath, 'sender': self.view.id}, 'page'))\n\treturn items"
+            }
+          ]
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "len({this.meta.contextMenu.items}) > 0"
+          }
         }
       }
     },
@@ -517,6 +727,33 @@
         "position": "relative"
       }
     },
-    "type": "ia.container.flex"
+    "type": "ia.container.flex",
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        },
+        {
+          "messageType": "oosToggle",
+          "pageScope": true,
+          "script": "\t# HMI Out Of Service (OutOfService/Set permission) - memo dialog; shared.OutOfService logs + audits the change\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tif not shared.Security.allowed(self.session, 'OutOfService', 'Set'):\n\t\treturn\n\ttp = str(self.view.params.tagPath or '')\n\t# page-scoped: every component on the page hears it - only the one that was right-clicked acts\n\tif not tp or str(payload.get('tagPath') or '') != tp:\n\t\treturn\n\t# required memo (+ reason when taking it out): the dialog's Confirm calls shared.OutOfService.setOutOfService\n\tshared.OutOfService.openDialog(tp, self.view.id.split('@')[0])",
+          "sessionScope": false,
+          "viewScope": false
+        },
+        {
+          "messageType": "oosHistory",
+          "pageScope": true,
+          "script": "\t# Out Of Service History (OutOfService/View permission) - OOS log page filtered to this device\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tif not shared.Security.allowed(self.session, 'OutOfService', 'View'):\n\t\treturn\n\ttp = str(self.view.params.tagPath or '')\n\tif not tp or str(payload.get('tagPath') or '') != tp:\n\t\treturn\n\tshared.OutOfService.openHistory(tp)",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    }
   }
 }

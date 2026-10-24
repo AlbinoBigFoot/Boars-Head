@@ -1,0 +1,183 @@
+{
+  "custom": {},
+  "params": {
+    "item": {
+      "icon": "",
+      "id": 0,
+      "kind": "",
+      "meta": "",
+      "name": ""
+    }
+  },
+  "propConfig": {
+    "params.item": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 56,
+      "width": 320
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Icon"
+        },
+        "position": {
+          "basis": "20px",
+          "grow": 0,
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.path": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({view.params.item.icon}, 'material/description')"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "color": "var(--callToAction)",
+          "path": "material/description",
+          "style": {
+            "height": "20px",
+            "width": "20px"
+          }
+        },
+        "type": "ia.display.icon"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "Name"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "expression": "coalesce({view.params.item.name}, '')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "classes": "report-row-name",
+                "overflow": "hidden",
+                "textOverflow": "ellipsis",
+                "whiteSpace": "nowrap"
+              },
+              "text": ""
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "Meta"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "expression": "coalesce({view.params.item.meta}, '')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "classes": "report-choice-detail",
+                "overflow": "hidden",
+                "textOverflow": "ellipsis",
+                "whiteSpace": "nowrap"
+              },
+              "text": ""
+            },
+            "type": "ia.display.label"
+          }
+        ],
+        "meta": {
+          "name": "Text"
+        },
+        "position": {
+          "basis": "0",
+          "grow": 1,
+          "shrink": 1
+        },
+        "props": {
+          "alignItems": "stretch",
+          "direction": "column",
+          "style": {
+            "gap": "2px",
+            "minWidth": "0"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "meta": {
+          "name": "Go"
+        },
+        "position": {
+          "basis": "20px",
+          "grow": 0,
+          "shrink": 0
+        },
+        "props": {
+          "color": "var(--text-muted)",
+          "path": "material/chevron_right",
+          "style": {
+            "height": "20px",
+            "width": "20px"
+          }
+        },
+        "type": "ia.display.icon"
+      }
+    ],
+    "events": {
+      "dom": {
+        "onClick": {
+          "config": {
+            "script": "\tit = self.view.params.item\n\tsystem.perspective.sendMessage('rptLoadSaved', {'kind': it.kind, 'id': it.id}, scope='page')\n"
+          },
+          "scope": "G",
+          "type": "script"
+        }
+      }
+    },
+    "meta": {
+      "name": "root"
+    },
+    "position": {
+      "shrink": 0
+    },
+    "props": {
+      "alignItems": "center",
+      "direction": "row",
+      "style": {
+        "classes": "report-row",
+        "cursor": "pointer",
+        "gap": "12px",
+        "height": "100%",
+        "minWidth": "0",
+        "padding": "0 12px"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

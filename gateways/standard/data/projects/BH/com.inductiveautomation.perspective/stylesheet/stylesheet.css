@@ -1,9 +1,10 @@
 /* Direct stylesheet authoring is an advanced feature. Knowledge of CSS required.
  *
- * PROJECT RULE — CSS is the only styling system for BH Perspective.
- * Do NOT create or extend Designer Style Classes (Styles → Colors / Container / Fonts).
- * Put fonts, colors, motion, and theme tokens here. Bind views with simple class names
- * (e.g. fan-spin, alarm-flash). Perspective prefixes them as .psc-* automatically.
+ * PROJECT RULE (2026-09-23) — shared single-class look styling lives in project Style Classes
+ * (style-classes/: Fonts/*, fs-*, fw-*, text-*, faceplate-*, ...). This stylesheet keeps what
+ * style classes can't express: theme aliases, IA internals, Apex, descendant/:has/state rules,
+ * layout props, motion. Style classes are emitted AFTER this file, sorted by name.
+ * See docs/stylesheet-cleanup.md before moving rules between the two.
  *
  * =============================================================================
  * THEME SYSTEM — light/dark × cool/warm (Lightspeed)
@@ -153,6 +154,9 @@
 	--status-defrost: #ec407a;
 	--status-off: #9e9e9e;
 	--sts-defrost: var(--status-defrost);
+	/* Condenser / Safety Relay (Figma Dev Jam 348:3633 / 350:2614) - theme-invariant like --status-* */
+	--status-unknown: #607d8b; /* StatusIndicator UNK / STARTING / STOPPING / DISABLED */
+	--device-safety: #c62828; /* Figma device/safety: safety relay enclosure */
 
 	/* Compressor CP/SV mode text (operator cues — may change later) */
 	--comp-mode-auto: #2e7d32;
@@ -276,7 +280,7 @@
 }
 
 .psc-comp-mode-remote {
-	color: var(--text) !important;
+	color: var(--text);
 }
 
 /*
@@ -295,7 +299,7 @@
 
 /* AnalogValue text when PV > SP — theme-invariant (text only, not device fill) */
 .psc-analog-over-sp {
-	color: var(--analog-over-sp) !important;
+	color: var(--analog-over-sp);
 }
 
 .psc-analog-level-warning {
@@ -321,8 +325,6 @@
 	font-size: 11px;
 	font-weight: 400;
 	line-height: 1.1;
-	margin: 0;
-	padding: 0;
 	color: var(--neutral-60);
 }
 
@@ -388,6 +390,71 @@
 	animation: ct-spray-fall 0.85s ease-in infinite;
 }
 
+/* --- Safety Relay ENET Comm LED: flashes green while comm is OK (comm loss = static red, no class) --- */
+@keyframes led-comm-flash {
+	0%,
+	49% {
+		fill: var(--sts-run);
+	}
+	50%,
+	100% {
+		fill: var(--neutral-60);
+	}
+}
+
+.psc-led-comm-flash {
+	animation: led-comm-flash 1s steps(1, end) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.psc-led-comm-flash {
+		animation: none;
+	}
+}
+
+/* --- /safety-relay page: the component is drawn at a fixed 536 x 404; zoom it to the viewport --- */
+.psc-safety-relay-zoom {
+	zoom: 1.25;
+}
+
+@media (min-width: 1600px) and (min-height: 860px) {
+	.psc-safety-relay-zoom {
+		zoom: 1.6;
+	}
+}
+
+/* --- /plc-rack (.cursor/tasks/plc-rack-io): the rack scales to its width; narrow = two banks --- */
+.psc-plcrack-host {
+	container-type: inline-size;
+}
+
+@container (max-width: 1000px) {
+	.psc-plcrack-rack {
+		aspect-ratio: 750 / 560 !important;
+	}
+
+	.psc-plcrack-u114 {
+		flex-basis: 15.2000% !important;
+		height: 50% !important;
+	}
+
+	.psc-plcrack-u54 {
+		flex-basis: 7.2000% !important;
+		height: 50% !important;
+	}
+
+	.psc-plcrack-u24 {
+		flex-basis: 3.2000% !important;
+		height: 50% !important;
+	}
+
+	.psc-plcrack-u96 {
+		flex-basis: 12.8000% !important;
+		height: 50% !important;
+	}
+}
+/* --- /plc-rack end --- */
+
 /* --- Alarm badge blink (1 Hz) when active AND unacknowledged --- */
 @keyframes alarm-flash {
 	0%,
@@ -416,8 +483,9 @@ html.animations-off .ct-fan-side-spin,
 html.animations-off .psc-ct-spray-run,
 html.animations-off .ct-spray-run,
 html.animations-off .psc-alarm-flash,
+html.animations-off .psc-led-comm-flash,
+html.animations-off .psc-status-dot-blink,
 html.animations-off .alarm-flash,
-html.animations-off .psc-container-fade-in,
 html.animations-off .container-fade-in,
 body:has(.psc-animations-off) .psc-fan-spin,
 body:has(.psc-animations-off) .fan-spin,
@@ -426,12 +494,12 @@ body:has(.psc-animations-off) .ct-fan-side-spin,
 body:has(.psc-animations-off) .psc-ct-spray-run,
 body:has(.psc-animations-off) .ct-spray-run,
 body:has(.psc-animations-off) .psc-alarm-flash,
+body:has(.psc-animations-off) .psc-led-comm-flash,
+body:has(.psc-animations-off) .psc-status-dot-blink,
 body:has(.psc-animations-off) .alarm-flash,
-body:has(.psc-animations-off) .psc-container-fade-in,
 body:has(.psc-animations-off) .container-fade-in {
 	animation: none !important;
 }
-
 
 /* =============================================================================
  * Migrated from Designer Style Classes (Colors / Container / Fonts)
@@ -439,12 +507,7 @@ body:has(.psc-animations-off) .container-fade-in {
  * ============================================================================= */
 
 /* --- Background / color utility (theme semantic tokens) --- */
-.psc-bg-page {
-	background-color: var(--surface-page);
-}
-.psc-bg-baddata {
-	background-color: var(--text-muted);
-}
+
 .psc-bg-component {
 	background-color: var(--surface-component);
 }
@@ -457,19 +520,9 @@ body:has(.psc-animations-off) .container-fade-in {
 .psc-bg-header {
 	background-color: var(--surface-header);
 }
-.psc-color-icon {
-	color: var(--icon);
-}
-.psc-color-icon-disabled {
-	color: var(--icon-disabled);
-}
 
 /* --- Container chrome --- */
-.psc-container-button {
-	background-color: var(--text-muted);
-	border-style: none;
-	box-shadow: var(--boxShadow1);
-}
+
 .psc-container-button:hover {
 	background-color: var(--text-subtle);
 }
@@ -495,9 +548,6 @@ body:has(.psc-animations-off) .container-fade-in {
 	width: 100%;
 	min-width: 0;
 	overflow-x: hidden;
-	/* Themed vertical scrollbars (Firefox); Chromium via ::-webkit-* below */
-	scrollbar-width: thin;
-	scrollbar-color: var(--neutral-50) var(--neutral-20);
 }
 
 /* Cards / embeds: allow flex shrink inside hosts; hide H-scroll chrome */
@@ -539,38 +589,28 @@ body:has(.psc-animations-off) .container-fade-in {
 	max-width: 100% !important;
 }
 
-/* Themed scrollbars — Perspective client is Chromium; also Firefox */
-.psc-unit-overview-grid ::-webkit-scrollbar,
-.psc-unit-overview-host ::-webkit-scrollbar,
-.psc-themed-scroll ::-webkit-scrollbar {
-	width: 8px;
-	height: 8px;
+/* Scrollbars (global, matches Scout): thin rounded thumb on a transparent track, no arrow buttons.
+ * Chromium ignores ::-webkit-scrollbar on any element that sets scrollbar-width / scrollbar-color,
+ * so don't set those standard props here (the hidden-scrollbar rules below still use scrollbar-width: none). */
+::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+}
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+	background: transparent;
+}
+::-webkit-scrollbar-thumb {
+	background: var(--neutral-50);
+	border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+	background: var(--neutral-70);
 }
 .psc-unit-overview-grid ::-webkit-scrollbar:horizontal,
 .psc-unit-overview-host ::-webkit-scrollbar:horizontal,
 .psc-themed-scroll ::-webkit-scrollbar:horizontal {
 	height: 0 !important;
-}
-.psc-unit-overview-grid ::-webkit-scrollbar-thumb,
-.psc-unit-overview-host ::-webkit-scrollbar-thumb,
-.psc-themed-scroll ::-webkit-scrollbar-thumb {
-	background: var(--neutral-50);
-	border-radius: 4px;
-}
-.psc-unit-overview-grid ::-webkit-scrollbar-thumb:hover,
-.psc-unit-overview-host ::-webkit-scrollbar-thumb:hover,
-.psc-themed-scroll ::-webkit-scrollbar-thumb:hover {
-	background: var(--accent, var(--neutral-60));
-}
-.psc-unit-overview-grid ::-webkit-scrollbar-track,
-.psc-unit-overview-host ::-webkit-scrollbar-track,
-.psc-themed-scroll ::-webkit-scrollbar-track {
-	background: var(--neutral-20);
-}
-.psc-unit-overview-host,
-.psc-themed-scroll {
-	scrollbar-width: thin;
-	scrollbar-color: var(--neutral-50) var(--neutral-20);
 }
 
 .psc-unit-overview-table {
@@ -586,6 +626,12 @@ body:has(.psc-animations-off) .container-fade-in {
 	margin: 2px;
 }
 
+/* CG AhuEvapHistory cards: 100% width + 2px margin overflows the rail and clips borders/charts. */
+.psc-ahu-evap-history-card.psc-container-card-border {
+	margin: 0;
+	overflow: visible;
+}
+
 @keyframes container-fade-in {
 	from {
 		opacity: 0;
@@ -594,10 +640,6 @@ body:has(.psc-animations-off) .container-fade-in {
 		opacity: 1;
 	}
 }
-.psc-container-fade-in {
-	animation: container-fade-in 1s 1s normal 1;
-}
-
 .psc-container-header {
 	border-bottom: 1px solid var(--border);
 }
@@ -614,62 +656,21 @@ body:has(.psc-animations-off) .container-fade-in {
 	padding-right: 2px;
 }
 
-.psc-container-item-border {
-	border-bottom: 1px solid var(--border);
+/* --- Typography --- */
+
+.psc-Fonts\/Header {
+	text-indent: 2px;
+}
+.psc-Fonts\/Label {
+	color: var(--icon);
+	text-indent: 2px;
 }
 
-/* --- Typography --- */
-.psc-font-baddata {
-	color: var(--text-muted);
-	font-family: sans-serif;
-	font-size: 0.9em;
-	font-style: italic;
-	font-weight: 500;
-}
-.psc-font-button {
-	color: var(--text-inverse);
-	font-family: sans-serif;
-	font-size: 0.8rem;
-	font-weight: normal;
-}
-.psc-font-header {
-	color: var(--text-secondary);
-	font-family: sans-serif;
-	font-size: 0.9rem;
-	font-weight: 500;
+.psc-Fonts\/Title {
 	text-indent: 2px;
 }
-.psc-font-label {
-	color: var(--icon);
-	font-family: sans-serif;
-	font-size: 0.8rem;
-	font-weight: 500;
-	text-indent: 2px;
-}
-.psc-font-livedata {
-	color: var(--callToAction);
-	font-family: sans-serif;
-	font-size: 0.9rem;
-	font-weight: 500;
-}
-.psc-font-livedata-entry {
-	color: var(--qual-7, var(--accent));
-	font-family: Roboto-Mono, monospace;
-	font-size: 0.85rem;
-	font-weight: bold;
-}
-.psc-font-title {
-	color: var(--text-secondary);
-	font-family: sans-serif;
-	font-size: 1rem;
-	font-weight: 400;
-	text-indent: 2px;
-}
-.psc-font-value {
+.psc-Fonts\/Value {
 	color: var(--text);
-	font-family: sans-serif;
-	font-size: 0.8rem;
-	font-weight: normal;
 }
 
 /* =============================================================================
@@ -688,8 +689,8 @@ body:has(.psc-animations-off) .container-fade-in {
 }
 
 .psc-alarm-row-high {
-	background-color: var(--alarm-high) !important;
-	color: var(--alarm-row-fg-light) !important;
+	background-color: var(--alarm-high);
+	color: var(--alarm-row-fg-light);
 }
 .psc-alarm-row-high-ack {
 	background-color: var(--alarm-high-ack) !important;
@@ -697,8 +698,8 @@ body:has(.psc-animations-off) .container-fade-in {
 }
 
 .psc-alarm-row-medium {
-	background-color: var(--alarm-medium) !important;
-	color: var(--alarm-row-fg-dark) !important;
+	background-color: var(--alarm-medium);
+	color: var(--alarm-row-fg-dark);
 }
 .psc-alarm-row-medium-ack {
 	background-color: var(--alarm-medium-ack) !important;
@@ -722,17 +723,6 @@ body:has(.psc-animations-off) .container-fade-in {
 /* =============================================================================
  * Adhoc Trend toolbar (gear / Realtime|Historical / time range)
  * ============================================================================= */
-
-.psc-adhoc-trend-toolbar-label {
-	font-family: Bahnschrift, "Segoe UI", sans-serif;
-	font-size: 13px;
-	font-weight: 600;
-	letter-spacing: 0.02em;
-	color: var(--text-secondary);
-	white-space: nowrap;
-	padding: 0 !important;
-	margin: 0 !important;
-}
 
 .psc-adhoc-trend-toolbar-icon {
 	margin: 0 !important;
@@ -771,6 +761,31 @@ body:has(.psc-animations-off) .container-fade-in {
 	font-size: 0.875rem;
 	font-weight: 500;
 	color: var(--text-secondary);
+}
+
+/* Chart area, Tag Browser and Pens on their own surface: the surrounding bg-container / bg-header /
+   bg-component are the same grey as the app header */
+.psc-adhoc-trend-chart-host,
+.psc-adhoc-trend-tag-browser,
+.psc-adhoc-trend-pens .psc-bg-header,
+.psc-adhoc-trend-pens .psc-bg-component {
+	background-color: var(--surface-card);
+}
+.psc-adhoc-trend-pens .ia_table__head__header__cell {
+	border-bottom: 1px solid var(--border);
+}
+
+/* Faceplate Trend tab chart (_Assets/Trend, every device faceplate): theme card background (was --neutral-40, grey in
+ * light mode); grid lines + axis text follow the theme so they stay visible on it. */
+.psc-faceplate-trend-chart .apexcharts-gridline,
+.psc-faceplate-trend-chart .apexcharts-grid-borders line {
+	stroke: var(--border) !important;
+}
+.psc-faceplate-trend-chart .apexcharts-xaxis-label,
+.psc-faceplate-trend-chart .apexcharts-yaxis-label,
+.psc-faceplate-trend-chart .apexcharts-legend-text {
+	fill: var(--text) !important;
+	color: var(--text) !important;
 }
 
 /* Adhoc Trend ApexCharts — contain paint (no outer scrollbars); tip stays visible */
@@ -907,10 +922,6 @@ body:has(.psc-animations-off) .container-fade-in {
 	overflow: hidden !important;
 }
 
-.psc-adhoc-trend-plot-title {
-	font-weight: 600;
-}
-
 .psc-adhoc-trend-plot-toolbar {
 	flex: 0 0 36px !important;
 	min-height: 36px !important;
@@ -995,6 +1006,14 @@ body:has(.psc-animations-off) .container-fade-in {
 .psc-container-card .ia_table__headCell {
 	background-color: var(--surface-header) !important;
 	background: var(--surface-header) !important;
+}
+/* Trending Pens table matches the chart card (same specificity as above, so it must stay after it) */
+.psc-adhoc-trend-pens .ia_table__head,
+.psc-adhoc-trend-pens .ia_table__headContainer,
+.psc-adhoc-trend-pens .ia_table__head .tc,
+.psc-adhoc-trend-pens .ia_table__headCell {
+	background-color: var(--surface-card) !important;
+	background: var(--surface-card) !important;
 }
 
 .ia_table__body .psc-adhoc-trend-pen-plot-cell .ia_embeddedView,
@@ -1099,7 +1118,7 @@ body:has(.psc-animations-off) .container-fade-in {
 .psc-adhoc-trend-load-delete-btn {
 	overflow: visible !important;
 	white-space: nowrap !important;
-	font-size: 12px !important;
+	font-size: 12px;
 	line-height: 1.2 !important;
 }
 
@@ -1122,7 +1141,6 @@ body:has(.psc-animations-off) .container-fade-in {
 /* Header + close must sit above ApexCharts pan/toolbar and nested embed layers */
 .psc-adhoc-trend-faceplate-header {
 	position: relative;
-	z-index: 40;
 	min-height: 40px;
 	align-items: center;
 	flex: 0 0 auto;
@@ -1132,10 +1150,7 @@ body:has(.psc-animations-off) .container-fade-in {
 
 .psc-adhoc-trend-faceplate-close {
 	position: relative;
-	z-index: 41;
 	cursor: pointer !important;
-	min-width: 36px !important;
-	min-height: 36px !important;
 	padding: 4px !important;
 	box-sizing: border-box;
 	pointer-events: auto !important;
@@ -1248,6 +1263,8 @@ body:has(.psc-animations-off) .container-fade-in {
 }
 
 .psc-adhoc-trend-toolbar-label {
+	padding: 0 !important;
+	margin: 0 !important;
 	overflow: visible !important;
 	white-space: nowrap !important;
 }
@@ -1346,10 +1363,9 @@ body:has(.psc-animations-off) .container-fade-in {
 }
 
 .psc-adhoc-trend-action-btn-outline {
-	background-color: transparent !important;
-	border: 1px solid var(--neutral-80) !important;
-	color: var(--neutral-80) !important;
-	box-shadow: none !important;
+	background-color: transparent;
+	border: 1px solid var(--neutral-80);
+	box-shadow: none;
 }
 
 .psc-adhoc-trend-action-btn-outline:hover {
@@ -1418,7 +1434,6 @@ body:has(.psc-animations-off) .container-fade-in {
 
 .psc-adhoc-trend-config-faceplate-header {
 	position: relative;
-	z-index: 40;
 	min-height: 40px;
 	align-items: center;
 	flex: 0 0 auto;
@@ -1427,10 +1442,7 @@ body:has(.psc-animations-off) .container-fade-in {
 
 .psc-adhoc-trend-config-faceplate-close {
 	position: relative;
-	z-index: 41;
 	cursor: pointer !important;
-	min-width: 36px !important;
-	min-height: 36px !important;
 	padding: 4px !important;
 	box-sizing: border-box;
 	pointer-events: auto !important;
@@ -1450,6 +1462,14 @@ body:has(.psc-animations-off) .container-fade-in {
 	min-height: 0;
 	justify-content: flex-start !important;
 	gap: 8px;
+}
+/* Trending page settings gear opens the toolbar as its own popup: give it a card (the rule above keeps
+   it transparent when embedded, e.g. inside the faceplate Trend Config popup). */
+.popup-body > .psc-adhoc-trend-config-toolbar {
+	background-color: var(--surface-card) !important;
+	border: 1px solid var(--border) !important;
+	border-radius: var(--borderRadius);
+	box-shadow: var(--boxShadow1) !important;
 }
 
 /* ----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1621,6 +1641,15 @@ body:has(.psc-animations-off) .container-fade-in {
 	overflow: hidden !important;
 }
 
+/* Popups center in the page area, not the window: Perspective centers them in .popups-pane (fixed, full window),
+ * so keep that pane off the app header and - while it is docked open - the nav (page-config: top 48, left 260). */
+.client-root:has(.docked-view-top) .popups-pane {
+	top: 48px !important;
+}
+.client-root:has(.docked-view-left[style*="left: 0px"]) .popups-pane {
+	left: 260px !important;
+}
+
 .client-root .popup {
 	box-shadow: none;
 	background: transparent;
@@ -1648,7 +1677,6 @@ body:has(.psc-animations-off) .container-fade-in {
 	overflow: hidden !important;
 }
 
-
 /* Adhoc ContextMenu / account popups — opaque shell (global .ia_popup is transparent) */
 #popup-ContextMenu,
 #popup-userRolesLogin,
@@ -1668,6 +1696,15 @@ body:has(.psc-animations-off) .container-fade-in {
 /* ChangeTheme — sized to fit (220×210); no inner scrollbar */
 #popup-changeTheme {
 	overflow: hidden !important;
+}
+
+/* Transparent modal backdrop (sibling of #popup-changeTheme) so overlayDismiss
+ * works without dimming the HMI. Perspective uses .popups-pane > .modal. */
+.popups-pane:has(#popup-changeTheme) > .modal {
+	background: transparent !important;
+	background-color: transparent !important;
+	backdrop-filter: none !important;
+	opacity: 1;
 }
 
 .ia_popup[id^='popup-SaveTrendConfig'] {
@@ -1719,7 +1756,6 @@ body:has(.psc-animations-off) .container-fade-in {
 	gap: 4px;
 	height: 100%;
 	overflow-y: auto;
-	padding: 8px 6px;
 }
 
 .psc-nav-brand {
@@ -1735,74 +1771,18 @@ body:has(.psc-animations-off) .container-fade-in {
 }
 
 /* Plant home landing — feature overview cards */
-.psc-plant-landing {
-	background-color: var(--surface);
-	gap: 0;
-	height: 100%;
-	overflow-y: auto;
-	padding: 28px 32px 40px;
-}
-
-.psc-plant-landing-eyebrow {
-	color: var(--text-muted);
-	font-family: Bahnschrift, 'Segoe UI', sans-serif;
-	font-size: 11px;
-	font-weight: 600;
-	letter-spacing: 0.1em;
-	margin-bottom: 6px;
-	text-transform: uppercase;
-}
-
-.psc-plant-landing-title {
-	color: var(--text) !important;
-	font-family: Bahnschrift, 'Segoe UI', sans-serif !important;
-	line-height: 1.2;
-}
-
-.psc-plant-landing-intro {
-	color: var(--text-secondary);
-	line-height: 1.45;
-	max-width: 42rem;
-}
-
-.psc-plant-feature-grid {
-	align-content: flex-start;
-	align-items: stretch;
-	width: 100%;
-}
-
 .psc-plant-feature-card {
 	background-color: var(--surface-card);
 	border: 1px solid var(--border);
 	border-radius: 0.5rem;
 	box-shadow: var(--boxShadow1);
-	gap: 10px;
 	max-width: 420px;
-	min-height: 160px;
 	min-width: 280px;
 	padding: 16px 18px;
 }
 
-.psc-plant-feature-header {
-	align-items: center;
-	gap: 10px;
-}
-
-.psc-plant-feature-icon {
-	color: var(--icon-nav, var(--text-secondary));
-}
-
 .psc-plant-feature-title {
-	color: var(--text) !important;
-	font-family: Bahnschrift, 'Segoe UI', sans-serif !important;
 	font-size: 15px !important;
-}
-
-.psc-plant-feature-body {
-	color: var(--text-secondary);
-	font-size: 13px;
-	line-height: 1.45;
-	white-space: pre-wrap;
 }
 
 /* =============================================================================
@@ -1811,13 +1791,6 @@ body:has(.psc-animations-off) .container-fade-in {
  *   classes: "container-card kpi-card"
  * Standalone kpi-card uses the same surface/border tokens.
  * ============================================================================= */
-
-.psc-kpi-dashboard-page {
-	box-sizing: border-box;
-	min-height: 0;
-	padding: 20px 24px;
-	width: 100%;
-}
 
 .psc-kpi-dashboard-grid {
 	align-content: flex-start;
@@ -1840,7 +1813,6 @@ body:has(.psc-animations-off) .container-fade-in {
 	gap: 8px;
 	min-height: 240px;
 	min-width: 0;
-	overflow: hidden;
 	padding: 12px 16px;
 }
 
@@ -1853,19 +1825,12 @@ body:has(.psc-animations-off) .container-fade-in {
 	font-family: Bahnschrift, 'Segoe UI', sans-serif;
 	font-size: 13px;
 	font-weight: 600;
-	gap: 8px;
 	justify-content: space-between;
 	letter-spacing: 0.02em;
 }
 
 .psc-kpi-value {
-	color: var(--callToAction);
 	flex: 0 0 auto;
-	font-family: Bahnschrift, 'Segoe UI', sans-serif;
-	font-size: 2rem;
-	font-weight: 600;
-	letter-spacing: -0.02em;
-	line-height: 1.15;
 }
 
 .psc-kpi-chart {
@@ -1898,7 +1863,7 @@ body:has(.psc-animations-off) .container-fade-in {
 	text-align: center;
 }
 
-.psc-kpi-metrics .psc-font-label {
+.psc-kpi-metrics .psc-Fonts\/Label {
 	color: var(--text-muted);
 	font-size: 11px;
 	font-weight: 500;
@@ -1912,9 +1877,9 @@ body:has(.psc-animations-off) .container-fade-in {
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: row;
-	gap: 6px;
 	justify-content: center;
 	padding: 4px 8px 10px;
+	position: relative;
 	width: 100%;
 }
 
@@ -1936,15 +1901,26 @@ body:has(.psc-animations-off) .container-fade-in {
 	color: var(--text-nav);
 	flex: 1 1 auto !important;
 	font-family: Bahnschrift, 'Segoe UI', sans-serif;
-	font-size: 12px;
-	min-height: 28px;
+	font-size: 14px;
+	min-height: 32px;
 	min-width: 0 !important;
+	padding-right: 96px;
 	width: 100% !important;
+}
+
+/* Clear (x) and result count overlay the field's right edge (Scout-style) so the field
+   itself spans the full dock width and stays centred. */
+.psc-nav-search-clear,
+.psc-nav-search-count {
+	position: absolute !important;
+	top: 50%;
+	transform: translateY(calc(-50% - 3px));
+	width: auto !important;
 }
 
 .psc-nav-search-clear {
 	color: var(--text-nav-muted);
-	flex: 0 0 auto;
+	right: 18px;
 	text-align: center;
 	user-select: none;
 }
@@ -1955,51 +1931,54 @@ body:has(.psc-animations-off) .container-fade-in {
 
 .psc-nav-search-count {
 	color: var(--text-nav-muted);
-	flex: 0 0 auto;
 	font-family: Bahnschrift, 'Segoe UI', sans-serif;
-	font-size: 10px;
-	text-align: left;
+	font-size: 11px;
+	right: 40px;
+	text-align: right;
 	white-space: nowrap;
 }
 
 .psc-nav-clock {
 	align-self: stretch;
 	box-sizing: border-box;
-	color: var(--text-nav-muted);
 	display: block;
-	font-family: Bahnschrift, 'Segoe UI', sans-serif;
-	font-size: 11px;
-	padding: 4px 8px 6px;
-	text-align: center;
-	white-space: nowrap;
 	width: 100%;
 }
 
-/* Search hit / ancestor icon tint (applied via tree item icon.style.classes) */
-.psc-nav-search-hit {
-	color: var(--info);
-}
-
-/* Row highlight only for direct search matches (material/search icon).
-   Margin keeps adjacent hits from merging into one blob. */
-.psc-nav-tree .ia_treeComponent__node:has(svg[data-icon='material/search']),
-.psc-nav-tree .tree-row:has(svg[data-icon='material/search']),
-.psc-nav-tree .tree-item:has(svg[data-icon='material/search']) {
-	background-color: color-mix(in srgb, var(--info) 28%, transparent) !important;
-	border: 1px solid color-mix(in srgb, var(--info) 55%, transparent);
-	border-radius: 0.375rem;
+/* Nav search (Scout-style). Classes are set on the item icon by the search script
+   (.cursor/tasks/nav-scout-style/apply.py):
+   hit    -> item keeps its own icon, drawn white on a blue pill; row text bold
+   parent -> ancestor of a hit: info-tinted icon, row expanded */
+.psc-nav-tree svg.psc-nav-search-hit {
+	background-color: var(--info);
+	border-radius: 4px;
 	box-sizing: border-box;
-	font-weight: 600;
-	margin: 3px 2px;
+	color: #ffffff !important;
+	padding: 2px;
 }
 
-@supports not (background-color: color-mix(in srgb, red 50%, transparent)) {
-	.psc-nav-tree .ia_treeComponent__node:has(svg[data-icon='material/search']),
-	.psc-nav-tree .tree-row:has(svg[data-icon='material/search']),
-	.psc-nav-tree .tree-item:has(svg[data-icon='material/search']) {
-		background-color: rgba(33, 150, 243, 0.28) !important;
-		border: 1px solid rgba(33, 150, 243, 0.55);
-	}
+.psc-nav-tree .ia_treeComponent__node svg.psc-nav-search-hit path:not([fill='none']),
+.psc-nav-tree .ia_treeComponent__node svg.psc-nav-search-hit rect:not([fill='none']),
+.psc-nav-tree .ia_treeComponent__node svg.psc-nav-search-hit circle:not([fill='none']),
+.psc-nav-tree .ia_treeComponent__node svg.psc-nav-search-hit ellipse:not([fill='none']) {
+	fill: #ffffff !important;
+}
+
+.psc-nav-tree .ia_treeComponent__node:has(.psc-nav-search-hit),
+.psc-nav-tree .tree-row:has(.psc-nav-search-hit) {
+	color: var(--text) !important;
+	font-weight: 700;
+}
+
+.psc-nav-tree svg.psc-nav-search-parent {
+	color: var(--info) !important;
+}
+
+.psc-nav-tree .ia_treeComponent__node svg.psc-nav-search-parent path:not([fill='none']),
+.psc-nav-tree .ia_treeComponent__node svg.psc-nav-search-parent rect:not([fill='none']),
+.psc-nav-tree .ia_treeComponent__node svg.psc-nav-search-parent circle:not([fill='none']),
+.psc-nav-tree .ia_treeComponent__node svg.psc-nav-search-parent ellipse:not([fill='none']) {
+	fill: var(--info) !important;
 }
 
 .psc-nav-section {
@@ -2017,7 +1996,17 @@ body:has(.psc-animations-off) .container-fade-in {
 .psc-nav-tree {
 	color: var(--text-nav);
 	font-family: Bahnschrift, 'Segoe UI', sans-serif;
-	font-size: 13px;
+	font-size: 14px;
+}
+
+/* Node icons 22px (Scout-sized). Items carry an inline 18px icon style, hence !important. */
+.psc-nav-tree .ia_treeComponent__node__icon,
+.psc-nav-tree .ia_treeComponent__node__icon--expanded,
+.psc-nav-tree .ia_treeComponent__node__icon--selected,
+.psc-nav-tree .label-wrapper-icon svg {
+	height: 22px !important;
+	min-width: 22px;
+	width: 22px !important;
 }
 
 .psc-nav-tree .ia_treeComponent__node {
@@ -2030,9 +2019,9 @@ body:has(.psc-animations-off) .container-fade-in {
 }
 
 .psc-nav-tree-selected {
-	background-color: var(--surface-nav-selected) !important;
+	background-color: var(--surface-nav-selected);
 	border-radius: 0.375rem;
-	color: var(--text) !important;
+	color: var(--text);
 	font-weight: 600;
 }
 
@@ -2049,8 +2038,7 @@ body:has(.psc-animations-off) .container-fade-in {
 .psc-nav-tree .ia_treeComponent__expandIcon--selected,
 .psc-nav-tree .ia_treeComponent__terminalExpandIcon,
 .psc-nav-tree .label-wrapper-icon svg,
-.psc-nav-tree .expand-icon,
-.psc-nav-icon {
+.psc-nav-tree .expand-icon {
 	color: var(--icon-nav);
 	height: 18px;
 	width: 18px;
@@ -2068,12 +2056,8 @@ body:has(.psc-animations-off) .container-fade-in {
 .psc-nav-tree .label-wrapper-icon svg rect:not([fill='none']),
 .psc-nav-tree .label-wrapper-icon svg circle:not([fill='none']),
 .psc-nav-tree .label-wrapper-icon svg ellipse:not([fill='none']),
-.psc-nav-tree .expand-icon path:not([fill='none']),
-.psc-nav-icon path:not([fill='none']),
-.psc-nav-icon rect:not([fill='none']),
-.psc-nav-icon circle:not([fill='none']),
-.psc-nav-icon ellipse:not([fill='none']) {
-	fill: var(--icon-nav) !important;
+.psc-nav-tree .expand-icon path:not([fill='none']) {
+	fill: var(--icon-nav);
 }
 
 .psc-nav-tree .ia_treeComponent__node__icon path[fill='none'],
@@ -2083,21 +2067,16 @@ body:has(.psc-animations-off) .container-fade-in {
 .psc-nav-tree .ia_treeComponent__expandIcon path[fill='none'],
 .psc-nav-tree .ia_treeComponent__terminalExpandIcon path[fill='none'],
 .psc-nav-tree .label-wrapper-icon svg path[fill='none'],
-.psc-nav-tree .expand-icon path[fill='none'],
-.psc-nav-icon path[fill='none'],
-.psc-nav-icon rect[fill='none'],
-.psc-nav-icon circle[fill='none'],
-.psc-nav-icon ellipse[fill='none'] {
-	fill: none !important;
+.psc-nav-tree .expand-icon path[fill='none'] {
+	fill: none;
 }
 
 .psc-nav-tree .ia_treeComponent__node__icon [stroke]:not([stroke='none']),
 .psc-nav-tree .ia_treeComponent__expandIcon [stroke]:not([stroke='none']),
 .psc-nav-tree .ia_treeComponent__terminalExpandIcon [stroke]:not([stroke='none']),
 .psc-nav-tree .label-wrapper-icon svg [stroke]:not([stroke='none']),
-.psc-nav-tree .expand-icon [stroke]:not([stroke='none']),
-.psc-nav-icon [stroke]:not([stroke='none']) {
-	stroke: var(--icon-nav) !important;
+.psc-nav-tree .expand-icon [stroke]:not([stroke='none']) {
+	stroke: var(--icon-nav);
 }
 
 .psc-nav-tree .ia_treeComponent__node--selected .ia_treeComponent__node__icon,
@@ -2125,19 +2104,6 @@ body:has(.psc-animations-off) .container-fade-in {
 	stroke: var(--icon) !important;
 }
 
-.psc-nav-devices-card {
-	background-color: var(--surface-card);
-	border: 1px solid var(--border);
-	border-radius: 6px;
-	min-height: 160px;
-	padding: 16px;
-}
-
-.psc-nav-devices-btn {
-	justify-content: flex-start;
-	text-align: left;
-}
-
 /* Top header dock — account + theme gear (Lightspeed-style top-right) */
 .psc-app-header {
 	align-items: center;
@@ -2154,34 +2120,39 @@ body:has(.psc-animations-off) .container-fade-in {
 	width: 100%;
 }
 
-/* RCP1 Simulate toggle — left side of top dock */
-.psc-rcp1-sim-toggle {
+/* Header nav hamburger — left of SIM; toggles shared dock id plant-nav */
+.psc-nav-menu-btn {
 	align-items: center;
 	background-color: var(--surface-card);
 	border: 1px solid var(--border);
 	border-radius: 0.5rem;
+	box-shadow: var(--boxShadow1);
 	box-sizing: border-box;
-	color: var(--text-muted);
+	color: var(--icon);
 	display: inline-flex;
-	gap: 2px;
+	height: 36px;
+	justify-content: center;
+	width: 36px;
 }
-.psc-rcp1-sim-toggle-on {
-	border-color: var(--border-strong);
-	color: var(--text);
+.psc-nav-menu-btn:hover {
+	background-color: var(--surface-sunken);
 }
-.psc-rcp1-sim-label {
+.psc-nav-menu-btn svg.psc-color-icon,
+.psc-nav-menu-btn .ia_icon svg,
+.psc-nav-menu-btn .ia_icon,
+.psc-nav-menu-btn svg {
 	color: inherit;
-	font-size: 11px;
-	font-weight: 600;
-	letter-spacing: 0.04em;
-	text-transform: uppercase;
+	fill: initial;
+	height: 22px !important;
+	width: 22px !important;
 }
-.psc-rcp1-sim-label-on {
-	color: var(--text);
+.psc-nav-menu-btn svg path:not([fill='none']) {
+	fill: currentColor;
 }
-.psc-rcp1-sim-switch {
-	min-height: 24px;
+.psc-nav-menu-btn svg path[fill='none'] {
+	fill: none !important;
 }
+
 .psc-app-header::-webkit-scrollbar,
 .psc-app-header *::-webkit-scrollbar {
 	display: none !important;
@@ -2225,13 +2196,13 @@ body:has(.psc-animations-off) .container-fade-in {
 .psc-perm-badge .ia_icon svg,
 .psc-perm-badge .ia_icon,
 .psc-perm-badge svg {
-	color: inherit !important;
+	color: inherit;
 	fill: initial;
 	height: 20px !important;
 	width: 20px !important;
 }
 .psc-perm-badge svg path:not([fill='none']) {
-	fill: currentColor !important;
+	fill: currentColor;
 }
 .psc-perm-badge svg path[fill='none'] {
 	fill: none !important;
@@ -2284,7 +2255,7 @@ body:has(.psc-animations-off) .container-fade-in {
 .psc-account-settings .ia_icon svg,
 .psc-account-settings .ia_icon,
 .psc-account-settings svg {
-	color: var(--icon) !important;
+	color: var(--icon);
 	fill: initial;
 	flex: 0 0 22px !important;
 	height: 22px !important;
@@ -2296,21 +2267,21 @@ body:has(.psc-animations-off) .container-fade-in {
 	width: 22px !important;
 }
 .psc-account-settings svg path:not([fill='none']) {
-	fill: var(--icon) !important;
+	fill: var(--icon);
 }
 .psc-account-settings svg path[fill='none'] {
-	fill: none !important;
+	fill: none;
 }
 /* Same fill=none protection on the account chip person icon */
 .psc-account-chip svg.psc-color-icon,
 .psc-account-chip .ia_icon svg,
 .psc-account-chip .ia_icon,
 .psc-account-chip svg {
-	color: var(--icon) !important;
+	color: var(--icon);
 	fill: initial;
 }
 .psc-account-chip svg path:not([fill='none']) {
-	fill: var(--icon) !important;
+	fill: var(--icon);
 }
 .psc-account-chip svg path[fill='none'] {
 	fill: none !important;
@@ -2322,42 +2293,31 @@ body:has(.psc-animations-off) .container-fade-in {
 	box-shadow: var(--boxShadow1);
 	color: var(--text);
 }
-.psc-theme-toggle {
-	border: 1px solid var(--border-strong);
-	border-radius: 10px;
-	overflow: hidden;
-}
+
 .psc-theme-toggle-option {
 	align-items: center;
-	color: var(--text);
-	font-family: Bahnschrift, 'Segoe UI', sans-serif;
-	font-size: 12px;
 	gap: 4px;
 	justify-content: center;
 	min-height: 28px;
-	padding: 4px 6px;
 }
 /* Labels/icons inherit option color so selected contrast is not stomped by font-* classes */
-.psc-theme-toggle-option .psc-font-label,
-.psc-theme-toggle-option .psc-font-value,
-.psc-theme-toggle-option .psc-font-title {
+.psc-theme-toggle-option .psc-Fonts\/Label,
+.psc-theme-toggle-option .psc-Fonts\/Value,
+.psc-theme-toggle-option .psc-Fonts\/Title {
 	color: inherit !important;
 }
 /* Selected segment: matches ChangeTheme (neutral-100 fill + inverse text).
  * Neutrals invert in dark themes, so --text-inverse/--neutral-10 stays readable;
  * --text-on-accent (fixed white) would fail on light selected fill in dark. */
-.psc-theme-toggle-option-selected {
-	background-color: var(--neutral-100) !important;
-	color: var(--text-inverse) !important;
-}
-.psc-theme-toggle-option-selected .psc-font-label,
-.psc-theme-toggle-option-selected .psc-font-value,
-.psc-theme-toggle-option-selected .psc-font-title,
+
+.psc-theme-toggle-option-selected .psc-Fonts\/Label,
+.psc-theme-toggle-option-selected .psc-Fonts\/Value,
+.psc-theme-toggle-option-selected .psc-Fonts\/Title,
 .psc-theme-toggle-option-selected .ia_labelComponent,
 .psc-theme-toggle-option-selected svg,
 .psc-theme-toggle-option-selected svg path:not([fill='none']) {
-	color: var(--text-inverse) !important;
-	fill: var(--text-inverse) !important;
+	color: var(--text-inverse);
+	fill: var(--text-inverse);
 }
 
 /* --- Scout-style device alarm chrome (feature/scout-alarm-icon-header) --- */
@@ -2392,14 +2352,16 @@ body:has(.psc-animations-off) .container-fade-in {
 }
 
 .psc-alarm-frame {
-	pointer-events: none !important;
+	pointer-events: none;
 	z-index: 40 !important;
 	box-sizing: border-box !important;
-	background: transparent !important;
+	background: transparent;
 }
 
 .psc-alarm-frame.psc-alarm-border {
-	border: 4px solid var(--alarm-color, var(--alarm-critical)) !important;
+	/* Scout: 2px priority border (was a 4px overlay that painted over labels) */
+	border: 2px solid var(--alarm-color, var(--alarm-critical)) !important;
+	border-radius: 4px;
 	outline: none !important;
 	box-shadow: none !important;
 }
@@ -2407,52 +2369,116 @@ body:has(.psc-animations-off) .container-fade-in {
 .psc-alarm-header,
 .psc-device-graphic > .psc-alarm-header,
 .psc-device-graphic > .view-parent.psc-alarm-header {
-	pointer-events: none !important;
+	pointer-events: none;
 	z-index: 50 !important;
 }
+
 
 .psc-icon-header {
 	min-height: 20px;
 	min-width: 20px;
-	overflow: visible;
+}
+
+/* Sensor alarm: priority ring on the tag box + badge pinned to the box's left edge, so it sits in the same place
+ * for every orientation (the stem/value move above/below, the box and its left side do not). */
+.psc-sensor-badge-box {
+	position: relative !important;
+}
+.psc-sensor-badge-box > .psc-sensor-alarm-badge {
+	position: absolute !important;
+	left: -26px;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 50 !important;
+}
+/* Sensor value pinned to a side of the tag box (params.valuePosition; auto keeps the orientation grid) */
+.psc-sensor-badge-box > .psc-sensor-badge-value {
+	position: absolute !important;
+	width: max-content !important;
+	white-space: nowrap;
+	z-index: 40;
+}
+.psc-sensor-badge-box > .psc-sensor-badge-value-left {
+	right: calc(100% + 10px);
+	top: 50%;
+	transform: translateY(-50%);
+}
+.psc-sensor-badge-box > .psc-sensor-badge-value-right {
+	left: calc(100% + 10px);
+	top: 50%;
+	transform: translateY(-50%);
+}
+.psc-sensor-badge-box > .psc-sensor-badge-value-top {
+	bottom: calc(100% + 8px);
+	left: 50%;
+	transform: translateX(-50%);
+}
+.psc-sensor-badge-box > .psc-sensor-badge-value-bottom {
+	top: calc(100% + 8px);
+	left: 50%;
+	transform: translateX(-50%);
+}
+.psc-sensor-badge-box-value-left > .psc-sensor-alarm-badge {
+	left: auto;
+	right: -26px;
+}
+/* Sensor faceplate icon (params.faceplate): pinned right of the tag box like the alarm badge on the left, so no embed
+ * moves; above / below the centre line when the stem or the value already sits on the right (.cursor/tasks/sensor-modes) */
+.psc-sensor-badge-box > .psc-sensor-faceplate-icon {
+	position: absolute !important;
+	left: calc(100% + 6px);
+	z-index: 45;
+}
+.psc-sensor-badge-box > .psc-sensor-faceplate-icon-side {
+	top: 50%;
+	transform: translateY(-50%);
+}
+.psc-sensor-badge-box > .psc-sensor-faceplate-icon-raised {
+	left: calc(100% + 2px);
+	bottom: calc(50% + 9px);
+}
+.psc-sensor-badge-box > .psc-sensor-faceplate-icon-lowered {
+	left: calc(100% + 2px);
+	top: calc(50% + 9px);
+}
+/* the embed hosting a sensor clipped the badge outside its box */
+.ia_embeddedView:has(.psc-sensor-badge-box),
+.view-parent:has(> .psc-sensor-component) {
+	overflow: visible !important;
 }
 
 /* Scout unack flash on priority letter badge */
-.psc-alarm-icon-unack {
-	animation: alarm-flash 1s steps(1, end) infinite;
-}
-
 /* ---- Tank (LTR) device graphic ---- */
 .psc-tank-vessel {
-	background-color: var(--neutral-30) !important;
+	background-color: var(--neutral-30);
 	border: 2px solid var(--neutral-100) !important;
-	border-radius: 20px !important;
+	border-radius: 20px;
 	box-sizing: border-box !important;
 	overflow: hidden !important;
 }
 
 .psc-tank-sight {
-	background-color: var(--neutral-20) !important;
+	background-color: var(--neutral-20);
 	border: 1px solid var(--neutral-100) !important;
-	border-radius: 6px !important;
+	border-radius: 6px;
 	box-sizing: border-box !important;
 	overflow: hidden !important;
 }
 
 .psc-tank-liquid {
-	background-color: var(--ct-water) !important;
+	background-color: var(--ct-water);
 	width: 100% !important;
 	min-height: 0 !important;
 }
 
 .psc-tank-stem {
-	background-color: var(--neutral-60) !important;
+	background-color: var(--neutral-60);
 }
 
 .psc-tank-float {
-	background-color: var(--tank-float) !important;
+	background-color: var(--tank-float);
 	border: 1px solid var(--tank-float-stroke) !important;
-	border-radius: 50% !important;
+	border-radius: 50%;
 	box-sizing: border-box !important;
 }
 
@@ -2461,32 +2487,19 @@ body:has(.psc-animations-off) .container-fade-in {
 	border-color: #005000 !important;
 }
 
-.psc-tank-sw-label {
-	color: var(--neutral-60) !important;
-}
-
 /* Tick bars only — solid level color */
 .psc-tank-level-critical {
-	background-color: var(--status-level-critical) !important;
+	background-color: var(--status-level-critical);
 }
 
 .psc-tank-level-warning {
-	background-color: var(--status-level-warning) !important;
+	background-color: var(--status-level-warning);
 }
 
 /* HH / H / L / LL text beside ticks — color only, no fill */
-.psc-tank-level-text-critical {
-	background: transparent !important;
-	color: var(--status-level-critical) !important;
-}
-
-.psc-tank-level-text-warning {
-	background: transparent !important;
-	color: var(--status-level-warning) !important;
-}
 
 .psc-tank-level-mark {
-	cursor: pointer !important;
+	cursor: pointer;
 }
 
 /* Device label + analog centered over vessel (width matches vessel; marginLeft bound by orientation) */
@@ -2511,32 +2524,6 @@ body:has(.psc-animations-off) .container-fade-in {
 	justify-items: center;
 	align-content: start;
 	gap: 2px;
-}
-
-.psc-device-horizontal {
-	display: grid !important;
-	grid-template-areas:
-		"icon-header component"
-		"label       component"
-		"value       component"
-		"status      component";
-	grid-template-columns: max-content max-content;
-	align-items: center;
-	column-gap: 4px;
-	row-gap: 2px;
-}
-
-.psc-device-horizontal-reverse {
-	display: grid !important;
-	grid-template-areas:
-		"component icon-header"
-		"component label"
-		"component value"
-		"component status";
-	grid-template-columns: max-content max-content;
-	align-items: center;
-	column-gap: 4px;
-	row-gap: 2px;
 }
 
 [class*="psc-device-"] .psc-icon-header {
@@ -2604,11 +2591,26 @@ body:has(.psc-animations-off) .container-fade-in {
 	outline: 1px solid var(--neutral-100);
 	outline-offset: 3px;
 	background: var(--neutral-30) !important;
-	color: var(--neutral-100) !important;
+	color: var(--neutral-100);
 	text-align: center;
 	white-space: nowrap !important;
 	line-height: 1.25;
 	border-radius: 0;
+}
+
+/* Sensor in alarm: the outer ring of the tag box takes the priority colour (after the base rule so it wins) */
+[class*="psc-sensor"] .psc-tag-label.psc-sensor-badge.psc-alarm-border,
+.psc-tag-label.psc-sensor-badge.psc-alarm-border {
+	outline: 2px solid var(--alarm-color, var(--alarm-critical)) !important;
+	outline-offset: 2px;
+}
+
+/* Sensor Comm Loss (.cursor/tasks/sensor-layout/build.py): the tag box is the sensor's graphic, so Bad PV quality
+ * fills it red like every other device body (device-comm-loss); white text stays legible on the fixed red */
+[class*="psc-sensor"] .psc-tag-label.psc-sensor-badge.psc-device-comm-loss,
+.psc-tag-label.psc-sensor-badge.psc-device-comm-loss {
+	background: var(--deviceFill-commLoss) !important;
+	color: #ffffff !important;
 }
 
 /* Badge + stem share one grid cell so stem always touches.
@@ -2639,27 +2641,50 @@ body:has(.psc-animations-off) .container-fade-in {
 	overflow: visible !important;
 }
 
-/* AnalogValue always nearest the stem/badge; Status further out. Small gap so value doesn't kiss the graphic. */
+/* Sensor grid (.cursor/tasks/sensor-layout/build.py): no status text row - the IconHeader (notification-wrapper)
+ * sits in its place, right against the value, or against the tag box when params.valuePosition pins the value
+ * elsewhere (sensor-value-away). The leading row in vertical keeps the tag box / stem where they always were. */
 .psc-sensor-vertical {
 	grid-template:
+		"."
 		"notification-wrapper"
-		"nut"
 		"value"
 		"stem";
-	grid-template-rows: 20px 22px max-content max-content;
+	grid-template-rows: 22px 20px max-content max-content;
+}
+
+.psc-sensor-vertical.psc-sensor-value-away {
+	grid-template:
+		"."
+		"value"
+		"notification-wrapper"
+		"stem";
+	grid-template-rows: 22px max-content 20px max-content;
 }
 
 .psc-sensor-vertical .psc-value {
 	margin-bottom: 8px !important;
 }
 
+.psc-sensor-vertical.psc-sensor-value-away .psc-notification-wrapper {
+	transform: translateY(-3px);
+}
+
 .psc-sensor-vertical-reverse {
 	grid-template:
 		"stem"
 		"value"
-		"nut"
 		"notification-wrapper";
-	grid-template-rows: max-content max-content 22px 20px;
+	grid-template-rows: max-content max-content 20px;
+	grid-template-columns: max-content;
+}
+
+.psc-sensor-vertical-reverse.psc-sensor-value-away {
+	grid-template:
+		"stem"
+		"notification-wrapper"
+		"value";
+	grid-template-rows: max-content 20px max-content;
 	grid-template-columns: max-content;
 }
 
@@ -2667,62 +2692,57 @@ body:has(.psc-animations-off) .container-fade-in {
 	margin-top: 8px !important;
 }
 
-.psc-sensor-horizontal {
-	grid-template:
-		"notification-wrapper ."
-		"value                stem"
-		"nut                  .";
-	grid-template-rows: 20px max-content 22px;
-	grid-template-columns: max-content max-content;
+.psc-sensor-vertical-reverse.psc-sensor-value-away .psc-notification-wrapper {
+	transform: translateY(3px);
 }
 
-.psc-sensor-horizontal-reverse {
-	grid-template:
-		". notification-wrapper"
-		"stem value"
-		". nut";
-	grid-template-rows: 20px max-content 22px;
-	grid-template-columns: max-content max-content;
-}
-
+.psc-sensor-horizontal,
 .psc-sensor-component.psc-sensor-horizontal {
 	grid-template:
-		"notification-wrapper ."
+		". ."
 		"value stem"
-		"nut .";
-	grid-template-rows: 20px max-content 22px;
+		". notification-wrapper";
+	grid-template-rows: 20px max-content 20px;
 	grid-template-columns: max-content max-content;
-}
-
-.psc-sensor-component.psc-sensor-horizontal .psc-notification-wrapper,
-.psc-sensor-component.psc-sensor-horizontal .psc-value,
-.psc-sensor-component.psc-sensor-horizontal .psc-nut {
-	justify-self: end;
-	margin-right: 4px;
 }
 
 .psc-sensor-component.psc-sensor-horizontal .psc-value {
+	justify-self: end;
 	margin-right: 6px !important;
 }
 
+/* horizontal: icons centred under the tag box (the stem line adds 24 px on the box's far side of the column) */
+.psc-sensor-component.psc-sensor-horizontal .psc-notification-wrapper {
+	justify-self: center;
+	transform: translate(-12px, 2px);
+}
+
+.psc-sensor-component.psc-sensor-horizontal.psc-sensor-value-under .psc-notification-wrapper {
+	transform: translate(-12px, 24px);
+}
+
+.psc-sensor-horizontal-reverse,
 .psc-sensor-component.psc-sensor-horizontal-reverse {
 	grid-template:
-		". notification-wrapper"
+		". ."
 		"stem value"
-		". nut";
-	grid-template-rows: 20px max-content 22px;
+		"notification-wrapper .";
+	grid-template-rows: 20px max-content 20px;
 	grid-template-columns: max-content max-content;
 }
 
-.psc-sensor-component.psc-sensor-horizontal-reverse .psc-notification-wrapper,
-.psc-sensor-component.psc-sensor-horizontal-reverse .psc-value,
-.psc-sensor-component.psc-sensor-horizontal-reverse .psc-nut {
+.psc-sensor-component.psc-sensor-horizontal-reverse .psc-value {
 	justify-self: start;
-	margin-left: 4px;
+	margin-left: 6px !important;
 }
 
-.psc-sensor-component.psc-sensor-horizontal-reverse .psc-value {
-	margin-left: 6px !important;
+.psc-sensor-component.psc-sensor-horizontal-reverse .psc-notification-wrapper {
+	justify-self: center;
+	transform: translate(12px, 2px);
+}
+
+.psc-sensor-component.psc-sensor-horizontal-reverse.psc-sensor-value-under .psc-notification-wrapper {
+	transform: translate(12px, 24px);
 }
 
 /* =============================================================================
@@ -2744,8 +2764,8 @@ body:has(.psc-animations-off) .container-fade-in {
 	min-height: 36px !important;
 	padding: 0 !important;
 	margin: 0 !important;
-	background: transparent !important;
-	color: var(--text) !important;
+	background: transparent;
+	color: var(--text);
 	cursor: pointer;
 	overflow: visible !important;
 }
@@ -2762,8 +2782,8 @@ body:has(.psc-animations-off) .container-fade-in {
 	min-height: 36px !important;
 	padding: 0 28px 0 14px !important;
 	margin: 0 !important;
-	background: transparent !important;
-	color: var(--text) !important;
+	background: transparent;
+	color: var(--text);
 	overflow: visible !important;
 }
 
@@ -2775,9 +2795,9 @@ body:has(.psc-animations-off) .container-fade-in {
 	height: auto !important;
 	margin: 0 !important;
 	padding: 0 !important;
-	pointer-events: none !important;
+	pointer-events: none;
 	z-index: 0 !important;
-	background-color: var(--neutral-100) !important;
+	background-color: var(--neutral-100);
 	clip-path: polygon(
 		0 0,
 		calc(100% - 18px) 0,
@@ -2798,9 +2818,9 @@ body:has(.psc-animations-off) .container-fade-in {
 	height: auto !important;
 	margin: 0 !important;
 	padding: 0 !important;
-	pointer-events: none !important;
+	pointer-events: none;
 	z-index: 1 !important;
-	background-color: var(--surface-component) !important;
+	background-color: var(--surface-component);
 	clip-path: polygon(
 		0 0,
 		calc(100% - 16.5px) 0,
@@ -2824,16 +2844,16 @@ body:has(.psc-animations-off) .container-fade-in {
 	max-width: none !important;
 	margin: 0 !important;
 	padding: 0 !important;
-	background: transparent !important;
-	border: none !important;
-	color: var(--text) !important;
-	font-family: Inter, 'Segoe UI', sans-serif !important;
-	font-size: 12px !important;
-	font-weight: 700 !important;
-	letter-spacing: 0.6px !important;
+	background: transparent;
+	border: none;
+	color: var(--text);
+	font-family: Inter, 'Segoe UI', sans-serif;
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.6px;
 	line-height: 1 !important;
-	text-align: center !important;
-	text-transform: uppercase !important;
+	text-align: center;
+	text-transform: uppercase;
 	white-space: nowrap !important;
 }
 
@@ -2846,6 +2866,7 @@ body:has(.psc-animations-off) .container-fade-in {
 /*
  * Perspective flex hosts stretch cross-axis by default → width ≠ height → oval.
  * Lock equal box + no shrink so border-radius:50% stays a circle.
+ * (Restored 2026-09-25 - the stylesheet cleanup dropped this rule and the Safetys dots vanished.)
  */
 .psc-status-dot {
 	width: 28px !important;
@@ -2921,6 +2942,12 @@ body:has(.psc-animations-off) .container-fade-in {
 	overflow: visible !important;
 }
 
+.psc-safetys-widget .psc-status-dot-root {
+	gap: 2px;
+	height: auto;
+	align-items: center !important;
+}
+
 .psc-safetys-widget .psc-status-dot {
 	width: 22px !important;
 	height: 22px !important;
@@ -2932,12 +2959,6 @@ body:has(.psc-animations-off) .container-fade-in {
 	flex-shrink: 0 !important;
 	aspect-ratio: 1 / 1 !important;
 	align-self: center !important;
-}
-
-.psc-safetys-widget .psc-status-dot-root {
-	gap: 2px;
-	height: auto;
-	align-items: center !important;
 }
 
 /* Match indicator column height to stacked fans; space MR AD…FIRE top-to-bottom */
@@ -2972,7 +2993,6 @@ body:has(.psc-animations-off) .container-fade-in {
 	padding: 4px 8px;
 	border-bottom: 1px solid var(--border);
 	position: relative;
-	z-index: 40;
 	flex: 0 0 auto;
 	isolation: isolate;
 	pointer-events: none;
@@ -2980,11 +3000,6 @@ body:has(.psc-animations-off) .container-fade-in {
 }
 
 .psc-faceplate-title {
-	font-weight: 700;
-	font-size: 16px;
-	line-height: 1.2;
-	white-space: nowrap;
-	overflow: hidden;
 	text-overflow: ellipsis;
 	pointer-events: none;
 }
@@ -2996,10 +3011,7 @@ body:has(.psc-animations-off) .container-fade-in {
 /* In-view Close X — native popup header is hidden globally */
 .psc-faceplate-close {
 	position: relative;
-	z-index: 41;
 	cursor: pointer !important;
-	min-width: 36px !important;
-	min-height: 36px !important;
 	padding: 4px !important;
 	box-sizing: border-box;
 	pointer-events: auto !important;
@@ -3042,7 +3054,7 @@ body:has(.psc-animations-off) .container-fade-in {
 	line-height: 1.15;
 }
 
-/* Tab label text on light chrome — not inverse (--text-inverse / font-button) */
+/* Tab label text on light chrome — not inverse (--text-inverse / Fonts/Button) */
 .psc-faceplate-tab-text {
 	color: var(--text);
 	font-family: monospace;
@@ -3072,7 +3084,6 @@ body:has(.psc-animations-off) .container-fade-in {
 	background: var(--surface-card);
 	border: 1px solid var(--border);
 	border-top: none;
-	min-height: 0;
 	/* Contain layout only; tab content scrolls via EmbeddedView overflow:auto */
 	overflow: hidden;
 	padding: 8px;
@@ -3125,6 +3136,12 @@ body:has(.psc-animations-off) .container-fade-in {
 	white-space: normal;
 }
 
+/* The vertical-tab display:flex !important above must not resurrect tabs hidden by their display binding */
+.psc-faceplate-tabs-vertical .psc-faceplate-button[style*="display: none"],
+.psc-faceplate-tabs-vertical .psc-faceplate-button-selected[style*="display: none"] {
+	display: none !important;
+}
+
 .psc-faceplate-tabs-vertical .psc-faceplate-button-selected {
 	border-right: none;
 	border-bottom: 1px solid var(--border);
@@ -3169,49 +3186,11 @@ body:has(.psc-animations-off) .container-fade-in {
 }
 
 .psc-faceplate-kpi-label {
-	font-size: 12px;
-	font-weight: 700;
 	min-width: 52px;
-	white-space: nowrap;
-}
-
-.psc-faceplate-mode-chip {
-	font-size: 11px;
-	font-weight: 600;
-	padding: 2px 8px;
-	border-radius: 4px;
-	border: 1px solid var(--border);
-	background: var(--surface-container);
-	color: var(--text-muted);
-}
-
-.psc-faceplate-mode-active {
-	border-color: var(--text);
-	color: var(--text);
-	background: var(--surface-card);
 }
 
 .psc-faceplate-section {
 	gap: 6px;
-	margin-bottom: 12px;
-}
-
-.psc-faceplate-section-title {
-	font-size: 12px;
-	font-weight: 700;
-	text-transform: uppercase;
-	letter-spacing: 0.04em;
-	color: var(--text-muted);
-	margin-bottom: 4px;
-}
-
-.psc-faceplate-stub {
-	font-size: 12px;
-	color: var(--text-muted);
-	padding: 8px;
-	border: 1px dashed var(--border);
-	border-radius: 6px;
-	background: var(--surface-container);
 }
 
 .psc-faceplate-alarm-list {
@@ -3229,18 +3208,7 @@ body:has(.psc-animations-off) .container-fade-in {
 }
 
 .psc-faceplate-alarm-name {
-	font-size: 14px;
-	font-weight: 600;
-	text-align: center;
-	overflow: hidden;
 	text-overflow: ellipsis;
-	white-space: nowrap;
-}
-
-.psc-faceplate-alarm-notes {
-	font-size: 11px;
-	text-align: center;
-	color: var(--text-muted);
 }
 
 .psc-faceplate-alarm-fields {
@@ -3255,21 +3223,13 @@ body:has(.psc-animations-off) .container-fade-in {
 	color: var(--text);
 }
 
-
 /* --- Faceplate Controls / Interlocks polish (260730-m0m) --- */
 .psc-faceplate-buttons-6 { grid-template-columns: repeat(6, 1fr); }
 
-.psc-faceplate-section-card {
-	background: var(--surface-card);
-	border: 1px solid var(--border);
-	border-radius: 4px;
-	padding: 8px 10px;
-	margin-bottom: 8px;
-}
-
-.psc-faceplate-mode-chip {
-	cursor: pointer;
-	user-select: none;
+/* Panel config rows: AnalogInput value + EU + pencil need ~118px; do not clip icon. */
+.psc-faceplate-section-card .psc-config-input-row,
+.psc-faceplate-section-card .psc-faceplate-kpi-row {
+	overflow: visible;
 }
 
 /* Shared Modes row (faceplate Controls) */
@@ -3290,59 +3250,50 @@ body:has(.psc-animations-off) .container-fade-in {
 	opacity: 1;
 }
 
-.psc-faceplate-mode-btn-label {
-	font-size: 10px;
-	font-weight: 600;
-	line-height: 1.1;
-	white-space: nowrap;
-}
-
-.psc-faceplate-mode-code {
-	font-size: 12px;
-	color: var(--text);
-	font-weight: 600;
-}
-
 .psc-faceplate-cmd-row {
 	align-items: center;
 }
 
 .psc-faceplate-cmd-btn {
 	min-height: 28px;
-	padding: 4px 10px;
-	border: 1px solid var(--border);
-	border-radius: 4px;
-	background: var(--surface-container);
-	color: var(--text);
-	font-size: 11px;
-	font-weight: 600;
 }
 
 .psc-faceplate-cmd-btn:hover {
 	border-color: var(--text-muted);
 }
 
-.psc-faceplate-cmd-btn-active {
-	border-color: var(--text);
-	background: var(--surface-card);
+/* Disabled commands (e.g. Start Defrost while defrosting) must read as unavailable */
+.psc-faceplate-cmd-btn.ia_button--secondary--disabled,
+.psc-faceplate-cmd-btn:disabled {
+	opacity: 0.4;
+	cursor: not-allowed;
 }
 
-.psc-faceplate-cmd-btn-bypass {
-	border-color: var(--status-level-warning, #fbc02d);
-	background: var(--status-level-warning, #fbc02d);
-	color: #212121;
+/* CG bottom control panel (AhuEvapPanel): larger text inside the shared AnalogInput/TimeInput
+   elements without changing them elsewhere. */
+.psc-cg-panel .psc-config-input-row .psc-Fonts\/Value,
+.psc-cg-panel .psc-analog-input-edit,
+.psc-cg-panel .psc-analog-input-edit input {
+	font-size: 15px;
+	font-weight: 600;
 }
 
-.psc-faceplate-bypass-banner {
-	color: var(--status-level-warning, #fbc02d);
+/* LTU card (Machine Room): larger value, edit field and pencil inside the shared AnalogInput element. */
+.psc-ltu-sp .psc-config-input-row .psc-Fonts\/Value,
+.psc-ltu-sp .psc-analog-input-edit,
+.psc-ltu-sp .psc-analog-input-edit input {
+	font-size: 16px;
 	font-weight: 700;
 }
 
-.psc-faceplate-hint {
-	color: var(--text-muted);
-	font-size: 11px;
-	line-height: 1.4;
-	white-space: normal;
+.psc-ltu-sp svg {
+	width: 28px !important;
+	height: 28px !important;
+}
+
+.psc-cg-panel .psc-config-input-row .psc-Fonts\/Label:not(.psc-config-input-label) {
+	font-size: 13px;
+	flex-basis: 34px !important;
 }
 
 .psc-faceplate-trend-empty {
@@ -3352,11 +3303,6 @@ body:has(.psc-animations-off) .container-fade-in {
 	line-height: 1.4;
 	text-align: center;
 	white-space: normal;
-}
-
-.psc-faceplate-config-empty {
-	color: var(--text-muted);
-	font-size: 12px;
 }
 
 /* Configuration AnalogInput / MultiStateInput — keep label + value + edit as a tight cluster */
@@ -3391,65 +3337,7 @@ body:has(.psc-animations-off) .container-fade-in {
 	box-sizing: border-box;
 }
 
-.psc-faceplate-interlock-agg {
-	width: 100%;
-	box-sizing: border-box;
-	flex-shrink: 0 !important;
-}
-
 /* Status chips: size to content so overflow:auto does not paint bars */
-.psc-faceplate-interlock-stat {
-	border: 1px solid var(--border);
-	border-radius: 4px;
-	background: var(--surface-container);
-	padding: 8px 10px !important;
-	min-width: 0 !important;
-	min-height: 52px !important;
-	box-sizing: border-box !important;
-	flex: 1 1 0 !important;
-}
-
-.psc-faceplate-interlock-stat-label {
-	font-size: 10px !important;
-	font-weight: 700 !important;
-	letter-spacing: 0.03em;
-	text-transform: uppercase;
-	color: var(--text-muted) !important;
-	white-space: nowrap;
-	line-height: 1.2 !important;
-	max-width: 100%;
-}
-
-.psc-faceplate-interlock-stat-value {
-	font-size: 14px !important;
-	font-weight: 700 !important;
-	color: var(--text) !important;
-	white-space: nowrap;
-	line-height: 1.2 !important;
-}
-
-.psc-faceplate-interlock-stat-ok .psc-faceplate-interlock-stat-value {
-	color: var(--text-muted) !important;
-}
-
-.psc-faceplate-interlock-stat-fault {
-	border-color: color-mix(in srgb, var(--alarm-hi, #c62828) 45%, var(--border));
-	background: color-mix(in srgb, var(--alarm-hi, #c62828) 12%, var(--surface-container));
-}
-
-.psc-faceplate-interlock-stat-fault .psc-faceplate-interlock-stat-value {
-	color: var(--alarm-hi, #c62828) !important;
-}
-
-.psc-faceplate-interlock-stat-byp {
-	border-color: color-mix(in srgb, var(--qual-7, #f9a825) 45%, var(--border));
-	background: color-mix(in srgb, var(--qual-7, #f9a825) 12%, var(--surface-container));
-}
-
-.psc-faceplate-interlock-stat-byp .psc-faceplate-interlock-stat-value {
-	color: var(--qual-7, #f9a825) !important;
-}
-
 .psc-faceplate-interlock-colhdr {
 	border-bottom: 1px solid var(--border);
 	padding-bottom: 4px;
@@ -3516,16 +3404,13 @@ body:has(.psc-animations-off) .container-fade-in {
 	font-weight: 700;
 }
 
+/* Bypass column: box only — hide caption text nodes, keep the checkbox icon */
 .psc-faceplate-interlock-bypass {
 	margin: 0 !important;
 	justify-content: center !important;
 	align-items: center !important;
 	min-width: 0 !important;
 	max-width: 36px !important;
-}
-
-/* Bypass column: box only — hide caption text nodes, keep the checkbox icon */
-.psc-faceplate-interlock-bypass {
 	font-size: 0 !important;
 	color: transparent !important;
 }
@@ -3552,9 +3437,6 @@ body:has(.psc-animations-off) .container-fade-in {
 }
 
 .psc-faceplate-interlock-sts {
-	font-family: monospace;
-	font-size: 11px;
-	text-align: center;
 	line-height: 1.2 !important;
 	white-space: nowrap !important;
 }
@@ -3598,17 +3480,8 @@ body:has(.psc-animations-off) .container-fade-in {
 }
 .psc-faceplate-fault-chip {
 	min-width: 88px;
-	padding: 4px 6px;
-	border: 1px solid var(--border);
-	border-radius: 4px;
-	background: var(--surface-container);
 }
-.psc-faceplate-fault-code {
-	font-size: 11px;
-	font-weight: 700;
-	letter-spacing: 0.04em;
-	color: var(--text-muted);
-}
+
 .psc-faceplate-fault-state {
 	font-size: 12px;
 	font-weight: 600;
@@ -3741,11 +3614,6 @@ body:has(.psc-animations-off) .container-fade-in {
 		-10px 6px 22px rgba(0, 0, 0, 0.24),
 		var(--boxShadow2, 0 4px 14px rgba(0, 0, 0, 0.18)) !important;
 }
-.psc-site-card-gauge,
-.psc-site-card-gauge .apexcharts-canvas {
-	overflow: hidden !important;
-	max-height: 110px !important;
-}
 .psc-site-card-pen {
 	min-width: 0;
 	overflow: hidden !important;
@@ -3803,28 +3671,13 @@ body:has(.psc-animations-off) .container-fade-in {
 }
 
 .psc-kpi-hero-pen {
-	min-width: 140px;
 	box-sizing: border-box;
 }
 .psc-kpi-dashboard-chart-card {
-	min-width: min(100%, 520px);
 	min-height: 360px;
 	box-sizing: border-box;
 }
 
-.psc-kpi-coming-meter-row {
-	min-width: 0;
-	overflow: hidden;
-}
-.psc-kpi-coming-subcard {
-	box-sizing: border-box;
-	background: rgba(0,0,0,0.02);
-	border-radius: 6px;
-	min-width: 220px;
-	max-width: 320px;
-	flex-shrink: 0 !important;
-	overflow: hidden !important;
-}
 .psc-kpi-coming-chart {
 	box-sizing: border-box;
 	max-width: 720px;
@@ -3832,6 +3685,7 @@ body:has(.psc-animations-off) .container-fade-in {
 	overflow: hidden !important;
 }
 .psc-kpi-coming-meter-row {
+	min-width: 0;
 	box-sizing: border-box;
 	max-width: 420px;
 	overflow: hidden !important;
@@ -3854,10 +3708,6 @@ body:has(.psc-animations-off) .container-fade-in {
 	overflow: hidden !important;
 }
 
-.psc-kpi-domain-section {
-	box-sizing: border-box;
-	min-width: 0;
-}
 .psc-kpi-domain-subsection {
 	box-sizing: border-box;
 	background: color-mix(in srgb, var(--neutral-100) 5%, var(--neutral-10));
@@ -3874,15 +3724,15 @@ body:has(.psc-animations-off) .container-fade-in {
 /* Domain tabs — quiet classic strip; active = underline only (no CTA fill bar) */
 .psc-kpi-domain-tabs {
 	min-height: 0 !important;
-	border: none !important;
-	border-radius: 0 !important;
-	background: transparent !important;
-	box-shadow: none !important;
+	border: none;
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
 	overflow: hidden !important;
 }
 .psc-kpi-domain-tabs > .tab-menu.menu-classic,
 .psc-kpi-domain-tabs .tab-menu.menu-classic {
-	background: transparent !important;
+	background: transparent;
 	border-bottom: 1px solid color-mix(in srgb, var(--neutral-100) 14%, transparent) !important;
 	padding: 0 2px !important;
 	gap: 2px !important;
@@ -3892,15 +3742,15 @@ body:has(.psc-animations-off) .container-fade-in {
 }
 .psc-kpi-domain-tabs .tab-menu-item.menu-classic-tab,
 .psc-kpi-domain-tabs .ia_tabContainerComponent__tab--classic {
-	background: transparent !important;
-	color: var(--text, var(--neutral-90)) !important;
-	border: none !important;
-	border-bottom: 2px solid transparent !important;
-	border-radius: 0 !important;
-	font-weight: 600 !important;
-	font-size: 13px !important;
-	letter-spacing: 0.02em !important;
-	opacity: 0.55 !important;
+	background: transparent;
+	color: var(--text, var(--neutral-90));
+	border: none;
+	border-bottom: 2px solid transparent;
+	border-radius: 0;
+	font-weight: 600;
+	font-size: 13px;
+	letter-spacing: 0.02em;
+	opacity: 0.55;
 	min-height: 34px !important;
 	padding: 8px 14px !important;
 	margin: 0 !important;
@@ -3909,11 +3759,11 @@ body:has(.psc-animations-off) .container-fade-in {
 .psc-kpi-domain-tabs .tab-menu-item.menu-classic-tab.tab-active,
 .psc-kpi-domain-tabs .ia_tabContainerComponent__tab--classic--active,
 .psc-kpi-domain-tabs .ia_tabContainerComponent__tab--classic.tab-active {
-	background: transparent !important;
-	color: var(--text, var(--neutral-100)) !important;
+	background: transparent;
+	color: var(--text, var(--neutral-100));
 	border-bottom-color: var(--callToAction) !important;
 	opacity: 1 !important;
-	box-shadow: none !important;
+	box-shadow: none;
 }
 .psc-kpi-domain-tabs .tab-menu-item.menu-classic-tab:not(.tab-active):hover {
 	background: transparent !important;
@@ -3921,8 +3771,8 @@ body:has(.psc-animations-off) .container-fade-in {
 	color: var(--text, var(--neutral-100)) !important;
 }
 .psc-kpi-domain-tabs .tab-menu-item.menu-classic-tab span {
-	color: inherit !important;
-	font-weight: inherit !important;
+	color: inherit;
+	font-weight: inherit;
 }
 .psc-kpi-domain-panel {
 	box-sizing: border-box;
@@ -3971,6 +3821,10 @@ body:has(.psc-animations-off) .container-fade-in {
 }
 
 .psc-kpi-dashboard-page {
+	box-sizing: border-box;
+	min-height: 0;
+	padding: 20px 24px;
+	width: 100%;
 	justify-content: flex-start !important;
 }
 .psc-kpi-dashboard-chart-card {
@@ -3981,7 +3835,7 @@ body:has(.psc-animations-off) .container-fade-in {
 
 .psc-kpi-exec-stat { box-sizing: border-box; min-width: 140px; }
 .psc-kpi-exec-callout { box-sizing: border-box; }
-.psc-kpi-exec-page { min-height: 0; }
+
 .psc-kpi-exec-page .psc-container-card {
 	overflow-x: hidden !important;
 }
@@ -4047,16 +3901,998 @@ body:has(.psc-animations-off) .container-fade-in {
 	background: var(--neutral-10) !important;
 	border-color: color-mix(in srgb, var(--neutral-100) 16%, transparent) !important;
 }
-.psc-kpi-hero-pen .psc-font-label {
-	color: var(--text-secondary, var(--neutral-70)) !important;
+.psc-kpi-hero-pen .psc-Fonts\/Label {
+	color: var(--text-secondary, var(--neutral-70));
 	opacity: 1 !important;
 }
-.psc-kpi-dashboard-page .psc-font-heading {
-	color: var(--text, var(--neutral-100)) !important;
+.psc-kpi-dashboard-page .psc-Fonts\/Heading {
+	color: var(--text, var(--neutral-100));
 }
 .psc-kpi-coming-subcard {
+	box-sizing: border-box;
+	border-radius: 6px;
+	max-width: 320px;
+	flex-shrink: 0 !important;
+	overflow: hidden !important;
 	background: color-mix(in srgb, var(--neutral-100) 4%, var(--neutral-10)) !important;
 	border: 1px solid color-mix(in srgb, var(--neutral-100) 12%, transparent);
 }
 
+/* Utility Overview KPI rail — Apex axis/legend/datalabel chrome follows theme */
+.psc-utility-kpi-rail .apexcharts-xaxis text,
+.psc-utility-kpi-rail .apexcharts-yaxis text,
+.psc-utility-kpi-rail .apexcharts-yaxis-title text,
+.psc-utility-kpi-rail .apexcharts-xaxis-title text,
+.psc-utility-kpi-rail .apexcharts-legend-text,
+.psc-utility-kpi-rail .apexcharts-datalabel,
+.psc-utility-kpi-rail .apexcharts-datalabels text,
+.psc-utility-kpi-rail .apexcharts-data-labels text,
+.psc-utility-kpi-rail .apexcharts-datalabel-label,
+.psc-utility-kpi-rail .apexcharts-datalabel-value,
+.psc-utility-kpi-chart .apexcharts-xaxis text,
+.psc-utility-kpi-chart .apexcharts-yaxis text,
+.psc-utility-kpi-chart .apexcharts-yaxis-title text,
+.psc-utility-kpi-chart .apexcharts-xaxis-title text,
+.psc-utility-kpi-chart .apexcharts-legend-text,
+.psc-utility-kpi-chart .apexcharts-datalabel,
+.psc-utility-kpi-chart .apexcharts-datalabels text,
+.psc-utility-kpi-chart .apexcharts-data-labels text,
+.psc-utility-kpi-chart .apexcharts-datalabel-label,
+.psc-utility-kpi-chart .apexcharts-datalabel-value {
+	fill: var(--text, var(--neutral-90)) !important;
+	color: var(--text, var(--neutral-90)) !important;
+}
+.psc-utility-kpi-rail .apexcharts-gridline,
+.psc-utility-kpi-chart .apexcharts-gridline {
+	stroke: color-mix(in srgb, var(--neutral-100) 18%, transparent) !important;
+}
+.psc-utility-kpi-rail .apexcharts-tooltip,
+.psc-utility-kpi-chart .apexcharts-tooltip {
+	background: var(--neutral-20) !important;
+	color: var(--text, var(--neutral-90)) !important;
+	border: 1px solid color-mix(in srgb, var(--neutral-100) 20%, transparent) !important;
+	z-index: 40 !important;
+}
+/* Tall shared tooltips (status-by-area) must not be clipped by Apex host paint */
+.psc-utility-kpi-chart.ia_apexChartComponent,
+.psc-utility-kpi-chart .apexcharts-canvas,
+.psc-utility-kpi-chart .apexcharts-inner {
+	overflow: visible !important;
+}
+/* Dwell hours: labels stay in Apex y-gutter (no extra translate — that wasted width).
+   Apex may emit text-anchor="right" (invalid SVG); browsers fall back to start and
+   labels grow into the bars. Force end so align:right / offsetX gutter works. */
+.psc-utility-dwell-chart .apexcharts-svg {
+	overflow: visible !important;
+}
+.psc-utility-dwell-chart .apexcharts-yaxis text,
+.psc-utility-dwell-chart .apexcharts-yaxis-label {
+	text-anchor: end !important;
+}
+.psc-utility-kpi-rail .apexcharts-canvas,
+.psc-utility-kpi-rail .apexcharts-svg,
+.psc-utility-kpi-chart .apexcharts-canvas,
+.psc-utility-kpi-chart .apexcharts-svg {
+	background: transparent !important;
+}
 
+/* Utility Overview KPI tables — no horizontal scrollbar */
+.psc-utility-kpi-table.ia_tableComponent,
+.psc-utility-kpi-table .ia_tableComponent,
+.psc-utility-kpi-table .ia_table__headContainer,
+.psc-utility-kpi-table .ia_table__body,
+.psc-utility-kpi-rail .psc-utility-kpi-table,
+.psc-utility-kpi-rail .ia_tableComponent {
+	max-width: 100% !important;
+	min-width: 0 !important;
+	overflow-x: hidden !important;
+}
+.psc-utility-kpi-table .ia_table__body::-webkit-scrollbar:horizontal,
+.psc-utility-kpi-rail .ia_table__body::-webkit-scrollbar:horizontal {
+	height: 0 !important;
+	display: none !important;
+}
+
+/* Production Overview device tiles — button-like hover affordance */
+.psc-prod-device-tile {
+	transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+}
+.psc-prod-device-tile:hover {
+	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
+	transform: translateY(-3px);
+	border-color: var(--cta) !important;
+	z-index: 5;
+}
+
+/* Type-scale utilities (fs-*, fw-*, text-*) and other shared classes are Perspective style
+   classes (project style-classes/). Perspective emits them AFTER this stylesheet, sorted by name. */
+
+/* Header alarm indicator count badge (Scout AlarmNotification): top-right of the bell, priority colour */
+.psc-header-alarm-count {
+	position: absolute !important;
+	top: 1px;
+	right: 0px;
+	min-width: 16px;
+	height: 16px;
+	padding: 0 4px !important;
+	box-sizing: border-box;
+	border-radius: 8px;
+	background: var(--alarm-color, var(--alarm-critical));
+	color: #fff !important;
+	font-size: 10px !important;
+	font-weight: 700 !important;
+	line-height: 16px;
+	text-align: center;
+	pointer-events: none;
+	z-index: 5;
+}
+
+/* Header icons without button boxes (user 2026-09-29: the boxed bell clipped its count) - hamburger, alarms, lock,
+ * user, settings: icon only, border outline on hover */
+.psc-header-icon,
+.psc-header-icon.psc-nav-menu-btn,
+.psc-header-icon.psc-perm-badge,
+.psc-header-icon.psc-account-chip,
+.psc-header-icon.psc-account-settings {
+	background-color: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
+	border-radius: 0.5rem;
+	overflow: visible !important;
+}
+.psc-header-icon:hover {
+	background-color: transparent !important;
+	outline: 1px solid var(--border-strong) !important;
+	outline-offset: -1px;
+}
+
+/* HMI Out Of Service (.cursor/tasks/out-of-service/build.py): only the Out Of Service icon and the OUT OF SERVICE
+ * status show (user 2026-09-29: no X / greying) - the device's alarm frame / badge are hidden while it is out of service */
+.psc-device-oos .psc-alarm-frame,
+.psc-device-oos .psc-alarm-header,
+.psc-device-oos .psc-sensor-alarm-badge {
+	display: none !important;
+}
+.psc-device-oos .psc-alarm-border {
+	outline-color: var(--neutral-100) !important;
+	outline-width: 1px !important;
+}
+
+/* Native component context menu (meta.contextMenu - Ticket Logger, Out Of Service) styled like the trend value
+ * menu popup (01_Popups/00_Faceplates/Alerts/ContextMenu: container-card, 32 px Fonts/Header rows, no icons) */
+.ia_componentContextMenu {
+	background-color: var(--surface-card) !important;
+	border: 1px solid var(--border) !important;
+	border-radius: 0.5rem !important;
+	box-shadow: var(--boxShadow1) !important;
+	padding: 2px 0 6px !important;
+	min-width: 180px;
+	overflow: hidden;
+}
+.ia_componentContextMenu .ia_componentContextMenu__item.menu-item {
+	box-sizing: border-box;
+	width: 180px !important;
+	height: 32px !important;
+	min-height: 32px !important;
+	max-height: none !important;
+	line-height: 32px !important;
+	display: flex !important;
+	align-items: center;
+	padding: 0 8px !important;
+	background-color: transparent !important;
+	color: var(--text-secondary) !important;
+	font-family: sans-serif !important;
+	font-size: 0.9rem !important;
+	font-weight: 500 !important;
+	cursor: pointer;
+	transition: background-color 0.25s linear;
+}
+.ia_componentContextMenu .ia_componentContextMenu__item.menu-item:hover {
+	background-color: var(--surface-sunken) !important;
+}
+.ia_componentContextMenu .ia_componentContextMenu__icon {
+	display: none !important;
+}
+
+/* Trend X-trace contrast (.cursor/tasks/trend-colors/trace_contrast.py): solid card, shaded time row, darker
+ * crosshair - the tooltip blended into the grey chart. The x-axis time label is hidden (the card title already
+ * shows the time). */
+.psc-adhoc-trend-apex .apexcharts-tooltip,
+.psc-faceplate-trend-chart .apexcharts-tooltip {
+	background: var(--neutral-10) !important;
+	border: 1px solid var(--neutral-60) !important;
+	border-radius: 6px !important;
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28) !important;
+	color: var(--text) !important;
+	z-index: 20 !important;
+}
+.psc-adhoc-trend-apex .apexcharts-tooltip-title,
+.psc-faceplate-trend-chart .apexcharts-tooltip-title {
+	background: var(--neutral-30) !important;
+	border-bottom: 1px solid var(--neutral-50) !important;
+	color: var(--text) !important;
+	font-weight: 700 !important;
+}
+.psc-adhoc-trend-apex .apexcharts-tooltip-text-y-label,
+.psc-faceplate-trend-chart .apexcharts-tooltip-text-y-label {
+	color: var(--text) !important;
+}
+.psc-adhoc-trend-apex .apexcharts-tooltip-text-y-value,
+.psc-faceplate-trend-chart .apexcharts-tooltip-text-y-value {
+	color: var(--text) !important;
+	font-weight: 700 !important;
+}
+.psc-adhoc-trend-apex .apexcharts-xcrosshairs,
+.psc-faceplate-trend-chart .apexcharts-xcrosshairs {
+	stroke: var(--neutral-90) !important;
+	stroke-width: 1.5 !important;
+	stroke-dasharray: 4 3 !important;
+	opacity: 0.9 !important;
+}
+.psc-adhoc-trend-apex .apexcharts-xaxistooltip,
+.psc-faceplate-trend-chart .apexcharts-xaxistooltip {
+	display: none !important;
+}
+
+/* Header icon sizes (user 2026-09-29: too small, trend especially) - after and over the older 22 px !important
+ * rules on .psc-nav-menu-btn / .psc-account-settings. equipment/trending is thin strokes inset in its viewBox, so
+ * it gets a bigger box to read the same size as the Material glyphs. */
+.psc-header-icon svg.psc-color-icon {
+	flex: 0 0 var(--header-icon, 28px) !important;
+	height: var(--header-icon, 28px) !important;
+	width: var(--header-icon, 28px) !important;
+	min-height: var(--header-icon, 28px) !important;
+	min-width: var(--header-icon, 28px) !important;
+	max-height: var(--header-icon, 28px) !important;
+	max-width: var(--header-icon, 28px) !important;
+}
+.psc-header-icon.psc-perm-badge svg.psc-color-icon,
+.psc-header-icon.psc-account-chip svg.psc-color-icon {
+	--header-icon: 26px;
+}
+.psc-header-icon svg.psc-color-icon.psc-header-icon-trend {
+	--header-icon: 32px;
+}
+
+/* Safetys Reset / Silence (.cursor/tasks/safetys-reset-silence/build.py): FT MachineRoom RESET is red, SILENCE
+ * the normal button; style classes load after the stylesheet, hence !important */
+.psc-safetys-alarm-btn.psc-safetys-reset {
+	background-color: var(--alarm-critical) !important;
+	border-color: var(--alarm-critical) !important;
+	color: #fff !important;
+}
+.psc-safetys-alarm-btn.psc-safetys-reset:hover {
+	filter: brightness(1.1);
+}
+
+/* Faceplate Web GUI clickable (.cursor/tasks/faceplate-webgui/fix.py): the drag strip normally ends 56 px from
+ * the right (Close X); with Web GUI (88 px + 6 px margin) in the header it ends left of the button */
+.popup:has(.psc-faceplate-webgui) > .popup-drag,
+.ia_popup:has(.psc-faceplate-webgui) > .popup-drag {
+	right: 160px;
+}
+
+/* Ticket Logger drag strip (.cursor/tasks/ticket-logger-integrations/build.py): Perspective's drag strip covered the
+ * header's Settings icon; it now stops 44 px short of the right edge (drag from the title) */
+.popup:has(.psc-ticket-logger) > .popup-drag,
+.ia_popup:has(.psc-ticket-logger) > .popup-drag {
+	left: 0;
+	right: 44px;
+	width: auto !important;
+}
+
+/* Ticket Logger Settings gear: corner icon button, faceplate-close hover chip */
+.psc-ticket-logger-gear {
+	padding: 4px !important;
+	box-sizing: border-box;
+	cursor: pointer !important;
+}
+
+.psc-ticket-logger-gear:hover {
+	background-color: var(--neutral-40);
+	border-radius: var(--borderRadius);
+}
+
+/* Integrations accordion header (98_Configuration/IntegrationSection) */
+.psc-integration-section-header {
+	cursor: pointer;
+	user-select: none;
+}
+
+.psc-integration-section-header:hover {
+	background-color: var(--surface-nav-hover);
+}
+
+/* dropdown-subtle (on dropdownOptionStyle.classes): neutral option highlight - nav-tree selection tokens - instead of
+ * Perspective's saturated callToAction fill. Opt-in: Ticket Logger Priority / Type, Integrations New Provider */
+.iaDropdownCommon_option.psc-dropdown-subtle.ia_dropdown__option--focused,
+.iaDropdownCommon_option.psc-dropdown-subtle:hover {
+	background-color: var(--surface-nav-selected) !important;
+	color: var(--text) !important;
+}
+
+.iaDropdownCommon_option.psc-dropdown-subtle.ia_dropdown__option--selected {
+	background-color: var(--surface-nav-selected) !important;
+	color: var(--text) !important;
+	box-shadow: inset 3px 0 0 var(--border-strong);
+	font-weight: 600;
+}
+/* end Ticket Logger block */
+
+/* Faceplate hover (.cursor/tasks/faceplate-hover/build.py): anything that opens a faceplate gets the header-icon
+ * hover - a 1 px outline, no box (class only while the click does something) */
+.psc-faceplate-hover {
+	cursor: pointer;
+	border-radius: 0.5rem;
+}
+.psc-faceplate-hover:hover {
+	outline: 1px solid var(--border-strong) !important;
+	outline-offset: -1px;
+}
+
+/* CG page nav buttons (.cursor/tasks/cg-nav-buttons) */
+.psc-cg-nav-btn svg {
+  width: 28px !important;
+  height: 28px !important;
+}
+.psc-cg-nav-arrow svg {
+  width: 56px !important;
+  height: 56px !important;
+  flex-shrink: 0;
+}
+.psc-cg-nav-btn.ia_button--secondary {
+  gap: 8px;
+}
+
+/* Valve orientation (.cursor/tasks/valve-orientation) */
+.psc-valve-vertical-reverse {
+  display: grid !important;
+  grid-template:
+    "graphic"
+    "label"
+    "value"
+    "status";
+  justify-items: center;
+  align-content: start;
+  row-gap: 2px;
+}
+.psc-valve-vertical-reverse > .psc-valve-label {
+  grid-area: label;
+}
+.psc-valve-vertical-reverse > .psc-device-graphic {
+  grid-area: graphic;
+}
+.psc-valve-vertical-reverse > .psc-valve-value {
+  grid-area: value;
+}
+.psc-valve-vertical-reverse > .psc-valve-status {
+  grid-area: status;
+}
+.psc-valve-horizontal,
+.psc-valve-horizontal-reverse {
+  display: grid !important;
+  align-items: center;
+  justify-items: center;
+  column-gap: 4px;
+  row-gap: 2px;
+}
+.psc-valve-horizontal {
+  grid-template:
+    "label graphic"
+    "value graphic"
+    "status graphic";
+  grid-template-columns: max-content max-content;
+}
+.psc-valve-horizontal-reverse {
+  grid-template:
+    "graphic label"
+    "graphic value"
+    "graphic status";
+  grid-template-columns: max-content max-content;
+}
+.psc-valve-horizontal > .psc-valve-label,
+.psc-valve-horizontal-reverse > .psc-valve-label {
+  grid-area: label;
+  width: auto !important;
+}
+.psc-valve-horizontal > .psc-device-graphic,
+.psc-valve-horizontal-reverse > .psc-device-graphic {
+  grid-area: graphic;
+}
+.psc-valve-horizontal > .psc-valve-value,
+.psc-valve-horizontal-reverse > .psc-valve-value {
+  grid-area: value;
+}
+.psc-valve-horizontal > .psc-valve-status,
+.psc-valve-horizontal-reverse > .psc-valve-status {
+  grid-area: status;
+}
+
+/* HMI Out Of Service log (.cursor/tasks/oos-log/build.py): header notes badge (same shape as the alarm count, the
+ * OUT OF SERVICE grey), status chips, memo / comment text that wraps */
+.psc-header-oos-count {
+	--alarm-color: #616161;
+}
+.psc-oos-chip {
+	border-radius: 10px;
+	padding: 1px 8px;
+	color: #fff !important;
+	background-color: #616161;
+	white-space: nowrap;
+	line-height: 18px;
+}
+.psc-oos-chip-returned {
+	background-color: var(--success);
+}
+.psc-oos-chip-progress {
+	background-color: var(--info);
+}
+.psc-oos-chip-ready {
+	background-color: var(--success);
+}
+.psc-oos-chip-waiting {
+	background-color: var(--warning);
+}
+.psc-oos-memo {
+	white-space: pre-wrap !important;
+	overflow-wrap: anywhere;
+}
+/* Memo column: one line with an ellipsis (the full memo is in the detail pane); the cell's .content is a flex
+ * box, which can't ellipsize, so it becomes a block */
+.psc-oos-memo-cell {
+	overflow: hidden !important;
+	min-width: 0;
+}
+.psc-oos-memo-cell > .content {
+	display: block !important;
+	padding-right: 12px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap !important;
+	min-width: 0;
+}
+.psc-oos-comment {
+	border-left: 3px solid var(--border);
+	padding: 4px 8px;
+	background-color: var(--surface-sunken);
+	border-radius: 0 4px 4px 0;
+}
+
+/* Header branding (.cursor/tasks/branding/build.py, 2026-10-22): Boar's Head lockup after the hamburger (click = home)
+ * and the One Shot Automation badge + divider left of the lock (click = contact card). .psc-app-header is overflow
+ * hidden, so the lockups collapse to their marks on narrow headers: One Shot < 1024 px, Boar's Head < 900 px, and the
+ * One Shot badge hides < 700 px. Each logo view only shows its mark when params.collapsible (the header slots). */
+.psc-integrator-divider {
+	background-color: var(--border-strong);
+}
+@media (min-width: 900px) {
+	.psc-brand-logo-slot .psc-brand-logo-mark {
+		display: none !important;
+	}
+}
+@media (max-width: 899px) {
+	.psc-brand-logo-slot {
+		flex-basis: 44px !important;
+	}
+	.psc-brand-logo-slot .psc-brand-logo-full {
+		display: none !important;
+	}
+}
+@media (min-width: 1024px) {
+	.psc-integrator-logo-slot .psc-integrator-logo-mark {
+		display: none !important;
+	}
+}
+@media (max-width: 1023px) {
+	.psc-integrator-logo-slot {
+		flex-basis: 39px !important;
+	}
+	.psc-integrator-logo-slot .psc-integrator-logo-full {
+		display: none !important;
+	}
+}
+@media (max-width: 699px) {
+	.psc-integrator-badge {
+		display: none !important;
+	}
+}
+/* end Header branding */
+/* ==== Operations Forms layout system (.cursor/tasks/operations-forms/layout.py) ====
+ * States and IA inner parts for the form-* style classes, plus the tablet stacking (container query on
+ * .psc-form-page). Rewritten by the operations-forms builder; edit layout.py, not this block. */
+.psc-form-page {
+	container-type: inline-size;
+}
+input.psc-form-input {
+	padding: 0 10px;
+}
+textarea.psc-form-input {
+	padding: 8px 10px;
+	resize: vertical;
+}
+.psc-form-input.ia_dateTimeInputComponent {
+	padding: 0;
+	overflow: hidden;
+}
+.psc-form-input .ia_inputField {
+	border: none !important;
+	background-color: transparent !important;
+	height: 100% !important;
+	color: inherit;
+	font: inherit;
+	padding: 0 10px;
+	text-align: left;
+}
+.psc-form-input:focus,
+.psc-form-input:focus-within {
+	border-color: var(--callToAction);
+	box-shadow: 0 0 0 1px var(--callToAction);
+	outline: none;
+}
+.psc-form-input.psc-form-input-required,
+.psc-form-input.psc-form-input-required:focus,
+.psc-form-input.psc-form-input-required:focus-within {
+	border-color: var(--error);
+	box-shadow: 0 0 0 1px var(--error);
+}
+.psc-form-input:disabled,
+.psc-form-input:has(input:disabled),
+.psc-form-input.iaDropdownCommon--disabled {
+	background-color: var(--surface-page);
+	color: var(--text);
+	opacity: 1;
+	cursor: default;
+}
+.psc-form-btn:hover,
+.psc-form-btn-primary:hover {
+	filter: brightness(0.95);
+}
+.psc-form-btn:disabled,
+.psc-form-btn-primary:disabled {
+	opacity: 0.5;
+	filter: none;
+}
+.psc-form-td-cap {
+	display: none !important;
+}
+@container (max-width: 1100px) {
+	.psc-form-stack .psc-form-thead {
+		display: none !important;
+	}
+	.psc-form-stack .psc-form-tr {
+		flex-wrap: wrap !important;
+		row-gap: 10px;
+		background-color: var(--surface-page);
+		border-radius: 4px;
+		padding: 10px 12px;
+	}
+	.psc-form-stack .psc-form-td {
+		flex: 1 1 calc(33.33% - 8px) !important;
+		min-width: 150px !important;
+	}
+	.psc-form-stack .psc-form-td-cap {
+		display: flex !important;
+	}
+	.psc-form-stack .psc-form-tr > .psc-form-row-label {
+		flex: 1 1 100% !important;
+	}
+}
+/* ==== end Operations Forms layout system ==== */
+
+/* trend-context:begin (.cursor/tasks/trend-context/build.py - rerun, do not edit by hand) */
+/* Trend context menu / toast / copy / quick history popups: own card, transparent chrome + modal backdrop */
+#popup-TrendContextMenu, #popup-TrendCopyPath, #popup-TrendToast, #popup-TrendQuickHistory {
+	background-color: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
+	overflow: visible !important;
+}
+#popup-TrendContextMenu > .ia_popup__content, #popup-TrendContextMenu > .ia_popup__content > .view-parent,
+#popup-TrendCopyPath > .ia_popup__content, #popup-TrendCopyPath > .ia_popup__content > .view-parent,
+#popup-TrendToast > .ia_popup__content, #popup-TrendToast > .ia_popup__content > .view-parent,
+#popup-TrendQuickHistory > .ia_popup__content, #popup-TrendQuickHistory > .ia_popup__content > .view-parent {
+	background-color: transparent;
+	height: 100% !important;
+	width: 100% !important;
+	overflow: hidden !important;
+	scrollbar-width: none;
+}
+.popups-pane:has(#popup-TrendContextMenu) > .modal,
+.popups-pane:has(#popup-TrendCopyPath) > .modal {
+	background: transparent !important;
+	background-color: transparent !important;
+	backdrop-filter: none !important;
+	opacity: 1;
+}
+.psc-trend-ctx-menu {
+	background-color: var(--surface-raised);
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+	color: var(--text);
+	overflow: hidden;
+	padding: 4px 0;
+}
+.psc-trend-ctx-copy-card, .psc-trend-ctx-quick {
+	padding: 8px 12px;
+	gap: 6px;
+}
+.psc-trend-ctx-head {
+	padding: 4px 12px;
+	justify-content: center;
+}
+.psc-trend-ctx-title {
+	color: var(--text);
+	font-weight: 600;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.psc-trend-ctx-path {
+	color: var(--neutral-60);
+	font-size: 10px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.psc-trend-ctx-copy-path {
+	user-select: text !important;
+	-webkit-user-select: text !important;
+	word-break: break-all;
+	cursor: text;
+}
+.psc-trend-ctx-sep {
+	background-color: var(--border);
+	margin: 4px 0;
+	height: 1px;
+	min-height: 1px;
+	max-height: 1px;
+}
+.psc-trend-ctx-row {
+	padding: 0 12px;
+	gap: 10px;
+	cursor: pointer;
+}
+.psc-trend-ctx-row:hover {
+	background-color: var(--surface-sunken);
+}
+.psc-trend-ctx-row-muted, .psc-trend-ctx-row-muted:hover {
+	cursor: default;
+	background-color: transparent;
+}
+.psc-trend-ctx-text {
+	color: var(--text);
+	white-space: nowrap;
+}
+.psc-trend-ctx-icon {
+	color: var(--text);
+	fill: var(--text);
+}
+.psc-trend-ctx-muted {
+	color: var(--neutral-60) !important;
+	fill: var(--neutral-60) !important;
+}
+.psc-trend-ctx-close {
+	cursor: pointer;
+}
+.psc-trend-ctx-toast {
+	background-color: var(--surface-raised);
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+	padding: 0 14px;
+	gap: 10px;
+	height: 100%;
+}
+.psc-trend-ctx-toast-dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background-color: var(--success, #2E7D32);
+}
+.psc-trend-ctx-toast-warn {
+	background-color: var(--warning, #F9A825);
+}
+.psc-trend-ctx-toast-text {
+	color: var(--text);
+	font-weight: 500;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.psc-trend-ctx-link {
+	color: var(--callToAction);
+	cursor: pointer;
+	white-space: nowrap;
+}
+.psc-trend-ctx-copy button.tc-copy-btn {
+	background-color: var(--callToAction);
+	color: #fff;
+	border: none;
+	border-radius: 3px;
+	padding: 5px 16px;
+	font: inherit;
+	cursor: pointer;
+}
+/* Header trend icon basket badge */
+.psc-trend-badge {
+	position: absolute;
+	top: -2px;
+	right: -4px;
+	min-width: 16px;
+	height: 16px;
+	line-height: 16px;
+	padding: 0 4px;
+	border-radius: 8px;
+	background-color: var(--callToAction);
+	color: #fff;
+	font-size: 10px;
+	font-weight: 600;
+	text-align: center;
+	pointer-events: none;
+}
+/* Popup close X: Perspective's default drag strip (.popup-drag, top 10px, 18px tall, full width) sat on top of the
+   in-view close icons and header buttons, so only their bottom edge clicked. Keep it off the right 56px of every
+   popup; the trend popups get a strip over their title only. */
+.ia_popup > .popup-drag {
+	right: 56px;
+	width: auto;
+}
+#popup-TrendQuickHistory > .popup-drag {
+	top: 0;
+	left: 0;
+	right: 340px;
+	width: auto;
+	height: 40px;
+	cursor: grab;
+	z-index: 100;
+}
+#popup-TrendCopyPath > .popup-drag {
+	top: 0;
+	left: 0;
+	right: 56px;
+	width: auto;
+	height: 40px;
+	cursor: grab;
+	z-index: 100;
+}
+.psc-trend-ctx-close-btn {
+	width: 32px;
+	height: 32px;
+	min-width: 32px;
+	border-radius: 4px;
+	cursor: pointer;
+}
+.psc-trend-ctx-close-btn:hover {
+	background-color: var(--surface-sunken);
+}
+/* Chart tools (Trending page once above the plots, faceplate Trend tab, Quick History): Figma Dev Jam
+   "Trending / Chart Tools v2". Native zoom / pan / reset icons hidden: only the download menu stays. */
+.psc-trend-chart .apexcharts-zoom-icon, .psc-trend-chart .apexcharts-pan-icon,
+.psc-trend-chart .apexcharts-zoomin-icon, .psc-trend-chart .apexcharts-zoomout-icon,
+.psc-trend-chart .apexcharts-reset-icon, .psc-trend-chart .apexcharts-selection-icon {
+	display: none !important;
+}
+.psc-trend-tools {
+	gap: 4px;
+	padding: 6px 8px;
+	border-bottom: 1px solid var(--border);
+}
+.psc-trend-tools-compact {
+	padding: 4px 2px;
+}
+.psc-trend-tools-row {
+	gap: 8px;
+	flex-wrap: wrap;
+	row-gap: 4px;
+}
+.psc-trend-seg-group {
+	border: 1px solid var(--callToAction);
+	border-radius: 4px;
+	overflow: hidden;
+	gap: 0;
+}
+.psc-trend-seg, .psc-trend-tool-btn {
+	height: 28px !important;
+	min-height: 28px !important;
+	padding: 0 12px !important;
+	gap: 6px;
+	font-size: 12px !important;
+	font-weight: 600 !important;
+	white-space: nowrap;
+	box-shadow: none !important;
+	cursor: pointer;
+}
+.psc-trend-tools-compact .psc-trend-seg, .psc-trend-tools-compact .psc-trend-tool-btn {
+	height: 26px !important;
+	min-height: 26px !important;
+	padding: 0 8px !important;
+}
+.psc-trend-seg {
+	border: none !important;
+	border-left: 1px solid var(--callToAction) !important;
+	border-radius: 0 !important;
+	background-color: var(--surface-card) !important;
+	background-image: none !important;
+	color: var(--callToAction) !important;
+}
+.psc-trend-seg:first-child {
+	border-left: none !important;
+}
+.psc-trend-seg:hover {
+	background-color: var(--callToActionHighlight) !important;
+}
+.psc-trend-seg-on, .psc-trend-seg-on:hover {
+	background-color: var(--callToAction) !important;
+	color: #FFFFFF !important;
+}
+.psc-trend-seg svg, .psc-trend-tool-btn svg {
+	fill: currentColor !important;
+	color: inherit !important;
+}
+.psc-trend-tool-btn {
+	border: 1px solid var(--border) !important;
+	border-radius: 4px !important;
+	background-color: var(--surface-card) !important;
+	background-image: none !important;
+	color: var(--text) !important;
+}
+.psc-trend-tool-btn:hover:not(:disabled) {
+	background-color: var(--surface-sunken) !important;
+}
+.psc-trend-tool-btn:disabled, .psc-trend-tool-btn[disabled] {
+	color: var(--neutral-50, #9AA1AB) !important;
+	cursor: default;
+	opacity: 0.6;
+}
+.psc-trend-tool-icon {
+	padding: 0 6px !important;
+	min-width: 28px;
+}
+.psc-trend-tool-compact {
+	height: 24px !important;
+	min-height: 24px !important;
+	padding: 0 8px !important;
+	font-size: 11px !important;
+}
+.psc-trend-live-on {
+	color: var(--callToAction) !important;
+	border-color: var(--callToAction) !important;
+}
+.psc-trend-divider {
+	width: 1px;
+	height: 20px;
+	background-color: var(--border);
+}
+.psc-trend-switch-box {
+	gap: 6px;
+	cursor: pointer;
+	padding: 0 4px;
+	border-radius: 4px;
+}
+.psc-trend-switch-box:hover {
+	background-color: var(--surface-sunken);
+}
+.psc-trend-switch {
+	pointer-events: none;
+}
+.psc-trend-switch-label {
+	color: var(--text);
+	font-size: 12px;
+	font-weight: 600;
+	white-space: nowrap;
+}
+.psc-trend-switch-state {
+	color: var(--neutral-60);
+	font-size: 12px;
+	font-weight: 700;
+	min-width: 22px;
+}
+.psc-trend-switch-state-on {
+	color: var(--callToAction);
+}
+.psc-trend-zoom-chip {
+	gap: 6px;
+	height: 24px;
+	padding: 0 10px;
+	border: 1px solid var(--callToAction);
+	border-radius: 12px;
+	background-color: var(--callToActionHighlight);
+	cursor: pointer;
+}
+.psc-trend-zoom-chip-text {
+	color: var(--callToAction);
+	font-size: 11px;
+	font-weight: 600;
+	white-space: nowrap;
+}
+.psc-trend-zoom-chip-link {
+	color: var(--callToAction);
+	font-size: 11px;
+	font-weight: 700;
+	text-decoration: underline;
+}
+.psc-trend-hint {
+	color: var(--neutral-60);
+	font-size: 11px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+/* trend-context:end */
+/* ==== Admin pages (Roles & Permissions, User Management; .cursor/tasks/user-management/admin_views.py) ====
+ * Hover / disabled states and the Roles tab summary markup (raw HTML in a markdown component) for the admin-*
+ * style classes. Rewritten by build_admin.py; edit admin_views.py, not this block. */
+.psc-admin-row:hover,
+.psc-admin-list-item:hover {
+	background-color: color-mix(in srgb, var(--callToActionHighlight) 55%, transparent);
+}
+.psc-admin-list-item-selected:hover {
+	background-color: var(--callToActionHighlight);
+}
+.psc-admin-cell-click:hover {
+	box-shadow: inset 0 0 0 1px var(--callToAction);
+}
+.psc-admin-group:hover {
+	filter: brightness(0.98);
+}
+.psc-admin-tab:hover {
+	filter: brightness(0.95);
+}
+.ia_passwordFieldComponent > input.psc-form-input {
+	height: 32px !important;
+	padding: 0 10px;
+}
+.psc-admin-btn-danger:disabled {
+	opacity: 0.45;
+}
+.psc-admin-md .markdown-container,
+.psc-admin-md {
+	font-family: sans-serif;
+	color: var(--text);
+}
+.psc-admin-md .admin-md-cat {
+	padding: 10px 0;
+	border-bottom: 1px solid var(--border);
+}
+.psc-admin-md .admin-md-head {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 4px;
+}
+.psc-admin-md .admin-md-name {
+	font-size: 13px;
+	font-weight: 700;
+	flex: 1 1 auto;
+}
+.psc-admin-md .admin-md-track {
+	display: inline-block;
+	width: 120px;
+	height: 6px;
+	border-radius: 3px;
+	background-color: var(--surface-page);
+	overflow: hidden;
+}
+.psc-admin-md .admin-md-fill {
+	display: block;
+	height: 6px;
+	background-color: var(--callToAction);
+}
+.psc-admin-md .admin-md-count {
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--text-muted);
+	min-width: 42px;
+	text-align: right;
+}
+.psc-admin-md .admin-md-yes {
+	font-size: 12px;
+	line-height: 1.45;
+}
+.psc-admin-md .admin-md-no {
+	font-size: 12px;
+	line-height: 1.45;
+	color: var(--text-muted);
+}
+/* ==== end Admin pages ==== */

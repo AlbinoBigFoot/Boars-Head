@@ -1,0 +1,1737 @@
+{
+  "custom": {
+    "preview": "ok",
+    "good": false,
+    "fault": 0,
+    "state": "bad",
+    "ch0": null,
+    "unit0": "",
+    "rng0": false,
+    "ch1": null,
+    "unit1": "",
+    "rng1": false,
+    "ch2": null,
+    "unit2": "",
+    "rng2": false,
+    "ch3": null,
+    "unit3": "",
+    "rng3": false,
+    "ch4": null,
+    "unit4": "",
+    "rng4": false,
+    "ch5": null,
+    "unit5": "",
+    "rng5": false,
+    "ch6": null,
+    "unit6": "",
+    "rng6": false,
+    "ch7": null,
+    "unit7": "",
+    "rng7": false
+  },
+  "params": {
+    "tagPath": "",
+    "slot": 0,
+    "member": "",
+    "selected": false,
+    "state": "OK",
+    "name": ""
+  },
+  "propConfig": {
+    "custom.preview": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "lower(trim(coalesce({view.params.state}, 'ok')))"
+        }
+      }
+    },
+    "custom.good": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', {view.custom.preview} != 'bad', coalesce(try(isGood(tag({view.params.tagPath} + '/Fault')) && isGood(tag({view.params.tagPath} + '/Ch0Data')), false), false))"
+        }
+      }
+    },
+    "custom.fault": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/Fault')), false), false), if(coalesce({view.params.tagPath}, '') = '', if({view.custom.preview} = 'fault', 1, 0), coalesce(try(toInt(tag({view.params.tagPath} + '/Fault')), 0), 0)), null)"
+        }
+      }
+    },
+    "custom.state": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(!{view.custom.good}, 'bad', if({view.custom.fault} = -1, 'conn', if({view.custom.fault} != 0, 'fault', 'ok')))"
+        }
+      }
+    },
+    "custom.ch0": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch0En')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch0Signal')), false), false)), if(coalesce({view.params.tagPath}, '') = '', if({view.custom.preview} = 'ok', 4.0, null), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch0En')), true), true), try(toFloat(tag({view.params.tagPath} + '/Ch0Signal')), null), null)), null)"
+        }
+      }
+    },
+    "custom.unit0": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/Ch0Unit')), false), false), if(coalesce({view.params.tagPath}, '') = '', if(0 < 4, 'mA', 'V'), coalesce(try(toStr(tag({view.params.tagPath} + '/Ch0Unit')), ''), '')), null)"
+        }
+      }
+    },
+    "custom.rng0": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch0OverRange')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch0UnderRange')), false), false)), if(coalesce({view.params.tagPath}, '') = '', false, coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch0OverRange')), false), false) || coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch0UnderRange')), false), false)), null)"
+        }
+      }
+    },
+    "custom.ch1": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch1En')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch1Signal')), false), false)), if(coalesce({view.params.tagPath}, '') = '', if({view.custom.preview} = 'ok', 8.21, null), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch1En')), true), true), try(toFloat(tag({view.params.tagPath} + '/Ch1Signal')), null), null)), null)"
+        }
+      }
+    },
+    "custom.unit1": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/Ch1Unit')), false), false), if(coalesce({view.params.tagPath}, '') = '', if(1 < 4, 'mA', 'V'), coalesce(try(toStr(tag({view.params.tagPath} + '/Ch1Unit')), ''), '')), null)"
+        }
+      }
+    },
+    "custom.rng1": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch1OverRange')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch1UnderRange')), false), false)), if(coalesce({view.params.tagPath}, '') = '', false, coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch1OverRange')), false), false) || coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch1UnderRange')), false), false)), null)"
+        }
+      }
+    },
+    "custom.ch2": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch2En')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch2Signal')), false), false)), if(coalesce({view.params.tagPath}, '') = '', if({view.custom.preview} = 'ok', 12.04, null), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch2En')), true), true), try(toFloat(tag({view.params.tagPath} + '/Ch2Signal')), null), null)), null)"
+        }
+      }
+    },
+    "custom.unit2": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/Ch2Unit')), false), false), if(coalesce({view.params.tagPath}, '') = '', if(2 < 4, 'mA', 'V'), coalesce(try(toStr(tag({view.params.tagPath} + '/Ch2Unit')), ''), '')), null)"
+        }
+      }
+    },
+    "custom.rng2": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch2OverRange')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch2UnderRange')), false), false)), if(coalesce({view.params.tagPath}, '') = '', false, coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch2OverRange')), false), false) || coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch2UnderRange')), false), false)), null)"
+        }
+      }
+    },
+    "custom.ch3": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch3En')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch3Signal')), false), false)), if(coalesce({view.params.tagPath}, '') = '', if({view.custom.preview} = 'ok', 16.38, null), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch3En')), true), true), try(toFloat(tag({view.params.tagPath} + '/Ch3Signal')), null), null)), null)"
+        }
+      }
+    },
+    "custom.unit3": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/Ch3Unit')), false), false), if(coalesce({view.params.tagPath}, '') = '', if(3 < 4, 'mA', 'V'), coalesce(try(toStr(tag({view.params.tagPath} + '/Ch3Unit')), ''), '')), null)"
+        }
+      }
+    },
+    "custom.rng3": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch3OverRange')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch3UnderRange')), false), false)), if(coalesce({view.params.tagPath}, '') = '', false, coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch3OverRange')), false), false) || coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch3UnderRange')), false), false)), null)"
+        }
+      }
+    },
+    "custom.ch4": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch4En')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch4Signal')), false), false)), if(coalesce({view.params.tagPath}, '') = '', if({view.custom.preview} = 'ok', 2.55, null), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch4En')), true), true), try(toFloat(tag({view.params.tagPath} + '/Ch4Signal')), null), null)), null)"
+        }
+      }
+    },
+    "custom.unit4": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/Ch4Unit')), false), false), if(coalesce({view.params.tagPath}, '') = '', if(4 < 4, 'mA', 'V'), coalesce(try(toStr(tag({view.params.tagPath} + '/Ch4Unit')), ''), '')), null)"
+        }
+      }
+    },
+    "custom.rng4": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch4OverRange')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch4UnderRange')), false), false)), if(coalesce({view.params.tagPath}, '') = '', false, coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch4OverRange')), false), false) || coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch4UnderRange')), false), false)), null)"
+        }
+      }
+    },
+    "custom.ch5": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch5En')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch5Signal')), false), false)), if(coalesce({view.params.tagPath}, '') = '', if({view.custom.preview} = 'ok', 3.83, null), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch5En')), true), true), try(toFloat(tag({view.params.tagPath} + '/Ch5Signal')), null), null)), null)"
+        }
+      }
+    },
+    "custom.unit5": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/Ch5Unit')), false), false), if(coalesce({view.params.tagPath}, '') = '', if(5 < 4, 'mA', 'V'), coalesce(try(toStr(tag({view.params.tagPath} + '/Ch5Unit')), ''), '')), null)"
+        }
+      }
+    },
+    "custom.rng5": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch5OverRange')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch5UnderRange')), false), false)), if(coalesce({view.params.tagPath}, '') = '', false, coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch5OverRange')), false), false) || coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch5UnderRange')), false), false)), null)"
+        }
+      }
+    },
+    "custom.ch6": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch6En')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch6Signal')), false), false)), if(coalesce({view.params.tagPath}, '') = '', if({view.custom.preview} = 'ok', 20.6, null), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch6En')), true), true), try(toFloat(tag({view.params.tagPath} + '/Ch6Signal')), null), null)), null)"
+        }
+      }
+    },
+    "custom.unit6": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/Ch6Unit')), false), false), if(coalesce({view.params.tagPath}, '') = '', if(6 < 4, 'mA', 'V'), coalesce(try(toStr(tag({view.params.tagPath} + '/Ch6Unit')), ''), '')), null)"
+        }
+      }
+    },
+    "custom.rng6": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch6OverRange')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch6UnderRange')), false), false)), if(coalesce({view.params.tagPath}, '') = '', true, coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch6OverRange')), false), false) || coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch6UnderRange')), false), false)), null)"
+        }
+      }
+    },
+    "custom.ch7": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch7En')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch7Signal')), false), false)), if(coalesce({view.params.tagPath}, '') = '', if({view.custom.preview} = 'ok', 4.09, null), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch7En')), true), true), try(toFloat(tag({view.params.tagPath} + '/Ch7Signal')), null), null)), null)"
+        }
+      }
+    },
+    "custom.unit7": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/Ch7Unit')), false), false), if(coalesce({view.params.tagPath}, '') = '', if(7 < 4, 'mA', 'V'), coalesce(try(toStr(tag({view.params.tagPath} + '/Ch7Unit')), ''), '')), null)"
+        }
+      }
+    },
+    "custom.rng7": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch7OverRange')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch7UnderRange')), false), false)), if(coalesce({view.params.tagPath}, '') = '', false, coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch7OverRange')), false), false) || coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch7UnderRange')), false), false)), null)"
+        }
+      }
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.slot": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.member": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.selected": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.state": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.name": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "width": 54,
+      "height": 280
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root",
+      "contextMenu": {}
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "overflow": "visible",
+        "cursor": "pointer",
+        "width": "100%",
+        "height": "100%"
+      }
+    },
+    "propConfig": {
+      "meta.contextMenu.items": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "coalesce({session.custom.TicketLogAccess}, false)"
+          },
+          "transforms": [
+            {
+              "type": "script",
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = str(self.view.params.tagPath or '')\n\texcept:\n\t\tpass\n\tview_name = self.view.id.split('@')[0]\n\titems = []\n\tif value:\n\t\tlogged = tagPath if tagPath.strip() else 'No TagPath: ' + view_name.split('/')[-1]\n\t\titems.append({\n\t\t\t\"text\": 'Ticket Logger',\n\t\t\t\"icon\": {\"path\": 'material/info', \"color\": \"--neutral-80\", \"style\": {}},\n\t\t\t\"style\": {\"classes\": \"bg-component Fonts/Value\", \"height\": 24, \"width\": 170},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\"type\": 'ticketLog', \"payload\": {'tagPath': logged, 'viewName': view_name, 'sender': self.view.id}, \"scope\": 'page'}\n\t\t})\n\treturn items"
+            }
+          ]
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "len({this.meta.contextMenu.items}) > 0"
+          }
+        }
+      },
+      "props.style.classes": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "if(coalesce({view.params.member}, '') != '', 'faceplate-hover', '')"
+          }
+        }
+      }
+    },
+    "events": {
+      "dom": {
+        "onClick": {
+          "type": "script",
+          "scope": "G",
+          "config": {
+            "script": "\t# read-only rack: a click only selects the module for the detail panel (page message)\n\tmember = str(self.view.params.member or '')\n\tif member:\n\t\tsystem.perspective.sendMessage('plcRackSelect', payload={'member': member}, scope='page')\n"
+          }
+        },
+        "onMouseEnter": {
+          "type": "script",
+          "scope": "G",
+          "config": {
+            "script": "\t# hover popover over the rack (UI state only; the page clears it on leave)\n\tm = str(self.view.params.member or '')\n\tif m:\n\t\tsystem.perspective.sendMessage('plcRackHover', payload={'member': m, 'leave': False}, scope='page')\n"
+          }
+        },
+        "onMouseLeave": {
+          "type": "script",
+          "scope": "G",
+          "config": {
+            "script": "\t# hover popover over the rack (UI state only; the page clears it on leave)\n\tm = str(self.view.params.member or '')\n\tif m:\n\t\tsystem.perspective.sendMessage('plcRackHover', payload={'member': m, 'leave': True}, scope='page')\n"
+          }
+        }
+      }
+    },
+    "children": [
+      {
+        "type": "ia.shapes.svg",
+        "meta": {
+          "name": "Module"
+        },
+        "position": {
+          "grow": 1,
+          "shrink": 1,
+          "basis": "0px"
+        },
+        "props": {
+          "viewBox": "-1 0 54 280",
+          "elements": [
+            {
+              "type": "rect",
+              "name": "body",
+              "fill": {
+                "paint": "var(--deviceFill-running)"
+              },
+              "style": {},
+              "x": 0.25,
+              "y": 0.25,
+              "width": 51.5,
+              "height": 259.5,
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "rx": 2
+            },
+            {
+              "type": "text",
+              "name": "slot",
+              "text": "00",
+              "x": 26.0,
+              "y": 11.8,
+              "textAnchor": "middle",
+              "fontSize": 8,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "rect",
+              "name": "status-window",
+              "fill": {
+                "paint": "var(--neutral-30)"
+              },
+              "style": {},
+              "x": 4,
+              "y": 16,
+              "width": 44,
+              "height": 14,
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "rx": 1
+            },
+            {
+              "type": "rect",
+              "name": "led-ok",
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "style": {},
+              "x": 8.25,
+              "y": 20.25,
+              "width": 5.5,
+              "height": 5.5,
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "rx": 1
+            },
+            {
+              "type": "text",
+              "name": "ok",
+              "text": "OK",
+              "x": 17,
+              "y": 24.1,
+              "textAnchor": "start",
+              "fontSize": 6,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "rect",
+              "name": "io-window",
+              "fill": {
+                "paint": "var(--neutral-30)"
+              },
+              "style": {},
+              "x": 4,
+              "y": 31,
+              "width": 44,
+              "height": 183,
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "rx": 1
+            },
+            {
+              "type": "rect",
+              "name": "led-0",
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "style": {},
+              "x": 5.75,
+              "y": 35.75,
+              "width": 5.5,
+              "height": 5.5,
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "rx": 1.2
+            },
+            {
+              "type": "text",
+              "name": "ch-0",
+              "text": "0",
+              "x": 13.5,
+              "y": 42.1,
+              "textAnchor": "start",
+              "fontSize": 7,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "text",
+              "name": "unit-0",
+              "text": "",
+              "x": 46,
+              "y": 40.85,
+              "textAnchor": "end",
+              "fontSize": 5.5,
+              "fontWeight": "400",
+              "fill": {
+                "paint": "var(--neutral-80)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "text",
+              "name": "val-0",
+              "text": "--",
+              "x": 46,
+              "y": 53.25,
+              "textAnchor": "end",
+              "fontSize": 9.5,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "rect",
+              "name": "led-1",
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "style": {},
+              "x": 5.75,
+              "y": 58.25,
+              "width": 5.5,
+              "height": 5.5,
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "rx": 1.2
+            },
+            {
+              "type": "text",
+              "name": "ch-1",
+              "text": "1",
+              "x": 13.5,
+              "y": 64.6,
+              "textAnchor": "start",
+              "fontSize": 7,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "text",
+              "name": "unit-1",
+              "text": "",
+              "x": 46,
+              "y": 63.35,
+              "textAnchor": "end",
+              "fontSize": 5.5,
+              "fontWeight": "400",
+              "fill": {
+                "paint": "var(--neutral-80)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "text",
+              "name": "val-1",
+              "text": "--",
+              "x": 46,
+              "y": 75.75,
+              "textAnchor": "end",
+              "fontSize": 9.5,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "rect",
+              "name": "led-2",
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "style": {},
+              "x": 5.75,
+              "y": 80.75,
+              "width": 5.5,
+              "height": 5.5,
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "rx": 1.2
+            },
+            {
+              "type": "text",
+              "name": "ch-2",
+              "text": "2",
+              "x": 13.5,
+              "y": 87.1,
+              "textAnchor": "start",
+              "fontSize": 7,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "text",
+              "name": "unit-2",
+              "text": "",
+              "x": 46,
+              "y": 85.85,
+              "textAnchor": "end",
+              "fontSize": 5.5,
+              "fontWeight": "400",
+              "fill": {
+                "paint": "var(--neutral-80)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "text",
+              "name": "val-2",
+              "text": "--",
+              "x": 46,
+              "y": 98.25,
+              "textAnchor": "end",
+              "fontSize": 9.5,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "rect",
+              "name": "led-3",
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "style": {},
+              "x": 5.75,
+              "y": 103.25,
+              "width": 5.5,
+              "height": 5.5,
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "rx": 1.2
+            },
+            {
+              "type": "text",
+              "name": "ch-3",
+              "text": "3",
+              "x": 13.5,
+              "y": 109.6,
+              "textAnchor": "start",
+              "fontSize": 7,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "text",
+              "name": "unit-3",
+              "text": "",
+              "x": 46,
+              "y": 108.35,
+              "textAnchor": "end",
+              "fontSize": 5.5,
+              "fontWeight": "400",
+              "fill": {
+                "paint": "var(--neutral-80)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "text",
+              "name": "val-3",
+              "text": "--",
+              "x": 46,
+              "y": 120.75,
+              "textAnchor": "end",
+              "fontSize": 9.5,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "rect",
+              "name": "led-4",
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "style": {},
+              "x": 5.75,
+              "y": 125.75,
+              "width": 5.5,
+              "height": 5.5,
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "rx": 1.2
+            },
+            {
+              "type": "text",
+              "name": "ch-4",
+              "text": "4",
+              "x": 13.5,
+              "y": 132.1,
+              "textAnchor": "start",
+              "fontSize": 7,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "text",
+              "name": "unit-4",
+              "text": "",
+              "x": 46,
+              "y": 130.85,
+              "textAnchor": "end",
+              "fontSize": 5.5,
+              "fontWeight": "400",
+              "fill": {
+                "paint": "var(--neutral-80)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "text",
+              "name": "val-4",
+              "text": "--",
+              "x": 46,
+              "y": 143.25,
+              "textAnchor": "end",
+              "fontSize": 9.5,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "rect",
+              "name": "led-5",
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "style": {},
+              "x": 5.75,
+              "y": 148.25,
+              "width": 5.5,
+              "height": 5.5,
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "rx": 1.2
+            },
+            {
+              "type": "text",
+              "name": "ch-5",
+              "text": "5",
+              "x": 13.5,
+              "y": 154.6,
+              "textAnchor": "start",
+              "fontSize": 7,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "text",
+              "name": "unit-5",
+              "text": "",
+              "x": 46,
+              "y": 153.35,
+              "textAnchor": "end",
+              "fontSize": 5.5,
+              "fontWeight": "400",
+              "fill": {
+                "paint": "var(--neutral-80)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "text",
+              "name": "val-5",
+              "text": "--",
+              "x": 46,
+              "y": 165.75,
+              "textAnchor": "end",
+              "fontSize": 9.5,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "rect",
+              "name": "led-6",
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "style": {},
+              "x": 5.75,
+              "y": 170.75,
+              "width": 5.5,
+              "height": 5.5,
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "rx": 1.2
+            },
+            {
+              "type": "text",
+              "name": "ch-6",
+              "text": "6",
+              "x": 13.5,
+              "y": 177.1,
+              "textAnchor": "start",
+              "fontSize": 7,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "text",
+              "name": "unit-6",
+              "text": "",
+              "x": 46,
+              "y": 175.85,
+              "textAnchor": "end",
+              "fontSize": 5.5,
+              "fontWeight": "400",
+              "fill": {
+                "paint": "var(--neutral-80)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "text",
+              "name": "val-6",
+              "text": "--",
+              "x": 46,
+              "y": 188.25,
+              "textAnchor": "end",
+              "fontSize": 9.5,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "rect",
+              "name": "led-7",
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "style": {},
+              "x": 5.75,
+              "y": 193.25,
+              "width": 5.5,
+              "height": 5.5,
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "rx": 1.2
+            },
+            {
+              "type": "text",
+              "name": "ch-7",
+              "text": "7",
+              "x": 13.5,
+              "y": 199.6,
+              "textAnchor": "start",
+              "fontSize": 7,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "text",
+              "name": "unit-7",
+              "text": "",
+              "x": 46,
+              "y": 198.35,
+              "textAnchor": "end",
+              "fontSize": 5.5,
+              "fontWeight": "400",
+              "fill": {
+                "paint": "var(--neutral-80)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "text",
+              "name": "val-7",
+              "text": "--",
+              "x": 46,
+              "y": 210.75,
+              "textAnchor": "end",
+              "fontSize": 9.5,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "text",
+              "name": "kind",
+              "text": "ANALOG IN",
+              "x": 26.0,
+              "y": 223.15,
+              "textAnchor": "middle",
+              "fontSize": 6.5,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "rect",
+              "name": "door",
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "style": {},
+              "x": 4.25,
+              "y": 226.25,
+              "width": 43.5,
+              "height": 19.5,
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "rx": 1
+            },
+            {
+              "type": "rect",
+              "name": "door-label",
+              "fill": {
+                "paint": "var(--neutral-30)"
+              },
+              "style": {},
+              "x": 7,
+              "y": 229,
+              "width": 38,
+              "height": 14,
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "rx": 1
+            },
+            {
+              "type": "text",
+              "name": "name",
+              "text": "",
+              "x": 26.0,
+              "y": 238.2,
+              "textAnchor": "middle",
+              "fontSize": 7,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "text",
+              "name": "catalog",
+              "text": "1769-IF8/A",
+              "x": 26.0,
+              "y": 253.55,
+              "textAnchor": "middle",
+              "fontSize": 5.5,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "text",
+              "name": "status",
+              "text": "",
+              "x": 26.0,
+              "y": 272.8,
+              "textAnchor": "middle",
+              "fontSize": 8,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "rect",
+              "name": "selected",
+              "x": -0.4,
+              "y": -0.4,
+              "width": 52.8,
+              "height": 260.8,
+              "rx": 2.5,
+              "fill": {
+                "paint": "none"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "1.6",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "style": {}
+            }
+          ],
+          "style": {
+            "overflow": "visible",
+            "userSelect": "none",
+            "width": "100%",
+            "height": "100%"
+          }
+        },
+        "propConfig": {
+          "props.elements[1].text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if(coalesce({view.params.slot}, 0) < 10, '0', '') + toStr(coalesce({view.params.slot}, 0))"
+              }
+            }
+          },
+          "props.elements[3].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "case({view.custom.state}, 'ok', 'var(--sts-run)', 'fault', 'var(--sts-fault)', 'conn', 'var(--sts-fault)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[6].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch0}), if({view.custom.rng0}, 'var(--status-level-warning)', 'var(--sts-run)'), 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[8].text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch0}), coalesce({view.custom.unit0}, ''), '')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[9].text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch0}), numberFormat({view.custom.ch0}, if(abs({view.custom.ch0}) >= 100, '0.0', '0.00')), '--')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[9].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch0}), 'var(--text)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[9].style.fontStyle": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch0}), 'normal', 'italic')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[10].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch1}), if({view.custom.rng1}, 'var(--status-level-warning)', 'var(--sts-run)'), 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[12].text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch1}), coalesce({view.custom.unit1}, ''), '')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[13].text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch1}), numberFormat({view.custom.ch1}, if(abs({view.custom.ch1}) >= 100, '0.0', '0.00')), '--')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[13].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch1}), 'var(--text)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[13].style.fontStyle": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch1}), 'normal', 'italic')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[14].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch2}), if({view.custom.rng2}, 'var(--status-level-warning)', 'var(--sts-run)'), 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[16].text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch2}), coalesce({view.custom.unit2}, ''), '')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[17].text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch2}), numberFormat({view.custom.ch2}, if(abs({view.custom.ch2}) >= 100, '0.0', '0.00')), '--')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[17].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch2}), 'var(--text)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[17].style.fontStyle": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch2}), 'normal', 'italic')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[18].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch3}), if({view.custom.rng3}, 'var(--status-level-warning)', 'var(--sts-run)'), 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[20].text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch3}), coalesce({view.custom.unit3}, ''), '')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[21].text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch3}), numberFormat({view.custom.ch3}, if(abs({view.custom.ch3}) >= 100, '0.0', '0.00')), '--')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[21].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch3}), 'var(--text)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[21].style.fontStyle": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch3}), 'normal', 'italic')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[22].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch4}), if({view.custom.rng4}, 'var(--status-level-warning)', 'var(--sts-run)'), 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[24].text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch4}), coalesce({view.custom.unit4}, ''), '')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[25].text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch4}), numberFormat({view.custom.ch4}, if(abs({view.custom.ch4}) >= 100, '0.0', '0.00')), '--')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[25].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch4}), 'var(--text)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[25].style.fontStyle": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch4}), 'normal', 'italic')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[26].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch5}), if({view.custom.rng5}, 'var(--status-level-warning)', 'var(--sts-run)'), 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[28].text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch5}), coalesce({view.custom.unit5}, ''), '')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[29].text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch5}), numberFormat({view.custom.ch5}, if(abs({view.custom.ch5}) >= 100, '0.0', '0.00')), '--')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[29].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch5}), 'var(--text)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[29].style.fontStyle": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch5}), 'normal', 'italic')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[30].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch6}), if({view.custom.rng6}, 'var(--status-level-warning)', 'var(--sts-run)'), 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[32].text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch6}), coalesce({view.custom.unit6}, ''), '')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[33].text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch6}), numberFormat({view.custom.ch6}, if(abs({view.custom.ch6}) >= 100, '0.0', '0.00')), '--')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[33].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch6}), 'var(--text)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[33].style.fontStyle": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch6}), 'normal', 'italic')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[34].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch7}), if({view.custom.rng7}, 'var(--status-level-warning)', 'var(--sts-run)'), 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[36].text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch7}), coalesce({view.custom.unit7}, ''), '')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[37].text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch7}), numberFormat({view.custom.ch7}, if(abs({view.custom.ch7}) >= 100, '0.0', '0.00')), '--')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[37].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch7}), 'var(--text)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[37].style.fontStyle": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch7}), 'normal', 'italic')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[41].text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "coalesce({view.params.name}, '')"
+              }
+            }
+          },
+          "props.elements[43].text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "case({view.custom.state}, 'ok', 'OK', 'fault', 'FAULT', 'conn', 'NO CONN', 'NO DATA')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[43].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "case({view.custom.state}, 'ok', 'var(--sts-run)', 'fault', 'var(--sts-fault)', 'conn', 'var(--sts-fault)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[43].style.fontStyle": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'bad', 'italic', 'normal')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[44].stroke.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if(coalesce({view.params.selected}, false), 'var(--sts-run)', 'none')"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "sessionScope": false,
+          "viewScope": false,
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,210 @@
+{
+  "custom": {},
+  "params": {
+    "tagPath": ""
+  },
+  "props": {
+    "defaultSize": {
+      "width": 520,
+      "height": 150
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "position": {},
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "trend-ctx-menu trend-ctx-copy-card"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Header"
+        },
+        "position": {
+          "basis": "32px",
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "alignItems": "center"
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Title"
+            },
+            "position": {
+              "grow": 1
+            },
+            "props": {
+              "text": "Copy Tag Path",
+              "style": {
+                "classes": "Fonts/Label trend-ctx-title"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Close",
+              "tooltip": {
+                "enabled": true,
+                "text": "Close"
+              }
+            },
+            "position": {
+              "basis": "32px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "alignItems": "center",
+              "justify": "center",
+              "style": {
+                "classes": "trend-ctx-close-btn"
+              }
+            },
+            "events": {
+              "dom": {
+                "onClick": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\tsystem.perspective.closePopup('TrendCopyPath')"
+                  }
+                }
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.icon",
+                "meta": {
+                  "name": "Icon"
+                },
+                "position": {
+                  "basis": "18px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "material/close",
+                  "style": {
+                    "classes": "trend-ctx-icon",
+                    "height": "18px",
+                    "width": "18px"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "Path"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "text": "",
+          "style": {
+            "classes": "Fonts/Value trend-ctx-copy-path"
+          }
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "view.params.tagPath"
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Actions"
+        },
+        "position": {
+          "basis": "36px",
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "alignItems": "center",
+          "style": {
+            "gap": "10px"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.markdown",
+            "meta": {
+              "name": "Copy"
+            },
+            "position": {
+              "basis": "120px",
+              "shrink": 0
+            },
+            "props": {
+              "markdown": {
+                "escapeHtml": false
+              },
+              "style": {
+                "classes": "trend-ctx-copy"
+              }
+            },
+            "propConfig": {
+              "props.source": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.params.tagPath"
+                  },
+                  "transforms": [
+                    {
+                      "type": "script",
+                      "code": "\treturn shared.TrendContext.copy_markdown(value)"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Hint"
+            },
+            "position": {
+              "grow": 1
+            },
+            "props": {
+              "text": "Or Select The Path And Press Ctrl+C",
+              "style": {
+                "classes": "trend-ctx-path"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "propConfig": {
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  }
+}

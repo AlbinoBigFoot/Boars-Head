@@ -1,0 +1,1471 @@
+{
+  "custom": {
+    "copied": null,
+    "copyFrom": "",
+    "err": "",
+    "groupInst": [],
+    "groups": [],
+    "model": {
+      "defaults": [],
+      "groups": [],
+      "roles": [],
+      "total": 0
+    },
+    "name": "",
+    "open": {},
+    "q": "",
+    "search": "",
+    "sel": [],
+    "step": 1
+  },
+  "params": {
+    "userSource": "default"
+  },
+  "propConfig": {
+    "custom.copied": {
+      "persistent": true
+    },
+    "custom.copyFrom": {
+      "persistent": true
+    },
+    "custom.err": {
+      "persistent": true
+    },
+    "custom.groupInst": {
+      "binding": {
+        "config": {
+          "expression": "forEach({view.custom.groups}, asMap('name', it()['name'], 'icon', it()['icon'], 'desc', it()['desc'], 'rows', it()['rows'], 'open', it()['open'], 'instancePosition', asMap('basis', toStr(44 + if(it()['open'], len(it()['rows']) * 48, 0)) + 'px', 'grow', 0, 'shrink', 0)))"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "custom.groups": {
+      "binding": {
+        "config": {
+          "expression": "where(forEach(coalesce(try({view.custom.model}['groups'], asList()), asList()), asMap('name', it()['name'], 'icon', it()['icon'], 'desc', it()['desc'], 'rows', forEach(where(it()['rows'], len({view.custom.q}) = 0 || indexOf(lower(it()['label'] + ' ' + it()['key'] + ' ' + it()['desc'] + ' ' + it()['sub']), {view.custom.q}) >= 0), asMap('key', it()['key'], 'label', it()['label'], 'desc', it()['desc'], 'sub', it()['sub'], 'on', len(where({view.custom.sel}, it() = it(1)['key'])) > 0)), 'open', len({view.custom.q}) > 0 || coalesce(try({view.custom.open}[it()['name']], false), false))), len(it()['rows']) > 0)"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "custom.model": {
+      "persistent": true
+    },
+    "custom.name": {
+      "persistent": true
+    },
+    "custom.open": {
+      "persistent": true
+    },
+    "custom.q": {
+      "binding": {
+        "config": {
+          "expression": "lower(trim(coalesce({view.custom.search}, '')))"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "custom.search": {
+      "persistent": true
+    },
+    "custom.sel": {
+      "persistent": true
+    },
+    "custom.step": {
+      "persistent": true
+    },
+    "params.userSource": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 660,
+      "width": 760
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Title"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "classes": "form-title",
+                    "fontSize": "18px"
+                  },
+                  "text": "New Role"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Sub"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.custom.step} = 1, 'Name the role and pick where its permissions start from.', 'Choose what the role may do. Nothing is created until you press Create Role.')"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "form-subtitle",
+                    "minWidth": "0",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis",
+                    "whiteSpace": "nowrap"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              }
+            ],
+            "meta": {
+              "name": "TitleBlock"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 1,
+              "shrink": 1
+            },
+            "props": {
+              "alignItems": "stretch",
+              "direction": "column",
+              "style": {
+                "gap": "2px",
+                "minWidth": "0"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "meta": {
+                      "name": "Num"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "position.display": {
+                        "binding": {
+                          "config": {
+                            "expression": "!({view.custom.step} > 1)"
+                          },
+                          "type": "expr"
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.custom.step} >= 1, 'admin-step-num admin-step-num-on', 'admin-step-num')"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "classes": ""
+                      },
+                      "text": "1"
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "Done"
+                    },
+                    "position": {
+                      "basis": "14px",
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "position.display": {
+                        "binding": {
+                          "config": {
+                            "expression": "{view.custom.step} > 1"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "path": "material/check",
+                      "style": {
+                        "classes": "admin-step-num-on"
+                      }
+                    },
+                    "type": "ia.display.icon"
+                  }
+                ],
+                "meta": {
+                  "name": "Dot1"
+                },
+                "position": {
+                  "basis": "22px",
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.style.classes": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.custom.step} >= 1, 'admin-step-dot admin-step-dot-on', 'admin-step-dot')"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "alignItems": "center",
+                  "direction": "row",
+                  "justify": "center",
+                  "style": {
+                    "height": "22px"
+                  }
+                },
+                "type": "ia.container.flex"
+              },
+              {
+                "meta": {
+                  "name": "Cap1"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.style.classes": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.custom.step} = 1, 'admin-step-label admin-step-label-on', 'admin-step-label')"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "admin-step-label"
+                  },
+                  "text": "Role"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "children": [],
+                "meta": {
+                  "name": "Line"
+                },
+                "position": {
+                  "basis": "40px",
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.style.classes": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.custom.step} > 1, 'admin-step-line admin-step-line-on', 'admin-step-line')"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "alignItems": "center",
+                  "direction": "row",
+                  "style": {
+                    "height": "2px"
+                  }
+                },
+                "type": "ia.container.flex"
+              },
+              {
+                "children": [
+                  {
+                    "meta": {
+                      "name": "Num"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "position.display": {
+                        "binding": {
+                          "config": {
+                            "expression": "!({view.custom.step} > 2)"
+                          },
+                          "type": "expr"
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "config": {
+                            "expression": "if({view.custom.step} >= 2, 'admin-step-num admin-step-num-on', 'admin-step-num')"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "classes": ""
+                      },
+                      "text": "2"
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "Done"
+                    },
+                    "position": {
+                      "basis": "14px",
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "position.display": {
+                        "binding": {
+                          "config": {
+                            "expression": "{view.custom.step} > 2"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "path": "material/check",
+                      "style": {
+                        "classes": "admin-step-num-on"
+                      }
+                    },
+                    "type": "ia.display.icon"
+                  }
+                ],
+                "meta": {
+                  "name": "Dot2"
+                },
+                "position": {
+                  "basis": "22px",
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.style.classes": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.custom.step} >= 2, 'admin-step-dot admin-step-dot-on', 'admin-step-dot')"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "alignItems": "center",
+                  "direction": "row",
+                  "justify": "center",
+                  "style": {
+                    "height": "22px"
+                  }
+                },
+                "type": "ia.container.flex"
+              },
+              {
+                "meta": {
+                  "name": "Cap2"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.style.classes": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.custom.step} = 2, 'admin-step-label admin-step-label-on', 'admin-step-label')"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "admin-step-label"
+                  },
+                  "text": "Permissions"
+                },
+                "type": "ia.display.label"
+              }
+            ],
+            "meta": {
+              "name": "Stepper"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "alignItems": "center",
+              "direction": "row",
+              "style": {
+                "gap": "10px"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\tsystem.perspective.closePopup(shared.PermissionMatrix.WIZARD_ID)\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Close"
+            },
+            "position": {
+              "basis": "20px",
+              "shrink": 0
+            },
+            "props": {
+              "path": "material/close",
+              "style": {
+                "classes": "admin-ico-muted",
+                "cursor": "pointer"
+              }
+            },
+            "type": "ia.display.icon"
+          }
+        ],
+        "meta": {
+          "name": "Head"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "alignItems": "center",
+          "direction": "row",
+          "style": {
+            "classes": "form-section-head",
+            "gap": "12px",
+            "paddingTop": "14px"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Label"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "classes": "form-label"
+                  },
+                  "text": "Role Name"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Input"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "bidirectional": true,
+                        "path": "view.custom.name"
+                      },
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "deferUpdates": false,
+                  "placeholder": "e.g. Shift Supervisor",
+                  "style": {
+                    "classes": "form-input",
+                    "height": "34px"
+                  }
+                },
+                "type": "ia.input.text-field"
+              }
+            ],
+            "meta": {
+              "name": "Name"
+            },
+            "position": {
+              "basis": "auto",
+              "grow": 0,
+              "shrink": 1
+            },
+            "props": {
+              "alignItems": "stretch",
+              "direction": "column",
+              "style": {
+                "gap": "4px",
+                "minWidth": "0"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "meta": {
+              "name": "NameHint"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "classes": "form-hint",
+                "whiteSpace": "normal"
+              },
+              "text": "Letters, numbers, spaces, - and _. Must not match an existing role or a name in a _Config/Security role list."
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "Error"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "config": {
+                    "expression": "len(coalesce({view.custom.err}, '')) > 0"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.err"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "classes": "form-status form-status-error",
+                "whiteSpace": "normal"
+              },
+              "text": ""
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Label"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "classes": "form-label"
+                  },
+                  "text": "Copy Permissions From"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Input"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.options": {
+                    "binding": {
+                      "config": {
+                        "expression": "flatten(asList(asList(asMap('value', '', 'label', 'None (Start From The Defaults)')), forEach(coalesce(try({view.custom.model}['roles'], asList()), asList()), asMap('value', it(), 'label', it()))))"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.value": {
+                    "binding": {
+                      "config": {
+                        "bidirectional": true,
+                        "path": "view.custom.copyFrom"
+                      },
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "dropdownOptionStyle": {
+                    "classes": "form-check"
+                  },
+                  "multiSelect": false,
+                  "placeholder": {
+                    "text": "None (Start From The Defaults)"
+                  },
+                  "search": {
+                    "enabled": false
+                  },
+                  "showClearIcon": false,
+                  "style": {
+                    "classes": "form-input",
+                    "height": "34px",
+                    "minWidth": "0"
+                  }
+                },
+                "type": "ia.input.dropdown"
+              }
+            ],
+            "meta": {
+              "name": "Copy"
+            },
+            "position": {
+              "basis": "auto",
+              "grow": 0,
+              "shrink": 1
+            },
+            "props": {
+              "alignItems": "stretch",
+              "direction": "column",
+              "style": {
+                "gap": "4px",
+                "minWidth": "0"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "meta": {
+              "name": "CopyHint"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "classes": "form-hint",
+                "whiteSpace": "normal"
+              },
+              "text": "Copies that role's effective permissions (Full Access and inherited ticks included). Every tick can be changed on the next step."
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Icon"
+                },
+                "position": {
+                  "basis": "18px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "material/info",
+                  "style": {
+                    "classes": "admin-ico-on"
+                  }
+                },
+                "type": "ia.display.icon"
+              },
+              {
+                "meta": {
+                  "name": "Text"
+                },
+                "position": {
+                  "basis": "0",
+                  "grow": 1,
+                  "shrink": 1
+                },
+                "props": {
+                  "style": {
+                    "classes": "form-check",
+                    "minWidth": "0",
+                    "whiteSpace": "normal"
+                  },
+                  "text": "The role is added to user source default with its own Roles & Permissions column. It is not added to any _Config/Security role list (Full Access, Admin, Restricted)."
+                },
+                "type": "ia.display.label"
+              }
+            ],
+            "meta": {
+              "name": "Note"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "alignItems": "flex-start",
+              "direction": "row",
+              "style": {
+                "classes": "admin-note",
+                "gap": "10px"
+              }
+            },
+            "type": "ia.container.flex"
+          }
+        ],
+        "meta": {
+          "name": "Step1"
+        },
+        "position": {
+          "basis": "0",
+          "grow": 1,
+          "shrink": 1
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "{view.custom.step} = 1"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "alignItems": "stretch",
+          "direction": "column",
+          "style": {
+            "gap": "10px",
+            "minWidth": "0",
+            "overflowY": "auto",
+            "padding": "18px 20px"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Name"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "trim(coalesce({view.custom.name}, ''))"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "admin-item-title",
+                    "fontSize": "14px"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Chip"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "if(len(coalesce({view.custom.copied}, '')) > 0, 'Copied From ' + {view.custom.copied}, 'Starting From The Defaults')"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "admin-chip"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Spacer"
+                },
+                "position": {
+                  "basis": "0",
+                  "grow": 1,
+                  "shrink": 1
+                },
+                "props": {
+                  "style": {
+                    "classes": "admin-desc"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Count"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "toStr(len(coalesce({view.custom.sel}, asList()))) + ' Of ' + toStr(coalesce(try({view.custom.model}['total'], 0), 0)) + ' Selected'"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "admin-cell-text",
+                    "color": "var(--callToAction)"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              }
+            ],
+            "meta": {
+              "name": "Summary"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "alignItems": "center",
+              "direction": "row",
+              "style": {
+                "gap": "10px",
+                "minWidth": "0"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Search"
+                },
+                "position": {
+                  "basis": "200px",
+                  "grow": 1,
+                  "shrink": 1
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "bidirectional": true,
+                        "path": "view.custom.search"
+                      },
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "deferUpdates": false,
+                  "placeholder": "Search Permissions",
+                  "style": {
+                    "classes": "form-input",
+                    "height": "32px",
+                    "minWidth": "0"
+                  }
+                },
+                "type": "ia.input.text-field"
+              },
+              {
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\tsystem.perspective.sendMessage('nrExpand', payload={'open': True}, scope='page')\n"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "ExpandAll"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.enabled": {
+                    "binding": {
+                      "config": {
+                        "expression": "len({view.custom.q}) = 0"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "image": {
+                    "height": 16,
+                    "icon": {
+                      "path": "material/unfold_more"
+                    },
+                    "position": "left",
+                    "width": 16
+                  },
+                  "primary": false,
+                  "style": {
+                    "classes": "form-btn",
+                    "height": "32px"
+                  },
+                  "text": "Expand All"
+                },
+                "type": "ia.input.button"
+              },
+              {
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\tsystem.perspective.sendMessage('nrExpand', payload={'open': False}, scope='page')\n"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "CollapseAll"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.enabled": {
+                    "binding": {
+                      "config": {
+                        "expression": "len({view.custom.q}) = 0"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "image": {
+                    "height": 16,
+                    "icon": {
+                      "path": "material/unfold_less"
+                    },
+                    "position": "left",
+                    "width": 16
+                  },
+                  "primary": false,
+                  "style": {
+                    "classes": "form-btn",
+                    "height": "32px"
+                  },
+                  "text": "Collapse All"
+                },
+                "type": "ia.input.button"
+              }
+            ],
+            "meta": {
+              "name": "Toolbar"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "alignItems": "center",
+              "direction": "row",
+              "style": {
+                "gap": "10px",
+                "minWidth": "0"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Items"
+                },
+                "position": {
+                  "grow": 0,
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.instances": {
+                    "binding": {
+                      "config": {
+                        "expression": "{view.custom.groupInst}"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "direction": "column",
+                  "elementPosition": {
+                    "basis": "44px",
+                    "grow": 0,
+                    "shrink": 0
+                  },
+                  "instances": [],
+                  "path": "00_Pages/Boars Head/Operations/_Admin/NRGroup",
+                  "style": {
+                    "minWidth": "0"
+                  },
+                  "useDefaultViewHeight": false,
+                  "useDefaultViewWidth": false
+                },
+                "type": "ia.display.flex-repeater"
+              },
+              {
+                "children": [
+                  {
+                    "meta": {
+                      "name": "Text"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "'No Permissions Match \"' + trim(coalesce({view.custom.search}, '')) + '\"'"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "form-subtitle"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.display.label"
+                  }
+                ],
+                "meta": {
+                  "name": "Empty"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "position.display": {
+                    "binding": {
+                      "config": {
+                        "expression": "len({view.custom.groups}) = 0"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "alignItems": "center",
+                  "direction": "row",
+                  "justify": "center",
+                  "style": {
+                    "padding": "32px 16px"
+                  }
+                },
+                "type": "ia.container.flex"
+              }
+            ],
+            "meta": {
+              "name": "Groups"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 1,
+              "shrink": 1
+            },
+            "props": {
+              "alignItems": "stretch",
+              "direction": "column",
+              "style": {
+                "classes": "form-card",
+                "minWidth": "0",
+                "overflowX": "hidden",
+                "overflowY": "auto"
+              }
+            },
+            "type": "ia.container.flex"
+          }
+        ],
+        "meta": {
+          "name": "Step2"
+        },
+        "position": {
+          "basis": "0",
+          "grow": 1,
+          "shrink": 1
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "{view.custom.step} = 2"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "alignItems": "stretch",
+          "direction": "column",
+          "style": {
+            "gap": "12px",
+            "minWidth": "0",
+            "padding": "14px 20px"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tself.view.custom.step = 1\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Back"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.custom.step} = 2"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "image": {
+                "height": 16,
+                "icon": {
+                  "path": "material/arrow_back"
+                },
+                "position": "left",
+                "width": 16
+              },
+              "primary": false,
+              "style": {
+                "classes": "form-btn",
+                "height": "36px"
+              },
+              "text": "Back"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "meta": {
+              "name": "Status"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 1,
+              "shrink": 1
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.custom.step} = 1, 'Step 1 Of 2', 'Recorded In The Audit Log As Role Created')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "classes": "form-status",
+                "minWidth": "0"
+              },
+              "text": ""
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tsystem.perspective.closePopup(shared.PermissionMatrix.WIZARD_ID)\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Cancel"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "primary": false,
+              "style": {
+                "classes": "form-btn",
+                "height": "36px"
+              },
+              "text": "Cancel"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tv = self.view.custom\n\terr = shared.PermissionMatrix.checkRoleName(self.view.params.userSource or 'default', v.name)\n\tv.err = err\n\tif err:\n\t\treturn\n\tsrc = str(v.copyFrom or '')\n\tif v.copied is None or str(v.copied) != src:\n\t\tv.sel = shared.PermissionMatrix.roleGrants(src, self.session.props.auth.user.roles) if src else list(v.model['defaults'])\n\t\tv.copied = src\n\tv.step = 2\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Next"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.custom.step} = 1"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.enabled": {
+                "binding": {
+                  "config": {
+                    "expression": "len(trim(coalesce({view.custom.name}, ''))) > 0"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "image": {
+                "height": 16,
+                "icon": {
+                  "path": "material/arrow_forward"
+                },
+                "position": "right",
+                "width": 16
+              },
+              "primary": true,
+              "style": {
+                "classes": "form-btn-primary",
+                "height": "36px"
+              },
+              "text": "Next: Permissions"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tv = self.view.custom\n\tname = str(v.name or '').strip()\n\tn = len(v.sel or [])\n\tsrc = str(v.copied or '')\n\tshared.Alerts.showAlert(state='info', title='Create Role %s?' % name,\n\t\tmessage='%d Of %d Permissions%s.\\n\\nThe role is added to user source %s with its own Roles & Permissions column and recorded in the Audit Log. It has no users until you assign it.' % (n, v.model['total'], (' (Copied From %s)' % src) if src else '', self.view.params.userSource or 'default'),\n\t\tshowCloseBtn=False, btnTextPrimary='Create Role', btnTextSecondary='Cancel', btnActionPrimary='nrCreateConfirmed', btnActionSecondary='', payload={'name': name, 'grants': [str(k) for k in (v.sel or [])], 'copyFrom': src}, overlayDismiss=False)\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Create"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.custom.step} = 2"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "image": {
+                "height": 16,
+                "icon": {
+                  "path": "material/add"
+                },
+                "position": "left",
+                "width": 16
+              },
+              "primary": true,
+              "style": {
+                "classes": "form-btn-primary",
+                "height": "36px"
+              },
+              "text": "Create Role"
+            },
+            "type": "ia.input.button"
+          }
+        ],
+        "meta": {
+          "name": "ActionBar"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "alignItems": "center",
+          "direction": "row",
+          "style": {
+            "borderTop": "1px solid var(--border)",
+            "gap": "10px",
+            "padding": "10px 20px"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "events": {
+      "system": {
+        "onStartup": {
+          "config": {
+            "script": "\tif not shared.PermissionMatrix.mayCreate(self.session):\n\t\tsystem.perspective.closePopup(shared.PermissionMatrix.WIZARD_ID)\n\t\treturn\n\tm = shared.PermissionMatrix.wizardModel(self.view.params.userSource or 'default', self.session.props.auth.user.roles)\n\tself.view.custom.model = m\n\tself.view.custom.sel = list(m['defaults'])\n\tself.view.custom.open = dict((str(g['name']), i == 0) for i, g in enumerate(m['groups']))\n"
+          },
+          "scope": "G",
+          "type": "script"
+        }
+      }
+    },
+    "meta": {
+      "name": "root"
+    },
+    "position": {
+      "shrink": 0
+    },
+    "props": {
+      "alignItems": "stretch",
+      "direction": "column",
+      "style": {
+        "backgroundColor": "var(--surface-card)",
+        "height": "100%",
+        "minWidth": "0",
+        "overflow": "hidden"
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "nrToggle",
+          "pageScope": true,
+          "script": "\tsel = [str(k) for k in (self.view.custom.sel or [])]\n\tk = str(payload['key'])\n\tif k in sel:\n\t\tsel.remove(k)\n\telse:\n\t\tsel.append(k)\n\tself.view.custom.sel = sel\n",
+          "sessionScope": false,
+          "viewScope": false
+        },
+        {
+          "messageType": "nrBulk",
+          "pageScope": true,
+          "script": "\tsel = [str(k) for k in (self.view.custom.sel or [])]\n\tkeys = [str(k) for k in (payload['keys'] or [])]\n\tif payload['grant']:\n\t\tsel += [k for k in keys if k not in sel]\n\telse:\n\t\tsel = [k for k in sel if k not in keys]\n\tself.view.custom.sel = sel\n",
+          "sessionScope": false,
+          "viewScope": false
+        },
+        {
+          "messageType": "nrGroupToggle",
+          "pageScope": true,
+          "script": "\to = dict(self.view.custom.open or {})\n\tn = str(payload['name'])\n\to[n] = not bool(o.get(n))\n\tself.view.custom.open = o\n",
+          "sessionScope": false,
+          "viewScope": false
+        },
+        {
+          "messageType": "nrExpand",
+          "pageScope": true,
+          "script": "\tself.view.custom.open = dict((str(g['name']), bool(payload['open'])) for g in (self.view.custom.model['groups'] or []))\n",
+          "sessionScope": false,
+          "viewScope": false
+        },
+        {
+          "messageType": "nrCreateConfirmed",
+          "pageScope": true,
+          "script": "\tres = shared.PermissionMatrix.createRole(self.session, self.view.params.userSource or 'default', payload['name'], [str(k) for k in (payload['grants'] or [])], payload.get('copyFrom') or '')\n\tif not res['ok']:\n\t\tshared.Alerts.showAlert(state='error', title='Cannot Create Role', message=res['message'], btnTextPrimary='OK')\n\t\treturn\n\tsystem.perspective.closePopup(shared.PermissionMatrix.WIZARD_ID)\n\tsystem.perspective.sendMessage('nrCreated', payload={'name': str(payload['name']).strip()}, scope='page')\n\tshared.Alerts.showAlert(state='success', title='Role Created', message=res['message'] + ' Assign it to users on User Management > Users.', btnTextPrimary='OK')\n",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    },
+    "type": "ia.container.flex"
+  }
+}

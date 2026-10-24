@@ -1,0 +1,382 @@
+{
+  "custom": {},
+  "params": {},
+  "props": {
+    "defaultSize": {
+      "height": 900,
+      "width": 1200
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Title"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "style": {
+            "classes": "Fonts/Title fs-20 fw-700",
+            "marginBottom": "4px"
+          },
+          "text": "Alarm Journal"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Subtitle"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "style": {
+            "classes": "Fonts/Label fs-13",
+            "marginBottom": "12px"
+          },
+          "text": "Historical alarm events. Filter by Device Type and Area (multi-select). An alarm must match both; an empty filter shows all."
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "DeviceTypeLabel"
+            },
+            "position": {
+              "basis": "90px",
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "classes": "Fonts/Label fw-600",
+                "alignItems": "center",
+                "display": "flex"
+              },
+              "text": "Device Type"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "DeviceTypeDropdown"
+            },
+            "position": {
+              "basis": "360px",
+              "grow": 0,
+              "shrink": 0
+            },
+            "props": {
+              "dropdownOptionStyle": {
+                "classes": "bg-component Fonts/Value"
+              },
+              "multiSelect": true,
+              "options": [
+                {
+                  "label": "Evaporators",
+                  "value": "Evaporators"
+                },
+                {
+                  "label": "Compressors",
+                  "value": "Compressors"
+                },
+                {
+                  "label": "Pumps",
+                  "value": "Pumps"
+                },
+                {
+                  "label": "Exhaust Fans",
+                  "value": "ExhaustFans"
+                },
+                {
+                  "label": "Cooling Towers",
+                  "value": "CoolingTowers"
+                },
+                {
+                  "label": "Valves",
+                  "value": "Valves"
+                },
+                {
+                  "label": "Tanks",
+                  "value": "Tanks"
+                },
+                {
+                  "label": "Sensors",
+                  "value": "Sensors"
+                }
+              ],
+              "placeholder": {
+                "text": "All device types"
+              },
+              "search": {
+                "enabled": false
+              },
+              "style": {
+                "classes": "bg-component container-card Fonts/Value",
+                "height": "32px",
+                "minWidth": "280px"
+              },
+              "value": null,
+              "wrapMultiSelectValues": true
+            },
+            "type": "ia.input.dropdown"
+          },
+          {
+            "meta": {
+              "name": "AreaLabel"
+            },
+            "position": {
+              "basis": "50px",
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "classes": "Fonts/Label fw-600",
+                "alignItems": "center",
+                "display": "flex"
+              },
+              "text": "Area"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "AreaDropdown"
+            },
+            "position": {
+              "basis": "360px",
+              "grow": 0,
+              "shrink": 0
+            },
+            "props": {
+              "dropdownOptionStyle": {
+                "classes": "bg-component Fonts/Value"
+              },
+              "multiSelect": true,
+              "options": [
+                {
+                  "label": "Freezer",
+                  "value": "Freezer"
+                },
+                {
+                  "label": "SuperChill",
+                  "value": "SuperChill"
+                },
+                {
+                  "label": "Club",
+                  "value": "Club"
+                },
+                {
+                  "label": "Palletizing",
+                  "value": "Palletizing"
+                },
+                {
+                  "label": "East PH",
+                  "value": "East PH"
+                },
+                {
+                  "label": "West PH",
+                  "value": "West PH"
+                },
+                {
+                  "label": "Dock",
+                  "value": "Dock"
+                },
+                {
+                  "label": "Machine Room",
+                  "value": "Machine Room"
+                }
+              ],
+              "placeholder": {
+                "text": "All areas"
+              },
+              "search": {
+                "enabled": false
+              },
+              "style": {
+                "classes": "bg-component container-card Fonts/Value",
+                "height": "32px",
+                "minWidth": "280px"
+              },
+              "value": null,
+              "wrapMultiSelectValues": true
+            },
+            "type": "ia.input.dropdown"
+          },
+          {
+            "type": "ia.input.button",
+            "meta": {
+              "name": "GenerateReport"
+            },
+            "position": {
+              "basis": "180px",
+              "shrink": 0,
+              "grow": 0
+            },
+            "propConfig": {
+              "props.enabled": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "coalesce({session.custom.Permissions.Reports.Use}, false)"
+                  }
+                }
+              }
+            },
+            "props": {
+              "text": "Generate Report",
+              "primary": true,
+              "image": {
+                "icon": {
+                  "path": "material/get_app"
+                },
+                "width": 16,
+                "height": 16
+              },
+              "style": {
+                "classes": "Fonts/Button",
+                "height": "32px",
+                "marginLeft": "auto"
+              }
+            },
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\t# Custom report builder, pre-filled with the Alarms source and this page's Area filter\n\tareas = self.parent.getChild('AreaDropdown').props.value or []\n\tshared.Reports.open('alarms', {'areas': [str(a) for a in areas], 'origin': 'Alarm Journal'})\n"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "meta": {
+          "name": "Filters"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "alignItems": "center",
+          "style": {
+            "gap": "8px",
+            "marginBottom": "12px",
+            "overflow": "visible"
+          },
+          "wrap": "wrap"
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "meta": {
+          "name": "AlarmJournalTable"
+        },
+        "position": {
+          "grow": 1
+        },
+        "propConfig": {
+          "props.params.sourceFilter": {
+            "binding": {
+              "config": {
+                "struct": {
+                  "types": "{../Filters/DeviceTypeDropdown.props.value}",
+                  "areas": "{../Filters/AreaDropdown.props.value}"
+                },
+                "waitOnAll": true
+              },
+              "transforms": [
+                {
+                  "code": "\treturn shared.Alarms.sourceFilter(value.types, value.areas)",
+                  "type": "script"
+                }
+              ],
+              "type": "expr-struct"
+            }
+          }
+        },
+        "props": {
+          "params": {
+            "sourceFilter": "*"
+          },
+          "path": "00_Pages/Boars Head/Alarms/_Assets/AlarmJournalTable",
+          "style": {
+            "height": "100%",
+            "minHeight": "480px",
+            "width": "100%"
+          }
+        },
+        "type": "ia.display.view"
+      }
+    ],
+    "meta": {
+      "name": "root",
+      "contextMenu": {}
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "bg-page",
+        "height": "100%",
+        "padding": "16px",
+        "width": "100%"
+      }
+    },
+    "type": "ia.container.flex",
+    "propConfig": {
+      "meta.contextMenu.items": {
+        "binding": {
+          "config": {
+            "struct": {
+              "tagPath": "\"No TagPath: \""
+            },
+            "waitOnAll": true
+          },
+          "transforms": [
+            {
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = self.view.params.tagPath\n\texcept:\n\t\tpass\n\tif tagPath is None or str(tagPath).strip() == '':\n\t\ttagPath = value.tagPath + self.view.id.split('@')[0].split('/')[-1]\n\titems = [\n\t\t\t  {\n\t\t\t    \"text\": \"Ticket Logger\",\n\t\t\t    \"icon\": {\n\t\t\t      \"path\": \"material/info\",\n\t\t\t      \"color\": \"--neutral-80\",\n\t\t\t      \"style\": {}\n\t\t\t    },\n\t\t\t    \"style\": {\n\t\t\t      \"classes\": \"bg-component Fonts/Value\",\n\t\t\t      \"height\": 24,\n\t\t\t      \"width\": 120\n\t\t\t    },\n\t\t\t    \"type\": \"message\",\n\t\t\t    \"children\": [],\n\t\t\t    \"link\": {\n\t\t\t      \"url\": \"\",\n\t\t\t      \"target\": \"self\"\n\t\t\t    },\n\t\t\t    \"method\": {\n\t\t\t      \"name\": \"\",\n\t\t\t      \"params\": {}\n\t\t\t    },\n\t\t\t    \"message\": {\n\t\t\t      \"type\": \"ticketLog\",\n\t\t\t      \"payload\": {\n\t\t\t        \"tagPath\": tagPath,\n\t\t\t        \"viewName\": self.view.id.split('@')[0], 'sender': self.view.id\n\t\t\t      },\n\t\t\t      \"scope\": \"page\"\n\t\t\t    }\n\t\t\t  }\n\t\t\t]\n\treturn items",
+              "type": "script"
+            }
+          ],
+          "type": "expr-struct"
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "config": {
+            "struct": {
+              "items": "{this.meta.contextMenu.items}",
+              "permission": "{session.custom.TicketLogAccess}"
+            },
+            "waitOnAll": true
+          },
+          "transforms": [
+            {
+              "expression": "len({value}['items']) > 0 && {value}['permission']",
+              "type": "expression"
+            }
+          ],
+          "type": "expr-struct"
+        }
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    }
+  }
+}

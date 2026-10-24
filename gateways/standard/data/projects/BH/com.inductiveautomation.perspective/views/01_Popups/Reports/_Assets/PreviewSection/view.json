@@ -1,0 +1,338 @@
+{
+  "custom": {},
+  "params": {
+    "sec": {
+      "cards": [],
+      "charts": [],
+      "columns": [],
+      "data": [],
+      "more": "",
+      "note": "",
+      "rowHeight": 30,
+      "title": "",
+      "type": ""
+    }
+  },
+  "propConfig": {
+    "params.sec": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 200,
+      "width": 840
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "Title"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 1,
+              "shrink": 1
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "expression": "coalesce({view.params.sec.title}, '')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "classes": "form-th"
+              },
+              "text": ""
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "Note"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "expression": "coalesce({view.params.sec.note}, '')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "classes": "report-choice-detail"
+              },
+              "text": ""
+            },
+            "type": "ia.display.label"
+          }
+        ],
+        "meta": {
+          "name": "Bar"
+        },
+        "position": {
+          "basis": "20px",
+          "grow": 0,
+          "shrink": 0
+        },
+        "props": {
+          "alignItems": "center",
+          "direction": "row",
+          "style": {
+            "gap": "8px",
+            "minWidth": "0"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "meta": {
+          "name": "Cards"
+        },
+        "position": {
+          "basis": "0",
+          "grow": 1,
+          "shrink": 1
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({view.params.sec.type}, '') = 'cards'"
+              },
+              "type": "expr"
+            }
+          },
+          "props.instances": {
+            "binding": {
+              "config": {
+                "path": "view.params.sec.cards"
+              },
+              "transforms": [
+                {
+                  "code": "\treturn [{'card': c} for c in (value or [])]\n",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "alignContent": "flex-start",
+          "alignItems": "flex-start",
+          "direction": "row",
+          "elementPosition": {
+            "basis": "calc((100% - 36px) / 4)",
+            "grow": 0,
+            "shrink": 0
+          },
+          "elementStyle": {
+            "height": "92px"
+          },
+          "instances": [],
+          "path": "01_Popups/Reports/_Assets/PreviewCard",
+          "style": {
+            "gap": "12px",
+            "overflow": "hidden"
+          },
+          "useDefaultViewHeight": false,
+          "useDefaultViewWidth": false,
+          "wrap": "wrap"
+        },
+        "type": "ia.display.flex-repeater"
+      },
+      {
+        "meta": {
+          "name": "Charts"
+        },
+        "position": {
+          "basis": "0",
+          "grow": 1,
+          "shrink": 1
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({view.params.sec.type}, '') = 'trend'"
+              },
+              "type": "expr"
+            }
+          },
+          "props.instances": {
+            "binding": {
+              "config": {
+                "path": "view.params.sec.charts"
+              },
+              "transforms": [
+                {
+                  "code": "\treturn [{'chart': c} for c in list(value or [])[:2]]\n",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "direction": "column",
+          "elementPosition": {
+            "basis": "236px",
+            "grow": 0,
+            "shrink": 0
+          },
+          "instances": [],
+          "path": "01_Popups/Reports/_Assets/PreviewChart",
+          "style": {
+            "overflow": "hidden"
+          },
+          "useDefaultViewHeight": false,
+          "useDefaultViewWidth": false
+        },
+        "type": "ia.display.flex-repeater"
+      },
+      {
+        "meta": {
+          "name": "Table"
+        },
+        "position": {
+          "basis": "0",
+          "grow": 1,
+          "shrink": 1
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({view.params.sec.type}, '') != 'cards' && coalesce({view.params.sec.type}, '') != 'trend'"
+              },
+              "type": "expr"
+            }
+          },
+          "props.columns": {
+            "binding": {
+              "config": {
+                "path": "view.params.sec.columns"
+              },
+              "type": "property"
+            }
+          },
+          "props.data": {
+            "binding": {
+              "config": {
+                "path": "view.params.sec.data"
+              },
+              "type": "property"
+            }
+          },
+          "props.rows.height": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({view.params.sec.rowHeight}, 30)"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "cells": {
+            "style": {
+              "classes": "Fonts/Value fs-12"
+            }
+          },
+          "columns": [],
+          "data": [],
+          "emptyMessage": {
+            "noData": {
+              "text": "No Rows"
+            }
+          },
+          "headerStyle": {
+            "classes": "Fonts/Label"
+          },
+          "pager": {
+            "bottom": false,
+            "top": false
+          },
+          "rows": {
+            "height": 30,
+            "striped": {
+              "enabled": true
+            }
+          },
+          "style": {
+            "classes": "bg-component"
+          },
+          "virtualized": false
+        },
+        "type": "ia.display.table"
+      },
+      {
+        "meta": {
+          "name": "More"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "len(coalesce({view.params.sec.more}, '')) > 0"
+              },
+              "type": "expr"
+            }
+          },
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({view.params.sec.more}, '')"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "classes": "report-choice-detail"
+          },
+          "text": ""
+        },
+        "type": "ia.display.label"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "position": {
+      "shrink": 0
+    },
+    "props": {
+      "alignItems": "stretch",
+      "direction": "column",
+      "style": {
+        "gap": "12px",
+        "height": "100%",
+        "minWidth": "0",
+        "overflow": "hidden"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

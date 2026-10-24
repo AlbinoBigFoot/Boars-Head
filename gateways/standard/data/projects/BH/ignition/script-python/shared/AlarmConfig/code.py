@@ -329,6 +329,12 @@ def applyOverride(tagPath, alarmName, priority=None, mode=None, viewName=None):
 	alarm_name = str(alarmName or "").strip()
 	if not tag_path or not alarm_name:
 		raise ValueError("tagPath and alarmName are required")
+	# security-tiers: AlarmConfiguration/Edit in Roles & Permissions
+	if not shared.Security.require('AlarmConfiguration', 'Edit', tag_path + ' ' + alarm_name):
+		return {"ok": False, "denied": True, "tagPath": tag_path, "alarmName": alarm_name, "alarm": None}
+	# device-perms: the device-type Alarm row as well (Pump/Alarm, Sensor/Alarm, ...)
+	if not shared.Security.requireDevice(tag_path, 'Alarm', tag_path + ' ' + alarm_name):
+		return {"ok": False, "denied": True, "tagPath": tag_path, "alarmName": alarm_name, "alarm": None}
 
 	parent, _, leaf = tag_path.rpartition("/")
 	if not parent or not leaf:

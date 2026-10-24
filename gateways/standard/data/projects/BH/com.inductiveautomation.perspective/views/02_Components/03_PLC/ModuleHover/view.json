@@ -1,0 +1,1785 @@
+{
+  "custom": {
+    "preview": "ok",
+    "good": false,
+    "fault": 0,
+    "state": "bad",
+    "ch0": null,
+    "unit0": "",
+    "rng0": false,
+    "ch1": null,
+    "unit1": "",
+    "rng1": false,
+    "ch2": null,
+    "unit2": "",
+    "rng2": false,
+    "ch3": null,
+    "unit3": "",
+    "rng3": false,
+    "ch4": null,
+    "unit4": "",
+    "rng4": false,
+    "ch5": null,
+    "unit5": "",
+    "rng5": false,
+    "ch6": null,
+    "unit6": "",
+    "rng6": false,
+    "ch7": null,
+    "unit7": "",
+    "rng7": false,
+    "word": 0
+  },
+  "params": {
+    "tagPath": "",
+    "kind": "",
+    "title": ""
+  },
+  "propConfig": {
+    "custom.preview": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "lower(trim(coalesce({view.params.state}, 'ok')))"
+        }
+      }
+    },
+    "custom.good": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.kind}, '') = 'CTRL', coalesce(try(toBoolean(tag({view.params.tagPath} + '/Connected')), false), false), coalesce(try(isGood(tag({view.params.tagPath} + '/Fault')), false), false))"
+        }
+      }
+    },
+    "custom.fault": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/Fault')), false), false), if(coalesce({view.params.tagPath}, '') = '', if({view.custom.preview} = 'fault', 1, 0), coalesce(try(toInt(tag({view.params.tagPath} + '/Fault')), 0), 0)), null)"
+        }
+      }
+    },
+    "custom.state": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(!{view.custom.good}, 'bad', if({view.custom.fault} = -1, 'conn', if({view.custom.fault} != 0, 'fault', 'ok')))"
+        }
+      }
+    },
+    "custom.ch0": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch0En')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch0Signal')), false), false)), if(coalesce({view.params.tagPath}, '') = '', if({view.custom.preview} = 'ok', 4.0, null), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch0En')), true), true), try(toFloat(tag({view.params.tagPath} + '/Ch0Signal')), null), null)), null)"
+        }
+      }
+    },
+    "custom.unit0": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/Ch0Unit')), false), false), if(coalesce({view.params.tagPath}, '') = '', if(0 < 4, 'mA', 'V'), coalesce(try(toStr(tag({view.params.tagPath} + '/Ch0Unit')), ''), '')), null)"
+        }
+      }
+    },
+    "custom.rng0": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch0OverRange')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch0UnderRange')), false), false)), if(coalesce({view.params.tagPath}, '') = '', false, coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch0OverRange')), false), false) || coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch0UnderRange')), false), false)), null)"
+        }
+      }
+    },
+    "custom.ch1": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch1En')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch1Signal')), false), false)), if(coalesce({view.params.tagPath}, '') = '', if({view.custom.preview} = 'ok', 8.21, null), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch1En')), true), true), try(toFloat(tag({view.params.tagPath} + '/Ch1Signal')), null), null)), null)"
+        }
+      }
+    },
+    "custom.unit1": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/Ch1Unit')), false), false), if(coalesce({view.params.tagPath}, '') = '', if(1 < 4, 'mA', 'V'), coalesce(try(toStr(tag({view.params.tagPath} + '/Ch1Unit')), ''), '')), null)"
+        }
+      }
+    },
+    "custom.rng1": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch1OverRange')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch1UnderRange')), false), false)), if(coalesce({view.params.tagPath}, '') = '', false, coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch1OverRange')), false), false) || coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch1UnderRange')), false), false)), null)"
+        }
+      }
+    },
+    "custom.ch2": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch2En')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch2Signal')), false), false)), if(coalesce({view.params.tagPath}, '') = '', if({view.custom.preview} = 'ok', 12.04, null), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch2En')), true), true), try(toFloat(tag({view.params.tagPath} + '/Ch2Signal')), null), null)), null)"
+        }
+      }
+    },
+    "custom.unit2": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/Ch2Unit')), false), false), if(coalesce({view.params.tagPath}, '') = '', if(2 < 4, 'mA', 'V'), coalesce(try(toStr(tag({view.params.tagPath} + '/Ch2Unit')), ''), '')), null)"
+        }
+      }
+    },
+    "custom.rng2": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch2OverRange')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch2UnderRange')), false), false)), if(coalesce({view.params.tagPath}, '') = '', false, coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch2OverRange')), false), false) || coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch2UnderRange')), false), false)), null)"
+        }
+      }
+    },
+    "custom.ch3": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch3En')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch3Signal')), false), false)), if(coalesce({view.params.tagPath}, '') = '', if({view.custom.preview} = 'ok', 16.38, null), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch3En')), true), true), try(toFloat(tag({view.params.tagPath} + '/Ch3Signal')), null), null)), null)"
+        }
+      }
+    },
+    "custom.unit3": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/Ch3Unit')), false), false), if(coalesce({view.params.tagPath}, '') = '', if(3 < 4, 'mA', 'V'), coalesce(try(toStr(tag({view.params.tagPath} + '/Ch3Unit')), ''), '')), null)"
+        }
+      }
+    },
+    "custom.rng3": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch3OverRange')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch3UnderRange')), false), false)), if(coalesce({view.params.tagPath}, '') = '', false, coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch3OverRange')), false), false) || coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch3UnderRange')), false), false)), null)"
+        }
+      }
+    },
+    "custom.ch4": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch4En')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch4Signal')), false), false)), if(coalesce({view.params.tagPath}, '') = '', if({view.custom.preview} = 'ok', 2.55, null), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch4En')), true), true), try(toFloat(tag({view.params.tagPath} + '/Ch4Signal')), null), null)), null)"
+        }
+      }
+    },
+    "custom.unit4": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/Ch4Unit')), false), false), if(coalesce({view.params.tagPath}, '') = '', if(4 < 4, 'mA', 'V'), coalesce(try(toStr(tag({view.params.tagPath} + '/Ch4Unit')), ''), '')), null)"
+        }
+      }
+    },
+    "custom.rng4": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch4OverRange')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch4UnderRange')), false), false)), if(coalesce({view.params.tagPath}, '') = '', false, coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch4OverRange')), false), false) || coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch4UnderRange')), false), false)), null)"
+        }
+      }
+    },
+    "custom.ch5": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch5En')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch5Signal')), false), false)), if(coalesce({view.params.tagPath}, '') = '', if({view.custom.preview} = 'ok', 3.83, null), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch5En')), true), true), try(toFloat(tag({view.params.tagPath} + '/Ch5Signal')), null), null)), null)"
+        }
+      }
+    },
+    "custom.unit5": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/Ch5Unit')), false), false), if(coalesce({view.params.tagPath}, '') = '', if(5 < 4, 'mA', 'V'), coalesce(try(toStr(tag({view.params.tagPath} + '/Ch5Unit')), ''), '')), null)"
+        }
+      }
+    },
+    "custom.rng5": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch5OverRange')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch5UnderRange')), false), false)), if(coalesce({view.params.tagPath}, '') = '', false, coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch5OverRange')), false), false) || coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch5UnderRange')), false), false)), null)"
+        }
+      }
+    },
+    "custom.ch6": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch6En')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch6Signal')), false), false)), if(coalesce({view.params.tagPath}, '') = '', if({view.custom.preview} = 'ok', 20.6, null), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch6En')), true), true), try(toFloat(tag({view.params.tagPath} + '/Ch6Signal')), null), null)), null)"
+        }
+      }
+    },
+    "custom.unit6": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/Ch6Unit')), false), false), if(coalesce({view.params.tagPath}, '') = '', if(6 < 4, 'mA', 'V'), coalesce(try(toStr(tag({view.params.tagPath} + '/Ch6Unit')), ''), '')), null)"
+        }
+      }
+    },
+    "custom.rng6": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch6OverRange')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch6UnderRange')), false), false)), if(coalesce({view.params.tagPath}, '') = '', true, coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch6OverRange')), false), false) || coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch6UnderRange')), false), false)), null)"
+        }
+      }
+    },
+    "custom.ch7": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch7En')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch7Signal')), false), false)), if(coalesce({view.params.tagPath}, '') = '', if({view.custom.preview} = 'ok', 4.09, null), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch7En')), true), true), try(toFloat(tag({view.params.tagPath} + '/Ch7Signal')), null), null)), null)"
+        }
+      }
+    },
+    "custom.unit7": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/Ch7Unit')), false), false), if(coalesce({view.params.tagPath}, '') = '', if(7 < 4, 'mA', 'V'), coalesce(try(toStr(tag({view.params.tagPath} + '/Ch7Unit')), ''), '')), null)"
+        }
+      }
+    },
+    "custom.rng7": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/Ch7OverRange')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Ch7UnderRange')), false), false)), if(coalesce({view.params.tagPath}, '') = '', false, coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch7OverRange')), false), false) || coalesce(try(toBoolean(tag({view.params.tagPath} + '/Ch7UnderRange')), false), false)), null)"
+        }
+      }
+    },
+    "custom.word": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if((coalesce(try(isGood(tag({view.params.tagPath} + '/ReadBack')), false), false) || coalesce(try(isGood(tag({view.params.tagPath} + '/Data')), false), false)), if(coalesce({view.params.kind}, '') = 'DO', coalesce(try(toInt(tag({view.params.tagPath} + '/ReadBack')), 0), 0), coalesce(try(toInt(tag({view.params.tagPath} + '/Data')), 0), 0)), null)"
+        }
+      }
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.kind": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.title": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "width": 340,
+      "height": 156
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "padding": "12px 14px 14px 14px",
+        "gap": "6px",
+        "overflow": "hidden",
+        "backgroundColor": "var(--surface-component)",
+        "borderRadius": "4px",
+        "border": "1px solid var(--neutral-100)",
+        "boxSizing": "border-box",
+        "boxShadow": "0 2px 8px rgba(0, 0, 0, 0.3)",
+        "pointerEvents": "none"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "Title"
+        },
+        "position": {
+          "basis": "24px",
+          "shrink": 0
+        },
+        "props": {
+          "text": "",
+          "style": {
+            "classes": "fs-16 fw-700",
+            "textAlign": "left",
+            "whiteSpace": "nowrap",
+            "overflow": "hidden",
+            "textOverflow": "ellipsis"
+          }
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "view.params.title"
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "Status"
+        },
+        "position": {
+          "basis": "20px",
+          "shrink": 0
+        },
+        "props": {
+          "text": "",
+          "style": {
+            "classes": "fs-14 fw-700",
+            "textAlign": "left",
+            "whiteSpace": "nowrap",
+            "overflow": "hidden",
+            "textOverflow": "ellipsis"
+          }
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if(coalesce({view.params.kind}, '') = 'CTRL', if({view.custom.good}, 'Controller Connected', 'Comm Loss'), case({view.custom.state}, 'ok', 'Module OK · Fault Word 0', 'fault', 'Module Fault · Fault Word ' + toStr({view.custom.fault}), 'conn', 'Connection Fault', 'No Data'))"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.style.color": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if(coalesce({view.params.kind}, '') = 'CTRL', if({view.custom.good}, 'var(--sts-run)', 'var(--sts-fault)'), case({view.custom.state}, 'ok', 'var(--sts-run)', 'fault', 'var(--sts-fault)', 'conn', 'var(--sts-fault)', 'var(--neutral-60)'))"
+              },
+              "overlayOptOut": true
+            }
+          }
+        }
+      },
+      {
+        "type": "ia.shapes.svg",
+        "meta": {
+          "name": "Grid"
+        },
+        "position": {
+          "basis": "74px",
+          "shrink": 0
+        },
+        "props": {
+          "viewBox": "0 0 110 38",
+          "elements": [
+            {
+              "type": "circle",
+              "name": "led-0",
+              "cx": 7.0,
+              "cy": 6,
+              "r": 4,
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "style": {}
+            },
+            {
+              "type": "text",
+              "name": "n-0",
+              "text": "0",
+              "x": 7.0,
+              "y": 17.1,
+              "textAnchor": "middle",
+              "fontSize": 6,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "circle",
+              "name": "led-1",
+              "cx": 20.5,
+              "cy": 6,
+              "r": 4,
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "style": {}
+            },
+            {
+              "type": "text",
+              "name": "n-1",
+              "text": "1",
+              "x": 20.5,
+              "y": 17.1,
+              "textAnchor": "middle",
+              "fontSize": 6,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "circle",
+              "name": "led-2",
+              "cx": 34.0,
+              "cy": 6,
+              "r": 4,
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "style": {}
+            },
+            {
+              "type": "text",
+              "name": "n-2",
+              "text": "2",
+              "x": 34.0,
+              "y": 17.1,
+              "textAnchor": "middle",
+              "fontSize": 6,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "circle",
+              "name": "led-3",
+              "cx": 47.5,
+              "cy": 6,
+              "r": 4,
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "style": {}
+            },
+            {
+              "type": "text",
+              "name": "n-3",
+              "text": "3",
+              "x": 47.5,
+              "y": 17.1,
+              "textAnchor": "middle",
+              "fontSize": 6,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "circle",
+              "name": "led-4",
+              "cx": 61.0,
+              "cy": 6,
+              "r": 4,
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "style": {}
+            },
+            {
+              "type": "text",
+              "name": "n-4",
+              "text": "4",
+              "x": 61.0,
+              "y": 17.1,
+              "textAnchor": "middle",
+              "fontSize": 6,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "circle",
+              "name": "led-5",
+              "cx": 74.5,
+              "cy": 6,
+              "r": 4,
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "style": {}
+            },
+            {
+              "type": "text",
+              "name": "n-5",
+              "text": "5",
+              "x": 74.5,
+              "y": 17.1,
+              "textAnchor": "middle",
+              "fontSize": 6,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "circle",
+              "name": "led-6",
+              "cx": 88.0,
+              "cy": 6,
+              "r": 4,
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "style": {}
+            },
+            {
+              "type": "text",
+              "name": "n-6",
+              "text": "6",
+              "x": 88.0,
+              "y": 17.1,
+              "textAnchor": "middle",
+              "fontSize": 6,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "circle",
+              "name": "led-7",
+              "cx": 101.5,
+              "cy": 6,
+              "r": 4,
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "style": {}
+            },
+            {
+              "type": "text",
+              "name": "n-7",
+              "text": "7",
+              "x": 101.5,
+              "y": 17.1,
+              "textAnchor": "middle",
+              "fontSize": 6,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "circle",
+              "name": "led-8",
+              "cx": 7.0,
+              "cy": 24,
+              "r": 4,
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "style": {}
+            },
+            {
+              "type": "text",
+              "name": "n-8",
+              "text": "8",
+              "x": 7.0,
+              "y": 35.1,
+              "textAnchor": "middle",
+              "fontSize": 6,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "circle",
+              "name": "led-9",
+              "cx": 20.5,
+              "cy": 24,
+              "r": 4,
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "style": {}
+            },
+            {
+              "type": "text",
+              "name": "n-9",
+              "text": "9",
+              "x": 20.5,
+              "y": 35.1,
+              "textAnchor": "middle",
+              "fontSize": 6,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "circle",
+              "name": "led-10",
+              "cx": 34.0,
+              "cy": 24,
+              "r": 4,
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "style": {}
+            },
+            {
+              "type": "text",
+              "name": "n-10",
+              "text": "10",
+              "x": 34.0,
+              "y": 35.1,
+              "textAnchor": "middle",
+              "fontSize": 6,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "circle",
+              "name": "led-11",
+              "cx": 47.5,
+              "cy": 24,
+              "r": 4,
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "style": {}
+            },
+            {
+              "type": "text",
+              "name": "n-11",
+              "text": "11",
+              "x": 47.5,
+              "y": 35.1,
+              "textAnchor": "middle",
+              "fontSize": 6,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "circle",
+              "name": "led-12",
+              "cx": 61.0,
+              "cy": 24,
+              "r": 4,
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "style": {}
+            },
+            {
+              "type": "text",
+              "name": "n-12",
+              "text": "12",
+              "x": 61.0,
+              "y": 35.1,
+              "textAnchor": "middle",
+              "fontSize": 6,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "circle",
+              "name": "led-13",
+              "cx": 74.5,
+              "cy": 24,
+              "r": 4,
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "style": {}
+            },
+            {
+              "type": "text",
+              "name": "n-13",
+              "text": "13",
+              "x": 74.5,
+              "y": 35.1,
+              "textAnchor": "middle",
+              "fontSize": 6,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "circle",
+              "name": "led-14",
+              "cx": 88.0,
+              "cy": 24,
+              "r": 4,
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "style": {}
+            },
+            {
+              "type": "text",
+              "name": "n-14",
+              "text": "14",
+              "x": 88.0,
+              "y": 35.1,
+              "textAnchor": "middle",
+              "fontSize": 6,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            },
+            {
+              "type": "circle",
+              "name": "led-15",
+              "cx": 101.5,
+              "cy": 24,
+              "r": 4,
+              "fill": {
+                "paint": "var(--neutral-60)"
+              },
+              "stroke": {
+                "paint": "var(--neutral-100)",
+                "width": "0.5",
+                "linecap": "butt",
+                "linejoin": "miter"
+              },
+              "style": {}
+            },
+            {
+              "type": "text",
+              "name": "n-15",
+              "text": "15",
+              "x": 101.5,
+              "y": 35.1,
+              "textAnchor": "middle",
+              "fontSize": 6,
+              "fontWeight": "600",
+              "fill": {
+                "paint": "var(--text)"
+              },
+              "stroke": {
+                "paint": "none",
+                "width": "0"
+              },
+              "style": {
+                "fontFamily": "inherit",
+                "userSelect": "none"
+              }
+            }
+          ],
+          "style": {
+            "width": "100%",
+            "height": "74px",
+            "userSelect": "none"
+          }
+        },
+        "propConfig": {
+          "props.elements[0].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 0) = 1, 'var(--sts-run)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[1].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 0) = 1, 'var(--sts-run)', 'var(--text)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[2].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 1) = 1, 'var(--sts-run)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[3].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 1) = 1, 'var(--sts-run)', 'var(--text)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[4].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 2) = 1, 'var(--sts-run)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[5].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 2) = 1, 'var(--sts-run)', 'var(--text)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[6].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 3) = 1, 'var(--sts-run)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[7].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 3) = 1, 'var(--sts-run)', 'var(--text)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[8].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 4) = 1, 'var(--sts-run)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[9].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 4) = 1, 'var(--sts-run)', 'var(--text)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[10].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 5) = 1, 'var(--sts-run)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[11].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 5) = 1, 'var(--sts-run)', 'var(--text)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[12].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 6) = 1, 'var(--sts-run)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[13].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 6) = 1, 'var(--sts-run)', 'var(--text)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[14].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 7) = 1, 'var(--sts-run)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[15].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 7) = 1, 'var(--sts-run)', 'var(--text)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[16].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 8) = 1, 'var(--sts-run)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[17].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 8) = 1, 'var(--sts-run)', 'var(--text)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[18].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 9) = 1, 'var(--sts-run)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[19].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 9) = 1, 'var(--sts-run)', 'var(--text)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[20].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 10) = 1, 'var(--sts-run)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[21].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 10) = 1, 'var(--sts-run)', 'var(--text)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[22].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 11) = 1, 'var(--sts-run)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[23].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 11) = 1, 'var(--sts-run)', 'var(--text)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[24].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 12) = 1, 'var(--sts-run)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[25].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 12) = 1, 'var(--sts-run)', 'var(--text)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[26].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 13) = 1, 'var(--sts-run)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[27].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 13) = 1, 'var(--sts-run)', 'var(--text)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[28].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 14) = 1, 'var(--sts-run)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[29].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 14) = 1, 'var(--sts-run)', 'var(--text)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[30].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 15) = 1, 'var(--sts-run)', 'var(--neutral-60)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.elements[31].fill.paint": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.state} = 'ok' && getBit(coalesce({view.custom.word}, 0), 15) = 1, 'var(--sts-run)', 'var(--text)')"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "coalesce({view.params.kind}, '') = 'DI' || coalesce({view.params.kind}, '') = 'DO'"
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Channels"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "style": {
+            "rowGap": "4px",
+            "lineHeight": "20px"
+          },
+          "wrap": "wrap"
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Ch0"
+            },
+            "position": {
+              "basis": "50%",
+              "shrink": 0,
+              "grow": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "fs-14 fw-600",
+                "textAlign": "left",
+                "whiteSpace": "nowrap",
+                "overflow": "hidden",
+                "textOverflow": "ellipsis"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "'Ch0  ' + if({view.custom.state} = 'ok' && !isNull({view.custom.ch0}), numberFormat({view.custom.ch0}, '0.00') + ' ' + coalesce({view.custom.unit0}, ''), '--')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.style.color": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch0}), if({view.custom.rng0}, 'var(--status-level-warning)', 'var(--text)'), 'var(--neutral-60)')"
+                  },
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Ch1"
+            },
+            "position": {
+              "basis": "50%",
+              "shrink": 0,
+              "grow": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "fs-14 fw-600",
+                "textAlign": "left",
+                "whiteSpace": "nowrap",
+                "overflow": "hidden",
+                "textOverflow": "ellipsis"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "'Ch1  ' + if({view.custom.state} = 'ok' && !isNull({view.custom.ch1}), numberFormat({view.custom.ch1}, '0.00') + ' ' + coalesce({view.custom.unit1}, ''), '--')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.style.color": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch1}), if({view.custom.rng1}, 'var(--status-level-warning)', 'var(--text)'), 'var(--neutral-60)')"
+                  },
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Ch2"
+            },
+            "position": {
+              "basis": "50%",
+              "shrink": 0,
+              "grow": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "fs-14 fw-600",
+                "textAlign": "left",
+                "whiteSpace": "nowrap",
+                "overflow": "hidden",
+                "textOverflow": "ellipsis"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "'Ch2  ' + if({view.custom.state} = 'ok' && !isNull({view.custom.ch2}), numberFormat({view.custom.ch2}, '0.00') + ' ' + coalesce({view.custom.unit2}, ''), '--')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.style.color": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch2}), if({view.custom.rng2}, 'var(--status-level-warning)', 'var(--text)'), 'var(--neutral-60)')"
+                  },
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Ch3"
+            },
+            "position": {
+              "basis": "50%",
+              "shrink": 0,
+              "grow": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "fs-14 fw-600",
+                "textAlign": "left",
+                "whiteSpace": "nowrap",
+                "overflow": "hidden",
+                "textOverflow": "ellipsis"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "'Ch3  ' + if({view.custom.state} = 'ok' && !isNull({view.custom.ch3}), numberFormat({view.custom.ch3}, '0.00') + ' ' + coalesce({view.custom.unit3}, ''), '--')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.style.color": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch3}), if({view.custom.rng3}, 'var(--status-level-warning)', 'var(--text)'), 'var(--neutral-60)')"
+                  },
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Ch4"
+            },
+            "position": {
+              "basis": "50%",
+              "shrink": 0,
+              "grow": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "fs-14 fw-600",
+                "textAlign": "left",
+                "whiteSpace": "nowrap",
+                "overflow": "hidden",
+                "textOverflow": "ellipsis"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "'Ch4  ' + if({view.custom.state} = 'ok' && !isNull({view.custom.ch4}), numberFormat({view.custom.ch4}, '0.00') + ' ' + coalesce({view.custom.unit4}, ''), '--')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.style.color": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch4}), if({view.custom.rng4}, 'var(--status-level-warning)', 'var(--text)'), 'var(--neutral-60)')"
+                  },
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Ch5"
+            },
+            "position": {
+              "basis": "50%",
+              "shrink": 0,
+              "grow": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "fs-14 fw-600",
+                "textAlign": "left",
+                "whiteSpace": "nowrap",
+                "overflow": "hidden",
+                "textOverflow": "ellipsis"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "'Ch5  ' + if({view.custom.state} = 'ok' && !isNull({view.custom.ch5}), numberFormat({view.custom.ch5}, '0.00') + ' ' + coalesce({view.custom.unit5}, ''), '--')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.style.color": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch5}), if({view.custom.rng5}, 'var(--status-level-warning)', 'var(--text)'), 'var(--neutral-60)')"
+                  },
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Ch6"
+            },
+            "position": {
+              "basis": "50%",
+              "shrink": 0,
+              "grow": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "fs-14 fw-600",
+                "textAlign": "left",
+                "whiteSpace": "nowrap",
+                "overflow": "hidden",
+                "textOverflow": "ellipsis"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "'Ch6  ' + if({view.custom.state} = 'ok' && !isNull({view.custom.ch6}), numberFormat({view.custom.ch6}, '0.00') + ' ' + coalesce({view.custom.unit6}, ''), '--')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.style.color": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch6}), if({view.custom.rng6}, 'var(--status-level-warning)', 'var(--text)'), 'var(--neutral-60)')"
+                  },
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Ch7"
+            },
+            "position": {
+              "basis": "50%",
+              "shrink": 0,
+              "grow": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "fs-14 fw-600",
+                "textAlign": "left",
+                "whiteSpace": "nowrap",
+                "overflow": "hidden",
+                "textOverflow": "ellipsis"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "'Ch7  ' + if({view.custom.state} = 'ok' && !isNull({view.custom.ch7}), numberFormat({view.custom.ch7}, '0.00') + ' ' + coalesce({view.custom.unit7}, ''), '--')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.style.color": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.state} = 'ok' && !isNull({view.custom.ch7}), if({view.custom.rng7}, 'var(--status-level-warning)', 'var(--text)'), 'var(--neutral-60)')"
+                  },
+                  "overlayOptOut": true
+                }
+              }
+            }
+          }
+        ],
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "coalesce({view.params.kind}, '') = 'AI'"
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Controller"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "gap": "1px"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Mode"
+            },
+            "position": {
+              "basis": "24px",
+              "shrink": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "fs-14 fw-600",
+                "textAlign": "left",
+                "whiteSpace": "nowrap",
+                "overflow": "hidden",
+                "textOverflow": "ellipsis"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/Mode')), false), false), 'Mode  ' + coalesce(try(toStr(tag({view.params.tagPath} + '/Mode')), null), '--'), '—')"
+                  },
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Driver"
+            },
+            "position": {
+              "basis": "24px",
+              "shrink": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "fs-14 fw-600",
+                "textAlign": "left",
+                "whiteSpace": "nowrap",
+                "overflow": "hidden",
+                "textOverflow": "ellipsis"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/Connected')), false), false), 'Driver  ' + if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/Connected')), false), false), 'Connected', 'Disconnected'), '—')"
+                  },
+                  "overlayOptOut": true
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Fault"
+            },
+            "position": {
+              "basis": "24px",
+              "shrink": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "fs-14 fw-600",
+                "textAlign": "left",
+                "whiteSpace": "nowrap",
+                "overflow": "hidden",
+                "textOverflow": "ellipsis"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/MajorFault')), false), false), 'Major Fault  ' + if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/MajorFault')), false), false), 'Yes', 'No'), '—')"
+                  },
+                  "overlayOptOut": true
+                }
+              }
+            }
+          }
+        ],
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "coalesce({view.params.kind}, '') = 'CTRL'"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

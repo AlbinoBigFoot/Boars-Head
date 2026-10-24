@@ -3,6 +3,7 @@ SELECT
     trend_name,
     username,
     is_shared,
+    is_locked,
     trend_config
 FROM
     dbo.adhoc_trend_configs

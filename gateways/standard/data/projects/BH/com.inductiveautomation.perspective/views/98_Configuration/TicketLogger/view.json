@@ -1,5 +1,12 @@
 {
-  "custom": {},
+  "custom": {
+    "mode": "ticket",
+    "type": "Issue",
+    "fieldKeys": "",
+    "types": null,
+    "fields": null,
+    "route": ""
+  },
   "params": {
     "tagPath": "",
     "viewName": ""
@@ -12,6 +19,45 @@
     "params.viewName": {
       "paramDirection": "input",
       "persistent": true
+    },
+    "custom.types": {
+      "binding": {
+        "type": "tag",
+        "config": {
+          "mode": "direct",
+          "tagPath": "[default]_Config/TicketLogger/Types",
+          "fallbackDelay": 2.5
+        }
+      }
+    },
+    "custom.fields": {
+      "binding": {
+        "type": "tag",
+        "config": {
+          "mode": "direct",
+          "tagPath": "[default]_Config/TicketLogger/Fields",
+          "fallbackDelay": 2.5
+        }
+      }
+    },
+    "custom.fieldKeys": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "',' + replace(coalesce(try(lookup({view.custom.types}, {view.custom.type}, '', 'Type', 'Fields'), ''), ''), ' ', '') + ','"
+        }
+      }
+    },
+    "custom.mode": {
+      "persistent": false
+    },
+    "custom.route": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce(try(runScript('shared.TicketLogger.routeLabel', 0, {view.custom.type}, {view.params.tagPath}), ''), '')"
+        }
+      }
     }
   },
   "props": {
@@ -44,19 +90,91 @@
               "name": "Title"
             },
             "position": {
-              "basis": "98%",
-              "grow": 1
+              "basis": "0px",
+              "grow": 1,
+              "shrink": 1
             },
             "props": {
               "style": {
-                "classes": "font-title",
+                "classes": "Fonts/Title",
                 "paddingBottom": "0.5%",
                 "paddingLeft": "0.5%",
                 "paddingTop": "0.5%"
               },
               "text": "Ticket Logger"
             },
-            "type": "ia.display.label"
+            "type": "ia.display.label",
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.mode} = 'settings', 'Ticket Logger Settings', 'Ticket Logger')"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.icon",
+            "meta": {
+              "name": "Settings",
+              "tooltip": {
+                "enabled": true,
+                "text": "Integrations"
+              }
+            },
+            "position": {
+              "basis": "32px",
+              "shrink": 0
+            },
+            "props": {
+              "path": "material/settings",
+              "style": {
+                "classes": "color-icon ticket-logger-gear",
+                "height": "32px",
+                "width": "32px",
+                "alignSelf": "center",
+                "marginRight": "-2px"
+              }
+            },
+            "propConfig": {
+              "meta.visible": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "session.custom.TicketLogSettings"
+                  }
+                }
+              },
+              "props.path": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.mode} = 'settings', 'material/close', 'material/settings')"
+                  }
+                }
+              },
+              "meta.tooltip.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.mode} = 'settings', 'Back To Ticket', 'Ticket Logger Settings')"
+                  }
+                }
+              }
+            },
+            "events": {
+              "dom": {
+                "onClick": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\tif not self.session.custom.TicketLogSettings:\n\t\treturn\n\tself.view.custom.mode = 'ticket' if self.view.custom.mode == 'settings' else 'settings'\n"
+                  }
+                }
+              }
+            }
           }
         ],
         "meta": {
@@ -66,7 +184,38 @@
           "basis": "40px",
           "shrink": 0
         },
-        "type": "ia.container.flex"
+        "type": "ia.container.flex",
+        "props": {
+          "style": {
+            "overflow": "hidden"
+          }
+        }
+      },
+      {
+        "type": "ia.display.view",
+        "meta": {
+          "name": "Integrations"
+        },
+        "position": {
+          "grow": 1,
+          "basis": "0px"
+        },
+        "props": {
+          "path": "98_Configuration/TicketLoggerSettings",
+          "style": {
+            "overflow": "hidden"
+          }
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "{view.custom.mode} = 'settings'"
+              }
+            }
+          }
+        }
       },
       {
         "children": [
@@ -80,7 +229,7 @@
             },
             "props": {
               "style": {
-                "classes": "font-label"
+                "classes": "Fonts/Label"
               },
               "text": "Tag Path:"
             },
@@ -111,7 +260,7 @@
             },
             "props": {
               "style": {
-                "classes": "font-value"
+                "classes": "Fonts/Value"
               },
               "textStyle": {
                 "overflowWrap": "break-word"
@@ -132,7 +281,17 @@
             "padding": 5
           }
         },
-        "type": "ia.container.flex"
+        "type": "ia.container.flex",
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "!({view.custom.mode} = 'settings')"
+              }
+            }
+          }
+        }
       },
       {
         "children": [
@@ -146,7 +305,7 @@
             },
             "props": {
               "style": {
-                "classes": "font-label"
+                "classes": "Fonts/Label"
               },
               "text": "View:"
             },
@@ -171,7 +330,7 @@
             },
             "props": {
               "style": {
-                "classes": "font-value"
+                "classes": "Fonts/Value"
               },
               "textStyle": {
                 "overflowWrap": "break-word"
@@ -192,7 +351,17 @@
             "padding": 5
           }
         },
-        "type": "ia.container.flex"
+        "type": "ia.container.flex",
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "!({view.custom.mode} = 'settings')"
+              }
+            }
+          }
+        }
       },
       {
         "children": [
@@ -210,7 +379,7 @@
                     },
                     "props": {
                       "style": {
-                        "classes": "font-label"
+                        "classes": "Fonts/Label"
                       },
                       "text": "Reporter:"
                     },
@@ -235,7 +404,7 @@
                     },
                     "props": {
                       "style": {
-                        "classes": "font-value"
+                        "classes": "Fonts/Value"
                       }
                     },
                     "type": "ia.display.label"
@@ -267,7 +436,7 @@
                     },
                     "props": {
                       "style": {
-                        "classes": "font-label"
+                        "classes": "Fonts/Label"
                       },
                       "text": "Ticket Date:"
                     },
@@ -302,7 +471,7 @@
                     },
                     "props": {
                       "style": {
-                        "classes": "font-value",
+                        "classes": "Fonts/Value",
                         "fontSize": ""
                       },
                       "textStyle": {
@@ -337,7 +506,7 @@
                     },
                     "props": {
                       "style": {
-                        "classes": "font-label"
+                        "classes": "Fonts/Label"
                       },
                       "text": "Priority:"
                     },
@@ -353,7 +522,7 @@
                     },
                     "props": {
                       "dropdownOptionStyle": {
-                        "classes": "bg-component font-value"
+                        "classes": "bg-component Fonts/Value dropdown-subtle"
                       },
                       "options": [
                         {
@@ -377,7 +546,7 @@
                         "text": "Select Priority"
                       },
                       "style": {
-                        "classes": "bg-component container-card font-value",
+                        "classes": "bg-component container-card Fonts/Value",
                         "height": "30px",
                         "maxWidth": 200
                       }
@@ -412,7 +581,7 @@
                         },
                         "props": {
                           "style": {
-                            "classes": "font-label"
+                            "classes": "Fonts/Label"
                           },
                           "text": "Type:"
                         },
@@ -428,7 +597,7 @@
                         },
                         "props": {
                           "dropdownOptionStyle": {
-                            "classes": "bg-component font-value"
+                            "classes": "bg-component Fonts/Value dropdown-subtle"
                           },
                           "options": [
                             {
@@ -452,13 +621,39 @@
                             "text": "Select Type"
                           },
                           "style": {
-                            "classes": "bg-component container-card font-value",
+                            "classes": "bg-component container-card Fonts/Value",
                             "height": "30px",
                             "maxWidth": 260
-                          },
-                          "value": "Issue"
+                          }
                         },
-                        "type": "ia.input.dropdown"
+                        "type": "ia.input.dropdown",
+                        "propConfig": {
+                          "props.value": {
+                            "binding": {
+                              "type": "property",
+                              "config": {
+                                "path": "view.custom.type",
+                                "bidirectional": true
+                              }
+                            }
+                          },
+                          "props.options": {
+                            "binding": {
+                              "type": "tag",
+                              "config": {
+                                "mode": "direct",
+                                "tagPath": "[default]_Config/TicketLogger/Types",
+                                "fallbackDelay": 2.5
+                              },
+                              "transforms": [
+                                {
+                                  "type": "script",
+                                  "code": "\tif value is None:\n\t\treturn []\n\treturn [{'value': r['Type'], 'label': r['Label']} for r in system.dataset.toPyDataSet(value)]\n"
+                                }
+                              ]
+                            }
+                          }
+                        }
                       }
                     ],
                     "meta": {
@@ -481,17 +676,16 @@
                     "propConfig": {
                       "props.text": {
                         "binding": {
+                          "type": "expr",
                           "config": {
-                            "expression": "if({../TypeRow/TypeDropdown.props.value} = 'Issue', 'Issue: commissioning / startup / checkout problems.', if({../TypeRow/TypeDropdown.props.value} = 'Bug',  'Bug: production defects on live systems.',  if({../TypeRow/TypeDropdown.props.value} = 'Request',   'Request: change, enhancement, or work ask (not a defect).',   if({../TypeRow/TypeDropdown.props.value} = 'Question',    'Question: need clarification or help \u2014 not a defect.',    'Pick a type \u2014 hover the dropdown for a full description.'))))"
-                          },
-                          "type": "expr"
+                            "expression": "coalesce(try(lookup({view.custom.types}, {view.custom.type}, '', 'Type', 'Help'), ''), 'Pick a type \u2014 hover the dropdown for a full description.')"
+                          }
                         }
                       }
                     },
                     "props": {
                       "style": {
-                        "classes": "font-label",
-                        "fontSize": "11px",
+                        "classes": "Fonts/Label fs-11",
                         "marginLeft": "100px",
                         "opacity": "0.9",
                         "overflowWrap": "break-word",
@@ -500,13 +694,43 @@
                       "text": "Issue: commissioning / startup / checkout problems."
                     },
                     "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "RouteHint"
+                    },
+                    "position": {
+                      "grow": 1,
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "property",
+                          "config": {
+                            "path": "view.custom.route"
+                          }
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "Fonts/Label fs-11 fw-600",
+                        "marginLeft": "100px",
+                        "opacity": "0.9",
+                        "overflowWrap": "break-word",
+                        "whiteSpace": "normal"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.display.label"
                   }
                 ],
                 "meta": {
                   "name": "IssueType"
                 },
                 "position": {
-                  "basis": "64px",
+                  "basis": "84px",
                   "shrink": 0
                 },
                 "props": {
@@ -541,14 +765,24 @@
         },
         "position": {
           "basis": "24%",
-          "grow": 1
+          "grow": 0
         },
         "props": {
           "style": {
             "overflow": "hidden"
           }
         },
-        "type": "ia.container.flex"
+        "type": "ia.container.flex",
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "!({view.custom.mode} = 'settings')"
+              }
+            }
+          }
+        }
       },
       {
         "children": [
@@ -564,12 +798,22 @@
                 },
                 "props": {
                   "style": {
-                    "classes": "font-label",
+                    "classes": "Fonts/Label",
                     "padding": 5
                   },
                   "text": "Expected Result"
                 },
-                "type": "ia.display.label"
+                "type": "ia.display.label",
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce(try(lookup({view.custom.fields}, 'expected', 'expected', 'Key', 'Label'), 'expected'), 'expected')"
+                      }
+                    }
+                  }
+                }
               },
               {
                 "meta": {
@@ -587,17 +831,27 @@
                     "borderStyle": "none",
                     "borderTopLeftRadius": 5,
                     "borderTopRightRadius": 5,
-                    "classes": "bg-component font-value",
+                    "classes": "bg-component Fonts/Value",
                     "marginLeft": 5,
                     "marginRight": 5,
                     "padding": 5
                   }
                 },
-                "type": "ia.input.text-area"
+                "type": "ia.input.text-area",
+                "propConfig": {
+                  "props.placeholder": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce(try(lookup({view.custom.fields}, 'expected', '', 'Key', 'Placeholder'), ''), '')"
+                      }
+                    }
+                  }
+                }
               }
             ],
             "meta": {
-              "name": "ExpectedResult"
+              "name": "Field_expected"
             },
             "position": {
               "grow": 1
@@ -605,7 +859,17 @@
             "props": {
               "direction": "column"
             },
-            "type": "ia.container.flex"
+            "type": "ia.container.flex",
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "indexOf({view.custom.fieldKeys}, ',expected,') >= 0"
+                  }
+                }
+              }
+            }
           },
           {
             "children": [
@@ -619,12 +883,22 @@
                 },
                 "props": {
                   "style": {
-                    "classes": "font-label",
+                    "classes": "Fonts/Label",
                     "padding": 5
                   },
-                  "text": "Actual Result"
+                  "text": "Expected Result"
                 },
-                "type": "ia.display.label"
+                "type": "ia.display.label",
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce(try(lookup({view.custom.fields}, 'actual', 'actual', 'Key', 'Label'), 'actual'), 'actual')"
+                      }
+                    }
+                  }
+                }
               },
               {
                 "meta": {
@@ -642,28 +916,45 @@
                     "borderStyle": "none",
                     "borderTopLeftRadius": 5,
                     "borderTopRightRadius": 5,
-                    "classes": "bg-component font-value",
+                    "classes": "bg-component Fonts/Value",
                     "marginLeft": 5,
                     "marginRight": 5,
                     "padding": 5
                   }
                 },
-                "type": "ia.input.text-area"
+                "type": "ia.input.text-area",
+                "propConfig": {
+                  "props.placeholder": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce(try(lookup({view.custom.fields}, 'actual', '', 'Key', 'Placeholder'), ''), '')"
+                      }
+                    }
+                  }
+                }
               }
             ],
             "meta": {
-              "name": "ActualResult"
+              "name": "Field_actual"
             },
             "position": {
               "grow": 1
             },
             "props": {
-              "direction": "column",
-              "style": {
-                "marginTop": "5px"
-              }
+              "direction": "column"
             },
-            "type": "ia.container.flex"
+            "type": "ia.container.flex",
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "indexOf({view.custom.fieldKeys}, ',actual,') >= 0"
+                  }
+                }
+              }
+            }
           },
           {
             "children": [
@@ -677,12 +968,22 @@
                 },
                 "props": {
                   "style": {
-                    "classes": "font-label",
+                    "classes": "Fonts/Label",
                     "padding": 5
                   },
-                  "text": "Steps to Recreate"
+                  "text": "Expected Result"
                 },
-                "type": "ia.display.label"
+                "type": "ia.display.label",
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce(try(lookup({view.custom.fields}, 'steps', 'steps', 'Key', 'Label'), 'steps'), 'steps')"
+                      }
+                    }
+                  }
+                }
               },
               {
                 "meta": {
@@ -700,29 +1001,300 @@
                     "borderStyle": "none",
                     "borderTopLeftRadius": 5,
                     "borderTopRightRadius": 5,
-                    "classes": "bg-component font-value",
+                    "classes": "bg-component Fonts/Value",
                     "marginLeft": 5,
                     "marginRight": 5,
                     "padding": 5
                   }
                 },
-                "type": "ia.input.text-area"
+                "type": "ia.input.text-area",
+                "propConfig": {
+                  "props.placeholder": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce(try(lookup({view.custom.fields}, 'steps', '', 'Key', 'Placeholder'), ''), '')"
+                      }
+                    }
+                  }
+                }
               }
             ],
             "meta": {
-              "name": "StepsToRecreate"
+              "name": "Field_steps"
             },
             "position": {
               "grow": 1
             },
             "props": {
-              "direction": "column",
-              "style": {
-                "marginBottom": "5px",
-                "marginTop": "5px"
-              }
+              "direction": "column"
             },
-            "type": "ia.container.flex"
+            "type": "ia.container.flex",
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "indexOf({view.custom.fieldKeys}, ',steps,') >= 0"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Label"
+                },
+                "position": {
+                  "basis": "30px",
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label",
+                    "padding": 5
+                  },
+                  "text": "Expected Result"
+                },
+                "type": "ia.display.label",
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce(try(lookup({view.custom.fields}, 'details', 'details', 'Key', 'Label'), 'details'), 'details')"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "meta": {
+                  "name": "TextBox"
+                },
+                "position": {
+                  "basis": "100px",
+                  "grow": 1
+                },
+                "props": {
+                  "placeholder": "Add Description",
+                  "style": {
+                    "borderBottomLeftRadius": 5,
+                    "borderBottomRightRadius": 5,
+                    "borderStyle": "none",
+                    "borderTopLeftRadius": 5,
+                    "borderTopRightRadius": 5,
+                    "classes": "bg-component Fonts/Value",
+                    "marginLeft": 5,
+                    "marginRight": 5,
+                    "padding": 5
+                  }
+                },
+                "type": "ia.input.text-area",
+                "propConfig": {
+                  "props.placeholder": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce(try(lookup({view.custom.fields}, 'details', '', 'Key', 'Placeholder'), ''), '')"
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "meta": {
+              "name": "Field_details"
+            },
+            "position": {
+              "grow": 1
+            },
+            "props": {
+              "direction": "column"
+            },
+            "type": "ia.container.flex",
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "indexOf({view.custom.fieldKeys}, ',details,') >= 0"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Label"
+                },
+                "position": {
+                  "basis": "30px",
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label",
+                    "padding": 5
+                  },
+                  "text": "Expected Result"
+                },
+                "type": "ia.display.label",
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce(try(lookup({view.custom.fields}, 'reason', 'reason', 'Key', 'Label'), 'reason'), 'reason')"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "meta": {
+                  "name": "TextBox"
+                },
+                "position": {
+                  "basis": "100px",
+                  "grow": 1
+                },
+                "props": {
+                  "placeholder": "Add Description",
+                  "style": {
+                    "borderBottomLeftRadius": 5,
+                    "borderBottomRightRadius": 5,
+                    "borderStyle": "none",
+                    "borderTopLeftRadius": 5,
+                    "borderTopRightRadius": 5,
+                    "classes": "bg-component Fonts/Value",
+                    "marginLeft": 5,
+                    "marginRight": 5,
+                    "padding": 5
+                  }
+                },
+                "type": "ia.input.text-area",
+                "propConfig": {
+                  "props.placeholder": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce(try(lookup({view.custom.fields}, 'reason', '', 'Key', 'Placeholder'), ''), '')"
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "meta": {
+              "name": "Field_reason"
+            },
+            "position": {
+              "grow": 1
+            },
+            "props": {
+              "direction": "column"
+            },
+            "type": "ia.container.flex",
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "indexOf({view.custom.fieldKeys}, ',reason,') >= 0"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Label"
+                },
+                "position": {
+                  "basis": "30px",
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label",
+                    "padding": 5
+                  },
+                  "text": "Expected Result"
+                },
+                "type": "ia.display.label",
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce(try(lookup({view.custom.fields}, 'question', 'question', 'Key', 'Label'), 'question'), 'question')"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "meta": {
+                  "name": "TextBox"
+                },
+                "position": {
+                  "basis": "100px",
+                  "grow": 1
+                },
+                "props": {
+                  "placeholder": "Add Description",
+                  "style": {
+                    "borderBottomLeftRadius": 5,
+                    "borderBottomRightRadius": 5,
+                    "borderStyle": "none",
+                    "borderTopLeftRadius": 5,
+                    "borderTopRightRadius": 5,
+                    "classes": "bg-component Fonts/Value",
+                    "marginLeft": 5,
+                    "marginRight": 5,
+                    "padding": 5
+                  }
+                },
+                "type": "ia.input.text-area",
+                "propConfig": {
+                  "props.placeholder": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce(try(lookup({view.custom.fields}, 'question', '', 'Key', 'Placeholder'), ''), '')"
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "meta": {
+              "name": "Field_question"
+            },
+            "position": {
+              "grow": 1
+            },
+            "props": {
+              "direction": "column"
+            },
+            "type": "ia.container.flex",
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "indexOf({view.custom.fieldKeys}, ',question,') >= 0"
+                  }
+                }
+              }
+            }
           }
         ],
         "meta": {
@@ -734,7 +1306,17 @@
         "props": {
           "direction": "column"
         },
-        "type": "ia.container.flex"
+        "type": "ia.container.flex",
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "!({view.custom.mode} = 'settings')"
+              }
+            }
+          }
+        }
       },
       {
         "children": [
@@ -743,7 +1325,7 @@
               "dom": {
                 "onClick": {
                   "config": {
-                    "script": "\tfrom shared import TicketLogger\n\tfrom shared import Alerts\n\n\troot = self.parent.parent\n\texpectedResult = root.getChild(\"Results\").getChild(\"ExpectedResult\").getChild(\"TextBox\").props.text or \"\"\n\tactualResult = root.getChild(\"Results\").getChild(\"ActualResult\").getChild(\"TextBox\").props.text or \"\"\n\tstepsToRecreate = root.getChild(\"Results\").getChild(\"StepsToRecreate\").getChild(\"TextBox\").props.text or \"\"\n\tpriority = root.getChild(\"IssueData\").getChild(\"IssueTimePriority\").getChild(\"IssuePriority\").getChild(\"PriorityDropdown\").props.value\n\trequestType = root.getChild(\"IssueData\").getChild(\"IssueTimePriority\").getChild(\"IssueType\").getChild(\"TypeRow\").getChild(\"TypeDropdown\").props.value\n\n\terrors = []\n\tif priority is None or priority == \"\" or priority == 0:\n\t\terrors.append(\"Select a Priority\")\n\tif len(str(expectedResult).strip()) < 3:\n\t\terrors.append(\"Expected Result (min 3 characters)\")\n\tif len(str(actualResult).strip()) < 3:\n\t\terrors.append(\"Actual Result (min 3 characters)\")\n\tif len(str(stepsToRecreate).strip()) < 3:\n\t\terrors.append(\"Steps to Recreate (min 3 characters)\")\n\n\tif errors:\n\t\tAlerts.showAlert(\n\t\t\tstate=\"warning\",\n\t\t\ttitle=\"Incomplete Ticket\",\n\t\t\tmessage=\"Please fix:\\n- \" + \"\\n- \".join(errors),\n\t\t\tshowCloseBtn=True,\n\t\t\tbtnTextPrimary=\"OK\",\n\t\t\tbtnTextSecondary=\"\",\n\t\t\tbtnActionPrimary=\"closeAlert\",\n\t\t\tbtnActionSecondary=\"\",\n\t\t\tpayload={}\n\t\t)\n\telse:\n\t\ttitle = root.getChild(\"TagPathContainer\").getChild(\"TagPath\").props.text\n\t\tviewName = root.getChild(\"ViewName\").getChild(\"Name\").props.text\n\t\tissuerName = root.getChild(\"IssueData\").getChild(\"IssueTimePriority\").getChild(\"IssuerName\").getChild(\"Name\").props.text\n\t\tif not requestType:\n\t\t\trequestType = \"Issue\"\n\t\temail = None\n\t\ttry:\n\t\t\temail = self.session.props.auth.user.email\n\t\texcept:\n\t\t\tpass\n\t\ttry:\n\t\t\tresult = TicketLogger.createTicket(\n\t\t\t\ttitle=title,\n\t\t\t\tviewName=viewName,\n\t\t\t\treporter=issuerName,\n\t\t\t\tpriority=priority,\n\t\t\t\texpectedResult=str(expectedResult).strip(),\n\t\t\t\tactualResult=str(actualResult).strip(),\n\t\t\t\tstepsToRecreate=str(stepsToRecreate).strip(),\n\t\t\t\temail=email,\n\t\t\t\trequestType=requestType,\n\t\t\t)\n\t\t\tmsg = \"Ticket log successful!\"\n\t\t\tif result and result.get(\"url\"):\n\t\t\t\tmsg = \"Ticket log successful!\\n\" + str(result.get(\"url\"))\n\t\t\tAlerts.showAlert(state=\"success\",title=\"Success\",message=msg,showCloseBtn=False,btnTextPrimary=\"Okay\",btnTextSecondary=\"\",btnActionPrimary=\"commitTicketLog\",btnActionSecondary=\"\",payload={})\n\t\texcept Exception as e:\n\t\t\tAlerts.showAlert(state=\"error\",title=\"Ticket Logger\",message=str(e),showCloseBtn=True,btnTextPrimary=\"OK\",btnTextSecondary=\"\",btnActionPrimary=\"closeAlert\",btnActionSecondary=\"\",payload={})\n"
+                    "script": "\tfrom shared import TicketLogger\n\tfrom shared import Alerts\n\n\t# ticket-routing: every user with TicketLogger/Use submits; shared.TicketLogger.send routes the ticket by its\n\t# selection (Type + the Area of its tag path) to Monday or the Oracle outbox (or records it in a dry run)\n\troot = self.parent.parent\n\tview = self.view\n\tpriority = root.getChild(\"IssueData\").getChild(\"IssueTimePriority\").getChild(\"IssuePriority\").getChild(\"PriorityDropdown\").props.value\n\trequestType = view.custom.type or \"Issue\"\n\tkeys = [k for k in str(view.custom.fieldKeys or \"\").split(\",\") if k]\n\tdefs = {}\n\tif view.custom.fields is not None:\n\t\tfor r in system.dataset.toPyDataSet(view.custom.fields):\n\t\t\tdefs[r[\"Key\"]] = (r[\"Label\"], int(r[\"MinLength\"] or 0))\n\n\terrors = []\n\tif priority is None or priority == \"\" or priority == 0:\n\t\terrors.append(\"Select a Priority\")\n\tif not keys:\n\t\terrors.append(\"Select a Type\")\n\tsections = []\n\tfor k in keys:\n\t\tlabel, minLen = defs.get(k, (k, 0))\n\t\ttext = str(root.getChild(\"Results\").getChild(\"Field_\" + k).getChild(\"TextBox\").props.text or \"\").strip()\n\t\tif len(text) < minLen:\n\t\t\terrors.append(\"%s (min %d characters)\" % (label, minLen))\n\t\tsections.append((label, text))\n\n\tif errors:\n\t\tAlerts.showAlert(state=\"warning\", title=\"Incomplete Ticket\", message=\"Please fix:\\n- \" + \"\\n- \".join(errors),\n\t\t\tshowCloseBtn=True, btnTextPrimary=\"OK\", btnTextSecondary=\"\", btnActionPrimary=\"closeAlert\",\n\t\t\tbtnActionSecondary=\"\", payload={})\n\t\treturn\n\ttitle = root.getChild(\"TagPathContainer\").getChild(\"TagPath\").props.text\n\tviewName = root.getChild(\"ViewName\").getChild(\"Name\").props.text\n\tissuerName = root.getChild(\"IssueData\").getChild(\"IssueTimePriority\").getChild(\"IssuerName\").getChild(\"Name\").props.text\n\temail = None\n\tusername = \"\"\n\ttry:\n\t\temail = self.session.props.auth.user.email\n\t\tusername = self.session.props.auth.user.userName\n\texcept:\n\t\tpass\n\tticket = {\"title\": title, \"tagPath\": view.params.tagPath or title, \"viewName\": viewName, \"reporter\": issuerName,\n\t\t\"username\": username, \"email\": email, \"priority\": priority, \"type\": requestType, \"sections\": sections}\n\ttry:\n\t\tresult = TicketLogger.send(ticket)\n\t\tAlerts.showAlert(state=\"success\", title=\"Dry Run\" if result.get(\"dryRun\") else \"Ticket Logged\",\n\t\t\tmessage=result.get(\"message\") or \"Ticket Logged\", showCloseBtn=False, btnTextPrimary=\"Okay\",\n\t\t\tbtnTextSecondary=\"\", btnActionPrimary=\"commitTicketLog\", btnActionSecondary=\"\", payload={})\n\texcept Exception as e:\n\t\tAlerts.showAlert(state=\"error\", title=\"Ticket Logger\", message=str(e), showCloseBtn=True, btnTextPrimary=\"OK\",\n\t\t\tbtnTextSecondary=\"\", btnActionPrimary=\"closeAlert\", btnActionSecondary=\"\", payload={})\n"
                   },
                   "scope": "G",
                   "type": "script"
@@ -769,7 +1351,7 @@
             },
             "props": {
               "style": {
-                "classes": "container-button font-button",
+                "classes": "container-button Fonts/Button",
                 "marginLeft": "15%",
                 "marginRight": "15%"
               },
@@ -802,7 +1384,7 @@
                 "width": 20
               },
               "style": {
-                "classes": "container-button font-button",
+                "classes": "container-button Fonts/Button",
                 "marginLeft": "15%",
                 "marginRight": "15%",
                 "minWidth": 30
@@ -826,7 +1408,17 @@
             "paddingTop": "2px"
           }
         },
-        "type": "ia.container.flex"
+        "type": "ia.container.flex",
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "!({view.custom.mode} = 'settings')"
+              }
+            }
+          }
+        }
       }
     ],
     "meta": {
@@ -862,7 +1454,7 @@
           },
           "transforms": [
             {
-              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = self.view.params.tagPath\n\texcept:\n\t\tpass\n\tif tagPath is None or str(tagPath).strip() == '':\n\t\ttagPath = value.tagPath + self.view.id.split('@')[0].split('/')[-1]\n\titems = [\n\t\t\t  {\n\t\t\t    \"text\": \"Ticket Logger\",\n\t\t\t    \"icon\": {\n\t\t\t      \"path\": \"material/info\",\n\t\t\t      \"color\": \"--neutral-80\",\n\t\t\t      \"style\": {}\n\t\t\t    },\n\t\t\t    \"style\": {\n\t\t\t      \"classes\": \"bg-component font-value\",\n\t\t\t      \"height\": 24,\n\t\t\t      \"width\": 120\n\t\t\t    },\n\t\t\t    \"type\": \"message\",\n\t\t\t    \"children\": [],\n\t\t\t    \"link\": {\n\t\t\t      \"url\": \"\",\n\t\t\t      \"target\": \"self\"\n\t\t\t    },\n\t\t\t    \"method\": {\n\t\t\t      \"name\": \"\",\n\t\t\t      \"params\": {}\n\t\t\t    },\n\t\t\t    \"message\": {\n\t\t\t      \"type\": \"ticketLog\",\n\t\t\t      \"payload\": {\n\t\t\t        \"tagPath\": tagPath,\n\t\t\t        \"viewName\": self.view.id.split('@')[0]\n\t\t\t      },\n\t\t\t      \"scope\": \"page\"\n\t\t\t    }\n\t\t\t  }\n\t\t\t]\n\treturn items",
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = self.view.params.tagPath\n\texcept:\n\t\tpass\n\tif tagPath is None or str(tagPath).strip() == '':\n\t\ttagPath = value.tagPath + self.view.id.split('@')[0].split('/')[-1]\n\titems = [\n\t\t\t  {\n\t\t\t    \"text\": \"Ticket Logger\",\n\t\t\t    \"icon\": {\n\t\t\t      \"path\": \"material/info\",\n\t\t\t      \"color\": \"--neutral-80\",\n\t\t\t      \"style\": {}\n\t\t\t    },\n\t\t\t    \"style\": {\n\t\t\t      \"classes\": \"bg-component Fonts/Value\",\n\t\t\t      \"height\": 24,\n\t\t\t      \"width\": 120\n\t\t\t    },\n\t\t\t    \"type\": \"message\",\n\t\t\t    \"children\": [],\n\t\t\t    \"link\": {\n\t\t\t      \"url\": \"\",\n\t\t\t      \"target\": \"self\"\n\t\t\t    },\n\t\t\t    \"method\": {\n\t\t\t      \"name\": \"\",\n\t\t\t      \"params\": {}\n\t\t\t    },\n\t\t\t    \"message\": {\n\t\t\t      \"type\": \"ticketLog\",\n\t\t\t      \"payload\": {\n\t\t\t        \"tagPath\": tagPath,\n\t\t\t        \"viewName\": self.view.id.split('@')[0], 'sender': self.view.id\n\t\t\t      },\n\t\t\t      \"scope\": \"page\"\n\t\t\t    }\n\t\t\t  }\n\t\t\t]\n\treturn items",
               "type": "script"
             }
           ],
@@ -873,7 +1465,7 @@
     "props": {
       "direction": "column",
       "style": {
-        "classes": "bg-container container-card container-card-border",
+        "classes": "bg-container container-card container-card-border ticket-logger",
         "paddingLeft": "1%",
         "paddingRight": "1%"
       }
@@ -892,7 +1484,7 @@
         {
           "messageType": "ticketLog",
           "pageScope": true,
-          "script": "\t# implement your handler here\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'],payload['viewName'])",
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
           "sessionScope": false,
           "viewScope": false
         }

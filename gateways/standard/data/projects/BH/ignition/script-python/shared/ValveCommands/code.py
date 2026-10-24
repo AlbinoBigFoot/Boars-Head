@@ -1,4 +1,4 @@
-# Valve faceplate command helpers (SO/MO + SIM feedback).
+# Valve / pump faceplate command helpers (SO/MO).
 # Plant Digitals are often valueSource=reference → RCP1 atomics; resolve before write.
 
 logger = system.util.getLogger("shared.ValveCommands")
@@ -6,6 +6,7 @@ logger = system.util.getLogger("shared.ValveCommands")
 
 def _resolve(path):
 	"""Prefer OPC/Memory sourceTagPath when path is a reference leaf."""
+	path = shared.Pax.livePath(path)   # a PLC device's field -> its PLC member (flat-member cleanup 2026-10-23)
 	try:
 		cfg = system.tag.getConfiguration(path, False)[0]
 		src = cfg.get("sourceTagPath") or cfg.get("sourceTagPath")
@@ -14,6 +15,16 @@ def _resolve(path):
 	except Exception:
 		pass
 	return path
+
+
+def _plcAllowed(path):
+	"""plc-write-lock: shared.PlcWriteLock.writeAllowed (an error blocks only paths naming RCP1)."""
+	try:
+		return shared.PlcWriteLock.writeAllowed(path)
+	except Exception as e:
+		logger.warn("PlcWriteLock check failed for %s: %s" % (path, e))
+		p = str(path or "")
+		return not ('_RCP1_' in p or '[RCP1]' in p)
 
 
 def _qualityGood(q):
@@ -28,13 +39,17 @@ def _qualityGood(q):
 
 
 def _writeRaw(paths, vals):
-	"""Write resolved paths; if OPC rejects, ensure SIM memory and retry once."""
+	"""Write resolved paths (raw, no audit); Bad qualities are logged."""
 	resolved = [_resolve(p) for p in paths]
-	try:
-		shared.Rcp1Simulate.ensureApplied()
-	except Exception as e:
-		logger.warn("ensureApplied before write: %s" % str(e))
-
+	# plc-write-lock (.cursor/tasks/plc-write-lock): raw writes skip anything that would reach the RCP1 controller
+	# while PLC writes are locked (shared.PlcWriteLock.writeAllowed)
+	keep = [i for i, p in enumerate(resolved) if _plcAllowed(p)]
+	if len(keep) != len(resolved):
+		paths = [paths[i] for i in keep]
+		vals = [vals[i] for i in keep]
+		resolved = [resolved[i] for i in keep]
+		if not resolved:
+			return []
 	try:
 		qualities = system.tag.writeBlocking(resolved, vals)
 	except Exception as e:
@@ -47,27 +62,25 @@ def _writeRaw(paths, vals):
 			bad.append((resolved[i] if i < len(resolved) else paths[i], str(q)))
 
 	if bad:
-		logger.warn("Bad write quality (will ensure SIM + retry): %s" % (bad,))
-		try:
-			shared.Rcp1Simulate.ensureApplied(force=True)
-		except Exception as e:
-			logger.warn("ensureApplied(force) failed: %s" % str(e))
-		try:
-			qualities = system.tag.writeBlocking(resolved, vals)
-		except Exception:
-			qualities = system.tag.writeBlocking(paths, vals)
-		bad2 = []
-		for i, q in enumerate(qualities or []):
-			if not _qualityGood(q):
-				bad2.append((resolved[i] if i < len(resolved) else paths[i], str(q)))
-		if bad2:
-			logger.error("Write still Bad after SIM ensure: %s" % (bad2,))
+		logger.warn("Bad write quality: %s" % (bad,))
 
 	return qualities
 
 
 def _write(paths, vals, audit=True, label=None, viewName="Faceplate/Controls"):
-	"""Operator writes go through OpsAudit; SIM feedback uses raw writes."""
+	"""Operator writes go through OpsAudit; audit=False writes raw."""
+	# security-tiers + device-perms: Faceplates/Operate AND the device-type row of each path (Pump/Command,
+	# Valve/Mode, ...; a refusal shows 'Not Permitted'). Gateway scripts pass.
+	for p in paths:
+		if not shared.Security.requireWrite(p, label or str(p)):
+			return []
+	# pax-bindings: a PLC device (shared.Pax.part) is read only - its commands, mode and bypass bits belong to
+	# the PLC; never write its old members or its nested PlantPAx members from the HMI
+	for p in paths:
+		dev = shared.Pax.device(str(p).rsplit('/', 2)[0])
+		if shared.Pax.part(dev):
+			logger.info('Refused write %s: %s is mapped to the PLC (read only)' % (p, dev))
+			return []
 	if not audit:
 		return _writeRaw(paths, vals)
 	results = []
@@ -80,34 +93,6 @@ def _write(paths, vals, audit=True, label=None, viewName="Faceplate/Controls"):
 	return results
 
 
-def _simFeedback(base, opened):
-	"""Update limit switches + Val_Sts so SIM HMI reacts without a PLC."""
-	# Val_Sts demo convention: 2=OPEN, 1=CLOSED (see Rcp1Simulate._demoValue)
-	status = 2 if opened else 1
-	paths = [
-		base + "/OpenLS/Value",
-		base + "/ClosedLS/Value",
-		base + "/Status/Value",
-	]
-	vals = [bool(opened), not bool(opened), status]
-	_write(paths, vals, audit=False)
-
-
-def _simPumpRun(base, running):
-	"""Drive P_Motor status so overview impeller + faceplate banner follow Start/Stop."""
-	# Val_Sts: 1=STOPPED, 2=RUNNING (see Rcp1Simulate._demoValue / Devices/Pump)
-	status = 2 if running else 1
-	_write(
-		[
-			base + "/Val_Sts/Value",
-			base + "/Sts_Running/Value",
-			base + "/Sts_Stopped/Value",
-		],
-		[status, bool(running), not bool(running)],
-		audit=False,
-	)
-
-
 def startPump(tagPath):
 	base = str(tagPath or "").strip()
 	if not base:
@@ -118,7 +103,6 @@ def startPump(tagPath):
 		label="Start pump",
 		viewName="Faceplate/Controls",
 	)
-	_simPumpRun(base, True)
 
 
 def stopPump(tagPath):
@@ -131,7 +115,6 @@ def stopPump(tagPath):
 		label="Stop pump",
 		viewName="Faceplate/Controls",
 	)
-	_simPumpRun(base, False)
 
 
 def resetPump(tagPath):
@@ -139,20 +122,10 @@ def resetPump(tagPath):
 	if not base:
 		return
 	_write([base + "/OCmd_Reset/Value"], [True], label="Reset pump", viewName="Faceplate/Controls")
-	_write(
-		[
-			base + "/Sts_FailToStart/Value",
-			base + "/Sts_FailToStop/Value",
-			base + "/Alm_FailToStart/Value",
-			base + "/Alm_FailToStop/Value",
-		],
-		[False, False, False, False],
-		audit=False,
-	)
 
 
 def openValve(tagPath, valveType="MO"):
-	"""Open command. SO → Cmd + Cmd_Open; MO → pulse Cmd_Open + SIM feedback."""
+	"""Open command. SO → Cmd + Cmd_Open; MO → pulse Cmd_Open."""
 	base = str(tagPath or "").strip()
 	if not base:
 		return
@@ -165,7 +138,6 @@ def openValve(tagPath, valveType="MO"):
 		)
 	else:
 		_write([base + "/Cmd_Open/Value", base + "/Cmd_Close/Value"], [True, False])
-	_simFeedback(base, True)
 
 
 def closeValve(tagPath, valveType="MO"):
@@ -181,7 +153,6 @@ def closeValve(tagPath, valveType="MO"):
 		)
 	else:
 		_write([base + "/Cmd_Open/Value", base + "/Cmd_Close/Value"], [False, True])
-	_simFeedback(base, False)
 
 
 def resetValve(tagPath):
@@ -199,19 +170,6 @@ def writeTag(tagPath, value):
 	_write([path], [value])
 
 
-def _applyDisabled(base, disabled, sts_leaf="Disabled"):
-	"""SIM has no PLC enable/disable logic — drive Disabled / Nrdy_Disabled locally."""
-	flag = bool(disabled)
-	leaf = str(sts_leaf or "Disabled").strip() or "Disabled"
-	_write(
-		[base + "/" + leaf + "/Value"],
-		[flag],
-		label="Disable device" if flag else "Enable device",
-		viewName="Faceplate/Interlocks",
-	)
-	_write([base + "/Nrdy_Disabled/Value"], [flag], audit=False)
-
-
 def _readBool(path, default=False):
 	try:
 		return bool(system.tag.readBlocking([_resolve(path)])[0].value)
@@ -224,8 +182,7 @@ def enableDevice(tagPath, cmd_leaf="Cmd_Enable", sts_leaf="Disabled"):
 	if not base:
 		return
 	cmd = str(cmd_leaf or "Cmd_Enable").strip() or "Cmd_Enable"
-	_write([base + "/" + cmd + "/Value"], [True], audit=False)
-	_applyDisabled(base, False, sts_leaf=sts_leaf)
+	_write([base + "/" + cmd + "/Value"], [True], label="Enable device", viewName="Faceplate/Interlocks")
 
 
 def disableDevice(tagPath, cmd_leaf="Cmd_Disable", sts_leaf="Disabled"):
@@ -233,8 +190,7 @@ def disableDevice(tagPath, cmd_leaf="Cmd_Disable", sts_leaf="Disabled"):
 	if not base:
 		return
 	cmd = str(cmd_leaf or "Cmd_Disable").strip() or "Cmd_Disable"
-	_write([base + "/" + cmd + "/Value"], [True], audit=False)
-	_applyDisabled(base, True, sts_leaf=sts_leaf)
+	_write([base + "/" + cmd + "/Value"], [True], label="Disable device", viewName="Faceplate/Interlocks")
 
 
 def bypassActive(tagPath):

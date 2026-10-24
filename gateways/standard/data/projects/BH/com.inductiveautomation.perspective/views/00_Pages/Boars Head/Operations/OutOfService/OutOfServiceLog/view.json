@@ -1,0 +1,2853 @@
+{
+  "custom": {
+    "filter": "open",
+    "search": "",
+    "devicePath": "",
+    "startDate": null,
+    "endDate": null,
+    "refresh": 0,
+    "selectedId": -1,
+    "activeId": -1,
+    "records": null,
+    "record": null,
+    "comments": [],
+    "hasRecord": false,
+    "recordOpen": false,
+    "commentText": "",
+    "commentStatus": "",
+    "commentError": "",
+    "narrow": false,
+    "compact": false,
+    "showDetail": false
+  },
+  "params": {
+    "device": ""
+  },
+  "propConfig": {
+    "params.device": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.devicePath": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(indexOf(coalesce({page.props.path}, ''), '/operations/out-of-service/') >= 0 && trim(coalesce({view.params.device}, '')) != '', '[default]' + replace(trim({view.params.device}), '~', '/'), '')"
+        }
+      }
+    },
+    "custom.narrow": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({page.props.dimensions.primaryView.width}, 1920) < 1500"
+        }
+      }
+    },
+    "custom.compact": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({page.props.dimensions.primaryView.width}, 1920) < 900"
+        }
+      }
+    },
+    "custom.filter": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.custom.devicePath}, '') != '', 'all', 'open')"
+        }
+      },
+      "persistent": true
+    },
+    "custom.startDate": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "dateArithmetic(now(0), -365, 'day')"
+        }
+      },
+      "persistent": true
+    },
+    "custom.endDate": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "dateArithmetic(now(0), 1, 'day')"
+        }
+      },
+      "persistent": true
+    },
+    "custom.records": {
+      "binding": {
+        "type": "query",
+        "config": {
+          "queryPath": "OutOfService/Records",
+          "parameters": {
+            "allowed": "if(coalesce({session.custom.Permissions.OutOfService.View}, false), 1, 0)",
+            "filter": "coalesce({view.custom.filter}, 'open')",
+            "search": "if(trim(coalesce({view.custom.search}, '')) = '', '', '%' + trim(coalesce({view.custom.search}, '')) + '%')",
+            "device": "coalesce({view.custom.devicePath}, '')",
+            "startDate": "{view.custom.startDate}",
+            "endDate": "{view.custom.endDate}",
+            "now": "now(60000)",
+            "refresh": "coalesce({view.custom.refresh}, 0)"
+          },
+          "returnFormat": "dataset"
+        }
+      }
+    },
+    "custom.activeId": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.custom.selectedId}, -1) >= 0 && coalesce(try(lookup({view.custom.records}, {view.custom.selectedId}, -1, 'id', 'id'), -1), -1) >= 0, {view.custom.selectedId}, coalesce(try(toInt({view.custom.records}[0, 'id']), -1), -1))"
+        }
+      }
+    },
+    "custom.record": {
+      "binding": {
+        "type": "query",
+        "config": {
+          "queryPath": "OutOfService/Record",
+          "parameters": {
+            "allowed": "if(coalesce({session.custom.Permissions.OutOfService.View}, false), 1, 0)",
+            "id": "coalesce({view.custom.activeId}, -1)",
+            "now": "now(60000)",
+            "refresh": "coalesce({view.custom.refresh}, 0)"
+          },
+          "returnFormat": "dataset"
+        }
+      }
+    },
+    "custom.comments": {
+      "binding": {
+        "type": "query",
+        "config": {
+          "queryPath": "OutOfService/Comments",
+          "parameters": {
+            "allowed": "if(coalesce({session.custom.Permissions.OutOfService.View}, false), 1, 0)",
+            "id": "coalesce({view.custom.activeId}, -1)",
+            "refresh": "coalesce({view.custom.refresh}, 0)"
+          },
+          "returnFormat": "json"
+        }
+      }
+    },
+    "custom.hasRecord": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce(try(len({view.custom.record}) > 0, false), false)"
+        }
+      }
+    },
+    "custom.recordOpen": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({view.custom.hasRecord}, false) && coalesce(try(isNull({view.custom.record}[0, 'returned_at']), false), false)"
+        }
+      }
+    },
+    "custom.commentText": {
+      "persistent": true
+    },
+    "custom.commentStatus": {
+      "persistent": true
+    },
+    "custom.commentError": {
+      "persistent": true
+    },
+    "custom.selectedId": {
+      "persistent": true
+    },
+    "custom.showDetail": {
+      "persistent": true
+    },
+    "custom.search": {
+      "persistent": true
+    },
+    "custom.refresh": {
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 900,
+      "width": 1400
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root",
+      "contextMenu": {}
+    },
+    "props": {
+      "direction": "column",
+      "alignItems": "stretch",
+      "style": {
+        "classes": "bg-page",
+        "gap": "12px",
+        "padding": "16px",
+        "height": "100%",
+        "overflow": "hidden"
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "oosChanged",
+          "pageScope": false,
+          "sessionScope": true,
+          "viewScope": false,
+          "script": "\t# Out Of Service change in this session (memo dialog, comment): requery the list, record and thread\n\tself.view.custom.refresh = (self.view.custom.refresh or 0) + 1\n"
+        },
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    },
+    "children": [
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Header"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "style": {
+            "classes": "form-card",
+            "gap": "16px",
+            "padding": "14px 20px",
+            "minWidth": "0"
+          },
+          "alignItems": "center"
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "TitleBlock"
+            },
+            "position": {
+              "grow": 1,
+              "shrink": 1,
+              "basis": "0"
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "2px",
+                "minWidth": "0"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Title"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Out Of Service Log",
+                  "style": {
+                    "classes": "form-title"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce({view.custom.devicePath}, '') != '', 'Device History · ' + coalesce(try(split(replace(coalesce({view.custom.devicePath}, ''), '[default]', ''), '/')[len(split(replace(coalesce({view.custom.devicePath}, ''), '[default]', ''), '/')) - 1, 0], ''), ''), 'Out Of Service Log')"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Subtitle"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "",
+                  "style": {
+                    "classes": "form-subtitle",
+                    "whiteSpace": "normal"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce({view.custom.devicePath}, '') != '', coalesce(try(split(replace(coalesce({view.custom.devicePath}, ''), '[default]', ''), '/')[2, 0], ''), '') + if(coalesce(try(split(replace(coalesce({view.custom.devicePath}, ''), '[default]', ''), '/')[1, 0], ''), '') != '', ' · ' + coalesce(try(split(replace(coalesce({view.custom.devicePath}, ''), '[default]', ''), '/')[1, 0], ''), ''), ''), 'Equipment Taken Out Of Service: Why And By Whom, Notes And Comments, And When It Was Returned To Service. Select A Row To See The Full Record.')"
+                      }
+                    }
+                  },
+                  "meta.tooltip.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({view.custom.devicePath}, '') != ''"
+                      }
+                    }
+                  },
+                  "meta.tooltip.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({view.custom.devicePath}, '')"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.input.button",
+            "meta": {
+              "name": "AllDevices"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "Show All Devices",
+              "style": {
+                "classes": "form-btn",
+                "height": "36px"
+              }
+            },
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "coalesce({view.custom.devicePath}, '') != ''"
+                  }
+                }
+              }
+            },
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\t# clear the device param too (same view instance on both routes), then the all-devices route\n\ttry:\n\t\tself.view.params.device = ''\n\texcept:\n\t\tpass\n\tself.view.custom.selectedId = -1\n\tself.view.custom.showDetail = False\n\tsystem.perspective.navigate(page='/operations/out-of-service')\n"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Filters"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "style": {
+            "classes": "form-card",
+            "gap": "10px 12px",
+            "padding": "12px 20px",
+            "minWidth": "0"
+          },
+          "alignItems": "flex-end",
+          "wrap": "wrap"
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Show"
+            },
+            "position": {
+              "basis": "170px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "4px",
+                "minWidth": "0"
+              },
+              "alignItems": "stretch"
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Lbl"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Show",
+                  "style": {
+                    "classes": "form-label"
+                  }
+                }
+              },
+              {
+                "type": "ia.input.dropdown",
+                "meta": {
+                  "name": "V"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "options": [
+                    {
+                      "value": "open",
+                      "label": "Out Of Service"
+                    },
+                    {
+                      "value": "returned",
+                      "label": "Returned"
+                    },
+                    {
+                      "value": "all",
+                      "label": "All"
+                    }
+                  ],
+                  "showClearIcon": false,
+                  "dropdownOptionStyle": {
+                    "classes": "form-check"
+                  },
+                  "style": {
+                    "classes": "form-input",
+                    "height": "32px",
+                    "minWidth": "0"
+                  }
+                },
+                "propConfig": {
+                  "props.value": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "view.custom.filter",
+                        "bidirectional": true
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "From"
+            },
+            "position": {
+              "basis": "150px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "4px",
+                "minWidth": "0"
+              },
+              "alignItems": "stretch"
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Lbl"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "From",
+                  "style": {
+                    "classes": "form-label"
+                  }
+                }
+              },
+              {
+                "type": "ia.input.date-time-input",
+                "meta": {
+                  "name": "V"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "format": "YYYY-MM-DD",
+                  "pickerType": "date",
+                  "style": {
+                    "classes": "form-input",
+                    "height": "32px",
+                    "minWidth": "0"
+                  }
+                },
+                "propConfig": {
+                  "props.value": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "view.custom.startDate",
+                        "bidirectional": true
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "To"
+            },
+            "position": {
+              "basis": "150px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "4px",
+                "minWidth": "0"
+              },
+              "alignItems": "stretch"
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Lbl"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "To",
+                  "style": {
+                    "classes": "form-label"
+                  }
+                }
+              },
+              {
+                "type": "ia.input.date-time-input",
+                "meta": {
+                  "name": "V"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "format": "YYYY-MM-DD",
+                  "pickerType": "date",
+                  "style": {
+                    "classes": "form-input",
+                    "height": "32px",
+                    "minWidth": "0"
+                  }
+                },
+                "propConfig": {
+                  "props.value": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "view.custom.endDate",
+                        "bidirectional": true
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Search"
+            },
+            "position": {
+              "basis": "240px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "4px",
+                "minWidth": "0"
+              },
+              "alignItems": "stretch"
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Lbl"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Search",
+                  "style": {
+                    "classes": "form-label"
+                  }
+                }
+              },
+              {
+                "type": "ia.input.text-field",
+                "meta": {
+                  "name": "V"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "placeholder": "Device, Area, Type, Reason",
+                  "style": {
+                    "classes": "form-input",
+                    "height": "32px",
+                    "minWidth": "0"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "view.custom.search",
+                        "bidirectional": true
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.input.button",
+            "meta": {
+              "name": "Refresh"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "Refresh",
+              "style": {
+                "classes": "form-btn",
+                "height": "32px"
+              }
+            },
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\tself.view.custom.refresh = (self.view.custom.refresh or 0) + 1\n"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.input.button",
+            "meta": {
+              "name": "GenerateReport"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "Generate Report",
+              "style": {
+                "classes": "form-btn",
+                "height": "32px"
+              },
+              "image": {
+                "icon": {
+                  "path": "material/get_app"
+                },
+                "width": 18,
+                "height": 18
+              }
+            },
+            "propConfig": {
+              "props.enabled": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "coalesce({session.custom.Permissions.Reports.Use}, false)"
+                  }
+                }
+              }
+            },
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\t# redesign 2026-10-24: Report Builder on the Out Of Service source with this page's From / To dates\n\tshared.Reports.open('oos', {'start': self.view.custom.startDate, 'end': self.view.custom.endDate, 'origin': 'Out Of Service Log'})\n"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Rows"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "form-status",
+                "marginLeft": "auto",
+                "alignSelf": "center"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "toStr(coalesce(try(len({view.custom.records}), 0), 0)) + ' Records'"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Denied"
+        },
+        "position": {
+          "grow": 1
+        },
+        "props": {
+          "direction": "row",
+          "style": {
+            "classes": "form-card",
+            "padding": "24px"
+          },
+          "alignItems": "center",
+          "justify": "center"
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "!coalesce({session.custom.Permissions.OutOfService.View}, false)"
+              }
+            }
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "DeniedMsg"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "Access Denied - Out Of Service Log Permission Required",
+              "style": {
+                "classes": "form-section-title"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Content"
+        },
+        "position": {
+          "grow": 1,
+          "shrink": 1,
+          "basis": "0"
+        },
+        "props": {
+          "direction": "row",
+          "style": {
+            "gap": "16px",
+            "minHeight": "0",
+            "minWidth": "0"
+          },
+          "alignItems": "stretch"
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "coalesce({session.custom.Permissions.OutOfService.View}, false)"
+              }
+            }
+          }
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "List"
+            },
+            "position": {
+              "grow": 1,
+              "shrink": 1,
+              "basis": "0"
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "8px",
+                "minWidth": "0",
+                "minHeight": "0"
+              },
+              "alignItems": "stretch"
+            },
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "!(coalesce({view.custom.narrow}, false) && coalesce({view.custom.showDetail}, false))"
+                  }
+                }
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.table",
+                "meta": {
+                  "name": "Table"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 1,
+                  "basis": "0"
+                },
+                "props": {
+                  "columns": [
+                    {
+                      "field": "id",
+                      "visible": false,
+                      "editable": false,
+                      "render": "auto",
+                      "justify": "left",
+                      "align": "center",
+                      "resizable": true,
+                      "sortable": true,
+                      "sort": "none",
+                      "header": {
+                        "title": "Id",
+                        "justify": "left",
+                        "align": "center",
+                        "style": {
+                          "classes": "form-th"
+                        }
+                      },
+                      "strictWidth": true,
+                      "style": {
+                        "classes": "form-check"
+                      },
+                      "width": 50
+                    },
+                    {
+                      "field": "device_cell",
+                      "visible": true,
+                      "editable": false,
+                      "render": "view",
+                      "justify": "left",
+                      "align": "center",
+                      "resizable": true,
+                      "sortable": false,
+                      "sort": "none",
+                      "header": {
+                        "title": "Device",
+                        "justify": "left",
+                        "align": "center",
+                        "style": {
+                          "classes": "form-th"
+                        }
+                      },
+                      "strictWidth": true,
+                      "style": {
+                        "classes": "form-check"
+                      },
+                      "width": 190,
+                      "viewPath": "00_Pages/Boars Head/Operations/OutOfService/_Assets/TwoLineCell"
+                    },
+                    {
+                      "field": "status_cell",
+                      "visible": true,
+                      "editable": false,
+                      "render": "view",
+                      "justify": "left",
+                      "align": "center",
+                      "resizable": true,
+                      "sortable": false,
+                      "sort": "none",
+                      "header": {
+                        "title": "Status",
+                        "justify": "left",
+                        "align": "center",
+                        "style": {
+                          "classes": "form-th"
+                        }
+                      },
+                      "strictWidth": true,
+                      "style": {
+                        "classes": "form-check"
+                      },
+                      "width": 150,
+                      "viewPath": "00_Pages/Boars Head/Operations/OutOfService/_Assets/TwoLineCell"
+                    },
+                    {
+                      "field": "taken_name",
+                      "visible": true,
+                      "editable": false,
+                      "render": "auto",
+                      "justify": "left",
+                      "align": "center",
+                      "resizable": true,
+                      "sortable": true,
+                      "sort": "none",
+                      "header": {
+                        "title": "Taken By",
+                        "justify": "left",
+                        "align": "center",
+                        "style": {
+                          "classes": "form-th"
+                        }
+                      },
+                      "strictWidth": true,
+                      "style": {
+                        "classes": "form-check"
+                      },
+                      "width": 140
+                    },
+                    {
+                      "field": "taken_at",
+                      "visible": true,
+                      "editable": false,
+                      "render": "date",
+                      "justify": "left",
+                      "align": "center",
+                      "resizable": true,
+                      "sortable": true,
+                      "sort": "none",
+                      "header": {
+                        "title": "Taken At",
+                        "justify": "left",
+                        "align": "center",
+                        "style": {
+                          "classes": "form-th"
+                        }
+                      },
+                      "strictWidth": true,
+                      "style": {
+                        "classes": "form-check"
+                      },
+                      "width": 140,
+                      "dateFormat": "YYYY-MM-DD HH:mm"
+                    },
+                    {
+                      "field": "returned_at",
+                      "visible": true,
+                      "editable": false,
+                      "render": "date",
+                      "justify": "left",
+                      "align": "center",
+                      "resizable": true,
+                      "sortable": true,
+                      "sort": "none",
+                      "header": {
+                        "title": "Returned At",
+                        "justify": "left",
+                        "align": "center",
+                        "style": {
+                          "classes": "form-th"
+                        }
+                      },
+                      "strictWidth": true,
+                      "style": {
+                        "classes": "form-check"
+                      },
+                      "width": 140,
+                      "dateFormat": "YYYY-MM-DD HH:mm"
+                    },
+                    {
+                      "field": "memo_excerpt",
+                      "visible": true,
+                      "editable": false,
+                      "render": "auto",
+                      "justify": "left",
+                      "align": "center",
+                      "resizable": true,
+                      "sortable": true,
+                      "sort": "none",
+                      "header": {
+                        "title": "Memo",
+                        "justify": "left",
+                        "align": "center",
+                        "style": {
+                          "classes": "form-th"
+                        }
+                      },
+                      "strictWidth": false,
+                      "style": {
+                        "classes": "form-check oos-memo-cell"
+                      }
+                    },
+                    {
+                      "field": "duration",
+                      "visible": true,
+                      "editable": false,
+                      "render": "auto",
+                      "justify": "left",
+                      "align": "center",
+                      "resizable": true,
+                      "sortable": true,
+                      "sort": "none",
+                      "header": {
+                        "title": "Duration",
+                        "justify": "left",
+                        "align": "center",
+                        "style": {
+                          "classes": "form-th"
+                        }
+                      },
+                      "strictWidth": true,
+                      "style": {
+                        "classes": "form-check"
+                      },
+                      "width": 90
+                    },
+                    {
+                      "field": "device_name",
+                      "visible": false,
+                      "editable": false,
+                      "render": "auto",
+                      "justify": "left",
+                      "align": "center",
+                      "resizable": true,
+                      "sortable": true,
+                      "sort": "none",
+                      "header": {
+                        "title": "Device Name",
+                        "justify": "left",
+                        "align": "center",
+                        "style": {
+                          "classes": "form-th"
+                        }
+                      },
+                      "strictWidth": true,
+                      "style": {
+                        "classes": "form-check"
+                      },
+                      "width": 120
+                    },
+                    {
+                      "field": "device_type",
+                      "visible": false,
+                      "editable": false,
+                      "render": "auto",
+                      "justify": "left",
+                      "align": "center",
+                      "resizable": true,
+                      "sortable": true,
+                      "sort": "none",
+                      "header": {
+                        "title": "Type",
+                        "justify": "left",
+                        "align": "center",
+                        "style": {
+                          "classes": "form-th"
+                        }
+                      },
+                      "strictWidth": true,
+                      "style": {
+                        "classes": "form-check"
+                      },
+                      "width": 80
+                    },
+                    {
+                      "field": "area",
+                      "visible": false,
+                      "editable": false,
+                      "render": "auto",
+                      "justify": "left",
+                      "align": "center",
+                      "resizable": true,
+                      "sortable": true,
+                      "sort": "none",
+                      "header": {
+                        "title": "Area",
+                        "justify": "left",
+                        "align": "center",
+                        "style": {
+                          "classes": "form-th"
+                        }
+                      },
+                      "strictWidth": true,
+                      "style": {
+                        "classes": "form-check"
+                      },
+                      "width": 110
+                    },
+                    {
+                      "field": "status",
+                      "visible": false,
+                      "editable": false,
+                      "render": "auto",
+                      "justify": "left",
+                      "align": "center",
+                      "resizable": true,
+                      "sortable": true,
+                      "sort": "none",
+                      "header": {
+                        "title": "Status Text",
+                        "justify": "left",
+                        "align": "center",
+                        "style": {
+                          "classes": "form-th"
+                        }
+                      },
+                      "strictWidth": true,
+                      "style": {
+                        "classes": "form-check"
+                      },
+                      "width": 150
+                    },
+                    {
+                      "field": "reason",
+                      "visible": false,
+                      "editable": false,
+                      "render": "auto",
+                      "justify": "left",
+                      "align": "center",
+                      "resizable": true,
+                      "sortable": true,
+                      "sort": "none",
+                      "header": {
+                        "title": "Reason",
+                        "justify": "left",
+                        "align": "center",
+                        "style": {
+                          "classes": "form-th"
+                        }
+                      },
+                      "strictWidth": true,
+                      "style": {
+                        "classes": "form-check"
+                      },
+                      "width": 100
+                    },
+                    {
+                      "field": "tag_path",
+                      "visible": false,
+                      "editable": false,
+                      "render": "auto",
+                      "justify": "left",
+                      "align": "center",
+                      "resizable": true,
+                      "sortable": true,
+                      "sort": "none",
+                      "header": {
+                        "title": "Tag Path",
+                        "justify": "left",
+                        "align": "center",
+                        "style": {
+                          "classes": "form-th"
+                        }
+                      },
+                      "strictWidth": true,
+                      "style": {
+                        "classes": "form-check"
+                      },
+                      "width": 200
+                    }
+                  ],
+                  "selection": {
+                    "mode": "single",
+                    "enableRowSelection": true
+                  },
+                  "virtualized": true,
+                  "rows": {
+                    "striped": {
+                      "enabled": false
+                    },
+                    "height": 52
+                  },
+                  "emptyMessage": {
+                    "noData": {
+                      "text": "No Out Of Service Records"
+                    }
+                  },
+                  "style": {
+                    "classes": "form-card",
+                    "overflowX": "hidden"
+                  }
+                },
+                "propConfig": {
+                  "props.data": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "view.custom.records"
+                      }
+                    }
+                  },
+                  "props.columns[6].visible": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "!coalesce({view.custom.compact}, false)"
+                      }
+                    }
+                  },
+                  "props.columns[5].visible": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "!coalesce({view.custom.compact}, false)"
+                      }
+                    }
+                  },
+                  "props.columns[1].strictWidth": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "!coalesce({view.custom.compact}, false)"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "component": {
+                    "onRowClick": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\t# selection kept in view.custom (the table re-queries every minute for the durations); tablet: open detail\n\tself.view.custom.selectedId = event.value['id']\n\tself.view.custom.showDetail = True\n"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Detail"
+            },
+            "position": {
+              "basis": "420px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "12px",
+                "overflowY": "auto",
+                "overflowX": "hidden",
+                "minWidth": "0",
+                "minHeight": "0"
+              },
+              "alignItems": "stretch"
+            },
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "!coalesce({view.custom.narrow}, false) || coalesce({view.custom.showDetail}, false)"
+                  }
+                }
+              },
+              "position.basis": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if(coalesce({view.custom.narrow}, false), '0', '420px')"
+                  }
+                }
+              },
+              "position.grow": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if(coalesce({view.custom.narrow}, false), 1, 0)"
+                  }
+                }
+              }
+            },
+            "children": [
+              {
+                "type": "ia.input.button",
+                "meta": {
+                  "name": "Back"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Back To List",
+                  "style": {
+                    "classes": "form-btn",
+                    "height": "34px",
+                    "alignSelf": "flex-start"
+                  }
+                },
+                "propConfig": {
+                  "position.display": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({view.custom.narrow}, false)"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tself.view.custom.showDetail = False\n"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "NoSelection"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Select A Record To See Its Memo, Comments And Status Updates",
+                  "style": {
+                    "classes": "form-hint",
+                    "padding": "16px",
+                    "whiteSpace": "normal"
+                  }
+                },
+                "propConfig": {
+                  "position.display": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "!coalesce({view.custom.hasRecord}, false)"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Record"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "classes": "form-card",
+                    "minWidth": "0"
+                  },
+                  "alignItems": "stretch"
+                },
+                "propConfig": {
+                  "position.display": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({view.custom.hasRecord}, false)"
+                      }
+                    }
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Head"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "style": {
+                        "classes": "form-section-head",
+                        "gap": "8px"
+                      },
+                      "alignItems": "center"
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Title"
+                        },
+                        "position": {
+                          "grow": 1,
+                          "shrink": 1,
+                          "basis": "0"
+                        },
+                        "props": {
+                          "text": "",
+                          "style": {
+                            "classes": "form-section-title",
+                            "whiteSpace": "normal"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "coalesce(try({view.custom.record}[0, 'device_name'], ''), '')"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "propConfig": {
+                      "meta.tooltip.enabled": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "coalesce({view.custom.hasRecord}, false)"
+                          }
+                        }
+                      },
+                      "meta.tooltip.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "coalesce(try({view.custom.record}[0, 'tag_path'], ''), '')"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Body"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "gap": "6px",
+                        "padding": "14px 20px",
+                        "minWidth": "0"
+                      },
+                      "alignItems": "stretch"
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Status"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "",
+                          "style": {
+                            "classes": "oos-chip fs-11 fw-700",
+                            "alignSelf": "flex-start"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "coalesce(try({view.custom.record}[0, 'status'], ''), '')"
+                              }
+                            }
+                          },
+                          "props.style.classes": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "'oos-chip fs-11 fw-700 ' + case(coalesce(try({view.custom.record}[0, 'status'], ''), ''), 'Returned', 'oos-chip-returned', 'In Progress', 'oos-chip-progress', 'Ready To Return', 'oos-chip-ready', 'Awaiting Parts', 'oos-chip-waiting', 'On Hold', 'oos-chip-waiting', '')"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.container.flex",
+                        "meta": {
+                          "name": "Area"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "direction": "row",
+                          "style": {
+                            "gap": "8px",
+                            "minHeight": "22px",
+                            "minWidth": "0"
+                          },
+                          "alignItems": "flex-start"
+                        },
+                        "children": [
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "K"
+                            },
+                            "position": {
+                              "basis": "100px",
+                              "shrink": 0
+                            },
+                            "props": {
+                              "text": "Area",
+                              "style": {
+                                "classes": "form-label",
+                                "color": "var(--text-muted)"
+                              }
+                            }
+                          },
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "V"
+                            },
+                            "position": {
+                              "grow": 1,
+                              "shrink": 1,
+                              "basis": "0"
+                            },
+                            "props": {
+                              "text": "",
+                              "style": {
+                                "classes": "form-check",
+                                "whiteSpace": "normal",
+                                "overflowWrap": "anywhere"
+                              }
+                            },
+                            "propConfig": {
+                              "props.text": {
+                                "binding": {
+                                  "type": "expr",
+                                  "config": {
+                                    "expression": "coalesce(try({view.custom.record}[0, 'area'], ''), '') + if(coalesce(try({view.custom.record}[0, 'site'], ''), '') != '', ' (' + coalesce(try({view.custom.record}[0, 'site'], ''), '') + ')', '') + if(coalesce(try({view.custom.record}[0, 'device_type'], ''), '') != '', ' · ' + coalesce(try({view.custom.record}[0, 'device_type'], ''), ''), '')"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "type": "ia.container.flex",
+                        "meta": {
+                          "name": "Reason"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "direction": "row",
+                          "style": {
+                            "gap": "8px",
+                            "minHeight": "22px",
+                            "minWidth": "0"
+                          },
+                          "alignItems": "flex-start"
+                        },
+                        "children": [
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "K"
+                            },
+                            "position": {
+                              "basis": "100px",
+                              "shrink": 0
+                            },
+                            "props": {
+                              "text": "Reason",
+                              "style": {
+                                "classes": "form-label",
+                                "color": "var(--text-muted)"
+                              }
+                            }
+                          },
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "V"
+                            },
+                            "position": {
+                              "grow": 1,
+                              "shrink": 1,
+                              "basis": "0"
+                            },
+                            "props": {
+                              "text": "",
+                              "style": {
+                                "classes": "form-check",
+                                "whiteSpace": "normal",
+                                "overflowWrap": "anywhere"
+                              }
+                            },
+                            "propConfig": {
+                              "props.text": {
+                                "binding": {
+                                  "type": "expr",
+                                  "config": {
+                                    "expression": "coalesce(try({view.custom.record}[0, 'reason'], ''), '')"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "type": "ia.container.flex",
+                        "meta": {
+                          "name": "TakenBy"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "direction": "row",
+                          "style": {
+                            "gap": "8px",
+                            "minHeight": "22px",
+                            "minWidth": "0"
+                          },
+                          "alignItems": "flex-start"
+                        },
+                        "children": [
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "K"
+                            },
+                            "position": {
+                              "basis": "100px",
+                              "shrink": 0
+                            },
+                            "props": {
+                              "text": "Taken By",
+                              "style": {
+                                "classes": "form-label",
+                                "color": "var(--text-muted)"
+                              }
+                            }
+                          },
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "V"
+                            },
+                            "position": {
+                              "grow": 1,
+                              "shrink": 1,
+                              "basis": "0"
+                            },
+                            "props": {
+                              "text": "",
+                              "style": {
+                                "classes": "form-check",
+                                "whiteSpace": "normal",
+                                "overflowWrap": "anywhere"
+                              }
+                            },
+                            "propConfig": {
+                              "props.text": {
+                                "binding": {
+                                  "type": "expr",
+                                  "config": {
+                                    "expression": "coalesce(try({view.custom.record}[0, 'taken_name'], ''), '') + if(coalesce(try({view.custom.record}[0, 'taken_by'], ''), '') != '', ' (' + coalesce(try({view.custom.record}[0, 'taken_by'], ''), '') + ')', '')"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "type": "ia.container.flex",
+                        "meta": {
+                          "name": "TakenAt"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "direction": "row",
+                          "style": {
+                            "gap": "8px",
+                            "minHeight": "22px",
+                            "minWidth": "0"
+                          },
+                          "alignItems": "flex-start"
+                        },
+                        "children": [
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "K"
+                            },
+                            "position": {
+                              "basis": "100px",
+                              "shrink": 0
+                            },
+                            "props": {
+                              "text": "Taken At",
+                              "style": {
+                                "classes": "form-label",
+                                "color": "var(--text-muted)"
+                              }
+                            }
+                          },
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "V"
+                            },
+                            "position": {
+                              "grow": 1,
+                              "shrink": 1,
+                              "basis": "0"
+                            },
+                            "props": {
+                              "text": "",
+                              "style": {
+                                "classes": "form-check",
+                                "whiteSpace": "normal",
+                                "overflowWrap": "anywhere"
+                              }
+                            },
+                            "propConfig": {
+                              "props.text": {
+                                "binding": {
+                                  "type": "expr",
+                                  "config": {
+                                    "expression": "coalesce(try({view.custom.record}[0, 'taken_at_text'], ''), '')"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "type": "ia.container.flex",
+                        "meta": {
+                          "name": "Duration"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "direction": "row",
+                          "style": {
+                            "gap": "8px",
+                            "minHeight": "22px",
+                            "minWidth": "0"
+                          },
+                          "alignItems": "flex-start"
+                        },
+                        "children": [
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "K"
+                            },
+                            "position": {
+                              "basis": "100px",
+                              "shrink": 0
+                            },
+                            "props": {
+                              "text": "Duration",
+                              "style": {
+                                "classes": "form-label",
+                                "color": "var(--text-muted)"
+                              }
+                            }
+                          },
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "V"
+                            },
+                            "position": {
+                              "grow": 1,
+                              "shrink": 1,
+                              "basis": "0"
+                            },
+                            "props": {
+                              "text": "",
+                              "style": {
+                                "classes": "form-check",
+                                "whiteSpace": "normal",
+                                "overflowWrap": "anywhere"
+                              }
+                            },
+                            "propConfig": {
+                              "props.text": {
+                                "binding": {
+                                  "type": "expr",
+                                  "config": {
+                                    "expression": "coalesce(try({view.custom.record}[0, 'duration'], ''), '')"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "MemoTitle"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "Memo",
+                          "style": {
+                            "classes": "form-th",
+                            "marginTop": "6px"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Memo"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "",
+                          "style": {
+                            "classes": "form-check oos-memo"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "coalesce(try({view.custom.record}[0, 'memo'], ''), '')"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.container.flex",
+                        "meta": {
+                          "name": "Actions"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "direction": "row",
+                          "style": {
+                            "gap": "8px",
+                            "marginTop": "8px"
+                          },
+                          "wrap": "wrap"
+                        },
+                        "children": [
+                          {
+                            "type": "ia.input.button",
+                            "meta": {
+                              "name": "OpenFaceplate"
+                            },
+                            "position": {
+                              "shrink": 0
+                            },
+                            "props": {
+                              "text": "Open Faceplate",
+                              "style": {
+                                "classes": "form-btn",
+                                "height": "34px"
+                              }
+                            },
+                            "propConfig": {
+                              "position.display": {
+                                "binding": {
+                                  "type": "expr",
+                                  "config": {
+                                    "expression": "coalesce({session.custom.CanOpenFaceplates}, false)"
+                                  }
+                                }
+                              }
+                            },
+                            "events": {
+                              "component": {
+                                "onActionPerformed": {
+                                  "type": "script",
+                                  "scope": "G",
+                                  "config": {
+                                    "script": "\ttp = self.view.custom.record.getValueAt(0, 'tag_path') if self.view.custom.record.getRowCount() else ''\n\tif tp:\n\t\tNavigation.Faceplate.openDevice(tp)\n"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "type": "ia.input.button",
+                            "meta": {
+                              "name": "History"
+                            },
+                            "position": {
+                              "shrink": 0
+                            },
+                            "props": {
+                              "text": "Device History",
+                              "style": {
+                                "classes": "form-btn",
+                                "height": "34px"
+                              }
+                            },
+                            "propConfig": {
+                              "position.display": {
+                                "binding": {
+                                  "type": "expr",
+                                  "config": {
+                                    "expression": "coalesce({view.custom.devicePath}, '') != coalesce(try({view.custom.record}[0, 'tag_path'], ''), '')"
+                                  }
+                                }
+                              }
+                            },
+                            "events": {
+                              "component": {
+                                "onActionPerformed": {
+                                  "type": "script",
+                                  "scope": "G",
+                                  "config": {
+                                    "script": "\t# every Out Of Service record of this device (route /operations/out-of-service/:device)\n\tds = self.view.custom.record\n\tif ds is not None and ds.getRowCount():\n\t\tshared.OutOfService.openHistory(ds.getValueAt(0, 'tag_path'))\n"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "type": "ia.input.button",
+                            "meta": {
+                              "name": "Return"
+                            },
+                            "position": {
+                              "shrink": 0
+                            },
+                            "props": {
+                              "text": "Return To Service",
+                              "style": {
+                                "classes": "form-btn-primary",
+                                "height": "34px"
+                              }
+                            },
+                            "propConfig": {
+                              "position.display": {
+                                "binding": {
+                                  "type": "expr",
+                                  "config": {
+                                    "expression": "coalesce({session.custom.Permissions.OutOfService.Set}, false) && coalesce({view.custom.recordOpen}, false)"
+                                  }
+                                }
+                              }
+                            },
+                            "events": {
+                              "component": {
+                                "onActionPerformed": {
+                                  "type": "script",
+                                  "scope": "G",
+                                  "config": {
+                                    "script": "\t# same memo dialog + server handler as the device right-click menu (OutOfService/Set re-checked there)\n\tds = self.view.custom.record\n\tif ds is not None and ds.getRowCount():\n\t\tshared.OutOfService.openDialog(ds.getValueAt(0, 'tag_path'), self.view.id.split('@')[0], False)\n"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Returned"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "classes": "form-card",
+                    "minWidth": "0"
+                  },
+                  "alignItems": "stretch"
+                },
+                "propConfig": {
+                  "position.display": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({view.custom.hasRecord}, false) && !coalesce({view.custom.recordOpen}, false)"
+                      }
+                    }
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Head"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "style": {
+                        "classes": "form-section-head",
+                        "gap": "8px"
+                      },
+                      "alignItems": "center"
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Title"
+                        },
+                        "position": {
+                          "grow": 1,
+                          "shrink": 1,
+                          "basis": "0"
+                        },
+                        "props": {
+                          "text": "Returned To Service",
+                          "style": {
+                            "classes": "form-section-title",
+                            "whiteSpace": "normal"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Body"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "gap": "6px",
+                        "padding": "14px 20px",
+                        "minWidth": "0"
+                      },
+                      "alignItems": "stretch"
+                    },
+                    "children": [
+                      {
+                        "type": "ia.container.flex",
+                        "meta": {
+                          "name": "By"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "direction": "row",
+                          "style": {
+                            "gap": "8px",
+                            "minHeight": "22px",
+                            "minWidth": "0"
+                          },
+                          "alignItems": "flex-start"
+                        },
+                        "children": [
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "K"
+                            },
+                            "position": {
+                              "basis": "100px",
+                              "shrink": 0
+                            },
+                            "props": {
+                              "text": "Returned By",
+                              "style": {
+                                "classes": "form-label",
+                                "color": "var(--text-muted)"
+                              }
+                            }
+                          },
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "V"
+                            },
+                            "position": {
+                              "grow": 1,
+                              "shrink": 1,
+                              "basis": "0"
+                            },
+                            "props": {
+                              "text": "",
+                              "style": {
+                                "classes": "form-check",
+                                "whiteSpace": "normal",
+                                "overflowWrap": "anywhere"
+                              }
+                            },
+                            "propConfig": {
+                              "props.text": {
+                                "binding": {
+                                  "type": "expr",
+                                  "config": {
+                                    "expression": "coalesce(try({view.custom.record}[0, 'returned_name'], ''), '') + if(coalesce(try({view.custom.record}[0, 'returned_by'], ''), '') != '', ' (' + coalesce(try({view.custom.record}[0, 'returned_by'], ''), '') + ')', '')"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "type": "ia.container.flex",
+                        "meta": {
+                          "name": "At"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "direction": "row",
+                          "style": {
+                            "gap": "8px",
+                            "minHeight": "22px",
+                            "minWidth": "0"
+                          },
+                          "alignItems": "flex-start"
+                        },
+                        "children": [
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "K"
+                            },
+                            "position": {
+                              "basis": "100px",
+                              "shrink": 0
+                            },
+                            "props": {
+                              "text": "Returned At",
+                              "style": {
+                                "classes": "form-label",
+                                "color": "var(--text-muted)"
+                              }
+                            }
+                          },
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "V"
+                            },
+                            "position": {
+                              "grow": 1,
+                              "shrink": 1,
+                              "basis": "0"
+                            },
+                            "props": {
+                              "text": "",
+                              "style": {
+                                "classes": "form-check",
+                                "whiteSpace": "normal",
+                                "overflowWrap": "anywhere"
+                              }
+                            },
+                            "propConfig": {
+                              "props.text": {
+                                "binding": {
+                                  "type": "expr",
+                                  "config": {
+                                    "expression": "coalesce(try({view.custom.record}[0, 'returned_at_text'], ''), '')"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "MemoTitle"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "Return Memo",
+                          "style": {
+                            "classes": "form-th",
+                            "marginTop": "6px"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Memo"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "",
+                          "style": {
+                            "classes": "form-check oos-memo"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "coalesce(try({view.custom.record}[0, 'return_memo'], ''), '')"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Thread"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "classes": "form-card",
+                    "minWidth": "0"
+                  },
+                  "alignItems": "stretch"
+                },
+                "propConfig": {
+                  "position.display": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({view.custom.hasRecord}, false)"
+                      }
+                    }
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Head"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "style": {
+                        "classes": "form-section-head",
+                        "gap": "8px"
+                      },
+                      "alignItems": "center"
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Title"
+                        },
+                        "position": {
+                          "grow": 1,
+                          "shrink": 1,
+                          "basis": "0"
+                        },
+                        "props": {
+                          "text": "",
+                          "style": {
+                            "classes": "form-section-title",
+                            "whiteSpace": "normal"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "'Comments & Status Updates (' + toStr(coalesce(try(len({view.custom.comments}), 0), 0)) + ')'"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Body"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "gap": "6px",
+                        "padding": "14px 20px",
+                        "minWidth": "0"
+                      },
+                      "alignItems": "stretch"
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.flex-repeater",
+                        "meta": {
+                          "name": "Entries"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "path": "00_Pages/Boars Head/Operations/OutOfService/_Assets/CommentEntry",
+                          "direction": "column",
+                          "useDefaultViewWidth": false,
+                          "useDefaultViewHeight": false,
+                          "elementPosition": {
+                            "basis": "auto",
+                            "grow": 0,
+                            "shrink": 0
+                          },
+                          "style": {
+                            "gap": "6px",
+                            "overflow": "visible"
+                          }
+                        },
+                        "propConfig": {
+                          "props.instances": {
+                            "binding": {
+                              "type": "property",
+                              "config": {
+                                "path": "view.custom.comments"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Empty"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "No Comments Yet",
+                          "style": {
+                            "classes": "form-hint"
+                          }
+                        },
+                        "propConfig": {
+                          "position.display": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "coalesce(try(len({view.custom.comments}), 0), 0) = 0"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "AddComment"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "classes": "form-card",
+                    "minWidth": "0"
+                  },
+                  "alignItems": "stretch"
+                },
+                "propConfig": {
+                  "position.display": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({view.custom.hasRecord}, false) && coalesce({session.custom.Permissions.OutOfService.Comment}, false)"
+                      }
+                    }
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Head"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "row",
+                      "style": {
+                        "classes": "form-section-head",
+                        "gap": "8px"
+                      },
+                      "alignItems": "center"
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Title"
+                        },
+                        "position": {
+                          "grow": 1,
+                          "shrink": 1,
+                          "basis": "0"
+                        },
+                        "props": {
+                          "text": "Add Comment",
+                          "style": {
+                            "classes": "form-section-title",
+                            "whiteSpace": "normal"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Body"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "gap": "6px",
+                        "padding": "14px 20px",
+                        "minWidth": "0"
+                      },
+                      "alignItems": "stretch"
+                    },
+                    "children": [
+                      {
+                        "type": "ia.container.flex",
+                        "meta": {
+                          "name": "StatusRow"
+                        },
+                        "position": {
+                          "basis": "auto",
+                          "shrink": 0
+                        },
+                        "props": {
+                          "direction": "column",
+                          "style": {
+                            "gap": "4px",
+                            "minWidth": "0"
+                          },
+                          "alignItems": "stretch"
+                        },
+                        "children": [
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "Lbl"
+                            },
+                            "position": {
+                              "shrink": 0
+                            },
+                            "props": {
+                              "text": "Status Change",
+                              "style": {
+                                "classes": "form-label"
+                              }
+                            }
+                          },
+                          {
+                            "type": "ia.input.dropdown",
+                            "meta": {
+                              "name": "V"
+                            },
+                            "position": {
+                              "shrink": 0
+                            },
+                            "props": {
+                              "options": [
+                                {
+                                  "value": "",
+                                  "label": "No Status Change"
+                                },
+                                {
+                                  "value": "In Progress",
+                                  "label": "In Progress"
+                                },
+                                {
+                                  "value": "Awaiting Parts",
+                                  "label": "Awaiting Parts"
+                                },
+                                {
+                                  "value": "On Hold",
+                                  "label": "On Hold"
+                                },
+                                {
+                                  "value": "Ready To Return",
+                                  "label": "Ready To Return"
+                                }
+                              ],
+                              "placeholder": {
+                                "text": "No Status Change"
+                              },
+                              "showClearIcon": false,
+                              "dropdownOptionStyle": {
+                                "classes": "form-check"
+                              },
+                              "style": {
+                                "classes": "form-input",
+                                "height": "32px",
+                                "minWidth": "0"
+                              }
+                            },
+                            "propConfig": {
+                              "props.value": {
+                                "binding": {
+                                  "type": "property",
+                                  "config": {
+                                    "path": "view.custom.commentStatus",
+                                    "bidirectional": true
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ],
+                        "propConfig": {
+                          "position.display": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "coalesce({view.custom.recordOpen}, false)"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.input.text-area",
+                        "meta": {
+                          "name": "Text"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "placeholder": "Comment, at least 10 characters",
+                          "deferUpdates": false,
+                          "resize": "none",
+                          "style": {
+                            "classes": "form-input",
+                            "height": "90px"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "type": "property",
+                              "config": {
+                                "path": "view.custom.commentText",
+                                "bidirectional": true
+                              }
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.container.flex",
+                        "meta": {
+                          "name": "Foot"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "direction": "row",
+                          "style": {
+                            "gap": "8px"
+                          },
+                          "alignItems": "center"
+                        },
+                        "children": [
+                          {
+                            "type": "ia.display.label",
+                            "meta": {
+                              "name": "Count"
+                            },
+                            "position": {
+                              "shrink": 0
+                            },
+                            "props": {
+                              "text": "",
+                              "style": {
+                                "classes": "Fonts/Label fs-11 text-muted"
+                              }
+                            },
+                            "propConfig": {
+                              "props.text": {
+                                "binding": {
+                                  "type": "expr",
+                                  "config": {
+                                    "expression": "if(len(trim(coalesce({view.custom.commentText}, ''))) >= 10, toStr(len(trim(coalesce({view.custom.commentText}, '')))) + ' Characters', toStr(len(trim(coalesce({view.custom.commentText}, '')))) + ' / 10 Characters Minimum')"
+                                  }
+                                }
+                              },
+                              "props.style.classes": {
+                                "binding": {
+                                  "type": "expr",
+                                  "config": {
+                                    "expression": "if(len(trim(coalesce({view.custom.commentText}, ''))) >= 10, 'Fonts/Label fs-11 text-ok', 'Fonts/Label fs-11 text-muted')"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "type": "ia.input.button",
+                            "meta": {
+                              "name": "Add"
+                            },
+                            "position": {
+                              "shrink": 0
+                            },
+                            "props": {
+                              "text": "Add Comment",
+                              "style": {
+                                "classes": "form-btn-primary",
+                                "height": "34px",
+                                "marginLeft": "auto"
+                              }
+                            },
+                            "propConfig": {
+                              "props.enabled": {
+                                "binding": {
+                                  "type": "expr",
+                                  "config": {
+                                    "expression": "len(trim(coalesce({view.custom.commentText}, ''))) >= 10"
+                                  }
+                                }
+                              }
+                            },
+                            "events": {
+                              "component": {
+                                "onActionPerformed": {
+                                  "type": "script",
+                                  "scope": "G",
+                                  "config": {
+                                    "script": "\t# one-shot command: shared.OutOfService.addComment re-checks OutOfService/Comment, the length and the record\n\t# (returned records take comments, no status change); username / time come from the session on the gateway\n\tres = shared.OutOfService.addComment(self.session, self.view.custom.activeId, self.view.custom.commentStatus,\n\t\tself.view.custom.commentText)\n\tif res.get('ok'):\n\t\tself.view.custom.commentText = ''\n\t\tself.view.custom.commentStatus = ''\n\t\tself.view.custom.commentError = ''\n\t\tself.view.custom.refresh = (self.view.custom.refresh or 0) + 1\n\telse:\n\t\tself.view.custom.commentError = res.get('error') or 'Not Saved'\n"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Error"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "",
+                          "style": {
+                            "classes": "Fonts/Value fs-12 fw-600",
+                            "color": "var(--error)",
+                            "whiteSpace": "normal"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "type": "property",
+                              "config": {
+                                "path": "view.custom.commentError"
+                              }
+                            }
+                          },
+                          "position.display": {
+                            "binding": {
+                              "type": "expr",
+                              "config": {
+                                "expression": "coalesce({view.custom.commentError}, '') != ''"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "ReadOnlyNote"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Read Only - Engineering Or Above Can Add Comments",
+                  "style": {
+                    "classes": "form-hint",
+                    "padding": "0 4px"
+                  }
+                },
+                "propConfig": {
+                  "position.display": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({view.custom.hasRecord}, false) && !coalesce({session.custom.Permissions.OutOfService.Comment}, false)"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "propConfig": {
+      "meta.contextMenu.items": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "coalesce({session.custom.TicketLogAccess}, false)"
+          },
+          "transforms": [
+            {
+              "type": "script",
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = str(self.view.params.tagPath or '')\n\texcept:\n\t\tpass\n\tview_name = self.view.id.split('@')[0]\n\titems = []\n\tif value:\n\t\tlogged = tagPath if tagPath.strip() else 'No TagPath: ' + view_name.split('/')[-1]\n\t\titems.append({\n\t\t\t\"text\": 'Ticket Logger',\n\t\t\t\"icon\": {\"path\": 'material/info', \"color\": \"--neutral-80\", \"style\": {}},\n\t\t\t\"style\": {\"classes\": \"bg-component Fonts/Value\", \"height\": 24, \"width\": 170},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\"type\": 'ticketLog', \"payload\": {'tagPath': logged, 'viewName': view_name, 'sender': self.view.id}, \"scope\": 'page'}\n\t\t})\n\treturn items"
+            }
+          ]
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "len({this.meta.contextMenu.items}) > 0"
+          }
+        }
+      }
+    }
+  }
+}

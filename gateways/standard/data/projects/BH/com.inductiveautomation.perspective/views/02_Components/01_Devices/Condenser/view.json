@@ -1,0 +1,1729 @@
+{
+  "custom": {
+    "label": "",
+    "preview": 0,
+    "fanMapList": [],
+    "fanLabelList": [],
+    "fanAuto": [],
+    "fan1": {
+      "member": "Fan 1",
+      "path": "",
+      "sts": 0
+    },
+    "fan2": {
+      "member": "Fan 2",
+      "path": "",
+      "sts": 0
+    },
+    "fan3": {
+      "member": "Fan 3",
+      "path": "",
+      "sts": 0
+    },
+    "fan1Pax": "",
+    "fan2Pax": "",
+    "fan3Pax": ""
+  },
+  "params": {
+    "tagPath": "",
+    "fans": 3,
+    "label": "",
+    "state": "Unknown",
+    "analog": true,
+    "analogPath": "",
+    "faceplate": null,
+    "fanMap": [],
+    "fanLabels": []
+  },
+  "propConfig": {
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.fans": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.label": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.state": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.analog": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.analogPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.faceplate": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.fanMap": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.fanLabels": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.label": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.label}, '') != '', {view.params.label}, if(coalesce({view.params.tagPath}, '') = '', '', subString({view.params.tagPath}, lastIndexOf({view.params.tagPath}, '/') + 1)))"
+        }
+      },
+      "persistent": true
+    },
+    "custom.preview": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "case(lower(trim(coalesce({view.params.state}, ''))), 'stopped', 1, 'running', 2, 'stopping', 7, 'starting', 8, 'disabled', 33, 'comm loss', -1, 0)"
+        }
+      },
+      "persistent": true
+    },
+    "custom.fanMapList": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(isNull({view.params.fanMap}), asList(), if(indexOf(typeOf({view.params.fanMap}), '[]') >= 0 || indexOf(typeOf({view.params.fanMap}), 'List') >= 0, forEach({view.params.fanMap}, coalesce(trim(toStr(it())), '')), forEach(split(toStr({view.params.fanMap}), ','), trim(toStr(it()[0])))))"
+        }
+      }
+    },
+    "custom.fanLabelList": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(isNull({view.params.fanLabels}), asList(), if(indexOf(typeOf({view.params.fanLabels}), '[]') >= 0 || indexOf(typeOf({view.params.fanLabels}), 'List') >= 0, forEach({view.params.fanLabels}, coalesce(trim(toStr(it())), '')), forEach(split(toStr({view.params.fanLabels}), ','), trim(toStr(it()[0])))))"
+        }
+      }
+    },
+    "custom.fanAuto": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '' || len(where({view.custom.fanMapList}, it() != '')) >= coalesce(try(toInt({view.params.fans}), 3), 3), '', {view.params.tagPath})"
+        },
+        "transforms": [
+          {
+            "type": "script",
+            "code": "\tpath = str(value or '').strip()\n\tif not path:\n\t\treturn []\n\timport re\n\ttry:\n\t\tresults = system.tag.browse(path, {'tagType': 'UdtInstance'}).getResults()\n\texcept:\n\t\treturn []\n\tcands = []\n\tfor r in results:\n\t\ttry:\n\t\t\tcands.append((str(r['name']), str(r['fullPath'])))\n\t\texcept:\n\t\t\tpass\n\tif not cands:\n\t\treturn []\n\tqvs = system.tag.readBlocking([p + '.typeId' for n, p in cands])\n\tnames = [n for (n, p), qv in zip(cands, qvs) if str(qv.value or '').split(']')[-1].lower() == 'devices/pump']\n\tnames.sort(key=lambda s: [int(t) if t.isdigit() else t.lower() for t in re.split(r'(\\d+)', s)])\n\treturn names"
+          }
+        ]
+      }
+    },
+    "custom.fan1.member": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce(if(coalesce(try(toStr({view.custom.fanMapList}[0]), ''), '') != '', coalesce(try(toStr({view.custom.fanMapList}[0]), ''), ''), null), if(coalesce(try(toStr({view.custom.fanAuto}[0]), ''), '') != '', coalesce(try(toStr({view.custom.fanAuto}[0]), ''), ''), null), 'Fan 1')"
+        }
+      }
+    },
+    "custom.fan1.path": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', '', if(coalesce(try(isGood(tag({view.params.tagPath} + '/' + {view.custom.fan1.member} + '.tagType')), false), false), {view.params.tagPath} + '/' + {view.custom.fan1.member}, ''))"
+        }
+      }
+    },
+    "custom.fan1.sts": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', {view.custom.preview}, if({view.custom.fan1.path} = '', -2, if(coalesce(try(!isGood(tag({view.custom.fan1.path} + '/Motor/Val_Sts')), true), true), -1, coalesce(try(toInt(tag({view.custom.fan1.path} + '/Motor/Val_Sts')), 0), 0))))"
+        }
+      }
+    },
+    "custom.fan2.member": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce(if(coalesce(try(toStr({view.custom.fanMapList}[1]), ''), '') != '', coalesce(try(toStr({view.custom.fanMapList}[1]), ''), ''), null), if(coalesce(try(toStr({view.custom.fanAuto}[1]), ''), '') != '', coalesce(try(toStr({view.custom.fanAuto}[1]), ''), ''), null), 'Fan 2')"
+        }
+      }
+    },
+    "custom.fan2.path": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', '', if(coalesce(try(isGood(tag({view.params.tagPath} + '/' + {view.custom.fan2.member} + '.tagType')), false), false), {view.params.tagPath} + '/' + {view.custom.fan2.member}, ''))"
+        }
+      }
+    },
+    "custom.fan2.sts": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', {view.custom.preview}, if({view.custom.fan2.path} = '', -2, if(coalesce(try(!isGood(tag({view.custom.fan2.path} + '/Motor/Val_Sts')), true), true), -1, coalesce(try(toInt(tag({view.custom.fan2.path} + '/Motor/Val_Sts')), 0), 0))))"
+        }
+      }
+    },
+    "custom.fan3.member": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce(if(coalesce(try(toStr({view.custom.fanMapList}[2]), ''), '') != '', coalesce(try(toStr({view.custom.fanMapList}[2]), ''), ''), null), if(coalesce(try(toStr({view.custom.fanAuto}[2]), ''), '') != '', coalesce(try(toStr({view.custom.fanAuto}[2]), ''), ''), null), 'Fan 3')"
+        }
+      }
+    },
+    "custom.fan3.path": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', '', if(coalesce(try(isGood(tag({view.params.tagPath} + '/' + {view.custom.fan3.member} + '.tagType')), false), false), {view.params.tagPath} + '/' + {view.custom.fan3.member}, ''))"
+        }
+      }
+    },
+    "custom.fan3.sts": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', {view.custom.preview}, if({view.custom.fan3.path} = '', -2, if(coalesce(try(!isGood(tag({view.custom.fan3.path} + '/Motor/Val_Sts')), true), true), -1, coalesce(try(toInt(tag({view.custom.fan3.path} + '/Motor/Val_Sts')), 0), 0))))"
+        }
+      }
+    },
+    "custom.fan1Pax": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.custom.fan1.path}, '') = '', '', case(toStr(coalesce(try(tag({view.custom.fan1.path} + '.TypeId'), ''), '')), 'Devices/Pump', 'Motor', 'Devices/Valve', 'Valve', 'Devices/Tank', 'Tank', 'Devices/Compressor', 'Comp', 'Devices/Evaporator', 'CG', 'Devices/ExhaustFan', 'EF', 'Devices/LTU', 'LTU', 'Devices/SafetyRelay', 'Relay', 'Devices/SuctionSequence', 'Seq', 'Devices/DischargeSequence', 'Dsq', 'Devices/Sensor', if(coalesce(try(toBoolean(tag({view.custom.fan1.path} + '/AIn.Enabled')), false), false), 'AIn', if(coalesce(try(toBoolean(tag({view.custom.fan1.path} + '/AInRef.Enabled')), false), false), 'AInRef', '')), 'Devices/DiscreteInput', if(coalesce(try(toBoolean(tag({view.custom.fan1.path} + '/DIn.Enabled')), false), false), 'DIn', ''), ''))"
+        }
+      }
+    },
+    "custom.fan2Pax": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.custom.fan2.path}, '') = '', '', case(toStr(coalesce(try(tag({view.custom.fan2.path} + '.TypeId'), ''), '')), 'Devices/Pump', 'Motor', 'Devices/Valve', 'Valve', 'Devices/Tank', 'Tank', 'Devices/Compressor', 'Comp', 'Devices/Evaporator', 'CG', 'Devices/ExhaustFan', 'EF', 'Devices/LTU', 'LTU', 'Devices/SafetyRelay', 'Relay', 'Devices/SuctionSequence', 'Seq', 'Devices/DischargeSequence', 'Dsq', 'Devices/Sensor', if(coalesce(try(toBoolean(tag({view.custom.fan2.path} + '/AIn.Enabled')), false), false), 'AIn', if(coalesce(try(toBoolean(tag({view.custom.fan2.path} + '/AInRef.Enabled')), false), false), 'AInRef', '')), 'Devices/DiscreteInput', if(coalesce(try(toBoolean(tag({view.custom.fan2.path} + '/DIn.Enabled')), false), false), 'DIn', ''), ''))"
+        }
+      }
+    },
+    "custom.fan3Pax": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.custom.fan3.path}, '') = '', '', case(toStr(coalesce(try(tag({view.custom.fan3.path} + '.TypeId'), ''), '')), 'Devices/Pump', 'Motor', 'Devices/Valve', 'Valve', 'Devices/Tank', 'Tank', 'Devices/Compressor', 'Comp', 'Devices/Evaporator', 'CG', 'Devices/ExhaustFan', 'EF', 'Devices/LTU', 'LTU', 'Devices/SafetyRelay', 'Relay', 'Devices/SuctionSequence', 'Seq', 'Devices/DischargeSequence', 'Dsq', 'Devices/Sensor', if(coalesce(try(toBoolean(tag({view.custom.fan3.path} + '/AIn.Enabled')), false), false), 'AIn', if(coalesce(try(toBoolean(tag({view.custom.fan3.path} + '/AInRef.Enabled')), false), false), 'AInRef', '')), 'Devices/DiscreteInput', if(coalesce(try(toBoolean(tag({view.custom.fan3.path} + '/DIn.Enabled')), false), false), 'DIn', ''), ''))"
+        }
+      }
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "width": 320,
+      "height": 190
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root",
+      "contextMenu": {}
+    },
+    "props": {
+      "direction": "column",
+      "alignItems": "center",
+      "justify": "flex-start",
+      "style": {
+        "classes": "device-vertical",
+        "gap": "2px",
+        "overflow": "visible",
+        "width": "100%"
+      }
+    },
+    "propConfig": {
+      "meta.contextMenu.items": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "coalesce({session.custom.TicketLogAccess}, false)"
+          },
+          "transforms": [
+            {
+              "type": "script",
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = str(self.view.params.tagPath or '')\n\texcept:\n\t\tpass\n\tview_name = self.view.id.split('@')[0]\n\titems = []\n\tif value:\n\t\tlogged = tagPath if tagPath.strip() else 'No TagPath: ' + view_name.split('/')[-1]\n\t\titems.append({\n\t\t\t\"text\": 'Ticket Logger',\n\t\t\t\"icon\": {\"path\": 'material/info', \"color\": \"--neutral-80\", \"style\": {}},\n\t\t\t\"style\": {\"classes\": \"bg-component Fonts/Value\", \"height\": 24, \"width\": 170},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\"type\": 'ticketLog', \"payload\": {'tagPath': logged, 'viewName': view_name, 'sender': self.view.id}, \"scope\": 'page'}\n\t\t})\n\treturn items"
+            }
+          ]
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "len({this.meta.contextMenu.items}) > 0"
+          }
+        }
+      }
+    },
+    "children": [
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "DeviceLabel"
+        },
+        "position": {
+          "basis": "20px",
+          "shrink": 0
+        },
+        "props": {
+          "align": "center",
+          "style": {
+            "classes": "label Fonts/Value fs-11 fw-700",
+            "minHeight": "20px",
+            "textAlign": "center",
+            "width": "100%"
+          }
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "view.custom.label"
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "ia.container.coord",
+        "meta": {
+          "name": "Graphic"
+        },
+        "position": {
+          "basis": "148px",
+          "shrink": 0
+        },
+        "props": {
+          "style": {
+            "classes": "device-graphic component",
+            "height": "148px",
+            "width": "304px",
+            "position": "relative",
+            "overflow": "visible"
+          }
+        },
+        "propConfig": {
+          "props.style.width": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if(coalesce(try(toInt({view.params.fans}), 3), 3) >= 3, '304px', '208px')"
+              }
+            }
+          }
+        },
+        "children": [
+          {
+            "type": "ia.shapes.svg",
+            "meta": {
+              "name": "Housing3"
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "width": 304,
+              "height": 148
+            },
+            "props": {
+              "viewBox": "0 0 152 74",
+              "elements": [
+                {
+                  "type": "rect",
+                  "name": "housing",
+                  "fill": {
+                    "paint": "var(--neutral-30)"
+                  },
+                  "style": {},
+                  "x": 0.25,
+                  "y": 0.25,
+                  "width": 151.5,
+                  "height": 73.5,
+                  "stroke": {
+                    "paint": "var(--neutral-100)",
+                    "width": "0.5",
+                    "linecap": "butt",
+                    "linejoin": "miter"
+                  },
+                  "rx": 2
+                },
+                {
+                  "type": "rect",
+                  "name": "fan-deck",
+                  "fill": {
+                    "paint": "var(--deviceFill-running)"
+                  },
+                  "style": {},
+                  "x": 4.25,
+                  "y": 4.25,
+                  "width": 143.5,
+                  "height": 51.5,
+                  "stroke": {
+                    "paint": "var(--neutral-100)",
+                    "width": "0.5",
+                    "linecap": "butt",
+                    "linejoin": "miter"
+                  },
+                  "rx": 1
+                },
+                {
+                  "type": "rect",
+                  "name": "coil",
+                  "fill": {
+                    "paint": "var(--deviceFill-running)"
+                  },
+                  "style": {},
+                  "x": 4.25,
+                  "y": 58.25,
+                  "width": 143.5,
+                  "height": 5.5,
+                  "stroke": {
+                    "paint": "var(--neutral-100)",
+                    "width": "0.5",
+                    "linecap": "butt",
+                    "linejoin": "miter"
+                  }
+                },
+                {
+                  "type": "rect",
+                  "name": "coil-0",
+                  "fill": {
+                    "paint": "var(--neutral-60)"
+                  },
+                  "style": {},
+                  "x": 6,
+                  "y": 59,
+                  "width": 140,
+                  "height": 0.75,
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  }
+                },
+                {
+                  "type": "rect",
+                  "name": "coil-1",
+                  "fill": {
+                    "paint": "var(--neutral-60)"
+                  },
+                  "style": {},
+                  "x": 6,
+                  "y": 60.5,
+                  "width": 140,
+                  "height": 0.75,
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  }
+                },
+                {
+                  "type": "rect",
+                  "name": "coil-2",
+                  "fill": {
+                    "paint": "var(--neutral-60)"
+                  },
+                  "style": {},
+                  "x": 6,
+                  "y": 62,
+                  "width": 140,
+                  "height": 0.75,
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  }
+                },
+                {
+                  "type": "rect",
+                  "name": "basin",
+                  "fill": {
+                    "paint": "var(--neutral-60)"
+                  },
+                  "style": {},
+                  "x": 4.25,
+                  "y": 66.25,
+                  "width": 143.5,
+                  "height": 4.5,
+                  "stroke": {
+                    "paint": "var(--neutral-100)",
+                    "width": "0.5",
+                    "linecap": "butt",
+                    "linejoin": "miter"
+                  }
+                },
+                {
+                  "type": "rect",
+                  "name": "basin-water",
+                  "fill": {
+                    "paint": "var(--ct-water)"
+                  },
+                  "style": {},
+                  "x": 5.5,
+                  "y": 67,
+                  "width": 141,
+                  "height": 3,
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  }
+                }
+              ],
+              "style": {
+                "overflow": "hidden"
+              }
+            },
+            "propConfig": {
+              "meta.visible": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "coalesce(try(toInt({view.params.fans}), 3), 3) >= 3"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.shapes.svg",
+            "meta": {
+              "name": "Housing2"
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "width": 208,
+              "height": 148
+            },
+            "props": {
+              "viewBox": "0 0 104 74",
+              "elements": [
+                {
+                  "type": "rect",
+                  "name": "housing",
+                  "fill": {
+                    "paint": "var(--neutral-30)"
+                  },
+                  "style": {},
+                  "x": 0.25,
+                  "y": 0.25,
+                  "width": 103.5,
+                  "height": 73.5,
+                  "stroke": {
+                    "paint": "var(--neutral-100)",
+                    "width": "0.5",
+                    "linecap": "butt",
+                    "linejoin": "miter"
+                  },
+                  "rx": 2
+                },
+                {
+                  "type": "rect",
+                  "name": "fan-deck",
+                  "fill": {
+                    "paint": "var(--deviceFill-running)"
+                  },
+                  "style": {},
+                  "x": 4.25,
+                  "y": 4.25,
+                  "width": 95.5,
+                  "height": 51.5,
+                  "stroke": {
+                    "paint": "var(--neutral-100)",
+                    "width": "0.5",
+                    "linecap": "butt",
+                    "linejoin": "miter"
+                  },
+                  "rx": 1
+                },
+                {
+                  "type": "rect",
+                  "name": "coil",
+                  "fill": {
+                    "paint": "var(--deviceFill-running)"
+                  },
+                  "style": {},
+                  "x": 4.25,
+                  "y": 58.25,
+                  "width": 95.5,
+                  "height": 5.5,
+                  "stroke": {
+                    "paint": "var(--neutral-100)",
+                    "width": "0.5",
+                    "linecap": "butt",
+                    "linejoin": "miter"
+                  }
+                },
+                {
+                  "type": "rect",
+                  "name": "coil-0",
+                  "fill": {
+                    "paint": "var(--neutral-60)"
+                  },
+                  "style": {},
+                  "x": 6,
+                  "y": 59,
+                  "width": 92,
+                  "height": 0.75,
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  }
+                },
+                {
+                  "type": "rect",
+                  "name": "coil-1",
+                  "fill": {
+                    "paint": "var(--neutral-60)"
+                  },
+                  "style": {},
+                  "x": 6,
+                  "y": 60.5,
+                  "width": 92,
+                  "height": 0.75,
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  }
+                },
+                {
+                  "type": "rect",
+                  "name": "coil-2",
+                  "fill": {
+                    "paint": "var(--neutral-60)"
+                  },
+                  "style": {},
+                  "x": 6,
+                  "y": 62,
+                  "width": 92,
+                  "height": 0.75,
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  }
+                },
+                {
+                  "type": "rect",
+                  "name": "basin",
+                  "fill": {
+                    "paint": "var(--neutral-60)"
+                  },
+                  "style": {},
+                  "x": 4.25,
+                  "y": 66.25,
+                  "width": 95.5,
+                  "height": 4.5,
+                  "stroke": {
+                    "paint": "var(--neutral-100)",
+                    "width": "0.5",
+                    "linecap": "butt",
+                    "linejoin": "miter"
+                  }
+                },
+                {
+                  "type": "rect",
+                  "name": "basin-water",
+                  "fill": {
+                    "paint": "var(--ct-water)"
+                  },
+                  "style": {},
+                  "x": 5.5,
+                  "y": 67,
+                  "width": 93,
+                  "height": 3,
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  }
+                }
+              ],
+              "style": {
+                "overflow": "hidden"
+              }
+            },
+            "propConfig": {
+              "meta.visible": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "coalesce(try(toInt({view.params.fans}), 3), 3) < 3"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.container.coord",
+            "meta": {
+              "name": "Fan1"
+            },
+            "position": {
+              "x": 10,
+              "y": 12,
+              "width": 92,
+              "height": 96
+            },
+            "props": {
+              "style": {
+                "overflow": "visible",
+                "zIndex": 2
+              }
+            },
+            "children": [
+              {
+                "type": "ia.shapes.svg",
+                "meta": {
+                  "name": "Fan"
+                },
+                "position": {
+                  "x": 26,
+                  "y": 40,
+                  "width": 40,
+                  "height": 40
+                },
+                "props": {
+                  "viewBox": "0 0 28 28",
+                  "elements": [
+                    {
+                      "type": "circle",
+                      "name": "fan-ring",
+                      "cx": 14,
+                      "cy": 14,
+                      "r": 13.65,
+                      "fill": {
+                        "paint": "var(--neutral-30)"
+                      },
+                      "stroke": {
+                        "paint": "var(--neutral-100)",
+                        "width": "0.7",
+                        "linecap": "butt",
+                        "linejoin": "miter"
+                      },
+                      "style": {}
+                    },
+                    {
+                      "type": "path",
+                      "name": "blades",
+                      "d": "M14.0004 10.56C12.1007 10.56 10.56 12.1006 10.56 14.0004C10.5602 15.9 12.1008 17.4398 14.0004 17.4398C15.8998 17.4396 17.4396 15.8998 17.4398 14.0004C17.4398 12.1008 15.9 10.5602 14.0004 10.56ZM10.1293 13.9135L10.0463 13.8881C6.20329 12.7028 4.20766 10.8321 3.96719 8.30215C3.93883 8.00344 3.99654 7.77154 4.16152 7.5209C4.89473 6.4077 5.75406 5.48193 6.80996 4.66836C7.20584 4.36346 7.76984 4.70433 7.68398 5.19668C7.3209 7.27475 8.27601 9.55388 10.4936 12.0258L10.599 12.1439L10.6801 12.0082C10.8448 11.7337 11.0368 11.4894 11.2631 11.2631L11.3236 11.2016L11.2836 11.1254C9.40422 7.56966 9.31598 4.83539 10.935 2.87637C11.126 2.64528 11.3307 2.52184 11.6244 2.46133C12.93 2.19255 14.1921 2.14645 15.5141 2.31777C16.0097 2.38207 16.1677 3.02149 15.7592 3.30898C14.0329 4.52175 13.0962 6.80928 12.9164 10.1254L12.9076 10.2826L13.0609 10.2445C13.3715 10.1669 13.6803 10.1293 14.0004 10.1293H14.0863L14.1117 10.0463C15.297 6.20326 17.1677 4.20766 19.6977 3.96719C19.9964 3.9388 20.2283 3.99657 20.4789 4.16152C21.5921 4.89473 22.5179 5.75406 23.3314 6.80996C23.6366 7.2059 23.2956 7.77002 22.8031 7.68398C20.725 7.3209 18.4459 8.27594 15.974 10.4936L15.8559 10.599L15.9916 10.6801C16.2661 10.8448 16.5114 11.0367 16.7377 11.2631L16.7982 11.3236L16.8744 11.2836C20.4302 9.40413 23.1644 9.31595 25.1234 10.935C25.3546 11.126 25.478 11.3307 25.5385 11.6244C25.8073 12.93 25.8543 14.1922 25.683 15.5141C25.6187 16.0097 24.9783 16.1678 24.6908 15.7592C23.4781 14.0329 21.1913 13.0963 17.8754 12.9164L17.7172 12.9076L17.7553 13.0609C17.8329 13.3715 17.8715 13.6803 17.8715 14.0004V14.0863L17.9535 14.1117C21.7967 15.297 23.7921 17.1677 24.0326 19.6977C24.061 19.9964 24.0033 20.2282 23.8383 20.4789C23.1051 21.5921 22.2457 22.5179 21.1898 23.3314C20.7939 23.6364 20.2298 23.2955 20.3158 22.8031C20.6789 20.725 19.7239 18.446 17.5062 15.974L17.4008 15.8559L17.3197 15.9916C17.155 16.2662 16.964 16.5114 16.7377 16.7377L16.6762 16.7982L16.7162 16.8744C18.5957 20.4302 18.6848 23.1644 17.0658 25.1234C16.8747 25.3548 16.6693 25.4779 16.3754 25.5385C15.0698 25.8073 13.8077 25.8543 12.4857 25.683C11.99 25.6187 11.8326 24.9782 12.2416 24.6908C13.9677 23.4781 14.9035 21.1912 15.0834 17.8754L15.0922 17.7172L14.9389 17.7553C14.6284 17.833 14.3204 17.8715 14.0004 17.8715H13.9135L13.8881 17.9535C12.7028 21.7967 10.8321 23.7921 8.30215 24.0326C8.00339 24.061 7.77159 24.0033 7.5209 23.8383C6.40771 23.1051 5.48193 22.2457 4.66836 21.1898C4.36363 20.794 4.70441 20.23 5.19668 20.3158C7.27478 20.6789 9.55384 19.7239 12.0258 17.5062L12.1439 17.4008L12.0082 17.3197C11.7338 17.1551 11.4893 16.9639 11.2631 16.7377L11.2016 16.6762L11.1254 16.7162C7.56962 18.5957 4.8354 18.6848 2.87637 17.0658C2.64499 16.8747 2.52185 16.6694 2.46133 16.3754C2.19254 15.0698 2.14644 13.8077 2.31777 12.4857C2.38218 11.9901 3.02166 11.8326 3.30898 12.2416C4.52177 13.9678 6.80937 14.9036 10.1254 15.0834L10.2826 15.0922L10.2445 14.9389C10.1669 14.6284 10.1293 14.3204 10.1293 14.0004V13.9135Z",
+                      "fill": {
+                        "paint": "var(--neutral-60)"
+                      },
+                      "stroke": {
+                        "paint": "var(--neutral-100)",
+                        "width": "0.233333",
+                        "linecap": "butt",
+                        "linejoin": "miter"
+                      },
+                      "style": {}
+                    }
+                  ],
+                  "style": {
+                    "overflow": "hidden"
+                  }
+                },
+                "propConfig": {
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.custom.fan1.sts} = -1, 'device-comm-loss', if({view.custom.fan1.sts} = 2 || {view.custom.fan1.sts} = 8, 'fan-spin', ''))"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.opacity": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.custom.fan1.sts} = -2, 0.4, 1)"
+                      },
+                      "overlayOptOut": true
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Caption"
+                },
+                "position": {
+                  "x": 0,
+                  "y": 22,
+                  "width": 92,
+                  "height": 16
+                },
+                "props": {
+                  "direction": "row",
+                  "justify": "center",
+                  "alignItems": "center",
+                  "style": {
+                    "gap": "2px",
+                    "overflow": "visible"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "FanLabel"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Fan 1",
+                      "style": {
+                        "classes": "fs-11 fw-600",
+                        "textAlign": "center",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "color": "var(--text)",
+                        "maxWidth": "74px",
+                        "textOverflow": "ellipsis"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "coalesce(if(coalesce(try(toStr({view.custom.fanLabelList}[0]), ''), '') != '', coalesce(try(toStr({view.custom.fanLabelList}[0]), ''), ''), null), {view.custom.fan1.member})"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.icon",
+                    "meta": {
+                      "name": "FaceplateIcon"
+                    },
+                    "position": {
+                      "basis": "16px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "path": "material/fullscreen",
+                      "style": {
+                        "height": "16px",
+                        "width": "16px"
+                      }
+                    },
+                    "propConfig": {
+                      "props.style.opacity": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(isNull({view.params.faceplate}) || {view.custom.fan1.path} = '', 0, 1)"
+                          },
+                          "overlayOptOut": true
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "AlarmHeader"
+                },
+                "position": {
+                  "x": 24,
+                  "y": 0,
+                  "width": 20,
+                  "height": 20
+                },
+                "props": {
+                  "path": "03_Elements/01_Status/AlarmHeader",
+                  "params": {
+                    "tagPath": ""
+                  },
+                  "useDefaultViewHeight": false,
+                  "useDefaultViewWidth": false,
+                  "style": {
+                    "overflow": "visible",
+                    "classes": "alarm-header",
+                    "pointerEvents": "none"
+                  }
+                },
+                "propConfig": {
+                  "props.params.tagPath": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "view.custom.fan1.path"
+                      },
+                      "overlayOptOut": true
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "IconHeader"
+                },
+                "position": {
+                  "x": 48,
+                  "y": 0,
+                  "width": 20,
+                  "height": 20
+                },
+                "props": {
+                  "path": "03_Elements/01_Status/IconHeader",
+                  "params": {
+                    "tagPath": "",
+                    "statusPath": "",
+                    "justify": "center"
+                  },
+                  "useDefaultViewHeight": false,
+                  "useDefaultViewWidth": false,
+                  "style": {
+                    "overflow": "visible",
+                    "classes": "icon-header"
+                  }
+                },
+                "propConfig": {
+                  "props.params.tagPath": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "view.custom.fan1.path"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.params.statusPath": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.custom.fan1.path} = '', '', {view.custom.fan1.path} + '/Motor/Val_Sts')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "FanStatus"
+                },
+                "position": {
+                  "x": 0,
+                  "y": 80,
+                  "width": 92,
+                  "height": 16
+                },
+                "props": {
+                  "text": "",
+                  "style": {
+                    "classes": "fs-11 fw-700",
+                    "textAlign": "center",
+                    "whiteSpace": "nowrap",
+                    "overflow": "visible"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "case({view.custom.fan1.sts}, -2, 'NO TAG', -1, 'COMM LOSS', 1, 'STOP', 2, 'RUN', 7, 'STOPPING', 8, 'STARTING', 33, 'DISABLED', 'UNK')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.color": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "case({view.custom.fan1.sts}, -2, 'var(--text-muted)', -1, 'var(--sts-fault)', 1, 'var(--status-off)', 2, 'var(--sts-run)', 'var(--status-unknown)')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  }
+                },
+                "events": {
+                  "dom": {
+                    "onContextMenu": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tshared.TrendContext.menu(self, event, '{view.custom.fan1.path}/Motor/Val_Sts')"
+                      },
+                      "preventDefault": true,
+                      "stopPropagation": true
+                    }
+                  }
+                }
+              }
+            ],
+            "propConfig": {
+              "props.style.classes": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if(coalesce({session.custom.CanOpenFaceplates}, false) && coalesce({view.params.faceplate}, '') != '' && coalesce({view.custom.fan1.path}, '') != '', 'faceplate-hover', '')"
+                  },
+                  "overlayOptOut": true
+                }
+              }
+            },
+            "events": {
+              "dom": {
+                "onClick": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\tif not self.view.params.faceplate:\n\t\treturn\n\tpath = str(self.view.custom.fan1.path or '')\n\tif not path:\n\t\treturn\n\tname = str(self.view.custom.label or '')\n\ttitle = ('%s %s' % (name, self.view.custom.fan1.member)).strip()\n\t# each condenser fan is a P_Motor: same typed Controls as the pumps\n\tshared.Alerts.showFaceplate(\n\t\ttagPath=path,\n\t\tdeviceType='Pump',\n\t\ttitle=title,\n\t\twebGuiUrl='',\n\t\tshowControls=True,\n\t\tshowConfiguration=True,\n\t\tshowInterlocks=True,\n\t\tshowTrend=True,\n\t\tshowAlarmConfiguration=True,\n\t\tshowAlarms=True,\n\t\twidth=560,\n\t\theight=640\n\t)\n"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.container.coord",
+            "meta": {
+              "name": "Fan2"
+            },
+            "position": {
+              "x": 106,
+              "y": 12,
+              "width": 92,
+              "height": 96
+            },
+            "props": {
+              "style": {
+                "overflow": "visible",
+                "zIndex": 2
+              }
+            },
+            "children": [
+              {
+                "type": "ia.shapes.svg",
+                "meta": {
+                  "name": "Fan"
+                },
+                "position": {
+                  "x": 26,
+                  "y": 40,
+                  "width": 40,
+                  "height": 40
+                },
+                "props": {
+                  "viewBox": "0 0 28 28",
+                  "elements": [
+                    {
+                      "type": "circle",
+                      "name": "fan-ring",
+                      "cx": 14,
+                      "cy": 14,
+                      "r": 13.65,
+                      "fill": {
+                        "paint": "var(--neutral-30)"
+                      },
+                      "stroke": {
+                        "paint": "var(--neutral-100)",
+                        "width": "0.7",
+                        "linecap": "butt",
+                        "linejoin": "miter"
+                      },
+                      "style": {}
+                    },
+                    {
+                      "type": "path",
+                      "name": "blades",
+                      "d": "M14.0004 10.56C12.1007 10.56 10.56 12.1006 10.56 14.0004C10.5602 15.9 12.1008 17.4398 14.0004 17.4398C15.8998 17.4396 17.4396 15.8998 17.4398 14.0004C17.4398 12.1008 15.9 10.5602 14.0004 10.56ZM10.1293 13.9135L10.0463 13.8881C6.20329 12.7028 4.20766 10.8321 3.96719 8.30215C3.93883 8.00344 3.99654 7.77154 4.16152 7.5209C4.89473 6.4077 5.75406 5.48193 6.80996 4.66836C7.20584 4.36346 7.76984 4.70433 7.68398 5.19668C7.3209 7.27475 8.27601 9.55388 10.4936 12.0258L10.599 12.1439L10.6801 12.0082C10.8448 11.7337 11.0368 11.4894 11.2631 11.2631L11.3236 11.2016L11.2836 11.1254C9.40422 7.56966 9.31598 4.83539 10.935 2.87637C11.126 2.64528 11.3307 2.52184 11.6244 2.46133C12.93 2.19255 14.1921 2.14645 15.5141 2.31777C16.0097 2.38207 16.1677 3.02149 15.7592 3.30898C14.0329 4.52175 13.0962 6.80928 12.9164 10.1254L12.9076 10.2826L13.0609 10.2445C13.3715 10.1669 13.6803 10.1293 14.0004 10.1293H14.0863L14.1117 10.0463C15.297 6.20326 17.1677 4.20766 19.6977 3.96719C19.9964 3.9388 20.2283 3.99657 20.4789 4.16152C21.5921 4.89473 22.5179 5.75406 23.3314 6.80996C23.6366 7.2059 23.2956 7.77002 22.8031 7.68398C20.725 7.3209 18.4459 8.27594 15.974 10.4936L15.8559 10.599L15.9916 10.6801C16.2661 10.8448 16.5114 11.0367 16.7377 11.2631L16.7982 11.3236L16.8744 11.2836C20.4302 9.40413 23.1644 9.31595 25.1234 10.935C25.3546 11.126 25.478 11.3307 25.5385 11.6244C25.8073 12.93 25.8543 14.1922 25.683 15.5141C25.6187 16.0097 24.9783 16.1678 24.6908 15.7592C23.4781 14.0329 21.1913 13.0963 17.8754 12.9164L17.7172 12.9076L17.7553 13.0609C17.8329 13.3715 17.8715 13.6803 17.8715 14.0004V14.0863L17.9535 14.1117C21.7967 15.297 23.7921 17.1677 24.0326 19.6977C24.061 19.9964 24.0033 20.2282 23.8383 20.4789C23.1051 21.5921 22.2457 22.5179 21.1898 23.3314C20.7939 23.6364 20.2298 23.2955 20.3158 22.8031C20.6789 20.725 19.7239 18.446 17.5062 15.974L17.4008 15.8559L17.3197 15.9916C17.155 16.2662 16.964 16.5114 16.7377 16.7377L16.6762 16.7982L16.7162 16.8744C18.5957 20.4302 18.6848 23.1644 17.0658 25.1234C16.8747 25.3548 16.6693 25.4779 16.3754 25.5385C15.0698 25.8073 13.8077 25.8543 12.4857 25.683C11.99 25.6187 11.8326 24.9782 12.2416 24.6908C13.9677 23.4781 14.9035 21.1912 15.0834 17.8754L15.0922 17.7172L14.9389 17.7553C14.6284 17.833 14.3204 17.8715 14.0004 17.8715H13.9135L13.8881 17.9535C12.7028 21.7967 10.8321 23.7921 8.30215 24.0326C8.00339 24.061 7.77159 24.0033 7.5209 23.8383C6.40771 23.1051 5.48193 22.2457 4.66836 21.1898C4.36363 20.794 4.70441 20.23 5.19668 20.3158C7.27478 20.6789 9.55384 19.7239 12.0258 17.5062L12.1439 17.4008L12.0082 17.3197C11.7338 17.1551 11.4893 16.9639 11.2631 16.7377L11.2016 16.6762L11.1254 16.7162C7.56962 18.5957 4.8354 18.6848 2.87637 17.0658C2.64499 16.8747 2.52185 16.6694 2.46133 16.3754C2.19254 15.0698 2.14644 13.8077 2.31777 12.4857C2.38218 11.9901 3.02166 11.8326 3.30898 12.2416C4.52177 13.9678 6.80937 14.9036 10.1254 15.0834L10.2826 15.0922L10.2445 14.9389C10.1669 14.6284 10.1293 14.3204 10.1293 14.0004V13.9135Z",
+                      "fill": {
+                        "paint": "var(--neutral-60)"
+                      },
+                      "stroke": {
+                        "paint": "var(--neutral-100)",
+                        "width": "0.233333",
+                        "linecap": "butt",
+                        "linejoin": "miter"
+                      },
+                      "style": {}
+                    }
+                  ],
+                  "style": {
+                    "overflow": "hidden"
+                  }
+                },
+                "propConfig": {
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.custom.fan2.sts} = -1, 'device-comm-loss', if({view.custom.fan2.sts} = 2 || {view.custom.fan2.sts} = 8, 'fan-spin', ''))"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.opacity": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.custom.fan2.sts} = -2, 0.4, 1)"
+                      },
+                      "overlayOptOut": true
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Caption"
+                },
+                "position": {
+                  "x": 0,
+                  "y": 22,
+                  "width": 92,
+                  "height": 16
+                },
+                "props": {
+                  "direction": "row",
+                  "justify": "center",
+                  "alignItems": "center",
+                  "style": {
+                    "gap": "2px",
+                    "overflow": "visible"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "FanLabel"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Fan 2",
+                      "style": {
+                        "classes": "fs-11 fw-600",
+                        "textAlign": "center",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "color": "var(--text)",
+                        "maxWidth": "74px",
+                        "textOverflow": "ellipsis"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "coalesce(if(coalesce(try(toStr({view.custom.fanLabelList}[1]), ''), '') != '', coalesce(try(toStr({view.custom.fanLabelList}[1]), ''), ''), null), {view.custom.fan2.member})"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.icon",
+                    "meta": {
+                      "name": "FaceplateIcon"
+                    },
+                    "position": {
+                      "basis": "16px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "path": "material/fullscreen",
+                      "style": {
+                        "height": "16px",
+                        "width": "16px"
+                      }
+                    },
+                    "propConfig": {
+                      "props.style.opacity": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(isNull({view.params.faceplate}) || {view.custom.fan2.path} = '', 0, 1)"
+                          },
+                          "overlayOptOut": true
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "AlarmHeader"
+                },
+                "position": {
+                  "x": 24,
+                  "y": 0,
+                  "width": 20,
+                  "height": 20
+                },
+                "props": {
+                  "path": "03_Elements/01_Status/AlarmHeader",
+                  "params": {
+                    "tagPath": ""
+                  },
+                  "useDefaultViewHeight": false,
+                  "useDefaultViewWidth": false,
+                  "style": {
+                    "overflow": "visible",
+                    "classes": "alarm-header",
+                    "pointerEvents": "none"
+                  }
+                },
+                "propConfig": {
+                  "props.params.tagPath": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "view.custom.fan2.path"
+                      },
+                      "overlayOptOut": true
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "IconHeader"
+                },
+                "position": {
+                  "x": 48,
+                  "y": 0,
+                  "width": 20,
+                  "height": 20
+                },
+                "props": {
+                  "path": "03_Elements/01_Status/IconHeader",
+                  "params": {
+                    "tagPath": "",
+                    "statusPath": "",
+                    "justify": "center"
+                  },
+                  "useDefaultViewHeight": false,
+                  "useDefaultViewWidth": false,
+                  "style": {
+                    "overflow": "visible",
+                    "classes": "icon-header"
+                  }
+                },
+                "propConfig": {
+                  "props.params.tagPath": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "view.custom.fan2.path"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.params.statusPath": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.custom.fan2.path} = '', '', {view.custom.fan2.path} + '/Motor/Val_Sts')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "FanStatus"
+                },
+                "position": {
+                  "x": 0,
+                  "y": 80,
+                  "width": 92,
+                  "height": 16
+                },
+                "props": {
+                  "text": "",
+                  "style": {
+                    "classes": "fs-11 fw-700",
+                    "textAlign": "center",
+                    "whiteSpace": "nowrap",
+                    "overflow": "visible"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "case({view.custom.fan2.sts}, -2, 'NO TAG', -1, 'COMM LOSS', 1, 'STOP', 2, 'RUN', 7, 'STOPPING', 8, 'STARTING', 33, 'DISABLED', 'UNK')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.color": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "case({view.custom.fan2.sts}, -2, 'var(--text-muted)', -1, 'var(--sts-fault)', 1, 'var(--status-off)', 2, 'var(--sts-run)', 'var(--status-unknown)')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  }
+                },
+                "events": {
+                  "dom": {
+                    "onContextMenu": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tshared.TrendContext.menu(self, event, '{view.custom.fan2.path}/Motor/Val_Sts')"
+                      },
+                      "preventDefault": true,
+                      "stopPropagation": true
+                    }
+                  }
+                }
+              }
+            ],
+            "propConfig": {
+              "props.style.classes": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if(coalesce({session.custom.CanOpenFaceplates}, false) && coalesce({view.params.faceplate}, '') != '' && coalesce({view.custom.fan2.path}, '') != '', 'faceplate-hover', '')"
+                  },
+                  "overlayOptOut": true
+                }
+              }
+            },
+            "events": {
+              "dom": {
+                "onClick": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\tif not self.view.params.faceplate:\n\t\treturn\n\tpath = str(self.view.custom.fan2.path or '')\n\tif not path:\n\t\treturn\n\tname = str(self.view.custom.label or '')\n\ttitle = ('%s %s' % (name, self.view.custom.fan2.member)).strip()\n\t# each condenser fan is a P_Motor: same typed Controls as the pumps\n\tshared.Alerts.showFaceplate(\n\t\ttagPath=path,\n\t\tdeviceType='Pump',\n\t\ttitle=title,\n\t\twebGuiUrl='',\n\t\tshowControls=True,\n\t\tshowConfiguration=True,\n\t\tshowInterlocks=True,\n\t\tshowTrend=True,\n\t\tshowAlarmConfiguration=True,\n\t\tshowAlarms=True,\n\t\twidth=560,\n\t\theight=640\n\t)\n"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.container.coord",
+            "meta": {
+              "name": "Fan3"
+            },
+            "position": {
+              "x": 202,
+              "y": 12,
+              "width": 92,
+              "height": 96
+            },
+            "props": {
+              "style": {
+                "overflow": "visible",
+                "zIndex": 2
+              }
+            },
+            "children": [
+              {
+                "type": "ia.shapes.svg",
+                "meta": {
+                  "name": "Fan"
+                },
+                "position": {
+                  "x": 26,
+                  "y": 40,
+                  "width": 40,
+                  "height": 40
+                },
+                "props": {
+                  "viewBox": "0 0 28 28",
+                  "elements": [
+                    {
+                      "type": "circle",
+                      "name": "fan-ring",
+                      "cx": 14,
+                      "cy": 14,
+                      "r": 13.65,
+                      "fill": {
+                        "paint": "var(--neutral-30)"
+                      },
+                      "stroke": {
+                        "paint": "var(--neutral-100)",
+                        "width": "0.7",
+                        "linecap": "butt",
+                        "linejoin": "miter"
+                      },
+                      "style": {}
+                    },
+                    {
+                      "type": "path",
+                      "name": "blades",
+                      "d": "M14.0004 10.56C12.1007 10.56 10.56 12.1006 10.56 14.0004C10.5602 15.9 12.1008 17.4398 14.0004 17.4398C15.8998 17.4396 17.4396 15.8998 17.4398 14.0004C17.4398 12.1008 15.9 10.5602 14.0004 10.56ZM10.1293 13.9135L10.0463 13.8881C6.20329 12.7028 4.20766 10.8321 3.96719 8.30215C3.93883 8.00344 3.99654 7.77154 4.16152 7.5209C4.89473 6.4077 5.75406 5.48193 6.80996 4.66836C7.20584 4.36346 7.76984 4.70433 7.68398 5.19668C7.3209 7.27475 8.27601 9.55388 10.4936 12.0258L10.599 12.1439L10.6801 12.0082C10.8448 11.7337 11.0368 11.4894 11.2631 11.2631L11.3236 11.2016L11.2836 11.1254C9.40422 7.56966 9.31598 4.83539 10.935 2.87637C11.126 2.64528 11.3307 2.52184 11.6244 2.46133C12.93 2.19255 14.1921 2.14645 15.5141 2.31777C16.0097 2.38207 16.1677 3.02149 15.7592 3.30898C14.0329 4.52175 13.0962 6.80928 12.9164 10.1254L12.9076 10.2826L13.0609 10.2445C13.3715 10.1669 13.6803 10.1293 14.0004 10.1293H14.0863L14.1117 10.0463C15.297 6.20326 17.1677 4.20766 19.6977 3.96719C19.9964 3.9388 20.2283 3.99657 20.4789 4.16152C21.5921 4.89473 22.5179 5.75406 23.3314 6.80996C23.6366 7.2059 23.2956 7.77002 22.8031 7.68398C20.725 7.3209 18.4459 8.27594 15.974 10.4936L15.8559 10.599L15.9916 10.6801C16.2661 10.8448 16.5114 11.0367 16.7377 11.2631L16.7982 11.3236L16.8744 11.2836C20.4302 9.40413 23.1644 9.31595 25.1234 10.935C25.3546 11.126 25.478 11.3307 25.5385 11.6244C25.8073 12.93 25.8543 14.1922 25.683 15.5141C25.6187 16.0097 24.9783 16.1678 24.6908 15.7592C23.4781 14.0329 21.1913 13.0963 17.8754 12.9164L17.7172 12.9076L17.7553 13.0609C17.8329 13.3715 17.8715 13.6803 17.8715 14.0004V14.0863L17.9535 14.1117C21.7967 15.297 23.7921 17.1677 24.0326 19.6977C24.061 19.9964 24.0033 20.2282 23.8383 20.4789C23.1051 21.5921 22.2457 22.5179 21.1898 23.3314C20.7939 23.6364 20.2298 23.2955 20.3158 22.8031C20.6789 20.725 19.7239 18.446 17.5062 15.974L17.4008 15.8559L17.3197 15.9916C17.155 16.2662 16.964 16.5114 16.7377 16.7377L16.6762 16.7982L16.7162 16.8744C18.5957 20.4302 18.6848 23.1644 17.0658 25.1234C16.8747 25.3548 16.6693 25.4779 16.3754 25.5385C15.0698 25.8073 13.8077 25.8543 12.4857 25.683C11.99 25.6187 11.8326 24.9782 12.2416 24.6908C13.9677 23.4781 14.9035 21.1912 15.0834 17.8754L15.0922 17.7172L14.9389 17.7553C14.6284 17.833 14.3204 17.8715 14.0004 17.8715H13.9135L13.8881 17.9535C12.7028 21.7967 10.8321 23.7921 8.30215 24.0326C8.00339 24.061 7.77159 24.0033 7.5209 23.8383C6.40771 23.1051 5.48193 22.2457 4.66836 21.1898C4.36363 20.794 4.70441 20.23 5.19668 20.3158C7.27478 20.6789 9.55384 19.7239 12.0258 17.5062L12.1439 17.4008L12.0082 17.3197C11.7338 17.1551 11.4893 16.9639 11.2631 16.7377L11.2016 16.6762L11.1254 16.7162C7.56962 18.5957 4.8354 18.6848 2.87637 17.0658C2.64499 16.8747 2.52185 16.6694 2.46133 16.3754C2.19254 15.0698 2.14644 13.8077 2.31777 12.4857C2.38218 11.9901 3.02166 11.8326 3.30898 12.2416C4.52177 13.9678 6.80937 14.9036 10.1254 15.0834L10.2826 15.0922L10.2445 14.9389C10.1669 14.6284 10.1293 14.3204 10.1293 14.0004V13.9135Z",
+                      "fill": {
+                        "paint": "var(--neutral-60)"
+                      },
+                      "stroke": {
+                        "paint": "var(--neutral-100)",
+                        "width": "0.233333",
+                        "linecap": "butt",
+                        "linejoin": "miter"
+                      },
+                      "style": {}
+                    }
+                  ],
+                  "style": {
+                    "overflow": "hidden"
+                  }
+                },
+                "propConfig": {
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.custom.fan3.sts} = -1, 'device-comm-loss', if({view.custom.fan3.sts} = 2 || {view.custom.fan3.sts} = 8, 'fan-spin', ''))"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.opacity": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.custom.fan3.sts} = -2, 0.4, 1)"
+                      },
+                      "overlayOptOut": true
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Caption"
+                },
+                "position": {
+                  "x": 0,
+                  "y": 22,
+                  "width": 92,
+                  "height": 16
+                },
+                "props": {
+                  "direction": "row",
+                  "justify": "center",
+                  "alignItems": "center",
+                  "style": {
+                    "gap": "2px",
+                    "overflow": "visible"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "FanLabel"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Fan 3",
+                      "style": {
+                        "classes": "fs-11 fw-600",
+                        "textAlign": "center",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "color": "var(--text)",
+                        "maxWidth": "74px",
+                        "textOverflow": "ellipsis"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "coalesce(if(coalesce(try(toStr({view.custom.fanLabelList}[2]), ''), '') != '', coalesce(try(toStr({view.custom.fanLabelList}[2]), ''), ''), null), {view.custom.fan3.member})"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.icon",
+                    "meta": {
+                      "name": "FaceplateIcon"
+                    },
+                    "position": {
+                      "basis": "16px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "path": "material/fullscreen",
+                      "style": {
+                        "height": "16px",
+                        "width": "16px"
+                      }
+                    },
+                    "propConfig": {
+                      "props.style.opacity": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(isNull({view.params.faceplate}) || {view.custom.fan3.path} = '', 0, 1)"
+                          },
+                          "overlayOptOut": true
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "AlarmHeader"
+                },
+                "position": {
+                  "x": 24,
+                  "y": 0,
+                  "width": 20,
+                  "height": 20
+                },
+                "props": {
+                  "path": "03_Elements/01_Status/AlarmHeader",
+                  "params": {
+                    "tagPath": ""
+                  },
+                  "useDefaultViewHeight": false,
+                  "useDefaultViewWidth": false,
+                  "style": {
+                    "overflow": "visible",
+                    "classes": "alarm-header",
+                    "pointerEvents": "none"
+                  }
+                },
+                "propConfig": {
+                  "props.params.tagPath": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "view.custom.fan3.path"
+                      },
+                      "overlayOptOut": true
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "IconHeader"
+                },
+                "position": {
+                  "x": 48,
+                  "y": 0,
+                  "width": 20,
+                  "height": 20
+                },
+                "props": {
+                  "path": "03_Elements/01_Status/IconHeader",
+                  "params": {
+                    "tagPath": "",
+                    "statusPath": "",
+                    "justify": "center"
+                  },
+                  "useDefaultViewHeight": false,
+                  "useDefaultViewWidth": false,
+                  "style": {
+                    "overflow": "visible",
+                    "classes": "icon-header"
+                  }
+                },
+                "propConfig": {
+                  "props.params.tagPath": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "view.custom.fan3.path"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.params.statusPath": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if({view.custom.fan3.path} = '', '', {view.custom.fan3.path} + '/Motor/Val_Sts')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "FanStatus"
+                },
+                "position": {
+                  "x": 0,
+                  "y": 80,
+                  "width": 92,
+                  "height": 16
+                },
+                "props": {
+                  "text": "",
+                  "style": {
+                    "classes": "fs-11 fw-700",
+                    "textAlign": "center",
+                    "whiteSpace": "nowrap",
+                    "overflow": "visible"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "case({view.custom.fan3.sts}, -2, 'NO TAG', -1, 'COMM LOSS', 1, 'STOP', 2, 'RUN', 7, 'STOPPING', 8, 'STARTING', 33, 'DISABLED', 'UNK')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.color": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "case({view.custom.fan3.sts}, -2, 'var(--text-muted)', -1, 'var(--sts-fault)', 1, 'var(--status-off)', 2, 'var(--sts-run)', 'var(--status-unknown)')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  }
+                },
+                "events": {
+                  "dom": {
+                    "onContextMenu": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tshared.TrendContext.menu(self, event, '{view.custom.fan3.path}/Motor/Val_Sts')"
+                      },
+                      "preventDefault": true,
+                      "stopPropagation": true
+                    }
+                  }
+                }
+              }
+            ],
+            "propConfig": {
+              "props.style.classes": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if(coalesce({session.custom.CanOpenFaceplates}, false) && coalesce({view.params.faceplate}, '') != '' && coalesce({view.custom.fan3.path}, '') != '', 'faceplate-hover', '')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "meta.visible": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "coalesce(try(toInt({view.params.fans}), 3), 3) >= 3"
+                  }
+                }
+              }
+            },
+            "events": {
+              "dom": {
+                "onClick": {
+                  "type": "script",
+                  "scope": "G",
+                  "config": {
+                    "script": "\tif not self.view.params.faceplate:\n\t\treturn\n\tpath = str(self.view.custom.fan3.path or '')\n\tif not path:\n\t\treturn\n\tname = str(self.view.custom.label or '')\n\ttitle = ('%s %s' % (name, self.view.custom.fan3.member)).strip()\n\t# each condenser fan is a P_Motor: same typed Controls as the pumps\n\tshared.Alerts.showFaceplate(\n\t\ttagPath=path,\n\t\tdeviceType='Pump',\n\t\ttitle=title,\n\t\twebGuiUrl='',\n\t\tshowControls=True,\n\t\tshowConfiguration=True,\n\t\tshowInterlocks=True,\n\t\tshowTrend=True,\n\t\tshowAlarmConfiguration=True,\n\t\tshowAlarms=True,\n\t\twidth=560,\n\t\theight=640\n\t)\n"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ia.display.view",
+        "meta": {
+          "name": "AnalogValue"
+        },
+        "position": {
+          "basis": "18px",
+          "shrink": 0
+        },
+        "props": {
+          "path": "03_Elements/01_Status/AnalogValue",
+          "useDefaultViewHeight": true,
+          "params": {
+            "spacing": {
+              "center": true,
+              "data": 0,
+              "engUnit": 30
+            }
+          },
+          "style": {
+            "classes": "value",
+            "height": "18px",
+            "minHeight": "18px",
+            "overflow": "visible",
+            "width": "100%"
+          }
+        },
+        "propConfig": {
+          "props.params.tagPath": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "view.params.analogPath"
+              }
+            }
+          },
+          "meta.visible": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "coalesce({view.params.analog}, true)"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "sessionScope": false,
+          "viewScope": false,
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])"
+        }
+      ]
+    }
+  }
+}

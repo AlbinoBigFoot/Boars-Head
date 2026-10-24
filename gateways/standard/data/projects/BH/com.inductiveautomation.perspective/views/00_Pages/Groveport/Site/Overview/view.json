@@ -13,7 +13,8 @@
   "root": {
     "type": "ia.container.flex",
     "meta": {
-      "name": "root"
+      "name": "root",
+      "contextMenu": {}
     },
     "props": {
       "direction": "column",
@@ -22,7 +23,6 @@
         "gap": "12px",
         "padding": "16px 20px 20px",
         "overflow": "hidden",
-        "minHeight": "0",
         "height": "100%"
       }
     },
@@ -52,9 +52,7 @@
             "props": {
               "text": "Groveport \u2014 Site Dashboard",
               "style": {
-                "classes": "font-heading",
-                "fontSize": "22px",
-                "fontWeight": "700"
+                "classes": "Fonts/Heading fs-22 fw-700"
               }
             }
           },
@@ -66,8 +64,7 @@
             "props": {
               "text": "EPMS \u00b7 Utility \u00b7 Production \u2014 switch domains with the tabs below.",
               "style": {
-                "classes": "font-label",
-                "fontSize": "13px",
+                "classes": "Fonts/Label fs-13",
                 "opacity": "0.8",
                 "whiteSpace": "normal"
               }
@@ -122,10 +119,9 @@
                 "padding": "12px 14px 14px",
                 "width": "100%",
                 "height": "100%",
-                "overflowX": "hidden",
                 "overflowY": "auto",
-                "boxSizing": "border-box",
                 "minHeight": "0",
+                "overflowX": "hidden",
                 "justifyContent": "flex-start",
                 "alignContent": "flex-start"
               }
@@ -139,8 +135,7 @@
                 "props": {
                   "text": "Site energy \u2014 Utility Tracker kWh benchmarks and area metering rollout.",
                   "style": {
-                    "classes": "font-label",
-                    "fontSize": "13px",
+                    "classes": "Fonts/Label fs-13",
                     "opacity": "0.8",
                     "whiteSpace": "normal"
                   }
@@ -182,8 +177,8 @@
                         "minWidth": "160px",
                         "maxWidth": "200px",
                         "width": "168px",
-                        "flexShrink": "0",
-                        "overflow": "hidden"
+                        "overflow": "hidden",
+                        "flexShrink": "0"
                       }
                     },
                     "children": [
@@ -195,8 +190,7 @@
                         "props": {
                           "text": "kWh (MTD)",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "13px",
+                            "classes": "Fonts/Label fs-13",
                             "opacity": "0.8"
                           }
                         }
@@ -222,9 +216,7 @@
                             "props": {
                               "text": "\u2014",
                               "style": {
-                                "classes": "font-livedata-entry",
-                                "fontSize": "22px",
-                                "fontWeight": "600"
+                                "classes": "Fonts/LiveDataEntry fs-22 fw-600"
                               }
                             },
                             "propConfig": {
@@ -232,7 +224,7 @@
                                 "binding": {
                                   "type": "expr",
                                   "config": {
-                                    "expression": "numberFormat(coalesce(try(if(isBadOrError(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/EPMS/kWh')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/EPMS/kWh')), null), 0), '#,##0')"
+                                    "expression": "numberFormat(coalesce(try(if(!isGood(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/EPMS/kWh')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/EPMS/kWh')), null), 0), '#,##0')"
                                   },
                                   "overlays": {
                                     "bad": false,
@@ -254,8 +246,7 @@
                             "props": {
                               "text": "kWh",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "13px",
+                                "classes": "Fonts/Label fs-13",
                                 "opacity": "0.7"
                               }
                             }
@@ -284,8 +275,8 @@
                         "minWidth": "160px",
                         "maxWidth": "200px",
                         "width": "168px",
-                        "flexShrink": "0",
-                        "overflow": "hidden"
+                        "overflow": "hidden",
+                        "flexShrink": "0"
                       }
                     },
                     "children": [
@@ -297,8 +288,7 @@
                         "props": {
                           "text": "Reactive",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "13px",
+                            "classes": "Fonts/Label fs-13",
                             "opacity": "0.8"
                           }
                         }
@@ -324,9 +314,7 @@
                             "props": {
                               "text": "\u2014",
                               "style": {
-                                "classes": "font-livedata-entry",
-                                "fontSize": "22px",
-                                "fontWeight": "600"
+                                "classes": "Fonts/LiveDataEntry fs-22 fw-600"
                               }
                             },
                             "propConfig": {
@@ -334,7 +322,7 @@
                                 "binding": {
                                   "type": "expr",
                                   "config": {
-                                    "expression": "numberFormat(coalesce(try(if(isBadOrError(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/EPMS/Kvar')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/EPMS/Kvar')), null), 0), '#,##0.0')"
+                                    "expression": "numberFormat(coalesce(try(if(!isGood(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/EPMS/Kvar')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/EPMS/Kvar')), null), 0), '#,##0.0')"
                                   },
                                   "overlays": {
                                     "bad": false,
@@ -356,8 +344,7 @@
                             "props": {
                               "text": "kvar",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "13px",
+                                "classes": "Fonts/Label fs-13",
                                 "opacity": "0.7"
                               }
                             }
@@ -386,8 +373,8 @@
                         "minWidth": "160px",
                         "maxWidth": "200px",
                         "width": "168px",
-                        "flexShrink": "0",
-                        "overflow": "hidden"
+                        "overflow": "hidden",
+                        "flexShrink": "0"
                       }
                     },
                     "children": [
@@ -399,8 +386,7 @@
                         "props": {
                           "text": "3yr month avg",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "13px",
+                            "classes": "Fonts/Label fs-13",
                             "opacity": "0.8"
                           }
                         }
@@ -426,9 +412,7 @@
                             "props": {
                               "text": "\u2014",
                               "style": {
-                                "classes": "font-livedata-entry",
-                                "fontSize": "22px",
-                                "fontWeight": "600"
+                                "classes": "Fonts/LiveDataEntry fs-22 fw-600"
                               }
                             },
                             "propConfig": {
@@ -436,7 +420,7 @@
                                 "binding": {
                                   "type": "expr",
                                   "config": {
-                                    "expression": "numberFormat(coalesce(try(if(isBadOrError(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/EPMS/Avg3Yr')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/EPMS/Avg3Yr')), null), 0), '#,##0')"
+                                    "expression": "numberFormat(coalesce(try(if(!isGood(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/EPMS/Avg3Yr')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/EPMS/Avg3Yr')), null), 0), '#,##0')"
                                   },
                                   "overlays": {
                                     "bad": false,
@@ -458,8 +442,7 @@
                             "props": {
                               "text": "kWh",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "13px",
+                                "classes": "Fonts/Label fs-13",
                                 "opacity": "0.7"
                               }
                             }
@@ -488,8 +471,8 @@
                         "minWidth": "160px",
                         "maxWidth": "200px",
                         "width": "168px",
-                        "flexShrink": "0",
-                        "overflow": "hidden"
+                        "overflow": "hidden",
+                        "flexShrink": "0"
                       }
                     },
                     "children": [
@@ -501,8 +484,7 @@
                         "props": {
                           "text": "Metering coverage",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "13px",
+                            "classes": "Fonts/Label fs-13",
                             "opacity": "0.8"
                           }
                         }
@@ -528,9 +510,7 @@
                             "props": {
                               "text": "\u2014",
                               "style": {
-                                "classes": "font-livedata-entry",
-                                "fontSize": "22px",
-                                "fontWeight": "600"
+                                "classes": "Fonts/LiveDataEntry fs-22 fw-600"
                               }
                             },
                             "propConfig": {
@@ -560,8 +540,7 @@
                             "props": {
                               "text": "% areas",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "13px",
+                                "classes": "Fonts/Label fs-13",
                                 "opacity": "0.7"
                               }
                             }
@@ -587,8 +566,8 @@
                     "width": "100%",
                     "maxWidth": "960px",
                     "overflow": "hidden",
-                    "flexShrink": "0",
-                    "alignSelf": "flex-start"
+                    "alignSelf": "flex-start",
+                    "flexShrink": "0"
                   }
                 },
                 "children": [
@@ -613,9 +592,7 @@
                         "props": {
                           "text": "kWh",
                           "style": {
-                            "classes": "font-heading",
-                            "fontSize": "15px",
-                            "fontWeight": "600"
+                            "classes": "Fonts/Heading fs-15 fw-600"
                           }
                         }
                       },
@@ -627,8 +604,7 @@
                         "props": {
                           "text": "Last 48 months \u00b7 7yr high/low band \u00b7 3yr AVG \u00b7 actual",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
+                            "classes": "Fonts/Label fs-12",
                             "opacity": "0.75"
                           }
                         }
@@ -1572,6 +1548,15 @@
                                 }
                               },
                               "decimalsInFloat": 0
+                            },
+                            "noData": {
+                              "text": "No Data",
+                              "align": "center",
+                              "verticalAlign": "middle",
+                              "style": {
+                                "color": "#90A4AE",
+                                "fontSize": "14px"
+                              }
                             }
                           }
                         },
@@ -1597,8 +1582,6 @@
                     "gap": "6px",
                     "padding": "10px 12px",
                     "width": "100%",
-                    "maxWidth": "100%",
-                    "boxSizing": "border-box",
                     "overflow": "hidden",
                     "flexShrink": "0"
                   }
@@ -1632,9 +1615,7 @@
                         "props": {
                           "text": "Area metering",
                           "style": {
-                            "classes": "font-heading",
-                            "fontSize": "15px",
-                            "fontWeight": "600"
+                            "classes": "Fonts/Heading fs-15 fw-600"
                           }
                         }
                       },
@@ -1646,8 +1627,7 @@
                         "props": {
                           "text": "Demo",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "11px",
+                            "classes": "Fonts/Label fs-11",
                             "opacity": "0.75",
                             "padding": "2px 8px",
                             "borderRadius": "4px",
@@ -1667,8 +1647,7 @@
                     "props": {
                       "text": "Submeter rollout by area \u2014 installed count and kWh / therm MTD (demo values).",
                       "style": {
-                        "classes": "font-label",
-                        "fontSize": "12px",
+                        "classes": "Fonts/Label fs-12",
                         "opacity": "0.8",
                         "whiteSpace": "normal"
                       }
@@ -1695,8 +1674,7 @@
                         "props": {
                           "text": "Installed",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
+                            "classes": "Fonts/Label fs-12",
                             "opacity": "0.75"
                           }
                         }
@@ -1709,9 +1687,7 @@
                         "props": {
                           "text": "6 / 8",
                           "style": {
-                            "classes": "font-livedata-entry",
-                            "fontSize": "15px",
-                            "fontWeight": "600"
+                            "classes": "Fonts/LiveDataEntry fs-15 fw-600"
                           }
                         }
                       }
@@ -1774,7 +1750,6 @@
                                 "classes": "kpi-coming-meter-row",
                                 "gap": "8px",
                                 "width": "100%",
-                                "maxWidth": "420px",
                                 "padding": "3px 0",
                                 "borderBottom": "1px solid rgba(0,0,0,0.06)",
                                 "overflow": "hidden"
@@ -1794,8 +1769,7 @@
                                 "props": {
                                   "text": "Freezer",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "13px",
+                                    "classes": "Fonts/Label fs-13",
                                     "width": "110px",
                                     "minWidth": "110px",
                                     "overflow": "hidden",
@@ -1812,8 +1786,7 @@
                                 "props": {
                                   "text": "Online",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "12px",
+                                    "classes": "Fonts/Label fs-12",
                                     "opacity": "0.8",
                                     "width": "70px",
                                     "minWidth": "70px",
@@ -1829,9 +1802,7 @@
                                 "props": {
                                   "text": "84,210",
                                   "style": {
-                                    "classes": "font-livedata-entry",
-                                    "fontSize": "13px",
-                                    "fontWeight": "600",
+                                    "classes": "Fonts/LiveDataEntry fs-13 fw-600",
                                     "width": "56px",
                                     "minWidth": "56px",
                                     "textAlign": "right"
@@ -1850,8 +1821,7 @@
                                 "props": {
                                   "text": "kWh",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "11px",
+                                    "classes": "Fonts/Label fs-11",
                                     "opacity": "0.65",
                                     "width": "28px"
                                   }
@@ -1865,9 +1835,7 @@
                                 "props": {
                                   "text": "2,140",
                                   "style": {
-                                    "classes": "font-livedata-entry",
-                                    "fontSize": "13px",
-                                    "fontWeight": "600",
+                                    "classes": "Fonts/LiveDataEntry fs-13 fw-600",
                                     "width": "40px",
                                     "minWidth": "40px",
                                     "textAlign": "right"
@@ -1886,8 +1854,7 @@
                                 "props": {
                                   "text": "therm",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "11px",
+                                    "classes": "Fonts/Label fs-11",
                                     "opacity": "0.65",
                                     "width": "36px"
                                   }
@@ -1913,7 +1880,6 @@
                                 "classes": "kpi-coming-meter-row",
                                 "gap": "8px",
                                 "width": "100%",
-                                "maxWidth": "420px",
                                 "padding": "3px 0",
                                 "borderBottom": "1px solid rgba(0,0,0,0.06)",
                                 "overflow": "hidden"
@@ -1933,8 +1899,7 @@
                                 "props": {
                                   "text": "SuperChill",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "13px",
+                                    "classes": "Fonts/Label fs-13",
                                     "width": "110px",
                                     "minWidth": "110px",
                                     "overflow": "hidden",
@@ -1951,8 +1916,7 @@
                                 "props": {
                                   "text": "Online",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "12px",
+                                    "classes": "Fonts/Label fs-12",
                                     "opacity": "0.8",
                                     "width": "70px",
                                     "minWidth": "70px",
@@ -1968,9 +1932,7 @@
                                 "props": {
                                   "text": "61,180",
                                   "style": {
-                                    "classes": "font-livedata-entry",
-                                    "fontSize": "13px",
-                                    "fontWeight": "600",
+                                    "classes": "Fonts/LiveDataEntry fs-13 fw-600",
                                     "width": "56px",
                                     "minWidth": "56px",
                                     "textAlign": "right"
@@ -1989,8 +1951,7 @@
                                 "props": {
                                   "text": "kWh",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "11px",
+                                    "classes": "Fonts/Label fs-11",
                                     "opacity": "0.65",
                                     "width": "28px"
                                   }
@@ -2004,9 +1965,7 @@
                                 "props": {
                                   "text": "1,825",
                                   "style": {
-                                    "classes": "font-livedata-entry",
-                                    "fontSize": "13px",
-                                    "fontWeight": "600",
+                                    "classes": "Fonts/LiveDataEntry fs-13 fw-600",
                                     "width": "40px",
                                     "minWidth": "40px",
                                     "textAlign": "right"
@@ -2025,8 +1984,7 @@
                                 "props": {
                                   "text": "therm",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "11px",
+                                    "classes": "Fonts/Label fs-11",
                                     "opacity": "0.65",
                                     "width": "36px"
                                   }
@@ -2052,7 +2010,6 @@
                                 "classes": "kpi-coming-meter-row",
                                 "gap": "8px",
                                 "width": "100%",
-                                "maxWidth": "420px",
                                 "padding": "3px 0",
                                 "borderBottom": "1px solid rgba(0,0,0,0.06)",
                                 "overflow": "hidden"
@@ -2072,8 +2029,7 @@
                                 "props": {
                                   "text": "Club",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "13px",
+                                    "classes": "Fonts/Label fs-13",
                                     "width": "110px",
                                     "minWidth": "110px",
                                     "overflow": "hidden",
@@ -2090,8 +2046,7 @@
                                 "props": {
                                   "text": "Online",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "12px",
+                                    "classes": "Fonts/Label fs-12",
                                     "opacity": "0.8",
                                     "width": "70px",
                                     "minWidth": "70px",
@@ -2107,9 +2062,7 @@
                                 "props": {
                                   "text": "22,140",
                                   "style": {
-                                    "classes": "font-livedata-entry",
-                                    "fontSize": "13px",
-                                    "fontWeight": "600",
+                                    "classes": "Fonts/LiveDataEntry fs-13 fw-600",
                                     "width": "56px",
                                     "minWidth": "56px",
                                     "textAlign": "right"
@@ -2128,8 +2081,7 @@
                                 "props": {
                                   "text": "kWh",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "11px",
+                                    "classes": "Fonts/Label fs-11",
                                     "opacity": "0.65",
                                     "width": "28px"
                                   }
@@ -2143,9 +2095,7 @@
                                 "props": {
                                   "text": "910",
                                   "style": {
-                                    "classes": "font-livedata-entry",
-                                    "fontSize": "13px",
-                                    "fontWeight": "600",
+                                    "classes": "Fonts/LiveDataEntry fs-13 fw-600",
                                     "width": "40px",
                                     "minWidth": "40px",
                                     "textAlign": "right"
@@ -2164,8 +2114,7 @@
                                 "props": {
                                   "text": "therm",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "11px",
+                                    "classes": "Fonts/Label fs-11",
                                     "opacity": "0.65",
                                     "width": "36px"
                                   }
@@ -2191,7 +2140,6 @@
                                 "classes": "kpi-coming-meter-row",
                                 "gap": "8px",
                                 "width": "100%",
-                                "maxWidth": "420px",
                                 "padding": "3px 0",
                                 "borderBottom": "1px solid rgba(0,0,0,0.06)",
                                 "overflow": "hidden"
@@ -2211,8 +2159,7 @@
                                 "props": {
                                   "text": "Palletizing",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "13px",
+                                    "classes": "Fonts/Label fs-13",
                                     "width": "110px",
                                     "minWidth": "110px",
                                     "overflow": "hidden",
@@ -2229,8 +2176,7 @@
                                 "props": {
                                   "text": "Online",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "12px",
+                                    "classes": "Fonts/Label fs-12",
                                     "opacity": "0.8",
                                     "width": "70px",
                                     "minWidth": "70px",
@@ -2246,9 +2192,7 @@
                                 "props": {
                                   "text": "18,450",
                                   "style": {
-                                    "classes": "font-livedata-entry",
-                                    "fontSize": "13px",
-                                    "fontWeight": "600",
+                                    "classes": "Fonts/LiveDataEntry fs-13 fw-600",
                                     "width": "56px",
                                     "minWidth": "56px",
                                     "textAlign": "right"
@@ -2267,8 +2211,7 @@
                                 "props": {
                                   "text": "kWh",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "11px",
+                                    "classes": "Fonts/Label fs-11",
                                     "opacity": "0.65",
                                     "width": "28px"
                                   }
@@ -2282,9 +2225,7 @@
                                 "props": {
                                   "text": "420",
                                   "style": {
-                                    "classes": "font-livedata-entry",
-                                    "fontSize": "13px",
-                                    "fontWeight": "600",
+                                    "classes": "Fonts/LiveDataEntry fs-13 fw-600",
                                     "width": "40px",
                                     "minWidth": "40px",
                                     "textAlign": "right"
@@ -2303,8 +2244,7 @@
                                 "props": {
                                   "text": "therm",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "11px",
+                                    "classes": "Fonts/Label fs-11",
                                     "opacity": "0.65",
                                     "width": "36px"
                                   }
@@ -2353,7 +2293,6 @@
                                 "classes": "kpi-coming-meter-row",
                                 "gap": "8px",
                                 "width": "100%",
-                                "maxWidth": "420px",
                                 "padding": "3px 0",
                                 "borderBottom": "1px solid rgba(0,0,0,0.06)",
                                 "overflow": "hidden"
@@ -2373,8 +2312,7 @@
                                 "props": {
                                   "text": "East PH",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "13px",
+                                    "classes": "Fonts/Label fs-13",
                                     "width": "110px",
                                     "minWidth": "110px",
                                     "overflow": "hidden",
@@ -2391,8 +2329,7 @@
                                 "props": {
                                   "text": "Online",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "12px",
+                                    "classes": "Fonts/Label fs-12",
                                     "opacity": "0.8",
                                     "width": "70px",
                                     "minWidth": "70px",
@@ -2408,9 +2345,7 @@
                                 "props": {
                                   "text": "33,420",
                                   "style": {
-                                    "classes": "font-livedata-entry",
-                                    "fontSize": "13px",
-                                    "fontWeight": "600",
+                                    "classes": "Fonts/LiveDataEntry fs-13 fw-600",
                                     "width": "56px",
                                     "minWidth": "56px",
                                     "textAlign": "right"
@@ -2429,8 +2364,7 @@
                                 "props": {
                                   "text": "kWh",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "11px",
+                                    "classes": "Fonts/Label fs-11",
                                     "opacity": "0.65",
                                     "width": "28px"
                                   }
@@ -2444,9 +2378,7 @@
                                 "props": {
                                   "text": "1,180",
                                   "style": {
-                                    "classes": "font-livedata-entry",
-                                    "fontSize": "13px",
-                                    "fontWeight": "600",
+                                    "classes": "Fonts/LiveDataEntry fs-13 fw-600",
                                     "width": "40px",
                                     "minWidth": "40px",
                                     "textAlign": "right"
@@ -2465,8 +2397,7 @@
                                 "props": {
                                   "text": "therm",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "11px",
+                                    "classes": "Fonts/Label fs-11",
                                     "opacity": "0.65",
                                     "width": "36px"
                                   }
@@ -2492,7 +2423,6 @@
                                 "classes": "kpi-coming-meter-row",
                                 "gap": "8px",
                                 "width": "100%",
-                                "maxWidth": "420px",
                                 "padding": "3px 0",
                                 "borderBottom": "1px solid rgba(0,0,0,0.06)",
                                 "overflow": "hidden"
@@ -2512,8 +2442,7 @@
                                 "props": {
                                   "text": "West PH",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "13px",
+                                    "classes": "Fonts/Label fs-13",
                                     "width": "110px",
                                     "minWidth": "110px",
                                     "overflow": "hidden",
@@ -2530,8 +2459,7 @@
                                 "props": {
                                   "text": "Online",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "12px",
+                                    "classes": "Fonts/Label fs-12",
                                     "opacity": "0.8",
                                     "width": "70px",
                                     "minWidth": "70px",
@@ -2547,9 +2475,7 @@
                                 "props": {
                                   "text": "29,780",
                                   "style": {
-                                    "classes": "font-livedata-entry",
-                                    "fontSize": "13px",
-                                    "fontWeight": "600",
+                                    "classes": "Fonts/LiveDataEntry fs-13 fw-600",
                                     "width": "56px",
                                     "minWidth": "56px",
                                     "textAlign": "right"
@@ -2568,8 +2494,7 @@
                                 "props": {
                                   "text": "kWh",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "11px",
+                                    "classes": "Fonts/Label fs-11",
                                     "opacity": "0.65",
                                     "width": "28px"
                                   }
@@ -2583,9 +2508,7 @@
                                 "props": {
                                   "text": "1,095",
                                   "style": {
-                                    "classes": "font-livedata-entry",
-                                    "fontSize": "13px",
-                                    "fontWeight": "600",
+                                    "classes": "Fonts/LiveDataEntry fs-13 fw-600",
                                     "width": "40px",
                                     "minWidth": "40px",
                                     "textAlign": "right"
@@ -2604,8 +2527,7 @@
                                 "props": {
                                   "text": "therm",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "11px",
+                                    "classes": "Fonts/Label fs-11",
                                     "opacity": "0.65",
                                     "width": "36px"
                                   }
@@ -2631,7 +2553,6 @@
                                 "classes": "kpi-coming-meter-row",
                                 "gap": "8px",
                                 "width": "100%",
-                                "maxWidth": "420px",
                                 "padding": "3px 0",
                                 "borderBottom": "1px solid rgba(0,0,0,0.06)",
                                 "overflow": "hidden"
@@ -2651,8 +2572,7 @@
                                 "props": {
                                   "text": "Dock",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "13px",
+                                    "classes": "Fonts/Label fs-13",
                                     "width": "110px",
                                     "minWidth": "110px",
                                     "overflow": "hidden",
@@ -2669,8 +2589,7 @@
                                 "props": {
                                   "text": "Planned",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "12px",
+                                    "classes": "Fonts/Label fs-12",
                                     "opacity": "0.8",
                                     "width": "70px",
                                     "minWidth": "70px",
@@ -2686,9 +2605,7 @@
                                 "props": {
                                   "text": "0",
                                   "style": {
-                                    "classes": "font-livedata-entry",
-                                    "fontSize": "13px",
-                                    "fontWeight": "600",
+                                    "classes": "Fonts/LiveDataEntry fs-13 fw-600",
                                     "width": "56px",
                                     "minWidth": "56px",
                                     "textAlign": "right"
@@ -2707,8 +2624,7 @@
                                 "props": {
                                   "text": "kWh",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "11px",
+                                    "classes": "Fonts/Label fs-11",
                                     "opacity": "0.65",
                                     "width": "28px"
                                   }
@@ -2722,9 +2638,7 @@
                                 "props": {
                                   "text": "0",
                                   "style": {
-                                    "classes": "font-livedata-entry",
-                                    "fontSize": "13px",
-                                    "fontWeight": "600",
+                                    "classes": "Fonts/LiveDataEntry fs-13 fw-600",
                                     "width": "40px",
                                     "minWidth": "40px",
                                     "textAlign": "right"
@@ -2743,8 +2657,7 @@
                                 "props": {
                                   "text": "therm",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "11px",
+                                    "classes": "Fonts/Label fs-11",
                                     "opacity": "0.65",
                                     "width": "36px"
                                   }
@@ -2770,7 +2683,6 @@
                                 "classes": "kpi-coming-meter-row",
                                 "gap": "8px",
                                 "width": "100%",
-                                "maxWidth": "420px",
                                 "padding": "3px 0",
                                 "borderBottom": "1px solid rgba(0,0,0,0.06)",
                                 "overflow": "hidden"
@@ -2790,8 +2702,7 @@
                                 "props": {
                                   "text": "Machine Room",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "13px",
+                                    "classes": "Fonts/Label fs-13",
                                     "width": "110px",
                                     "minWidth": "110px",
                                     "overflow": "hidden",
@@ -2808,8 +2719,7 @@
                                 "props": {
                                   "text": "Installing",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "12px",
+                                    "classes": "Fonts/Label fs-12",
                                     "opacity": "0.8",
                                     "width": "70px",
                                     "minWidth": "70px",
@@ -2825,9 +2735,7 @@
                                 "props": {
                                   "text": "15,220",
                                   "style": {
-                                    "classes": "font-livedata-entry",
-                                    "fontSize": "13px",
-                                    "fontWeight": "600",
+                                    "classes": "Fonts/LiveDataEntry fs-13 fw-600",
                                     "width": "56px",
                                     "minWidth": "56px",
                                     "textAlign": "right"
@@ -2846,8 +2754,7 @@
                                 "props": {
                                   "text": "kWh",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "11px",
+                                    "classes": "Fonts/Label fs-11",
                                     "opacity": "0.65",
                                     "width": "28px"
                                   }
@@ -2861,9 +2768,7 @@
                                 "props": {
                                   "text": "780",
                                   "style": {
-                                    "classes": "font-livedata-entry",
-                                    "fontSize": "13px",
-                                    "fontWeight": "600",
+                                    "classes": "Fonts/LiveDataEntry fs-13 fw-600",
                                     "width": "40px",
                                     "minWidth": "40px",
                                     "textAlign": "right"
@@ -2882,8 +2787,7 @@
                                 "props": {
                                   "text": "therm",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "11px",
+                                    "classes": "Fonts/Label fs-11",
                                     "opacity": "0.65",
                                     "width": "36px"
                                   }
@@ -2909,8 +2813,6 @@
                     "gap": "6px",
                     "padding": "10px 12px",
                     "width": "100%",
-                    "maxWidth": "100%",
-                    "boxSizing": "border-box",
                     "overflow": "hidden",
                     "flexShrink": "0"
                   }
@@ -2944,9 +2846,7 @@
                         "props": {
                           "text": "kWh year-over-year",
                           "style": {
-                            "classes": "font-heading",
-                            "fontSize": "15px",
-                            "fontWeight": "600"
+                            "classes": "Fonts/Heading fs-15 fw-600"
                           }
                         }
                       },
@@ -2958,8 +2858,7 @@
                         "props": {
                           "text": "Demo",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "11px",
+                            "classes": "Fonts/Label fs-11",
                             "opacity": "0.75",
                             "padding": "2px 8px",
                             "borderRadius": "4px",
@@ -3022,9 +2921,7 @@
                             "props": {
                               "text": "kWh \u00b7 YoY",
                               "style": {
-                                "classes": "font-heading",
-                                "fontSize": "14px",
-                                "fontWeight": "600"
+                                "classes": "Fonts/Heading fs-14 fw-600"
                               }
                             }
                           },
@@ -3036,8 +2933,7 @@
                             "props": {
                               "text": "Demo",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "11px",
+                                "classes": "Fonts/Label fs-11",
                                 "opacity": "0.75",
                                 "padding": "2px 8px",
                                 "borderRadius": "4px",
@@ -3227,6 +3123,15 @@
                                 "tooltip": {
                                   "enabled": true,
                                   "theme": "dark"
+                                },
+                                "noData": {
+                                  "text": "No Data",
+                                  "align": "center",
+                                  "verticalAlign": "middle",
+                                  "style": {
+                                    "color": "#90A4AE",
+                                    "fontSize": "14px"
+                                  }
                                 }
                               }
                             },
@@ -3260,10 +3165,9 @@
                 "padding": "12px 14px 14px",
                 "width": "100%",
                 "height": "100%",
-                "overflowX": "hidden",
                 "overflowY": "auto",
-                "boxSizing": "border-box",
                 "minHeight": "0",
+                "overflowX": "hidden",
                 "justifyContent": "flex-start",
                 "alignContent": "flex-start"
               }
@@ -3277,8 +3181,7 @@
                 "props": {
                   "text": "Ambient temperature benchmarks with natural gas, water, and CO\u2082 pens (demo utility values).",
                   "style": {
-                    "classes": "font-label",
-                    "fontSize": "13px",
+                    "classes": "Fonts/Label fs-13",
                     "opacity": "0.8",
                     "whiteSpace": "normal"
                   }
@@ -3320,8 +3223,8 @@
                         "minWidth": "160px",
                         "maxWidth": "200px",
                         "width": "168px",
-                        "flexShrink": "0",
-                        "overflow": "hidden"
+                        "overflow": "hidden",
+                        "flexShrink": "0"
                       }
                     },
                     "children": [
@@ -3333,8 +3236,7 @@
                         "props": {
                           "text": "Natural Gas",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "13px",
+                            "classes": "Fonts/Label fs-13",
                             "opacity": "0.8"
                           }
                         }
@@ -3360,9 +3262,7 @@
                             "props": {
                               "text": "\u2014",
                               "style": {
-                                "classes": "font-livedata-entry",
-                                "fontSize": "22px",
-                                "fontWeight": "600"
+                                "classes": "Fonts/LiveDataEntry fs-22 fw-600"
                               }
                             },
                             "propConfig": {
@@ -3370,7 +3270,7 @@
                                 "binding": {
                                   "type": "expr",
                                   "config": {
-                                    "expression": "numberFormat(coalesce(try(if(isBadOrError(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Utility/Therm')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Utility/Therm')), null), 28450), '#,##0')"
+                                    "expression": "numberFormat(coalesce(try(if(!isGood(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Utility/Therm')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Utility/Therm')), null), 28450), '#,##0')"
                                   },
                                   "overlays": {
                                     "bad": false,
@@ -3392,8 +3292,7 @@
                             "props": {
                               "text": "therm",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "13px",
+                                "classes": "Fonts/Label fs-13",
                                 "opacity": "0.7"
                               }
                             }
@@ -3422,8 +3321,8 @@
                         "minWidth": "160px",
                         "maxWidth": "200px",
                         "width": "168px",
-                        "flexShrink": "0",
-                        "overflow": "hidden"
+                        "overflow": "hidden",
+                        "flexShrink": "0"
                       }
                     },
                     "children": [
@@ -3435,8 +3334,7 @@
                         "props": {
                           "text": "Water",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "13px",
+                            "classes": "Fonts/Label fs-13",
                             "opacity": "0.8"
                           }
                         }
@@ -3462,9 +3360,7 @@
                             "props": {
                               "text": "\u2014",
                               "style": {
-                                "classes": "font-livedata-entry",
-                                "fontSize": "22px",
-                                "fontWeight": "600"
+                                "classes": "Fonts/LiveDataEntry fs-22 fw-600"
                               }
                             },
                             "propConfig": {
@@ -3472,7 +3368,7 @@
                                 "binding": {
                                   "type": "expr",
                                   "config": {
-                                    "expression": "numberFormat(coalesce(try(if(isBadOrError(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Utility/H2O')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Utility/H2O')), null), 1260), '#,##0')"
+                                    "expression": "numberFormat(coalesce(try(if(!isGood(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Utility/H2O')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Utility/H2O')), null), 1260), '#,##0')"
                                   },
                                   "overlays": {
                                     "bad": false,
@@ -3494,8 +3390,7 @@
                             "props": {
                               "text": "H2O",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "13px",
+                                "classes": "Fonts/Label fs-13",
                                 "opacity": "0.7"
                               }
                             }
@@ -3524,8 +3419,8 @@
                         "minWidth": "160px",
                         "maxWidth": "200px",
                         "width": "168px",
-                        "flexShrink": "0",
-                        "overflow": "hidden"
+                        "overflow": "hidden",
+                        "flexShrink": "0"
                       }
                     },
                     "children": [
@@ -3537,8 +3432,7 @@
                         "props": {
                           "text": "CO\u2082",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "13px",
+                            "classes": "Fonts/Label fs-13",
                             "opacity": "0.8"
                           }
                         }
@@ -3564,9 +3458,7 @@
                             "props": {
                               "text": "\u2014",
                               "style": {
-                                "classes": "font-livedata-entry",
-                                "fontSize": "22px",
-                                "fontWeight": "600"
+                                "classes": "Fonts/LiveDataEntry fs-22 fw-600"
                               }
                             },
                             "propConfig": {
@@ -3574,7 +3466,7 @@
                                 "binding": {
                                   "type": "expr",
                                   "config": {
-                                    "expression": "numberFormat(coalesce(try(if(isBadOrError(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Utility/CO2')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Utility/CO2')), null), 41200), '#,##0')"
+                                    "expression": "numberFormat(coalesce(try(if(!isGood(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Utility/CO2')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Utility/CO2')), null), 41200), '#,##0')"
                                   },
                                   "overlays": {
                                     "bad": false,
@@ -3596,8 +3488,7 @@
                             "props": {
                               "text": "lb",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "13px",
+                                "classes": "Fonts/Label fs-13",
                                 "opacity": "0.7"
                               }
                             }
@@ -3626,8 +3517,8 @@
                         "minWidth": "160px",
                         "maxWidth": "200px",
                         "width": "168px",
-                        "flexShrink": "0",
-                        "overflow": "hidden"
+                        "overflow": "hidden",
+                        "flexShrink": "0"
                       }
                     },
                     "children": [
@@ -3639,8 +3530,7 @@
                         "props": {
                           "text": "Outdoor Temp",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "13px",
+                            "classes": "Fonts/Label fs-13",
                             "opacity": "0.8"
                           }
                         }
@@ -3666,9 +3556,7 @@
                             "props": {
                               "text": "\u2014",
                               "style": {
-                                "classes": "font-livedata-entry",
-                                "fontSize": "22px",
-                                "fontWeight": "600"
+                                "classes": "Fonts/LiveDataEntry fs-22 fw-600"
                               }
                             },
                             "propConfig": {
@@ -3676,7 +3564,7 @@
                                 "binding": {
                                   "type": "expr",
                                   "config": {
-                                    "expression": "numberFormat(coalesce(try(if(isBadOrError(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Utility/AmbientAvgF')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Utility/AmbientAvgF')), null), 0), '0')"
+                                    "expression": "numberFormat(coalesce(try(if(!isGood(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Utility/AmbientAvgF')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Utility/AmbientAvgF')), null), 0), '0')"
                                   },
                                   "overlays": {
                                     "bad": false,
@@ -3698,8 +3586,7 @@
                             "props": {
                               "text": "\u00b0F",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "13px",
+                                "classes": "Fonts/Label fs-13",
                                 "opacity": "0.7"
                               }
                             }
@@ -3725,8 +3612,8 @@
                     "width": "100%",
                     "maxWidth": "960px",
                     "overflow": "hidden",
-                    "flexShrink": "0",
-                    "alignSelf": "flex-start"
+                    "alignSelf": "flex-start",
+                    "flexShrink": "0"
                   }
                 },
                 "children": [
@@ -3751,9 +3638,7 @@
                         "props": {
                           "text": "Temperature",
                           "style": {
-                            "classes": "font-heading",
-                            "fontSize": "15px",
-                            "fontWeight": "600"
+                            "classes": "Fonts/Heading fs-15 fw-600"
                           }
                         }
                       },
@@ -3765,8 +3650,7 @@
                         "props": {
                           "text": "Last 36 months \u00b7 7yr high/low band \u00b7 3yr AVG \u00b7 current month AVG",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "12px",
+                            "classes": "Fonts/Label fs-12",
                             "opacity": "0.75"
                           }
                         }
@@ -4518,6 +4402,15 @@
                                 }
                               },
                               "decimalsInFloat": 0
+                            },
+                            "noData": {
+                              "text": "No Data",
+                              "align": "center",
+                              "verticalAlign": "middle",
+                              "style": {
+                                "color": "#90A4AE",
+                                "fontSize": "14px"
+                              }
                             }
                           }
                         },
@@ -4543,8 +4436,6 @@
                     "gap": "6px",
                     "padding": "10px 12px",
                     "width": "100%",
-                    "maxWidth": "100%",
-                    "boxSizing": "border-box",
                     "overflow": "hidden",
                     "flexShrink": "0"
                   }
@@ -4578,9 +4469,7 @@
                         "props": {
                           "text": "Therm year-over-year",
                           "style": {
-                            "classes": "font-heading",
-                            "fontSize": "15px",
-                            "fontWeight": "600"
+                            "classes": "Fonts/Heading fs-15 fw-600"
                           }
                         }
                       },
@@ -4592,8 +4481,7 @@
                         "props": {
                           "text": "Demo",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "11px",
+                            "classes": "Fonts/Label fs-11",
                             "opacity": "0.75",
                             "padding": "2px 8px",
                             "borderRadius": "4px",
@@ -4656,9 +4544,7 @@
                             "props": {
                               "text": "Therm \u00b7 YoY",
                               "style": {
-                                "classes": "font-heading",
-                                "fontSize": "14px",
-                                "fontWeight": "600"
+                                "classes": "Fonts/Heading fs-14 fw-600"
                               }
                             }
                           },
@@ -4670,8 +4556,7 @@
                             "props": {
                               "text": "Demo",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "11px",
+                                "classes": "Fonts/Label fs-11",
                                 "opacity": "0.75",
                                 "padding": "2px 8px",
                                 "borderRadius": "4px",
@@ -4861,6 +4746,15 @@
                                 "tooltip": {
                                   "enabled": true,
                                   "theme": "dark"
+                                },
+                                "noData": {
+                                  "text": "No Data",
+                                  "align": "center",
+                                  "verticalAlign": "middle",
+                                  "style": {
+                                    "color": "#90A4AE",
+                                    "fontSize": "14px"
+                                  }
                                 }
                               }
                             },
@@ -4894,10 +4788,9 @@
                 "padding": "12px 14px 14px",
                 "width": "100%",
                 "height": "100%",
-                "overflowX": "hidden",
                 "overflowY": "auto",
-                "boxSizing": "border-box",
                 "minHeight": "0",
+                "overflowX": "hidden",
                 "justifyContent": "flex-start",
                 "alignContent": "flex-start"
               }
@@ -4911,8 +4804,7 @@
                 "props": {
                   "text": "Volume and intensity pens, YoY comparison, and Cascade / Eneroi line-break restart averages.",
                   "style": {
-                    "classes": "font-label",
-                    "fontSize": "13px",
+                    "classes": "Fonts/Label fs-13",
                     "opacity": "0.8",
                     "whiteSpace": "normal"
                   }
@@ -4954,8 +4846,8 @@
                         "minWidth": "160px",
                         "maxWidth": "200px",
                         "width": "168px",
-                        "flexShrink": "0",
-                        "overflow": "hidden"
+                        "overflow": "hidden",
+                        "flexShrink": "0"
                       }
                     },
                     "children": [
@@ -4967,8 +4859,7 @@
                         "props": {
                           "text": "Production",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "13px",
+                            "classes": "Fonts/Label fs-13",
                             "opacity": "0.8"
                           }
                         }
@@ -4994,9 +4885,7 @@
                             "props": {
                               "text": "\u2014",
                               "style": {
-                                "classes": "font-livedata-entry",
-                                "fontSize": "22px",
-                                "fontWeight": "600"
+                                "classes": "Fonts/LiveDataEntry fs-22 fw-600"
                               }
                             },
                             "propConfig": {
@@ -5004,7 +4893,7 @@
                                 "binding": {
                                   "type": "expr",
                                   "config": {
-                                    "expression": "numberFormat(coalesce(try(if(isBadOrError(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Production/ProdVol')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Production/ProdVol')), null), 0), '#,##0')"
+                                    "expression": "numberFormat(coalesce(try(if(!isGood(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Production/ProdVol')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Production/ProdVol')), null), 0), '#,##0')"
                                   },
                                   "overlays": {
                                     "bad": false,
@@ -5026,8 +4915,7 @@
                             "props": {
                               "text": "lb",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "13px",
+                                "classes": "Fonts/Label fs-13",
                                 "opacity": "0.7"
                               }
                             }
@@ -5056,8 +4944,8 @@
                         "minWidth": "160px",
                         "maxWidth": "200px",
                         "width": "168px",
-                        "flexShrink": "0",
-                        "overflow": "hidden"
+                        "overflow": "hidden",
+                        "flexShrink": "0"
                       }
                     },
                     "children": [
@@ -5069,8 +4957,7 @@
                         "props": {
                           "text": "7d avg volume",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "13px",
+                            "classes": "Fonts/Label fs-13",
                             "opacity": "0.8"
                           }
                         }
@@ -5096,9 +4983,7 @@
                             "props": {
                               "text": "\u2014",
                               "style": {
-                                "classes": "font-livedata-entry",
-                                "fontSize": "22px",
-                                "fontWeight": "600"
+                                "classes": "Fonts/LiveDataEntry fs-22 fw-600"
                               }
                             },
                             "propConfig": {
@@ -5106,7 +4991,7 @@
                                 "binding": {
                                   "type": "expr",
                                   "config": {
-                                    "expression": "numberFormat(coalesce(try(if(isBadOrError(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Production/ProdVolAvg7d')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Production/ProdVolAvg7d')), null), 0), '#,##0')"
+                                    "expression": "numberFormat(coalesce(try(if(!isGood(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Production/ProdVolAvg7d')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Production/ProdVolAvg7d')), null), 0), '#,##0')"
                                   },
                                   "overlays": {
                                     "bad": false,
@@ -5128,8 +5013,7 @@
                             "props": {
                               "text": "lb",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "13px",
+                                "classes": "Fonts/Label fs-13",
                                 "opacity": "0.7"
                               }
                             }
@@ -5158,8 +5042,8 @@
                         "minWidth": "160px",
                         "maxWidth": "200px",
                         "width": "168px",
-                        "flexShrink": "0",
-                        "overflow": "hidden"
+                        "overflow": "hidden",
+                        "flexShrink": "0"
                       }
                     },
                     "children": [
@@ -5171,8 +5055,7 @@
                         "props": {
                           "text": "Energy intensity",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "13px",
+                            "classes": "Fonts/Label fs-13",
                             "opacity": "0.8"
                           }
                         }
@@ -5198,9 +5081,7 @@
                             "props": {
                               "text": "\u2014",
                               "style": {
-                                "classes": "font-livedata-entry",
-                                "fontSize": "22px",
-                                "fontWeight": "600"
+                                "classes": "Fonts/LiveDataEntry fs-22 fw-600"
                               }
                             },
                             "propConfig": {
@@ -5208,7 +5089,7 @@
                                 "binding": {
                                   "type": "expr",
                                   "config": {
-                                    "expression": "numberFormat(coalesce(try(if(isBadOrError(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Production/kWhPerLb')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Production/kWhPerLb')), null), 0), '0.0')"
+                                    "expression": "numberFormat(coalesce(try(if(!isGood(tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Production/kWhPerLb')), null, tag(coalesce({view.params.tagRoot}, '[default]KPI/Groveport/Site') + '/Production/kWhPerLb')), null), 0), '0.0')"
                                   },
                                   "overlays": {
                                     "bad": false,
@@ -5230,8 +5111,7 @@
                             "props": {
                               "text": "kWh/lb",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "13px",
+                                "classes": "Fonts/Label fs-13",
                                 "opacity": "0.7"
                               }
                             }
@@ -5254,8 +5134,6 @@
                     "gap": "6px",
                     "padding": "10px 12px",
                     "width": "100%",
-                    "maxWidth": "100%",
-                    "boxSizing": "border-box",
                     "overflow": "hidden",
                     "flexShrink": "0"
                   }
@@ -5289,9 +5167,7 @@
                         "props": {
                           "text": "Production year-over-year",
                           "style": {
-                            "classes": "font-heading",
-                            "fontSize": "15px",
-                            "fontWeight": "600"
+                            "classes": "Fonts/Heading fs-15 fw-600"
                           }
                         }
                       },
@@ -5303,8 +5179,7 @@
                         "props": {
                           "text": "Demo",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "11px",
+                            "classes": "Fonts/Label fs-11",
                             "opacity": "0.75",
                             "padding": "2px 8px",
                             "borderRadius": "4px",
@@ -5367,9 +5242,7 @@
                             "props": {
                               "text": "Production \u00b7 YoY",
                               "style": {
-                                "classes": "font-heading",
-                                "fontSize": "14px",
-                                "fontWeight": "600"
+                                "classes": "Fonts/Heading fs-14 fw-600"
                               }
                             }
                           },
@@ -5381,8 +5254,7 @@
                             "props": {
                               "text": "Demo",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "11px",
+                                "classes": "Fonts/Label fs-11",
                                 "opacity": "0.75",
                                 "padding": "2px 8px",
                                 "borderRadius": "4px",
@@ -5572,6 +5444,15 @@
                                 "tooltip": {
                                   "enabled": true,
                                   "theme": "dark"
+                                },
+                                "noData": {
+                                  "text": "No Data",
+                                  "align": "center",
+                                  "verticalAlign": "middle",
+                                  "style": {
+                                    "color": "#90A4AE",
+                                    "fontSize": "14px"
+                                  }
                                 }
                               }
                             },
@@ -5599,8 +5480,6 @@
                     "gap": "6px",
                     "padding": "10px 12px",
                     "width": "100%",
-                    "maxWidth": "100%",
-                    "boxSizing": "border-box",
                     "overflow": "hidden",
                     "flexShrink": "0"
                   }
@@ -5634,9 +5513,7 @@
                         "props": {
                           "text": "Line-break restart averages",
                           "style": {
-                            "classes": "font-heading",
-                            "fontSize": "15px",
-                            "fontWeight": "600"
+                            "classes": "Fonts/Heading fs-15 fw-600"
                           }
                         }
                       },
@@ -5648,8 +5525,7 @@
                         "props": {
                           "text": "Demo",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "11px",
+                            "classes": "Fonts/Label fs-11",
                             "opacity": "0.75",
                             "padding": "2px 8px",
                             "borderRadius": "4px",
@@ -5669,8 +5545,7 @@
                     "props": {
                       "text": "Utility Tracker baselines \u2014 Cascade (Groveport October) and Eneroi site months. Restart avg is demo.",
                       "style": {
-                        "classes": "font-label",
-                        "fontSize": "12px",
+                        "classes": "Fonts/Label fs-12",
                         "opacity": "0.8",
                         "whiteSpace": "normal"
                       }
@@ -5705,7 +5580,6 @@
                           "style": {
                             "gap": "6px",
                             "minWidth": "240px",
-                            "maxWidth": "320px",
                             "width": "280px",
                             "padding": "8px 10px",
                             "classes": "kpi-coming-subcard",
@@ -5721,9 +5595,7 @@
                             "props": {
                               "text": "Cascade",
                               "style": {
-                                "classes": "font-heading",
-                                "fontSize": "14px",
-                                "fontWeight": "600"
+                                "classes": "Fonts/Heading fs-14 fw-600"
                               }
                             }
                           },
@@ -5748,8 +5620,7 @@
                                 "props": {
                                   "text": "Restart avg",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "12px",
+                                    "classes": "Fonts/Label fs-12",
                                     "opacity": "0.75"
                                   }
                                 }
@@ -5762,9 +5633,7 @@
                                 "props": {
                                   "text": "18.4",
                                   "style": {
-                                    "classes": "font-livedata-entry",
-                                    "fontSize": "20px",
-                                    "fontWeight": "600"
+                                    "classes": "Fonts/LiveDataEntry fs-20 fw-600"
                                   }
                                 }
                               },
@@ -5776,8 +5645,7 @@
                                 "props": {
                                   "text": "min",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "12px",
+                                    "classes": "Fonts/Label fs-12",
                                     "opacity": "0.7"
                                   }
                                 }
@@ -5792,8 +5660,7 @@
                             "props": {
                               "text": "Baseline: October",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "12px",
+                                "classes": "Fonts/Label fs-12",
                                 "opacity": "0.8"
                               }
                             }
@@ -5806,8 +5673,7 @@
                             "props": {
                               "text": "Reference months",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "11px",
+                                "classes": "Fonts/Label fs-11",
                                 "opacity": "0.65"
                               }
                             }
@@ -5837,8 +5703,7 @@
                                 "props": {
                                   "text": "New York",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "13px",
+                                    "classes": "Fonts/Label fs-13",
                                     "opacity": "0.85"
                                   }
                                 }
@@ -5851,8 +5716,7 @@
                                 "props": {
                                   "text": "March",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "13px",
+                                    "classes": "Fonts/Label fs-13",
                                     "opacity": "0.8"
                                   }
                                 }
@@ -5884,8 +5748,7 @@
                                 "props": {
                                   "text": "Groveport",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "13px",
+                                    "classes": "Fonts/Label fs-13",
                                     "opacity": "1"
                                   }
                                 }
@@ -5898,8 +5761,7 @@
                                 "props": {
                                   "text": "October",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "13px",
+                                    "classes": "Fonts/Label fs-13",
                                     "opacity": "0.8"
                                   }
                                 }
@@ -5931,8 +5793,7 @@
                                 "props": {
                                   "text": "Holland",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "13px",
+                                    "classes": "Fonts/Label fs-13",
                                     "opacity": "0.85"
                                   }
                                 }
@@ -5945,8 +5806,7 @@
                                 "props": {
                                   "text": "November",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "13px",
+                                    "classes": "Fonts/Label fs-13",
                                     "opacity": "0.8"
                                   }
                                 }
@@ -5970,7 +5830,6 @@
                           "style": {
                             "gap": "6px",
                             "minWidth": "240px",
-                            "maxWidth": "320px",
                             "width": "280px",
                             "padding": "8px 10px",
                             "classes": "kpi-coming-subcard",
@@ -5986,9 +5845,7 @@
                             "props": {
                               "text": "Eneroi",
                               "style": {
-                                "classes": "font-heading",
-                                "fontSize": "14px",
-                                "fontWeight": "600"
+                                "classes": "Fonts/Heading fs-14 fw-600"
                               }
                             }
                           },
@@ -6013,8 +5870,7 @@
                                 "props": {
                                   "text": "Restart avg",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "12px",
+                                    "classes": "Fonts/Label fs-12",
                                     "opacity": "0.75"
                                   }
                                 }
@@ -6027,9 +5883,7 @@
                                 "props": {
                                   "text": "24.1",
                                   "style": {
-                                    "classes": "font-livedata-entry",
-                                    "fontSize": "20px",
-                                    "fontWeight": "600"
+                                    "classes": "Fonts/LiveDataEntry fs-20 fw-600"
                                   }
                                 }
                               },
@@ -6041,8 +5895,7 @@
                                 "props": {
                                   "text": "min",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "12px",
+                                    "classes": "Fonts/Label fs-12",
                                     "opacity": "0.7"
                                   }
                                 }
@@ -6057,8 +5910,7 @@
                             "props": {
                               "text": "Baseline: \u2014",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "12px",
+                                "classes": "Fonts/Label fs-12",
                                 "opacity": "0.8"
                               }
                             }
@@ -6071,8 +5923,7 @@
                             "props": {
                               "text": "Reference months",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "11px",
+                                "classes": "Fonts/Label fs-11",
                                 "opacity": "0.65"
                               }
                             }
@@ -6102,8 +5953,7 @@
                                 "props": {
                                   "text": "Petersburg",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "13px",
+                                    "classes": "Fonts/Label fs-13",
                                     "opacity": "0.85"
                                   }
                                 }
@@ -6116,8 +5966,7 @@
                                 "props": {
                                   "text": "January",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "13px",
+                                    "classes": "Fonts/Label fs-13",
                                     "opacity": "0.8"
                                   }
                                 }
@@ -6149,8 +5998,7 @@
                                 "props": {
                                   "text": "Jarratt",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "13px",
+                                    "classes": "Fonts/Label fs-13",
                                     "opacity": "0.85"
                                   }
                                 }
@@ -6163,8 +6011,7 @@
                                 "props": {
                                   "text": "December",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "13px",
+                                    "classes": "Fonts/Label fs-13",
                                     "opacity": "0.8"
                                   }
                                 }
@@ -6196,8 +6043,7 @@
                                 "props": {
                                   "text": "Holland",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "13px",
+                                    "classes": "Fonts/Label fs-13",
                                     "opacity": "0.85"
                                   }
                                 }
@@ -6210,8 +6056,7 @@
                                 "props": {
                                   "text": "December",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "13px",
+                                    "classes": "Fonts/Label fs-13",
                                     "opacity": "0.8"
                                   }
                                 }
@@ -6236,8 +6081,6 @@
                     "gap": "6px",
                     "padding": "10px 12px",
                     "width": "100%",
-                    "maxWidth": "100%",
-                    "boxSizing": "border-box",
                     "overflow": "hidden",
                     "flexShrink": "0"
                   }
@@ -6271,9 +6114,7 @@
                         "props": {
                           "text": "Innovative",
                           "style": {
-                            "classes": "font-heading",
-                            "fontSize": "15px",
-                            "fontWeight": "600"
+                            "classes": "Fonts/Heading fs-15 fw-600"
                           }
                         }
                       },
@@ -6285,8 +6126,7 @@
                         "props": {
                           "text": "Demo",
                           "style": {
-                            "classes": "font-label",
-                            "fontSize": "11px",
+                            "classes": "Fonts/Label fs-11",
                             "opacity": "0.75",
                             "padding": "2px 8px",
                             "borderRadius": "4px",
@@ -6306,8 +6146,7 @@
                     "props": {
                       "text": "Future initiative KPIs \u2014 demo rollup until programs are instrumented.",
                       "style": {
-                        "classes": "font-label",
-                        "fontSize": "13px",
+                        "classes": "Fonts/Label fs-13",
                         "opacity": "0.85",
                         "whiteSpace": "normal"
                       }
@@ -6349,8 +6188,7 @@
                             "props": {
                               "text": "Active initiatives",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "11px",
+                                "classes": "Fonts/Label fs-11",
                                 "opacity": "0.7"
                               }
                             }
@@ -6363,9 +6201,7 @@
                             "props": {
                               "text": "3",
                               "style": {
-                                "classes": "font-livedata-entry",
-                                "fontSize": "22px",
-                                "fontWeight": "600"
+                                "classes": "Fonts/LiveDataEntry fs-22 fw-600"
                               }
                             }
                           }
@@ -6392,8 +6228,7 @@
                             "props": {
                               "text": "Est. annual savings",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "11px",
+                                "classes": "Fonts/Label fs-11",
                                 "opacity": "0.7"
                               }
                             }
@@ -6419,9 +6254,7 @@
                                 "props": {
                                   "text": "128,400",
                                   "style": {
-                                    "classes": "font-livedata-entry",
-                                    "fontSize": "22px",
-                                    "fontWeight": "600"
+                                    "classes": "Fonts/LiveDataEntry fs-22 fw-600"
                                   }
                                 }
                               },
@@ -6433,8 +6266,7 @@
                                 "props": {
                                   "text": "kWh",
                                   "style": {
-                                    "classes": "font-label",
-                                    "fontSize": "12px",
+                                    "classes": "Fonts/Label fs-12",
                                     "opacity": "0.7"
                                   }
                                 }
@@ -6465,8 +6297,7 @@
                             "props": {
                               "text": "Pilot areas",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "11px",
+                                "classes": "Fonts/Label fs-11",
                                 "opacity": "0.7"
                               }
                             }
@@ -6479,9 +6310,7 @@
                             "props": {
                               "text": "Freezer \u00b7 Dock \u00b7 Machine Room",
                               "style": {
-                                "classes": "font-label",
-                                "fontSize": "14px",
-                                "fontWeight": "600"
+                                "classes": "Fonts/Label fs-14 fw-600"
                               }
                             }
                           }
@@ -6495,6 +6324,43 @@
           }
         ]
       }
-    ]
+    ],
+    "propConfig": {
+      "meta.contextMenu.items": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "coalesce({session.custom.TicketLogAccess}, false)"
+          },
+          "transforms": [
+            {
+              "type": "script",
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = str(self.view.params.tagPath or '')\n\texcept:\n\t\tpass\n\tview_name = self.view.id.split('@')[0]\n\titems = []\n\tif value:\n\t\tlogged = tagPath if tagPath.strip() else 'No TagPath: ' + view_name.split('/')[-1]\n\t\titems.append({\n\t\t\t\"text\": 'Ticket Logger',\n\t\t\t\"icon\": {\"path\": 'material/info', \"color\": \"--neutral-80\", \"style\": {}},\n\t\t\t\"style\": {\"classes\": \"bg-component Fonts/Value\", \"height\": 24, \"width\": 170},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\"type\": 'ticketLog', \"payload\": {'tagPath': logged, 'viewName': view_name, 'sender': self.view.id}, \"scope\": 'page'}\n\t\t})\n\treturn items"
+            }
+          ]
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "len({this.meta.contextMenu.items}) > 0"
+          }
+        }
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    }
   }
 }

@@ -1,0 +1,790 @@
+{
+  "custom": {},
+  "params": {
+    "row": {
+      "id": 0
+    },
+    "tab": "mine"
+  },
+  "propConfig": {
+    "params.row": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tab": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 44,
+      "width": 1000
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Name"
+        },
+        "position": {
+          "basis": "0",
+          "grow": 1,
+          "shrink": 1
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({view.params.row.name}, '')"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "classes": "report-row-name",
+            "minWidth": "0",
+            "overflow": "hidden",
+            "textOverflow": "ellipsis",
+            "whiteSpace": "nowrap"
+          },
+          "text": ""
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Source"
+        },
+        "position": {
+          "basis": "130px",
+          "grow": 0,
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({view.params.row.source}, '')"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "classes": "Fonts/Value fs-12",
+            "minWidth": "0",
+            "overflow": "hidden",
+            "textOverflow": "ellipsis",
+            "whiteSpace": "nowrap"
+          },
+          "text": ""
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Range"
+        },
+        "position": {
+          "basis": "100px",
+          "grow": 0,
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({view.params.row.range}, '')"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "classes": "Fonts/Value fs-12",
+            "minWidth": "0",
+            "overflow": "hidden",
+            "textOverflow": "ellipsis",
+            "whiteSpace": "nowrap"
+          },
+          "text": ""
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "C4"
+        },
+        "position": {
+          "basis": "100px",
+          "grow": 0,
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "if(coalesce({view.params.tab}, 'mine') = 'runs', coalesce({view.params.row.runBy}, ''), coalesce({view.params.row.owner}, ''))"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "classes": "Fonts/Value fs-12",
+            "minWidth": "0",
+            "overflow": "hidden",
+            "textOverflow": "ellipsis",
+            "whiteSpace": "nowrap"
+          },
+          "text": ""
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "C5"
+        },
+        "position": {
+          "basis": "130px",
+          "grow": 0,
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "if(coalesce({view.params.tab}, 'mine') = 'runs', coalesce({view.params.row.runAt}, ''), coalesce({view.params.row.lastRun}, ''))"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "classes": "Fonts/Value fs-12",
+            "minWidth": "0",
+            "overflow": "hidden",
+            "textOverflow": "ellipsis",
+            "whiteSpace": "nowrap"
+          },
+          "text": ""
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "C6"
+        },
+        "position": {
+          "basis": "56px",
+          "grow": 0,
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "if(coalesce({view.params.tab}, 'mine') = 'runs', coalesce({view.params.row.format}, ''), coalesce({view.params.row.shared}, ''))"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "classes": "Fonts/Value fs-12",
+            "minWidth": "0",
+            "overflow": "hidden",
+            "textOverflow": "ellipsis",
+            "whiteSpace": "nowrap"
+          },
+          "text": ""
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "children": [
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\trow = self.view.params.row\n\tif not row or not row.get('id'):\n\t\treturn\n\tshared.Reports.open(None, {'origin': 'Saved Reports', 'step': 4}, self.session, row['id'])\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Run"
+            },
+            "position": {
+              "basis": "32px",
+              "grow": 0,
+              "shrink": 0
+            },
+            "propConfig": {
+              "meta.tooltip.enabled": {
+                "binding": {
+                  "config": {
+                    "expression": "true"
+                  },
+                  "type": "expr"
+                }
+              },
+              "meta.tooltip.text": {
+                "binding": {
+                  "config": {
+                    "expression": "if(true, 'Run This Report In The Builder Preview', '')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "position.display": {
+                "binding": {
+                  "config": {
+                    "expression": "!(coalesce({view.params.tab}, 'mine') = 'runs')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.enabled": {
+                "binding": {
+                  "config": {
+                    "expression": "true"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "image": {
+                "height": 18,
+                "icon": {
+                  "path": "material/play_arrow"
+                },
+                "width": 18
+              },
+              "style": {
+                "classes": "form-btn",
+                "height": "32px",
+                "padding": "0",
+                "width": "32px"
+              },
+              "text": ""
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\trow = self.view.params.row\n\tif not row or not row.get('id'):\n\t\treturn\n\tshared.Reports.open(None, {'origin': 'Saved Reports', 'runId': row['id'], 'step': 4}, self.session)\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "RunAgain"
+            },
+            "position": {
+              "basis": "32px",
+              "grow": 0,
+              "shrink": 0
+            },
+            "propConfig": {
+              "meta.tooltip.enabled": {
+                "binding": {
+                  "config": {
+                    "expression": "true"
+                  },
+                  "type": "expr"
+                }
+              },
+              "meta.tooltip.text": {
+                "binding": {
+                  "config": {
+                    "expression": "if(true, 'Open This Run In The Builder Preview', '')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "position.display": {
+                "binding": {
+                  "config": {
+                    "expression": "coalesce({view.params.tab}, 'mine') = 'runs'"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.enabled": {
+                "binding": {
+                  "config": {
+                    "expression": "true"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "image": {
+                "height": 18,
+                "icon": {
+                  "path": "material/replay"
+                },
+                "width": 18
+              },
+              "style": {
+                "classes": "form-btn",
+                "height": "32px",
+                "padding": "0",
+                "width": "32px"
+              },
+              "text": ""
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\trow = self.view.params.row\n\tif not row or not row.get('id'):\n\t\treturn\n\tshared.Reports.open(None, {'origin': 'Saved Reports', 'step': 3}, self.session, row['id'])\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Edit"
+            },
+            "position": {
+              "basis": "32px",
+              "grow": 0,
+              "shrink": 0
+            },
+            "propConfig": {
+              "meta.tooltip.enabled": {
+                "binding": {
+                  "config": {
+                    "expression": "true"
+                  },
+                  "type": "expr"
+                }
+              },
+              "meta.tooltip.text": {
+                "binding": {
+                  "config": {
+                    "expression": "if(true, 'Change This Report In The Builder', '')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "position.display": {
+                "binding": {
+                  "config": {
+                    "expression": "!(coalesce({view.params.tab}, 'mine') = 'runs')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.enabled": {
+                "binding": {
+                  "config": {
+                    "expression": "true"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "image": {
+                "height": 18,
+                "icon": {
+                  "path": "material/edit"
+                },
+                "width": 18
+              },
+              "style": {
+                "classes": "form-btn",
+                "height": "32px",
+                "padding": "0",
+                "width": "32px"
+              },
+              "text": ""
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\trow = self.view.params.row\n\tif not row or not row.get('id'):\n\t\treturn\n\tpos = shared.Reports.menuBox(self.page, event, 156, 122)\n\tsystem.perspective.openPopup(id='rptDownload', view='01_Popups/Reports/DownloadMenu',\n\t\tparams={'kind': 'run' if self.view.params.tab == 'runs' else 'tpl', 'id': row['id']}, position=pos,\n\t\tshowCloseIcon=False, draggable=False, resizable=False, modal=True, overlayDismiss=True, viewportBound=True)\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Download"
+            },
+            "position": {
+              "basis": "32px",
+              "grow": 0,
+              "shrink": 0
+            },
+            "propConfig": {
+              "meta.tooltip.enabled": {
+                "binding": {
+                  "config": {
+                    "expression": "true"
+                  },
+                  "type": "expr"
+                }
+              },
+              "meta.tooltip.text": {
+                "binding": {
+                  "config": {
+                    "expression": "if(!(coalesce({view.params.tab}, 'mine') = 'runs') || coalesce({view.params.row.mine}, false), 'Download This Report As PDF, Excel Or CSV', 'Only The Person Who Ran A Report Can Download It Again')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "position.display": {
+                "binding": {
+                  "config": {
+                    "expression": "true"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.enabled": {
+                "binding": {
+                  "config": {
+                    "expression": "!(coalesce({view.params.tab}, 'mine') = 'runs') || coalesce({view.params.row.mine}, false)"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "image": {
+                "height": 18,
+                "icon": {
+                  "path": "material/get_app"
+                },
+                "width": 18
+              },
+              "style": {
+                "classes": "form-btn",
+                "height": "32px",
+                "padding": "0",
+                "width": "32px"
+              },
+              "text": ""
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\trow = self.view.params.row\n\tif not row or not row.get('id'):\n\t\treturn\n\tres = shared.Reports.setTemplateShared(self.session, row['id'], not row.get('isShared'))\n\tsystem.perspective.sendMessage('rptSavedChanged', {'message': res['message']}, scope='page')\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Share"
+            },
+            "position": {
+              "basis": "32px",
+              "grow": 0,
+              "shrink": 0
+            },
+            "propConfig": {
+              "meta.tooltip.enabled": {
+                "binding": {
+                  "config": {
+                    "expression": "true"
+                  },
+                  "type": "expr"
+                }
+              },
+              "meta.tooltip.text": {
+                "binding": {
+                  "config": {
+                    "expression": "if(coalesce({view.params.row.canShare}, false), if(coalesce({view.params.row.isShared}, false), 'Stop Sharing This Report', 'Share This Report With Others'), 'Only The Owner (With Share Permission) Can Share A Report')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "position.display": {
+                "binding": {
+                  "config": {
+                    "expression": "!(coalesce({view.params.tab}, 'mine') = 'runs')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.enabled": {
+                "binding": {
+                  "config": {
+                    "expression": "coalesce({view.params.row.canShare}, false)"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.image.icon.path": {
+                "binding": {
+                  "config": {
+                    "expression": "if(coalesce({view.params.row.isShared}, false), 'material/people', 'material/share')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "image": {
+                "height": 18,
+                "icon": {
+                  "path": "material/share"
+                },
+                "width": 18
+              },
+              "style": {
+                "classes": "form-btn",
+                "height": "32px",
+                "padding": "0",
+                "width": "32px"
+              },
+              "text": ""
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\trow = self.view.params.row\n\tif not row or not row.get('id'):\n\t\treturn\n\tpos = shared.Reports.centerBox(self.page, 440, 210)\n\tsystem.perspective.openPopup(id='rptRename', view='01_Popups/Reports/RenameReport',\n\t\tparams={'id': row['id'], 'name': row.get('name') or ''}, position=pos, modal=True, draggable=False,\n\t\tresizable=False, showCloseIcon=False, overlayDismiss=False, viewportBound=True)\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Rename"
+            },
+            "position": {
+              "basis": "32px",
+              "grow": 0,
+              "shrink": 0
+            },
+            "propConfig": {
+              "meta.tooltip.enabled": {
+                "binding": {
+                  "config": {
+                    "expression": "true"
+                  },
+                  "type": "expr"
+                }
+              },
+              "meta.tooltip.text": {
+                "binding": {
+                  "config": {
+                    "expression": "if(coalesce({view.params.row.canEdit}, false), 'Rename This Report', 'Only The Owner Can Rename A Report')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "position.display": {
+                "binding": {
+                  "config": {
+                    "expression": "!(coalesce({view.params.tab}, 'mine') = 'runs')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.enabled": {
+                "binding": {
+                  "config": {
+                    "expression": "coalesce({view.params.row.canEdit}, false)"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "image": {
+                "height": 18,
+                "icon": {
+                  "path": "material/title"
+                },
+                "width": 18
+              },
+              "style": {
+                "classes": "form-btn",
+                "height": "32px",
+                "padding": "0",
+                "width": "32px"
+              },
+              "text": ""
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\trow = self.view.params.row\n\tif not row or not row.get('id'):\n\t\treturn\n\tshared.Alerts.showAlert(state='warning', title='Delete Report', message=\"Delete '\" + (row.get('name') or '') + \"'? This cannot be undone.\", showCloseBtn=False, btnTextPrimary='Delete', btnTextSecondary='Cancel', btnActionPrimary='rptPageDelete', btnActionSecondary='', payload={'id': row['id']}, overlayDismiss=False)\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Delete"
+            },
+            "position": {
+              "basis": "32px",
+              "grow": 0,
+              "shrink": 0
+            },
+            "propConfig": {
+              "meta.tooltip.enabled": {
+                "binding": {
+                  "config": {
+                    "expression": "true"
+                  },
+                  "type": "expr"
+                }
+              },
+              "meta.tooltip.text": {
+                "binding": {
+                  "config": {
+                    "expression": "if(coalesce({view.params.row.canEdit}, false), 'Delete This Report (Asks First)', 'Only The Owner Can Delete A Report')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "position.display": {
+                "binding": {
+                  "config": {
+                    "expression": "!(coalesce({view.params.tab}, 'mine') = 'runs')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.enabled": {
+                "binding": {
+                  "config": {
+                    "expression": "coalesce({view.params.row.canEdit}, false)"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "image": {
+                "height": 18,
+                "icon": {
+                  "color": "#C62828",
+                  "path": "material/delete"
+                },
+                "width": 18
+              },
+              "style": {
+                "classes": "form-btn",
+                "height": "32px",
+                "padding": "0",
+                "width": "32px"
+              },
+              "text": ""
+            },
+            "type": "ia.input.button"
+          }
+        ],
+        "meta": {
+          "name": "Actions"
+        },
+        "position": {
+          "basis": "212px",
+          "grow": 0,
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.basis": {
+            "binding": {
+              "config": {
+                "expression": "if(coalesce({view.params.tab}, 'mine') = 'runs', '68px', '212px')"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "alignItems": "center",
+          "direction": "row",
+          "justify": "flex-end",
+          "style": {
+            "gap": "4px",
+            "overflow": "hidden"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "events": {
+      "dom": {
+        "onDoubleClick": {
+          "config": {
+            "script": "\trow = self.view.params.row\n\tif not row or not row.get('id'):\n\t\treturn\n\tshared.Reports.open(None, {'origin': 'Saved Reports', 'step': 4}, self.session, row['id'])\n"
+          },
+          "scope": "G",
+          "type": "script"
+        }
+      }
+    },
+    "meta": {
+      "name": "root"
+    },
+    "position": {
+      "shrink": 0
+    },
+    "props": {
+      "alignItems": "center",
+      "direction": "row",
+      "style": {
+        "classes": "report-row",
+        "gap": "8px",
+        "height": "100%",
+        "minWidth": "0",
+        "overflow": "hidden",
+        "padding": "0 12px"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

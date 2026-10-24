@@ -1,18 +1,33 @@
 def doPost(request, session):
 	data = request['data']
-	# Site-rail hover highlight: {"__hover": true, "page": "/plants/groveport"}
+
+	# Globe marker hover / click -> ONLY the Perspective page that hosts the iframe (docs/globe-hover.md).
+	# {"__globe": "hover"|"navigate", "sessionId", "pageId", "token", "page", "seq"?}
 	try:
-		isHover = data is not None and data.get('__hover') == True
+		isGlobe = data is not None and data.get('__globe') is not None
 	except:
-		isHover = False
-	if isHover:
-		page = ''
+		isGlobe = False
+	if isGlobe:
+		# the iframe's own browser must hold a logged-in BH session (shared.WebAuth), then the HMAC token
+		if not shared.WebAuth.perspectiveUser(request):
+			return shared.WebAuth.deny(request)
+		status, reason = shared.Globe.relay(data)
+		if status != 200:
+			try:
+				request['servletResponse'].setStatus(status)
+			except:
+				pass
+		return {'json': {'ok': status == 200, 'reason': reason}}
+
+	# Every other body is a gateway-wide config write: admin login (HTTP Basic, AdminRoles) checked BEFORE the
+	# body is inspected (shared.Globe.adminWriter, docs/globe-hover.md#security).
+	status, user = shared.Globe.adminWriter(request)
+	if status != 200:
 		try:
-			page = str(data.get('page') or '')
+			request['servletResponse'].setStatus(status)
 		except:
-			page = ''
-		system.tag.writeBlocking(['[default]_Config/MapMarkerHover'], [page])
-		return
+			pass
+		return {'json': {'ok': False, 'reason': 'login required' if status == 401 else 'admin role required'}}
 
 	# GeoJSON FeatureCollection updates markers.
 	try:
@@ -36,4 +51,10 @@ def doPost(request, session):
 			pass
 		return
 
-	system.tag.writeBlocking(['[default]_Config/MapMarkerNavigation'], [data])
+	# Legacy gateway-wide hover / click bodies (_Config/MapMarkerHover / MapMarkerNavigation) are no longer
+	# accepted: they reached every open session.
+	try:
+		request['servletResponse'].setStatus(400)
+	except:
+		pass
+	return {'json': {'ok': False, 'reason': 'unsupported body'}}

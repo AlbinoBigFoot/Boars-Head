@@ -6,3 +6,4 @@ SET
     updated_at = SYSUTCDATETIME()
 WHERE
     id = :trendId
+    AND (is_locked = 0 OR :isAdmin = 1)

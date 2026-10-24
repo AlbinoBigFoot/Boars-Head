@@ -1,0 +1,1076 @@
+{
+  "custom": {
+    "pax": "",
+    "permDevice": "",
+    "roCommand": true,
+    "tipCommand": ""
+  },
+  "params": {
+    "tagPath": ""
+  },
+  "propConfig": {
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.pax": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', '', case(toStr(coalesce(try(tag({view.params.tagPath} + '.TypeId'), ''), '')), 'Devices/Pump', 'Motor', 'Devices/Valve', 'Valve', 'Devices/Tank', 'Tank', 'Devices/Compressor', 'Comp', 'Devices/Evaporator', 'CG', 'Devices/ExhaustFan', 'EF', 'Devices/LTU', 'LTU', 'Devices/SafetyRelay', 'Relay', 'Devices/SuctionSequence', 'Seq', 'Devices/DischargeSequence', 'Dsq', 'Devices/Sensor', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn.Enabled')), false), false), 'AIn', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AInRef.Enabled')), false), false), 'AInRef', '')), 'Devices/DiscreteInput', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/DIn.Enabled')), false), false), 'DIn', ''), ''))"
+        }
+      }
+    },
+    "custom.permDevice": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', '', coalesce(try(lookup(tag('[default]_Config/Security/DeviceTypes'), toStr(coalesce(try(tag({view.params.tagPath} + '.TypeId'), ''), '')), null, 'TypeId', 'Device'), null), try(lookup(tag('[default]_Config/Security/DeviceTypes'), toStr(coalesce(try(tag(left({view.params.tagPath}, lastIndexOf({view.params.tagPath}, '/')) + '.TypeId'), ''), '')), null, 'TypeId', 'Device'), null), try(lookup(tag('[default]_Config/Security/DeviceTypes'), toStr(coalesce(try(tag(left(left({view.params.tagPath}, lastIndexOf({view.params.tagPath}, '/')), lastIndexOf(left({view.params.tagPath}, lastIndexOf({view.params.tagPath}, '/')), '/')) + '.TypeId'), ''), '')), null, 'TypeId', 'Device'), null), ''))"
+        }
+      },
+      "access": "PROTECTED"
+    },
+    "custom.roCommand": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({session.custom.ReadOnly}, true) || !coalesce(try({session.custom.Permissions}[{view.custom.permDevice}]['Command'], null), true)"
+        }
+      },
+      "access": "PROTECTED"
+    },
+    "custom.tipCommand": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(!coalesce({session.custom.ReadOnly}, true) && coalesce({view.custom.roCommand}, false), 'Not Permitted: ' + {view.custom.permDevice} + ' / ' + 'Command' + ' (Roles & Permissions)', '')"
+        }
+      }
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 360,
+      "width": 400
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root",
+      "contextMenu": {}
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "gap": "8px",
+        "overflow": "hidden",
+        "padding": "4px",
+        "minHeight": 0,
+        "height": "100%"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "AlarmBits"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "classes": "faceplate-section faceplate-section-card",
+            "width": "100%"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Title"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "Sensor Alarms",
+              "style": {
+                "classes": "faceplate-section-title Fonts/Label"
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Body"
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "8px",
+                "width": "100%"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Chips"
+                },
+                "props": {
+                  "direction": "row",
+                  "wrap": "wrap",
+                  "alignItems": "stretch",
+                  "justify": "flex-start",
+                  "style": {
+                    "classes": "faceplate-fault-chips",
+                    "gap": "8px",
+                    "overflow": "visible",
+                    "width": "100%"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Fail",
+                      "tooltip": {
+                        "enabled": true,
+                        "text": "Input Failure  \u00b7  High Priority"
+                      }
+                    },
+                    "position": {
+                      "basis": "108px",
+                      "grow": 0,
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "classes": "faceplate-fault-chip",
+                        "gap": "2px"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Code"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "Input Failure",
+                          "style": {
+                            "classes": "faceplate-fault-code Fonts/Label"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "State"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "Normal",
+                          "style": {
+                            "classes": "faceplate-fault-state",
+                            "borderRadius": "4px",
+                            "alignSelf": "flex-start"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "config": {
+                                "expression": "if(coalesce({view.params.tagPath}, '') = '' || coalesce(try(isGood(tag({view.params.tagPath} + '/AIn/Sts_Fail')), false), false), if({view.params.tagPath} = '', '\u2014', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn/Sts_Fail')), false), false), 'Active', 'Normal')), '\u2014')"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.classes": {
+                            "binding": {
+                              "config": {
+                                "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/AIn/Sts_Fail')), false), false), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn/Sts_Fail')), false), false), 'faceplate-fault-state faceplate-fault-active', 'faceplate-fault-state faceplate-fault-ok'), '/AIn/Sts_Fail value-bad')"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.padding": {
+                            "binding": {
+                              "config": {
+                                "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/AIn/Sts_Fail')), false), false), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn/Sts_Fail')), false), false), '0px 6px', '0px'), '0px')"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.backgroundColor": {
+                            "binding": {
+                              "config": {
+                                "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/AIn/Sts_Fail')), false), false), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn/Sts_Fail')), false), false), 'var(--alarm-high)', ''), 'var(--neutral-30)')"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.color": {
+                            "binding": {
+                              "config": {
+                                "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/AIn/Sts_Fail')), false), false), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn/Sts_Fail')), false), false), 'var(--alarm-row-fg-dark)', ''), 'var(--neutral-60)')"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Priority"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "High Priority",
+                          "style": {
+                            "classes": "faceplate-fault-code Fonts/Label"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "HiHi",
+                      "tooltip": {
+                        "enabled": true,
+                        "text": "High-High  \u00b7  High Priority"
+                      }
+                    },
+                    "position": {
+                      "basis": "108px",
+                      "grow": 0,
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "classes": "faceplate-fault-chip",
+                        "gap": "2px"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Code"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "High-High",
+                          "style": {
+                            "classes": "faceplate-fault-code Fonts/Label"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "State"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "Normal",
+                          "style": {
+                            "classes": "faceplate-fault-state",
+                            "borderRadius": "4px",
+                            "alignSelf": "flex-start"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "config": {
+                                "expression": "if(coalesce({view.params.tagPath}, '') = '' || coalesce(try(isGood(tag({view.params.tagPath} + '/AIn/Sts_HiHi')), false), false), if({view.params.tagPath} = '', '\u2014', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn/Sts_HiHi')), false), false), 'Active', 'Normal')), '\u2014')"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.classes": {
+                            "binding": {
+                              "config": {
+                                "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/AIn/Sts_HiHi')), false), false), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn/Sts_HiHi')), false), false), 'faceplate-fault-state faceplate-fault-active', 'faceplate-fault-state faceplate-fault-ok'), '/AIn/Sts_HiHi value-bad')"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.padding": {
+                            "binding": {
+                              "config": {
+                                "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/AIn/Sts_HiHi')), false), false), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn/Sts_HiHi')), false), false), '0px 6px', '0px'), '0px')"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.backgroundColor": {
+                            "binding": {
+                              "config": {
+                                "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/AIn/Sts_HiHi')), false), false), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn/Sts_HiHi')), false), false), 'var(--alarm-high)', ''), 'var(--neutral-30)')"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.color": {
+                            "binding": {
+                              "config": {
+                                "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/AIn/Sts_HiHi')), false), false), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn/Sts_HiHi')), false), false), 'var(--alarm-row-fg-dark)', ''), 'var(--neutral-60)')"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Priority"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "High Priority",
+                          "style": {
+                            "classes": "faceplate-fault-code Fonts/Label"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Hi",
+                      "tooltip": {
+                        "enabled": true,
+                        "text": "High  \u00b7  Medium Priority"
+                      }
+                    },
+                    "position": {
+                      "basis": "108px",
+                      "grow": 0,
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "classes": "faceplate-fault-chip",
+                        "gap": "2px"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Code"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "High",
+                          "style": {
+                            "classes": "faceplate-fault-code Fonts/Label"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "State"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "Normal",
+                          "style": {
+                            "classes": "faceplate-fault-state",
+                            "borderRadius": "4px",
+                            "alignSelf": "flex-start"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "config": {
+                                "expression": "if(coalesce({view.params.tagPath}, '') = '' || coalesce(try(isGood(tag({view.params.tagPath} + '/AIn/Sts_Hi')), false), false), if({view.params.tagPath} = '', '\u2014', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn/Sts_Hi')), false), false), 'Active', 'Normal')), '\u2014')"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.classes": {
+                            "binding": {
+                              "config": {
+                                "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/AIn/Sts_Hi')), false), false), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn/Sts_Hi')), false), false), 'faceplate-fault-state faceplate-fault-active', 'faceplate-fault-state faceplate-fault-ok'), '/AIn/Sts_Hi value-bad')"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.padding": {
+                            "binding": {
+                              "config": {
+                                "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/AIn/Sts_Hi')), false), false), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn/Sts_Hi')), false), false), '0px 6px', '0px'), '0px')"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.backgroundColor": {
+                            "binding": {
+                              "config": {
+                                "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/AIn/Sts_Hi')), false), false), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn/Sts_Hi')), false), false), 'var(--alarm-medium)', ''), 'var(--neutral-30)')"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.color": {
+                            "binding": {
+                              "config": {
+                                "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/AIn/Sts_Hi')), false), false), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn/Sts_Hi')), false), false), 'var(--alarm-row-fg-dark)', ''), 'var(--neutral-60)')"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Priority"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "Medium Priority",
+                          "style": {
+                            "classes": "faceplate-fault-code Fonts/Label"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Lo",
+                      "tooltip": {
+                        "enabled": true,
+                        "text": "Low  \u00b7  Medium Priority"
+                      }
+                    },
+                    "position": {
+                      "basis": "108px",
+                      "grow": 0,
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "classes": "faceplate-fault-chip",
+                        "gap": "2px"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Code"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "Low",
+                          "style": {
+                            "classes": "faceplate-fault-code Fonts/Label"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "State"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "Normal",
+                          "style": {
+                            "classes": "faceplate-fault-state",
+                            "borderRadius": "4px",
+                            "alignSelf": "flex-start"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "config": {
+                                "expression": "if(coalesce({view.params.tagPath}, '') = '' || coalesce(try(isGood(tag({view.params.tagPath} + '/AIn/Sts_Lo')), false), false), if({view.params.tagPath} = '', '\u2014', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn/Sts_Lo')), false), false), 'Active', 'Normal')), '\u2014')"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.classes": {
+                            "binding": {
+                              "config": {
+                                "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/AIn/Sts_Lo')), false), false), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn/Sts_Lo')), false), false), 'faceplate-fault-state faceplate-fault-active', 'faceplate-fault-state faceplate-fault-ok'), '/AIn/Sts_Lo value-bad')"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.padding": {
+                            "binding": {
+                              "config": {
+                                "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/AIn/Sts_Lo')), false), false), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn/Sts_Lo')), false), false), '0px 6px', '0px'), '0px')"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.backgroundColor": {
+                            "binding": {
+                              "config": {
+                                "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/AIn/Sts_Lo')), false), false), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn/Sts_Lo')), false), false), 'var(--alarm-medium)', ''), 'var(--neutral-30)')"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.color": {
+                            "binding": {
+                              "config": {
+                                "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/AIn/Sts_Lo')), false), false), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn/Sts_Lo')), false), false), 'var(--alarm-row-fg-dark)', ''), 'var(--neutral-60)')"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Priority"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "Medium Priority",
+                          "style": {
+                            "classes": "faceplate-fault-code Fonts/Label"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "LoLo",
+                      "tooltip": {
+                        "enabled": true,
+                        "text": "Low-Low  \u00b7  High Priority"
+                      }
+                    },
+                    "position": {
+                      "basis": "108px",
+                      "grow": 0,
+                      "shrink": 0
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "classes": "faceplate-fault-chip",
+                        "gap": "2px"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Code"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "Low-Low",
+                          "style": {
+                            "classes": "faceplate-fault-code Fonts/Label"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "State"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "Normal",
+                          "style": {
+                            "classes": "faceplate-fault-state",
+                            "borderRadius": "4px",
+                            "alignSelf": "flex-start"
+                          }
+                        },
+                        "propConfig": {
+                          "props.text": {
+                            "binding": {
+                              "config": {
+                                "expression": "if(coalesce({view.params.tagPath}, '') = '' || coalesce(try(isGood(tag({view.params.tagPath} + '/AIn/Sts_LoLo')), false), false), if({view.params.tagPath} = '', '\u2014', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn/Sts_LoLo')), false), false), 'Active', 'Normal')), '\u2014')"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.classes": {
+                            "binding": {
+                              "config": {
+                                "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/AIn/Sts_LoLo')), false), false), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn/Sts_LoLo')), false), false), 'faceplate-fault-state faceplate-fault-active', 'faceplate-fault-state faceplate-fault-ok'), '/AIn/Sts_LoLo value-bad')"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.padding": {
+                            "binding": {
+                              "config": {
+                                "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/AIn/Sts_LoLo')), false), false), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn/Sts_LoLo')), false), false), '0px 6px', '0px'), '0px')"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.backgroundColor": {
+                            "binding": {
+                              "config": {
+                                "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/AIn/Sts_LoLo')), false), false), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn/Sts_LoLo')), false), false), 'var(--alarm-high)', ''), 'var(--neutral-30)')"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          },
+                          "props.style.color": {
+                            "binding": {
+                              "config": {
+                                "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + '/AIn/Sts_LoLo')), false), false), if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn/Sts_LoLo')), false), false), 'var(--alarm-row-fg-dark)', ''), 'var(--neutral-60)')"
+                              },
+                              "type": "expr",
+                              "overlays": {
+                                "bad": false,
+                                "error": false,
+                                "pending": false,
+                                "stale": false,
+                                "unknown": false,
+                                "disabled": false
+                              },
+                              "overlayOptOut": true
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "Priority"
+                        },
+                        "position": {
+                          "shrink": 0
+                        },
+                        "props": {
+                          "text": "High Priority",
+                          "style": {
+                            "classes": "faceplate-fault-code Fonts/Label"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "ia.input.button",
+                "meta": {
+                  "name": "BtnAckAll"
+                },
+                "position": {
+                  "basis": "36px",
+                  "grow": 0,
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.enabled": {
+                    "binding": {
+                      "config": {
+                        "expression": "(!coalesce({view.custom.roCommand}, false) && !({view.params.tagPath} = '')) && coalesce({view.custom.pax}, '') = ''"
+                      },
+                      "type": "expr",
+                      "overlays": {
+                        "bad": false,
+                        "error": false,
+                        "pending": false,
+                        "stale": false,
+                        "unknown": false,
+                        "disabled": false
+                      }
+                    }
+                  },
+                  "meta.tooltip.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "{view.custom.tipCommand} != ''"
+                      }
+                    }
+                  },
+                  "meta.tooltip.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "{view.custom.tipCommand}"
+                      }
+                    }
+                  }
+                },
+                "props": {
+                  "text": "Ack / Reset",
+                  "style": {
+                    "classes": "faceplate-cmd-btn Fonts/Label",
+                    "alignSelf": "center",
+                    "width": "auto",
+                    "minWidth": "108px",
+                    "height": "36px",
+                    "maxHeight": "36px"
+                  }
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\tif self.view.custom.pax:\n\t\treturn  # pax-bindings: live PLC object, read only\n\tif self.view.custom.roCommand:\n\t\treturn\n\tbase = self.view.params.tagPath\n\tif not base:\n\t\treturn\n\tshared.ValveCommands.writeTag(base + '/' + str(self.view.custom.pax) + '/OCmd_Reset', True)\n\tuser = ''\n\ttry:\n\t\tuser = str(self.session.props.auth.user.userName or '')\n\texcept:\n\t\tpass\n\ttry:\n\t\tshared.Alarms.acknowledgeForTag(base, user, 'Faceplate Ack / Reset')\n\texcept:\n\t\tsystem.util.getLogger('SensorAlarms').warn('Ignition alarm ack failed for %s' % base)\n"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "ia.display.view",
+        "meta": {
+          "name": "SharedAlarms"
+        },
+        "position": {
+          "grow": 1,
+          "shrink": 1
+        },
+        "props": {
+          "path": "01_Popups/00_Faceplates/_Assets/Alarms",
+          "params": {
+            "tagPath": ""
+          },
+          "style": {
+            "width": "100%",
+            "minHeight": "120px"
+          }
+        },
+        "propConfig": {
+          "props.params.tagPath": {
+            "binding": {
+              "config": {
+                "path": "view.params.tagPath"
+              },
+              "type": "property",
+              "overlays": {
+                "bad": false,
+                "error": false,
+                "pending": false,
+                "stale": false,
+                "unknown": false,
+                "disabled": false
+              }
+            }
+          }
+        }
+      }
+    ],
+    "propConfig": {
+      "meta.contextMenu.items": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "coalesce({session.custom.TicketLogAccess}, false)"
+          },
+          "transforms": [
+            {
+              "type": "script",
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = str(self.view.params.tagPath or '')\n\texcept:\n\t\tpass\n\tview_name = self.view.id.split('@')[0]\n\titems = []\n\tif value:\n\t\tlogged = tagPath if tagPath.strip() else 'No TagPath: ' + view_name.split('/')[-1]\n\t\titems.append({\n\t\t\t\"text\": 'Ticket Logger',\n\t\t\t\"icon\": {\"path\": 'material/info', \"color\": \"--neutral-80\", \"style\": {}},\n\t\t\t\"style\": {\"classes\": \"bg-component Fonts/Value\", \"height\": 24, \"width\": 170},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\"type\": 'ticketLog', \"payload\": {'tagPath': logged, 'viewName': view_name, 'sender': self.view.id}, \"scope\": 'page'}\n\t\t})\n\treturn items"
+            }
+          ]
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "len({this.meta.contextMenu.items}) > 0"
+          }
+        }
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    }
+  }
+}

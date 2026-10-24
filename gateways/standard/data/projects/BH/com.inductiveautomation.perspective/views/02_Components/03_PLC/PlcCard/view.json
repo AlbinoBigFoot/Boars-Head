@@ -1,0 +1,2004 @@
+{
+  "custom": {
+    "rack": {},
+    "alarms": null,
+    "show": {
+      "Description": true,
+      "Catalog": true,
+      "Firmware": true,
+      "Ip": true,
+      "Driver": true,
+      "CommLoss": true,
+      "Mode": true,
+      "MajorFault": true,
+      "MinorFault": true,
+      "IoFault": true,
+      "LastFault": true,
+      "ModuleTypes": true,
+      "Alarms": true,
+      "RackStrip": true
+    }
+  },
+  "params": {
+    "plcPath": "",
+    "name": "",
+    "description": "",
+    "page": "",
+    "showDescription": null,
+    "showCatalog": null,
+    "showFirmware": null,
+    "showIp": null,
+    "showDriver": null,
+    "showCommLoss": null,
+    "showMode": null,
+    "showMajorFault": null,
+    "showMinorFault": null,
+    "showIoFault": null,
+    "showLastFault": null,
+    "showModuleTypes": null,
+    "showAlarms": null,
+    "showRackStrip": null
+  },
+  "propConfig": {
+    "params.plcPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.name": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.description": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.page": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.showDescription": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.showCatalog": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.showFirmware": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.showIp": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.showDriver": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.showCommLoss": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.showMode": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.showMajorFault": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.showMinorFault": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.showIoFault": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.showLastFault": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.showModuleTypes": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.showAlarms": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.showRackStrip": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.rack": {
+      "binding": {
+        "type": "tag",
+        "config": {
+          "fallbackDelay": 2.5,
+          "mode": "indirect",
+          "references": {
+            "p": "{view.params.plcPath}"
+          },
+          "tagPath": "{p}/Rack"
+        }
+      }
+    },
+    "custom.alarms": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "now(10000)"
+        },
+        "transforms": [
+          {
+            "type": "script",
+            "code": "\t# active alarms of this PLC (sources under its site instance) - an expression cannot query alarms by path.\n\t# {count, top}: top = the highest-priority active alarm's name\n\tpath = str(self.view.params.plcPath or '')\n\tif not path:\n\t\treturn None\n\ttry:\n\t\trel = path.split(']', 1)[-1]\n\t\tres = list(system.alarm.queryStatus(source=['*' + rel + '/*'], state=['ActiveUnacked', 'ActiveAcked']))\n\t\ttop = ''\n\t\tif res:\n\t\t\tbest = sorted(res, key=lambda a: -a.getPriority().ordinal())[0]\n\t\t\ttop = str(best.getName())\n\t\treturn {'count': len(res), 'top': top}\n\texcept:\n\t\treturn None"
+          }
+        ]
+      }
+    },
+    "custom.show.Catalog": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({view.params.showCatalog}, coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/CatalogNumber.tagType')), false), false))"
+        }
+      }
+    },
+    "custom.show.Firmware": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({view.params.showFirmware}, coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MajorRevision.tagType')), false), false))"
+        }
+      }
+    },
+    "custom.show.Ip": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({view.params.showIp}, coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/IPAddress.tagType')), false), false))"
+        }
+      }
+    },
+    "custom.show.Driver": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({view.params.showDriver}, coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected.tagType')), false), false))"
+        }
+      }
+    },
+    "custom.show.CommLoss": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({view.params.showCommLoss}, coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/CommLoss.tagType')), false), false))"
+        }
+      }
+    },
+    "custom.show.Mode": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({view.params.showMode}, coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Mode.tagType')), false), false))"
+        }
+      }
+    },
+    "custom.show.MajorFault": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({view.params.showMajorFault}, coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MajorFault.tagType')), false), false))"
+        }
+      }
+    },
+    "custom.show.MinorFault": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({view.params.showMinorFault}, coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MinorFault.tagType')), false), false))"
+        }
+      }
+    },
+    "custom.show.IoFault": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({view.params.showIoFault}, coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/IOFault.tagType')), false), false))"
+        }
+      }
+    },
+    "custom.show.LastFault": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({view.params.showLastFault}, coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MajorFaultRecordCode.tagType')), false), false))"
+        }
+      }
+    },
+    "custom.show.ModuleTypes": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({view.params.showModuleTypes}, coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Rack.tagType')), false), false))"
+        }
+      }
+    },
+    "custom.show.Alarms": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({view.params.showAlarms}, coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected.tagType')), false), false))"
+        }
+      }
+    },
+    "custom.show.Description": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({view.params.showDescription}, coalesce({view.params.description}, '') != '')"
+        }
+      }
+    },
+    "custom.show.RackStrip": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "coalesce({view.params.showRackStrip}, coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Rack.tagType')), false), false))"
+        }
+      }
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "width": 400,
+      "height": 440
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "form-card faceplate-hover",
+        "width": "100%",
+        "height": "100%",
+        "overflow": "hidden",
+        "cursor": "pointer",
+        "boxSizing": "border-box"
+      }
+    },
+    "events": {
+      "dom": {
+        "onClick": {
+          "type": "script",
+          "scope": "G",
+          "config": {
+            "script": "\t# open this PLC's rack page\n\tpage = str(self.view.params.page or '')\n\tif not page:\n\t\tpage = '/operations/plcs/' + str(self.view.params.name or '')\n\tsystem.perspective.navigate(page=page)\n"
+          }
+        }
+      }
+    },
+    "children": [
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Head"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "style": {
+            "classes": "form-section-head",
+            "gap": "10px"
+          },
+          "alignItems": "center"
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Titles"
+            },
+            "position": {
+              "grow": 1,
+              "shrink": 1,
+              "basis": "0px"
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "2px",
+                "overflow": "hidden"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Name"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "",
+                  "style": {
+                    "classes": "form-title fs-16",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "view.params.name"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Description"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "",
+                  "style": {
+                    "classes": "form-subtitle fs-11",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "coalesce({view.params.description}, '')"
+                      }
+                    }
+                  },
+                  "position.display": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "view.custom.show.Description"
+                      }
+                    }
+                  },
+                  "meta.tooltip.text": {
+                    "binding": {
+                      "type": "property",
+                      "config": {
+                        "path": "view.params.description"
+                      }
+                    }
+                  },
+                  "meta.tooltip.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "true"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Pill"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "fs-11 fw-700",
+                "textAlign": "center",
+                "whiteSpace": "nowrap",
+                "overflow": "hidden",
+                "textOverflow": "ellipsis",
+                "color": "#FFFFFF",
+                "padding": "4px 10px",
+                "borderRadius": "12px"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if(!(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false) && coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false)), if(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false), 'COMM LOSS', 'NO DATA'), if(coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/MajorFault')), false), false), 'MAJOR FAULT', if((coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false) && coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false)) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Mode')), false), false), upper(toStr(tag(coalesce({view.params.plcPath}, '') + '/Mode'))), 'NO DATA')))"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.style.backgroundColor": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if(!(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false) && coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false)), if(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false), 'var(--sts-fault)', 'var(--neutral-60)'), if(coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/MajorFault')), false), false), 'var(--sts-fault)', if(coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Run')), false), false), 'var(--sts-run)', 'var(--neutral-60)')))"
+                  },
+                  "overlayOptOut": true
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Body"
+        },
+        "position": {
+          "grow": 1,
+          "shrink": 1,
+          "basis": "0px"
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "padding": "6px 20px 20px 20px",
+            "overflow": "hidden"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "RowCatalog"
+            },
+            "position": {
+              "basis": "26px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "style": {
+                "borderBottom": "1px solid var(--border)"
+              },
+              "alignItems": "center"
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Key"
+                },
+                "position": {
+                  "basis": "130px",
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Controller",
+                  "style": {
+                    "classes": "form-label fw-400 text-muted",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Value"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 1,
+                  "basis": "0px"
+                },
+                "props": {
+                  "text": "--",
+                  "style": {
+                    "classes": "form-label",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/ProductName')), false), false) || coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/CatalogNumber')), false), false), coalesce(try(if(isGood(tag(coalesce({view.params.plcPath}, '') + '/ProductName')) && len(trim(toStr(tag(coalesce({view.params.plcPath}, '') + '/ProductName')))) > 0, split(trim(toStr(tag(coalesce({view.params.plcPath}, '') + '/ProductName'))), ' ')[0, 0], null), null), try(toStr(tag(coalesce({view.params.plcPath}, '') + '/CatalogNumber')), null), '--'), '--')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/ProductName')), false), false) || coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/CatalogNumber')), false), false), 'form-label', 'form-label value-bad')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.color": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/ProductName')), false), false) || coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/CatalogNumber')), false), false), 'var(--text)', 'var(--neutral-60)')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "meta.tooltip.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/ProductName')), false), false) || coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/CatalogNumber')), false), false), toStr(coalesce(try(if(isGood(tag(coalesce({view.params.plcPath}, '') + '/ProductName')) && len(trim(toStr(tag(coalesce({view.params.plcPath}, '') + '/ProductName')))) > 0, split(trim(toStr(tag(coalesce({view.params.plcPath}, '') + '/ProductName'))), ' ')[0, 0], null), null), try(toStr(tag(coalesce({view.params.plcPath}, '') + '/CatalogNumber')), null), '--')), '')"
+                      }
+                    }
+                  },
+                  "meta.tooltip.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "true"
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.custom.show.Catalog"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "RowFirmware"
+            },
+            "position": {
+              "basis": "26px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "style": {
+                "borderBottom": "1px solid var(--border)"
+              },
+              "alignItems": "center"
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Key"
+                },
+                "position": {
+                  "basis": "130px",
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Firmware",
+                  "style": {
+                    "classes": "form-label fw-400 text-muted",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Value"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 1,
+                  "basis": "0px"
+                },
+                "props": {
+                  "text": "--",
+                  "style": {
+                    "classes": "form-label",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MajorRevision')), false), false) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MinorRevision')), false), false), toStr(tag(coalesce({view.params.plcPath}, '') + '/MajorRevision')) + '.' + toStr(tag(coalesce({view.params.plcPath}, '') + '/MinorRevision')), '--')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MajorRevision')), false), false) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MinorRevision')), false), false), 'form-label', 'form-label value-bad')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.color": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MajorRevision')), false), false) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MinorRevision')), false), false), 'var(--text)', 'var(--neutral-60)')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "meta.tooltip.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MajorRevision')), false), false) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MinorRevision')), false), false), toStr(toStr(tag(coalesce({view.params.plcPath}, '') + '/MajorRevision')) + '.' + toStr(tag(coalesce({view.params.plcPath}, '') + '/MinorRevision'))), '')"
+                      }
+                    }
+                  },
+                  "meta.tooltip.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "true"
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.custom.show.Firmware"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "RowIp"
+            },
+            "position": {
+              "basis": "26px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "style": {
+                "borderBottom": "1px solid var(--border)"
+              },
+              "alignItems": "center"
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Key"
+                },
+                "position": {
+                  "basis": "130px",
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "IP Address",
+                  "style": {
+                    "classes": "form-label fw-400 text-muted",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Value"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 1,
+                  "basis": "0px"
+                },
+                "props": {
+                  "text": "--",
+                  "style": {
+                    "classes": "form-label",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/IPAddress')), false), false), toStr(tag(coalesce({view.params.plcPath}, '') + '/IPAddress')), '--')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/IPAddress')), false), false), 'form-label', 'form-label value-bad')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.color": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/IPAddress')), false), false), 'var(--text)', 'var(--neutral-60)')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "meta.tooltip.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/IPAddress')), false), false), toStr(toStr(tag(coalesce({view.params.plcPath}, '') + '/IPAddress'))), '')"
+                      }
+                    }
+                  },
+                  "meta.tooltip.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "true"
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.custom.show.Ip"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "RowDriver"
+            },
+            "position": {
+              "basis": "26px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "style": {
+                "borderBottom": "1px solid var(--border)"
+              },
+              "alignItems": "center"
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Key"
+                },
+                "position": {
+                  "basis": "130px",
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Driver",
+                  "style": {
+                    "classes": "form-label fw-400 text-muted",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Value"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 1,
+                  "basis": "0px"
+                },
+                "props": {
+                  "text": "--",
+                  "style": {
+                    "classes": "form-label",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false), if((coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false) && coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false)), 'Connected', 'Disconnected'), '--')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false), 'form-label', 'form-label value-bad')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.color": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false), if((coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false) && coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false)), 'var(--sts-run)', 'var(--sts-fault)'), 'var(--neutral-60)')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "meta.tooltip.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false), toStr(if((coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false) && coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false)), 'Connected', 'Disconnected')), '')"
+                      }
+                    }
+                  },
+                  "meta.tooltip.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "true"
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.custom.show.Driver"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "RowCommLoss"
+            },
+            "position": {
+              "basis": "26px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "style": {
+                "borderBottom": "1px solid var(--border)"
+              },
+              "alignItems": "center"
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Key"
+                },
+                "position": {
+                  "basis": "130px",
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Comm Loss",
+                  "style": {
+                    "classes": "form-label fw-400 text-muted",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Value"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 1,
+                  "basis": "0px"
+                },
+                "props": {
+                  "text": "--",
+                  "style": {
+                    "classes": "form-label",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/CommLoss')), false), false), if(coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/CommLoss')), false), false), 'Yes', 'No'), '--')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/CommLoss')), false), false), 'form-label', 'form-label value-bad')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.color": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/CommLoss')), false), false), if(coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/CommLoss')), false), false), 'var(--sts-fault)', 'var(--text)'), 'var(--neutral-60)')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "meta.tooltip.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/CommLoss')), false), false), toStr(if(coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/CommLoss')), false), false), 'Yes', 'No')), '')"
+                      }
+                    }
+                  },
+                  "meta.tooltip.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "true"
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.custom.show.CommLoss"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "RowMode"
+            },
+            "position": {
+              "basis": "26px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "style": {
+                "borderBottom": "1px solid var(--border)"
+              },
+              "alignItems": "center"
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Key"
+                },
+                "position": {
+                  "basis": "130px",
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Mode",
+                  "style": {
+                    "classes": "form-label fw-400 text-muted",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Value"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 1,
+                  "basis": "0px"
+                },
+                "props": {
+                  "text": "--",
+                  "style": {
+                    "classes": "form-label",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if((coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false) && coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false)) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Mode')), false), false), toStr(tag(coalesce({view.params.plcPath}, '') + '/Mode')), '--')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if((coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false) && coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false)) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Mode')), false), false), 'form-label', 'form-label value-bad')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.color": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if((coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false) && coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false)) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Mode')), false), false), if(coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Run')), false), false), 'var(--sts-run)', 'var(--text)'), 'var(--neutral-60)')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "meta.tooltip.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if((coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false) && coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false)) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Mode')), false), false), toStr(toStr(tag(coalesce({view.params.plcPath}, '') + '/Mode'))), '')"
+                      }
+                    }
+                  },
+                  "meta.tooltip.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "true"
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.custom.show.Mode"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "RowMajorFault"
+            },
+            "position": {
+              "basis": "26px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "style": {
+                "borderBottom": "1px solid var(--border)"
+              },
+              "alignItems": "center"
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Key"
+                },
+                "position": {
+                  "basis": "130px",
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Major Fault",
+                  "style": {
+                    "classes": "form-label fw-400 text-muted",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Value"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 1,
+                  "basis": "0px"
+                },
+                "props": {
+                  "text": "--",
+                  "style": {
+                    "classes": "form-label",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if((coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false) && coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false)) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MajorFault')), false), false), if(coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/MajorFault')), false), false), 'Yes', 'No'), '--')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if((coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false) && coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false)) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MajorFault')), false), false), 'form-label', 'form-label value-bad')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.color": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if((coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false) && coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false)) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MajorFault')), false), false), if(!((coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false) && coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false)) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MajorFault')), false), false)), 'var(--neutral-60)', if(coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/MajorFault')), false), false), 'var(--sts-fault)', 'var(--text)')), 'var(--neutral-60)')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "meta.tooltip.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if((coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false) && coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false)) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MajorFault')), false), false), toStr(if(coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/MajorFault')), false), false), 'Yes', 'No')), '')"
+                      }
+                    }
+                  },
+                  "meta.tooltip.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "true"
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.custom.show.MajorFault"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "RowMinorFault"
+            },
+            "position": {
+              "basis": "26px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "style": {
+                "borderBottom": "1px solid var(--border)"
+              },
+              "alignItems": "center"
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Key"
+                },
+                "position": {
+                  "basis": "130px",
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Minor Fault",
+                  "style": {
+                    "classes": "form-label fw-400 text-muted",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Value"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 1,
+                  "basis": "0px"
+                },
+                "props": {
+                  "text": "--",
+                  "style": {
+                    "classes": "form-label",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if((coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false) && coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false)) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MinorFault')), false), false), if(coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/MinorFault')), false), false), 'Yes', 'No'), '--')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if((coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false) && coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false)) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MinorFault')), false), false), 'form-label', 'form-label value-bad')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.color": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if((coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false) && coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false)) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MinorFault')), false), false), if(!((coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false) && coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false)) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MinorFault')), false), false)), 'var(--neutral-60)', if(coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/MinorFault')), false), false), 'var(--sts-fault)', 'var(--text)')), 'var(--neutral-60)')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "meta.tooltip.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if((coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false) && coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false)) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MinorFault')), false), false), toStr(if(coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/MinorFault')), false), false), 'Yes', 'No')), '')"
+                      }
+                    }
+                  },
+                  "meta.tooltip.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "true"
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.custom.show.MinorFault"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "RowIoFault"
+            },
+            "position": {
+              "basis": "26px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "style": {
+                "borderBottom": "1px solid var(--border)"
+              },
+              "alignItems": "center"
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Key"
+                },
+                "position": {
+                  "basis": "130px",
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "I/O Fault",
+                  "style": {
+                    "classes": "form-label fw-400 text-muted",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Value"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 1,
+                  "basis": "0px"
+                },
+                "props": {
+                  "text": "--",
+                  "style": {
+                    "classes": "form-label",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if((coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false) && coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false)) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/IOFault')), false), false), if(coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/IOFault')), false), false), 'Yes', 'No'), '--')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if((coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false) && coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false)) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/IOFault')), false), false), 'form-label', 'form-label value-bad')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.color": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if((coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false) && coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false)) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/IOFault')), false), false), if(!((coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false) && coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false)) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/IOFault')), false), false)), 'var(--neutral-60)', if(coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/IOFault')), false), false), 'var(--sts-fault)', 'var(--text)')), 'var(--neutral-60)')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "meta.tooltip.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if((coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false) && coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false)) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/IOFault')), false), false), toStr(if(coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/IOFault')), false), false), 'Yes', 'No')), '')"
+                      }
+                    }
+                  },
+                  "meta.tooltip.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "true"
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.custom.show.IoFault"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "RowLastFault"
+            },
+            "position": {
+              "basis": "26px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "style": {
+                "borderBottom": "1px solid var(--border)"
+              },
+              "alignItems": "center"
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Key"
+                },
+                "position": {
+                  "basis": "130px",
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Last Major Fault",
+                  "style": {
+                    "classes": "form-label fw-400 text-muted",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Value"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 1,
+                  "basis": "0px"
+                },
+                "props": {
+                  "text": "--",
+                  "style": {
+                    "classes": "form-label",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MajorFaultRecordType')), false), false) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MajorFaultRecordCode')), false), false), 'Type ' + toStr(tag(coalesce({view.params.plcPath}, '') + '/MajorFaultRecordType')) + ' · Code ' + toStr(tag(coalesce({view.params.plcPath}, '') + '/MajorFaultRecordCode')), '--')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MajorFaultRecordType')), false), false) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MajorFaultRecordCode')), false), false), 'form-label', 'form-label value-bad')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "props.style.color": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MajorFaultRecordType')), false), false) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MajorFaultRecordCode')), false), false), 'var(--text)', 'var(--neutral-60)')"
+                      },
+                      "overlayOptOut": true
+                    }
+                  },
+                  "meta.tooltip.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MajorFaultRecordType')), false), false) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/MajorFaultRecordCode')), false), false), toStr('Type ' + toStr(tag(coalesce({view.params.plcPath}, '') + '/MajorFaultRecordType')) + ' · Code ' + toStr(tag(coalesce({view.params.plcPath}, '') + '/MajorFaultRecordCode'))), '')"
+                      }
+                    }
+                  },
+                  "meta.tooltip.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "true"
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.custom.show.LastFault"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "RowModuleTypes"
+            },
+            "position": {
+              "basis": "26px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "style": {
+                "borderBottom": "1px solid var(--border)"
+              },
+              "alignItems": "center"
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Key"
+                },
+                "position": {
+                  "basis": "130px",
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Module Types",
+                  "style": {
+                    "classes": "form-label fw-400 text-muted",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Value"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 1,
+                  "basis": "0px"
+                },
+                "props": {
+                  "text": "--",
+                  "style": {
+                    "classes": "form-label",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(!isNull(try({view.custom.rack.typeSummary}, null)), coalesce(try(toStr({view.custom.rack.typeSummary}), null), '--'), '--')"
+                      }
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(!isNull(try({view.custom.rack.typeSummary}, null)), 'form-label', 'form-label value-bad')"
+                      }
+                    }
+                  },
+                  "props.style.color": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(!isNull(try({view.custom.rack.typeSummary}, null)), 'var(--text)', 'var(--neutral-60)')"
+                      }
+                    }
+                  },
+                  "meta.tooltip.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(!isNull(try({view.custom.rack.typeSummary}, null)), toStr(coalesce(try(toStr({view.custom.rack.typeSummary}), null), '--')), '')"
+                      }
+                    }
+                  },
+                  "meta.tooltip.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "true"
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.custom.show.ModuleTypes"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "RowAlarms"
+            },
+            "position": {
+              "basis": "26px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "style": {
+                "borderBottom": "1px solid var(--border)"
+              },
+              "alignItems": "center"
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Key"
+                },
+                "position": {
+                  "basis": "130px",
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Active Alarms",
+                  "style": {
+                    "classes": "form-label fw-400 text-muted",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Value"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 1,
+                  "basis": "0px"
+                },
+                "props": {
+                  "text": "--",
+                  "style": {
+                    "classes": "form-label",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis"
+                  }
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(!isNull(try({view.custom.alarms.count}, null)), toStr(coalesce(try({view.custom.alarms.count}, null), 0)) + if(coalesce(try({view.custom.alarms.top}, null), '') = '', '', ' · ' + {view.custom.alarms.top}), '--')"
+                      }
+                    }
+                  },
+                  "props.style.classes": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(!isNull(try({view.custom.alarms.count}, null)), 'form-label', 'form-label value-bad')"
+                      }
+                    }
+                  },
+                  "props.style.color": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(!isNull(try({view.custom.alarms.count}, null)), if(coalesce(try({view.custom.alarms.count}, null), 0) > 0, 'var(--sts-fault)', 'var(--sts-run)'), 'var(--neutral-60)')"
+                      }
+                    }
+                  },
+                  "meta.tooltip.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "if(!isNull(try({view.custom.alarms.count}, null)), toStr(toStr(coalesce(try({view.custom.alarms.count}, null), 0)) + if(coalesce(try({view.custom.alarms.top}, null), '') = '', '', ' · ' + {view.custom.alarms.top})), '')"
+                      }
+                    }
+                  },
+                  "meta.tooltip.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "true"
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.custom.show.Alarms"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "RackStrip"
+            },
+            "position": {
+              "basis": "46px",
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "style": {
+                "paddingTop": "6px"
+              },
+              "alignItems": "flex-start"
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Key"
+                },
+                "position": {
+                  "basis": "130px",
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Modules",
+                  "style": {
+                    "classes": "form-label fw-400 text-muted",
+                    "textAlign": "left",
+                    "whiteSpace": "nowrap",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis",
+                    "height": "10px",
+                    "lineHeight": "10px"
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Health"
+                },
+                "position": {
+                  "grow": 1,
+                  "shrink": 1,
+                  "basis": "0px"
+                },
+                "props": {
+                  "direction": "column",
+                  "style": {
+                    "gap": "4px",
+                    "overflow": "hidden"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.flex-repeater",
+                    "meta": {
+                      "name": "Leds"
+                    },
+                    "position": {
+                      "shrink": 0,
+                      "basis": "10px"
+                    },
+                    "props": {
+                      "path": "02_Components/03_PLC/PlcCardLed",
+                      "direction": "row",
+                      "wrap": "nowrap",
+                      "useDefaultViewWidth": false,
+                      "useDefaultViewHeight": false,
+                      "elementPosition": {
+                        "grow": 1,
+                        "shrink": 1,
+                        "basis": "0px"
+                      },
+                      "instances": [],
+                      "style": {
+                        "gap": "2px",
+                        "height": "10px",
+                        "overflow": "hidden"
+                      }
+                    },
+                    "propConfig": {
+                      "props.instances": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "forEach(where(coalesce({view.custom.rack.items}, asList()), it()['kind'] = 'card'), asMap('tagPath', {view.params.plcPath} + '/' + it()['member'], 'label', 'Slot ' + toStr(toInt(it()['slot'])) + ' · ' + coalesce(it()['name'], '') + ' · ' + coalesce(it()['catalog'], ''), 'instanceStyle', asMap('classes', ''), 'instancePosition', asMap('basis', '0px', 'shrink', 1, 'grow', 1)))"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Summary"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "--",
+                      "style": {
+                        "classes": "fs-11 fw-700",
+                        "textAlign": "left",
+                        "whiteSpace": "nowrap",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if((coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false) && coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false)) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/ModulesFaulted')), false), false) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/ModuleCount')), false), false), if(coalesce(try(toInt(tag(coalesce({view.params.plcPath}, '') + '/ModulesFaulted')), 0), 0) > 0, toStr(coalesce(try(toInt(tag(coalesce({view.params.plcPath}, '') + '/ModulesFaulted')), 0), 0)) + ' Faulted · ', '') + toStr(coalesce(try(toInt(tag(coalesce({view.params.plcPath}, '') + '/ModuleCount')), 0), 0) - coalesce(try(toInt(tag(coalesce({view.params.plcPath}, '') + '/ModulesFaulted')), 0), 0)) + ' / ' + toStr(coalesce(try(toInt(tag(coalesce({view.params.plcPath}, '') + '/ModuleCount')), 0), 0)) + ' OK', 'COMM LOSS')"
+                          },
+                          "overlayOptOut": true
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "'fs-11 fw-700'"
+                          }
+                        }
+                      },
+                      "props.style.color": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(!((coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false) && coalesce(try(toBoolean(tag(coalesce({view.params.plcPath}, '') + '/Connected')), false), false)) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/ModulesFaulted')), false), false) && coalesce(try(isGood(tag(coalesce({view.params.plcPath}, '') + '/ModuleCount')), false), false)), 'var(--sts-fault)', if(coalesce(try(toInt(tag(coalesce({view.params.plcPath}, '') + '/ModulesFaulted')), 0), 0) > 0, 'var(--sts-fault)', 'var(--sts-run)'))"
+                          },
+                          "overlayOptOut": true
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.custom.show.RackStrip"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,951 @@
+{
+  "custom": {},
+  "params": {},
+  "props": {
+    "defaultSize": {
+      "height": 1080,
+      "width": 1920
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root",
+      "contextMenu": {}
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "bg-page",
+        "height": "100%",
+        "width": "100%",
+        "overflow": "hidden",
+        "padding": "16px 24px",
+        "boxSizing": "border-box",
+        "gap": "8px"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "Title"
+        },
+        "position": {
+          "basis": "36px",
+          "shrink": 0
+        },
+        "props": {
+          "text": "Rupture Disks",
+          "style": {
+            "classes": "Fonts/Title fs-20 fw-700",
+            "textAlign": "center"
+          }
+        }
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Grid"
+        },
+        "position": {
+          "grow": 1,
+          "basis": "0px"
+        },
+        "props": {
+          "direction": "row",
+          "justify": "space-evenly",
+          "alignItems": "flex-start",
+          "style": {
+            "gap": "16px",
+            "paddingTop": "clamp(0px, 4vh, 56px)",
+            "overflow": "hidden",
+            "minHeight": "0px"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Column1"
+            },
+            "position": {
+              "basis": "210px",
+              "shrink": 1
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "clamp(8px, 2.4vh, 30px)",
+                "minWidth": "150px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS01"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "PS01 EC1A-1",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS01 EC1A-1/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS01 EC1A-1",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS02"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "PS02 EC1A-2",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS02 EC1A-2/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS02 EC1A-2",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS03"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "PS03 EC1B-1",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS03 EC1B-1/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS03 EC1B-1",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS04"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "PS04 EC1B-2",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS04 EC1B-2/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS04 EC1B-2",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS05"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "PS05 COMP-1-SEPR-1",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS05 COMP-1-SEPR-1/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS05 COMP-1-SEPR-1",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS06"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "PS06 COMP-1-SEPR-2",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS06 COMP-1-SEPR-2/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS06 COMP-1-SEPR-2",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS07"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "PS07 COMP-1-TSYPHON",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS07 COMP-1-TSYPHON/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS07 COMP-1-TSYPHON",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS08"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "PS08 COMP-2-SEPR-1",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS08 COMP-2-SEPR-1/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS08 COMP-2-SEPR-1",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Column2"
+            },
+            "position": {
+              "basis": "210px",
+              "shrink": 1
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "clamp(8px, 2.4vh, 30px)",
+                "minWidth": "150px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS09"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "PS09 COMP-2-SEPR-2",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS09 COMP-2-SEPR-2/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS09 COMP-2-SEPR-2",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS10"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "PS10 COMP-2-TSYPHON",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS10 COMP-2-TSYPHON/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS10 COMP-2-TSYPHON",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS14"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "PS14 COMP-4-SEPR-1",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS14 COMP-4-SEPR-1/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS14 COMP-4-SEPR-1",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS15"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "PS15 COMP-4-SEPR-2",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS15 COMP-4-SEPR-2/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS15 COMP-4-SEPR-2",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS16"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "PS16 COMP-4-TSYPHON",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS16 COMP-4-TSYPHON/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS16 COMP-4-TSYPHON",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS17"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "PS17 COMP-5-SEPR-1",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS17 COMP-5-SEPR-1/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS17 COMP-5-SEPR-1",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS18"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "PS18 COMP-5-SEPR-2",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS18 COMP-5-SEPR-2/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS18 COMP-5-SEPR-2",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS19"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "PS19 COMP-5-TSYPHON",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS19 COMP-5-TSYPHON/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS19 COMP-5-TSYPHON",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Column3"
+            },
+            "position": {
+              "basis": "210px",
+              "shrink": 1
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "clamp(8px, 2.4vh, 30px)",
+                "minWidth": "150px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS20"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "PS20 COMP-6-SEPR-1",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS20 COMP-6-SEPR-1/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS20 COMP-6-SEPR-1",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS21"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "PS21 COMP-6-SEPR-2",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS21 COMP-6-SEPR-2/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS21 COMP-6-SEPR-2",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS22"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "PS22 COMP-6-TSYPHON",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS22 COMP-6-TSYPHON/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS22 COMP-6-TSYPHON",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS23"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "PS23 COMP-7-SEPR-1",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS23 COMP-7-SEPR-1/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS23 COMP-7-SEPR-1",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS24"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "PS24 COMP-7-SEPR-2",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS24 COMP-7-SEPR-2/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS24 COMP-7-SEPR-2",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS25"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "PS25 COMP-7-TSYPHON",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS25 COMP-7-TSYPHON/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS25 COMP-7-TSYPHON",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS26"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "TSYPON-VESSEL-1",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS26 TSYPON-VESSEL-1/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS26 TSYPON-VESSEL-1",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS27"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "TSYPON-VESSEL-2",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS27 TSYPON-VESSEL-2/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS27 TSYPON-VESSEL-2",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Column4"
+            },
+            "position": {
+              "basis": "210px",
+              "shrink": 1
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "clamp(8px, 2.4vh, 30px)",
+                "minWidth": "150px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS28"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "LTR-VESSEL-1",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS28 LTR-VESSEL-1/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS28 LTR-VESSEL-1",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS29"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "LTR-VESSEL-2",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS29 LTR-VESSEL-2/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS29 LTR-VESSEL-2",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS30"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "LTR-OIL POT",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS30 LTR-OIL POT/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS30 LTR-OIL POT",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS31"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "HTR-VESSEL-1",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS31 HTR-VESSEL-1/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS31 HTR-VESSEL-1",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS32"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "HTR-VESSEL-2",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS32 HTR-VESSEL-2/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS32 HTR-VESSEL-2",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS33"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "HTR-VESSEL-2",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS33 HTR-VESSEL-2/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS33 HTR-VESSEL-2",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS34"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "HTR-OIL POT",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS34 HTR-OIL POT/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS34 HTR-OIL POT",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS35"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "PURGER",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS35 PURGER/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS35 PURGER",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Column5"
+            },
+            "position": {
+              "basis": "210px",
+              "shrink": 1
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "clamp(8px, 2.4vh, 30px)",
+                "minWidth": "150px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS36"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "HPR-#1",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS36 HPR-1/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS36 HPR-1",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              },
+              {
+                "type": "ia.display.view",
+                "meta": {
+                  "name": "PS37"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "path": "00_Pages/Groveport/Utility/OverviewStatusTile",
+                  "useDefaultViewWidth": false,
+                  "useDefaultViewHeight": false,
+                  "params": {
+                    "label": "HPR-#2",
+                    "tagPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS37 HPR-2/DIn/Sts",
+                    "diPath": "[default]Boars_Head/GrovePort/Machine Room/RuptureDisks/PS37 HPR-2",
+                    "alarmText": "RDISK ALARM",
+                    "okValue": false
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "propConfig": {
+      "meta.contextMenu.items": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "coalesce({session.custom.TicketLogAccess}, false)"
+          },
+          "transforms": [
+            {
+              "type": "script",
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = str(self.view.params.tagPath or '')\n\texcept:\n\t\tpass\n\tview_name = self.view.id.split('@')[0]\n\titems = []\n\tif value:\n\t\tlogged = tagPath if tagPath.strip() else 'No TagPath: ' + view_name.split('/')[-1]\n\t\titems.append({\n\t\t\t\"text\": 'Ticket Logger',\n\t\t\t\"icon\": {\"path\": 'material/info', \"color\": \"--neutral-80\", \"style\": {}},\n\t\t\t\"style\": {\"classes\": \"bg-component Fonts/Value\", \"height\": 24, \"width\": 170},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\"type\": 'ticketLog', \"payload\": {'tagPath': logged, 'viewName': view_name, 'sender': self.view.id}, \"scope\": 'page'}\n\t\t})\n\treturn items"
+            }
+          ]
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "len({this.meta.contextMenu.items}) > 0"
+          }
+        }
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    }
+  }
+}

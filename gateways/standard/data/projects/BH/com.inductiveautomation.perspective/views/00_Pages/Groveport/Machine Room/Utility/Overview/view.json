@@ -1,0 +1,1871 @@
+{
+  "custom": {
+    "hsdPax": ""
+  },
+  "params": {
+    "Scale": true,
+    "tagPath": "[default]Boars_Head/GrovePort/Machine Room"
+  },
+  "propConfig": {
+    "params.Scale": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.hsdPax": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "case(toStr(coalesce(try(tag({view.params.tagPath} + \u0027/Sensors/HSD-Discharge Pressure\u0027 + \u0027.TypeId\u0027), \u0027\u0027), \u0027\u0027)), \u0027Devices/Pump\u0027, \u0027Motor\u0027, \u0027Devices/Valve\u0027, \u0027Valve\u0027, \u0027Devices/Tank\u0027, \u0027Tank\u0027, \u0027Devices/Compressor\u0027, \u0027Comp\u0027, \u0027Devices/Evaporator\u0027, \u0027CG\u0027, \u0027Devices/ExhaustFan\u0027, \u0027EF\u0027, \u0027Devices/LTU\u0027, \u0027LTU\u0027, \u0027Devices/SafetyRelay\u0027, \u0027Relay\u0027, \u0027Devices/SuctionSequence\u0027, \u0027Seq\u0027, \u0027Devices/DischargeSequence\u0027, \u0027Dsq\u0027, \u0027Devices/Sensor\u0027, if(coalesce(try(toBoolean(tag({view.params.tagPath} + \u0027/Sensors/HSD-Discharge Pressure\u0027 + \u0027/AIn.Enabled\u0027)), false), false), \u0027AIn\u0027, if(coalesce(try(toBoolean(tag({view.params.tagPath} + \u0027/Sensors/HSD-Discharge Pressure\u0027 + \u0027/AInRef.Enabled\u0027)), false), false), \u0027AInRef\u0027, \u0027\u0027)), \u0027Devices/DiscreteInput\u0027, if(coalesce(try(toBoolean(tag({view.params.tagPath} + \u0027/Sensors/HSD-Discharge Pressure\u0027 + \u0027/DIn.Enabled\u0027)), false), false), \u0027DIn\u0027, \u0027\u0027), \u0027\u0027)"
+        }
+      }
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 791,
+      "width": 1920
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "HTR"
+            },
+            "position": {
+              "height": 191,
+              "width": 207,
+              "x": 194,
+              "y": 122
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.tagPath} + \"/Tanks/HTR\""
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "faceplate": "TankOverview",
+                "orientation": {
+                  "reverse": true,
+                  "standard": false
+                }
+              },
+              "path": "02_Components/01_Devices/Tank"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "HPR"
+            },
+            "position": {
+              "height": 191,
+              "width": 207,
+              "x": 562,
+              "y": 122
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.tagPath} + \"/Tanks/HPR\""
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "faceplate": "TankOverview"
+              },
+              "path": "02_Components/01_Devices/Tank"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "LTR"
+            },
+            "position": {
+              "height": 191,
+              "width": 207,
+              "x": 865.793,
+              "y": 122
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.tagPath} + \"/Tanks/LTR\""
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "faceplate": "TankOverview",
+                "orientation": {
+                  "reverse": false,
+                  "standard": true
+                }
+              },
+              "path": "02_Components/01_Devices/Tank"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "HTLR-Pump 2"
+            },
+            "position": {
+              "height": 175,
+              "width": 88,
+              "x": 346.462,
+              "y": 329
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.tagPath} + \"/Pumps/HTLR-Pump 2\""
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "analog": false,
+                "direction": {
+                  "default": true,
+                  "rotated180": false,
+                  "rotated270": false,
+                  "rotated90": false
+                },
+                "faceplate": "Pump",
+                "orientation": {
+                  "horizontal": false,
+                  "horizontalReverse": false,
+                  "vertical": true
+                }
+              },
+              "path": "02_Components/01_Devices/Pump"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "LTRL-Pump 1"
+            },
+            "position": {
+              "height": 175,
+              "width": 88,
+              "x": 761.696,
+              "y": 329
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.tagPath} + \"/Pumps/LTLR-Pump 1\""
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "analog": false,
+                "direction": {
+                  "default": true,
+                  "rotated180": false,
+                  "rotated270": false,
+                  "rotated90": false
+                },
+                "faceplate": "Pump",
+                "orientation": {
+                  "horizontal": false,
+                  "horizontalReverse": false,
+                  "vertical": true
+                }
+              },
+              "path": "02_Components/01_Devices/Pump"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "LTRL-Pump 2"
+            },
+            "position": {
+              "height": 175,
+              "width": 105,
+              "x": 966.78,
+              "y": 329
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.tagPath} + \"/Pumps/LTLR-Pump 2\""
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "analog": false,
+                "direction": {
+                  "default": true,
+                  "rotated180": false,
+                  "rotated270": false,
+                  "rotated90": false
+                },
+                "faceplate": "Pump",
+                "orientation": {
+                  "horizontal": false,
+                  "horizontalReverse": false,
+                  "vertical": true
+                }
+              },
+              "path": "02_Components/01_Devices/Pump"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "HTLR-Pump 1"
+            },
+            "position": {
+              "height": 175,
+              "width": 88,
+              "x": 165.49,
+              "y": 329
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.tagPath} + \"/Pumps/HTLR-Pump 1\""
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "analog": false,
+                "direction": {
+                  "default": true,
+                  "rotated180": false,
+                  "rotated270": false,
+                  "rotated90": false
+                },
+                "faceplate": "Pump",
+                "orientation": {
+                  "horizontal": false,
+                  "horizontalReverse": false,
+                  "vertical": true
+                }
+              },
+              "path": "02_Components/01_Devices/Pump"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "Lbl-Comp1"
+            },
+            "position": {
+              "height": 23,
+              "width": 64,
+              "x": 366.99,
+              "y": 58
+            },
+            "props": {
+              "text": "COMP 1"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "Lbl-HTRS"
+            },
+            "position": {
+              "height": 23,
+              "width": 64,
+              "x": 380.98,
+              "y": 85.9852
+            },
+            "props": {
+              "text": "HTRS"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "COMP1"
+            },
+            "position": {
+              "height": 173,
+              "width": 149,
+              "x": 871.3,
+              "y": 593.1
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.tagPath} + \"/Compressors/COMP 1\""
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "faceplate": "Compressor",
+                "webGuiUrl": "http://10.80.31.61/compressor"
+              },
+              "path": "02_Components/01_Devices/Compressor"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "COMP7"
+            },
+            "position": {
+              "height": 169,
+              "width": 150,
+              "x": 142.7,
+              "y": 593.1
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.tagPath} + \"/Compressors/COMP 7\""
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "faceplate": "Compressor",
+                "webGuiUrl": "http://10.80.31.65/compressor"
+              },
+              "path": "02_Components/01_Devices/Compressor"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "COMP6"
+            },
+            "position": {
+              "height": 169,
+              "width": 150,
+              "x": 301.7,
+              "y": 593.1
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.tagPath} + \"/Compressors/COMP 6\""
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "faceplate": "Compressor",
+                "webGuiUrl": "http://10.80.31.64/compressor"
+              },
+              "path": "02_Components/01_Devices/Compressor"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "COMP4"
+            },
+            "position": {
+              "height": 169,
+              "width": 150,
+              "x": 673.2,
+              "y": 593.1
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.tagPath} + \"/Compressors/COMP 4\""
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "faceplate": "Compressor",
+                "webGuiUrl": "http://10.80.31.62/compressor"
+              },
+              "path": "02_Components/01_Devices/Compressor"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "COMP5"
+            },
+            "position": {
+              "height": 169,
+              "width": 150,
+              "x": 485.2,
+              "y": 593.1
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.tagPath} + \"/Compressors/COMP 5\""
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "faceplate": "Compressor",
+                "webGuiUrl": "http://10.80.31.63/compressor"
+              },
+              "path": "02_Components/01_Devices/Compressor"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "MAIN LIQ SV"
+            },
+            "position": {
+              "height": 121,
+              "width": 110,
+              "x": 469.71,
+              "y": 150
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.tagPath} + \"/Valves/Main Liq SV\""
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "faceplate": "SolenoidValve",
+                "label": "MAIN LIQ SV"
+              },
+              "path": "02_Components/01_Devices/SolenoidValve"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "OPL1_0"
+            },
+            "position": {
+              "height": 121,
+              "width": 113,
+              "x": 364.192,
+              "y": 150
+            },
+            "props": {
+              "params": {
+                "faceplate": "",
+                "feedback": false,
+                "label": "OPL 1",
+                "tagPath": ""
+              },
+              "path": "02_Components/01_Devices/SolenoidValve"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "Condensor Nav"
+            },
+            "position": {
+              "height": 37,
+              "width": 130,
+              "x": 499.2,
+              "y": 67.45
+            },
+            "props": {
+              "params": {
+                "label": "CONDENSERS",
+                "page": "/condensers",
+                "viewPath": ""
+              },
+              "path": "02_Components/00_Controls/NavButton"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "OPL1_1"
+            },
+            "position": {
+              "height": 121,
+              "width": 113,
+              "x": 785.71,
+              "y": 198.96
+            },
+            "props": {
+              "params": {
+                "faceplate": "",
+                "feedback": false,
+                "label": "OPL 1",
+                "tagPath": ""
+              },
+              "path": "02_Components/01_Devices/SolenoidValve"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "HSS-PT2"
+            },
+            "position": {
+              "height": 69,
+              "width": 113,
+              "x": 39.52,
+              "y": 81.39
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.tagPath} + \"/Sensors/HSS-Pumps Pressure\""
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "faceplate": "Sensor",
+                "feedback": true,
+                "label": "HSS-PT2",
+                "orientation": {
+                  "horizontal": true,
+                  "horizontalReverse": false,
+                  "vertical": false,
+                  "verticalReverse": false
+                },
+                "valuePosition": "top"
+              },
+              "path": "02_Components/01_Devices/Sensor"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "HSS-PT3"
+            },
+            "position": {
+              "height": 123,
+              "width": 80,
+              "x": 473.15,
+              "y": 283.39
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.tagPath} + \"/Sensors/HSL-Pumps Pressure\""
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "faceplate": "Sensor",
+                "feedback": true,
+                "label": "HSL-PSIG",
+                "orientation": {
+                  "horizontal": false,
+                  "horizontalReverse": false,
+                  "vertical": true,
+                  "verticalReverse": false
+                }
+              },
+              "path": "02_Components/01_Devices/Sensor"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "HSS-PT4"
+            },
+            "position": {
+              "height": 123,
+              "width": 80,
+              "x": 1082.15,
+              "y": 282.756
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.tagPath} + \"/Sensors/LSL-Pumps Pressure\""
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "faceplate": "Sensor",
+                "feedback": true,
+                "label": "LSL-PSIG",
+                "orientation": {
+                  "horizontal": false,
+                  "horizontalReverse": false,
+                  "vertical": true,
+                  "verticalReverse": false
+                }
+              },
+              "path": "02_Components/01_Devices/Sensor"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "Lbl-LTRL"
+            },
+            "position": {
+              "height": 23,
+              "width": 64,
+              "x": 1171.14,
+              "y": 388.866
+            },
+            "props": {
+              "text": "LTRL"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "Lbl-HSS"
+            },
+            "position": {
+              "height": 23,
+              "width": 32,
+              "x": 110.689,
+              "y": 556
+            },
+            "props": {
+              "text": "HSS"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "Lbl-HTR"
+            },
+            "position": {
+              "height": 23,
+              "width": 32,
+              "x": 997.461,
+              "y": 532.994
+            },
+            "props": {
+              "text": "HTR"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "Lbl-LTRS"
+            },
+            "position": {
+              "height": 23,
+              "width": 38,
+              "x": 844.611,
+              "y": 77.8543
+            },
+            "props": {
+              "text": "LTRS"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "Lbl-LSS"
+            },
+            "position": {
+              "height": 23,
+              "width": 30,
+              "x": 1218.14,
+              "y": 570.167
+            },
+            "props": {
+              "text": "LSS"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "HSS-PT5"
+            },
+            "position": {
+              "height": 124,
+              "width": 83,
+              "x": 1149.24,
+              "y": 87.39
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.params.tagPath} + \"/Sensors/LSS-Pumps Pressure\""
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "faceplate": "Sensor",
+                "label": "LSS-PT1",
+                "orientation": {
+                  "horizontal": false,
+                  "horizontalReverse": false,
+                  "vertical": false,
+                  "verticalReverse": true
+                }
+              },
+              "path": "02_Components/01_Devices/Sensor"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "SAFETYS"
+            },
+            "position": {
+              "height": 405,
+              "width": 263,
+              "x": 1269,
+              "y": 83.96
+            },
+            "props": {
+              "params": {
+                "brEfTagPath": "[default]Boars_Head/GrovePort/Machine Room/ExhaustFans/BR EF",
+                "circuitTagPath": "[default]Boars_Head/GrovePort/Machine Room/Digitals/Alarm Circuit/Value",
+                "fireTagPath": "[default]Boars_Head/GrovePort/Machine Room/Digitals/FIRE/Value",
+                "lightTagPath": "[default]Boars_Head/GrovePort/Machine Room/Digitals/Alarm Light/Value",
+                "mrAdTagPath": "[default]Boars_Head/GrovePort/Machine Room/Digitals/MR AD/Value",
+                "mrEfTagPath": "[default]Boars_Head/GrovePort/Machine Room/ExhaustFans/MR EF",
+                "rdisksTagPath": "[default]Boars_Head/GrovePort/Machine Room/Digitals/RDISKS/Value",
+                "resetTagPath": "[default]Boars_Head/GrovePort/Machine Room/Digitals/Alarm Reset/Value",
+                "silenceTagPath": "[default]Boars_Head/GrovePort/Machine Room/Digitals/Alarm Silence/Value",
+                "title": "SAFETYS",
+                "vlAdTagPath": "[default]Boars_Head/GrovePort/Machine Room/Digitals/VL AD/Value"
+              },
+              "path": "02_Components/02_Widgets/Safetys"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "Condensor Nav_0"
+            },
+            "position": {
+              "height": 37,
+              "width": 133,
+              "x": 175.2,
+              "y": 15.45
+            },
+            "propConfig": {
+              "props.params.label": {
+                "binding": {
+                  "config": {
+                    "expression": "if(coalesce(try(isGood(tag({view.params.tagPath} + \u0027/Sensors/HSD-Discharge Pressure/AIn/Val\u0027)), false), false), coalesce(try(numberFormat(tag({view.params.tagPath} + \u0027/Sensors/HSD-Discharge Pressure/AIn/Val\u0027), \u0027#,##0.0\u0027) + \u0027 \u0027 + coalesce(try(tag({view.params.tagPath} + \u0027/Sensors/HSD-Discharge Pressure/AIn/Val.EngUnit\u0027), \u0027\u0027), \u0027\u0027), null), \u0027—\u0027), \u0027—\u0027)"
+                  },
+                  "type": "expr",
+                  "overlayOptOut": true
+                }
+              }
+            },
+            "props": {
+              "params": {
+                "page": "/condensers",
+                "viewPath": ""
+              },
+              "path": "02_Components/00_Controls/NavButton"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\ttagPath \u003d \u0027[default]Boars_Head/GrovePort/Machine Room/Sequences/HSS\u0027\n\ttitle \u003d \u0027High Stage Suction\u0027\n\tNavigation.Faceplate.openFaceplate(\u0027seq-fp-%s\u0027 % tagPath, tagPath, \u002701_Popups/00_Faceplates/SuctionSequence\u0027, False, title, 820, 700,\n\t\t{\u0027title\u0027: title})\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "HSS-SuctionSP"
+            },
+            "position": {
+              "height": 34,
+              "width": 170,
+              "x": 1060,
+              "y": 630
+            },
+            "props": {
+              "style": {
+                "classes": "faceplate-cmd-btn"
+              },
+              "text": "HSS Suction SP"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\ttagPath \u003d \u0027[default]Boars_Head/GrovePort/Machine Room/Sequences/LSS\u0027\n\ttitle \u003d \u0027Low Stage Suction\u0027\n\tNavigation.Faceplate.openFaceplate(\u0027seq-fp-%s\u0027 % tagPath, tagPath, \u002701_Popups/00_Faceplates/SuctionSequence\u0027, False, title, 820, 700,\n\t\t{\u0027title\u0027: title})\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "LSS-SuctionSP"
+            },
+            "position": {
+              "height": 34,
+              "width": 170,
+              "x": 1060,
+              "y": 674
+            },
+            "props": {
+              "style": {
+                "classes": "faceplate-cmd-btn"
+              },
+              "text": "LSS Suction SP"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tsystem.perspective.navigate(page\u003d\u0027/rupture-disks\u0027)\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "RuptureDisks"
+            },
+            "position": {
+              "height": 34,
+              "width": 170,
+              "x": 1060,
+              "y": 718
+            },
+            "props": {
+              "style": {
+                "classes": "faceplate-cmd-btn"
+              },
+              "text": "Rupture Disks"
+            },
+            "type": "ia.input.button"
+          },
+          {
+            "meta": {
+              "name": "LTU"
+            },
+            "position": {
+              "height": 162,
+              "width": 261,
+              "x": 1271,
+              "y": 500
+            },
+            "props": {
+              "params": {
+                "tagPath": "[default]Boars_Head/GrovePort/Machine Room/LTU/NH3 LTU"
+              },
+              "path": "02_Components/01_Devices/LTU"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "AD-MR-AD1"
+            },
+            "position": {
+              "height": 44,
+              "width": 85,
+              "x": 1269,
+              "y": 670
+            },
+            "props": {
+              "params": {
+                "alarmText": "ALARM",
+                "diPath": "[default]Boars_Head/GrovePort/Machine Room/Detectors/MR-AD1",
+                "label": "MR-AD1",
+                "okValue": false,
+                "tagPath": "[default]Boars_Head/GrovePort/Machine Room/Detectors/MR-AD1/DIn/Sts"
+              },
+              "path": "00_Pages/Groveport/Utility/OverviewStatusTile"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "AD-VL-AD"
+            },
+            "position": {
+              "height": 44,
+              "width": 85,
+              "x": 1358,
+              "y": 670
+            },
+            "props": {
+              "params": {
+                "alarmText": "ALARM",
+                "diPath": "[default]Boars_Head/GrovePort/Machine Room/Detectors/VL-AD",
+                "label": "VL-AD",
+                "okValue": false,
+                "tagPath": "[default]Boars_Head/GrovePort/Machine Room/Detectors/VL-AD/DIn/Sts"
+              },
+              "path": "00_Pages/Groveport/Utility/OverviewStatusTile"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "AD-MASTER-AD1"
+            },
+            "position": {
+              "height": 44,
+              "width": 85,
+              "x": 1447,
+              "y": 670
+            },
+            "props": {
+              "params": {
+                "alarmText": "ALARM",
+                "diPath": "[default]Boars_Head/GrovePort/Machine Room/Detectors/MASTER-AD1",
+                "label": "MASTER-AD1",
+                "okValue": false,
+                "tagPath": "[default]Boars_Head/GrovePort/Machine Room/Detectors/MASTER-AD1/DIn/Sts"
+              },
+              "path": "00_Pages/Groveport/Utility/OverviewStatusTile"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "Lbl-LTU"
+            },
+            "position": {
+              "height": 23,
+              "width": 38,
+              "x": 774.898,
+              "y": 155.238
+            },
+            "props": {
+              "text": "LTU"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "Lbl-HTL"
+            },
+            "position": {
+              "height": 23,
+              "width": 38,
+              "x": 773.188,
+              "y": 248.24
+            },
+            "props": {
+              "text": "HTL"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "DI-HTR-HLCO"
+            },
+            "position": {
+              "height": 44,
+              "width": 100,
+              "x": 45,
+              "y": 160
+            },
+            "props": {
+              "params": {
+                "alarmText": "HI",
+                "diPath": "[default]Boars_Head/GrovePort/Machine Room/Tanks/HTR/DI_HLCO",
+                "label": "HTR-HLCO",
+                "okValue": false,
+                "tagPath": "[default]Boars_Head/GrovePort/Machine Room/Tanks/HTR/HlcoDIn/Sts"
+              },
+              "path": "00_Pages/Groveport/Utility/OverviewStatusTile"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "DI-HTR-HiLevel"
+            },
+            "position": {
+              "height": 44,
+              "width": 100,
+              "x": 45,
+              "y": 208
+            },
+            "props": {
+              "params": {
+                "alarmText": "HI",
+                "diPath": "[default]Boars_Head/GrovePort/Machine Room/Tanks/HTR/DI_HiLevel",
+                "label": "HTR-HI LEVEL",
+                "okValue": false,
+                "tagPath": "[default]Boars_Head/GrovePort/Machine Room/Tanks/HTR/HiHiDIn/Sts"
+              },
+              "path": "00_Pages/Groveport/Utility/OverviewStatusTile"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "DI-HTR-OPL"
+            },
+            "position": {
+              "height": 44,
+              "width": 100,
+              "x": 45,
+              "y": 256
+            },
+            "props": {
+              "params": {
+                "alarmText": "ALARM",
+                "diPath": "[default]Boars_Head/GrovePort/Machine Room/Tanks/HTR/DI_OPL",
+                "label": "HTR-OPL",
+                "okValue": false,
+                "tagPath": "[default]Boars_Head/GrovePort/Machine Room/Tanks/HTR/OplDIn/Sts"
+              },
+              "path": "00_Pages/Groveport/Utility/OverviewStatusTile"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "DI-HTR-LoLo"
+            },
+            "position": {
+              "height": 44,
+              "width": 100,
+              "x": 45,
+              "y": 304
+            },
+            "props": {
+              "params": {
+                "alarmText": "LO",
+                "diPath": "[default]Boars_Head/GrovePort/Machine Room/Tanks/HTR/DI_LoLo",
+                "label": "HTR-LOLO LEVEL",
+                "okValue": false,
+                "tagPath": "[default]Boars_Head/GrovePort/Machine Room/Tanks/HTR/LoLoDIn/Sts"
+              },
+              "path": "00_Pages/Groveport/Utility/OverviewStatusTile"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "DI-LTR-HLCO"
+            },
+            "position": {
+              "height": 44,
+              "width": 100,
+              "x": 1080,
+              "y": 216
+            },
+            "props": {
+              "params": {
+                "alarmText": "HI",
+                "diPath": "[default]Boars_Head/GrovePort/Machine Room/Tanks/LTR/DI_HLCO",
+                "label": "LTR-HLCO",
+                "okValue": false,
+                "tagPath": "[default]Boars_Head/GrovePort/Machine Room/Tanks/LTR/HlcoDIn/Sts"
+              },
+              "path": "00_Pages/Groveport/Utility/OverviewStatusTile"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "DI-LTR-HiLevel"
+            },
+            "position": {
+              "height": 44,
+              "width": 100,
+              "x": 1080,
+              "y": 416
+            },
+            "props": {
+              "params": {
+                "alarmText": "HI",
+                "diPath": "[default]Boars_Head/GrovePort/Machine Room/Tanks/LTR/DI_HiLevel",
+                "label": "LTR-HI LEVEL",
+                "okValue": false,
+                "tagPath": "[default]Boars_Head/GrovePort/Machine Room/Tanks/LTR/HiHiDIn/Sts"
+              },
+              "path": "00_Pages/Groveport/Utility/OverviewStatusTile"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "DI-LTR-OPL"
+            },
+            "position": {
+              "height": 44,
+              "width": 100,
+              "x": 1080,
+              "y": 464
+            },
+            "props": {
+              "params": {
+                "alarmText": "ALARM",
+                "diPath": "[default]Boars_Head/GrovePort/Machine Room/Tanks/LTR/DI_OPL",
+                "label": "LTR-OPL",
+                "okValue": false,
+                "tagPath": "[default]Boars_Head/GrovePort/Machine Room/Tanks/LTR/OplDIn/Sts"
+              },
+              "path": "00_Pages/Groveport/Utility/OverviewStatusTile"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "DI-LTR-LoLo"
+            },
+            "position": {
+              "height": 44,
+              "width": 100,
+              "x": 1080,
+              "y": 512
+            },
+            "props": {
+              "params": {
+                "alarmText": "LO",
+                "diPath": "[default]Boars_Head/GrovePort/Machine Room/Tanks/LTR/DI_LoLo",
+                "label": "LTR-LOLO LEVEL",
+                "okValue": false,
+                "tagPath": "[default]Boars_Head/GrovePort/Machine Room/Tanks/LTR/LoLoDIn/Sts"
+              },
+              "path": "00_Pages/Groveport/Utility/OverviewStatusTile"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "DI-HPR-LoLo"
+            },
+            "position": {
+              "height": 44,
+              "width": 100,
+              "x": 622,
+              "y": 330
+            },
+            "props": {
+              "params": {
+                "alarmText": "LO",
+                "diPath": "[default]Boars_Head/GrovePort/Machine Room/Tanks/HPR/DI_LoLo",
+                "label": "HPR-LO LEVEL",
+                "okValue": false,
+                "tagPath": "[default]Boars_Head/GrovePort/Machine Room/Tanks/HPR/LoLoDIn/Sts"
+              },
+              "path": "00_Pages/Groveport/Utility/OverviewStatusTile"
+            },
+            "type": "ia.display.view"
+          }
+        ],
+        "meta": {
+          "name": "Canvas"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.style.transform": {
+            "binding": {
+              "config": {
+                "struct": {
+                  "contentHeight": "782",
+                  "contentWidth": "1524",
+                  "contentX": "24",
+                  "contentY": "0",
+                  "defaultViewHeight": "{view.props.defaultSize.height}",
+                  "defaultViewWidth": "{view.props.defaultSize.width}",
+                  "primaryViewHeight": "{page.props.dimensions.primaryView.height}",
+                  "primaryViewWidth": "{page.props.dimensions.primaryView.width}",
+                  "scale": "{view.params.Scale}"
+                },
+                "waitOnAll": true
+              },
+              "transforms": [
+                {
+                  "code": "\treturn shared.Scale.cssTransform(value)",
+                  "type": "script"
+                }
+              ],
+              "type": "expr-struct"
+            }
+          }
+        },
+        "props": {
+          "pipes": [
+            {
+              "appearance": "p\u0026id",
+              "end": "arrowInward",
+              "fill": "",
+              "flanges": true,
+              "lineVariant": "solid",
+              "name": "Comp 1",
+              "origin": {
+                "connections": [
+                  {
+                    "connections": [
+                      {
+                        "connections": [
+                          {
+                            "x": 363,
+                            "y": 70
+                          }
+                        ],
+                        "x": 301,
+                        "y": 70
+                      }
+                    ],
+                    "x": 301,
+                    "y": 90
+                  }
+                ],
+                "x": 301,
+                "y": 125
+              },
+              "start": "none",
+              "stroke": "#FF8C00",
+              "visible": true,
+              "width": 3
+            },
+            {
+              "appearance": "p\u0026id",
+              "end": "arrowInward",
+              "fill": "",
+              "flanges": true,
+              "lineVariant": "solid",
+              "name": "HTRS",
+              "origin": {
+                "connections": [
+                  {
+                    "connections": [
+                      {
+                        "x": 378,
+                        "y": 98
+                      }
+                    ],
+                    "x": 327,
+                    "y": 98
+                  }
+                ],
+                "x": 327,
+                "y": 124
+              },
+              "start": "none",
+              "stroke": "#8AFFFF",
+              "visible": true,
+              "width": 3
+            },
+            {
+              "appearance": "p\u0026id",
+              "end": "none",
+              "fill": "",
+              "flanges": true,
+              "lineVariant": "midArrow",
+              "name": "HSS",
+              "origin": {
+                "connections": [
+                  {
+                    "connections": [
+                      {
+                        "connections": [
+                          {
+                            "connections": [
+                              {
+                                "connections": [
+                                  {
+                                    "connections": [
+                                      {
+                                        "connections": [
+                                          {
+                                            "connections": [
+                                              {
+                                                "connections": [
+                                                  {
+                                                    "connections": [
+                                                      {
+                                                        "x": 896.2,
+                                                        "y": 634
+                                                      }
+                                                    ],
+                                                    "x": 896.2,
+                                                    "y": 581
+                                                  }
+                                                ],
+                                                "x": 823.2,
+                                                "y": 581
+                                              },
+                                              {
+                                                "x": 698,
+                                                "y": 634
+                                              }
+                                            ],
+                                            "x": 698,
+                                            "y": 581
+                                          },
+                                          {
+                                            "x": 511,
+                                            "y": 634
+                                          }
+                                        ],
+                                        "x": 511,
+                                        "y": 581
+                                      },
+                                      {
+                                        "x": 327,
+                                        "y": 634
+                                      }
+                                    ],
+                                    "x": 327,
+                                    "y": 581
+                                  },
+                                  {
+                                    "x": 168,
+                                    "y": 634
+                                  }
+                                ],
+                                "x": 168,
+                                "y": 581
+                              }
+                            ],
+                            "x": 149,
+                            "y": 581
+                          }
+                        ],
+                        "x": 149,
+                        "y": 90
+                      }
+                    ],
+                    "x": 288,
+                    "y": 90
+                  }
+                ],
+                "x": 288,
+                "y": 125
+              },
+              "start": "none",
+              "stroke": "#8AFFFF",
+              "visible": true,
+              "width": 3
+            },
+            {
+              "appearance": "p\u0026id",
+              "end": "arrowOutward",
+              "fill": "",
+              "flanges": true,
+              "lineVariant": "solid",
+              "name": "HTRL",
+              "origin": {
+                "connections": [
+                  {
+                    "connections": [
+                      {
+                        "connections": [
+                          {
+                            "x": 574.71,
+                            "y": 401
+                          }
+                        ],
+                        "x": 506,
+                        "y": 401
+                      },
+                      {
+                        "x": 219,
+                        "y": 401
+                      }
+                    ],
+                    "x": 308.2,
+                    "y": 401
+                  }
+                ],
+                "x": 308.2,
+                "y": 319.96
+              },
+              "start": "none",
+              "stroke": "#00D9D9",
+              "visible": true,
+              "width": 3
+            },
+            {
+              "appearance": "p\u0026id",
+              "end": "none",
+              "fill": "",
+              "flanges": true,
+              "lineVariant": "solid",
+              "name": "OPL",
+              "origin": {
+                "connections": [
+                  {
+                    "x": 620,
+                    "y": 210
+                  }
+                ],
+                "x": 346.46,
+                "y": 210
+              },
+              "start": "none",
+              "stroke": "#FF8C00",
+              "visible": true,
+              "width": 3
+            },
+            {
+              "appearance": "p\u0026id",
+              "end": "none",
+              "fill": "",
+              "flanges": true,
+              "lineVariant": "midArrow",
+              "name": "HTR1",
+              "origin": {
+                "connections": [
+                  {
+                    "connections": [
+                      {
+                        "connections": [
+                          {
+                            "connections": [
+                              {
+                                "x": 203,
+                                "y": 33.95
+                              }
+                            ],
+                            "x": 41,
+                            "y": 33.95
+                          }
+                        ],
+                        "x": 41,
+                        "y": 541.1
+                      }
+                    ],
+                    "x": 992,
+                    "y": 541.1
+                  }
+                ],
+                "x": 992,
+                "y": 628
+              },
+              "start": "none",
+              "stroke": "#FF8C00",
+              "visible": true,
+              "width": 3
+            },
+            {
+              "appearance": "p\u0026id",
+              "end": "none",
+              "fill": "",
+              "flanges": true,
+              "lineVariant": "midArrow",
+              "name": "HTR2",
+              "origin": {
+                "connections": [
+                  {
+                    "x": 794,
+                    "y": 541.1
+                  }
+                ],
+                "x": 794,
+                "y": 628
+              },
+              "start": "none",
+              "stroke": "#FF8C00",
+              "visible": true,
+              "width": 3
+            },
+            {
+              "appearance": "p\u0026id",
+              "end": "none",
+              "fill": "",
+              "flanges": true,
+              "lineVariant": "midArrow",
+              "name": "HTR3",
+              "origin": {
+                "connections": [
+                  {
+                    "x": 607.71,
+                    "y": 541.1
+                  }
+                ],
+                "x": 607.71,
+                "y": 628
+              },
+              "start": "none",
+              "stroke": "#FF8C00",
+              "visible": true,
+              "width": 3
+            },
+            {
+              "appearance": "p\u0026id",
+              "end": "none",
+              "fill": "",
+              "flanges": true,
+              "lineVariant": "midArrow",
+              "name": "HTR4",
+              "origin": {
+                "connections": [
+                  {
+                    "x": 422,
+                    "y": 541.1
+                  }
+                ],
+                "x": 422,
+                "y": 628
+              },
+              "start": "none",
+              "stroke": "#FF8C00",
+              "visible": true,
+              "width": 3
+            },
+            {
+              "appearance": "p\u0026id",
+              "end": "none",
+              "fill": "",
+              "flanges": true,
+              "lineVariant": "midArrow",
+              "name": "HTR5",
+              "origin": {
+                "connections": [
+                  {
+                    "x": 265,
+                    "y": 541.1
+                  }
+                ],
+                "x": 265,
+                "y": 628
+              },
+              "start": "none",
+              "stroke": "#FF8C00",
+              "visible": true,
+              "width": 3
+            },
+            {
+              "appearance": "p\u0026id",
+              "end": "none",
+              "fill": "",
+              "flanges": true,
+              "lineVariant": "solid",
+              "name": "pipe",
+              "origin": {
+                "connections": [
+                  {
+                    "connections": [
+                      {
+                        "connections": [
+                          {
+                            "x": 560.2,
+                            "y": 85.99
+                          }
+                        ],
+                        "x": 596,
+                        "y": 85.99
+                      }
+                    ],
+                    "x": 639,
+                    "y": 85.99
+                  }
+                ],
+                "x": 639,
+                "y": 118
+              },
+              "start": "none",
+              "stroke": "#FF8C00",
+              "visible": true,
+              "width": 3
+            },
+            {
+              "appearance": "p\u0026id",
+              "end": "none",
+              "fill": "",
+              "flanges": true,
+              "lineVariant": "solid",
+              "name": "HTL",
+              "origin": {
+                "connections": [
+                  {
+                    "x": 927,
+                    "y": 259
+                  }
+                ],
+                "x": 806,
+                "y": 259
+              },
+              "start": "arrowInward",
+              "stroke": "#8A8AFF",
+              "visible": true,
+              "width": 3
+            },
+            {
+              "appearance": "p\u0026id",
+              "end": "arrowOutward",
+              "fill": "",
+              "flanges": true,
+              "lineVariant": "solid",
+              "name": "pipe_1",
+              "origin": {
+                "connections": [
+                  {
+                    "connections": [
+                      {
+                        "x": 1170,
+                        "y": 401
+                      },
+                      {
+                        "x": 804,
+                        "y": 401
+                      }
+                    ],
+                    "x": 953,
+                    "y": 401
+                  }
+                ],
+                "x": 953,
+                "y": 319.96
+              },
+              "start": "none",
+              "stroke": "#0000FF",
+              "visible": true,
+              "width": 3
+            },
+            {
+              "appearance": "p\u0026id",
+              "end": "none",
+              "fill": "",
+              "flanges": true,
+              "lineVariant": "solid",
+              "name": "pipe_2",
+              "origin": {
+                "connections": [
+                  {
+                    "connections": [
+                      {
+                        "x": 939,
+                        "y": 124
+                      }
+                    ],
+                    "x": 939,
+                    "y": 90
+                  }
+                ],
+                "x": 884,
+                "y": 90
+              },
+              "start": "arrowInward",
+              "stroke": "#0000FF",
+              "visible": true,
+              "width": 3
+            },
+            {
+              "appearance": "p\u0026id",
+              "end": "none",
+              "fill": "",
+              "flanges": true,
+              "lineVariant": "midArrow",
+              "name": "pipe_3",
+              "origin": {
+                "connections": [
+                  {
+                    "connections": [
+                      {
+                        "connections": [
+                          {
+                            "connections": [
+                              {
+                                "connections": [
+                                  {
+                                    "connections": [
+                                      {
+                                        "connections": [
+                                          {
+                                            "x": 717,
+                                            "y": 648.5
+                                          }
+                                        ],
+                                        "x": 717,
+                                        "y": 567.5
+                                      },
+                                      {
+                                        "x": 916,
+                                        "y": 648.5
+                                      }
+                                    ],
+                                    "x": 916,
+                                    "y": 567.5
+                                  }
+                                ],
+                                "x": 1245,
+                                "y": 567.5
+                              }
+                            ],
+                            "x": 1245,
+                            "y": 285.96
+                          }
+                        ],
+                        "x": 1245,
+                        "y": 90
+                      }
+                    ],
+                    "x": 987,
+                    "y": 90
+                  }
+                ],
+                "x": 987,
+                "y": 125
+              },
+              "start": "none",
+              "stroke": "#0000FF",
+              "visible": true,
+              "width": 3
+            },
+            {
+              "appearance": "p\u0026id",
+              "end": "none",
+              "fill": "",
+              "flanges": true,
+              "lineVariant": "solid",
+              "name": "LTU",
+              "origin": {
+                "connections": [
+                  {
+                    "x": 927,
+                    "y": 168
+                  }
+                ],
+                "x": 806,
+                "y": 168
+              },
+              "start": "none",
+              "stroke": "#8A8AFF",
+              "width": 3
+            }
+          ],
+          "style": {
+            "classes": "bg-page",
+            "height": "791px",
+            "overflow": "visible",
+            "transformOrigin": "top left",
+            "width": "1920px"
+          }
+        },
+        "type": "ia.container.coord"
+      }
+    ],
+    "meta": {
+      "contextMenu": {},
+      "name": "root"
+    },
+    "propConfig": {
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "config": {
+            "expression": "len({this.meta.contextMenu.items}) \u003e 0"
+          },
+          "type": "expr"
+        }
+      },
+      "meta.contextMenu.items": {
+        "binding": {
+          "config": {
+            "expression": "coalesce({session.custom.TicketLogAccess}, false)"
+          },
+          "transforms": [
+            {
+              "code": "\ttagPath \u003d \u0027\u0027\n\ttry:\n\t\ttagPath \u003d str(self.view.params.tagPath or \u0027\u0027)\n\texcept:\n\t\tpass\n\tview_name \u003d self.view.id.split(\u0027@\u0027)[0]\n\titems \u003d []\n\tif value:\n\t\tlogged \u003d tagPath if tagPath.strip() else \u0027No TagPath: \u0027 + view_name.split(\u0027/\u0027)[-1]\n\t\titems.append({\n\t\t\t\"text\": \u0027Ticket Logger\u0027,\n\t\t\t\"icon\": {\"path\": \u0027material/info\u0027, \"color\": \"--neutral-80\", \"style\": {}},\n\t\t\t\"style\": {\"classes\": \"bg-component Fonts/Value\", \"height\": 24, \"width\": 170},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\"type\": \u0027ticketLog\u0027, \"payload\": {\u0027tagPath\u0027: logged, \u0027viewName\u0027: view_name, \u0027sender\u0027: self.view.id}, \"scope\": \u0027page\u0027}\n\t\t})\n\treturn items",
+              "type": "script"
+            }
+          ],
+          "type": "expr"
+        }
+      }
+    },
+    "props": {
+      "alignItems": "flex-start",
+      "style": {
+        "height": "100%",
+        "overflow": "hidden",
+        "width": "100%"
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender \u003d payload.get(\u0027sender\u0027)\n\tif sender and sender !\u003d self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload[\u0027tagPath\u0027], payload[\u0027viewName\u0027])",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    },
+    "type": "ia.container.flex"
+  }
+}

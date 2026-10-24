@@ -1,0 +1,1758 @@
+{
+  "custom": {
+    "label": "",
+    "preview": "normal",
+    "commLoss": false,
+    "fault": false,
+    "run": true,
+    "pts": {
+      "in0": false,
+      "in1": false,
+      "in2": false,
+      "in3": false,
+      "in4": false,
+      "in5": false,
+      "in6": false,
+      "in7": false,
+      "in8": false,
+      "in9": false,
+      "out0": false,
+      "out1": false,
+      "out2": false,
+      "out3": false,
+      "out4": false,
+      "out5": false,
+      "pin0": false,
+      "pin1": false,
+      "pin2": false,
+      "pin3": false,
+      "pout0": false,
+      "pout1": false,
+      "pout2": false,
+      "pout3": false
+    },
+    "pax": ""
+  },
+  "params": {
+    "tagPath": "",
+    "label": "HLCO Safety Relay",
+    "state": "Normal",
+    "input0Name": "In 0: LSS HLCO",
+    "input1Name": "In 1: HSS HLCO"
+  },
+  "propConfig": {
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.label": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.state": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.input0Name": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.input1Name": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.label": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.label}, '') != '', {view.params.label}, if(coalesce({view.params.tagPath}, '') = '', '', subString({view.params.tagPath}, lastIndexOf({view.params.tagPath}, '/') + 1)))"
+        }
+      },
+      "persistent": true
+    },
+    "custom.preview": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "lower(trim(coalesce({view.params.state}, 'normal')))"
+        }
+      },
+      "persistent": true
+    },
+    "custom.commLoss": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', {view.custom.preview} = 'comm loss', !isGood(tag({view.params.tagPath} + '/IO/ConnectionFaulted')) || coalesce(try(toBoolean(tag({view.params.tagPath} + '/IO/ConnectionFaulted')), true), true))"
+        }
+      }
+    },
+    "custom.fault": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', {view.custom.preview} = 'fault', !{view.custom.commLoss} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/PlcMajorFault')), false), false))"
+        }
+      }
+    },
+    "custom.run": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', {view.custom.preview} = 'normal', !{view.custom.commLoss} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/IO/RunMode')), false), false))"
+        }
+      }
+    },
+    "custom.pts.in0": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', {view.custom.preview} = 'normal', !{view.custom.commLoss} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/IO/Pt00Data')), false), false))"
+        }
+      }
+    },
+    "custom.pts.in1": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', {view.custom.preview} = 'normal' || {view.custom.preview} = 'fault', !{view.custom.commLoss} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/IO/Pt01Data')), false), false))"
+        }
+      }
+    },
+    "custom.pts.in2": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', false, !{view.custom.commLoss} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/IO/Pt02Data')), false), false))"
+        }
+      }
+    },
+    "custom.pts.in3": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', false, !{view.custom.commLoss} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/IO/Pt03Data')), false), false))"
+        }
+      }
+    },
+    "custom.pts.in4": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', false, !{view.custom.commLoss} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/IO/Pt04Data')), false), false))"
+        }
+      }
+    },
+    "custom.pts.in5": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', false, !{view.custom.commLoss} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/IO/Pt05Data')), false), false))"
+        }
+      }
+    },
+    "custom.pts.in6": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', false, !{view.custom.commLoss} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/IO/Pt06Data')), false), false))"
+        }
+      }
+    },
+    "custom.pts.in7": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', false, !{view.custom.commLoss} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/IO/Pt07Data')), false), false))"
+        }
+      }
+    },
+    "custom.pts.in8": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', false, !{view.custom.commLoss} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/IO/Pt08Data')), false), false))"
+        }
+      }
+    },
+    "custom.pts.in9": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', false, !{view.custom.commLoss} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/IO/Pt09Data')), false), false))"
+        }
+      }
+    },
+    "custom.pts.out0": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', {view.custom.preview} = 'normal', !{view.custom.commLoss} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/IO/Pt18Data')), false), false))"
+        }
+      }
+    },
+    "custom.pts.out1": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', {view.custom.preview} = 'normal', !{view.custom.commLoss} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/IO/Pt19Data')), false), false))"
+        }
+      }
+    },
+    "custom.pts.out2": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', false, !{view.custom.commLoss} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/IO/Pt20Data')), false), false))"
+        }
+      }
+    },
+    "custom.pts.out3": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', false, !{view.custom.commLoss} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/IO/Pt21Data')), false), false))"
+        }
+      }
+    },
+    "custom.pts.out4": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', false, !{view.custom.commLoss} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/IO/SOF05')), false), false))"
+        }
+      }
+    },
+    "custom.pts.out5": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', false, !{view.custom.commLoss} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/IO/SOF06')), false), false))"
+        }
+      }
+    },
+    "custom.pts.pin0": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', {view.custom.preview} = 'normal', !{view.custom.commLoss} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/IO/Plugin2InPt00Data')), false), false))"
+        }
+      }
+    },
+    "custom.pts.pin1": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', {view.custom.preview} = 'normal' || {view.custom.preview} = 'fault', !{view.custom.commLoss} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/IO/Plugin2InPt01Data')), false), false))"
+        }
+      }
+    },
+    "custom.pts.pin2": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', false, !{view.custom.commLoss} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/IO/Plugin2InPt02Data')), false), false))"
+        }
+      }
+    },
+    "custom.pts.pin3": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', false, !{view.custom.commLoss} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/IO/Plugin2InPt03Data')), false), false))"
+        }
+      }
+    },
+    "custom.pts.pout0": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', {view.custom.preview} = 'normal', !{view.custom.commLoss} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/IO/Plugin2OutPt00Data')), false), false))"
+        }
+      }
+    },
+    "custom.pts.pout1": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', {view.custom.preview} = 'normal', !{view.custom.commLoss} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/IO/Plugin2OutPt01Data')), false), false))"
+        }
+      }
+    },
+    "custom.pts.pout2": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', false, !{view.custom.commLoss} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/IO/Plugin2OutPt02Data')), false), false))"
+        }
+      }
+    },
+    "custom.pts.pout3": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', false, !{view.custom.commLoss} && coalesce(try(toBoolean(tag({view.params.tagPath} + '/IO/Plugin2OutPt03Data')), false), false))"
+        }
+      }
+    },
+    "custom.pax": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', '', case(toStr(coalesce(try(tag({view.params.tagPath} + '.TypeId'), ''), '')), 'Devices/Pump', 'Motor', 'Devices/Valve', 'Valve', 'Devices/Tank', 'Tank', 'Devices/Compressor', 'Comp', 'Devices/Evaporator', 'CG', 'Devices/ExhaustFan', 'EF', 'Devices/LTU', 'LTU', 'Devices/SafetyRelay', 'Relay', 'Devices/SuctionSequence', 'Seq', 'Devices/DischargeSequence', 'Dsq', 'Devices/Sensor', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn.Enabled')), false), false), 'AIn', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AInRef.Enabled')), false), false), 'AInRef', '')), 'Devices/DiscreteInput', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/DIn.Enabled')), false), false), 'DIn', ''), ''))"
+        }
+      }
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "width": 536,
+      "height": 404
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root",
+      "contextMenu": {}
+    },
+    "props": {
+      "direction": "column",
+      "alignItems": "center",
+      "justify": "flex-start",
+      "style": {
+        "gap": "2px",
+        "overflow": "visible",
+        "width": "100%"
+      }
+    },
+    "propConfig": {
+      "meta.contextMenu.items": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "coalesce({session.custom.TicketLogAccess}, false)"
+          },
+          "transforms": [
+            {
+              "type": "script",
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = str(self.view.params.tagPath or '')\n\texcept:\n\t\tpass\n\tview_name = self.view.id.split('@')[0]\n\titems = []\n\tif value:\n\t\tlogged = tagPath if tagPath.strip() else 'No TagPath: ' + view_name.split('/')[-1]\n\t\titems.append({\n\t\t\t\"text\": 'Ticket Logger',\n\t\t\t\"icon\": {\"path\": 'material/info', \"color\": \"--neutral-80\", \"style\": {}},\n\t\t\t\"style\": {\"classes\": \"bg-component Fonts/Value\", \"height\": 24, \"width\": 170},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\"type\": 'ticketLog', \"payload\": {'tagPath': logged, 'viewName': view_name, 'sender': self.view.id}, \"scope\": 'page'}\n\t\t})\n\treturn items"
+            }
+          ]
+        }
+      },
+      "meta.contextMenu.enabled": {
+        "binding": {
+          "type": "expr",
+          "config": {
+            "expression": "len({this.meta.contextMenu.items}) > 0"
+          }
+        }
+      }
+    },
+    "children": [
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "DeviceLabel"
+        },
+        "position": {
+          "basis": "20px",
+          "shrink": 0
+        },
+        "props": {
+          "align": "center",
+          "style": {
+            "classes": "label Fonts/Value fs-11 fw-700",
+            "minHeight": "20px",
+            "textAlign": "center",
+            "width": "100%"
+          }
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "view.custom.label"
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "ia.container.coord",
+        "meta": {
+          "name": "Graphic"
+        },
+        "position": {
+          "basis": "340px",
+          "shrink": 0
+        },
+        "props": {
+          "style": {
+            "classes": "device-graphic component",
+            "height": "340px",
+            "width": "520px",
+            "position": "relative",
+            "overflow": "visible"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.shapes.svg",
+            "meta": {
+              "name": "Enclosure"
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "width": 520,
+              "height": 340
+            },
+            "props": {
+              "viewBox": "0 0 260 170",
+              "elements": [
+                {
+                  "type": "rect",
+                  "name": "enclosure",
+                  "fill": {
+                    "paint": "var(--device-safety)"
+                  },
+                  "style": {},
+                  "x": 0.25,
+                  "y": 0.25,
+                  "width": 259.5,
+                  "height": 169.5,
+                  "stroke": {
+                    "paint": "var(--neutral-100)",
+                    "width": "0.5",
+                    "linecap": "butt",
+                    "linejoin": "miter"
+                  },
+                  "rx": 2
+                },
+                {
+                  "type": "rect",
+                  "name": "cr30-body",
+                  "fill": {
+                    "paint": "var(--deviceFill-running)"
+                  },
+                  "style": {},
+                  "x": 6.25,
+                  "y": 6.25,
+                  "width": 69.5,
+                  "height": 157.5,
+                  "stroke": {
+                    "paint": "var(--neutral-100)",
+                    "width": "0.5",
+                    "linecap": "butt",
+                    "linejoin": "miter"
+                  },
+                  "rx": 1
+                },
+                {
+                  "type": "text",
+                  "name": "pt-in0",
+                  "text": "0",
+                  "x": 18,
+                  "y": 19.7,
+                  "textAnchor": "middle",
+                  "fontSize": 7,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "pt-in1",
+                  "text": "1",
+                  "x": 30,
+                  "y": 19.7,
+                  "textAnchor": "middle",
+                  "fontSize": 7,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "pt-in2",
+                  "text": "2",
+                  "x": 42,
+                  "y": 19.7,
+                  "textAnchor": "middle",
+                  "fontSize": 7,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "pt-in3",
+                  "text": "3",
+                  "x": 54,
+                  "y": 19.7,
+                  "textAnchor": "middle",
+                  "fontSize": 7,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "pt-in4",
+                  "text": "4",
+                  "x": 66,
+                  "y": 19.7,
+                  "textAnchor": "middle",
+                  "fontSize": 7,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "pt-in5",
+                  "text": "5",
+                  "x": 18,
+                  "y": 33.7,
+                  "textAnchor": "middle",
+                  "fontSize": 7,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "pt-in6",
+                  "text": "6",
+                  "x": 30,
+                  "y": 33.7,
+                  "textAnchor": "middle",
+                  "fontSize": 7,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "pt-in7",
+                  "text": "7",
+                  "x": 42,
+                  "y": 33.7,
+                  "textAnchor": "middle",
+                  "fontSize": 7,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "pt-in8",
+                  "text": "8",
+                  "x": 54,
+                  "y": 33.7,
+                  "textAnchor": "middle",
+                  "fontSize": 7,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "pt-in9",
+                  "text": "9",
+                  "x": 66,
+                  "y": 33.7,
+                  "textAnchor": "middle",
+                  "fontSize": 7,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "cr30-in",
+                  "text": "In",
+                  "x": 72,
+                  "y": 44.6,
+                  "textAnchor": "end",
+                  "fontSize": 6,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "rect",
+                  "name": "led-run",
+                  "fill": {
+                    "paint": "var(--neutral-60)"
+                  },
+                  "style": {},
+                  "x": 14.25,
+                  "y": 54.25,
+                  "width": 6.5,
+                  "height": 6.5,
+                  "stroke": {
+                    "paint": "var(--neutral-100)",
+                    "width": "0.5",
+                    "linecap": "butt",
+                    "linejoin": "miter"
+                  },
+                  "rx": 1
+                },
+                {
+                  "type": "rect",
+                  "name": "led-fault",
+                  "fill": {
+                    "paint": "var(--neutral-60)"
+                  },
+                  "style": {},
+                  "x": 14.25,
+                  "y": 70.25,
+                  "width": 6.5,
+                  "height": 6.5,
+                  "stroke": {
+                    "paint": "var(--neutral-100)",
+                    "width": "0.5",
+                    "linecap": "butt",
+                    "linejoin": "miter"
+                  },
+                  "rx": 1
+                },
+                {
+                  "type": "rect",
+                  "name": "led-comm",
+                  "fill": {
+                    "paint": "var(--neutral-60)"
+                  },
+                  "style": {},
+                  "x": 14.25,
+                  "y": 86.25,
+                  "width": 6.5,
+                  "height": 6.5,
+                  "stroke": {
+                    "paint": "var(--neutral-100)",
+                    "width": "0.5",
+                    "linecap": "butt",
+                    "linejoin": "miter"
+                  },
+                  "rx": 1
+                },
+                {
+                  "type": "text",
+                  "name": "cr30-run",
+                  "text": "Run",
+                  "x": 25,
+                  "y": 59.6,
+                  "textAnchor": "start",
+                  "fontSize": 6,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "cr30-fault",
+                  "text": "Fault",
+                  "x": 25,
+                  "y": 75.6,
+                  "textAnchor": "start",
+                  "fontSize": 6,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "cr30-comm",
+                  "text": "Comm",
+                  "x": 25,
+                  "y": 91.6,
+                  "textAnchor": "start",
+                  "fontSize": 6,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "pt-out0",
+                  "text": "0",
+                  "x": 18,
+                  "y": 117.7,
+                  "textAnchor": "middle",
+                  "fontSize": 7,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "pt-out1",
+                  "text": "1",
+                  "x": 30,
+                  "y": 117.7,
+                  "textAnchor": "middle",
+                  "fontSize": 7,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "pt-out2",
+                  "text": "2",
+                  "x": 42,
+                  "y": 117.7,
+                  "textAnchor": "middle",
+                  "fontSize": 7,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "pt-out3",
+                  "text": "3",
+                  "x": 18,
+                  "y": 131.7,
+                  "textAnchor": "middle",
+                  "fontSize": 7,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "pt-out4",
+                  "text": "4",
+                  "x": 30,
+                  "y": 131.7,
+                  "textAnchor": "middle",
+                  "fontSize": 7,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "pt-out5",
+                  "text": "5",
+                  "x": 42,
+                  "y": 131.7,
+                  "textAnchor": "middle",
+                  "fontSize": 7,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "cr30-out",
+                  "text": "Out",
+                  "x": 72,
+                  "y": 124.6,
+                  "textAnchor": "end",
+                  "fontSize": 6,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "cr30-model",
+                  "text": "440C-CR30",
+                  "x": 41,
+                  "y": 156.6,
+                  "textAnchor": "middle",
+                  "fontSize": 6,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--device-safety)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "rect",
+                  "name": "enet-body",
+                  "fill": {
+                    "paint": "var(--deviceFill-running)"
+                  },
+                  "style": {},
+                  "x": 84.25,
+                  "y": 16.25,
+                  "width": 75.5,
+                  "height": 147.5,
+                  "stroke": {
+                    "paint": "var(--neutral-100)",
+                    "width": "0.5",
+                    "linecap": "butt",
+                    "linejoin": "miter"
+                  },
+                  "rx": 1
+                },
+                {
+                  "type": "rect",
+                  "name": "enet-comm-block",
+                  "fill": {
+                    "paint": "var(--neutral-30)"
+                  },
+                  "style": {},
+                  "x": 88,
+                  "y": 20,
+                  "width": 30,
+                  "height": 52,
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  }
+                },
+                {
+                  "type": "rect",
+                  "name": "enet-led-comm",
+                  "fill": {
+                    "paint": "var(--neutral-60)"
+                  },
+                  "style": {},
+                  "x": 91.25,
+                  "y": 23.25,
+                  "width": 6.5,
+                  "height": 6.5,
+                  "stroke": {
+                    "paint": "var(--neutral-100)",
+                    "width": "0.5",
+                    "linecap": "butt",
+                    "linejoin": "miter"
+                  },
+                  "rx": 1
+                },
+                {
+                  "type": "text",
+                  "name": "enet-comm",
+                  "text": "Comm",
+                  "x": 100,
+                  "y": 28.5,
+                  "textAnchor": "start",
+                  "fontSize": 5,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "enet-model",
+                  "text": "440C-ENET",
+                  "x": 122,
+                  "y": 156.6,
+                  "textAnchor": "middle",
+                  "fontSize": 6,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "rect",
+                  "name": "io-body",
+                  "fill": {
+                    "paint": "var(--deviceFill-running)"
+                  },
+                  "style": {},
+                  "x": 168.25,
+                  "y": 16.25,
+                  "width": 83.5,
+                  "height": 147.5,
+                  "stroke": {
+                    "paint": "var(--neutral-100)",
+                    "width": "0.5",
+                    "linecap": "butt",
+                    "linejoin": "miter"
+                  },
+                  "rx": 1
+                },
+                {
+                  "type": "rect",
+                  "name": "io-block",
+                  "fill": {
+                    "paint": "var(--neutral-30)"
+                  },
+                  "style": {},
+                  "x": 172,
+                  "y": 20,
+                  "width": 36,
+                  "height": 62,
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "io-in",
+                  "text": "In",
+                  "x": 190,
+                  "y": 27.6,
+                  "textAnchor": "middle",
+                  "fontSize": 6,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "pt-pin0",
+                  "text": "0",
+                  "x": 183,
+                  "y": 36.7,
+                  "textAnchor": "middle",
+                  "fontSize": 7,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "pt-pin1",
+                  "text": "1",
+                  "x": 197,
+                  "y": 36.7,
+                  "textAnchor": "middle",
+                  "fontSize": 7,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "pt-pin2",
+                  "text": "2",
+                  "x": 183,
+                  "y": 46.7,
+                  "textAnchor": "middle",
+                  "fontSize": 7,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "pt-pin3",
+                  "text": "3",
+                  "x": 197,
+                  "y": 46.7,
+                  "textAnchor": "middle",
+                  "fontSize": 7,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "rect",
+                  "name": "io-divider",
+                  "fill": {
+                    "paint": "var(--neutral-100)"
+                  },
+                  "style": {},
+                  "x": 172,
+                  "y": 50,
+                  "width": 36,
+                  "height": 0.75,
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "pt-pout0",
+                  "text": "0",
+                  "x": 183,
+                  "y": 59.7,
+                  "textAnchor": "middle",
+                  "fontSize": 7,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "pt-pout1",
+                  "text": "1",
+                  "x": 197,
+                  "y": 59.7,
+                  "textAnchor": "middle",
+                  "fontSize": 7,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "pt-pout2",
+                  "text": "2",
+                  "x": 183,
+                  "y": 69.7,
+                  "textAnchor": "middle",
+                  "fontSize": 7,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "pt-pout3",
+                  "text": "3",
+                  "x": 197,
+                  "y": 69.7,
+                  "textAnchor": "middle",
+                  "fontSize": 7,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "io-out",
+                  "text": "Out",
+                  "x": 190,
+                  "y": 78.6,
+                  "textAnchor": "middle",
+                  "fontSize": 6,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                },
+                {
+                  "type": "text",
+                  "name": "io-model",
+                  "text": "2080-IQ4-OB4",
+                  "x": 210,
+                  "y": 156.6,
+                  "textAnchor": "middle",
+                  "fontSize": 6,
+                  "fontWeight": "600",
+                  "fill": {
+                    "paint": "var(--text)"
+                  },
+                  "stroke": {
+                    "paint": "none",
+                    "width": "0"
+                  },
+                  "style": {
+                    "fontFamily": "inherit",
+                    "userSelect": "none"
+                  }
+                }
+              ],
+              "style": {
+                "overflow": "hidden",
+                "userSelect": "none"
+              }
+            },
+            "propConfig": {
+              "props.elements[2].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.pts.in0}, 'var(--sts-run)', 'var(--text)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[3].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.pts.in1}, 'var(--sts-run)', 'var(--text)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[4].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.pts.in2}, 'var(--sts-run)', 'var(--text)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[5].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.pts.in3}, 'var(--sts-run)', 'var(--text)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[6].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.pts.in4}, 'var(--sts-run)', 'var(--text)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[7].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.pts.in5}, 'var(--sts-run)', 'var(--text)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[8].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.pts.in6}, 'var(--sts-run)', 'var(--text)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[9].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.pts.in7}, 'var(--sts-run)', 'var(--text)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[10].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.pts.in8}, 'var(--sts-run)', 'var(--text)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[11].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.pts.in9}, 'var(--sts-run)', 'var(--text)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[13].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.run}, 'var(--sts-run)', 'var(--neutral-60)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[14].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.fault}, 'var(--sts-fault)', 'var(--neutral-60)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[15].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.commLoss}, 'var(--sts-fault)', 'var(--sts-run)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[19].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.pts.out0}, 'var(--sts-run)', 'var(--text)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[20].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.pts.out1}, 'var(--sts-run)', 'var(--text)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[21].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.pts.out2}, 'var(--sts-run)', 'var(--text)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[22].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.pts.out3}, 'var(--sts-run)', 'var(--text)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[23].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.pts.out4}, 'var(--sts-run)', 'var(--text)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[24].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.pts.out5}, 'var(--sts-run)', 'var(--text)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[29].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.commLoss}, 'var(--sts-fault)', 'var(--sts-run)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[35].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.pts.pin0}, 'var(--sts-run)', 'var(--text)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[36].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.pts.pin1}, 'var(--sts-run)', 'var(--text)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[37].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.pts.pin2}, 'var(--sts-run)', 'var(--text)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[38].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.pts.pin3}, 'var(--sts-run)', 'var(--text)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[40].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.pts.pout0}, 'var(--sts-run)', 'var(--text)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[41].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.pts.pout1}, 'var(--sts-run)', 'var(--text)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[42].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.pts.pout2}, 'var(--sts-run)', 'var(--text)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[43].fill.paint": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.pts.pout3}, 'var(--sts-run)', 'var(--text)')"
+                  },
+                  "overlayOptOut": true
+                }
+              },
+              "props.elements[29].style.classes": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if({view.custom.commLoss}, '', 'led-comm-flash')"
+                  },
+                  "overlayOptOut": true
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ia.display.label",
+        "meta": {
+          "name": "Status"
+        },
+        "position": {
+          "basis": "20px",
+          "shrink": 0
+        },
+        "props": {
+          "text": "",
+          "style": {
+            "classes": "fs-12 fw-700",
+            "textAlign": "center",
+            "whiteSpace": "nowrap",
+            "overflow": "visible",
+            "minHeight": "20px",
+            "width": "100%"
+          }
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.commLoss}, 'COMM LOSS', if({view.custom.fault}, 'FAULT', if({view.custom.run}, 'RUN', 'STOP')))"
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.style.color": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.commLoss} || {view.custom.fault}, 'var(--sts-fault)', if({view.custom.run}, 'var(--sts-run)', 'var(--status-off)'))"
+              },
+              "overlayOptOut": true
+            }
+          }
+        }
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "InputNames"
+        },
+        "position": {
+          "basis": "16px",
+          "shrink": 0
+        },
+        "props": {
+          "direction": "row",
+          "justify": "space-around",
+          "style": {
+            "width": "520px"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Input0"
+            },
+            "position": {
+              "basis": "256px",
+              "shrink": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "fs-11 fw-400",
+                "textAlign": "center",
+                "whiteSpace": "nowrap",
+                "overflow": "visible",
+                "color": "var(--text-muted)"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.params.input0Name"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Input1"
+            },
+            "position": {
+              "basis": "256px",
+              "shrink": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "fs-11 fw-400",
+                "textAlign": "center",
+                "whiteSpace": "nowrap",
+                "overflow": "visible",
+                "color": "var(--text-muted)"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.params.input1Name"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "ticketLog",
+          "pageScope": true,
+          "sessionScope": false,
+          "viewScope": false,
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])"
+        }
+      ]
+    }
+  }
+}

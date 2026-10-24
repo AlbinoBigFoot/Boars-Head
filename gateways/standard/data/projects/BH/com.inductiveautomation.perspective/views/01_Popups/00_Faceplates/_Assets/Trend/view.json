@@ -3,7 +3,18 @@
     "chartDataAnalog": null,
     "hours": 1,
     "penOptions": [],
-    "selectedPens": null
+    "selectedPens": null,
+    "defaultPens": [],
+    "ain": 0,
+    "pax": "",
+    "dragMode": "time",
+    "autoY": true,
+    "zoomMin": null,
+    "zoomMax": null,
+    "zoomResetAt": null,
+    "zoomKind": null,
+    "zoomHoldMin": null,
+    "zoomHoldMax": null
   },
   "params": {
     "hiddenTags": "",
@@ -15,13 +26,14 @@
         "config": {
           "struct": {
             "hours": "{view.custom.hours}",
-            "selectedPens": "{view.custom.selectedPens}"
+            "selectedPens": "{view.custom.selectedPens}",
+            "tick": "if(coalesce({view.custom.hours}, 1) <= 24 && coalesce({view.custom.dragMode}, 'time') != 'area', now(15000), 0)"
           },
           "waitOnAll": true
         },
         "transforms": [
           {
-            "code": "\tresult = None\n\tselected = value.get('selectedPens') if hasattr(value, 'get') else None\n\thours = value.get('hours') if hasattr(value, 'get') else 1\n\tif selected is None:\n\t\treturn result\n\tif isinstance(selected, (str, unicode)):\n\t\tselected = [selected] if selected else []\n\ttry:\n\t\thours = int(hours) if hours is not None else 1\n\texcept:\n\t\thours = 1\n\tif hours <= 0:\n\t\thours = 1\n\n\tpaths = []\n\taliases = []\n\tseen = set()\n\tfor item in selected:\n\t\tpath = str(item or '').strip()\n\t\tif not path or path in seen:\n\t\t\tcontinue\n\t\tseen.add(path)\n\t\tpaths.append(path)\n\t\tleaf = path.rsplit('/', 1)[-1]\n\t\tparts = path.split('/')\n\t\tif len(parts) >= 2 and leaf.upper() == 'VALUE':\n\t\t\talias = parts[-2]\n\t\telse:\n\t\t\talias = leaf\n\t\taliases.append(alias)\n\n\tif not paths:\n\t\treturn result\n\n\tend = system.date.now()\n\tstart = system.date.addHours(end, -hours)\n\ttry:\n\t\tresult = system.tag.queryTagHistory(\n\t\t\tpaths=paths,\n\t\t\tstartDate=start,\n\t\t\tendDate=end,\n\t\t\treturnSize=120,\n\t\t\taggregationMode='Average',\n\t\t\treturnFormat='Wide',\n\t\t\tcolumnNames=aliases\n\t\t)\n\texcept:\n\t\tresult = None\n\treturn result",
+            "code": "\tresult = None\n\tselected = value.get('selectedPens') if hasattr(value, 'get') else None\n\thours = value.get('hours') if hasattr(value, 'get') else 1\n\tif selected is None:\n\t\treturn result\n\tif isinstance(selected, (str, unicode)):\n\t\tselected = [selected] if selected else []\n\ttry:\n\t\thours = int(hours) if hours is not None else 1\n\texcept:\n\t\thours = 1\n\tif hours <= 0:\n\t\thours = 1\n\n\tpaths = []\n\taliases = []\n\tseen = set()\n\tfor item in selected:\n\t\tpath = str(item or '').strip()\n\t\tif not path or path in seen:\n\t\t\tcontinue\n\t\tseen.add(path)\n\t\tpaths.append(path)\n\t\tleaf = path.rsplit('/', 1)[-1]\n\t\tparts = path.split('/')\n\t\tif len(parts) >= 3 and leaf.upper() == 'VALUE' and parts[-2].upper() == 'VALUE':\n\t\t\talias = parts[-3]\n\t\telif len(parts) >= 2 and leaf.upper() == 'VALUE':\n\t\t\talias = parts[-2]\n\t\telse:\n\t\t\talias = (parts[-2] + ' ' + leaf) if len(parts) >= 2 else leaf  # pax-bindings: PAX member\n\t\taliases.append(alias)\n\n\tif not paths:\n\t\treturn result\n\n\tend = system.date.now()\n\tstart = system.date.addHours(end, -hours)\n\ttry:\n\t\tresult = system.tag.queryTagHistory(\n\t\t\tpaths=paths,\n\t\t\tstartDate=start,\n\t\t\tendDate=end,\n\t\t\treturnSize=120,\n\t\t\taggregationMode='Average',\n\t\t\treturnFormat='Tall',\n\t\t\tcolumnNames=aliases\n\t\t)\n\texcept:\n\t\tresult = None\n\treturn result",
             "type": "script"
           }
         ],
@@ -30,20 +42,25 @@
       "persistent": true
     },
     "custom.hours": {
-      "persistent": true
+      "persistent": true,
+      "onChange": {
+        "enabled": null,
+        "script": "\tself.custom.zoomMin = None\n\tself.custom.zoomMax = None"
+      }
     },
     "custom.penOptions": {
       "binding": {
         "config": {
           "struct": {
             "hiddenTags": "{view.params.hiddenTags}",
-            "tagPath": "{view.params.tagPath}"
+            "tagPath": "{view.params.tagPath}",
+            "defaultPens": "{view.custom.defaultPens}"
           },
           "waitOnAll": true
         },
         "transforms": [
           {
-            "code": "\tresult = []\n\ttag_path = value.get('tagPath', '') if hasattr(value, 'get') else ''\n\thiddenTagsInput = value.get('hiddenTags', '') if hasattr(value, 'get') else ''\n\tif tag_path:\n\t\ttag_path = str(tag_path).rstrip('/')\n\tif not tag_path:\n\t\treturn result\n\n\thidden_set = set()\n\ttry:\n\t\ttext = str(hiddenTagsInput or '')\n\t\tif text:\n\t\t\ttext = text.replace(';', ',')\n\t\t\tfor item in text.split(','):\n\t\t\t\titem = item.strip()\n\t\t\t\tif item:\n\t\t\t\t\thidden_set.add(item)\n\texcept Exception:\n\t\tpass\n\n\tdef isHidden(fullPath):\n\t\tif not hidden_set:\n\t\t\treturn False\n\t\tstripped = fullPath.split(']', 1)[-1] if ']' in fullPath else fullPath\n\t\tnorm = stripped.replace(chr(92), '/')\n\t\tif fullPath in hidden_set or stripped in hidden_set or norm in hidden_set:\n\t\t\treturn True\n\t\tnorm_slash = '/' + norm.strip('/') + '/'\n\t\tfor h in hidden_set:\n\t\t\thh = str(h).replace(chr(92), '/')\n\t\t\tif hh.endswith('/'):\n\t\t\t\tseg = hh.strip('/')\n\t\t\t\tif not seg:\n\t\t\t\t\tcontinue\n\t\t\t\tif ('/' + seg + '/') in norm_slash:\n\t\t\t\t\treturn True\n\t\t\t\tif norm.strip('/') == seg or norm.strip('/').startswith(seg + '/'):\n\t\t\t\t\treturn True\n\t\t\telse:\n\t\t\t\tif norm.endswith('/' + hh) or norm.split('/')[-1] == hh:\n\t\t\t\t\treturn True\n\t\treturn False\n\n\tcandidates = []\n\ttry:\n\t\tbrowse = system.tag.browse(path=tag_path, filter={'recursive': True}).getResults()\n\texcept:\n\t\tbrowse = []\n\tfor entry in browse:\n\t\ttry:\n\t\t\ttag_type = str(entry['tagType'])\n\t\texcept:\n\t\t\ttag_type = ''\n\t\tif tag_type in ('Folder', 'UdtType', 'UdtInstance', 'Property'):\n\t\t\tcontinue\n\t\tfull_path = str(entry['fullPath'])\n\t\tif '.' in full_path.rsplit('/', 1)[-1]:\n\t\t\tcontinue\n\t\tif isHidden(full_path):\n\t\t\tcontinue\n\t\tcandidates.append(full_path)\n\n\tif not candidates:\n\t\treturn result\n\n\tall_paths = []\n\tfor p in candidates:\n\t\tall_paths.append(p + '.Enabled')\n\t\tall_paths.append(p + '.HistoryEnabled')\n\t\tall_paths.append(p + '.DataType')\n\ttry:\n\t\tall_values = system.tag.readBlocking(all_paths)\n\texcept:\n\t\treturn result\n\n\tfor i, full_path in enumerate(candidates):\n\t\tenabled_qv = all_values[i * 3]\n\t\the_qv = all_values[i * 3 + 1]\n\t\tdt_qv = all_values[i * 3 + 2]\n\t\ttry:\n\t\t\tif not enabled_qv.value:\n\t\t\t\tcontinue\n\t\texcept:\n\t\t\tcontinue\n\t\ttry:\n\t\t\tif not he_qv.value:\n\t\t\t\tcontinue\n\t\texcept:\n\t\t\tcontinue\n\t\ttry:\n\t\t\tdt_raw = dt_qv.value if dt_qv is not None else ''\n\t\t\tif hasattr(dt_raw, 'name'):\n\t\t\t\tdt = str(dt_raw.name).lower()\n\t\t\telse:\n\t\t\t\tdt = str(dt_raw).lower()\n\t\t\tif '.' in dt:\n\t\t\t\tdt = dt.rsplit('.', 1)[-1]\n\t\texcept:\n\t\t\tdt = ''\n\t\tif 'string' in dt or 'date' in dt or 'bool' in dt:\n\t\t\tcontinue\n\t\tparts = full_path.split('/')\n\t\tleaf_name = parts[-1] if parts else full_path\n\t\tif len(parts) >= 2 and leaf_name.upper() == 'VALUE':\n\t\t\talias = parts[-2]\n\t\telse:\n\t\t\talias = leaf_name\n\t\tresult.append({'label': alias, 'value': full_path})\n\treturn result",
+            "code": "\tresult = []\n\ttag_path = value.get('tagPath', '') if hasattr(value, 'get') else ''\n\thiddenTagsInput = value.get('hiddenTags', '') if hasattr(value, 'get') else ''\n\tif tag_path:\n\t\ttag_path = str(tag_path).rstrip('/')\n\tif not tag_path:\n\t\treturn result\n\n\thidden_set = set()\n\ttry:\n\t\ttext = str(hiddenTagsInput or '')\n\t\tif text:\n\t\t\ttext = text.replace(';', ',')\n\t\t\tfor item in text.split(','):\n\t\t\t\titem = item.strip()\n\t\t\t\tif item:\n\t\t\t\t\thidden_set.add(item)\n\texcept Exception:\n\t\tpass\n\n\tdef isHidden(fullPath):\n\t\tif not hidden_set:\n\t\t\treturn False\n\t\tstripped = fullPath.split(']', 1)[-1] if ']' in fullPath else fullPath\n\t\tnorm = stripped.replace(chr(92), '/')\n\t\tif fullPath in hidden_set or stripped in hidden_set or norm in hidden_set:\n\t\t\treturn True\n\t\tnorm_slash = '/' + norm.strip('/') + '/'\n\t\tfor h in hidden_set:\n\t\t\thh = str(h).replace(chr(92), '/')\n\t\t\tif hh.endswith('/'):\n\t\t\t\tseg = hh.strip('/')\n\t\t\t\tif not seg:\n\t\t\t\t\tcontinue\n\t\t\t\tif ('/' + seg + '/') in norm_slash:\n\t\t\t\t\treturn True\n\t\t\t\tif norm.strip('/') == seg or norm.strip('/').startswith(seg + '/'):\n\t\t\t\t\treturn True\n\t\t\telse:\n\t\t\t\tif norm.endswith('/' + hh) or norm.split('/')[-1] == hh:\n\t\t\t\t\treturn True\n\t\treturn False\n\n\tcandidates = []\n\tpaxKey = shared.Pax.part(tag_path)\n\ttry:\n\t\tbrowse = system.tag.browse(path=tag_path, filter={'recursive': True}).getResults()\n\texcept:\n\t\tbrowse = []\n\tfor entry in browse:\n\t\ttry:\n\t\t\ttag_type = str(entry['tagType'])\n\t\texcept:\n\t\t\ttag_type = ''\n\t\tif tag_type in ('Folder', 'UdtType', 'UdtInstance', 'Property'):\n\t\t\tcontinue\n\t\tfull_path = str(entry['fullPath'])\n\t\tif '.' in full_path.rsplit('/', 1)[-1]:\n\t\t\tcontinue\n\t\tif isHidden(full_path):\n\t\t\tcontinue\n\t\tif paxKey and full_path.rsplit('/', 1)[-1] == 'Value':\n\t\t\tcontinue   # pax-bindings: a PLC-mapped device trends its historized PlantPAx members\n\t\tcandidates.append(full_path)\n\n\tif not candidates:\n\t\treturn result\n\n\tall_paths = []\n\tfor p in candidates:\n\t\tall_paths.append(p + '.Enabled')\n\t\tall_paths.append(p + '.HistoryEnabled')\n\t\tall_paths.append(p + '.DataType')\n\ttry:\n\t\tall_values = system.tag.readBlocking(all_paths)\n\texcept:\n\t\treturn result\n\n\tfor i, full_path in enumerate(candidates):\n\t\tenabled_qv = all_values[i * 3]\n\t\the_qv = all_values[i * 3 + 1]\n\t\tdt_qv = all_values[i * 3 + 2]\n\t\ttry:\n\t\t\tif not enabled_qv.value:\n\t\t\t\tcontinue\n\t\texcept:\n\t\t\tcontinue\n\t\ttry:\n\t\t\tif not he_qv.value:\n\t\t\t\tcontinue\n\t\texcept:\n\t\t\tcontinue\n\t\ttry:\n\t\t\tdt_raw = dt_qv.value if dt_qv is not None else ''\n\t\t\tif hasattr(dt_raw, 'name'):\n\t\t\t\tdt = str(dt_raw.name).lower()\n\t\t\telse:\n\t\t\t\tdt = str(dt_raw).lower()\n\t\t\tif '.' in dt:\n\t\t\t\tdt = dt.rsplit('.', 1)[-1]\n\t\texcept:\n\t\t\tdt = ''\n\t\tif 'string' in dt or 'date' in dt or 'bool' in dt:\n\t\t\tcontinue\n\t\tparts = full_path.split('/')\n\t\tleaf_name = parts[-1] if parts else full_path\n\t\tif len(parts) >= 2 and leaf_name.upper() == 'VALUE':\n\t\t\talias = parts[-2]\n\t\t\towner = full_path.rsplit('/', 1)[0]\n\t\telse:\n\t\t\talias = (parts[-2] + ' ' + leaf_name) if paxKey and len(parts) >= 2 else leaf_name  # pax-bindings\n\t\t\towner = full_path\n\t\tresult.append({'label': alias, 'value': full_path, 'owner': owner})\n\n\t# Plain-English labels: member metadata shortDescription -> longDescription -> member name.\n\t# Base-type descriptions inherited from _Root/* say nothing about the member.\n\tgeneric = ('analog', 'digital', 'multistate', 'string', 'value', 'document')\n\n\tdef describe(md):\n\t\tif md is None:\n\t\t\treturn ''\n\t\ttry:\n\t\t\tmd = system.util.jsonDecode(str(md))\n\t\texcept:\n\t\t\treturn ''\n\t\tif not hasattr(md, 'get'):\n\t\t\treturn ''\n\t\tfor key in ('shortDescription', 'longDescription'):\n\t\t\ttext = str(md.get(key) or '').strip()\n\t\t\tif text and text.lower() not in generic:\n\t\t\t\treturn text\n\t\treturn ''\n\n\tdef title(text):\n\t\treturn ' '.join([w[:1].upper() + w[1:] if w.islower() else w for w in text.split(' ')])\n\n\ttry:\n\t\tmds = system.tag.readBlocking([r['owner'] + '.metadata' for r in result] +\n\t\t                              [r['value'] + '.metadata' for r in result])\n\texcept:\n\t\tmds = []\n\tn = len(result)\n\tfor i, r in enumerate(result):\n\t\ttext = ''\n\t\tif len(mds) == 2 * n:\n\t\t\ttext = describe(mds[i].value) or describe(mds[n + i].value)\n\t\tif text:\n\t\t\tr['label'] = title(text)\n\tcounts = {}\n\tfor r in result:\n\t\tcounts[r['label']] = counts.get(r['label'], 0) + 1\n\tfor r in result:\n\t\talias = r.pop('owner').rsplit('/', 1)[-1]\n\t\tif counts[r['label']] > 1 and r['label'] != alias:\n\t\t\tr['label'] = '%s (%s)' % (r['label'], alias)\n\t# Default pens outside the device folder (e.g. a tank's pumps pressure sensor)\n\thave = set(r['value'] for r in result)\n\tfor extra in (value.get('defaultPens') or []):\n\t\textra = str(extra)\n\t\tif extra in have:\n\t\t\tcontinue\n\t\tparts = extra.split('/')\n\t\tname = parts[-3] if len(parts) >= 3 and parts[-2].upper() == 'VALUE' else parts[-2]\n\t\tresult.append({'label': name, 'value': extra})\n\tresult.sort(key=lambda r: r['label'].lower())\n\treturn result",
             "type": "script"
           }
         ],
@@ -68,6 +85,77 @@
     },
     "params.tagPath": {
       "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.defaultPens": {
+      "binding": {
+        "config": {
+          "struct": {
+            "tagPath": "{view.params.tagPath}"
+          },
+          "waitOnAll": true
+        },
+        "transforms": [
+          {
+            "type": "script",
+            "code": "\treturn shared.FaceplateTrend.defaultPens(value.get('tagPath'))\n"
+          }
+        ],
+        "type": "expr-struct"
+      },
+      "onChange": {
+        "enabled": true,
+        "script": "\tpens = currentValue.value if currentValue is not None else None\n\tif not pens:\n\t\treturn\n\tcur = self.custom.selectedPens\n\ttry:\n\t\tempty = cur is None or len(cur) == 0\n\texcept:\n\t\tempty = True\n\tif empty:\n\t\tself.custom.selectedPens = [str(getattr(p, 'value', p)) for p in pens]\n"
+      },
+      "persistent": true
+    },
+    "custom.ain": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(try(isGood(tag({view.params.tagPath} + '/AIn/Cfg_PVEUMax')), false),\n\tif(len(where(coalesce({view.custom.selectedPens}, asList()), replace(toStr(it()), '[default]', '') = replace(toStr({view.params.tagPath} + '/AIn/Val'), '[default]', ''))) = 0, 0,\n\t\tif(len(coalesce({view.custom.selectedPens}, asList())) = 1, 2, 1)),\n\t0)"
+        },
+        "overlays": {
+          "bad": false,
+          "error": false,
+          "pending": false,
+          "stale": false,
+          "unknown": false,
+          "disabled": false
+        }
+      },
+      "persistent": true
+    },
+    "custom.pax": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', '', case(toStr(coalesce(try(tag({view.params.tagPath} + '.TypeId'), ''), '')), 'Devices/Pump', 'Motor', 'Devices/Valve', 'Valve', 'Devices/Tank', 'Tank', 'Devices/Compressor', 'Comp', 'Devices/Evaporator', 'CG', 'Devices/ExhaustFan', 'EF', 'Devices/LTU', 'LTU', 'Devices/SafetyRelay', 'Relay', 'Devices/SuctionSequence', 'Seq', 'Devices/DischargeSequence', 'Dsq', 'Devices/Sensor', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn.Enabled')), false), false), 'AIn', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AInRef.Enabled')), false), false), 'AInRef', '')), 'Devices/DiscreteInput', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/DIn.Enabled')), false), false), 'DIn', ''), ''))"
+        }
+      }
+    },
+    "custom.dragMode": {
+      "persistent": true
+    },
+    "custom.autoY": {
+      "persistent": true
+    },
+    "custom.zoomMin": {
+      "persistent": true
+    },
+    "custom.zoomMax": {
+      "persistent": true
+    },
+    "custom.zoomResetAt": {
+      "persistent": true
+    },
+    "custom.zoomKind": {
+      "persistent": true
+    },
+    "custom.zoomHoldMin": {
+      "persistent": true
+    },
+    "custom.zoomHoldMax": {
       "persistent": true
     }
   },
@@ -114,7 +202,7 @@
             },
             "props": {
               "dropdownOptionStyle": {
-                "classes": "font-label"
+                "classes": "Fonts/Label"
               },
               "multiSelect": true,
               "placeholder": {
@@ -125,7 +213,7 @@
                 "exclusive": false
               },
               "style": {
-                "classes": "font-label",
+                "classes": "Fonts/Label",
                 "minHeight": "28px",
                 "width": "100%"
               }
@@ -153,7 +241,7 @@
             },
             "props": {
               "dropdownOptionStyle": {
-                "classes": "font-label"
+                "classes": "Fonts/Label"
               },
               "options": [
                 {
@@ -257,7 +345,7 @@
                 "enabled": false
               },
               "style": {
-                "classes": "font-label",
+                "classes": "Fonts/Label",
                 "minHeight": "28px",
                 "width": "100%"
               },
@@ -282,6 +370,529 @@
           }
         },
         "type": "ia.container.flex"
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "ChartTools"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "classes": "trend-tools trend-tools-compact"
+          }
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "try(len({view.custom.selectedPens}), 0) > 0"
+              }
+            }
+          }
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Row"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "direction": "row",
+              "alignItems": "center",
+              "wrap": "wrap",
+              "style": {
+                "classes": "trend-tools-row"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "DragMode"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "center",
+                  "style": {
+                    "classes": "trend-seg-group"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.input.button",
+                    "meta": {
+                      "name": "ModeZoomTime",
+                      "tooltip": {
+                        "enabled": true,
+                        "text": "Drag across the chart to zoom into that time range"
+                      }
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Zoom Time",
+                      "primary": false,
+                      "style": {
+                        "classes": "trend-seg"
+                      },
+                      "image": {
+                        "icon": {
+                          "path": "material/settings_ethernet"
+                        },
+                        "position": "left",
+                        "width": 16,
+                        "height": 16
+                      }
+                    },
+                    "propConfig": {
+                      "props.style.classes": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'area', 'area', if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'pan', 'pan', 'time')) = 'time', 'trend-seg trend-seg-on', 'trend-seg')"
+                          }
+                        }
+                      }
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "type": "script",
+                          "scope": "G",
+                          "config": {
+                            "script": "\tself.view.custom.dragMode = 'time'\n\tself.view.custom.zoomKind = 'time'\n"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.input.button",
+                    "meta": {
+                      "name": "ModeZoomArea",
+                      "tooltip": {
+                        "enabled": true,
+                        "text": "Drag a box to zoom into that time and value range. Pauses live updates"
+                      }
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Zoom Area",
+                      "primary": false,
+                      "style": {
+                        "classes": "trend-seg"
+                      },
+                      "image": {
+                        "icon": {
+                          "path": "material/crop_free"
+                        },
+                        "position": "left",
+                        "width": 16,
+                        "height": 16
+                      }
+                    },
+                    "propConfig": {
+                      "props.style.classes": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'area', 'area', if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'pan', 'pan', 'time')) = 'area', 'trend-seg trend-seg-on', 'trend-seg')"
+                          }
+                        }
+                      }
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "type": "script",
+                          "scope": "G",
+                          "config": {
+                            "script": "\tself.view.custom.dragMode = 'area'\n\tself.view.custom.zoomKind = 'time'\n"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.input.button",
+                    "meta": {
+                      "name": "ModePan",
+                      "tooltip": {
+                        "enabled": true,
+                        "text": "Drag the chart left or right to move through time"
+                      }
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Pan",
+                      "primary": false,
+                      "style": {
+                        "classes": "trend-seg"
+                      },
+                      "image": {
+                        "icon": {
+                          "path": "material/pan_tool"
+                        },
+                        "position": "left",
+                        "width": 16,
+                        "height": 16
+                      }
+                    },
+                    "propConfig": {
+                      "props.style.classes": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'area', 'area', if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'pan', 'pan', 'time')) = 'pan', 'trend-seg trend-seg-on', 'trend-seg')"
+                          }
+                        }
+                      }
+                    },
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "type": "script",
+                          "scope": "G",
+                          "config": {
+                            "script": "\tself.view.custom.dragMode = 'pan'\n\tself.view.custom.zoomKind = 'time'\n"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Div1"
+                },
+                "position": {
+                  "basis": "1px",
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "classes": "trend-divider"
+                  }
+                },
+                "children": []
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "AutoScale",
+                  "tooltip": {
+                    "enabled": true,
+                    "text": "On: every plot fits its value axis to the visible data. Off: the value axis covers the whole time range"
+                  }
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "center",
+                  "style": {
+                    "classes": "trend-switch-box"
+                  }
+                },
+                "events": {
+                  "dom": {
+                    "onClick": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tself.view.custom.autoY = not bool(self.view.custom.autoY)\n"
+                      }
+                    }
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.input.toggle-switch",
+                    "meta": {
+                      "name": "Switch"
+                    },
+                    "position": {
+                      "basis": "36px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "trend-switch"
+                      }
+                    },
+                    "propConfig": {
+                      "props.selected": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "coalesce(try({view.custom.autoY}, false), false)"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Label"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Auto-Scale Y",
+                      "style": {
+                        "classes": "trend-switch-label"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "State"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Off",
+                      "style": {
+                        "classes": "trend-switch-state"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try({view.custom.autoY}, false), false), 'On', 'Off')"
+                          }
+                        }
+                      },
+                      "props.style.classes": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(coalesce(try({view.custom.autoY}, false), false), 'trend-switch-state trend-switch-state-on', 'trend-switch-state')"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Div2"
+                },
+                "position": {
+                  "basis": "1px",
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "style": {
+                    "classes": "trend-divider"
+                  }
+                },
+                "children": []
+              },
+              {
+                "type": "ia.input.button",
+                "meta": {
+                  "name": "ResetZoom",
+                  "tooltip": {
+                    "enabled": true,
+                    "text": "Show the full time range"
+                  }
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "Reset Zoom",
+                  "primary": false,
+                  "style": {
+                    "classes": "trend-tool-btn"
+                  },
+                  "image": {
+                    "icon": {
+                      "path": "material/settings_backup_restore"
+                    },
+                    "position": "left",
+                    "width": 16,
+                    "height": 16
+                  }
+                },
+                "propConfig": {
+                  "props.enabled": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "!isNull(try({view.custom.zoomMin}, null)) && !isNull(try({view.custom.zoomMax}, null))"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tshared.TrendContext.chart_reset(self.view, ['AnalogChart', 'AnalogChartPan'])\n"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "ZoomChip",
+                  "tooltip": {
+                    "enabled": true,
+                    "text": "Click to reset the zoom"
+                  }
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "direction": "row",
+                  "alignItems": "center",
+                  "style": {
+                    "classes": "trend-zoom-chip"
+                  }
+                },
+                "propConfig": {
+                  "meta.visible": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "!isNull(try({view.custom.zoomMin}, null)) && !isNull(try({view.custom.zoomMax}, null))"
+                      }
+                    }
+                  }
+                },
+                "events": {
+                  "dom": {
+                    "onClick": {
+                      "type": "script",
+                      "scope": "G",
+                      "config": {
+                        "script": "\tshared.TrendContext.chart_reset(self.view, ['AnalogChart', 'AnalogChartPan'])\n"
+                      }
+                    }
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Range"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "",
+                      "style": {
+                        "classes": "trend-zoom-chip-text"
+                      }
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "type": "expr",
+                          "config": {
+                            "expression": "if(!isNull(try({view.custom.zoomMin}, null)) && !isNull(try({view.custom.zoomMax}, null)), 'Zoomed: ' + dateFormat(fromMillis(try({view.custom.zoomMin}, null)), if(try({view.custom.zoomMax}, null) - try({view.custom.zoomMin}, null) < 86400000, 'HH:mm', 'MMM d HH:mm')) + ' - ' + dateFormat(fromMillis(try({view.custom.zoomMax}, null)), if(try({view.custom.zoomMax}, null) - try({view.custom.zoomMin}, null) < 86400000, 'HH:mm', 'MMM d HH:mm')), '')"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Dot"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "·",
+                      "style": {
+                        "classes": "trend-zoom-chip-text"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Reset"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "Reset",
+                      "style": {
+                        "classes": "trend-zoom-chip-link"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Hint"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "trend-hint"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "case(if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'area', 'area', if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'pan', 'pan', 'time')), 'area', 'Drag a box on a chart to zoom into that time and value range', 'pan', 'Drag a chart left or right to move through time', 'Drag across a chart to zoom into that time range') + ' · Scroll to zoom · Double-click to reset'"
+                  }
+                }
+              }
+            }
+          }
+        ]
       },
       {
         "meta": {
@@ -320,10 +931,10 @@
         "propConfig": {
           "position.display": {
             "binding": {
+              "type": "expr",
               "config": {
-                "expression": "try(len({view.custom.selectedPens}), 0) > 0"
-              },
-              "type": "expr"
+                "expression": "(try(len({view.custom.selectedPens}), 0) > 0) && if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'area', 'area', if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'pan', 'pan', 'time')) != 'pan'"
+              }
             }
           },
           "props.series": {
@@ -331,17 +942,98 @@
               "config": {
                 "struct": {
                   "chartData": "{view.custom.chartDataAnalog}",
-                  "selectedPens": "{view.custom.selectedPens}"
+                  "selectedPens": "{view.custom.selectedPens}",
+                  "penOptions": "{view.custom.penOptions}"
                 },
                 "waitOnAll": true
               },
               "transforms": [
                 {
-                  "code": "\tselected = value.get('selectedPens') or []\n\tdata = value.get('chartData')\n\tseries = []\n\tif data is None:\n\t\treturn series\n\ttry:\n\t\trow_count = data.getRowCount()\n\texcept:\n\t\trow_count = 0\n\tif row_count <= 0:\n\t\treturn series\n\ttry:\n\t\tcol_names = list(data.getColumnNames())\n\texcept:\n\t\ttry:\n\t\t\tcol_names = [data.getColumnName(i) for i in range(data.getColumnCount())]\n\t\texcept:\n\t\t\treturn series\n\n\tdef add_series(name, column):\n\t\tif column not in col_names or column == 't_stamp':\n\t\t\treturn\n\t\ttry:\n\t\t\tfiltered = system.dataset.filterColumns(data, ['t_stamp', column])\n\t\texcept:\n\t\t\treturn\n\t\tseries.append({'name': name or column, 'data': filtered})\n\n\tused = set()\n\tif isinstance(selected, (str, unicode)):\n\t\tselected = [selected] if selected else []\n\tfor item in selected or []:\n\t\tpath = str(item or '')\n\t\tleaf = path.rsplit('/', 1)[-1]\n\t\tparts = path.split('/')\n\t\talias = parts[-2] if len(parts) >= 2 and leaf.upper() == 'VALUE' else leaf\n\t\tcol = None\n\t\tif alias and alias in col_names:\n\t\t\tcol = alias\n\t\telif path and path in col_names:\n\t\t\tcol = path\n\t\telse:\n\t\t\tfor n in col_names:\n\t\t\t\tif n == 't_stamp':\n\t\t\t\t\tcontinue\n\t\t\t\tif n == leaf or n.endswith('/' + leaf) or n == alias or n.endswith('/' + alias):\n\t\t\t\t\tcol = n\n\t\t\t\t\tbreak\n\t\tif col and col not in used:\n\t\t\tadd_series(alias or col, col)\n\t\t\tused.add(col)\n\tif not series:\n\t\tfor column in col_names:\n\t\t\tif column != 't_stamp':\n\t\t\t\tadd_series(column, column)\n\treturn series",
+                  "code": "\tselected = value.get('selectedPens') or []\n\tdata = value.get('chartData')\n\tlabels = {}\n\tfor opt in value.get('penOptions') or []:\n\t\ttry:\n\t\t\tlabels[str(opt['value'])] = str(opt['label'])\n\t\texcept:\n\t\t\tpass\n\tseries = []\n\tif data is None:\n\t\treturn series\n\ttry:\n\t\trow_count = data.getRowCount()\n\texcept:\n\t\trow_count = 0\n\tif row_count <= 0:\n\t\treturn series\n\ttry:\n\t\tcol_names = shared.TrendContext.columns(data)\n\texcept:\n\t\ttry:\n\t\t\tcol_names = [data.getColumnName(i) for i in range(data.getColumnCount())]\n\t\texcept:\n\t\t\treturn series\n\n\tdef add_series(name, column):\n\t\tif column not in col_names or column == 't_stamp':\n\t\t\treturn\n\t\ttry:\n\t\t\tfiltered = shared.TrendContext.points(data, column)\n\t\texcept:\n\t\t\treturn\n\t\tseries.append({'name': name or column, 'data': filtered})\n\n\tused = set()\n\tif isinstance(selected, (str, unicode)):\n\t\tselected = [selected] if selected else []\n\tfor item in selected or []:\n\t\tpath = str(item or '')\n\t\tleaf = path.rsplit('/', 1)[-1]\n\t\tparts = path.split('/')\n\t\tif len(parts) >= 3 and leaf.upper() == 'VALUE' and parts[-2].upper() == 'VALUE':\n\t\t\talias = parts[-3]\n\t\telse:\n\t\t\talias = parts[-2] if len(parts) >= 2 and leaf.upper() == 'VALUE' else ((parts[-2] + ' ' + leaf) if len(parts) >= 2 else leaf)  # pax-bindings\n\t\tcol = None\n\t\tif alias and alias in col_names:\n\t\t\tcol = alias\n\t\telif path and path in col_names:\n\t\t\tcol = path\n\t\telse:\n\t\t\tfor n in col_names:\n\t\t\t\tif n == 't_stamp':\n\t\t\t\t\tcontinue\n\t\t\t\tif n == leaf or n.endswith('/' + leaf) or n == alias or n.endswith('/' + alias):\n\t\t\t\t\tcol = n\n\t\t\t\t\tbreak\n\t\tif col and col not in used:\n\t\t\tadd_series(labels.get(path) or alias or col, col)\n\t\t\tused.add(col)\n\tif not series:\n\t\tfor column in col_names:\n\t\t\tif column != 't_stamp':\n\t\t\t\tadd_series(column, column)\n\treturn series",
                   "type": "script"
                 }
               ],
               "type": "expr-struct"
+            }
+          },
+          "props.options.annotations": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "asMap('yaxis', if({view.custom.ain} > 0,\n\twhere(asList(asMap('y', try(if(isGood(tag({view.params.tagPath} + '/AIn/Val_HiHiLim')), toFloat(tag({view.params.tagPath} + '/AIn/Val_HiHiLim')), null), null), 'borderColor', '#E53935', 'strokeDashArray', 0, 'label', asMap('text', 'HH', 'borderWidth', 0, 'position', 'left', 'textAnchor', 'start', 'offsetX', 4, 'style', asMap('color', '#E53935', 'background', 'transparent', 'fontSize', '11px'))),\n\t\tasMap('y', try(if(isGood(tag({view.params.tagPath} + '/AIn/Val_HiLim')), toFloat(tag({view.params.tagPath} + '/AIn/Val_HiLim')), null), null), 'borderColor', '#F9A825', 'strokeDashArray', 0, 'label', asMap('text', 'H', 'borderWidth', 0, 'position', 'left', 'textAnchor', 'start', 'offsetX', 4, 'style', asMap('color', '#F9A825', 'background', 'transparent', 'fontSize', '11px'))),\n\t\tasMap('y', try(if(isGood(tag({view.params.tagPath} + '/AIn/Val_LoLim')), toFloat(tag({view.params.tagPath} + '/AIn/Val_LoLim')), null), null), 'borderColor', '#F9A825', 'strokeDashArray', 0, 'label', asMap('text', 'L', 'borderWidth', 0, 'position', 'left', 'textAnchor', 'start', 'offsetX', 4, 'style', asMap('color', '#F9A825', 'background', 'transparent', 'fontSize', '11px'))),\n\t\tasMap('y', try(if(isGood(tag({view.params.tagPath} + '/AIn/Val_LoLoLim')), toFloat(tag({view.params.tagPath} + '/AIn/Val_LoLoLim')), null), null), 'borderColor', '#E53935', 'strokeDashArray', 0, 'label', asMap('text', 'LL', 'borderWidth', 0, 'position', 'left', 'textAnchor', 'start', 'offsetX', 4, 'style', asMap('color', '#E53935', 'background', 'transparent', 'fontSize', '11px')))),\n\t\t!isNull(it()['y'])),\n\tasList()))"
+              },
+              "overlays": {
+                "bad": false,
+                "error": false,
+                "pending": false,
+                "stale": false,
+                "unknown": false,
+                "disabled": false
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.options.yaxis": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.ain} = 2,\n\tasList(asMap('decimalsInFloat', 2, 'opposite', false, 'title', asMap('text', '', 'style', asMap('fontFamily', 'Poppins', 'fontWeight', 400)), 'tickAmount', 4,\n\t\t'min', coalesce(try(if(isGood(tag({view.params.tagPath} + '/AIn/Cfg_PVEUMin')), toFloat(tag({view.params.tagPath} + '/AIn/Cfg_PVEUMin')), null), null), 0), 'max', coalesce(try(if(isGood(tag({view.params.tagPath} + '/AIn/Cfg_PVEUMax')), toFloat(tag({view.params.tagPath} + '/AIn/Cfg_PVEUMax')), null), null), 100))),\n\tasList(asMap('decimalsInFloat', 1, 'opposite', false, 'title', asMap('text', '', 'style', asMap('fontFamily', 'Poppins', 'fontWeight', 400)))))"
+              },
+              "overlays": {
+                "bad": false,
+                "error": false,
+                "pending": false,
+                "stale": false,
+                "unknown": false,
+                "disabled": false
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.options.chart.zoom.type": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if(if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'area', 'area', if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'pan', 'pan', 'time')) = 'area', 'xy', 'x')"
+              }
+            }
+          },
+          "props.options.chart.zoom.autoScaleYaxis": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "coalesce({view.custom.autoY}, true)"
+              }
+            }
+          },
+          "props.options.xaxis.min": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if(coalesce({view.custom.zoomKind}, '') = 'area', {view.custom.zoomHoldMin}, coalesce({view.custom.zoomMin}, toMillis(addHours(now(15000), -coalesce({view.custom.hours}, 1)))))"
+              }
+            }
+          },
+          "props.options.xaxis.max": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if(coalesce({view.custom.zoomKind}, '') = 'area', {view.custom.zoomHoldMax}, coalesce({view.custom.zoomMax}, toMillis(now(15000))))"
+              }
+            }
+          },
+          "props.options.chart.toolbar.tools.download": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "this.props.series"
+              },
+              "transforms": [
+                {
+                  "type": "script",
+                  "code": "\t# trend-context: download (export) only with at least one good point (quality rule, docs/trending.md)\n\ttry:\n\t\tfor s in value or []:\n\t\t\tfor p in (s['data'] or []):\n\t\t\t\ttry:\n\t\t\t\t\ty = p['y']\n\t\t\t\texcept:\n\t\t\t\t\ty = p[1]\n\t\t\t\tif y is not None:\n\t\t\t\t\treturn True\n\texcept:\n\t\tpass\n\treturn False\n"
+                }
+              ]
             }
           }
         },
@@ -363,18 +1055,37 @@
                 "mounted": false,
                 "mouseLeave": false,
                 "mouseMove": false,
-                "scrolled": false,
+                "scrolled": true,
                 "selection": false,
                 "updated": false,
                 "xAxisLabelClick": false,
-                "zoomed": false
+                "zoomed": true
               },
               "height": 350,
               "stacked": false,
               "toolbar": {
-                "show": true
+                "show": true,
+                "autoSelected": "zoom",
+                "tools": {
+                  "download": true,
+                  "selection": false,
+                  "zoom": true,
+                  "zoomin": false,
+                  "zoomout": false,
+                  "pan": true,
+                  "reset": false
+                }
               },
-              "type": "line"
+              "type": "line",
+              "zoom": {
+                "enabled": true,
+                "type": "x",
+                "autoScaleYaxis": true,
+                "allowMouseWheelZoom": true
+              },
+              "animations": {
+                "enabled": false
+              }
             },
             "dataLabels": {
               "enabled": false
@@ -385,7 +1096,10 @@
             "legend": {
               "position": "bottom",
               "show": true,
-              "showForSingleSeries": true
+              "showForSingleSeries": true,
+              "onItemClick": {
+                "toggleDataSeries": true
+              }
             },
             "markers": {
               "size": 0
@@ -398,21 +1112,35 @@
               "x": {
                 "format": "HH:mm:ss",
                 "show": true
-              }
+              },
+              "shared": true,
+              "intersect": false,
+              "followCursor": false
             },
             "xaxis": {
               "labels": {
                 "datetimeFormatter": {
                   "day": "dd MMM",
-                  "hour": "hh:mm",
-                  "minute": "hh:mm:ss",
+                  "hour": "HH:mm",
+                  "minute": "HH:mm:ss",
                   "month": "MMM YY",
                   "year": "yyyy"
                 },
                 "datetimeUTC": false,
                 "show": true
               },
-              "type": "datetime"
+              "type": "datetime",
+              "crosshairs": {
+                "show": true,
+                "width": 1,
+                "position": "back",
+                "opacity": 0.9,
+                "stroke": {
+                  "color": "#b6b6b6",
+                  "width": 1,
+                  "dashArray": 0
+                }
+              }
             },
             "yaxis": [
               {
@@ -426,13 +1154,323 @@
                   "text": ""
                 }
               }
-            ]
+            ],
+            "annotations": {
+              "yaxis": []
+            },
+            "noData": {
+              "text": "No Data",
+              "align": "center",
+              "verticalAlign": "middle",
+              "style": {
+                "color": "#90A4AE",
+                "fontSize": "14px"
+              }
+            }
           },
           "style": {
-            "background": "var(--neutral-40)"
+            "background": "var(--surface-card)",
+            "classes": "faceplate-trend-chart trend-chart"
+          },
+          "series": []
+        },
+        "type": "kyvislabs.display.apexchart",
+        "events": {
+          "component": {
+            "zoomedHandler": {
+              "type": "script",
+              "scope": "G",
+              "config": {
+                "script": "\tshared.TrendContext.chart_zoomed(self.view, event, False, self)\n"
+              }
+            },
+            "scrolledHandler": {
+              "type": "script",
+              "scope": "G",
+              "config": {
+                "script": "\tshared.TrendContext.chart_zoomed(self.view, event, False, self)\n"
+              }
+            }
+          },
+          "dom": {
+            "onDoubleClick": {
+              "type": "script",
+              "scope": "G",
+              "config": {
+                "script": "\tshared.TrendContext.chart_reset(self.view, ['AnalogChart', 'AnalogChartPan'])\n"
+              }
+            }
+          }
+        }
+      },
+      {
+        "meta": {
+          "name": "AnalogChartPan"
+        },
+        "position": {
+          "grow": 1
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "(try(len({view.custom.selectedPens}), 0) > 0) && if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'area', 'area', if(coalesce(try({view.custom.dragMode}, 'time'), 'time') = 'pan', 'pan', 'time')) = 'pan'"
+              }
+            }
+          },
+          "props.series": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "../AnalogChart.props.series"
+              },
+              "transforms": [
+                {
+                  "type": "script",
+                  "code": "\treturn list(value or [])\n"
+                }
+              ]
+            }
+          },
+          "props.options.annotations": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "asMap('yaxis', if({view.custom.ain} > 0,\n\twhere(asList(asMap('y', try(if(isGood(tag({view.params.tagPath} + '/AIn/Val_HiHiLim')), toFloat(tag({view.params.tagPath} + '/AIn/Val_HiHiLim')), null), null), 'borderColor', '#E53935', 'strokeDashArray', 0, 'label', asMap('text', 'HH', 'borderWidth', 0, 'position', 'left', 'textAnchor', 'start', 'offsetX', 4, 'style', asMap('color', '#E53935', 'background', 'transparent', 'fontSize', '11px'))),\n\t\tasMap('y', try(if(isGood(tag({view.params.tagPath} + '/AIn/Val_HiLim')), toFloat(tag({view.params.tagPath} + '/AIn/Val_HiLim')), null), null), 'borderColor', '#F9A825', 'strokeDashArray', 0, 'label', asMap('text', 'H', 'borderWidth', 0, 'position', 'left', 'textAnchor', 'start', 'offsetX', 4, 'style', asMap('color', '#F9A825', 'background', 'transparent', 'fontSize', '11px'))),\n\t\tasMap('y', try(if(isGood(tag({view.params.tagPath} + '/AIn/Val_LoLim')), toFloat(tag({view.params.tagPath} + '/AIn/Val_LoLim')), null), null), 'borderColor', '#F9A825', 'strokeDashArray', 0, 'label', asMap('text', 'L', 'borderWidth', 0, 'position', 'left', 'textAnchor', 'start', 'offsetX', 4, 'style', asMap('color', '#F9A825', 'background', 'transparent', 'fontSize', '11px'))),\n\t\tasMap('y', try(if(isGood(tag({view.params.tagPath} + '/AIn/Val_LoLoLim')), toFloat(tag({view.params.tagPath} + '/AIn/Val_LoLoLim')), null), null), 'borderColor', '#E53935', 'strokeDashArray', 0, 'label', asMap('text', 'LL', 'borderWidth', 0, 'position', 'left', 'textAnchor', 'start', 'offsetX', 4, 'style', asMap('color', '#E53935', 'background', 'transparent', 'fontSize', '11px')))),\n\t\t!isNull(it()['y'])),\n\tasList()))"
+              },
+              "overlays": {
+                "bad": false,
+                "error": false,
+                "pending": false,
+                "stale": false,
+                "unknown": false,
+                "disabled": false
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.options.yaxis": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if({view.custom.ain} = 2,\n\tasList(asMap('decimalsInFloat', 2, 'opposite', false, 'title', asMap('text', '', 'style', asMap('fontFamily', 'Poppins', 'fontWeight', 400)), 'tickAmount', 4,\n\t\t'min', coalesce(try(if(isGood(tag({view.params.tagPath} + '/AIn/Cfg_PVEUMin')), toFloat(tag({view.params.tagPath} + '/AIn/Cfg_PVEUMin')), null), null), 0), 'max', coalesce(try(if(isGood(tag({view.params.tagPath} + '/AIn/Cfg_PVEUMax')), toFloat(tag({view.params.tagPath} + '/AIn/Cfg_PVEUMax')), null), null), 100))),\n\tasList(asMap('decimalsInFloat', 1, 'opposite', false, 'title', asMap('text', '', 'style', asMap('fontFamily', 'Poppins', 'fontWeight', 400)))))"
+              },
+              "overlays": {
+                "bad": false,
+                "error": false,
+                "pending": false,
+                "stale": false,
+                "unknown": false,
+                "disabled": false
+              },
+              "overlayOptOut": true
+            }
+          },
+          "props.options.chart.zoom.autoScaleYaxis": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "coalesce({view.custom.autoY}, true)"
+              }
+            }
+          },
+          "props.options.xaxis.min": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if(coalesce({view.custom.zoomKind}, '') = 'area', {view.custom.zoomHoldMin}, coalesce({view.custom.zoomMin}, toMillis(addHours(now(15000), -coalesce({view.custom.hours}, 1)))))"
+              }
+            }
+          },
+          "props.options.xaxis.max": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "if(coalesce({view.custom.zoomKind}, '') = 'area', {view.custom.zoomHoldMax}, coalesce({view.custom.zoomMax}, toMillis(now(15000))))"
+              }
+            }
+          },
+          "props.options.chart.toolbar.tools.download": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "this.props.series"
+              },
+              "transforms": [
+                {
+                  "type": "script",
+                  "code": "\t# trend-context: download (export) only with at least one good point (quality rule, docs/trending.md)\n\ttry:\n\t\tfor s in value or []:\n\t\t\tfor p in (s['data'] or []):\n\t\t\t\ttry:\n\t\t\t\t\ty = p['y']\n\t\t\t\texcept:\n\t\t\t\t\ty = p[1]\n\t\t\t\tif y is not None:\n\t\t\t\t\treturn True\n\texcept:\n\t\tpass\n\treturn False\n"
+                }
+              ]
+            }
           }
         },
-        "type": "kyvislabs.display.apexchart"
+        "props": {
+          "options": {
+            "chart": {
+              "events": {
+                "animationEnd": false,
+                "beforeMount": false,
+                "beforeResetZoom": false,
+                "beforeZoom": false,
+                "brushScrolled": false,
+                "click": false,
+                "dataPointMouseEnter": false,
+                "dataPointMouseLeave": false,
+                "dataPointSelection": false,
+                "legendClick": false,
+                "markerClick": false,
+                "mounted": false,
+                "mouseLeave": false,
+                "mouseMove": false,
+                "scrolled": true,
+                "selection": false,
+                "updated": false,
+                "xAxisLabelClick": false,
+                "zoomed": true
+              },
+              "height": 350,
+              "stacked": false,
+              "toolbar": {
+                "show": true,
+                "autoSelected": "pan",
+                "tools": {
+                  "download": true,
+                  "selection": false,
+                  "zoom": true,
+                  "zoomin": false,
+                  "zoomout": false,
+                  "pan": true,
+                  "reset": false
+                }
+              },
+              "type": "line",
+              "zoom": {
+                "enabled": true,
+                "type": "x",
+                "autoScaleYaxis": true,
+                "allowMouseWheelZoom": true
+              },
+              "animations": {
+                "enabled": false
+              }
+            },
+            "dataLabels": {
+              "enabled": false
+            },
+            "fill": {
+              "opacity": 1
+            },
+            "legend": {
+              "position": "bottom",
+              "show": true,
+              "showForSingleSeries": true,
+              "onItemClick": {
+                "toggleDataSeries": true
+              }
+            },
+            "markers": {
+              "size": 0
+            },
+            "stroke": {
+              "width": 1
+            },
+            "tooltip": {
+              "enabled": true,
+              "x": {
+                "format": "HH:mm:ss",
+                "show": true
+              },
+              "shared": true,
+              "intersect": false,
+              "followCursor": false
+            },
+            "xaxis": {
+              "labels": {
+                "datetimeFormatter": {
+                  "day": "dd MMM",
+                  "hour": "HH:mm",
+                  "minute": "HH:mm:ss",
+                  "month": "MMM YY",
+                  "year": "yyyy"
+                },
+                "datetimeUTC": false,
+                "show": true
+              },
+              "type": "datetime",
+              "crosshairs": {
+                "show": true,
+                "width": 1,
+                "position": "back",
+                "opacity": 0.9,
+                "stroke": {
+                  "color": "#b6b6b6",
+                  "width": 1,
+                  "dashArray": 0
+                }
+              }
+            },
+            "yaxis": [
+              {
+                "decimalsInFloat": 1,
+                "opposite": false,
+                "title": {
+                  "style": {
+                    "fontFamily": "Poppins",
+                    "fontWeight": 400
+                  },
+                  "text": ""
+                }
+              }
+            ],
+            "annotations": {
+              "yaxis": []
+            },
+            "noData": {
+              "text": "No Data",
+              "align": "center",
+              "verticalAlign": "middle",
+              "style": {
+                "color": "#90A4AE",
+                "fontSize": "14px"
+              }
+            }
+          },
+          "style": {
+            "background": "var(--surface-card)",
+            "classes": "faceplate-trend-chart trend-chart"
+          },
+          "series": []
+        },
+        "type": "kyvislabs.display.apexchart",
+        "events": {
+          "component": {
+            "zoomedHandler": {
+              "type": "script",
+              "scope": "G",
+              "config": {
+                "script": "\tshared.TrendContext.chart_zoomed(self.view, event, False, self)\n"
+              }
+            },
+            "scrolledHandler": {
+              "type": "script",
+              "scope": "G",
+              "config": {
+                "script": "\tshared.TrendContext.chart_zoomed(self.view, event, False, self)\n"
+              }
+            }
+          },
+          "dom": {
+            "onDoubleClick": {
+              "type": "script",
+              "scope": "G",
+              "config": {
+                "script": "\tshared.TrendContext.chart_reset(self.view, ['AnalogChart', 'AnalogChartPan'])\n"
+              }
+            }
+          }
+        }
       }
     ],
     "meta": {
@@ -460,7 +1498,7 @@
           },
           "transforms": [
             {
-              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = self.view.params.tagPath\n\texcept:\n\t\tpass\n\tif tagPath is None or str(tagPath).strip() == '':\n\t\ttagPath = value.tagPath + self.view.id.split('@')[0].split('/')[-1]\n\titems = [\n\t\t\t  {\n\t\t\t    \"text\": \"Ticket Logger\",\n\t\t\t    \"icon\": {\n\t\t\t      \"path\": \"material/info\",\n\t\t\t      \"color\": \"--neutral-80\",\n\t\t\t      \"style\": {}\n\t\t\t    },\n\t\t\t    \"style\": {\n\t\t\t      \"classes\": \"bg-component font-value\",\n\t\t\t      \"height\": 24,\n\t\t\t      \"width\": 120\n\t\t\t    },\n\t\t\t    \"type\": \"message\",\n\t\t\t    \"children\": [],\n\t\t\t    \"link\": {\n\t\t\t      \"url\": \"\",\n\t\t\t      \"target\": \"self\"\n\t\t\t    },\n\t\t\t    \"method\": {\n\t\t\t      \"name\": \"\",\n\t\t\t      \"params\": {}\n\t\t\t    },\n\t\t\t    \"message\": {\n\t\t\t      \"type\": \"ticketLog\",\n\t\t\t      \"payload\": {\n\t\t\t        \"tagPath\": tagPath,\n\t\t\t        \"viewName\": self.view.id.split('@')[0]\n\t\t\t      },\n\t\t\t      \"scope\": \"page\"\n\t\t\t    }\n\t\t\t  }\n\t\t\t]\n\treturn items",
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = self.view.params.tagPath\n\texcept:\n\t\tpass\n\tif tagPath is None or str(tagPath).strip() == '':\n\t\ttagPath = value.tagPath + self.view.id.split('@')[0].split('/')[-1]\n\titems = [\n\t\t\t  {\n\t\t\t    \"text\": \"Ticket Logger\",\n\t\t\t    \"icon\": {\n\t\t\t      \"path\": \"material/info\",\n\t\t\t      \"color\": \"--neutral-80\",\n\t\t\t      \"style\": {}\n\t\t\t    },\n\t\t\t    \"style\": {\n\t\t\t      \"classes\": \"bg-component Fonts/Value\",\n\t\t\t      \"height\": 24,\n\t\t\t      \"width\": 120\n\t\t\t    },\n\t\t\t    \"type\": \"message\",\n\t\t\t    \"children\": [],\n\t\t\t    \"link\": {\n\t\t\t      \"url\": \"\",\n\t\t\t      \"target\": \"self\"\n\t\t\t    },\n\t\t\t    \"method\": {\n\t\t\t      \"name\": \"\",\n\t\t\t      \"params\": {}\n\t\t\t    },\n\t\t\t    \"message\": {\n\t\t\t      \"type\": \"ticketLog\",\n\t\t\t      \"payload\": {\n\t\t\t        \"tagPath\": tagPath,\n\t\t\t        \"viewName\": self.view.id.split('@')[0], 'sender': self.view.id\n\t\t\t      },\n\t\t\t      \"scope\": \"page\"\n\t\t\t    }\n\t\t\t  }\n\t\t\t]\n\treturn items",
               "type": "script"
             }
           ],
@@ -501,7 +1539,7 @@
         {
           "messageType": "ticketLog",
           "pageScope": true,
-          "script": "\t# Ticket Logger context-menu opener\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
           "sessionScope": false,
           "viewScope": false
         }

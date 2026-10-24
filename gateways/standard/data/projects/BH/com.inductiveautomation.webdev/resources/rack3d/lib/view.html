@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PLC Rack 3D</title>
+<!-- .cursor/tasks/plc-rack-3d/build.py (generated copy); docs/plc-rack-3d.md. Served only to a logged-in BH
+     Perspective session (shared.WebAuth). three.js r170 (MIT) is served locally from rack3d/lib - no CDN. -->
+<script>
+(function () {
+  var t = (new URLSearchParams(location.search).get("theme") || "light").toLowerCase();
+  document.documentElement.setAttribute("data-theme", t.indexOf("dark") === 0 ? "dark" : "light");
+})();
+</script>
+<script type="importmap">
+{ "imports": { "three": "./lib/three.module.min.js" } }
+</script>
+<link rel="stylesheet" href="./lib/rack3d.css">
+</head>
+<body>
+<div id="stage"></div>
+<div id="bar">
+  <div class="title"><span id="t-plc">PLC</span><span class="sep">&middot;</span><span id="t-ctrl">1769-L36ERM</span></div>
+  <div id="chip" class="chip chip-off">No Data</div>
+  <div class="grow"></div>
+  <div class="legend">
+    <span><i class="dot on"></i>On</span><span><i class="dot off"></i>Off</span><span><i class="dot fault"></i>Fault</span>
+  </div>
+  <button id="reset" type="button">Reset View</button>
+</div>
+<div id="banner" hidden></div>
+<div id="demo" hidden>Demo &middot; Static Sample From The 2026-10-23 Live Data</div>
+<div id="tip" hidden></div>
+<aside id="panel" hidden>
+  <header><div><div id="p-title"></div><div id="p-sub"></div></div><button id="p-close" type="button">Back To Rack</button></header>
+  <div id="p-status"></div>
+  <div id="p-body"></div>
+</aside>
+<div id="nogl" hidden>
+  <div><b>3D View Unavailable</b><br>This browser or device has no WebGL support. Use the 2D rack page.</div>
+</div>
+<div id="foot"><span id="updated">Waiting For Data</span></div>
+<script type="module" src="./lib/rack3d.js"></script>
+</body>
+</html>

@@ -24,6 +24,14 @@ def getAlarmTags():
 	return alarmTags
 	
 def getHistoricalTags():
+	# trend-context (2026-10-23): every historized atomic member (PlantPAx Val*, Comp/*, FCM KPIs)
+	# from shared.TrendHistorized; the query below only found members named "Value".
+	try:
+		paths = shared.TrendContext.all_paths()
+		if paths:
+			return paths
+	except:
+		pass
 	historicalTags = []
 	results = system.tag.browse('').getResults()
 	for result in results:
@@ -72,7 +80,7 @@ def getHistoricalTags():
 			results = sorted(results, key=itemgetter('fullPath'))
 			for result in results:
 				fp = str(result["fullPath"])
-				if "_Config" not in fp and "_SiteInfo" not in fp and "_Sim_" not in fp:
+				if "_Config" not in fp and "_SiteInfo" not in fp:
 					historicalTags.append(fp.rsplit('/',1)[0])
 	
 	return historicalTags

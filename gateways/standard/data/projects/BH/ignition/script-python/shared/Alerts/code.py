@@ -22,6 +22,13 @@ ADHOC_TREND_CONFIG_WIDTH = 340
 ADHOC_TREND_CONFIG_HEIGHT = 520
 ADHOC_TREND_GAP = 12
 
+def _describe(tagPath, value, enumPath=None):
+	try:
+		return shared.Enums.describe(tagPath, value, enumPath)
+	except Exception:
+		return "%s" % (value,)
+
+
 def confirmApplyWrite(label, tagPath, newValue, oldValue=None, title="Apply configuration",
 		extraPayload=None, btnTextApply="Apply"):
 	"""Confirm before writing a config value. Cancel does not write.
@@ -34,9 +41,31 @@ def confirmApplyWrite(label, tagPath, newValue, oldValue=None, title="Apply conf
 	except Exception:
 		if oldValue is not None and newValue == oldValue:
 			return
+	# device-perms: no confirm for a session without Faceplates/Operate or the device-type row (requireWrite
+	# shows 'Not Permitted' naming the row); shared.Audit.writeTag refuses it as well
+	if '_Config/Integrations/' not in str(tagPath or '') and not shared.Security.requireWrite(tagPath, label):
+		return
+	# plc-write-lock (.cursor/tasks/plc-write-lock): no confirm (and no write) for a value that would reach the RCP1
+	# controller while PLC writes are locked - shared.Audit.writeTag refuses it as well
+	try:
+		plcBlocked = not shared.PlcWriteLock.writeAllowed(tagPath)
+	except Exception:
+		plcBlocked = False
+	if plcBlocked:
+		showAlert(state="warning", title="PLC Writes Locked",
+			message="This value is in the RCP1 controller (production PLC) and PLC writes are locked.<br><br>"
+			"Unlock: set [default]_Config/PlcWriteLock/Locked to false in the Designer (Tag Browser).",
+			showCloseBtn=True, overlayDismiss=True)
+		return
 	lbl = label if label not in (None, "") else (str(tagPath or "").split("/")[-1] or "Parameter")
-	old_s = "—" if oldValue is None else str(oldValue)
-	new_s = str(newValue)
+	# Enum-backed members show words ('Time Of Day (0)', shared.Enums); anything else / any error: the raw value
+	enumPath = None
+	try:
+		enumPath = (extraPayload or {}).get("enumPath")
+	except Exception:
+		enumPath = None
+	old_s = "—" if oldValue is None else _describe(tagPath, oldValue, enumPath)
+	new_s = _describe(tagPath, newValue, enumPath)
 	msg = (
 		"Apply this configuration change?<br><br>"
 		"<b>%s</b><br>Old: %s<br>New: %s"
@@ -238,12 +267,13 @@ def showFaceplate(tagPath="", deviceType="Compressor", webGuiUrl="", title=None,
 		showControls=True, showConfiguration=True, showInterlocks=True, showTrend=True,
 		showAlarmConfiguration=True, showAlarms=True, width=560, height=656,
 		hiddenFromConfiguration="", hiddenFromTrend="",
-		hiddenFromAlarmConfiguration="", hiddenFromAlarms=""):
+		hiddenFromAlarmConfiguration="", hiddenFromAlarms="", initialTab=""):
 	"""Open the shared tabbed Faceplate shell (Scout-style).
 
 	Caller show* flags are hints ANDed with Faceplate tagFlags (empty tabs hide).
 	deviceType selects Controls embeds under 01_Popups/00_Faceplates/_Assets/...
 	hiddenFrom* are comma-separated paths; entries ending with / match a folder prefix.
+	initialTab opens on that tab (e.g. 'Interlocks') instead of Controls.
 	"""
 	# Device-type curation defaults (caller can override / extend).
 	dt = deviceType or "Compressor"
@@ -275,6 +305,7 @@ def showFaceplate(tagPath="", deviceType="Compressor", webGuiUrl="", title=None,
 		"hiddenFromTrend": hiddenFromTrend or "",
 		"hiddenFromAlarmConfiguration": hiddenFromAlarmConfiguration or "",
 		"hiddenFromAlarms": hiddenFromAlarms or "",
+		"initialTab": initialTab or "",
 	}
 	if not title:
 		title = tagPath.split("/")[-1] if tagPath else "Faceplate"

@@ -8,7 +8,9 @@
     "label": "",
     "metadata": "",
     "selectedSp": "",
-    "values": {}
+    "values": {},
+    "oos": false,
+    "pax": ""
   },
   "params": {
     "faceplate": null,
@@ -109,7 +111,7 @@
     "custom.values.analog": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '',\n\t'',\n\tif({view.custom.selectedSp} = '',\n\t\t{view.params.tagPath} + '/Level/Value',\n\t\t{view.params.tagPath} + '/' + {view.custom.selectedSp} + '/SP/Value'))"
+          "expression": "if({view.params.tagPath} = '',\n\t'',\n\tif({view.custom.selectedSp} = '',\n\t\t{view.params.tagPath} + '/LvlAIn/Val',\n\t\t{view.params.tagPath} + '/LvlAIn/' + case({view.custom.selectedSp}, 'HH', 'Val_HiHiLim', 'H', 'Val_HiLim', 'L', 'Val_LoLim', 'LL', 'Val_LoLoLim', 'Val')))"
         },
         "type": "expr"
       }
@@ -125,7 +127,7 @@
     "custom.values.commLoss": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '',\n\tfalse,\n\tisBad(tag({view.params.tagPath} + '/Status/Value')))"
+          "expression": "if(coalesce({view.custom.oos}, false),\n\tfalse,\n\t(if({view.params.tagPath} = '',\n\tfalse,\n\t!isGood(tag({view.params.tagPath} + '/LvlAIn/Val_Fault')))))"
         },
         "type": "expr"
       }
@@ -133,7 +135,7 @@
     "custom.values.h": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '' || isBad(tag({view.params.tagPath} + '/H/Value')),\n\tfalse,\n\tcoalesce(tag({view.params.tagPath} + '/H/Value'), false))"
+          "expression": "if({view.params.tagPath} = '' || !isGood(tag({view.params.tagPath} + '/LvlAIn/Sts_Hi')),\n\tfalse,\n\tcoalesce(tag({view.params.tagPath} + '/LvlAIn/Sts_Hi'), false))"
         },
         "type": "expr"
       }
@@ -141,7 +143,7 @@
     "custom.values.hh": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '' || isBad(tag({view.params.tagPath} + '/HH/Value')),\n\tfalse,\n\tcoalesce(tag({view.params.tagPath} + '/HH/Value'), false))"
+          "expression": "if({view.params.tagPath} = '' || !isGood(tag({view.params.tagPath} + '/LvlAIn/Sts_HiHi')),\n\tfalse,\n\tcoalesce(tag({view.params.tagPath} + '/LvlAIn/Sts_HiHi'), false))"
         },
         "type": "expr"
       }
@@ -149,7 +151,7 @@
     "custom.values.l": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '' || isBad(tag({view.params.tagPath} + '/L/Value')),\n\tfalse,\n\tcoalesce(tag({view.params.tagPath} + '/L/Value'), false))"
+          "expression": "if({view.params.tagPath} = '' || !isGood(tag({view.params.tagPath} + '/LvlAIn/Sts_Lo')),\n\tfalse,\n\tcoalesce(tag({view.params.tagPath} + '/LvlAIn/Sts_Lo'), false))"
         },
         "type": "expr"
       }
@@ -157,7 +159,7 @@
     "custom.values.level": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '' || isBad(tag({view.params.tagPath} + '/Level/Value')),\n\t0,\n\tcoalesce(tag({view.params.tagPath} + '/Level/Value'), 0))"
+          "expression": "if({view.params.tagPath} = '' || !isGood(tag({view.params.tagPath} + '/LvlAIn/Val')),\n\t0,\n\tcoalesce(tag({view.params.tagPath} + '/LvlAIn/Val'), 0))"
         },
         "type": "expr"
       }
@@ -165,23 +167,7 @@
     "custom.values.ll": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '' || isBad(tag({view.params.tagPath} + '/LL/Value')),\n\tfalse,\n\tcoalesce(tag({view.params.tagPath} + '/LL/Value'), false))"
-        },
-        "type": "expr"
-      }
-    },
-    "custom.values.lsh": {
-      "binding": {
-        "config": {
-          "expression": "if({view.params.tagPath} = '' || isBad(tag({view.params.tagPath} + '/LSH/Value')),\n\tfalse,\n\tcoalesce(tag({view.params.tagPath} + '/LSH/Value'), false))"
-        },
-        "type": "expr"
-      }
-    },
-    "custom.values.lsl": {
-      "binding": {
-        "config": {
-          "expression": "if({view.params.tagPath} = '' || isBad(tag({view.params.tagPath} + '/LSL/Value')),\n\tfalse,\n\tcoalesce(tag({view.params.tagPath} + '/LSL/Value'), false))"
+          "expression": "if({view.params.tagPath} = '' || !isGood(tag({view.params.tagPath} + '/LvlAIn/Sts_LoLo')),\n\tfalse,\n\tcoalesce(tag({view.params.tagPath} + '/LvlAIn/Sts_LoLo'), false))"
         },
         "type": "expr"
       }
@@ -189,7 +175,7 @@
     "custom.values.status": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '',\n\t'',\n\t{view.params.tagPath} + '/Status/Value')"
+          "expression": "if({view.params.tagPath} = '',\n\t'',\n\t{view.params.tagPath} + '/LvlAIn/Val_Fault')"
         },
         "type": "expr"
       }
@@ -217,6 +203,23 @@
     "params.tagPath": {
       "paramDirection": "input",
       "persistent": true
+    },
+    "custom.oos": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', false, !coalesce(try(toBoolean(tag({view.params.tagPath} + '.Enabled')), true), true))"
+        }
+      },
+      "persistent": true
+    },
+    "custom.pax": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(coalesce({view.params.tagPath}, '') = '', '', case(toStr(coalesce(try(tag({view.params.tagPath} + '.TypeId'), ''), '')), 'Devices/Pump', 'Motor', 'Devices/Valve', 'Valve', 'Devices/Tank', 'Tank', 'Devices/Compressor', 'Comp', 'Devices/Evaporator', 'CG', 'Devices/ExhaustFan', 'EF', 'Devices/LTU', 'LTU', 'Devices/SafetyRelay', 'Relay', 'Devices/SuctionSequence', 'Seq', 'Devices/DischargeSequence', 'Dsq', 'Devices/Sensor', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AIn.Enabled')), false), false), 'AIn', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/AInRef.Enabled')), false), false), 'AInRef', '')), 'Devices/DiscreteInput', if(coalesce(try(toBoolean(tag({view.params.tagPath} + '/DIn.Enabled')), false), false), 'DIn', ''), ''))"
+        }
+      }
     }
   },
   "props": {
@@ -255,13 +258,11 @@
                     "classes": "icon-header",
                     "height": "20px",
                     "left": "0px",
-                    "minHeight": "20px",
-                    "minWidth": "20px",
-                    "overflow": "visible",
                     "position": "absolute",
                     "top": "0px",
                     "width": "20px",
-                    "zIndex": 2
+                    "zIndex": 2,
+                    "overflow": "visible"
                   },
                   "useDefaultViewHeight": true,
                   "useDefaultViewWidth": true
@@ -289,10 +290,8 @@
                 "props": {
                   "align": "center",
                   "style": {
-                    "classes": "font-value",
+                    "classes": "Fonts/Value fs-11 fw-700",
                     "cursor": "pointer",
-                    "fontSize": "11px",
-                    "fontWeight": "700",
                     "minHeight": "16px",
                     "textAlign": "center",
                     "width": "100%"
@@ -312,7 +311,7 @@
                   "meta.visible": {
                     "binding": {
                       "config": {
-                        "expression": "!(isNull({view.params.faceplate}) || {view.params.faceplate} = '')"
+                        "expression": "coalesce({session.custom.CanOpenFaceplates}, false) && (!(isNull({view.params.faceplate}) || {view.params.faceplate} = ''))"
                       },
                       "type": "expr"
                     }
@@ -374,60 +373,6 @@
           },
           {
             "children": [
-              {
-                "meta": {
-                  "name": "StemH"
-                },
-                "position": {
-                  "height": 4,
-                  "width": 15,
-                  "y": 14
-                },
-                "propConfig": {
-                  "position.x": {
-                    "binding": {
-                      "config": {
-                        "expression": "if({view.params.orientation.reverse},\n\t123,\n\t30)"
-                      },
-                      "type": "expr"
-                    }
-                  }
-                },
-                "props": {
-                  "style": {
-                    "classes": "tank-stem",
-                    "zIndex": 1
-                  }
-                },
-                "type": "ia.container.coord"
-              },
-              {
-                "meta": {
-                  "name": "StemL"
-                },
-                "position": {
-                  "height": 4,
-                  "width": 15,
-                  "y": 111
-                },
-                "propConfig": {
-                  "position.x": {
-                    "binding": {
-                      "config": {
-                        "expression": "if({view.params.orientation.reverse},\n\t122,\n\t31)"
-                      },
-                      "type": "expr"
-                    }
-                  }
-                },
-                "props": {
-                  "style": {
-                    "classes": "tank-stem",
-                    "zIndex": 1
-                  }
-                },
-                "type": "ia.container.coord"
-              },
               {
                 "meta": {
                   "name": "GlassPipeTop"
@@ -497,7 +442,8 @@
                           "config": {
                             "expression": "toString(max(0, min(100, coalesce({view.custom.values.level}, 0)))) + '%'"
                           },
-                          "type": "expr"
+                          "type": "expr",
+                          "overlayOptOut": true
                         }
                       }
                     },
@@ -533,8 +479,8 @@
                   "justify": "flex-end",
                   "style": {
                     "classes": "tank-vessel",
-                    "overflow": "hidden",
-                    "zIndex": 2
+                    "zIndex": 2,
+                    "overflow": "hidden"
                   }
                 },
                 "type": "ia.container.flex"
@@ -554,7 +500,8 @@
                           "config": {
                             "expression": "toString(max(0, min(100, coalesce({view.custom.values.level}, 0)))) + '%'"
                           },
-                          "type": "expr"
+                          "type": "expr",
+                          "overlayOptOut": true
                         }
                       }
                     },
@@ -590,8 +537,8 @@
                   "justify": "flex-end",
                   "style": {
                     "classes": "tank-sight",
-                    "overflow": "hidden",
-                    "zIndex": 2
+                    "zIndex": 2,
+                    "overflow": "hidden"
                   }
                 },
                 "type": "ia.container.flex"
@@ -646,9 +593,7 @@
                     },
                     "props": {
                       "style": {
-                        "classes": "font-label tank-level-text-critical",
-                        "fontSize": "10px",
-                        "fontWeight": "600",
+                        "classes": "Fonts/Label tank-level-text-critical fs-10 fw-600",
                         "lineHeight": "12px",
                         "overflow": "visible",
                         "whiteSpace": "nowrap"
@@ -700,7 +645,6 @@
                 "props": {
                   "style": {
                     "classes": "tank-level-mark",
-                    "cursor": "pointer",
                     "overflow": "visible"
                   }
                 },
@@ -756,9 +700,7 @@
                     },
                     "props": {
                       "style": {
-                        "classes": "font-label tank-level-text-warning",
-                        "fontSize": "10px",
-                        "fontWeight": "600",
+                        "classes": "Fonts/Label tank-level-text-warning fs-10 fw-600",
                         "lineHeight": "12px",
                         "overflow": "visible",
                         "whiteSpace": "nowrap"
@@ -810,7 +752,6 @@
                 "props": {
                   "style": {
                     "classes": "tank-level-mark",
-                    "cursor": "pointer",
                     "overflow": "visible"
                   }
                 },
@@ -866,9 +807,7 @@
                     },
                     "props": {
                       "style": {
-                        "classes": "font-label tank-level-text-warning",
-                        "fontSize": "10px",
-                        "fontWeight": "600",
+                        "classes": "Fonts/Label tank-level-text-warning fs-10 fw-600",
                         "lineHeight": "12px",
                         "overflow": "visible",
                         "whiteSpace": "nowrap"
@@ -920,7 +859,6 @@
                 "props": {
                   "style": {
                     "classes": "tank-level-mark",
-                    "cursor": "pointer",
                     "overflow": "visible"
                   }
                 },
@@ -976,9 +914,7 @@
                     },
                     "props": {
                       "style": {
-                        "classes": "font-label tank-level-text-critical",
-                        "fontSize": "10px",
-                        "fontWeight": "600",
+                        "classes": "Fonts/Label tank-level-text-critical fs-10 fw-600",
                         "lineHeight": "12px",
                         "overflow": "visible",
                         "whiteSpace": "nowrap"
@@ -1030,7 +966,6 @@
                 "props": {
                   "style": {
                     "classes": "tank-level-mark",
-                    "cursor": "pointer",
                     "overflow": "visible"
                   }
                 },
@@ -1038,140 +973,13 @@
               },
               {
                 "meta": {
-                  "name": "FloatH"
-                },
-                "position": {
-                  "height": 14,
-                  "width": 14,
-                  "y": 10
-                },
-                "propConfig": {
-                  "position.x": {
-                    "binding": {
-                      "config": {
-                        "expression": "if({view.params.orientation.reverse},\n\t138,\n\t16)"
-                      },
-                      "type": "expr"
-                    }
-                  },
-                  "props.style.classes": {
-                    "binding": {
-                      "config": {
-                        "expression": "if(coalesce({view.custom.values.lsh}, false),\n\t'tank-float tank-float-active',\n\t'tank-float')"
-                      },
-                      "type": "expr"
-                    }
-                  }
-                },
-                "props": {
-                  "style": {
-                    "zIndex": 5
-                  }
-                },
-                "type": "ia.container.coord"
-              },
-              {
-                "meta": {
-                  "name": "FloatL"
-                },
-                "position": {
-                  "height": 14,
-                  "width": 14,
-                  "y": 106
-                },
-                "propConfig": {
-                  "position.x": {
-                    "binding": {
-                      "config": {
-                        "expression": "if({view.params.orientation.reverse},\n\t137,\n\t17)"
-                      },
-                      "type": "expr"
-                    }
-                  },
-                  "props.style.classes": {
-                    "binding": {
-                      "config": {
-                        "expression": "if(coalesce({view.custom.values.lsl}, false),\n\t'tank-float tank-float-active',\n\t'tank-float')"
-                      },
-                      "type": "expr"
-                    }
-                  }
-                },
-                "props": {
-                  "style": {
-                    "zIndex": 5
-                  }
-                },
-                "type": "ia.container.coord"
-              },
-              {
-                "meta": {
-                  "name": "LabelLSH"
-                },
-                "position": {
-                  "height": 10,
-                  "width": 22
-                },
-                "propConfig": {
-                  "position.x": {
-                    "binding": {
-                      "config": {
-                        "expression": "if({view.params.orientation.reverse},\n\t134,\n\t12)"
-                      },
-                      "type": "expr"
-                    }
-                  }
-                },
-                "props": {
-                  "style": {
-                    "classes": "font-label tank-sw-label",
-                    "fontSize": "9px",
-                    "fontWeight": "500",
-                    "overflow": "visible",
-                    "zIndex": 10
-                  },
-                  "text": "LSH"
-                },
-                "type": "ia.display.label"
-              },
-              {
-                "meta": {
-                  "name": "LabelLSL"
-                },
-                "position": {
-                  "height": 10,
-                  "width": 22,
-                  "y": 120
-                },
-                "propConfig": {
-                  "position.x": {
-                    "binding": {
-                      "config": {
-                        "expression": "if({view.params.orientation.reverse},\n\t132,\n\t14)"
-                      },
-                      "type": "expr"
-                    }
-                  }
-                },
-                "props": {
-                  "style": {
-                    "classes": "font-label tank-sw-label",
-                    "fontSize": "9px",
-                    "fontWeight": "500",
-                    "overflow": "visible",
-                    "zIndex": 10
-                  },
-                  "text": "LSL"
-                },
-                "type": "ia.display.label"
-              },
-              {
-                "meta": {
                   "name": "AlarmFrame"
                 },
                 "position": {
-                  "height": 131,
-                  "width": 168
+                  "x": 0,
+                  "y": -20,
+                  "width": 168,
+                  "height": 151
                 },
                 "propConfig": {
                   "meta.visible": {
@@ -1185,15 +993,16 @@
                   "props.style.classes": {
                     "binding": {
                       "config": {
-                        "expression": "if(coalesce({view.custom.values.commLoss}, false),\n\t'',\n\tif(coalesce({view.custom.alarm.active}, false),\n\t\t'alarm-frame alarm-border alarm-priority-' +\n\t\t\tcase(coalesce({view.custom.alarm.priority}, 10),\n\t\t\t\t1, 'critical',\n\t\t\t\t2, 'high',\n\t\t\t\t3, 'medium',\n\t\t\t\t4, 'low',\n\t\t\t\t'critical'),\n\t\t'alarm-frame'))"
+                        "expression": "if(coalesce({view.custom.values.commLoss}, false),\n\t'',\n\tif(coalesce({view.custom.alarm.active}, false),\n\t\t'alarm-frame alarm-border alarm-priority-' +\n\t\t\tcase(coalesce({view.custom.alarm.priority}, 10),\n\t\t\t\t4, 'critical',\n\t\t\t\t3, 'high',\n\t\t\t\t2, 'medium',\n\t\t\t\t1, 'low',\n\t\t\t\t'low'),\n\t\t'alarm-frame'))"
                       },
-                      "type": "expr"
+                      "type": "expr",
+                      "overlayOptOut": true
                     }
                   }
                 },
                 "props": {
                   "style": {
-                    "height": "131px",
+                    "height": "151px",
                     "overflow": "visible",
                     "pointerEvents": "none",
                     "width": "168px",
@@ -1207,8 +1016,10 @@
                   "name": "AlarmHeader"
                 },
                 "position": {
-                  "height": 20,
-                  "width": 20
+                  "x": 2,
+                  "y": -18,
+                  "width": 20,
+                  "height": 20
                 },
                 "propConfig": {
                   "meta.visible": {
@@ -1246,16 +1057,17 @@
               "name": "Graphic"
             },
             "position": {
-              "basis": "125px",
+              "basis": "131px",
               "shrink": 0
             },
             "propConfig": {
               "props.style.classes": {
                 "binding": {
                   "config": {
-                    "expression": "if(coalesce({view.custom.values.commLoss}, false),\n\t'device-graphic device-comm-loss',\n\t'device-graphic')"
+                    "expression": "((if(coalesce({view.custom.values.commLoss}, false),\n\t'device-graphic device-comm-loss',\n\t'device-graphic')) + if(coalesce({view.custom.oos}, false), ' device-oos', '')) + if(coalesce({session.custom.CanOpenFaceplates}, false) && (len(trim(coalesce({view.params.faceplate}, ''))) > 0), ' faceplate-hover', '')"
                   },
-                  "type": "expr"
+                  "type": "expr",
+                  "overlayOptOut": true
                 }
               }
             },
@@ -1295,7 +1107,8 @@
                   "config": {
                     "expression": "{view.custom.values.analogForceColor}"
                   },
-                  "type": "expr"
+                  "type": "expr",
+                  "overlayOptOut": true
                 }
               },
               "props.params.tagPath": {
@@ -1312,6 +1125,14 @@
                     "expression": "if({view.params.orientation.reverse},\n\t'60px',\n\t'36px')"
                   },
                   "type": "expr"
+                }
+              },
+              "props.style.visibility": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "if(coalesce({view.custom.oos}, false), 'hidden', 'visible')"
+                  }
                 }
               }
             },
@@ -1335,6 +1156,65 @@
               "useDefaultViewHeight": true
             },
             "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "Status"
+            },
+            "position": {
+              "basis": "18px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.params.tagPath": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.custom.values.status}"
+                  },
+                  "type": "expr"
+                }
+              },
+              "meta.visible": {
+                "binding": {
+                  "config": {
+                    "expression": "if(coalesce({view.custom.values.commLoss}, false),\n\ttrue,\n\tif({view.custom.values.status} = '' || !isGood(tag({view.custom.values.status})),\n\t\tfalse,\n\t\tcoalesce(tag({view.custom.values.status}), 0) != 0))"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.params.outOfService": {
+                "binding": {
+                  "type": "property",
+                  "config": {
+                    "path": "view.custom.oos"
+                  }
+                }
+              },
+              "props.style.marginLeft": {
+                "binding": {
+                  "config": {
+                    "expression": "if({view.params.orientation.reverse},\n\t'60px',\n\t'36px')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "path": "03_Elements/01_Status/StatusIndicator",
+              "style": {
+                "cursor": "pointer",
+                "height": "22px",
+                "minHeight": "22px",
+                "overflow": "visible",
+                "width": "72px",
+                "classes": "tank-over-vessel"
+              },
+              "useDefaultViewHeight": true,
+              "params": {
+                "outOfService": false
+              }
+            },
+            "type": "ia.display.view"
           }
         ],
         "meta": {
@@ -1353,52 +1233,13 @@
           }
         },
         "type": "ia.container.flex"
-      },
-      {
-        "meta": {
-          "name": "Status"
-        },
-        "position": {
-          "basis": "18px",
-          "shrink": 0
-        },
-        "propConfig": {
-          "props.params.tagPath": {
-            "binding": {
-              "config": {
-                "expression": "{view.custom.values.status}"
-              },
-              "type": "expr"
-            }
-          },
-          "meta.visible": {
-            "binding": {
-              "config": {
-                "expression": "if(coalesce({view.custom.values.commLoss}, false),\n\ttrue,\n\tif({view.custom.values.status} = '' || isBad(tag({view.custom.values.status})),\n\t\tfalse,\n\t\tcoalesce(tag({view.custom.values.status}), 0) != 0))"
-              },
-              "type": "expr"
-            }
-          }
-        },
-        "props": {
-          "path": "03_Elements/01_Status/StatusIndicator",
-          "style": {
-            "cursor": "pointer",
-            "height": "22px",
-            "minHeight": "22px",
-            "overflow": "visible",
-            "width": "100%"
-          },
-          "useDefaultViewHeight": true
-        },
-        "type": "ia.display.view"
       }
     ],
     "events": {
       "dom": {
         "onClick": {
           "config": {
-            "script": "\tfaceplate = self.view.params.faceplate\n\tif faceplate is None or str(faceplate).strip() == '':\n\t\treturn\n\ttagPath = str(self.view.params.tagPath or '')\n\ttitle = str(self.view.custom.label or '')\n\tif title in (None, '', 'nn'):\n\t\ttitle = tagPath.split('/')[-1] if tagPath else self.view.name\n\t# Unified tabbed Faceplate. show* are hints; tagFlags hide empty tabs.\n\tparams = {\n\t\t'tagPath': tagPath,\n\t\t'deviceType': 'Tank',\n\t\t'webGuiUrl': '',\n\t\t'showControls': True,\n\t\t'showConfiguration': True,\n\t\t'showInterlocks': True,\n\t\t'showTrend': True,\n\t\t'showAlarmConfiguration': True,\n\t\t'showAlarms': True\n\t}\n\tNavigation.Faceplate.openFaceplate(\n\t\t'tank-fp-%s' % (tagPath or title),\n\t\ttagPath,\n\t\t'01_Popups/00_Faceplates/Faceplate',\n\t\tFalse,\n\t\ttitle,\n\t\t560,\n\t\t640,\n\t\tparams\n\t)\n"
+            "script": "\tfaceplate = self.view.params.faceplate\n\tif faceplate is None or str(faceplate).strip() == '':\n\t\treturn\n\ttagPath = str(self.view.params.tagPath or '')\n\ttitle = str(self.view.custom.label or '')\n\tif title in (None, '', 'nn'):\n\t\ttitle = tagPath.split('/')[-1] if tagPath else self.view.name\n\tif str(faceplate).strip() == 'TankOverview':\n\t\tNavigation.Faceplate.openFaceplate('tankov-fp-%s' % (tagPath or title), tagPath,\n\t\t\t'01_Popups/00_Faceplates/TankOverview', False, title, 1100, 760, {'title': title})\n\t\treturn\n\t# Unified tabbed Faceplate. show* are hints; tagFlags hide empty tabs.\n\tparams = {\n\t\t'tagPath': tagPath,\n\t\t'deviceType': 'Tank',\n\t\t'webGuiUrl': '',\n\t\t'showControls': True,\n\t\t'showConfiguration': True,\n\t\t'showInterlocks': True,\n\t\t'showTrend': True,\n\t\t'showAlarmConfiguration': True,\n\t\t'showAlarms': True\n\t}\n\tNavigation.Faceplate.openFaceplate(\n\t\t'tank-fp-%s' % (tagPath or title),\n\t\ttagPath,\n\t\t'01_Popups/00_Faceplates/Faceplate',\n\t\tFalse,\n\t\ttitle,\n\t\t560,\n\t\t640,\n\t\tparams\n\t)\n"
           },
           "scope": "G",
           "type": "script"
@@ -1412,37 +1253,30 @@
     "propConfig": {
       "meta.contextMenu.enabled": {
         "binding": {
+          "type": "expr",
           "config": {
-            "struct": {
-              "items": "{this.meta.contextMenu.items}",
-              "permission": "{session.custom.TicketLogAccess}"
-            },
-            "waitOnAll": true
-          },
-          "transforms": [
-            {
-              "expression": "len({value}['items']) > 0 && {value}['permission']",
-              "type": "expression"
-            }
-          ],
-          "type": "expr-struct"
+            "expression": "len({this.meta.contextMenu.items}) > 0"
+          }
         }
       },
       "meta.contextMenu.items": {
         "binding": {
+          "type": "expr-struct",
           "config": {
             "struct": {
-              "tagPath": "\"No TagPath: \""
+              "ticket": "coalesce({session.custom.TicketLogAccess}, false)",
+              "admin": "coalesce({session.custom.Permissions.OutOfService.Set}, false)",
+              "history": "coalesce({session.custom.Permissions.OutOfService.View}, false)",
+              "oos": "coalesce({view.custom.oos}, false)"
             },
-            "waitOnAll": true
+            "waitOnAll": false
           },
           "transforms": [
             {
-              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = self.view.params.tagPath\n\texcept:\n\t\tpass\n\tif tagPath is None or str(tagPath).strip() == '':\n\t\ttagPath = value.tagPath + self.view.id.split('@')[0].split('/')[-1]\n\titems = [\n\t\t\t  {\n\t\t\t    \"text\": \"Ticket Logger\",\n\t\t\t    \"icon\": {\n\t\t\t      \"path\": \"material/info\",\n\t\t\t      \"color\": \"--neutral-80\",\n\t\t\t      \"style\": {}\n\t\t\t    },\n\t\t\t    \"style\": {\n\t\t\t      \"classes\": \"bg-component font-value\",\n\t\t\t      \"height\": 24,\n\t\t\t      \"width\": 120\n\t\t\t    },\n\t\t\t    \"type\": \"message\",\n\t\t\t    \"children\": [],\n\t\t\t    \"link\": {\n\t\t\t      \"url\": \"\",\n\t\t\t      \"target\": \"self\"\n\t\t\t    },\n\t\t\t    \"method\": {\n\t\t\t      \"name\": \"\",\n\t\t\t      \"params\": {}\n\t\t\t    },\n\t\t\t    \"message\": {\n\t\t\t      \"type\": \"ticketLog\",\n\t\t\t      \"payload\": {\n\t\t\t        \"tagPath\": tagPath,\n\t\t\t        \"viewName\": self.view.id.split('@')[0]\n\t\t\t      },\n\t\t\t      \"scope\": \"page\"\n\t\t\t    }\n\t\t\t  }\n\t\t\t]\n\treturn items",
-              "type": "script"
+              "type": "script",
+              "code": "\ttagPath = ''\n\ttry:\n\t\ttagPath = str(self.view.params.tagPath or '')\n\texcept:\n\t\tpass\n\tview_name = self.view.id.split('@')[0]\n\tdef item(text, icon, msg_type, payload, scope):\n\t\treturn {\n\t\t\t\"text\": text,\n\t\t\t\"icon\": {\"path\": icon, \"color\": \"--neutral-80\", \"style\": {}},\n\t\t\t\"style\": {\"classes\": \"bg-component Fonts/Value\", \"height\": 24, \"width\": 170},\n\t\t\t\"type\": \"message\",\n\t\t\t\"children\": [],\n\t\t\t\"link\": {\"url\": \"\", \"target\": \"self\"},\n\t\t\t\"method\": {\"name\": \"\", \"params\": {}},\n\t\t\t\"message\": {\"type\": msg_type, \"payload\": payload, \"scope\": scope}\n\t\t}\n\titems = []\n\tif value['ticket']:\n\t\tlogged = tagPath if tagPath.strip() else 'No TagPath: ' + view_name.split('/')[-1]\n\t\titems.append(item('Ticket Logger', 'material/info', 'ticketLog',\n\t\t\t{'tagPath': logged, 'viewName': view_name, 'sender': self.view.id}, 'page'))\n\tif value['admin'] and tagPath.strip():\n\t\tif value['oos']:\n\t\t\titems.append(item('Return To Service', 'material/info', 'oosToggle', {'tagPath': tagPath, 'sender': self.view.id}, 'page'))\n\t\telse:\n\t\t\titems.append(item('Take Out Of Service', 'material/info', 'oosToggle',\n\t\t\t\t{'tagPath': tagPath, 'sender': self.view.id}, 'page'))\n\tif value['history'] and tagPath.strip():\n\t\titems.append(item('Out Of Service History', 'material/info', 'oosHistory',\n\t\t\t{'tagPath': tagPath, 'sender': self.view.id}, 'page'))\n\treturn items"
             }
-          ],
-          "type": "expr-struct"
+          ]
         }
       }
     },
@@ -1462,7 +1296,21 @@
         {
           "messageType": "ticketLog",
           "pageScope": true,
-          "script": "\t# Ticket Logger context-menu opener\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "script": "\t# Ticket Logger context-menu opener\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tshared.Alerts.contextMenuTicketLog(payload['tagPath'], payload['viewName'])",
+          "sessionScope": false,
+          "viewScope": false
+        },
+        {
+          "messageType": "oosToggle",
+          "pageScope": true,
+          "script": "\t# HMI Out Of Service (OutOfService/Set permission) - memo dialog; shared.OutOfService logs + audits the change\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tif not shared.Security.allowed(self.session, 'OutOfService', 'Set'):\n\t\treturn\n\ttp = str(self.view.params.tagPath or '')\n\t# page-scoped: every component on the page hears it - only the one that was right-clicked acts\n\tif not tp or str(payload.get('tagPath') or '') != tp:\n\t\treturn\n\t# required memo (+ reason when taking it out): the dialog's Confirm calls shared.OutOfService.setOutOfService\n\tshared.OutOfService.openDialog(tp, self.view.id.split('@')[0])",
+          "sessionScope": false,
+          "viewScope": false
+        },
+        {
+          "messageType": "oosHistory",
+          "pageScope": true,
+          "script": "\t# Out Of Service History (OutOfService/View permission) - OOS log page filtered to this device\n\t# page-scoped: every view on the page hears it - only the view whose menu was clicked acts\n\tsender = payload.get('sender')\n\tif sender and sender != self.view.id:\n\t\treturn\n\tif not shared.Security.allowed(self.session, 'OutOfService', 'View'):\n\t\treturn\n\ttp = str(self.view.params.tagPath or '')\n\tif not tp or str(payload.get('tagPath') or '') != tp:\n\t\treturn\n\tshared.OutOfService.openHistory(tp)",
           "sessionScope": false,
           "viewScope": false
         }

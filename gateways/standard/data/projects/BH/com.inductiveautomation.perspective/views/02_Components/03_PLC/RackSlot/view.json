@@ -1,0 +1,136 @@
+{
+  "custom": {},
+  "params": {
+    "tagPath": "",
+    "kind": "",
+    "catalog": "",
+    "slot": 0,
+    "member": "",
+    "selected": false,
+    "name": ""
+  },
+  "propConfig": {
+    "params.tagPath": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.kind": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.catalog": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.slot": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.member": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.selected": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.name": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "width": 54,
+      "height": 280
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "overflow": "visible",
+        "width": "100%",
+        "height": "100%"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.display.view",
+        "meta": {
+          "name": "Item"
+        },
+        "position": {
+          "grow": 1,
+          "shrink": 1,
+          "basis": "0px"
+        },
+        "props": {
+          "path": "",
+          "params": {},
+          "useDefaultViewHeight": false,
+          "useDefaultViewWidth": false,
+          "style": {
+            "overflow": "visible",
+            "width": "100%",
+            "height": "100%"
+          }
+        },
+        "propConfig": {
+          "props.path": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "case(coalesce({view.params.kind}, ''), 'controller', '02_Components/03_PLC/Controller_CompactLogix_5370', 'endcap', '02_Components/03_PLC/EndCap_1769_ECR', 'power', '02_Components/03_PLC/PowerSupply_1769', 'card', if(coalesce({view.params.catalog}, '') = '', '', '02_Components/03_PLC/Module_' + replace({view.params.catalog}, '-', '_')), '')"
+              }
+            }
+          },
+          "props.params.tagPath": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "view.params.tagPath"
+              }
+            }
+          },
+          "props.params.slot": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "view.params.slot"
+              }
+            }
+          },
+          "props.params.member": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "view.params.member"
+              }
+            }
+          },
+          "props.params.selected": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "view.params.selected"
+              }
+            }
+          },
+          "props.params.name": {
+            "binding": {
+              "type": "property",
+              "config": {
+                "path": "view.params.name"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,1089 @@
+{
+  "custom": {
+    "model": {
+      "counts": {
+        "mine": 0,
+        "runs": 0,
+        "shared": 0
+      },
+      "owners": [],
+      "rows": [],
+      "sources": [],
+      "total": 0
+    },
+    "msg": "",
+    "owner": null,
+    "refresh": 0,
+    "search": "",
+    "source": null,
+    "tab": "mine"
+  },
+  "params": {},
+  "propConfig": {
+    "custom.model": {
+      "binding": {
+        "config": {
+          "struct": {
+            "ok": "coalesce({session.custom.Permissions.Reports.Use}, false)",
+            "owner": "{view.custom.owner}",
+            "refresh": "{view.custom.refresh}",
+            "search": "{view.custom.search}",
+            "source": "{view.custom.source}",
+            "tab": "{view.custom.tab}"
+          },
+          "waitOnAll": false
+        },
+        "transforms": [
+          {
+            "code": "\tif not value.ok:\n\t\treturn {'rows': [], 'owners': [], 'sources': [], 'total': 0,\n\t\t\t'counts': {'mine': 0, 'shared': 0, 'runs': 0}}\n\treturn shared.Reports.savedModel(self.session, value.tab or 'mine', value.source or '',\n\t\tvalue.owner or '', value.search or '')\n",
+            "type": "script"
+          }
+        ],
+        "type": "expr-struct"
+      }
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 1000,
+      "width": 1600
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Title"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Title fs-20 fw-700"
+                  },
+                  "text": "Saved Reports"
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Subtitle"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "style": {
+                    "classes": "Fonts/Label fs-13",
+                    "whiteSpace": "normal"
+                  },
+                  "text": "Your Report Templates, The Ones Shared With You, And What Was Recently Generated."
+                },
+                "type": "ia.display.label"
+              }
+            ],
+            "meta": {
+              "name": "TitleBox"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 1,
+              "shrink": 1
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "2px",
+                "minWidth": "0"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tshared.Reports.open(None, {'origin': 'Saved Reports'}, self.session)\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "New"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "config": {
+                    "expression": "coalesce({session.custom.Permissions.Reports.Use}, false)"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "image": {
+                "height": 16,
+                "icon": {
+                  "path": "material/add"
+                },
+                "width": 16
+              },
+              "primary": true,
+              "style": {
+                "classes": "form-btn-primary",
+                "height": "34px"
+              },
+              "text": "Create A Report"
+            },
+            "type": "ia.input.button"
+          }
+        ],
+        "meta": {
+          "name": "Head"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "alignItems": "center",
+          "direction": "row",
+          "style": {
+            "gap": "12px"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "DeniedMsg"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "classes": "Fonts/Value fs-16 fw-600",
+                "whiteSpace": "normal"
+              },
+              "text": "Access Denied - Reports Need The Reports Permission (Maintenance Or Above)."
+            },
+            "type": "ia.display.label"
+          }
+        ],
+        "meta": {
+          "name": "Denied"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "!coalesce({session.custom.Permissions.Reports.Use}, false)"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "classes": "bg-component container-card",
+            "padding": "24px"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "events": {
+                  "dom": {
+                    "onClick": {
+                      "config": {
+                        "script": "\tv = self.view.custom\n\tv.tab = 'mine'\n\tv.source = None\n\tv.owner = None\n\tv.msg = ''\n"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "Tab_mine"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.style.classes": {
+                    "binding": {
+                      "config": {
+                        "expression": "if(coalesce({view.custom.tab}, 'mine') = 'mine', 'report-tab report-tab-active', 'report-tab')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "'My Reports (' + toStr(coalesce({view.custom.model.counts.mine}, 0)) + ')'"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "report-tab",
+                    "cursor": "pointer"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "events": {
+                  "dom": {
+                    "onClick": {
+                      "config": {
+                        "script": "\tv = self.view.custom\n\tv.tab = 'shared'\n\tv.source = None\n\tv.owner = None\n\tv.msg = ''\n"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "Tab_shared"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.style.classes": {
+                    "binding": {
+                      "config": {
+                        "expression": "if(coalesce({view.custom.tab}, 'mine') = 'shared', 'report-tab report-tab-active', 'report-tab')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "'Shared (' + toStr(coalesce({view.custom.model.counts.shared}, 0)) + ')'"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "report-tab",
+                    "cursor": "pointer"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "events": {
+                  "dom": {
+                    "onClick": {
+                      "config": {
+                        "script": "\tv = self.view.custom\n\tv.tab = 'runs'\n\tv.source = None\n\tv.owner = None\n\tv.msg = ''\n"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "Tab_runs"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.style.classes": {
+                    "binding": {
+                      "config": {
+                        "expression": "if(coalesce({view.custom.tab}, 'mine') = 'runs', 'report-tab report-tab-active', 'report-tab')"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "'Recent Runs (' + toStr(coalesce({view.custom.model.counts.runs}, 0)) + ')'"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "report-tab",
+                    "cursor": "pointer"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              }
+            ],
+            "meta": {
+              "name": "Tabs"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "alignItems": "center",
+              "direction": "row",
+              "style": {
+                "borderBottom": "1px solid var(--border)",
+                "gap": "24px",
+                "padding": "12px 20px 0 20px"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Search"
+                },
+                "position": {
+                  "basis": "240px",
+                  "grow": 1,
+                  "shrink": 1
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "bidirectional": true,
+                        "path": "view.custom.search"
+                      },
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "deferUpdates": true,
+                  "placeholder": "Search Reports",
+                  "style": {
+                    "classes": "form-input",
+                    "height": "32px"
+                  }
+                },
+                "type": "ia.input.text-field"
+              },
+              {
+                "meta": {
+                  "name": "Source"
+                },
+                "position": {
+                  "basis": "200px",
+                  "grow": 0,
+                  "shrink": 1
+                },
+                "propConfig": {
+                  "props.options": {
+                    "binding": {
+                      "config": {
+                        "path": "view.custom.model.sources"
+                      },
+                      "type": "property"
+                    }
+                  },
+                  "props.value": {
+                    "binding": {
+                      "config": {
+                        "bidirectional": true,
+                        "path": "view.custom.source"
+                      },
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "placeholder": {
+                    "text": "All Sources"
+                  },
+                  "showClearIcon": true,
+                  "style": {
+                    "classes": "form-input",
+                    "height": "32px"
+                  }
+                },
+                "type": "ia.input.dropdown"
+              },
+              {
+                "meta": {
+                  "name": "Owner"
+                },
+                "position": {
+                  "basis": "180px",
+                  "grow": 0,
+                  "shrink": 1
+                },
+                "propConfig": {
+                  "props.options": {
+                    "binding": {
+                      "config": {
+                        "path": "view.custom.model.owners"
+                      },
+                      "type": "property"
+                    }
+                  },
+                  "props.value": {
+                    "binding": {
+                      "config": {
+                        "bidirectional": true,
+                        "path": "view.custom.owner"
+                      },
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "placeholder": {
+                    "text": "All Owners"
+                  },
+                  "showClearIcon": true,
+                  "style": {
+                    "classes": "form-input",
+                    "height": "32px"
+                  }
+                },
+                "type": "ia.input.dropdown"
+              },
+              {
+                "events": {
+                  "component": {
+                    "onActionPerformed": {
+                      "config": {
+                        "script": "\tself.view.custom.refresh += 1\n"
+                      },
+                      "scope": "G",
+                      "type": "script"
+                    }
+                  }
+                },
+                "meta": {
+                  "name": "Refresh"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "props": {
+                  "image": {
+                    "height": 16,
+                    "icon": {
+                      "path": "material/refresh"
+                    },
+                    "width": 16
+                  },
+                  "style": {
+                    "classes": "form-btn",
+                    "height": "32px"
+                  },
+                  "text": "Refresh"
+                },
+                "type": "ia.input.button"
+              }
+            ],
+            "meta": {
+              "name": "Toolbar"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "alignItems": "center",
+              "direction": "row",
+              "style": {
+                "gap": "8px",
+                "padding": "12px 20px 12px 20px"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "meta": {
+                      "name": "Name"
+                    },
+                    "position": {
+                      "basis": "0",
+                      "grow": 1,
+                      "shrink": 1
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "if(coalesce({view.custom.tab}, 'mine') = 'runs', 'Report', 'Name')"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "form-th",
+                        "minWidth": "0",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis",
+                        "whiteSpace": "nowrap"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "Source"
+                    },
+                    "position": {
+                      "basis": "130px",
+                      "grow": 0,
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "'Source'"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "form-th",
+                        "minWidth": "0",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis",
+                        "whiteSpace": "nowrap"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "Range"
+                    },
+                    "position": {
+                      "basis": "100px",
+                      "grow": 0,
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "'Time Range'"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "form-th",
+                        "minWidth": "0",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis",
+                        "whiteSpace": "nowrap"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "C4"
+                    },
+                    "position": {
+                      "basis": "100px",
+                      "grow": 0,
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "if(coalesce({view.custom.tab}, 'mine') = 'runs', 'Run By', 'Owner')"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "form-th",
+                        "minWidth": "0",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis",
+                        "whiteSpace": "nowrap"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "C5"
+                    },
+                    "position": {
+                      "basis": "130px",
+                      "grow": 0,
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "if(coalesce({view.custom.tab}, 'mine') = 'runs', 'Run At', 'Last Run')"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "form-th",
+                        "minWidth": "0",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis",
+                        "whiteSpace": "nowrap"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "C6"
+                    },
+                    "position": {
+                      "basis": "56px",
+                      "grow": 0,
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "if(coalesce({view.custom.tab}, 'mine') = 'runs', 'Format', 'Shared')"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "form-th",
+                        "minWidth": "0",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis",
+                        "whiteSpace": "nowrap"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "children": [],
+                    "meta": {
+                      "name": "ActionsSpace"
+                    },
+                    "position": {
+                      "basis": "212px",
+                      "grow": 0,
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "position.basis": {
+                        "binding": {
+                          "config": {
+                            "expression": "if(coalesce({view.custom.tab}, 'mine') = 'runs', '68px', '212px')"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {}
+                    },
+                    "type": "ia.container.flex"
+                  }
+                ],
+                "meta": {
+                  "name": "ListHeader"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "position.display": {
+                    "binding": {
+                      "config": {
+                        "expression": "coalesce({view.custom.model.total}, 0) > 0"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "alignItems": "center",
+                  "direction": "row",
+                  "style": {
+                    "gap": "8px",
+                    "padding": "0 20px 6px 12px"
+                  }
+                },
+                "type": "ia.container.flex"
+              },
+              {
+                "meta": {
+                  "name": "List"
+                },
+                "position": {
+                  "basis": "0",
+                  "grow": 1,
+                  "shrink": 1
+                },
+                "propConfig": {
+                  "position.display": {
+                    "binding": {
+                      "config": {
+                        "expression": "coalesce({view.custom.model.total}, 0) > 0"
+                      },
+                      "type": "expr"
+                    }
+                  },
+                  "props.instances": {
+                    "binding": {
+                      "config": {
+                        "path": "view.custom.model"
+                      },
+                      "transforms": [
+                        {
+                          "code": "\tm = value or {}\n\ttab = m.get('tab') or 'mine'\n\treturn [{'row': dict((k, r[k]) for k in r.keys()), 'tab': tab} for r in (m.get('rows') or [])]\n",
+                          "type": "script"
+                        }
+                      ],
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "direction": "column",
+                  "elementPosition": {
+                    "basis": "44px",
+                    "grow": 0,
+                    "shrink": 0
+                  },
+                  "instances": [],
+                  "path": "01_Popups/Reports/_Assets/SavedListRow",
+                  "style": {
+                    "gap": "6px",
+                    "minHeight": "0",
+                    "overflowX": "hidden",
+                    "overflowY": "auto",
+                    "paddingRight": "8px"
+                  },
+                  "useDefaultViewHeight": false,
+                  "useDefaultViewWidth": false
+                },
+                "type": "ia.display.flex-repeater"
+              },
+              {
+                "children": [
+                  {
+                    "meta": {
+                      "name": "Icon"
+                    },
+                    "position": {
+                      "basis": "40px",
+                      "grow": 0,
+                      "shrink": 0
+                    },
+                    "props": {
+                      "color": "var(--text-muted)",
+                      "path": "material/bookmark_border",
+                      "style": {
+                        "height": "40px",
+                        "width": "40px"
+                      }
+                    },
+                    "type": "ia.display.icon"
+                  },
+                  {
+                    "meta": {
+                      "name": "Title"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "if(coalesce({view.custom.tab}, 'mine') = 'runs', 'No Recent Runs Yet', if(coalesce({view.custom.tab}, 'mine') = 'shared', 'Nothing Is Shared Yet', 'No Saved Reports Yet'))"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "report-heading",
+                        "textAlign": "center"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "meta": {
+                      "name": "Text"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "props.text": {
+                        "binding": {
+                          "config": {
+                            "expression": "if(coalesce({view.custom.tab}, 'mine') = 'runs', 'Reports You Download Appear Here.', if(coalesce({view.custom.tab}, 'mine') = 'shared', 'Reports Their Owners Share Show Up Here.', 'Build A Report, Then Use Save As Template On The Last Step.'))"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "style": {
+                        "classes": "report-hint",
+                        "overflow": "hidden",
+                        "textAlign": "center",
+                        "whiteSpace": "normal"
+                      },
+                      "text": ""
+                    },
+                    "type": "ia.display.label"
+                  },
+                  {
+                    "events": {
+                      "component": {
+                        "onActionPerformed": {
+                          "config": {
+                            "script": "\tshared.Reports.open(None, {'origin': 'Saved Reports'}, self.session)\n"
+                          },
+                          "scope": "G",
+                          "type": "script"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "name": "Create"
+                    },
+                    "position": {
+                      "shrink": 0
+                    },
+                    "propConfig": {
+                      "position.display": {
+                        "binding": {
+                          "config": {
+                            "expression": "coalesce({session.custom.Permissions.Reports.Use}, false)"
+                          },
+                          "type": "expr"
+                        }
+                      }
+                    },
+                    "props": {
+                      "image": {
+                        "height": 16,
+                        "icon": {
+                          "path": "material/add"
+                        },
+                        "width": 16
+                      },
+                      "primary": true,
+                      "style": {
+                        "classes": "form-btn-primary",
+                        "height": "34px"
+                      },
+                      "text": "Create A Report"
+                    },
+                    "type": "ia.input.button"
+                  }
+                ],
+                "meta": {
+                  "name": "Empty"
+                },
+                "position": {
+                  "basis": "0",
+                  "grow": 1,
+                  "shrink": 1
+                },
+                "propConfig": {
+                  "position.display": {
+                    "binding": {
+                      "config": {
+                        "expression": "coalesce({view.custom.model.total}, 0) = 0"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "alignItems": "center",
+                  "direction": "column",
+                  "justify": "center",
+                  "style": {
+                    "gap": "10px",
+                    "padding": "32px 16px"
+                  }
+                },
+                "type": "ia.container.flex"
+              }
+            ],
+            "meta": {
+              "name": "Tables"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 1,
+              "shrink": 1
+            },
+            "props": {
+              "alignItems": "stretch",
+              "direction": "column",
+              "style": {
+                "minHeight": "0",
+                "padding": "0 20px"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "meta": {
+              "name": "Status"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "config": {
+                    "expression": "coalesce({view.custom.msg}, '')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "classes": "Fonts/Value fs-12 fw-600",
+                "padding": "0 20px 12px 20px"
+              },
+              "text": ""
+            },
+            "type": "ia.display.label"
+          }
+        ],
+        "meta": {
+          "name": "Card"
+        },
+        "position": {
+          "basis": "0",
+          "grow": 1,
+          "shrink": 1
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "coalesce({session.custom.Permissions.Reports.Use}, false)"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "alignItems": "stretch",
+          "direction": "column",
+          "style": {
+            "classes": "form-card",
+            "minHeight": "0",
+            "overflow": "hidden"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "alignItems": "stretch",
+      "direction": "column",
+      "style": {
+        "classes": "bg-page",
+        "gap": "12px",
+        "height": "100%",
+        "padding": "16px 24px"
+      }
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "rptPageDelete",
+          "pageScope": true,
+          "script": "\tres = shared.Reports.deleteTemplate(self.session, payload.get('id'))\n\tself.view.custom.msg = res['message']\n\tif res['ok']:\n\t\tself.view.custom.refresh += 1\n",
+          "sessionScope": false,
+          "viewScope": false
+        },
+        {
+          "messageType": "rptSavedChanged",
+          "pageScope": true,
+          "script": "\tself.view.custom.msg = payload.get('message') or ''\n\tself.view.custom.refresh += 1\n",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    },
+    "type": "ia.container.flex"
+  }
+}

@@ -1,0 +1,180 @@
+{
+  "custom": {
+    "quality": "",
+    "raw": null,
+    "tagPath": "",
+    "text": "",
+    "valuePath": ""
+  },
+  "params": {
+    "commLoss": false,
+    "format": "",
+    "states": {},
+    "value": ""
+  },
+  "propConfig": {
+    "params.commLoss": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.quality": {
+      "binding": {
+        "config": {
+          "expression": "tag({view.custom.valuePath} + '.Quality')"
+        },
+        "transforms": [
+          {
+            "expression": "if(isNull({value}),\n\t\"\",\n\t{value}\n\t)",
+            "type": "expression"
+          },
+          {
+            "type": "expression",
+            "expression": "if(coalesce(try(isGood(tag({view.custom.valuePath} + '.Quality')), false), false), {value}, null)"
+          }
+        ],
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "custom.raw": {
+      "binding": {
+        "config": {
+          "fallbackDelay": 2.5,
+          "mode": "indirect",
+          "references": {
+            "tagPath": "{view.custom.valuePath}"
+          },
+          "tagPath": "{tagPath}.value"
+        },
+        "transforms": [
+          {
+            "expression": "forceQuality({value})",
+            "type": "expression"
+          }
+        ],
+        "type": "tag"
+      },
+      "persistent": true
+    },
+    "custom.tagPath": {
+      "binding": {
+        "config": {
+          "path": "view.params.value"
+        },
+        "type": "property"
+      },
+      "persistent": true
+    },
+    "custom.text": {
+      "binding": {
+        "config": {
+          "expression": "if(coalesce({view.custom.tagPath}, '') != '' && coalesce({view.custom.quality}, '') != 'Good', if(coalesce({view.params.commLoss}, false), 'COMM LOSS', '—'), if(coalesce({view.custom.tagPath}, '') = '' || isNull({view.custom.raw}),\n\t'',\n\tcoalesce(\n\t\ttry({view.params.states}[toStr(toInt({view.custom.raw}))], null),\n\t\tif(len(coalesce({view.params.format}, '')) > 0,\n\t\t\ttry(numberFormat({view.custom.raw}, {view.params.format}), ''),\n\t\t\ttry(toStr({view.custom.raw}), '')))))"
+        },
+        "type": "expr"
+      },
+      "persistent": true
+    },
+    "params.format": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.states": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.value": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "custom.valuePath": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(left(coalesce({view.params.value}, ''), 4) = 'pax:', substring({view.params.value}, 4), coalesce({view.params.value}, '') + '/Value')"
+        }
+      }
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 30,
+      "width": 100
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Label"
+        },
+        "position": {
+          "grow": 1
+        },
+        "propConfig": {
+          "props.style.classes": {
+            "binding": {
+              "config": {
+                "expression": "if(coalesce({view.custom.quality}, '') != 'Good', if(coalesce({view.params.commLoss}, false), 'Fonts/LiveData tank-level-text-critical fw-700', 'Fonts/LiveData value-bad'),\n\tif({view.custom.text} = 'Alarm' || {view.custom.text} = 'Fault' || {view.custom.text} = 'Not OK', 'Fonts/LiveData tank-level-text-critical fw-700', 'Fonts/LiveData'))"
+              },
+              "type": "expr",
+              "overlayOptOut": true
+            }
+          },
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.custom.text"
+              },
+              "type": "property",
+              "overlayOptOut": true
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "overflow": "hidden",
+            "textAlign": "center",
+            "whiteSpace": "nowrap"
+          }
+        },
+        "type": "ia.display.label"
+      }
+    ],
+    "events": {
+      "dom": {
+        "onContextMenu": {
+          "type": "script",
+          "scope": "G",
+          "config": {
+            "script": "\tshared.TrendContext.menu(self, event, '{view.custom.tagPath}')"
+          },
+          "preventDefault": true,
+          "stopPropagation": true
+        }
+      }
+    },
+    "meta": {
+      "name": "root"
+    },
+    "propConfig": {
+      "meta.visible": {
+        "binding": {
+          "config": {
+            "expression": "coalesce({view.params.value}, '') != ''"
+          },
+          "type": "expr"
+        }
+      }
+    },
+    "props": {
+      "alignItems": "center",
+      "justify": "center",
+      "style": {
+        "cursor": "pointer",
+        "minHeight": 20,
+        "overflow": "hidden"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

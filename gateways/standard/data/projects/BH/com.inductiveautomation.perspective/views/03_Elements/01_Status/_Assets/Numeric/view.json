@@ -5,7 +5,8 @@
     "quality": "Uncertain_InitialValue",
     "type": "Integer",
     "value": "",
-    "overSp": false
+    "overSp": false,
+    "ok": ""
   },
   "params": {
     "compact": false,
@@ -64,7 +65,7 @@
     "custom.type": {
       "binding": {
         "config": {
-          "expression": "typeOf(tag({view.params.tagPath}))"
+          "expression": "if(coalesce(try(isGood(tag({view.params.tagPath})), false), false), typeOf(tag({view.params.tagPath})), null)"
         },
         "type": "expr"
       },
@@ -72,12 +73,11 @@
     },
     "custom.value": {
       "binding": {
+        "type": "expr",
         "config": {
-          "expression": "if({view.custom.quality} = 'Good',\n\tnumberFormat(tag({view.params.tagPath}), {view.custom.format}),\n\t'')"
-        },
-        "type": "expr"
-      },
-      "persistent": true
+          "expression": "if({view.params.tagPath} = '', '', if(coalesce({view.custom.ok}, false), coalesce(try(numberFormat(tag({view.params.tagPath}), {view.custom.format}), null), '—'), '—'))"
+        }
+      }
     },
     "params.spacing": {
       "paramDirection": "inout",
@@ -98,11 +98,19 @@
     "custom.overSp": {
       "binding": {
         "config": {
-          "expression": "if({view.params.tagPath} = '' || {view.params.spTagPath} = '' || {view.custom.quality} != 'Good' || isBad(tag({view.params.spTagPath})),\n\tfalse,\n\ttag({view.params.tagPath}) > tag({view.params.spTagPath}))"
+          "expression": "if({view.params.tagPath} = '' || {view.params.spTagPath} = '' || {view.custom.quality} != 'Good' || !isGood(tag({view.params.spTagPath})),\n\tfalse,\n\ttag({view.params.tagPath}) > tag({view.params.spTagPath}))"
         },
         "type": "expr"
       },
       "persistent": true
+    },
+    "custom.ok": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "{view.params.tagPath} != '' && coalesce(try(isGood(tag({view.params.tagPath})), false), false) && !isNull(try(tag({view.params.tagPath}), null)) && coalesce(try(abs(toFloat(tag({view.params.tagPath}))) < 1e30, true), true)"
+        }
+      }
     }
   },
   "props": {
@@ -160,9 +168,10 @@
           "props.style.color": {
             "binding": {
               "config": {
-                "expression": "if({view.custom.quality} != 'Good',\n\t'#90A4AE',\n\tif({view.params.forceColor} = 'critical',\n\t\t'var(--status-level-critical, var(--analog-over-sp))',\n\t\tif({view.params.forceColor} = 'warning',\n\t\t\t'var(--status-level-warning)',\n\t\t\tif({view.custom.overSp},\n\t\t\t\t'var(--analog-over-sp)',\n\t\t\t\t'var(--accent)'))))"
+                "expression": "if({view.custom.quality} != 'Good',\n\t'#90A4AE',\n\tif({view.params.forceColor} = 'alarm', 'var(--error)', if({view.params.forceColor} = 'critical',\n\t\t'var(--status-level-critical, var(--analog-over-sp))',\n\t\tif({view.params.forceColor} = 'warning',\n\t\t\t'var(--status-level-warning)',\n\t\t\tif({view.custom.overSp},\n\t\t\t\t'var(--analog-over-sp)',\n\t\t\t\t'var(--accent)')))))"
               },
-              "type": "expr"
+              "type": "expr",
+              "overlayOptOut": true
             }
           },
           "props.style.fontSize": {
@@ -194,15 +203,17 @@
               "config": {
                 "path": "view.custom.value"
               },
-              "type": "property"
+              "type": "property",
+              "overlayOptOut": true
             }
           },
           "props.style.classes": {
             "binding": {
               "config": {
-                "expression": "if({view.params.forceColor} = 'critical',\n\t'analog-over-sp',\n\tif({view.params.forceColor} = 'warning',\n\t\t'analog-level-warning',\n\t\tif({view.custom.overSp},\n\t\t\t'analog-over-sp',\n\t\t\t'')))"
+                "expression": "if(coalesce({view.params.tagPath}, '') != '' && !coalesce({view.custom.ok}, false), 'value-bad', if({view.params.forceColor} = 'alarm', 'value-alarm', if({view.params.forceColor} = 'critical',\n\t'analog-over-sp',\n\tif({view.params.forceColor} = 'warning',\n\t\t'analog-level-warning',\n\t\tif({view.custom.overSp},\n\t\t\t'analog-over-sp',\n\t\t\t'')))))"
               },
-              "type": "expr"
+              "type": "expr",
+              "overlayOptOut": true
             }
           }
         },
@@ -218,6 +229,19 @@
             "whiteSpace": "nowrap"
           },
           "text": ""
+        },
+        "events": {
+          "dom": {
+            "onContextMenu": {
+              "type": "script",
+              "scope": "G",
+              "config": {
+                "script": "\tshared.TrendContext.menu(self, event, '{view.params.tagPath}')"
+              },
+              "preventDefault": true,
+              "stopPropagation": true
+            }
+          }
         }
       },
       {
@@ -271,29 +295,13 @@
     "events": {
       "dom": {
         "onContextMenu": {
+          "type": "script",
+          "scope": "G",
           "config": {
-            "draggable": false,
-            "id": "ContextMenu",
-            "modal": false,
-            "overlayDismiss": false,
-            "position": {
-              "relativeLocation": "bottom-right"
-            },
-            "positionType": "relative",
-            "resizable": false,
-            "showCloseIcon": false,
-            "type": "toggle",
-            "viewParams": {
-              "discrete": "false",
-              "tagPath": "{view.params.tagPath}"
-            },
-            "viewPath": "01_Popups/00_Faceplates/Alerts/ContextMenu",
-            "viewportBound": true
+            "script": "\tshared.TrendContext.menu(self, event, '{view.params.tagPath}')"
           },
           "preventDefault": true,
-          "scope": "C",
-          "stopPropagation": true,
-          "type": "popup"
+          "stopPropagation": true
         }
       }
     }

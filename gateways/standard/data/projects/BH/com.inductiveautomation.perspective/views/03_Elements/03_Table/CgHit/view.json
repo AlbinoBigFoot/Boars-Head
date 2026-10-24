@@ -1,0 +1,93 @@
+{
+  "custom": {},
+  "params": {
+    "row": "",
+    "rowData": {},
+    "value": ""
+  },
+  "propConfig": {
+    "params.row": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.rowData": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.value": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 28,
+      "width": 70
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Cg"
+        },
+        "position": {
+          "grow": 1
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.params.value"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "text": "",
+          "style": {
+            "classes": "Fonts/Value fs-12",
+            "cursor": "pointer",
+            "paddingLeft": "10px",
+            "paddingRight": "4px",
+            "width": "100%"
+          }
+        },
+        "type": "ia.display.label"
+      }
+    ],
+    "events": {
+      "dom": {
+        "onClick": {
+          "config": {
+            "script": "\tcg = ''\n\ttry:\n\t\tcg = str(self.view.params.value or '')\n\texcept:\n\t\tcg = ''\n\tif not cg:\n\t\ttry:\n\t\t\tcg = str((self.view.params.rowData or {}).get('cg') or '')\n\t\texcept:\n\t\t\tpass\n\tif cg:\n\t\tsystem.perspective.sendMessage(\n\t\t\t'UtilityOverviewHighlight',\n\t\t\t{'cg': cg, 'status': '', 'action': 'select'},\n\t\t\tscope='page'\n\t\t)\n"
+          },
+          "scope": "G",
+          "type": "script"
+        },
+        "onDoubleClick": {
+          "config": {
+            "script": "\trow = {}\n\ttry:\n\t\trow = self.view.params.rowData or {}\n\texcept:\n\t\trow = {}\n\tpage = ''\n\ttry:\n\t\tpage = str(row.get('navPage') or '').strip()\n\texcept:\n\t\tpage = ''\n\tif not page:\n\t\tcg = str(self.view.params.value or row.get('cg') or '')\n\t\tslug = cg.lower().replace('cg-', '')\n\t\tif slug:\n\t\t\tpage = '/cg-' + slug\n\tif page:\n\t\tNavigation.Nav.navigate({'action': 'page', 'page': page})\n"
+          },
+          "scope": "G",
+          "type": "script"
+        }
+      }
+    },
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "alignItems": "center",
+      "style": {
+        "cursor": "pointer",
+        "height": "100%",
+        "minHeight": 20,
+        "overflow": "hidden",
+        "width": "100%"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

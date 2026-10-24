@@ -1,0 +1,150 @@
+{
+  "custom": {
+    "list": {}
+  },
+  "params": {},
+  "propConfig": {
+    "custom.list": {
+      "binding": {
+        "type": "tag",
+        "config": {
+          "fallbackDelay": 2.5,
+          "mode": "direct",
+          "tagPath": "[default]_Config/PLCs/List"
+        }
+      }
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 1080,
+      "width": 1920
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "classes": "bg-page",
+        "height": "100%",
+        "width": "100%",
+        "overflowX": "hidden",
+        "overflowY": "auto",
+        "padding": "16px 24px 24px 24px",
+        "boxSizing": "border-box",
+        "gap": "16px"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Header"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "gap": "2px"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Title"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "PLCs",
+              "style": {
+                "classes": "form-title",
+                "textAlign": "left",
+                "whiteSpace": "nowrap",
+                "overflow": "hidden",
+                "textOverflow": "ellipsis"
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Subtitle"
+            },
+            "position": {
+              "shrink": 0
+            },
+            "props": {
+              "text": "",
+              "style": {
+                "classes": "form-subtitle",
+                "textAlign": "left",
+                "whiteSpace": "nowrap",
+                "overflow": "hidden",
+                "textOverflow": "ellipsis"
+              }
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "toStr(len(coalesce({view.custom.list.plcs}, asList()))) + if(len(coalesce({view.custom.list.plcs}, asList())) = 1, ' PLC', ' PLCs') + ' · Click A Card For Its Rack'"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ia.display.flex-repeater",
+        "meta": {
+          "name": "Cards"
+        },
+        "position": {
+          "shrink": 0,
+          "basis": "auto"
+        },
+        "props": {
+          "path": "02_Components/03_PLC/PlcCard",
+          "direction": "row",
+          "wrap": "wrap",
+          "justify": "flex-start",
+          "alignContent": "flex-start",
+          "useDefaultViewWidth": false,
+          "useDefaultViewHeight": false,
+          "elementPosition": {
+            "basis": "400px",
+            "shrink": 0,
+            "grow": 0
+          },
+          "instances": [],
+          "style": {
+            "gap": "16px",
+            "width": "100%",
+            "overflow": "visible"
+          }
+        },
+        "propConfig": {
+          "props.instances": {
+            "binding": {
+              "type": "expr",
+              "config": {
+                "expression": "forEach(coalesce({view.custom.list.plcs}, asList()), asMap('plcPath', it()['path'], 'name', coalesce(it()['name'], ''), 'description', coalesce(it()['description'], '') + if(coalesce(it()['location'], '') = '', '', ' · ' + it()['location']), 'page', coalesce(it()['page'], ''), 'showDescription', try(it()['show']['Description'], null), 'showCatalog', try(it()['show']['Catalog'], null), 'showFirmware', try(it()['show']['Firmware'], null), 'showIp', try(it()['show']['Ip'], null), 'showDriver', try(it()['show']['Driver'], null), 'showCommLoss', try(it()['show']['CommLoss'], null), 'showMode', try(it()['show']['Mode'], null), 'showMajorFault', try(it()['show']['MajorFault'], null), 'showMinorFault', try(it()['show']['MinorFault'], null), 'showIoFault', try(it()['show']['IoFault'], null), 'showLastFault', try(it()['show']['LastFault'], null), 'showModuleTypes', try(it()['show']['ModuleTypes'], null), 'showAlarms', try(it()['show']['Alarms'], null), 'showRackStrip', try(it()['show']['RackStrip'], null), 'instanceStyle', asMap('classes', '', 'height', '440px'), 'instancePosition', asMap('basis', '400px', 'shrink', 0, 'grow', 0)))"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

@@ -5,7 +5,8 @@
     "quality": "Bad_NotFound(\"Path '[default]value.quality' not found.\")",
     "tagPath": "",
     "textAlign": "center",
-    "value": ""
+    "value": "",
+    "valuePath": ""
   },
   "params": {
     "value": ""
@@ -17,7 +18,7 @@
     "custom.multistates": {
       "binding": {
         "config": {
-          "expression": "if({view.custom.tagPath} = '',\n\t'',\n\tif(!isBad(tag({view.custom.tagPath} + '/Value.Metadata')),\n\t\tif(isNull(tag({view.custom.tagPath} + '/Value.Metadata')['states']),\n\t\t\t'',\n\t\t\ttag({view.custom.tagPath} + '/Value.Metadata')['states']),\n\t\tif(!isBad(tag({view.custom.tagPath} + '/Metadata')),\n\t\t\tif(isNull(jsonGet(tag({view.custom.tagPath} + '/Metadata'), 'states')),\n\t\t\t\t'',\n\t\t\t\tjsonGet(tag({view.custom.tagPath} + '/Metadata'), 'states')),\n\t\t\t'')))"
+          "expression": "if({view.custom.tagPath} = '',\n\t'',\n\tif(isGood(tag({view.custom.valuePath} + '.Metadata')),\n\t\tif(isNull(tag({view.custom.valuePath} + '.Metadata')['states']),\n\t\t\t'',\n\t\t\ttag({view.custom.valuePath} + '.Metadata')['states']),\n\t\tif(isGood(tag({view.custom.tagPath} + '/Metadata')),\n\t\t\tif(isNull(jsonGet(tag({view.custom.tagPath} + '/Metadata'), 'states')),\n\t\t\t\t'',\n\t\t\t\tjsonGet(tag({view.custom.tagPath} + '/Metadata'), 'states')),\n\t\t\t'')))"
         },
         "type": "expr"
       },
@@ -26,20 +27,19 @@
     "custom.quality": {
       "binding": {
         "config": {
-          "fallbackDelay": 2.5,
-          "mode": "indirect",
-          "references": {
-            "tagPath": "{view.custom.tagPath}"
-          },
-          "tagPath": "{tagPath}/Value.Quality"
+          "expression": "tag({view.custom.valuePath} + '.Quality')"
         },
         "transforms": [
           {
             "expression": "if(isNull({value}),\n\t\"\",\n\t{value}\n\t)",
             "type": "expression"
+          },
+          {
+            "type": "expression",
+            "expression": "if(coalesce(try(isGood(tag({view.custom.valuePath} + '.Quality')), false), false), {value}, null)"
           }
         ],
-        "type": "tag"
+        "type": "expr"
       },
       "persistent": true
     },
@@ -61,13 +61,13 @@
           "fallbackDelay": 2.5,
           "mode": "indirect",
           "references": {
-            "tagPath": "{view.custom.tagPath}"
+            "tagPath": "{view.custom.valuePath}"
           },
-          "tagPath": "{tagPath}/Value.value"
+          "tagPath": "{tagPath}.value"
         },
         "transforms": [
           {
-            "expression": "forceQuality(if(isNull({value}),'',{value}))",
+            "expression": "forceQuality(if(isNull({value}) || coalesce({view.custom.quality}, '') != 'Good', '—', {value}))",
             "type": "expression"
           }
         ],
@@ -78,6 +78,14 @@
     "params.value": {
       "paramDirection": "input",
       "persistent": true
+    },
+    "custom.valuePath": {
+      "binding": {
+        "type": "expr",
+        "config": {
+          "expression": "if(left(coalesce({view.params.value}, ''), 4) = 'pax:', substring({view.params.value}, 4), coalesce({view.params.value}, '') + '/Value')"
+        }
+      }
     }
   },
   "props": {
@@ -107,11 +115,12 @@
               },
               "transforms": [
                 {
-                  "code": "\tfrom shared import Utilities\n\tresult = Utilities.getLabelValue(value.value, value.multistates)\n\tif result in (None, '') and value.value not in (None, ''):\n\t\ttry:\n\t\t\tv = int(value.value)\n\t\t\tfallback = {0: 'Off', 1: 'Cooling', 2: 'Defrost', 3: 'Fault', 5: 'Idle'}\n\t\t\tresult = fallback.get(v, str(value.value))\n\t\texcept:\n\t\t\tresult = str(value.value)\n\treturn (result if result is not None else '') + \"&nbsp;\"",
+                  "code": "\tfrom shared import Utilities\n\tresult = Utilities.getLabelValue(value.value, value.multistates)\n\tif result in (None, '') and value.value not in (None, ''):\n\t\ttry:\n\t\t\tv = int(value.value)\n\t\t\tfallback = {0: 'Off', 1: 'Cooling', 2: 'Defrost', 3: 'Fault', 5: 'Idle'}\n\t\t\tresult = fallback.get(v, unicode(value.value))\n\t\texcept:\n\t\t\tresult = unicode(value.value)\n\treturn (result if result is not None else '') + \"&nbsp;\"",
                   "type": "script"
                 }
               ],
-              "type": "expr-struct"
+              "type": "expr-struct",
+              "overlayOptOut": true
             }
           },
           "props.style.classes": {
@@ -121,11 +130,12 @@
               },
               "transforms": [
                 {
-                  "expression": "if({value} = \"Good\",\n\t'font-livedata',\n\t'font-baddata'\n\t)",
+                  "expression": "if({value} = \"Good\",\n\t'Fonts/LiveData',\n\t'Fonts/LiveData value-bad'\n\t)",
                   "type": "expression"
                 }
               ],
-              "type": "property"
+              "type": "property",
+              "overlayOptOut": true
             }
           },
           "props.style.marginRight": {
@@ -156,29 +166,13 @@
     "events": {
       "dom": {
         "onContextMenu": {
+          "type": "script",
+          "scope": "G",
           "config": {
-            "draggable": false,
-            "id": "ContextMenu",
-            "modal": false,
-            "overlayDismiss": false,
-            "position": {
-              "relativeLocation": "bottom-right"
-            },
-            "positionType": "relative",
-            "resizable": false,
-            "showCloseIcon": false,
-            "type": "toggle",
-            "viewParams": {
-              "discrete": "true",
-              "tagPath": "{view.custom.tagPath}"
-            },
-            "viewPath": "01_Popups/00_Faceplates/Alerts/ContextMenu",
-            "viewportBound": true
+            "script": "\tshared.TrendContext.menu(self, event, '{view.custom.tagPath}')"
           },
           "preventDefault": true,
-          "scope": "C",
-          "stopPropagation": true,
-          "type": "popup"
+          "stopPropagation": true
         }
       }
     },

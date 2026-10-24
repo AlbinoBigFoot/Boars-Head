@@ -1,0 +1,349 @@
+{
+  "custom": {},
+  "params": {
+    "desc": "",
+    "icon": "",
+    "name": "",
+    "open": false,
+    "rows": []
+  },
+  "propConfig": {
+    "params.desc": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.icon": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.name": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.open": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.rows": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 44,
+      "width": 700
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "meta": {
+                  "name": "Chevron"
+                },
+                "position": {
+                  "basis": "20px",
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.path": {
+                    "binding": {
+                      "config": {
+                        "expression": "if({view.params.open}, 'material/expand_more', 'material/chevron_right')"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "path": "material/chevron_right",
+                  "style": {
+                    "classes": "admin-ico-muted"
+                  }
+                },
+                "type": "ia.display.icon"
+              },
+              {
+                "meta": {
+                  "name": "Icon"
+                },
+                "position": {
+                  "basis": "18px",
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.path": {
+                    "binding": {
+                      "config": {
+                        "path": "view.params.icon"
+                      },
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "path": "material/folder",
+                  "style": {
+                    "classes": "admin-ico-on"
+                  }
+                },
+                "type": "ia.display.icon"
+              },
+              {
+                "meta": {
+                  "name": "Name"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "path": "view.params.name"
+                      },
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "admin-group-name"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Count"
+                },
+                "position": {
+                  "shrink": 0
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "expression": "toStr(len(where({view.params.rows}, it()['on']))) + '/' + toStr(len({view.params.rows}))"
+                      },
+                      "type": "expr"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "admin-count"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              },
+              {
+                "meta": {
+                  "name": "Desc"
+                },
+                "position": {
+                  "basis": "0",
+                  "grow": 1,
+                  "shrink": 1
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "config": {
+                        "path": "view.params.desc"
+                      },
+                      "type": "property"
+                    }
+                  }
+                },
+                "props": {
+                  "style": {
+                    "classes": "admin-desc",
+                    "minWidth": "0"
+                  },
+                  "text": ""
+                },
+                "type": "ia.display.label"
+              }
+            ],
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\tsystem.perspective.sendMessage('nrGroupToggle', payload={'name': self.view.params.name}, scope='page')\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "HeadClick"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 1,
+              "shrink": 1
+            },
+            "props": {
+              "alignItems": "center",
+              "direction": "row",
+              "style": {
+                "cursor": "pointer",
+                "gap": "8px",
+                "height": "100%",
+                "minWidth": "0"
+              }
+            },
+            "type": "ia.container.flex"
+          },
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\tp = self.view.params\n\tgrant = not all(bool(r['on']) for r in (p.rows or []))\n\tsystem.perspective.sendMessage('nrBulk', payload={'keys': [str(r['key']) for r in (p.rows or [])], 'grant': grant}, scope='page')\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Bulk"
+            },
+            "position": {
+              "basis": "20px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "meta.tooltip.enabled": {
+                "binding": {
+                  "config": {
+                    "expression": "len(coalesce(if(if(len(where({view.params.rows}, it()['on'])) = 0, 'none', if(len(where({view.params.rows}, it()['on'])) = len({view.params.rows}), 'all', 'some')) = 'all', 'Clear All In ' + {view.params.name}, 'Select All In ' + {view.params.name}), '')) > 0"
+                  },
+                  "type": "expr"
+                }
+              },
+              "meta.tooltip.text": {
+                "binding": {
+                  "config": {
+                    "expression": "if(if(len(where({view.params.rows}, it()['on'])) = 0, 'none', if(len(where({view.params.rows}, it()['on'])) = len({view.params.rows}), 'all', 'some')) = 'all', 'Clear All In ' + {view.params.name}, 'Select All In ' + {view.params.name})"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.path": {
+                "binding": {
+                  "config": {
+                    "expression": "case(if(len(where({view.params.rows}, it()['on'])) = 0, 'none', if(len(where({view.params.rows}, it()['on'])) = len({view.params.rows}), 'all', 'some')), 'all', 'material/check_box', 'some', 'material/indeterminate_check_box', 'material/check_box_outline_blank')"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.style.classes": {
+                "binding": {
+                  "config": {
+                    "expression": "if(if(len(where({view.params.rows}, it()['on'])) = 0, 'none', if(len(where({view.params.rows}, it()['on'])) = len({view.params.rows}), 'all', 'some')) = 'none', 'admin-ico-off', 'admin-ico-on')"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "path": "material/check_box",
+              "style": {
+                "classes": "admin-ico-on",
+                "cursor": "pointer"
+              }
+            },
+            "type": "ia.display.icon"
+          }
+        ],
+        "meta": {
+          "name": "Header"
+        },
+        "position": {
+          "basis": "44px",
+          "shrink": 0
+        },
+        "props": {
+          "alignItems": "center",
+          "direction": "row",
+          "style": {
+            "classes": "admin-group",
+            "gap": "8px",
+            "minWidth": "0",
+            "paddingLeft": "12px",
+            "paddingRight": "14px"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "meta": {
+          "name": "Rows"
+        },
+        "position": {
+          "basis": "0",
+          "grow": 1,
+          "shrink": 1
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "path": "view.params.open"
+              },
+              "type": "property"
+            }
+          },
+          "props.instances": {
+            "binding": {
+              "config": {
+                "expression": "forEach({view.params.rows}, asMap('key', it()['key'], 'label', it()['label'], 'desc', it()['desc'], 'sub', it()['sub'], 'on', it()['on'], 'instancePosition', asMap('basis', '48px', 'grow', 0, 'shrink', 0)))"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "direction": "column",
+          "elementPosition": {
+            "basis": "48px",
+            "grow": 0,
+            "shrink": 0
+          },
+          "instances": [],
+          "path": "00_Pages/Boars Head/Operations/_Admin/NRRow",
+          "style": {
+            "minWidth": "0"
+          },
+          "useDefaultViewHeight": false,
+          "useDefaultViewWidth": false
+        },
+        "type": "ia.display.flex-repeater"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "position": {
+      "shrink": 0
+    },
+    "props": {
+      "alignItems": "stretch",
+      "direction": "column",
+      "style": {
+        "minWidth": "0"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}

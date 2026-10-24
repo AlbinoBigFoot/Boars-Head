@@ -1,0 +1,155 @@
+{
+  "custom": {},
+  "params": {
+    "id": 0,
+    "kind": "tpl"
+  },
+  "propConfig": {
+    "params.id": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.kind": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 122,
+      "width": 156
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "events": {
+          "component": {
+            "onActionPerformed": {
+              "config": {
+                "script": "\tp = self.view.params\n\tif p.kind == 'run':\n\t\tmsg = shared.Reports.runFromRun(self.session, p.id, 'PDF')\n\telse:\n\t\tmsg = shared.Reports.runTemplate(self.session, p.id, 'PDF')\n\tsystem.perspective.closePopup('rptDownload')\n\tsystem.perspective.sendMessage('rptSavedChanged', {'message': msg}, scope='page')\n"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "Pdf"
+        },
+        "position": {
+          "basis": "32px",
+          "grow": 0,
+          "shrink": 0
+        },
+        "props": {
+          "image": {
+            "height": 16,
+            "icon": {
+              "path": "material/picture_as_pdf"
+            },
+            "width": 16
+          },
+          "style": {
+            "classes": "form-btn",
+            "height": "32px",
+            "justifyContent": "flex-start"
+          },
+          "text": "PDF"
+        },
+        "type": "ia.input.button"
+      },
+      {
+        "events": {
+          "component": {
+            "onActionPerformed": {
+              "config": {
+                "script": "\tp = self.view.params\n\tif p.kind == 'run':\n\t\tmsg = shared.Reports.runFromRun(self.session, p.id, 'Excel')\n\telse:\n\t\tmsg = shared.Reports.runTemplate(self.session, p.id, 'Excel')\n\tsystem.perspective.closePopup('rptDownload')\n\tsystem.perspective.sendMessage('rptSavedChanged', {'message': msg}, scope='page')\n"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "Xls"
+        },
+        "position": {
+          "basis": "32px",
+          "grow": 0,
+          "shrink": 0
+        },
+        "props": {
+          "image": {
+            "height": 16,
+            "icon": {
+              "path": "material/grid_on"
+            },
+            "width": 16
+          },
+          "style": {
+            "classes": "form-btn",
+            "height": "32px",
+            "justifyContent": "flex-start"
+          },
+          "text": "Excel"
+        },
+        "type": "ia.input.button"
+      },
+      {
+        "events": {
+          "component": {
+            "onActionPerformed": {
+              "config": {
+                "script": "\tp = self.view.params\n\tif p.kind == 'run':\n\t\tmsg = shared.Reports.runFromRun(self.session, p.id, 'CSV')\n\telse:\n\t\tmsg = shared.Reports.runTemplate(self.session, p.id, 'CSV')\n\tsystem.perspective.closePopup('rptDownload')\n\tsystem.perspective.sendMessage('rptSavedChanged', {'message': msg}, scope='page')\n"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "Csv"
+        },
+        "position": {
+          "basis": "32px",
+          "grow": 0,
+          "shrink": 0
+        },
+        "props": {
+          "image": {
+            "height": 16,
+            "icon": {
+              "path": "material/description"
+            },
+            "width": 16
+          },
+          "style": {
+            "classes": "form-btn",
+            "height": "32px",
+            "justifyContent": "flex-start"
+          },
+          "text": "CSV"
+        },
+        "type": "ia.input.button"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "position": {
+      "shrink": 0
+    },
+    "props": {
+      "alignItems": "stretch",
+      "direction": "column",
+      "style": {
+        "classes": "form-card",
+        "gap": "4px",
+        "height": "100%",
+        "padding": "8px"
+      }
+    },
+    "type": "ia.container.flex"
+  }
+}
