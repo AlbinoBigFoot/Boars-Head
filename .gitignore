@@ -26,6 +26,10 @@ _fix_*.py
 # Monday → local agent runtime logs / pid
 logs/monday-agent/
 
+# Local tool output (Playwright MCP snapshots/screenshots, Monday agent logs)
+.playwright-mcp/
+logs/
+
 # Python
 __pycache__/
 *.pyc
@@ -91,20 +95,102 @@ graphify-out/cost.json
 !gateways/standard/data/config/resources/core/ignition/tag-definition/default/RCP1/**
 # Never commit gateway temp artifacts under tag-definition
 gateways/**/tag-definition/**/*.tmp
-# Plant area instances (Machine Room Overview → Units/Machine Room → RCP1)
-!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Plant/
-!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Plant/**
-!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Plant/unary-resource.json
-!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Plant/Machine Room/
-!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Plant/Machine Room/**
 
 !gateways/standard/data/config/resources/core/ignition/tag-definition/default/_Config/
 !gateways/standard/data/config/resources/core/ignition/tag-definition/default/_Config/unary-resource.json
 !gateways/standard/data/config/resources/core/ignition/tag-definition/default/_Config/tags.json
+# _Config/Security role-list tags (gateway stores the folder as its own tags.json; security-tiers 2026-10-01)
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/_Config/Security/
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/_Config/Security/**
+# _Config/Forms operator list / P&ID defaults (Operations Forms, .cursor/tasks/operations-forms 2026-10-10)
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/_Config/Forms/
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/_Config/Forms/**
+# _Config/Reports/Catalog report builder data catalog (Document tag, .cursor/tasks/report-builder 2026-10-13)
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/_Config/Reports/
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/_Config/Reports/**
+# _Config/Enums code -> text DataSets (shared.Enums; .cursor/tasks/evap-defrost-strings 2026-10-22)
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/_Config/Enums/
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/_Config/Enums/**
+# _Config/PLCs/List PLC Overview cards (.cursor/tasks/plc-rack-io 2026-10-23)
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/_Config/PLCs/
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/_Config/PLCs/**
+# _Config/PlcWriteLock lock state + memory test scope (shared.PlcWriteLock; .cursor/tasks/plc-write-lock 2026-10-22)
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/_Config/PlcWriteLock/
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/_Config/PlcWriteLock/**
+# Handoff commit 2026-10-24 (user): provider root, KPI tags, remaining _Config folders (Monday token committed by user decision; private repo), Default tag groups
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/unary-resource.json
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/KPI/
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/KPI/**
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/_Config/Colors/
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/_Config/Colors/**
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/_Config/Icons/
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/_Config/Icons/**
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/_Config/Map/
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/_Config/Map/**
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/_Config/TicketLogger/
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/_Config/TicketLogger/**
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/_Config/Monday/
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/_Config/Monday/**
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/_Config/Integrations/
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/_Config/Integrations/**
+!gateways/standard/data/config/resources/core/ignition/tag-group/default/Default/
+!gateways/standard/data/config/resources/core/ignition/tag-group/default/Default/**
+!gateways/standard/data/config/resources/core/ignition/tag-group/default/Default Historical/
+!gateways/standard/data/config/resources/core/ignition/tag-group/default/Default Historical/**
+# RCP1 tag groups RCP1_Status / RCP1_Faceplate (.cursor/tasks/rcp1-pax-inventory rcp1_ops.py taggroups 2026-10-22)
+!gateways/standard/data/config/resources/core/ignition/tag-group/
+!gateways/standard/data/config/resources/core/ignition/tag-group/default/
+!gateways/standard/data/config/resources/core/ignition/tag-group/default/RCP1_Status/
+!gateways/standard/data/config/resources/core/ignition/tag-group/default/RCP1_Status/**
+!gateways/standard/data/config/resources/core/ignition/tag-group/default/RCP1_Faceplate/
+!gateways/standard/data/config/resources/core/ignition/tag-group/default/RCP1_Faceplate/**
+# PlantPAx library tag groups PAX_Status (Direct 1 s) / PAX_Faceplate (Leased) (.cursor/tasks/pax-devices 2026-10-22)
+!gateways/standard/data/config/resources/core/ignition/tag-group/default/PAX_Status/
+!gateways/standard/data/config/resources/core/ignition/tag-group/default/PAX_Status/**
+!gateways/standard/data/config/resources/core/ignition/tag-group/default/PAX_Faceplate/
+!gateways/standard/data/config/resources/core/ignition/tag-group/default/PAX_Faceplate/**
+!gateways/standard/data/config/resources/core/ignition/tag-group/default/PAX_Config/
+!gateways/standard/data/config/resources/core/ignition/tag-group/default/PAX_Config/**
+# Groveport Production FCM tags (sim/build_plant_sim.py; Production Overview tiles)
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Boars_Head/
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Boars_Head/unary-resource.json
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Boars_Head/GrovePort/
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Boars_Head/GrovePort/unary-resource.json
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Boars_Head/GrovePort/Production/
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Boars_Head/GrovePort/Production/**
+# Device instances: Boars_Head/GrovePort/<Area>/<Type>/<Device> (Plant/ retired 2026-09-29); PLC/ (RCP1 stand-in) stays untracked
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Boars_Head/GrovePort/Machine Room/
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Boars_Head/GrovePort/Machine Room/**
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Boars_Head/GrovePort/Freezer/
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Boars_Head/GrovePort/Freezer/**
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Boars_Head/GrovePort/SuperChill/
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Boars_Head/GrovePort/SuperChill/**
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Boars_Head/GrovePort/Club/
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Boars_Head/GrovePort/Club/**
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Boars_Head/GrovePort/Dock/
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Boars_Head/GrovePort/Dock/**
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Boars_Head/GrovePort/East PH/
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Boars_Head/GrovePort/East PH/**
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Boars_Head/GrovePort/West PH/
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Boars_Head/GrovePort/West PH/**
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Boars_Head/GrovePort/Palletizing/
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Boars_Head/GrovePort/Palletizing/**
+# Condensers devices (CSV tank, Outside Air Temp, sump pumps, EC fans) - PLC-mapped instances (.cursor/tasks/pax-devices 2026-10-22)
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Boars_Head/GrovePort/Condensers/
+!gateways/standard/data/config/resources/core/ignition/tag-definition/default/Boars_Head/GrovePort/Condensers/**
+# Programmable Device Simulator [Sim] (instructions.csv copied from sim/bh-plant-sim.csv)
+!gateways/standard/data/config/resources/core/com.inductiveautomation.opcua/
+!gateways/standard/data/config/resources/core/com.inductiveautomation.opcua/device/
+!gateways/standard/data/config/resources/core/com.inductiveautomation.opcua/device/Sim/
+!gateways/standard/data/config/resources/core/com.inductiveautomation.opcua/device/Sim/**
 
 # Gateway audit profiles (DevAudit / OpsAudit) - standard only
 !gateways/standard/data/config/resources/core/ignition/audit-profile/
 !gateways/standard/data/config/resources/core/ignition/audit-profile/**
+# Perspective Co-Branding: BH medallion + colours on the login / loading screens (no secrets; .cursor/tasks/branding
+# 2026-10-22). Takes effect where the parent ignition/ folder is whitelisted (standard); Edge has no co-branding.
+!gateways/**/data/config/resources/core/ignition/cobranding/
+!gateways/**/data/config/resources/core/ignition/cobranding/**
 # S&F Auditing pipeline System tags (status folders; no secrets)
 !gateways/standard/data/config/resources/core/ignition/tag-definition/System/
 !gateways/standard/data/config/resources/core/ignition/tag-definition/System/Gateway/
@@ -116,3 +202,8 @@ gateways/**/tag-definition/**/*.tmp
 
 # Local session handoff log (other docs/handoff/*.md plans stay tracked)
 docs/handoff/HANDOFF.md
+docs/handoff/
+
+# Claude Code local settings + agent performance log (local only)
+.claude/settings.local.json
+.claude/agent-perf/
