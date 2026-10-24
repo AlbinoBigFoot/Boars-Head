@@ -1,0 +1,81 @@
+/* Boar's Head SCADA Wiki theme: ribbon red #B00828 accent, light #F3F3F5 / dark #1E242E surfaces
+   (the same palette as the gateway Perspective co-branding, see docs/branding.md in the repo). */
+:root {
+  --ifm-color-primary: #b00828;
+  --ifm-color-primary-dark: #9e0724;
+  --ifm-color-primary-darker: #950722;
+  --ifm-color-primary-darkest: #7b061c;
+  --ifm-color-primary-light: #c2092c;
+  --ifm-color-primary-lighter: #cb092e;
+  --ifm-color-primary-lightest: #e40b35;
+  --ifm-background-color: #f3f3f5;
+  --ifm-background-surface-color: #ffffff;
+  --ifm-navbar-background-color: #ffffff;
+  --ifm-font-color-base: #1e242e;
+  --ifm-code-font-size: 92%;
+  --ifm-navbar-height: 3.75rem;
+  --bh-gold: #c8b068;
+  --docusaurus-highlighted-code-line-bg: rgba(176, 8, 40, 0.08);
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #f0566f;
+  --ifm-color-primary-dark: #ed3956;
+  --ifm-color-primary-darker: #ec2b4a;
+  --ifm-color-primary-darkest: #d41333;
+  --ifm-color-primary-light: #f37388;
+  --ifm-color-primary-lighter: #f48194;
+  --ifm-color-primary-lightest: #f8aab7;
+  --ifm-background-color: #1e242e;
+  --ifm-background-surface-color: #252c38;
+  --ifm-navbar-background-color: #171c24;
+  --ifm-font-color-base: #e6e8ec;
+  --docusaurus-highlighted-code-line-bg: rgba(240, 86, 111, 0.15);
+}
+
+html,
+body {
+  background-color: var(--ifm-background-color);
+}
+
+.navbar {
+  border-bottom: 3px solid #b00828;
+}
+.navbar__logo {
+  height: 2rem;
+}
+.navbar__logo img {
+  height: 2rem;
+  width: auto;
+}
+.navbar__title {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.footer--dark {
+  --ifm-footer-background-color: #121619;
+  border-top: 3px solid #b00828;
+}
+
+.markdown table th {
+  background: rgba(176, 8, 40, 0.07);
+}
+[data-theme='dark'] .markdown table th {
+  background: rgba(240, 86, 111, 0.1);
+}
+.markdown details {
+  margin-bottom: 1rem;
+}
+.markdown img {
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+}
+
+/* Search hit highlight on the target page (search-local wraps hits in <mark>). */
+mark {
+  background-color: rgba(200, 176, 104, 0.45);
+  color: inherit;
+  padding: 0 2px;
+  border-radius: 2px;
+}

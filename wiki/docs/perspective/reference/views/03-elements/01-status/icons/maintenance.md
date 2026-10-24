@@ -1,0 +1,52 @@
+---
+title: "Maintenance"
+sidebar_label: "Maintenance"
+description: "Perspective view 03_Elements/01_Status/Icons/Maintenance (Element (small reusable part)): 2 components, 2 bindings, 0 event scripts."
+generated: true
+keywords: ["03_Elements/01_Status/Icons/Maintenance", "Maintenance"]
+---
+
+:::note
+
+:::
+
+
+**Element (small reusable part)**: `03_Elements/01_Status/Icons/Maintenance`.
+
+| | |
+|---|---|
+| View path | `03_Elements/01_Status/Icons/Maintenance` |
+| File | `gateways/standard/data/projects/BH/com.inductiveautomation.perspective/views/03_Elements/01_Status/Icons/Maintenance/view.json` |
+| Designer | Project Browser &gt; Perspective &gt; Views &gt; 03\_Elements &gt; 01\_Status &gt; Icons &gt; Maintenance |
+| Root | `ia.container.flex`, no default size |
+| Size | 2 components, 2 bindings, 0 event handlers, 0 change scripts, 1 message handlers |
+| Last saved | 2026-08-01T20:00:00Z by the Designer |
+
+## Component Tree
+
+Component types: ia.container.flex x1, ia.shapes.svg x1.
+
+```text
+root  ia.container.flex  [2 bindings]
+  SVG  ia.shapes.svg
+```
+
+## Bindings
+
+2 bindings: expr-struct 2.
+
+**`root`**
+
+- `meta.contextMenu.items`: structured expression (expr-struct), then script transform. Common pattern, see [pattern-4](../../../../common-patterns.md#pattern-4).
+
+- `meta.contextMenu.enabled`: structured expression (expr-struct), then expression transform. Common pattern, see [pattern-1](../../../../common-patterns.md#pattern-1).
+
+## Event Scripts And Handlers
+
+- **`root`** message handler `ticketLog` (scope: page). Common pattern, see [pattern-9](../../../../common-patterns.md#pattern-9).
+
+Project script calls: [shared.Alerts.contextMenuTicketLog](../../../../../../scripting/reference/modules/shared-alerts.md).
+
+## Related Views
+
+**Embedded in** (3): [00\_Pages/00\_Docked/Legend](../../../00-pages/00-docked/legend.md), [01\_Popups/00\_Faceplates/\_Assets/Modes](../../../01-popups/00-faceplates/assets/modes.md), [03\_Elements/01\_Status/IconHeader](../iconheader.md)
