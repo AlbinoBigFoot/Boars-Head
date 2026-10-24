@@ -1,0 +1,122 @@
+[
+  {
+    "metadata": {
+      "shortDescription": "MAIN HG SV",
+      "longDescription": "valve. Live PLC [RCP1] (read only): ValveTag\u003dMAIN_HG_CV6. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "Main HG CV6",
+    "typeId": "Devices/Valve",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "valueSource": "memory",
+        "dataType": "String",
+        "value": "SO",
+        "name": "valveType",
+        "tagType": "AtomicTag"
+      },
+      {
+        "name": "Valve",
+        "tagType": "UdtInstance",
+        "enabled": true
+      }
+    ],
+    "documentation": "FT (STELLAR)Condensers GO_P_ValveSO {[RCP1]MAIN_HG_CV6} - MAIN HG SV",
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "ValveTag": {
+        "dataType": "String",
+        "value": "MAIN_HG_CV6"
+      }
+    }
+  },
+  {
+    "metadata": {
+      "shortDescription": "CSV MAKEUP SV",
+      "longDescription": "valve. Live PLC [RCP1] (read only): ValveTag\u003dRS_MW_CV25, IntlkTag\u003dEC1_INTLK. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "Main MW CV25",
+    "typeId": "Devices/Valve",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "valueSource": "memory",
+        "dataType": "String",
+        "value": "SO",
+        "name": "valveType",
+        "tagType": "AtomicTag"
+      },
+      {
+        "name": "Valve",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "Intlk",
+        "tagType": "UdtInstance",
+        "enabled": true
+      }
+    ],
+    "documentation": "FT (STELLAR)Condensers GO_P_ValveSO {[RCP1]RS_MW_CV25} - CSV MAKEUP SV",
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "ValveTag": {
+        "dataType": "String",
+        "value": "RS_MW_CV25"
+      },
+      "IntlkTag": {
+        "dataType": "String",
+        "value": "EC1_INTLK"
+      }
+    }
+  },
+  {
+    "metadata": {
+      "shortDescription": "CSV MAKEUP BACKUP SV",
+      "longDescription": "valve. Live PLC [RCP1] (read only): ValveTag\u003dRS_BACKUP_MW_CV26, IntlkTag\u003dEC1_INTLK. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "Backup MW CV26",
+    "typeId": "Devices/Valve",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "valueSource": "memory",
+        "dataType": "String",
+        "value": "SO",
+        "name": "valveType",
+        "tagType": "AtomicTag"
+      },
+      {
+        "name": "Valve",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "Intlk",
+        "tagType": "UdtInstance",
+        "enabled": true
+      }
+    ],
+    "documentation": "FT (STELLAR)Condensers GO_P_ValveSO {[RCP1]RS_BACKUP_MW_CV26} - CSV MAKEUP BACKUP SV",
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "ValveTag": {
+        "dataType": "String",
+        "value": "RS_BACKUP_MW_CV26"
+      },
+      "IntlkTag": {
+        "dataType": "String",
+        "value": "EC1_INTLK"
+      }
+    }
+  }
+]

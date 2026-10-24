@@ -1,0 +1,68 @@
+[
+  {
+    "metadata": {
+      "shortDescription": "MAIN LIQ SV",
+      "longDescription": "valve. Live PLC [RCP1] (read only): ValveTag=MAIN_LIQ_CV5. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "Main Liq SV",
+    "typeId": "Devices/Valve",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "valueSource": "memory",
+        "dataType": "String",
+        "value": "SO",
+        "name": "valveType",
+        "tagType": "AtomicTag"
+      },
+      {
+        "name": "Valve",
+        "tagType": "UdtInstance",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "ValveTag": {
+        "dataType": "String",
+        "value": "MAIN_LIQ_CV5"
+      }
+    },
+    "documentation": "FT (STELLAR)MachineRoom GO_P_ValveSO {[RCP1]MAIN_LIQ_CV5} - MAIN LIQ SV"
+  },
+  {
+    "name": "Overview",
+    "typeId": "Overview/Valve Overview",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "ActiveAlarmCount",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "expr",
+            "expression": "sum({[default]Boars_Head/GrovePort/Machine Room/Valves/Main Liq SV/_Alarms/_Active})",
+            "dataType": "Int4",
+            "formatString": "0",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "typeId": "_Root/Document",
+        "name": "Instances",
+        "tagType": "AtomicTag"
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "name": "Rebuild",
+        "tagType": "AtomicTag"
+      }
+    ]
+  }
+]

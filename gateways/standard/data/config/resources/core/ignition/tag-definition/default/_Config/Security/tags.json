@@ -1,0 +1,114 @@
+[
+  {
+    "valueSource": "memory",
+    "dataType": "DataSet",
+    "documentation": "Roles \u0026 Permissions page grouping: Key \u003d Devices value (Category, sub-group Label, Order) or Devices/Actions (row Label, optional Category). Unknown devices go to Other. Written by .cursor/tasks/user-management/build_admin.py from permission_catalog.py.",
+    "name": "PermissionCatalog",
+    "defaultValue": "{\"columns\":[{\"name\":\"Key\",\"type\":\"java.lang.String\"},{\"name\":\"Category\",\"type\":\"java.lang.String\"},{\"name\":\"Label\",\"type\":\"java.lang.String\"},{\"name\":\"Order\",\"type\":\"java.lang.Integer\"}],\"rows\":[[\"Faceplates\",\"General\",\"Faceplates\",10],[\"Trends\",\"General\",\"Trends\",20],[\"TicketLogger\",\"General\",\"Ticket Logger\",30],[\"Compressor\",\"Devices\",\"Compressor\",10],[\"Evaporator\",\"Devices\",\"Evaporator\",20],[\"Pump\",\"Devices\",\"Pump\",30],[\"Valve\",\"Devices\",\"Valve\",40],[\"Tank\",\"Devices\",\"Tank\",50],[\"Sensor\",\"Devices\",\"Sensor\",60],[\"LTU\",\"Devices\",\"NH3 LTU\",70],[\"AlarmSummary\",\"Alarms\",\"Alarm Summary\",10],[\"AlarmConfiguration\",\"Alarms\",\"Alarm Configuration\",20],[\"Engineering\",\"Engineering\",\"Engineering\",10],[\"Forms\",\"Operations\",\"Forms\",10],[\"OutOfService\",\"Operations\",\"Out Of Service\",20],[\"Reports\",\"Operations\",\"Reports\",30],[\"AuditLog\",\"Administration\",\"Audit Log\",10],[\"UserManagement\",\"Administration\",\"User Management\",20],[\"RolesPermissions\",\"Administration\",\"Roles \u0026 Permissions\",30],[\"Faceplates/Open\",\"\",\"Open Faceplates\",0],[\"Faceplates/Operate\",\"\",\"Operate Devices\",0],[\"Trends/Save\",\"\",\"Save Own Trends\",0],[\"Trends/ManageLocked\",\"\",\"Manage Locked Trends\",0],[\"TicketLogger/Use\",\"\",\"Use Ticket Logger\",0],[\"TicketLogger/Settings\",\"\",\"Ticket Logger Settings (OneShot Only)\",0],[\"Compressor/Command\",\"\",\"Command Compressors\",0],[\"Compressor/Alarm\",\"\",\"Configure Compressor Alarms\",0],[\"Evaporator/Command\",\"\",\"Command Evaporators\",0],[\"Evaporator/Setpoint\",\"\",\"Change Evaporator Setpoints\",0],[\"Evaporator/Alarm\",\"\",\"Configure Evaporator Alarms\",0],[\"Pump/Mode\",\"\",\"Change Pump Mode\",0],[\"Pump/Command\",\"\",\"Command Pumps\",0],[\"Pump/Interlocks\",\"\",\"Bypass Pump Interlocks\",0],[\"Pump/Configuration\",\"\",\"Configure Pumps\",0],[\"Pump/Alarm\",\"\",\"Configure Pump Alarms\",0],[\"Valve/Mode\",\"\",\"Change Valve Mode\",0],[\"Valve/Command\",\"\",\"Command Valves\",0],[\"Valve/Interlocks\",\"\",\"Bypass Valve Interlocks\",0],[\"Valve/Configuration\",\"\",\"Configure Valves\",0],[\"Valve/Alarm\",\"\",\"Configure Valve Alarms\",0],[\"Tank/Setpoint\",\"\",\"Change Tank Level Setpoints\",0],[\"Tank/Alarm\",\"\",\"Configure Tank Alarms\",0],[\"Sensor/Alarm\",\"\",\"Configure Sensor Alarms\",0],[\"LTU/Command\",\"\",\"Reset LTU Transfer Count\",0],[\"AlarmSummary/Acknowledge\",\"\",\"Acknowledge Alarms\",0],[\"AlarmSummary/Shelve\",\"\",\"Shelve Alarms\",0],[\"AlarmConfiguration/Edit\",\"\",\"Edit Alarm Configuration\",0],[\"Engineering/View\",\"\",\"View Engineering Tabs\",0],[\"Engineering/Edit\",\"\",\"Edit Engineering Tabs\",0],[\"Forms/Use\",\"\",\"Use Operations Forms\",0],[\"Forms/ViewAll\",\"\",\"View Everyone\u0027s Form History\",0],[\"OutOfService/Set\",\"\",\"Take Out Of Service\",0],[\"OutOfService/View\",\"\",\"View Out Of Service Log\",0],[\"OutOfService/Comment\",\"\",\"Comment On Out Of Service\",0],[\"Reports/Use\",\"\",\"Use Report Builder\",0],[\"Reports/ShareTemplates\",\"\",\"Share Report Templates\",0],[\"Reports/ManageTemplates\",\"\",\"Manage Others\u0027 Templates\",0],[\"Reports/Production\",\"\",\"Report On Production\",0],[\"Reports/Alarms\",\"\",\"Report On Alarms\",0],[\"Reports/ZoneTemps\",\"\",\"Report On Zone Temperatures\",0],[\"Reports/Compressors\",\"\",\"Report On Compressors\",0],[\"Reports/Runtime\",\"\",\"Report On Equipment Runtime\",0],[\"Reports/OutOfService\",\"\",\"Report On Out Of Service\",0],[\"Reports/Forms\",\"\",\"Report On Operations Forms\",0],[\"AuditLog/View\",\"\",\"View Audit Log\",0],[\"UserManagement/Add\",\"\",\"Add Users And Roles\",0],[\"UserManagement/Edit\",\"\",\"Edit Users And Roles\",0],[\"RolesPermissions/Edit\",\"\",\"Edit Roles \u0026 Permissions\",0]]}",
+    "tagType": "AtomicTag"
+  },
+  {
+    "valueSource": "memory",
+    "dataType": "String",
+    "documentation": "Roles hidden in User Management unless the viewer holds them.",
+    "name": "RestrictedRoles",
+    "defaultValue": "OneShot",
+    "tagType": "AtomicTag"
+  },
+  {
+    "valueSource": "memory",
+    "dataType": "String",
+    "documentation": "Roles \u0026 Permissions rows only some roles manage: \u0027Devices/Actions:RoleA|RoleB\u0027, comma-separated (device-perms 2026-10-24; role-wizard v7: BOTH Ticket Logger rows are OneShot only on the page - Use stays ticked for every role, Settings is OneShot only). A restricted row is not given to FullPermissionRoles implicitly (only its ticks count) and the Roles \u0026 Permissions page shows / saves it only for viewers holding one of its roles (saves by other viewers never touch it). shared.Security.restrictedRows / rowVisible.",
+    "name": "RestrictedRows",
+    "defaultValue": "TicketLogger/Settings:OneShot, TicketLogger/Use:OneShot",
+    "tagType": "AtomicTag"
+  },
+  {
+    "valueSource": "memory",
+    "dataType": "String",
+    "documentation": "Roles that see Ticket Logger \u003e Integrations (API endpoints, tokens, Test Connection) - session.custom.IntegrationAccess.",
+    "name": "IntegrationRoles",
+    "defaultValue": "OneShot",
+    "tagType": "AtomicTag"
+  },
+  {
+    "valueSource": "memory",
+    "dataType": "String",
+    "documentation": "Informational since 2026-10-01 (security tiers): read only \u003d no Faceplates/Operate tick in [default]_Config/RolesPermissions for any of the user\u0027s roles (session.custom.ReadOnly). Kept for reference; not used for gating.",
+    "name": "ReadOnlyRoles",
+    "defaultValue": "ReadOnly",
+    "tagType": "AtomicTag"
+  },
+  {
+    "valueSource": "memory",
+    "dataType": "String",
+    "documentation": "Role inheritance for the Roles \u0026 Permissions matrix: \u0027A:B\u0027 \u003d role A also gets every tick of role B (comma-separated pairs, chains follow, case-insensitive). Engineering:Maintenance keeps Engineering a superset of Maintenance (user 2026-10-01). Used by shared.Security.permissions (session.custom.Permissions, server checks).",
+    "name": "RoleInherits",
+    "defaultValue": "Engineering:Maintenance",
+    "tagType": "AtomicTag"
+  },
+  {
+    "valueSource": "memory",
+    "dataType": "Int4",
+    "documentation": "security-tiers builder: last one-time matrix decision set applied (see DECISIONS in .cursor/tasks/security-tiers/build.py). Not used by the HMI.",
+    "name": "TierSeedVersion",
+    "defaultValue": 7,
+    "tagType": "AtomicTag"
+  },
+  {
+    "valueSource": "memory",
+    "dataType": "DataSet",
+    "documentation": "device-perms (2026-10-24): UDT TypeId -\u003e Roles \u0026 Permissions Devices value. A device control needs its general row AND \u003cDevice\u003e/\u003cAction\u003e when that row exists (no row \u003d general only). shared.Security.deviceOf (server) and view.custom.permDevice (faceplates). New Devices/* types are appended by .cursor/tasks/security-tiers/build.py with their own name.",
+    "name": "DeviceTypes",
+    "defaultValue": "{\"columns\":[{\"name\":\"TypeId\",\"type\":\"java.lang.String\"},{\"name\":\"Device\",\"type\":\"java.lang.String\"}],\"rows\":[[\"Devices/Compressor\",\"Compressor\"],[\"Devices/CoolingTower\",\"CoolingTower\"],[\"Devices/DischargeSequence\",\"DischargeSequence\"],[\"Devices/DiscreteInput\",\"DiscreteInput\"],[\"Devices/Evaporator\",\"Evaporator\"],[\"Devices/ExhaustFan\",\"ExhaustFan\"],[\"Devices/LTU\",\"LTU\"],[\"Devices/Pump\",\"Pump\"],[\"Devices/SafetyRelay\",\"SafetyRelay\"],[\"Devices/Sensor\",\"Sensor\"],[\"Devices/SuctionSequence\",\"SuctionSequence\"],[\"Devices/Tank\",\"Tank\"],[\"Devices/VFD\",\"VFD\"],[\"Devices/Valve\",\"Valve\"]]}",
+    "tagType": "AtomicTag"
+  },
+  {
+    "valueSource": "memory",
+    "dataType": "String",
+    "documentation": "Roles that are HMI administrators (session.custom.Administrator: User Management / Roles \u0026 Permissions pages besides the matrix rows, legacy adminOnly nav items). Comma-separated, case-insensitive. Faceplates, Engineering, Audit Log, Out Of Service and locked trends are matrix rows (security tiers 2026-10-01).",
+    "name": "AdminRoles",
+    "defaultValue": "Administrator,Admin,Admins",
+    "tagType": "AtomicTag"
+  },
+  {
+    "valueSource": "memory",
+    "dataType": "String",
+    "documentation": "UNUSED since 2026-10-24 (device-perms): the Ticket Logger is gated by the Roles \u0026 Permissions rows TicketLogger/Use (every role; session.custom.TicketLogAccess) and TicketLogger/Settings (OneShot only). Kept for reference only.",
+    "name": "TicketLoggerRoles",
+    "defaultValue": "OneShot",
+    "tagType": "AtomicTag"
+  },
+  {
+    "valueSource": "memory",
+    "dataType": "DataSet",
+    "documentation": "device-perms (2026-10-24): which device-type row (\u003cDevice\u003e/\u003cAction\u003e) a server-side write needs. Pattern \u003d Python regex searched in the member path below the device instance (e.g. \u0027Motor/OCmd_Start/Value\u0027); first match wins; no match \u003d Setpoint (Setpoint and Configuration stand in for each other when a type has only one). shared.Security.actionOf; see docs/security-roles.md.",
+    "name": "DeviceActionRules",
+    "defaultValue": "{\"columns\":[{\"name\":\"Pattern\",\"type\":\"java.lang.String\"},{\"name\":\"Action\",\"type\":\"java.lang.String\"},{\"name\":\"Note\",\"type\":\"java.lang.String\"}],\"rows\":[[\"(^|/)PlcResetCount(/|$)\",\"Command\",\"LTU transfer count reset (HMI_Ltu_Clear, FT setToOne)\"],[\"(^|/)(Interlock|Intlk)(/|$)\",\"Interlocks\",\"Interlock object (reset, bypass, condition bypass)\"],[\"(^|/)[OPM]?Cmd_(Bypass|Byp|Enable|Disable)\\\\w*(/|$)|(^|/)Sts_BypActive(/|$)\",\"Interlocks\",\"Device enable / disable / bypass\"],[\"(^|/)Mode/[OPM]?Cmd_|(^|/)(OPER|MAINT|PROG|Sts_Oper|Sts_Maint|Sts_Prog|CP_Mode|Cmd_Auto|Cmd_Manual)(/|$)\",\"Mode\",\"Operator / program / maintenance, lock, auto / manual\"],[\"(^|/)[OPM]?Cmd(_\\\\w+)?(/|$)|(^|/)HMI(Start|Stop|Enable|Disable)\\\\w*(/|$)|(^|/)SB_Enable(/|$)|(^|/)LeadPump(/|$)|(^|/)(Reset|Ack|ResetAck)(/|$)\",\"Command\",\"Start / stop / open / close / defrost / set back / lead / reset\"]]}",
+    "tagType": "AtomicTag"
+  },
+  {
+    "valueSource": "memory",
+    "dataType": "DataSet",
+    "documentation": "Roles \u0026 Permissions page groups (Name, Order, Icon, Description). Written by .cursor/tasks/user-management/build_admin.py from permission_catalog.py.",
+    "name": "PermissionCategories",
+    "defaultValue": "{\"columns\":[{\"name\":\"Name\",\"type\":\"java.lang.String\"},{\"name\":\"Order\",\"type\":\"java.lang.Integer\"},{\"name\":\"Icon\",\"type\":\"java.lang.String\"},{\"name\":\"Description\",\"type\":\"java.lang.String\"}],\"rows\":[[\"General\",10,\"material/tune\",\"Faceplates, trends and everyday tools\"],[\"Devices\",20,\"material/settings_input_component\",\"Per-device rows: a device control needs its general row AND its device row\"],[\"Alarms\",30,\"material/notifications\",\"Acknowledge, shelve and configure alarms\"],[\"Engineering\",40,\"material/engineering\",\"FT Engineering tabs and fields\"],[\"Operations\",50,\"material/assignment\",\"Forms, Out Of Service and reports\"],[\"Administration\",60,\"material/admin_panel_settings\",\"Audit Log, users and roles\"],[\"Other\",99,\"material/help_outline\",\"Permissions without a group yet (add a device row to the catalog)\"]]}",
+    "tagType": "AtomicTag"
+  },
+  {
+    "valueSource": "memory",
+    "dataType": "String",
+    "documentation": "Roles \u0026 Permissions rows (\u0027Devices/Actions\u0027, comma-separated) a NEW role gets (role-wizard 2026-10-24, user: every role may log tickets): a role created in the gateway holds them until its matrix column exists, and the column is added with them ticked (shared.PermissionMatrix.syncRoles, save); the New Role wizard pre-ticks them (and sets them even when they are hidden RestrictedRows rows for the creator). shared.Security.newRoleDefaults.",
+    "name": "NewRoleDefaults",
+    "defaultValue": "TicketLogger/Use",
+    "tagType": "AtomicTag"
+  },
+  {
+    "valueSource": "memory",
+    "dataType": "String",
+    "documentation": "Roles that hold every Roles \u0026 Permissions action, even where the matrix has no tick.",
+    "name": "FullPermissionRoles",
+    "defaultValue": "Administrator,OneShot",
+    "tagType": "AtomicTag"
+  }
+]

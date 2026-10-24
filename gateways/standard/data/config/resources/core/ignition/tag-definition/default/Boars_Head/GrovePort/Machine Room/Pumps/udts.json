@@ -1,0 +1,213 @@
+[
+  {
+    "metadata": {
+      "shortDescription": "HTLR-Pump 2",
+      "longDescription": "pump. Live PLC [RCP1] (read only): MotorTag=HTR_PUMPS[2], IntlkTag=HTR_PUMP2_INTLK, RunTimeTag=HTR_PUMPS_RUNTIME[2]. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "HTLR-Pump 2",
+    "typeId": "Devices/Pump",
+    "tagType": "UdtInstance",
+    "enabled": true,
+    "tags": [
+      {
+        "name": "Motor",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "Intlk",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "RunTime",
+        "tagType": "UdtInstance",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "MotorTag": {
+        "dataType": "String",
+        "value": "HTR_PUMPS[2]"
+      },
+      "IntlkTag": {
+        "dataType": "String",
+        "value": "HTR_PUMP2_INTLK"
+      },
+      "RunTimeTag": {
+        "dataType": "String",
+        "value": "HTR_PUMPS_RUNTIME[2]"
+      }
+    }
+  },
+  {
+    "metadata": {
+      "shortDescription": "LTLR-Pump 2",
+      "longDescription": "pump. Live PLC [RCP1] (read only): MotorTag=LTR_PUMPS[2], IntlkTag=LTR_PUMP2_INTLK, RunTimeTag=LTR_PUMPS_RUNTIME[2]. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "LTLR-Pump 2",
+    "typeId": "Devices/Pump",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Motor",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "Intlk",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "RunTime",
+        "tagType": "UdtInstance",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "MotorTag": {
+        "dataType": "String",
+        "value": "LTR_PUMPS[2]"
+      },
+      "IntlkTag": {
+        "dataType": "String",
+        "value": "LTR_PUMP2_INTLK"
+      },
+      "RunTimeTag": {
+        "dataType": "String",
+        "value": "LTR_PUMPS_RUNTIME[2]"
+      }
+    }
+  },
+  {
+    "metadata": {
+      "shortDescription": "LTLR-Pump 1",
+      "longDescription": "pump. Live PLC [RCP1] (read only): MotorTag=LTR_PUMPS[1], IntlkTag=LTR_PUMP1_INTLK, RunTimeTag=LTR_PUMPS_RUNTIME[1]. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "LTLR-Pump 1",
+    "typeId": "Devices/Pump",
+    "tagType": "UdtInstance",
+    "enabled": true,
+    "tags": [
+      {
+        "name": "Motor",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "Intlk",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "RunTime",
+        "tagType": "UdtInstance",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "MotorTag": {
+        "dataType": "String",
+        "value": "LTR_PUMPS[1]"
+      },
+      "IntlkTag": {
+        "dataType": "String",
+        "value": "LTR_PUMP1_INTLK"
+      },
+      "RunTimeTag": {
+        "dataType": "String",
+        "value": "LTR_PUMPS_RUNTIME[1]"
+      }
+    }
+  },
+  {
+    "metadata": {
+      "shortDescription": "HTLR-Pump 1",
+      "longDescription": "pump. Live PLC [RCP1] (read only): MotorTag=HTR_PUMPS[1], IntlkTag=HTR_PUMP1_INTLK, RunTimeTag=HTR_PUMPS_RUNTIME[1]. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "HTLR-Pump 1",
+    "typeId": "Devices/Pump",
+    "tagType": "UdtInstance",
+    "enabled": true,
+    "tags": [
+      {
+        "name": "Motor",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "Intlk",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "RunTime",
+        "tagType": "UdtInstance",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "MotorTag": {
+        "dataType": "String",
+        "value": "HTR_PUMPS[1]"
+      },
+      "IntlkTag": {
+        "dataType": "String",
+        "value": "HTR_PUMP1_INTLK"
+      },
+      "RunTimeTag": {
+        "dataType": "String",
+        "value": "HTR_PUMPS_RUNTIME[1]"
+      }
+    }
+  },
+  {
+    "name": "Overview",
+    "typeId": "Overview/Pump Overview",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "ActiveAlarmCount",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "expr",
+            "expression": "sum({[default]Boars_Head/GrovePort/Machine Room/Pumps/HTLR-Pump 1/_Alarms/_Active},\n{[default]Boars_Head/GrovePort/Machine Room/Pumps/HTLR-Pump 2/_Alarms/_Active},\n{[default]Boars_Head/GrovePort/Machine Room/Pumps/LTLR-Pump 1/_Alarms/_Active},\n{[default]Boars_Head/GrovePort/Machine Room/Pumps/LTLR-Pump 2/_Alarms/_Active})",
+            "dataType": "Int4",
+            "formatString": "0",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "typeId": "_Root/Document",
+        "name": "Instances",
+        "tagType": "AtomicTag"
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "name": "Rebuild",
+        "tagType": "AtomicTag"
+      }
+    ]
+  }
+]

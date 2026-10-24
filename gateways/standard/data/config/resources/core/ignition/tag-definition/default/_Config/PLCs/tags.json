@@ -1,0 +1,23 @@
+[
+  {
+    "valueSource": "memory",
+    "dataType": "Document",
+    "documentation": "PLC Overview list (docs/plc-rack-io.md \u0027PLC Overview\u0027): one entry per PLC site UDT instance. Add a PLC here (no view edit). Seeded by .cursor/tasks/plc-rack-io/build.py when missing.",
+    "name": "List",
+    "defaultValue": {
+      "notes": "PLC Overview (/operations/plcs) cards, one per entry: name, path (site UDT instance), description, location, page (rack page), show {Field: true|false} overrides the automatic per-field defaults (fields: Description, Catalog, Firmware, Ip, Driver, CommLoss, Mode, MajorFault, MinorFault, IoFault, LastFault, ModulesFaulted, ModuleTypes, Alarms, RackStrip). Edit this tag to add a PLC; .cursor/tasks/plc-rack-io only seeds it.",
+      "plcs": [
+        {
+          "description": "Refrigeration Control Panel 1 PLC",
+          "location": "Groveport Machine Room",
+          "name": "RCP1",
+          "page": "/operations/plcs/RCP1",
+          "path": "[default]Boars_Head/GrovePort/Machine Room/PLC/RCP1",
+          "screwType": "phillips",
+          "show": {}
+        }
+      ]
+    },
+    "tagType": "AtomicTag"
+  }
+]

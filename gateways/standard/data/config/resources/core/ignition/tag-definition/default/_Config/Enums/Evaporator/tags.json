@@ -1,0 +1,26 @@
+[
+  {
+    "valueSource": "memory",
+    "dataType": "DataSet",
+    "documentation": "Evaporator Cfg_DefrostStartMode code -\u003e text. PLC (L5K CG_RL_Evap): 0 TOD, 1 Liquid Time, 2 Run Time, 3 DI Initiate, 4 AI Initiate. FT (STELLAR)CGDX 3VL/4VL: 0 ToD, 1 Cooling, 2 Runtime (input 0-2, security code F). The HMI selects 0-2 only; 3/4 are display only (selectable false). Read with lookup() or shared.Enums; edit through .cursor/tasks/evap-defrost-strings/build.py.",
+    "name": "DefrostStartMode",
+    "defaultValue": "{\"columns\":[{\"name\":\"value\",\"type\":\"java.lang.Integer\"},{\"name\":\"label\",\"type\":\"java.lang.String\"},{\"name\":\"short\",\"type\":\"java.lang.String\"},{\"name\":\"selectable\",\"type\":\"java.lang.Boolean\"}],\"rows\":[[0,\"Time Of Day\",\"ToD\",true],[1,\"Cooling Time\",\"Cooling\",true],[2,\"Runtime\",\"Runtime\",true],[3,\"Digital Input\",\"DI\",false],[4,\"Analog Input\",\"AI\",false]]}",
+    "tagType": "AtomicTag"
+  },
+  {
+    "valueSource": "memory",
+    "dataType": "DataSet",
+    "documentation": "Evaporator Cfg_CycFans code -\u003e text: fan mode while the unit is idle. PLC (L5K CG_RL_Evap): \u0027Cycle Fans Mode for When the Unit is in Idle\u0027 0 Fans Off, 1 Cycle Fans, 2 Fans On. FT: 0 Fans Off, 1 Cycle, 2 Fans On (security code F). Read with lookup() or shared.Enums; edit through .cursor/tasks/evap-defrost-strings/build.py.",
+    "name": "CycleFans",
+    "defaultValue": "{\"columns\":[{\"name\":\"value\",\"type\":\"java.lang.Integer\"},{\"name\":\"label\",\"type\":\"java.lang.String\"},{\"name\":\"short\",\"type\":\"java.lang.String\"},{\"name\":\"selectable\",\"type\":\"java.lang.Boolean\"}],\"rows\":[[0,\"Fans Off\",\"Off\",true],[1,\"Cycle Fans\",\"Cycle\",true],[2,\"Fans On\",\"On\",true]]}",
+    "tagType": "AtomicTag"
+  },
+  {
+    "valueSource": "memory",
+    "dataType": "DataSet",
+    "documentation": "PLC CG_RL_Evap Sts_State (control group phase, L5K wording) -\u003e hmiStatus \u003d the Devices/Evaporator Status/Value code (0 Off, 1 Cooling, 2 Defrost, 3 Fault, 5 Idle, 6 Pump Down, 7 Hot Gas, 8 Bleed, 9 Fan Delay) for the PAX tag mapping; map taken from the Evaporator UDT Status longDescription. FT captions differ (2 MAIN HOT GAS, 8 HEAT MODE). Status only: nothing writes it. Read with lookup() or shared.Enums; edit through .cursor/tasks/evap-defrost-strings/build.py.",
+    "name": "PlcState",
+    "defaultValue": "{\"columns\":[{\"name\":\"value\",\"type\":\"java.lang.Integer\"},{\"name\":\"label\",\"type\":\"java.lang.String\"},{\"name\":\"short\",\"type\":\"java.lang.String\"},{\"name\":\"selectable\",\"type\":\"java.lang.Boolean\"},{\"name\":\"hmiStatus\",\"type\":\"java.lang.Integer\"}],\"rows\":[[0,\"Off\",\"Off\",false,0],[1,\"Pump Out\",\"Pump Out\",false,6],[2,\"Soft Hot Gas\",\"Soft HG\",false,7],[3,\"Main Hot Gas\",\"Main HG\",false,7],[4,\"Bleed\",\"Bleed\",false,8],[5,\"Fan Delay\",\"Fan Delay\",false,9],[6,\"Cooling\",\"Cooling\",false,1],[7,\"Idle\",\"Idle\",false,5],[8,\"Cleanup\",\"Cleanup\",false,2],[9,\"Permissive\",\"Permissive\",false,5],[10,\"Interlock\",\"Interlock\",false,3]]}",
+    "tagType": "AtomicTag"
+  }
+]

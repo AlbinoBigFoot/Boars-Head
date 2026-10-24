@@ -1,0 +1,613 @@
+[
+  {
+    "metadata": {
+      "shortDescription": "CG-E2",
+      "longDescription": "evaporator. Live PLC [RCP1] (read only): CGTag=CG[8], ZATTag=CG_ZAT[8], IntlkTag=CG_Interlock[8], FansTag=CG_Fans[8], FansRunTimeTag=CG_Fans_Runtime[8], LiquidSVTag=CG_Liquid_SV[8], SuctionSVTag=CG_Suction_SV[8], HotGasSVTag=CG_HotGas_SV[8], BleedSVTag=CG_Bleed_SV[8]. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "CG-E2",
+    "typeId": "Devices/Evaporator",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Valves",
+        "tagType": "Folder",
+        "tags": [
+          {
+            "typeId": "Devices/Valve",
+            "name": "Bleed SV",
+            "tagType": "AtomicTag",
+            "tags": [
+              {
+                "name": "Valve",
+                "tagType": "UdtInstance",
+                "enabled": true
+              },
+              {
+                "name": "Intlk",
+                "tagType": "UdtInstance",
+                "enabled": true
+              }
+            ]
+          },
+          {
+            "typeId": "Devices/Valve",
+            "name": "Suction SV",
+            "tagType": "AtomicTag",
+            "tags": [
+              {
+                "name": "Valve",
+                "tagType": "UdtInstance",
+                "enabled": true
+              },
+              {
+                "name": "Intlk",
+                "tagType": "UdtInstance",
+                "enabled": true
+              }
+            ]
+          },
+          {
+            "typeId": "Devices/Valve",
+            "name": "Liquid SV",
+            "tagType": "AtomicTag",
+            "tags": [
+              {
+                "name": "Valve",
+                "tagType": "UdtInstance",
+                "enabled": true
+              },
+              {
+                "name": "Intlk",
+                "tagType": "UdtInstance",
+                "enabled": true
+              }
+            ]
+          },
+          {
+            "typeId": "Devices/Valve",
+            "name": "Hot Gas SV",
+            "tagType": "AtomicTag",
+            "tags": [
+              {
+                "name": "Valve",
+                "tagType": "UdtInstance",
+                "enabled": true
+              },
+              {
+                "name": "Intlk",
+                "tagType": "UdtInstance",
+                "enabled": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "CG",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "ZAT",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "Intlk",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "Fans",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "FansRunTime",
+        "tagType": "UdtInstance",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "CGTag": {
+        "dataType": "String",
+        "value": "CG[8]"
+      },
+      "ZATTag": {
+        "dataType": "String",
+        "value": "CG_ZAT[8]"
+      },
+      "IntlkTag": {
+        "dataType": "String",
+        "value": "CG_Interlock[8]"
+      },
+      "FansTag": {
+        "dataType": "String",
+        "value": "CG_Fans[8]"
+      },
+      "FansRunTimeTag": {
+        "dataType": "String",
+        "value": "CG_Fans_Runtime[8]"
+      },
+      "LiquidSVTag": {
+        "dataType": "String",
+        "value": "CG_Liquid_SV[8]"
+      },
+      "SuctionSVTag": {
+        "dataType": "String",
+        "value": "CG_Suction_SV[8]"
+      },
+      "HotGasSVTag": {
+        "dataType": "String",
+        "value": "CG_HotGas_SV[8]"
+      },
+      "BleedSVTag": {
+        "dataType": "String",
+        "value": "CG_Bleed_SV[8]"
+      }
+    }
+  },
+  {
+    "metadata": {
+      "shortDescription": "CG-E4",
+      "longDescription": "evaporator. Live PLC [RCP1] (read only): CGTag=CG[10], ZATTag=CG_ZAT[10], IntlkTag=CG_Interlock[10], FansTag=CG_Fans[10], FansRunTimeTag=CG_Fans_Runtime[10], LiquidSVTag=CG_Liquid_SV[10], SuctionSVTag=CG_Suction_SV[10], HotGasSVTag=CG_HotGas_SV[10], BleedSVTag=CG_Bleed_SV[10]. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "CG-E4",
+    "typeId": "Devices/Evaporator",
+    "tagType": "UdtInstance",
+    "enabled": true,
+    "tags": [
+      {
+        "name": "Valves",
+        "tagType": "Folder",
+        "tags": [
+          {
+            "typeId": "Devices/Valve",
+            "name": "Bleed SV",
+            "tagType": "AtomicTag",
+            "tags": [
+              {
+                "name": "Valve",
+                "tagType": "UdtInstance",
+                "enabled": true
+              },
+              {
+                "name": "Intlk",
+                "tagType": "UdtInstance",
+                "enabled": true
+              }
+            ]
+          },
+          {
+            "typeId": "Devices/Valve",
+            "name": "Hot Gas SV",
+            "tagType": "AtomicTag",
+            "tags": [
+              {
+                "name": "Valve",
+                "tagType": "UdtInstance",
+                "enabled": true
+              },
+              {
+                "name": "Intlk",
+                "tagType": "UdtInstance",
+                "enabled": true
+              }
+            ]
+          },
+          {
+            "typeId": "Devices/Valve",
+            "name": "Liquid SV",
+            "tagType": "AtomicTag",
+            "tags": [
+              {
+                "name": "Valve",
+                "tagType": "UdtInstance",
+                "enabled": true
+              },
+              {
+                "name": "Intlk",
+                "tagType": "UdtInstance",
+                "enabled": true
+              }
+            ]
+          },
+          {
+            "typeId": "Devices/Valve",
+            "name": "Suction SV",
+            "tagType": "AtomicTag",
+            "tags": [
+              {
+                "name": "Valve",
+                "tagType": "UdtInstance",
+                "enabled": true
+              },
+              {
+                "name": "Intlk",
+                "tagType": "UdtInstance",
+                "enabled": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "CG",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "ZAT",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "Intlk",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "Fans",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "FansRunTime",
+        "tagType": "UdtInstance",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "CGTag": {
+        "dataType": "String",
+        "value": "CG[10]"
+      },
+      "ZATTag": {
+        "dataType": "String",
+        "value": "CG_ZAT[10]"
+      },
+      "IntlkTag": {
+        "dataType": "String",
+        "value": "CG_Interlock[10]"
+      },
+      "FansTag": {
+        "dataType": "String",
+        "value": "CG_Fans[10]"
+      },
+      "FansRunTimeTag": {
+        "dataType": "String",
+        "value": "CG_Fans_Runtime[10]"
+      },
+      "LiquidSVTag": {
+        "dataType": "String",
+        "value": "CG_Liquid_SV[10]"
+      },
+      "SuctionSVTag": {
+        "dataType": "String",
+        "value": "CG_Suction_SV[10]"
+      },
+      "HotGasSVTag": {
+        "dataType": "String",
+        "value": "CG_HotGas_SV[10]"
+      },
+      "BleedSVTag": {
+        "dataType": "String",
+        "value": "CG_Bleed_SV[10]"
+      }
+    }
+  },
+  {
+    "metadata": {
+      "shortDescription": "CG-E1",
+      "longDescription": "evaporator. Live PLC [RCP1] (read only): CGTag=CG[7], ZATTag=CG_ZAT[7], IntlkTag=CG_Interlock[7], FansTag=CG_Fans[7], FansRunTimeTag=CG_Fans_Runtime[7], LiquidSVTag=CG_Liquid_SV[7], SuctionSVTag=CG_Suction_SV[7], HotGasSVTag=CG_HotGas_SV[7], BleedSVTag=CG_Bleed_SV[7]. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "CG-E1",
+    "typeId": "Devices/Evaporator",
+    "tagType": "UdtInstance",
+    "enabled": true,
+    "tags": [
+      {
+        "name": "Valves",
+        "tagType": "Folder",
+        "tags": [
+          {
+            "typeId": "Devices/Valve",
+            "name": "Liquid SV",
+            "tagType": "AtomicTag",
+            "tags": [
+              {
+                "name": "Valve",
+                "tagType": "UdtInstance",
+                "enabled": true
+              },
+              {
+                "name": "Intlk",
+                "tagType": "UdtInstance",
+                "enabled": true
+              }
+            ]
+          },
+          {
+            "typeId": "Devices/Valve",
+            "name": "Hot Gas SV",
+            "tagType": "AtomicTag",
+            "tags": [
+              {
+                "name": "Valve",
+                "tagType": "UdtInstance",
+                "enabled": true
+              },
+              {
+                "name": "Intlk",
+                "tagType": "UdtInstance",
+                "enabled": true
+              }
+            ]
+          },
+          {
+            "typeId": "Devices/Valve",
+            "name": "Suction SV",
+            "tagType": "AtomicTag",
+            "tags": [
+              {
+                "name": "Valve",
+                "tagType": "UdtInstance",
+                "enabled": true
+              },
+              {
+                "name": "Intlk",
+                "tagType": "UdtInstance",
+                "enabled": true
+              }
+            ]
+          },
+          {
+            "typeId": "Devices/Valve",
+            "name": "Bleed SV",
+            "tagType": "AtomicTag",
+            "tags": [
+              {
+                "name": "Valve",
+                "tagType": "UdtInstance",
+                "enabled": true
+              },
+              {
+                "name": "Intlk",
+                "tagType": "UdtInstance",
+                "enabled": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "CG",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "ZAT",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "Intlk",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "Fans",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "FansRunTime",
+        "tagType": "UdtInstance",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "CGTag": {
+        "dataType": "String",
+        "value": "CG[7]"
+      },
+      "ZATTag": {
+        "dataType": "String",
+        "value": "CG_ZAT[7]"
+      },
+      "IntlkTag": {
+        "dataType": "String",
+        "value": "CG_Interlock[7]"
+      },
+      "FansTag": {
+        "dataType": "String",
+        "value": "CG_Fans[7]"
+      },
+      "FansRunTimeTag": {
+        "dataType": "String",
+        "value": "CG_Fans_Runtime[7]"
+      },
+      "LiquidSVTag": {
+        "dataType": "String",
+        "value": "CG_Liquid_SV[7]"
+      },
+      "SuctionSVTag": {
+        "dataType": "String",
+        "value": "CG_Suction_SV[7]"
+      },
+      "HotGasSVTag": {
+        "dataType": "String",
+        "value": "CG_HotGas_SV[7]"
+      },
+      "BleedSVTag": {
+        "dataType": "String",
+        "value": "CG_Bleed_SV[7]"
+      }
+    }
+  },
+  {
+    "metadata": {
+      "shortDescription": "CG-E3",
+      "longDescription": "evaporator. Live PLC [RCP1] (read only): CGTag=CG[9], ZATTag=CG_ZAT[9], IntlkTag=CG_Interlock[9], FansTag=CG_Fans[9], FansRunTimeTag=CG_Fans_Runtime[9], LiquidSVTag=CG_Liquid_SV[9], SuctionSVTag=CG_Suction_SV[9], HotGasSVTag=CG_HotGas_SV[9], BleedSVTag=CG_Bleed_SV[9]. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "CG-E3",
+    "typeId": "Devices/Evaporator",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Valves",
+        "tagType": "Folder",
+        "tags": [
+          {
+            "typeId": "Devices/Valve",
+            "name": "Hot Gas SV",
+            "tagType": "AtomicTag",
+            "tags": [
+              {
+                "name": "Valve",
+                "tagType": "UdtInstance",
+                "enabled": true
+              },
+              {
+                "name": "Intlk",
+                "tagType": "UdtInstance",
+                "enabled": true
+              }
+            ]
+          },
+          {
+            "typeId": "Devices/Valve",
+            "enabled": true,
+            "name": "Bleed SV",
+            "tagType": "AtomicTag",
+            "tags": [
+              {
+                "name": "Valve",
+                "tagType": "UdtInstance",
+                "enabled": true
+              },
+              {
+                "name": "Intlk",
+                "tagType": "UdtInstance",
+                "enabled": true
+              }
+            ]
+          },
+          {
+            "typeId": "Devices/Valve",
+            "name": "Suction SV",
+            "tagType": "AtomicTag",
+            "tags": [
+              {
+                "name": "Valve",
+                "tagType": "UdtInstance",
+                "enabled": true
+              },
+              {
+                "name": "Intlk",
+                "tagType": "UdtInstance",
+                "enabled": true
+              }
+            ]
+          },
+          {
+            "typeId": "Devices/Valve",
+            "name": "Liquid SV",
+            "tagType": "AtomicTag",
+            "tags": [
+              {
+                "name": "Valve",
+                "tagType": "UdtInstance",
+                "enabled": true
+              },
+              {
+                "name": "Intlk",
+                "tagType": "UdtInstance",
+                "enabled": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "CG",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "ZAT",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "Intlk",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "Fans",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "FansRunTime",
+        "tagType": "UdtInstance",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "CGTag": {
+        "dataType": "String",
+        "value": "CG[9]"
+      },
+      "ZATTag": {
+        "dataType": "String",
+        "value": "CG_ZAT[9]"
+      },
+      "IntlkTag": {
+        "dataType": "String",
+        "value": "CG_Interlock[9]"
+      },
+      "FansTag": {
+        "dataType": "String",
+        "value": "CG_Fans[9]"
+      },
+      "FansRunTimeTag": {
+        "dataType": "String",
+        "value": "CG_Fans_Runtime[9]"
+      },
+      "LiquidSVTag": {
+        "dataType": "String",
+        "value": "CG_Liquid_SV[9]"
+      },
+      "SuctionSVTag": {
+        "dataType": "String",
+        "value": "CG_Suction_SV[9]"
+      },
+      "HotGasSVTag": {
+        "dataType": "String",
+        "value": "CG_HotGas_SV[9]"
+      },
+      "BleedSVTag": {
+        "dataType": "String",
+        "value": "CG_Bleed_SV[9]"
+      }
+    }
+  }
+]

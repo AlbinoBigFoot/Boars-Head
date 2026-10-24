@@ -1,0 +1,70 @@
+[
+  {
+    "valueSource": "memory",
+    "dataType": "DataSet",
+    "documentation": "Ticket Logger types. Fields \u003d comma-separated _Config/TicketLogger/Fields keys, in form order.",
+    "name": "Types",
+    "defaultValue": "{\"columns\":[{\"name\":\"Type\",\"type\":\"java.lang.String\"},{\"name\":\"Label\",\"type\":\"java.lang.String\"},{\"name\":\"Help\",\"type\":\"java.lang.String\"},{\"name\":\"Fields\",\"type\":\"java.lang.String\"}],\"rows\":[[\"Issue\",\"Issue \\u2014 Commissioning\",\"Issue: commissioning / startup / checkout problems.\",\"expected,actual,steps\"],[\"Bug\",\"Bug \\u2014 Production\",\"Bug: production defects on live systems.\",\"expected,actual,steps\"],[\"Request\",\"Request \\u2014 Change / ask\",\"Request: change, enhancement, or work ask (not a defect).\",\"details,reason\"],[\"Question\",\"Question \\u2014 Clarification\",\"Question: need clarification or help \\u2014 not a defect.\",\"question\"]]}",
+    "tagType": "AtomicTag"
+  },
+  {
+    "valueSource": "memory",
+    "dataType": "Document",
+    "documentation": "Ticket Logger routing (ticket-routing 2026-10-24): rules [{type, area, destination, boardId, groupId}] (\u0027\u0027 \u003d Any; most specific match wins: Type + Area, Type, Area) and the default for unmatched selections. destination \u003d Monday | Oracle (shared.TicketLogger.ADAPTERS); Monday board / group \u0027\u0027 \u003d the Monday integration settings. Edited in Ticket Logger \u003e Settings \u003e Routing (TicketLogger/Settings, OneShot only; OpsAudit \u0027Ticket Routing Changed\u0027).",
+    "name": "Routing",
+    "defaultValue": {
+      "default": {
+        "destination": "Monday",
+        "boardId": "",
+        "groupId": ""
+      },
+      "rules": [
+        {
+          "type": "Issue",
+          "area": "",
+          "destination": "Monday",
+          "boardId": "",
+          "groupId": ""
+        },
+        {
+          "type": "Bug",
+          "area": "",
+          "destination": "Monday",
+          "boardId": "",
+          "groupId": ""
+        },
+        {
+          "type": "Request",
+          "area": "",
+          "destination": "Monday",
+          "boardId": "",
+          "groupId": ""
+        },
+        {
+          "type": "Question",
+          "area": "",
+          "destination": "Monday",
+          "boardId": "",
+          "groupId": ""
+        }
+      ]
+    },
+    "tagType": "AtomicTag"
+  },
+  {
+    "valueSource": "memory",
+    "dataType": "Boolean",
+    "documentation": "Ticket Logger dry run (ticket-routing 2026-10-24): true \u003d no Monday item is created and nothing is queued for Oracle; tickets are recorded in dbo.ticket_outbox as \u0027Dry Run\u0027 with their routed destination. Ticket Logger \u003e Settings \u003e Destinations (OneShot only). Leave false in production.",
+    "name": "DryRun",
+    "defaultValue": false,
+    "tagType": "AtomicTag"
+  },
+  {
+    "valueSource": "memory",
+    "dataType": "DataSet",
+    "documentation": "Ticket Logger input fields (the view has one block per key; a new key needs a view block too).",
+    "name": "Fields",
+    "defaultValue": "{\"columns\":[{\"name\":\"Key\",\"type\":\"java.lang.String\"},{\"name\":\"Label\",\"type\":\"java.lang.String\"},{\"name\":\"Placeholder\",\"type\":\"java.lang.String\"},{\"name\":\"MinLength\",\"type\":\"java.lang.Integer\"}],\"rows\":[[\"expected\",\"Expected Result\",\"What should have happened\",3],[\"actual\",\"Actual Result\",\"What happened instead\",3],[\"steps\",\"Steps to Recreate\",\"1. Open ...  2. Click ...\",3],[\"details\",\"Request Details\",\"What should change or be added\",3],[\"reason\",\"Reason / Benefit\",\"Why it is needed and who it helps\",3],[\"question\",\"Question\",\"What do you need answered\",3]]}",
+    "tagType": "AtomicTag"
+  }
+]

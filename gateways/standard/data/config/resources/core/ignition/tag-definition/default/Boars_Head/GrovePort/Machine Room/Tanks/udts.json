@@ -1,0 +1,311 @@
+[
+  {
+    "metadata": {
+      "shortDescription": "HTR",
+      "longDescription": "tank. Live PLC [RCP1] (read only): LevelTag\u003dHT_LVL, PressSource\u003d[default]Boars_Head/GrovePort/Machine Room/Sensors/HSS-Pumps Pressure/AIn, HLCOTag\u003dHTR_HLCO, HiHiTag\u003dHTR_HIHI, OPLTag\u003dHTR_OPL, LoLoTag\u003dHTR_LOLO, Pump1AlmTag\u003dHTR_PUMPS_ALM[1], Pump2AlmTag\u003dHTR_PUMPS_ALM[2], StartPressTag\u003dHTPS_SET, LeadTag\u003dHTRL_PUMPS_SEQ.Cfg_Lead, LevelEU\u003d%, PressEU\u003dPSIG. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "HTR",
+    "typeId": "Devices/Tank",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "LvlAIn",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "PressAIn",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "HlcoDIn",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "HiHiDIn",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "OplDIn",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "LoLoDIn",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "Pump1Alm",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "Pump2Alm",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "StartPress",
+        "tagType": "AtomicTag",
+        "enabled": true
+      },
+      {
+        "name": "LeadPump",
+        "tagType": "AtomicTag",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "LevelTag": {
+        "dataType": "String",
+        "value": "HT_LVL"
+      },
+      "PressSource": {
+        "dataType": "String",
+        "value": "[default]Boars_Head/GrovePort/Machine Room/Sensors/HSS-Pumps Pressure/AIn"
+      },
+      "HLCOTag": {
+        "dataType": "String",
+        "value": "HTR_HLCO"
+      },
+      "HiHiTag": {
+        "dataType": "String",
+        "value": "HTR_HIHI"
+      },
+      "OPLTag": {
+        "dataType": "String",
+        "value": "HTR_OPL"
+      },
+      "LoLoTag": {
+        "dataType": "String",
+        "value": "HTR_LOLO"
+      },
+      "Pump1AlmTag": {
+        "dataType": "String",
+        "value": "HTR_PUMPS_ALM[1]"
+      },
+      "Pump2AlmTag": {
+        "dataType": "String",
+        "value": "HTR_PUMPS_ALM[2]"
+      },
+      "StartPressTag": {
+        "dataType": "String",
+        "value": "HTPS_SET"
+      },
+      "LeadTag": {
+        "dataType": "String",
+        "value": "HTRL_PUMPS_SEQ.Cfg_Lead"
+      },
+      "LevelEU": {
+        "dataType": "String",
+        "value": "%"
+      },
+      "PressEU": {
+        "dataType": "String",
+        "value": "PSIG"
+      }
+    }
+  },
+  {
+    "metadata": {
+      "shortDescription": "LTR",
+      "longDescription": "tank. Live PLC [RCP1] (read only): LevelTag\u003dLT_LVL, PressSource\u003d[default]Boars_Head/GrovePort/Machine Room/Sensors/LSS-Pumps Pressure/AIn, HLCOTag\u003dLTR_HLCO, HiHiTag\u003dLTR_HIHI, OPLTag\u003dLTR_OPL, LoLoTag\u003dLTR_LOLO, Pump1AlmTag\u003dLTR_PUMPS_ALM[1], Pump2AlmTag\u003dLTR_PUMPS_ALM[2], StartPressTag\u003dLTPS_SET, LeadTag\u003dLTRL_PUMPS_SEQ.Cfg_Lead, LevelEU\u003d%, PressEU\u003dPSIG. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "LTR",
+    "typeId": "Devices/Tank",
+    "tagType": "UdtInstance",
+    "enabled": true,
+    "tags": [
+      {
+        "name": "LvlAIn",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "PressAIn",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "HlcoDIn",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "HiHiDIn",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "OplDIn",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "LoLoDIn",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "Pump1Alm",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "Pump2Alm",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "StartPress",
+        "tagType": "AtomicTag",
+        "enabled": true
+      },
+      {
+        "name": "LeadPump",
+        "tagType": "AtomicTag",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "LevelTag": {
+        "dataType": "String",
+        "value": "LT_LVL"
+      },
+      "PressSource": {
+        "dataType": "String",
+        "value": "[default]Boars_Head/GrovePort/Machine Room/Sensors/LSS-Pumps Pressure/AIn"
+      },
+      "HLCOTag": {
+        "dataType": "String",
+        "value": "LTR_HLCO"
+      },
+      "HiHiTag": {
+        "dataType": "String",
+        "value": "LTR_HIHI"
+      },
+      "OPLTag": {
+        "dataType": "String",
+        "value": "LTR_OPL"
+      },
+      "LoLoTag": {
+        "dataType": "String",
+        "value": "LTR_LOLO"
+      },
+      "Pump1AlmTag": {
+        "dataType": "String",
+        "value": "LTR_PUMPS_ALM[1]"
+      },
+      "Pump2AlmTag": {
+        "dataType": "String",
+        "value": "LTR_PUMPS_ALM[2]"
+      },
+      "StartPressTag": {
+        "dataType": "String",
+        "value": "LTPS_SET"
+      },
+      "LeadTag": {
+        "dataType": "String",
+        "value": "LTRL_PUMPS_SEQ.Cfg_Lead"
+      },
+      "LevelEU": {
+        "dataType": "String",
+        "value": "%"
+      },
+      "PressEU": {
+        "dataType": "String",
+        "value": "PSIG"
+      }
+    }
+  },
+  {
+    "name": "Overview",
+    "typeId": "Overview/Tank Overview",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "ActiveAlarmCount",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "expr",
+            "expression": "sum({[default]Boars_Head/GrovePort/Machine Room/Tanks/HPR/_Alarms/_Active},\n{[default]Boars_Head/GrovePort/Machine Room/Tanks/HTR/_Alarms/_Active},\n{[default]Boars_Head/GrovePort/Machine Room/Tanks/LTR/_Alarms/_Active})",
+            "dataType": "Int4",
+            "formatString": "0",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "typeId": "_Root/Document",
+        "name": "Instances",
+        "tagType": "AtomicTag",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "name": "Rebuild",
+        "tagType": "AtomicTag"
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "HPR",
+      "longDescription": "tank. Live PLC [RCP1] (read only): LevelTag\u003dLT_HPR, LoLoTag\u003dHPR_LOLO, LevelEU\u003d%. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "HPR",
+    "typeId": "Devices/Tank",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "LvlAIn",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "LoLoDIn",
+        "tagType": "UdtInstance",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "LevelTag": {
+        "dataType": "String",
+        "value": "LT_HPR"
+      },
+      "LoLoTag": {
+        "dataType": "String",
+        "value": "HPR_LOLO"
+      },
+      "LevelEU": {
+        "dataType": "String",
+        "value": "%"
+      }
+    }
+  }
+]

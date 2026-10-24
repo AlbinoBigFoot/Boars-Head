@@ -1,0 +1,47 @@
+[
+  {
+    "metadata": {
+      "shortDescription": "HLCO Safety Relay",
+      "longDescription": "safetyrelay. Live PLC [RCP1] (read only): ModuleTag=SafetyRelay:I, MajorFaultTag=SafetyRelay_MajorFault, ResetAlmTag=SafetyRelay_ResetAlm. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "documentation": "FT (STELLAR)SafetyRelay - members reference the PLC/RCP1/SafetyRelay stand-ins (#OPC [RCP1]SafetyRelay:I.*, SafetyRelay_MajorFault, SafetyRelay_ResetAlm)",
+    "name": "HLCO Safety Relay",
+    "typeId": "Devices/SafetyRelay",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "IO",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "PlcMajorFault",
+        "tagType": "AtomicTag",
+        "enabled": true
+      },
+      {
+        "name": "PlcResetAlm",
+        "tagType": "AtomicTag",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "ModuleTag": {
+        "dataType": "String",
+        "value": "SafetyRelay:I"
+      },
+      "MajorFaultTag": {
+        "dataType": "String",
+        "value": "SafetyRelay_MajorFault"
+      },
+      "ResetAlmTag": {
+        "dataType": "String",
+        "value": "SafetyRelay_ResetAlm"
+      }
+    }
+  }
+]

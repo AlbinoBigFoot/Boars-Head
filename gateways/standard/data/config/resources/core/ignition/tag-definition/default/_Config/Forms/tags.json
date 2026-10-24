@@ -1,0 +1,26 @@
+[
+  {
+    "valueSource": "memory",
+    "dataType": "Int4",
+    "documentation": "operations-forms builder: last seed applied (not used by the HMI).",
+    "name": "SeedVersion",
+    "defaultValue": 1,
+    "tagType": "AtomicTag"
+  },
+  {
+    "valueSource": "memory",
+    "dataType": "String",
+    "documentation": "Operations Forms operator list (comma-separated): Name / Operator / Verified By dropdowns on Daily Rounds Log, NH3 Shift Log and Annual P\u0026ID Verification. The logged-in user\u0027s own name is always offered too. Seeded from both workbooks (.cursor/tasks/operations-forms).",
+    "name": "Operators",
+    "defaultValue": "Greg Ford, Dan Baker, Cody Gleason, I. Collins",
+    "tagType": "AtomicTag"
+  },
+  {
+    "valueSource": "memory",
+    "dataType": "String",
+    "documentation": "Annual P\u0026ID Verification: default \u0027Verified Against Drawing Revision\u0027 for a new cycle.",
+    "name": "PidDrawingRevision",
+    "defaultValue": "R-8 rev 04/14/20, R-9 rev 04/15/20, R-10 rev 04/15/20",
+    "tagType": "AtomicTag"
+  }
+]

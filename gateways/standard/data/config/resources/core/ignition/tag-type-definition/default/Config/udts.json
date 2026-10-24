@@ -1138,6 +1138,273 @@
             "tagType": "AtomicTag"
           }
         ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "OK state channel bits",
+          "longDescription": "OK state channel bits (FT P_Intlk Cfg_OKState)"
+        },
+        "name": "Cfg_OKState",
+        "typeId": "_Root/Analog",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "OK state channel bits",
+              "longDescription": "OK state channel bits (FT P_Intlk Cfg_OKState)"
+            },
+            "historicalDeadband": 0.0,
+            "historicalDeadbandMode": "Absolute",
+            "historicalDeadbandStyle": "Discrete",
+            "formatString": "#0",
+            "tagType": "AtomicTag",
+            "dataType": "Int4",
+            "historyProvider": "historian",
+            "name": "Value",
+            "historyEnabled": true,
+            "value": 0,
+            "sampleMode": "OnChange",
+            "valueSource": "memory"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Must reset (latched) channel bits",
+          "longDescription": "Must reset (latched) channel bits (FT P_Intlk Cfg_Latched)"
+        },
+        "name": "Cfg_Latched",
+        "typeId": "_Root/Analog",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Must reset (latched) channel bits",
+              "longDescription": "Must reset (latched) channel bits (FT P_Intlk Cfg_Latched)"
+            },
+            "historicalDeadband": 0.0,
+            "historicalDeadbandMode": "Absolute",
+            "historicalDeadbandStyle": "Discrete",
+            "formatString": "#0",
+            "tagType": "AtomicTag",
+            "dataType": "Int4",
+            "historyProvider": "historian",
+            "name": "Value",
+            "historyEnabled": true,
+            "value": 0,
+            "sampleMode": "OnChange",
+            "valueSource": "memory"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Allow navigation channel bits",
+          "longDescription": "Allow navigation channel bits (FT P_Intlk Cfg_HasNav)"
+        },
+        "name": "Cfg_HasNav",
+        "typeId": "_Root/Analog",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Allow navigation channel bits",
+              "longDescription": "Allow navigation channel bits (FT P_Intlk Cfg_HasNav)"
+            },
+            "historicalDeadband": 0.0,
+            "historicalDeadbandMode": "Absolute",
+            "historicalDeadbandStyle": "Discrete",
+            "formatString": "#0",
+            "tagType": "AtomicTag",
+            "dataType": "Int4",
+            "historyProvider": "historian",
+            "name": "Value",
+            "historyEnabled": true,
+            "value": 0,
+            "sampleMode": "OnChange",
+            "valueSource": "memory"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Description",
+          "longDescription": "Description (FT P_Intlk Cfg_Desc)"
+        },
+        "name": "Cfg_Desc",
+        "typeId": "_Root/String",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Description",
+              "longDescription": "Description (FT P_Intlk Cfg_Desc)"
+            },
+            "name": "Value",
+            "value": "Interlocks with First Out",
+            "tagType": "AtomicTag",
+            "valueSource": "memory"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Label",
+          "longDescription": "Label (FT P_Intlk Cfg_Label)"
+        },
+        "name": "Cfg_Label",
+        "typeId": "_Root/String",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Label",
+              "longDescription": "Label (FT P_Intlk Cfg_Label)"
+            },
+            "name": "Value",
+            "value": "Interlocks",
+            "tagType": "AtomicTag",
+            "valueSource": "memory"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Tag",
+          "longDescription": "Tag (FT P_Intlk Cfg_Tag)"
+        },
+        "name": "Cfg_Tag",
+        "typeId": "_Root/String",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Tag",
+              "longDescription": "Tag (FT P_Intlk Cfg_Tag)"
+            },
+            "name": "Value",
+            "value": "",
+            "tagType": "AtomicTag",
+            "valueSource": "memory"
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "shortDescription": "Clear program commands upon receipt",
+          "longDescription": "Clear program commands upon receipt (FT P_Intlk Cfg_PCmdClear)"
+        },
+        "name": "Cfg_PCmdClear",
+        "typeId": "_Root/Digital",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "metadata": {
+              "shortDescription": "Clear program commands upon receipt",
+              "longDescription": "Clear program commands upon receipt (FT P_Intlk Cfg_PCmdClear)",
+              "states": [
+                {
+                  "label": "Off",
+                  "value": 0
+                },
+                {
+                  "label": "On",
+                  "value": 1
+                }
+              ]
+            },
+            "name": "Value",
+            "value": true,
+            "tagType": "AtomicTag",
+            "valueSource": "memory"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Integration",
+    "tagType": "UdtType",
+    "documentation": "One API endpoint / connection (_Config/Integrations/<Name>). shared.Integrations reads and edits it; Ticket Logger > Integrations lists them.",
+    "tags": [
+      {
+        "valueSource": "memory",
+        "dataType": "String",
+        "name": "Provider",
+        "documentation": "Provider key - picks the connection test and client (Monday, Oracle, HTTP)",
+        "tagType": "AtomicTag",
+        "value": ""
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "String",
+        "name": "Description",
+        "documentation": "What this endpoint is used for",
+        "tagType": "AtomicTag",
+        "value": ""
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "name": "Enabled",
+        "documentation": "Off = never called, Connected stays false",
+        "tagType": "AtomicTag",
+        "value": false
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "String",
+        "name": "Endpoint URL",
+        "documentation": "Base URL of the API",
+        "tagType": "AtomicTag",
+        "value": ""
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "String",
+        "name": "API Version",
+        "documentation": "API version header, where the provider has one (Monday API-Version)",
+        "tagType": "AtomicTag",
+        "value": ""
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "String",
+        "name": "API Token",
+        "documentation": "Credential sent as Authorization. Write-only from the HMI; this folder is not in git",
+        "tagType": "AtomicTag",
+        "value": ""
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "name": "Connected",
+        "documentation": "Last connection test passed (pingMonday timer -> shared.Integrations.pingAll)",
+        "tagType": "AtomicTag",
+        "value": false
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "DateTime",
+        "name": "Last Check",
+        "documentation": "When the connection was last tested",
+        "tagType": "AtomicTag"
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "String",
+        "name": "Last Error",
+        "documentation": "Last connection test error ('' when connected)",
+        "tagType": "AtomicTag",
+        "value": ""
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "Document",
+        "name": "Settings",
+        "documentation": "Provider-specific settings, e.g. Monday workspaceId / boardId / groupId / columns",
+        "tagType": "AtomicTag",
+        "value": {}
       }
     ]
   }

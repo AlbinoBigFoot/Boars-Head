@@ -1,0 +1,265 @@
+[
+  {
+    "metadata": {
+      "shortDescription": "COMP 6",
+      "longDescription": "compressor. Live PLC [RCP1] (read only): CompTag=COMP[6], IntlkTag=COMP[6].Interlock. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "COMP 6",
+    "typeId": "Devices/Compressor",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Cfg_WebGuiUrl",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Comp",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "Intlk",
+        "tagType": "UdtInstance",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "CompTag": {
+        "dataType": "String",
+        "value": "COMP[6]"
+      },
+      "IntlkTag": {
+        "dataType": "String",
+        "value": "COMP[6].Interlock"
+      }
+    }
+  },
+  {
+    "metadata": {
+      "shortDescription": "COMP 1",
+      "longDescription": "compressor. Live PLC [RCP1] (read only): CompTag=COMP[1], IntlkTag=COMP[1].Interlock. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "COMP 1",
+    "typeId": "Devices/Compressor",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Cfg_WebGuiUrl",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Comp",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "Intlk",
+        "tagType": "UdtInstance",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "CompTag": {
+        "dataType": "String",
+        "value": "COMP[1]"
+      },
+      "IntlkTag": {
+        "dataType": "String",
+        "value": "COMP[1].Interlock"
+      }
+    }
+  },
+  {
+    "metadata": {
+      "shortDescription": "COMP 5",
+      "longDescription": "compressor. Live PLC [RCP1] (read only): CompTag=COMP[5], IntlkTag=COMP[5].Interlock. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "COMP 5",
+    "typeId": "Devices/Compressor",
+    "tagType": "UdtInstance",
+    "enabled": true,
+    "tags": [
+      {
+        "name": "Cfg_WebGuiUrl",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Comp",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "Intlk",
+        "tagType": "UdtInstance",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "CompTag": {
+        "dataType": "String",
+        "value": "COMP[5]"
+      },
+      "IntlkTag": {
+        "dataType": "String",
+        "value": "COMP[5].Interlock"
+      }
+    }
+  },
+  {
+    "metadata": {
+      "shortDescription": "COMP 4",
+      "longDescription": "compressor. Live PLC [RCP1] (read only): CompTag=COMP[4], IntlkTag=COMP[4].Interlock. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "COMP 4",
+    "typeId": "Devices/Compressor",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Cfg_WebGuiUrl",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Comp",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "Intlk",
+        "tagType": "UdtInstance",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "CompTag": {
+        "dataType": "String",
+        "value": "COMP[4]"
+      },
+      "IntlkTag": {
+        "dataType": "String",
+        "value": "COMP[4].Interlock"
+      }
+    }
+  },
+  {
+    "name": "Overview",
+    "typeId": "Overview/Compressor Overview",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "ActiveAlarmCount",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "expr",
+            "expression": "sum({[default]Boars_Head/GrovePort/Machine Room/Compressors/COMP 1/_Alarms/_Active},\n{[default]Boars_Head/GrovePort/Machine Room/Compressors/COMP 4/_Alarms/_Active},\n{[default]Boars_Head/GrovePort/Machine Room/Compressors/COMP 5/_Alarms/_Active},\n{[default]Boars_Head/GrovePort/Machine Room/Compressors/COMP 6/_Alarms/_Active},\n{[default]Boars_Head/GrovePort/Machine Room/Compressors/COMP 7/_Alarms/_Active})",
+            "dataType": "Int4",
+            "formatString": "0",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "typeId": "_Root/Document",
+        "name": "Instances",
+        "tagType": "AtomicTag"
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "name": "Rebuild",
+        "tagType": "AtomicTag"
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "COMP 7",
+      "longDescription": "compressor. Live PLC [RCP1] (read only): CompTag=COMP[7], IntlkTag=COMP[7].Interlock. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "COMP 7",
+    "typeId": "Devices/Compressor",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Cfg_WebGuiUrl",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "memory",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "name": "Comp",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "Intlk",
+        "tagType": "UdtInstance",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "CompTag": {
+        "dataType": "String",
+        "value": "COMP[7]"
+      },
+      "IntlkTag": {
+        "dataType": "String",
+        "value": "COMP[7].Interlock"
+      }
+    }
+  }
+]

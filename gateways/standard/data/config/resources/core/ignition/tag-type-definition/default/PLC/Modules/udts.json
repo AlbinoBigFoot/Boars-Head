@@ -1,0 +1,1787 @@
+[
+  {
+    "name": "_Discrete16In",
+    "tagType": "UdtType",
+    "metadata": {
+      "shortDescription": "1769 16-point discrete input base (read only)",
+      "longDescription": "1769 16-point discrete input base on a Logix local bus: OPC ns=1;s=[{DeviceName}]Local:{Slot}:I|O|C.<member>, every member readOnly, tag groups PAX_Status / PAX_Faceplate (.cursor/tasks/plc-rack-io/build.py)"
+    },
+    "parameters": {
+      "DeviceName": {
+        "dataType": "String",
+        "value": null
+      },
+      "Slot": {
+        "dataType": "Integer",
+        "value": 0
+      },
+      "Description": {
+        "dataType": "String",
+        "value": ""
+      }
+    },
+    "tags": [
+      {
+        "name": "CommOk",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}][Diagnostics]/Connected"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Logix driver connected (gates the card alarms during a comm loss)"
+      },
+      {
+        "name": "ConnectionFaulted",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "Boolean",
+        "expression": "coalesce({[.]CommOk}, false) && {[.]Fault} = -1",
+        "readOnly": true,
+        "documentation": "Connection fault to the card: every Fault bit set (only while the driver is connected)"
+      },
+      {
+        "name": "Data",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Data"
+        },
+        "dataType": "Int2",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Input image, bit n = input point n"
+      },
+      {
+        "name": "Fault",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Fault"
+        },
+        "dataType": "Int4",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Module fault word (Logix Local:n:I.Fault); 0 = OK, all bits set (-1) = connection fault"
+      },
+      {
+        "name": "Faulted",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "Boolean",
+        "expression": "coalesce({[.]CommOk}, false) && {[.]Fault} != 0",
+        "readOnly": true,
+        "documentation": "Module fault: Fault word non-zero (only while the driver is connected)",
+        "alarms": [
+          {
+            "mode": "WhenTrue",
+            "name": "Module Fault",
+            "priority": "High",
+            "notes": "1769 16-point Local:n:I.Fault != 0 (-1 = connection fault to the card). Suppressed while PLC communication is lost.",
+            "enabled": true,
+            "displayPath": {
+              "bindType": "Expression",
+              "value": "replace(try(split({PathToTag}, '/')[1, 0], ''), 'GrovePort', 'Groveport') + ' / ' + try(split({PathToTag}, '/')[2, 0], '') + ' / PLC / ' + try(split({PathToTag}, '/')[4, 0], '') + ' / ' + try(split({PathToTag}, '/')[5, 0], '')"
+            },
+            "label": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[4, 0], '') + ' ' + try(split({PathToTag}, '/')[5, 0], '') + ' Module Fault'"
+            },
+            "Site": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[1, 0], '')"
+            },
+            "Area": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[2, 0], '')"
+            },
+            "Device": {
+              "bindType": "Expression",
+              "value": "trim(try(split({PathToTag}, '/')[4, 0], '') + ' ' + try(split({PathToTag}, '/')[5, 0], ''))"
+            }
+          }
+        ]
+      },
+      {
+        "name": "ModuleType",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "'DI'",
+        "readOnly": true,
+        "documentation": "DI / DO / AI / AO / Comm"
+      },
+      {
+        "name": "Points",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "Int4",
+        "expression": "16",
+        "readOnly": true,
+        "documentation": "Point / channel count"
+      }
+    ]
+  },
+  {
+    "name": "_Discrete16Out",
+    "tagType": "UdtType",
+    "metadata": {
+      "shortDescription": "1769 16-point discrete output base (read only)",
+      "longDescription": "1769 16-point discrete output base on a Logix local bus: OPC ns=1;s=[{DeviceName}]Local:{Slot}:I|O|C.<member>, every member readOnly, tag groups PAX_Status / PAX_Faceplate (.cursor/tasks/plc-rack-io/build.py)"
+    },
+    "parameters": {
+      "DeviceName": {
+        "dataType": "String",
+        "value": null
+      },
+      "Slot": {
+        "dataType": "Integer",
+        "value": 0
+      },
+      "Description": {
+        "dataType": "String",
+        "value": ""
+      }
+    },
+    "tags": [
+      {
+        "name": "CommOk",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}][Diagnostics]/Connected"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Logix driver connected (gates the card alarms during a comm loss)"
+      },
+      {
+        "name": "ConnectionFaulted",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "Boolean",
+        "expression": "coalesce({[.]CommOk}, false) && {[.]Fault} = -1",
+        "readOnly": true,
+        "documentation": "Connection fault to the card: every Fault bit set (only while the driver is connected)"
+      },
+      {
+        "name": "Data",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:O.Data"
+        },
+        "dataType": "Int2",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Output image (controller command), bit n = output n"
+      },
+      {
+        "name": "Fault",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Fault"
+        },
+        "dataType": "Int4",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Module fault word (Logix Local:n:I.Fault); 0 = OK, all bits set (-1) = connection fault"
+      },
+      {
+        "name": "Faulted",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "Boolean",
+        "expression": "coalesce({[.]CommOk}, false) && {[.]Fault} != 0",
+        "readOnly": true,
+        "documentation": "Module fault: Fault word non-zero (only while the driver is connected)",
+        "alarms": [
+          {
+            "mode": "WhenTrue",
+            "name": "Module Fault",
+            "priority": "High",
+            "notes": "1769 16-point Local:n:I.Fault != 0 (-1 = connection fault to the card). Suppressed while PLC communication is lost.",
+            "enabled": true,
+            "displayPath": {
+              "bindType": "Expression",
+              "value": "replace(try(split({PathToTag}, '/')[1, 0], ''), 'GrovePort', 'Groveport') + ' / ' + try(split({PathToTag}, '/')[2, 0], '') + ' / PLC / ' + try(split({PathToTag}, '/')[4, 0], '') + ' / ' + try(split({PathToTag}, '/')[5, 0], '')"
+            },
+            "label": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[4, 0], '') + ' ' + try(split({PathToTag}, '/')[5, 0], '') + ' Module Fault'"
+            },
+            "Site": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[1, 0], '')"
+            },
+            "Area": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[2, 0], '')"
+            },
+            "Device": {
+              "bindType": "Expression",
+              "value": "trim(try(split({PathToTag}, '/')[4, 0], '') + ' ' + try(split({PathToTag}, '/')[5, 0], ''))"
+            }
+          }
+        ]
+      },
+      {
+        "name": "ModuleType",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "'DO'",
+        "readOnly": true,
+        "documentation": "DI / DO / AI / AO / Comm"
+      },
+      {
+        "name": "Points",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "Int4",
+        "expression": "16",
+        "readOnly": true,
+        "documentation": "Point / channel count"
+      },
+      {
+        "name": "ReadBack",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.ReadBack"
+        },
+        "dataType": "Int2",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Output readback (actual state), bit n = output n"
+      }
+    ]
+  },
+  {
+    "name": "1769_IA16",
+    "typeId": "PLC/Modules/_Discrete16In",
+    "tagType": "UdtType",
+    "metadata": {
+      "shortDescription": "1769-IA16 16-Point 120V AC Input (read only)",
+      "longDescription": "Allen-Bradley 1769-IA16 (inherits _Discrete16In) on a Logix local bus: OPC ns=1;s=[{DeviceName}]Local:{Slot}:I|O|C.<member>, every member readOnly, tag groups PAX_Status / PAX_Faceplate (.cursor/tasks/plc-rack-io/build.py)"
+    },
+    "parameters": {
+      "DeviceName": {
+        "dataType": "String",
+        "value": null
+      },
+      "Slot": {
+        "dataType": "Integer",
+        "value": 0
+      },
+      "Description": {
+        "dataType": "String",
+        "value": ""
+      }
+    },
+    "tags": [
+      {
+        "name": "CatalogDescription",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "'16-Point 120V AC Input'",
+        "readOnly": true,
+        "documentation": "Catalog description"
+      },
+      {
+        "name": "CatalogNumber",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "'1769-IA16'",
+        "readOnly": true,
+        "documentation": "Allen-Bradley catalog number"
+      },
+      {
+        "name": "PanelLabel",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "'120V AC IN'",
+        "readOnly": true,
+        "documentation": "Front-panel legend"
+      },
+      {
+        "name": "Series",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "'A'",
+        "readOnly": true,
+        "documentation": "Catalog series"
+      }
+    ]
+  },
+  {
+    "name": "1769_IF8",
+    "tagType": "UdtType",
+    "metadata": {
+      "shortDescription": "1769-IF8 8-Channel Analog Input (0-5 V / 4-20 mA) (read only)",
+      "longDescription": "Allen-Bradley 1769-IF8 on a Logix local bus: OPC ns=1;s=[{DeviceName}]Local:{Slot}:I|O|C.<member>, every member readOnly, tag groups PAX_Status / PAX_Faceplate (.cursor/tasks/plc-rack-io/build.py)"
+    },
+    "parameters": {
+      "DeviceName": {
+        "dataType": "String",
+        "value": null
+      },
+      "Slot": {
+        "dataType": "Integer",
+        "value": 0
+      },
+      "Description": {
+        "dataType": "String",
+        "value": ""
+      }
+    },
+    "tags": [
+      {
+        "name": "CatalogDescription",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "'8-Channel Analog Input (0-5 V / 4-20 mA)'",
+        "readOnly": true,
+        "documentation": "Catalog description"
+      },
+      {
+        "name": "CatalogNumber",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "'1769-IF8'",
+        "readOnly": true,
+        "documentation": "Allen-Bradley catalog number"
+      },
+      {
+        "name": "Ch0Data",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch0Data"
+        },
+        "dataType": "Int2",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 0 input value (counts in the configured data format)"
+      },
+      {
+        "name": "Ch0DataFormat",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:C.Ch0DataFormat"
+        },
+        "dataType": "Int1",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 0 configured data format code (module configuration)"
+      },
+      {
+        "name": "Ch0En",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:C.Ch0En"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 0 enabled (configuration)"
+      },
+      {
+        "name": "Ch0HAlarm",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch0HAlarm"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Faceplate",
+        "documentation": "Channel 0 module high process alarm"
+      },
+      {
+        "name": "Ch0LAlarm",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch0LAlarm"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Faceplate",
+        "documentation": "Channel 0 module low process alarm"
+      },
+      {
+        "name": "Ch0OverRange",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch0OverRange"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 0 over range"
+      },
+      {
+        "name": "Ch0Range",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:C.Ch0Range"
+        },
+        "dataType": "Int1",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 0 configured input range code (module configuration)"
+      },
+      {
+        "name": "Ch0RangeText",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "case({[.]Ch0Range}, 0, '-10 to +10 V', 1, '0 to 5 V', 2, '0 to 10 V', 3, '4 to 20 mA', 4, '1 to 5 V', 5, '0 to 20 mA', 'Unknown')",
+        "readOnly": true,
+        "documentation": "Channel 0 input range (1769-IF8 profile code)"
+      },
+      {
+        "name": "Ch0Signal",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "Float4",
+        "expression": "if({[.]Ch0DataFormat} = 1, {[.]Ch0Data} / 1000.0, null)",
+        "readOnly": true,
+        "documentation": "Channel 0 signal in V or mA (Engineering Units counts / 1000)"
+      },
+      {
+        "name": "Ch0UnderRange",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch0UnderRange"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 0 under range"
+      },
+      {
+        "name": "Ch0Unit",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "case({[.]Ch0Range}, 0, 'V', 1, 'V', 2, 'V', 3, 'mA', 4, 'V', 5, 'mA', '')",
+        "readOnly": true,
+        "documentation": "Channel 0 signal unit (range code)"
+      },
+      {
+        "name": "Ch1Data",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch1Data"
+        },
+        "dataType": "Int2",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 1 input value (counts in the configured data format)"
+      },
+      {
+        "name": "Ch1DataFormat",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:C.Ch1DataFormat"
+        },
+        "dataType": "Int1",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 1 configured data format code (module configuration)"
+      },
+      {
+        "name": "Ch1En",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:C.Ch1En"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 1 enabled (configuration)"
+      },
+      {
+        "name": "Ch1HAlarm",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch1HAlarm"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Faceplate",
+        "documentation": "Channel 1 module high process alarm"
+      },
+      {
+        "name": "Ch1LAlarm",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch1LAlarm"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Faceplate",
+        "documentation": "Channel 1 module low process alarm"
+      },
+      {
+        "name": "Ch1OverRange",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch1OverRange"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 1 over range"
+      },
+      {
+        "name": "Ch1Range",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:C.Ch1Range"
+        },
+        "dataType": "Int1",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 1 configured input range code (module configuration)"
+      },
+      {
+        "name": "Ch1RangeText",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "case({[.]Ch1Range}, 0, '-10 to +10 V', 1, '0 to 5 V', 2, '0 to 10 V', 3, '4 to 20 mA', 4, '1 to 5 V', 5, '0 to 20 mA', 'Unknown')",
+        "readOnly": true,
+        "documentation": "Channel 1 input range (1769-IF8 profile code)"
+      },
+      {
+        "name": "Ch1Signal",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "Float4",
+        "expression": "if({[.]Ch1DataFormat} = 1, {[.]Ch1Data} / 1000.0, null)",
+        "readOnly": true,
+        "documentation": "Channel 1 signal in V or mA (Engineering Units counts / 1000)"
+      },
+      {
+        "name": "Ch1UnderRange",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch1UnderRange"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 1 under range"
+      },
+      {
+        "name": "Ch1Unit",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "case({[.]Ch1Range}, 0, 'V', 1, 'V', 2, 'V', 3, 'mA', 4, 'V', 5, 'mA', '')",
+        "readOnly": true,
+        "documentation": "Channel 1 signal unit (range code)"
+      },
+      {
+        "name": "Ch2Data",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch2Data"
+        },
+        "dataType": "Int2",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 2 input value (counts in the configured data format)"
+      },
+      {
+        "name": "Ch2DataFormat",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:C.Ch2DataFormat"
+        },
+        "dataType": "Int1",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 2 configured data format code (module configuration)"
+      },
+      {
+        "name": "Ch2En",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:C.Ch2En"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 2 enabled (configuration)"
+      },
+      {
+        "name": "Ch2HAlarm",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch2HAlarm"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Faceplate",
+        "documentation": "Channel 2 module high process alarm"
+      },
+      {
+        "name": "Ch2LAlarm",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch2LAlarm"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Faceplate",
+        "documentation": "Channel 2 module low process alarm"
+      },
+      {
+        "name": "Ch2OverRange",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch2OverRange"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 2 over range"
+      },
+      {
+        "name": "Ch2Range",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:C.Ch2Range"
+        },
+        "dataType": "Int1",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 2 configured input range code (module configuration)"
+      },
+      {
+        "name": "Ch2RangeText",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "case({[.]Ch2Range}, 0, '-10 to +10 V', 1, '0 to 5 V', 2, '0 to 10 V', 3, '4 to 20 mA', 4, '1 to 5 V', 5, '0 to 20 mA', 'Unknown')",
+        "readOnly": true,
+        "documentation": "Channel 2 input range (1769-IF8 profile code)"
+      },
+      {
+        "name": "Ch2Signal",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "Float4",
+        "expression": "if({[.]Ch2DataFormat} = 1, {[.]Ch2Data} / 1000.0, null)",
+        "readOnly": true,
+        "documentation": "Channel 2 signal in V or mA (Engineering Units counts / 1000)"
+      },
+      {
+        "name": "Ch2UnderRange",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch2UnderRange"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 2 under range"
+      },
+      {
+        "name": "Ch2Unit",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "case({[.]Ch2Range}, 0, 'V', 1, 'V', 2, 'V', 3, 'mA', 4, 'V', 5, 'mA', '')",
+        "readOnly": true,
+        "documentation": "Channel 2 signal unit (range code)"
+      },
+      {
+        "name": "Ch3Data",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch3Data"
+        },
+        "dataType": "Int2",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 3 input value (counts in the configured data format)"
+      },
+      {
+        "name": "Ch3DataFormat",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:C.Ch3DataFormat"
+        },
+        "dataType": "Int1",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 3 configured data format code (module configuration)"
+      },
+      {
+        "name": "Ch3En",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:C.Ch3En"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 3 enabled (configuration)"
+      },
+      {
+        "name": "Ch3HAlarm",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch3HAlarm"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Faceplate",
+        "documentation": "Channel 3 module high process alarm"
+      },
+      {
+        "name": "Ch3LAlarm",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch3LAlarm"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Faceplate",
+        "documentation": "Channel 3 module low process alarm"
+      },
+      {
+        "name": "Ch3OverRange",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch3OverRange"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 3 over range"
+      },
+      {
+        "name": "Ch3Range",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:C.Ch3Range"
+        },
+        "dataType": "Int1",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 3 configured input range code (module configuration)"
+      },
+      {
+        "name": "Ch3RangeText",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "case({[.]Ch3Range}, 0, '-10 to +10 V', 1, '0 to 5 V', 2, '0 to 10 V', 3, '4 to 20 mA', 4, '1 to 5 V', 5, '0 to 20 mA', 'Unknown')",
+        "readOnly": true,
+        "documentation": "Channel 3 input range (1769-IF8 profile code)"
+      },
+      {
+        "name": "Ch3Signal",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "Float4",
+        "expression": "if({[.]Ch3DataFormat} = 1, {[.]Ch3Data} / 1000.0, null)",
+        "readOnly": true,
+        "documentation": "Channel 3 signal in V or mA (Engineering Units counts / 1000)"
+      },
+      {
+        "name": "Ch3UnderRange",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch3UnderRange"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 3 under range"
+      },
+      {
+        "name": "Ch3Unit",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "case({[.]Ch3Range}, 0, 'V', 1, 'V', 2, 'V', 3, 'mA', 4, 'V', 5, 'mA', '')",
+        "readOnly": true,
+        "documentation": "Channel 3 signal unit (range code)"
+      },
+      {
+        "name": "Ch4Data",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch4Data"
+        },
+        "dataType": "Int2",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 4 input value (counts in the configured data format)"
+      },
+      {
+        "name": "Ch4DataFormat",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:C.Ch4DataFormat"
+        },
+        "dataType": "Int1",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 4 configured data format code (module configuration)"
+      },
+      {
+        "name": "Ch4En",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:C.Ch4En"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 4 enabled (configuration)"
+      },
+      {
+        "name": "Ch4HAlarm",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch4HAlarm"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Faceplate",
+        "documentation": "Channel 4 module high process alarm"
+      },
+      {
+        "name": "Ch4LAlarm",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch4LAlarm"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Faceplate",
+        "documentation": "Channel 4 module low process alarm"
+      },
+      {
+        "name": "Ch4OverRange",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch4OverRange"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 4 over range"
+      },
+      {
+        "name": "Ch4Range",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:C.Ch4Range"
+        },
+        "dataType": "Int1",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 4 configured input range code (module configuration)"
+      },
+      {
+        "name": "Ch4RangeText",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "case({[.]Ch4Range}, 0, '-10 to +10 V', 1, '0 to 5 V', 2, '0 to 10 V', 3, '4 to 20 mA', 4, '1 to 5 V', 5, '0 to 20 mA', 'Unknown')",
+        "readOnly": true,
+        "documentation": "Channel 4 input range (1769-IF8 profile code)"
+      },
+      {
+        "name": "Ch4Signal",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "Float4",
+        "expression": "if({[.]Ch4DataFormat} = 1, {[.]Ch4Data} / 1000.0, null)",
+        "readOnly": true,
+        "documentation": "Channel 4 signal in V or mA (Engineering Units counts / 1000)"
+      },
+      {
+        "name": "Ch4UnderRange",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch4UnderRange"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 4 under range"
+      },
+      {
+        "name": "Ch4Unit",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "case({[.]Ch4Range}, 0, 'V', 1, 'V', 2, 'V', 3, 'mA', 4, 'V', 5, 'mA', '')",
+        "readOnly": true,
+        "documentation": "Channel 4 signal unit (range code)"
+      },
+      {
+        "name": "Ch5Data",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch5Data"
+        },
+        "dataType": "Int2",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 5 input value (counts in the configured data format)"
+      },
+      {
+        "name": "Ch5DataFormat",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:C.Ch5DataFormat"
+        },
+        "dataType": "Int1",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 5 configured data format code (module configuration)"
+      },
+      {
+        "name": "Ch5En",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:C.Ch5En"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 5 enabled (configuration)"
+      },
+      {
+        "name": "Ch5HAlarm",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch5HAlarm"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Faceplate",
+        "documentation": "Channel 5 module high process alarm"
+      },
+      {
+        "name": "Ch5LAlarm",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch5LAlarm"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Faceplate",
+        "documentation": "Channel 5 module low process alarm"
+      },
+      {
+        "name": "Ch5OverRange",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch5OverRange"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 5 over range"
+      },
+      {
+        "name": "Ch5Range",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:C.Ch5Range"
+        },
+        "dataType": "Int1",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 5 configured input range code (module configuration)"
+      },
+      {
+        "name": "Ch5RangeText",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "case({[.]Ch5Range}, 0, '-10 to +10 V', 1, '0 to 5 V', 2, '0 to 10 V', 3, '4 to 20 mA', 4, '1 to 5 V', 5, '0 to 20 mA', 'Unknown')",
+        "readOnly": true,
+        "documentation": "Channel 5 input range (1769-IF8 profile code)"
+      },
+      {
+        "name": "Ch5Signal",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "Float4",
+        "expression": "if({[.]Ch5DataFormat} = 1, {[.]Ch5Data} / 1000.0, null)",
+        "readOnly": true,
+        "documentation": "Channel 5 signal in V or mA (Engineering Units counts / 1000)"
+      },
+      {
+        "name": "Ch5UnderRange",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch5UnderRange"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 5 under range"
+      },
+      {
+        "name": "Ch5Unit",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "case({[.]Ch5Range}, 0, 'V', 1, 'V', 2, 'V', 3, 'mA', 4, 'V', 5, 'mA', '')",
+        "readOnly": true,
+        "documentation": "Channel 5 signal unit (range code)"
+      },
+      {
+        "name": "Ch6Data",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch6Data"
+        },
+        "dataType": "Int2",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 6 input value (counts in the configured data format)"
+      },
+      {
+        "name": "Ch6DataFormat",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:C.Ch6DataFormat"
+        },
+        "dataType": "Int1",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 6 configured data format code (module configuration)"
+      },
+      {
+        "name": "Ch6En",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:C.Ch6En"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 6 enabled (configuration)"
+      },
+      {
+        "name": "Ch6HAlarm",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch6HAlarm"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Faceplate",
+        "documentation": "Channel 6 module high process alarm"
+      },
+      {
+        "name": "Ch6LAlarm",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch6LAlarm"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Faceplate",
+        "documentation": "Channel 6 module low process alarm"
+      },
+      {
+        "name": "Ch6OverRange",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch6OverRange"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 6 over range"
+      },
+      {
+        "name": "Ch6Range",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:C.Ch6Range"
+        },
+        "dataType": "Int1",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 6 configured input range code (module configuration)"
+      },
+      {
+        "name": "Ch6RangeText",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "case({[.]Ch6Range}, 0, '-10 to +10 V', 1, '0 to 5 V', 2, '0 to 10 V', 3, '4 to 20 mA', 4, '1 to 5 V', 5, '0 to 20 mA', 'Unknown')",
+        "readOnly": true,
+        "documentation": "Channel 6 input range (1769-IF8 profile code)"
+      },
+      {
+        "name": "Ch6Signal",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "Float4",
+        "expression": "if({[.]Ch6DataFormat} = 1, {[.]Ch6Data} / 1000.0, null)",
+        "readOnly": true,
+        "documentation": "Channel 6 signal in V or mA (Engineering Units counts / 1000)"
+      },
+      {
+        "name": "Ch6UnderRange",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch6UnderRange"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 6 under range"
+      },
+      {
+        "name": "Ch6Unit",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "case({[.]Ch6Range}, 0, 'V', 1, 'V', 2, 'V', 3, 'mA', 4, 'V', 5, 'mA', '')",
+        "readOnly": true,
+        "documentation": "Channel 6 signal unit (range code)"
+      },
+      {
+        "name": "Ch7Data",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch7Data"
+        },
+        "dataType": "Int2",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 7 input value (counts in the configured data format)"
+      },
+      {
+        "name": "Ch7DataFormat",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:C.Ch7DataFormat"
+        },
+        "dataType": "Int1",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 7 configured data format code (module configuration)"
+      },
+      {
+        "name": "Ch7En",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:C.Ch7En"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 7 enabled (configuration)"
+      },
+      {
+        "name": "Ch7HAlarm",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch7HAlarm"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Faceplate",
+        "documentation": "Channel 7 module high process alarm"
+      },
+      {
+        "name": "Ch7LAlarm",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch7LAlarm"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Faceplate",
+        "documentation": "Channel 7 module low process alarm"
+      },
+      {
+        "name": "Ch7OverRange",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch7OverRange"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 7 over range"
+      },
+      {
+        "name": "Ch7Range",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:C.Ch7Range"
+        },
+        "dataType": "Int1",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 7 configured input range code (module configuration)"
+      },
+      {
+        "name": "Ch7RangeText",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "case({[.]Ch7Range}, 0, '-10 to +10 V', 1, '0 to 5 V', 2, '0 to 10 V', 3, '4 to 20 mA', 4, '1 to 5 V', 5, '0 to 20 mA', 'Unknown')",
+        "readOnly": true,
+        "documentation": "Channel 7 input range (1769-IF8 profile code)"
+      },
+      {
+        "name": "Ch7Signal",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "Float4",
+        "expression": "if({[.]Ch7DataFormat} = 1, {[.]Ch7Data} / 1000.0, null)",
+        "readOnly": true,
+        "documentation": "Channel 7 signal in V or mA (Engineering Units counts / 1000)"
+      },
+      {
+        "name": "Ch7UnderRange",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Ch7UnderRange"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Channel 7 under range"
+      },
+      {
+        "name": "Ch7Unit",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "case({[.]Ch7Range}, 0, 'V', 1, 'V', 2, 'V', 3, 'mA', 4, 'V', 5, 'mA', '')",
+        "readOnly": true,
+        "documentation": "Channel 7 signal unit (range code)"
+      },
+      {
+        "name": "CommOk",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}][Diagnostics]/Connected"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Logix driver connected (gates the card alarms during a comm loss)"
+      },
+      {
+        "name": "ConnectionFaulted",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "Boolean",
+        "expression": "coalesce({[.]CommOk}, false) && {[.]Fault} = -1",
+        "readOnly": true,
+        "documentation": "Connection fault to the card: every Fault bit set (only while the driver is connected)"
+      },
+      {
+        "name": "Fault",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]Local:{Slot}:I.Fault"
+        },
+        "dataType": "Int4",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Module fault word (Logix Local:n:I.Fault); 0 = OK, all bits set (-1) = connection fault"
+      },
+      {
+        "name": "Faulted",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "Boolean",
+        "expression": "coalesce({[.]CommOk}, false) && {[.]Fault} != 0",
+        "readOnly": true,
+        "documentation": "Module fault: Fault word non-zero (only while the driver is connected)",
+        "alarms": [
+          {
+            "mode": "WhenTrue",
+            "name": "Module Fault",
+            "priority": "High",
+            "notes": "1769-IF8 Local:n:I.Fault != 0 (-1 = connection fault to the card). Suppressed while PLC communication is lost.",
+            "enabled": true,
+            "displayPath": {
+              "bindType": "Expression",
+              "value": "replace(try(split({PathToTag}, '/')[1, 0], ''), 'GrovePort', 'Groveport') + ' / ' + try(split({PathToTag}, '/')[2, 0], '') + ' / PLC / ' + try(split({PathToTag}, '/')[4, 0], '') + ' / ' + try(split({PathToTag}, '/')[5, 0], '')"
+            },
+            "label": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[4, 0], '') + ' ' + try(split({PathToTag}, '/')[5, 0], '') + ' Module Fault'"
+            },
+            "Site": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[1, 0], '')"
+            },
+            "Area": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[2, 0], '')"
+            },
+            "Device": {
+              "bindType": "Expression",
+              "value": "trim(try(split({PathToTag}, '/')[4, 0], '') + ' ' + try(split({PathToTag}, '/')[5, 0], ''))"
+            }
+          }
+        ]
+      },
+      {
+        "name": "ModuleType",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "'AI'",
+        "readOnly": true,
+        "documentation": "DI / DO / AI / AO / Comm"
+      },
+      {
+        "name": "PanelLabel",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "'ANALOG IN'",
+        "readOnly": true,
+        "documentation": "Front-panel legend"
+      },
+      {
+        "name": "Points",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "Int4",
+        "expression": "8",
+        "readOnly": true,
+        "documentation": "Point / channel count"
+      },
+      {
+        "name": "Series",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "'A'",
+        "readOnly": true,
+        "documentation": "Catalog series"
+      }
+    ]
+  },
+  {
+    "name": "1769_IQ16",
+    "typeId": "PLC/Modules/_Discrete16In",
+    "tagType": "UdtType",
+    "metadata": {
+      "shortDescription": "1769-IQ16 16-Point 24V DC Sink / Source Input (read only)",
+      "longDescription": "Allen-Bradley 1769-IQ16 (inherits _Discrete16In) on a Logix local bus: OPC ns=1;s=[{DeviceName}]Local:{Slot}:I|O|C.<member>, every member readOnly, tag groups PAX_Status / PAX_Faceplate (.cursor/tasks/plc-rack-io/build.py)"
+    },
+    "parameters": {
+      "DeviceName": {
+        "dataType": "String",
+        "value": null
+      },
+      "Slot": {
+        "dataType": "Integer",
+        "value": 0
+      },
+      "Description": {
+        "dataType": "String",
+        "value": ""
+      }
+    },
+    "tags": [
+      {
+        "name": "CatalogDescription",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "'16-Point 24V DC Sink / Source Input'",
+        "readOnly": true,
+        "documentation": "Catalog description"
+      },
+      {
+        "name": "CatalogNumber",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "'1769-IQ16'",
+        "readOnly": true,
+        "documentation": "Allen-Bradley catalog number"
+      },
+      {
+        "name": "PanelLabel",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "'24V DC IN'",
+        "readOnly": true,
+        "documentation": "Front-panel legend"
+      },
+      {
+        "name": "Series",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "'A'",
+        "readOnly": true,
+        "documentation": "Catalog series"
+      }
+    ]
+  },
+  {
+    "name": "1769_OA16",
+    "typeId": "PLC/Modules/_Discrete16Out",
+    "tagType": "UdtType",
+    "metadata": {
+      "shortDescription": "1769-OA16 16-Point 120/240V AC Triac Output (read only)",
+      "longDescription": "Allen-Bradley 1769-OA16 (inherits _Discrete16Out) on a Logix local bus: OPC ns=1;s=[{DeviceName}]Local:{Slot}:I|O|C.<member>, every member readOnly, tag groups PAX_Status / PAX_Faceplate (.cursor/tasks/plc-rack-io/build.py)"
+    },
+    "parameters": {
+      "DeviceName": {
+        "dataType": "String",
+        "value": null
+      },
+      "Slot": {
+        "dataType": "Integer",
+        "value": 0
+      },
+      "Description": {
+        "dataType": "String",
+        "value": ""
+      }
+    },
+    "tags": [
+      {
+        "name": "CatalogDescription",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "'16-Point 120/240V AC Triac Output'",
+        "readOnly": true,
+        "documentation": "Catalog description"
+      },
+      {
+        "name": "CatalogNumber",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "'1769-OA16'",
+        "readOnly": true,
+        "documentation": "Allen-Bradley catalog number"
+      },
+      {
+        "name": "PanelLabel",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "'AC OUT'",
+        "readOnly": true,
+        "documentation": "Front-panel legend"
+      },
+      {
+        "name": "Series",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "'A'",
+        "readOnly": true,
+        "documentation": "Catalog series"
+      }
+    ]
+  },
+  {
+    "name": "1769_OW16",
+    "typeId": "PLC/Modules/_Discrete16Out",
+    "tagType": "UdtType",
+    "metadata": {
+      "shortDescription": "1769-OW16 16-Point AC/DC Relay Output (read only)",
+      "longDescription": "Allen-Bradley 1769-OW16 (inherits _Discrete16Out) on a Logix local bus: OPC ns=1;s=[{DeviceName}]Local:{Slot}:I|O|C.<member>, every member readOnly, tag groups PAX_Status / PAX_Faceplate (.cursor/tasks/plc-rack-io/build.py)"
+    },
+    "parameters": {
+      "DeviceName": {
+        "dataType": "String",
+        "value": null
+      },
+      "Slot": {
+        "dataType": "Integer",
+        "value": 0
+      },
+      "Description": {
+        "dataType": "String",
+        "value": ""
+      }
+    },
+    "tags": [
+      {
+        "name": "CatalogDescription",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "'16-Point AC/DC Relay Output'",
+        "readOnly": true,
+        "documentation": "Catalog description"
+      },
+      {
+        "name": "CatalogNumber",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "'1769-OW16'",
+        "readOnly": true,
+        "documentation": "Allen-Bradley catalog number"
+      },
+      {
+        "name": "PanelLabel",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "'RELAY OUT'",
+        "readOnly": true,
+        "documentation": "Front-panel legend"
+      },
+      {
+        "name": "Series",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "'A'",
+        "readOnly": true,
+        "documentation": "Catalog series"
+      }
+    ]
+  }
+]

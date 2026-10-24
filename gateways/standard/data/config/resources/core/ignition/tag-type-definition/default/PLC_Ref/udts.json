@@ -1,0 +1,2279 @@
+[
+  {
+    "name": "P_AIn",
+    "tagType": "UdtType",
+    "parameters": {
+      "Source": {
+        "dataType": "String",
+        "value": ""
+      },
+      "EngUnit": {
+        "dataType": "String",
+        "value": ""
+      }
+    },
+    "metadata": {
+      "shortDescription": "PlantPAx P_AIn reference (read only)",
+      "longDescription": "Read-only references to the P_AIn part that owns the controller object ({Source}); the owner subscribes, alarms and historizes it"
+    },
+    "tags": [
+      {
+        "name": "Fail",
+        "tagType": "Folder",
+        "tags": [
+          {
+            "name": "Ack",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "Alarm acknowledged status: 1\u003dAck rcvd",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Fail/Ack"
+            }
+          },
+          {
+            "name": "Alm",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "Alarm output 1\u003dIn Alarm",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Fail/Alm"
+            }
+          },
+          {
+            "name": "Cfg_Cond",
+            "tagType": "AtomicTag",
+            "dataType": "String",
+            "readOnly": true,
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Fail/Cfg_Cond"
+            }
+          },
+          {
+            "name": "Cfg_Exists",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm configured to exist, 0\u003dDoes not exist, don$\u0027t scan",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Fail/Cfg_Exists"
+            }
+          },
+          {
+            "name": "Disabled",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm has been Disabled by Maintanance (inhibits new alarm)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Fail/Disabled"
+            }
+          },
+          {
+            "name": "OCmd_Ack",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "Operator Command to Acknowledge alarm",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Fail/OCmd_Ack"
+            }
+          },
+          {
+            "name": "PCfg_AllowExist",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm can be configured to exist, 0\u003dother configs make alarm meaningless",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Fail/PCfg_AllowExist"
+            }
+          },
+          {
+            "name": "Rdy_Ack",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "Ready to receive OCmd_Ack (enables button)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Fail/Rdy_Ack"
+            }
+          },
+          {
+            "name": "Shelved",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm has been Shelved by Operator (inhibits new alarm)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Fail/Shelved"
+            }
+          },
+          {
+            "name": "Sts_AlmInh",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm has been suppressed, shelved or disabled, display $QI$Q icon",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Fail/Sts_AlmInh"
+            }
+          },
+          {
+            "name": "Sts_Err",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dError in Config: see detail Err_ bits for reason",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Fail/Sts_Err"
+            }
+          },
+          {
+            "name": "Suppressed",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm has been Suppressed by Program (inhibits new alarm)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Fail/Suppressed"
+            }
+          },
+          {
+            "name": "Val_Notify",
+            "tagType": "AtomicTag",
+            "dataType": "Int1",
+            "readOnly": true,
+            "documentation": "Current Alarm Severity and Acknowledgement (enumeration)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Fail/Val_Notify"
+            }
+          }
+        ]
+      },
+      {
+        "name": "FailGate",
+        "tagType": "Folder",
+        "tags": [
+          {
+            "name": "Cfg_InpCond",
+            "tagType": "AtomicTag",
+            "dataType": "String",
+            "readOnly": true,
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/FailGate/Cfg_InpCond"
+            }
+          },
+          {
+            "name": "Sts_Err",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dError in Config (see detail Err_ bits for reason), display icon",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/FailGate/Sts_Err"
+            }
+          },
+          {
+            "name": "Sts_Gate",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dGate Delay done, Output is enabled",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/FailGate/Sts_Gate"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Hi",
+        "tagType": "Folder",
+        "tags": [
+          {
+            "name": "Ack",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "Alarm acknowledged status: 1\u003dAck rcvd",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Hi/Ack"
+            }
+          },
+          {
+            "name": "Alm",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "Alarm output 1\u003dIn Alarm",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Hi/Alm"
+            }
+          },
+          {
+            "name": "Cfg_Cond",
+            "tagType": "AtomicTag",
+            "dataType": "String",
+            "readOnly": true,
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Hi/Cfg_Cond"
+            }
+          },
+          {
+            "name": "Cfg_Exists",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm configured to exist, 0\u003dDoes not exist, don$\u0027t scan",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Hi/Cfg_Exists"
+            }
+          },
+          {
+            "name": "Disabled",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm has been Disabled by Maintanance (inhibits new alarm)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Hi/Disabled"
+            }
+          },
+          {
+            "name": "OCmd_Ack",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "Operator Command to Acknowledge alarm",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Hi/OCmd_Ack"
+            }
+          },
+          {
+            "name": "PCfg_AllowExist",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm can be configured to exist, 0\u003dother configs make alarm meaningless",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Hi/PCfg_AllowExist"
+            }
+          },
+          {
+            "name": "Rdy_Ack",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "Ready to receive OCmd_Ack (enables button)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Hi/Rdy_Ack"
+            }
+          },
+          {
+            "name": "Shelved",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm has been Shelved by Operator (inhibits new alarm)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Hi/Shelved"
+            }
+          },
+          {
+            "name": "Sts_AlmInh",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm has been suppressed, shelved or disabled, display $QI$Q icon",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Hi/Sts_AlmInh"
+            }
+          },
+          {
+            "name": "Sts_Err",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dError in Config: see detail Err_ bits for reason",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Hi/Sts_Err"
+            }
+          },
+          {
+            "name": "Suppressed",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm has been Suppressed by Program (inhibits new alarm)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Hi/Suppressed"
+            }
+          },
+          {
+            "name": "Val_Notify",
+            "tagType": "AtomicTag",
+            "dataType": "Int1",
+            "readOnly": true,
+            "documentation": "Current Alarm Severity and Acknowledgement (enumeration)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Hi/Val_Notify"
+            }
+          }
+        ]
+      },
+      {
+        "name": "HiGate",
+        "tagType": "Folder",
+        "tags": [
+          {
+            "name": "Cfg_InpCond",
+            "tagType": "AtomicTag",
+            "dataType": "String",
+            "readOnly": true,
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/HiGate/Cfg_InpCond"
+            }
+          },
+          {
+            "name": "Sts_Err",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dError in Config (see detail Err_ bits for reason), display icon",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/HiGate/Sts_Err"
+            }
+          },
+          {
+            "name": "Sts_Gate",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dGate Delay done, Output is enabled",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/HiGate/Sts_Gate"
+            }
+          }
+        ]
+      },
+      {
+        "name": "HiHi",
+        "tagType": "Folder",
+        "tags": [
+          {
+            "name": "Ack",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "Alarm acknowledged status: 1\u003dAck rcvd",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/HiHi/Ack"
+            }
+          },
+          {
+            "name": "Alm",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "Alarm output 1\u003dIn Alarm",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/HiHi/Alm"
+            }
+          },
+          {
+            "name": "Cfg_Cond",
+            "tagType": "AtomicTag",
+            "dataType": "String",
+            "readOnly": true,
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/HiHi/Cfg_Cond"
+            }
+          },
+          {
+            "name": "Cfg_Exists",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm configured to exist, 0\u003dDoes not exist, don$\u0027t scan",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/HiHi/Cfg_Exists"
+            }
+          },
+          {
+            "name": "Disabled",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm has been Disabled by Maintanance (inhibits new alarm)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/HiHi/Disabled"
+            }
+          },
+          {
+            "name": "OCmd_Ack",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "Operator Command to Acknowledge alarm",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/HiHi/OCmd_Ack"
+            }
+          },
+          {
+            "name": "PCfg_AllowExist",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm can be configured to exist, 0\u003dother configs make alarm meaningless",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/HiHi/PCfg_AllowExist"
+            }
+          },
+          {
+            "name": "Rdy_Ack",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "Ready to receive OCmd_Ack (enables button)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/HiHi/Rdy_Ack"
+            }
+          },
+          {
+            "name": "Shelved",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm has been Shelved by Operator (inhibits new alarm)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/HiHi/Shelved"
+            }
+          },
+          {
+            "name": "Sts_AlmInh",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm has been suppressed, shelved or disabled, display $QI$Q icon",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/HiHi/Sts_AlmInh"
+            }
+          },
+          {
+            "name": "Sts_Err",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dError in Config: see detail Err_ bits for reason",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/HiHi/Sts_Err"
+            }
+          },
+          {
+            "name": "Suppressed",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm has been Suppressed by Program (inhibits new alarm)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/HiHi/Suppressed"
+            }
+          },
+          {
+            "name": "Val_Notify",
+            "tagType": "AtomicTag",
+            "dataType": "Int1",
+            "readOnly": true,
+            "documentation": "Current Alarm Severity and Acknowledgement (enumeration)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/HiHi/Val_Notify"
+            }
+          }
+        ]
+      },
+      {
+        "name": "HiHiGate",
+        "tagType": "Folder",
+        "tags": [
+          {
+            "name": "Cfg_InpCond",
+            "tagType": "AtomicTag",
+            "dataType": "String",
+            "readOnly": true,
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/HiHiGate/Cfg_InpCond"
+            }
+          },
+          {
+            "name": "Sts_Err",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dError in Config (see detail Err_ bits for reason), display icon",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/HiHiGate/Sts_Err"
+            }
+          },
+          {
+            "name": "Sts_Gate",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dGate Delay done, Output is enabled",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/HiHiGate/Sts_Gate"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Lo",
+        "tagType": "Folder",
+        "tags": [
+          {
+            "name": "Ack",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "Alarm acknowledged status: 1\u003dAck rcvd",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Lo/Ack"
+            }
+          },
+          {
+            "name": "Alm",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "Alarm output 1\u003dIn Alarm",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Lo/Alm"
+            }
+          },
+          {
+            "name": "Cfg_Cond",
+            "tagType": "AtomicTag",
+            "dataType": "String",
+            "readOnly": true,
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Lo/Cfg_Cond"
+            }
+          },
+          {
+            "name": "Cfg_Exists",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm configured to exist, 0\u003dDoes not exist, don$\u0027t scan",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Lo/Cfg_Exists"
+            }
+          },
+          {
+            "name": "Disabled",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm has been Disabled by Maintanance (inhibits new alarm)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Lo/Disabled"
+            }
+          },
+          {
+            "name": "OCmd_Ack",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "Operator Command to Acknowledge alarm",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Lo/OCmd_Ack"
+            }
+          },
+          {
+            "name": "PCfg_AllowExist",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm can be configured to exist, 0\u003dother configs make alarm meaningless",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Lo/PCfg_AllowExist"
+            }
+          },
+          {
+            "name": "Rdy_Ack",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "Ready to receive OCmd_Ack (enables button)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Lo/Rdy_Ack"
+            }
+          },
+          {
+            "name": "Shelved",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm has been Shelved by Operator (inhibits new alarm)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Lo/Shelved"
+            }
+          },
+          {
+            "name": "Sts_AlmInh",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm has been suppressed, shelved or disabled, display $QI$Q icon",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Lo/Sts_AlmInh"
+            }
+          },
+          {
+            "name": "Sts_Err",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dError in Config: see detail Err_ bits for reason",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Lo/Sts_Err"
+            }
+          },
+          {
+            "name": "Suppressed",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm has been Suppressed by Program (inhibits new alarm)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Lo/Suppressed"
+            }
+          },
+          {
+            "name": "Val_Notify",
+            "tagType": "AtomicTag",
+            "dataType": "Int1",
+            "readOnly": true,
+            "documentation": "Current Alarm Severity and Acknowledgement (enumeration)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Lo/Val_Notify"
+            }
+          }
+        ]
+      },
+      {
+        "name": "LoGate",
+        "tagType": "Folder",
+        "tags": [
+          {
+            "name": "Cfg_InpCond",
+            "tagType": "AtomicTag",
+            "dataType": "String",
+            "readOnly": true,
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/LoGate/Cfg_InpCond"
+            }
+          },
+          {
+            "name": "Sts_Err",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dError in Config (see detail Err_ bits for reason), display icon",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/LoGate/Sts_Err"
+            }
+          },
+          {
+            "name": "Sts_Gate",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dGate Delay done, Output is enabled",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/LoGate/Sts_Gate"
+            }
+          }
+        ]
+      },
+      {
+        "name": "LoLo",
+        "tagType": "Folder",
+        "tags": [
+          {
+            "name": "Ack",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "Alarm acknowledged status: 1\u003dAck rcvd",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/LoLo/Ack"
+            }
+          },
+          {
+            "name": "Alm",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "Alarm output 1\u003dIn Alarm",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/LoLo/Alm"
+            }
+          },
+          {
+            "name": "Cfg_Cond",
+            "tagType": "AtomicTag",
+            "dataType": "String",
+            "readOnly": true,
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/LoLo/Cfg_Cond"
+            }
+          },
+          {
+            "name": "Cfg_Exists",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm configured to exist, 0\u003dDoes not exist, don$\u0027t scan",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/LoLo/Cfg_Exists"
+            }
+          },
+          {
+            "name": "Disabled",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm has been Disabled by Maintanance (inhibits new alarm)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/LoLo/Disabled"
+            }
+          },
+          {
+            "name": "OCmd_Ack",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "Operator Command to Acknowledge alarm",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/LoLo/OCmd_Ack"
+            }
+          },
+          {
+            "name": "PCfg_AllowExist",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm can be configured to exist, 0\u003dother configs make alarm meaningless",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/LoLo/PCfg_AllowExist"
+            }
+          },
+          {
+            "name": "Rdy_Ack",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "Ready to receive OCmd_Ack (enables button)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/LoLo/Rdy_Ack"
+            }
+          },
+          {
+            "name": "Shelved",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm has been Shelved by Operator (inhibits new alarm)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/LoLo/Shelved"
+            }
+          },
+          {
+            "name": "Sts_AlmInh",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm has been suppressed, shelved or disabled, display $QI$Q icon",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/LoLo/Sts_AlmInh"
+            }
+          },
+          {
+            "name": "Sts_Err",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dError in Config: see detail Err_ bits for reason",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/LoLo/Sts_Err"
+            }
+          },
+          {
+            "name": "Suppressed",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dAlarm has been Suppressed by Program (inhibits new alarm)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/LoLo/Suppressed"
+            }
+          },
+          {
+            "name": "Val_Notify",
+            "tagType": "AtomicTag",
+            "dataType": "Int1",
+            "readOnly": true,
+            "documentation": "Current Alarm Severity and Acknowledgement (enumeration)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/LoLo/Val_Notify"
+            }
+          }
+        ]
+      },
+      {
+        "name": "LoLoGate",
+        "tagType": "Folder",
+        "tags": [
+          {
+            "name": "Cfg_InpCond",
+            "tagType": "AtomicTag",
+            "dataType": "String",
+            "readOnly": true,
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/LoLoGate/Cfg_InpCond"
+            }
+          },
+          {
+            "name": "Sts_Err",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dError in Config (see detail Err_ bits for reason), display icon",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/LoLoGate/Sts_Err"
+            }
+          },
+          {
+            "name": "Sts_Gate",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dGate Delay done, Output is enabled",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/LoLoGate/Sts_Gate"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Mode",
+        "tagType": "Folder",
+        "tags": [
+          {
+            "name": "Cfg_ProgDefault",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "Default Mode: 1\u003dProgram Mode if no requests; 0\u003dOperator Mode if no requests",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Mode/Cfg_ProgDefault"
+            }
+          },
+          {
+            "name": "MCmd_Acq",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "Maintenance Command to Acquire Ownership (Oper/Prog/Ovrd to Maint)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Mode/MCmd_Acq"
+            }
+          },
+          {
+            "name": "MCmd_Rel",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "Maintenance Command to Release Ownership (Maint to Oper/Prog/Ovrd)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Mode/MCmd_Rel"
+            }
+          },
+          {
+            "name": "OCmd_AcqLock",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "Operator Command to Acquire (Prog to Oper) / Lock Ownership",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Mode/OCmd_AcqLock"
+            }
+          },
+          {
+            "name": "OCmd_UnlockRel",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "Operator Command to Unlock / Release (Oper to Prog) Ownership",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Mode/OCmd_UnlockRel"
+            }
+          },
+          {
+            "name": "Rdy_MAcq",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dReady for MCmd_Acq, enable button",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Mode/Rdy_MAcq"
+            }
+          },
+          {
+            "name": "Rdy_MRel",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dReady for MCmd_Rel, enable button",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Mode/Rdy_MRel"
+            }
+          },
+          {
+            "name": "Rdy_OAcq",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dReady for OCmd_AcqLock, enable Acquire (to Oper) button",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Mode/Rdy_OAcq"
+            }
+          },
+          {
+            "name": "Rdy_OLock",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dReady for OCmd_AcqLock, enable Oper Lock button",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Mode/Rdy_OLock"
+            }
+          },
+          {
+            "name": "Rdy_ORel",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dReady for OCmd_UnlockRel, enable Release (to Prog) button",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Mode/Rdy_ORel"
+            }
+          },
+          {
+            "name": "Rdy_OUnlock",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dReady for OCmd_UnlockRel, enable Oper Unlock button",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Mode/Rdy_OUnlock"
+            }
+          },
+          {
+            "name": "Sts_Maint",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dMode is Maintenance (supersedes Ovrd, Prog, Oper)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Mode/Sts_Maint"
+            }
+          },
+          {
+            "name": "Sts_Oper",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dMode is Operator",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Mode/Sts_Oper"
+            }
+          },
+          {
+            "name": "Sts_Prog",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dMode is Program",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Mode/Sts_Prog"
+            }
+          },
+          {
+            "name": "Sts_ProgOperLock",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "1\u003dProgram or Operator has requested Mode Lock",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Mode/Sts_ProgOperLock"
+            }
+          },
+          {
+            "name": "Sts_ProgOperSel",
+            "tagType": "AtomicTag",
+            "dataType": "Boolean",
+            "readOnly": true,
+            "documentation": "Prog/Oper selection 1\u003dProgram, 0\u003dOperator",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Mode/Sts_ProgOperSel"
+            }
+          },
+          {
+            "name": "Val",
+            "tagType": "AtomicTag",
+            "dataType": "Int1",
+            "readOnly": true,
+            "documentation": "Mode enum: 0\u003dNo, 1\u003dH, 2\u003dM, 3\u003d!, 4\u003dP Lock, 5\u003dO Lock, 6\u003dP (O Def), 7\u003dO (P Def), 8\u003dP (\u003d Def), 9\u003dO (\u003d Def)",
+            "valueSource": "reference",
+            "sourceTagPath": {
+              "bindType": "parameter",
+              "binding": "{Source}/Mode/Val"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Cfg_Desc",
+        "tagType": "AtomicTag",
+        "dataType": "String",
+        "readOnly": true,
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Cfg_Desc"
+        }
+      },
+      {
+        "name": "Cfg_EU",
+        "tagType": "AtomicTag",
+        "dataType": "String",
+        "readOnly": true,
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Cfg_EU"
+        }
+      },
+      {
+        "name": "Cfg_FailDB",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "Out-of-Range (fail) High/Low Deadband (EU)",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Cfg_FailDB"
+        }
+      },
+      {
+        "name": "Cfg_FailHiLim",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "Out-of-Range (fail) High Limit (EU)",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Cfg_FailHiLim"
+        }
+      },
+      {
+        "name": "Cfg_FailLoLim",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "Out-of-Range (fail) Low Limit (EU)",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Cfg_FailLoLim"
+        }
+      },
+      {
+        "name": "Cfg_FiltTC",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "PV Filter Time Constant (s),$N0.0 \u003d unfiltered",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Cfg_FiltTC"
+        }
+      },
+      {
+        "name": "Cfg_HasChanObj",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "1\u003dTells HMI a Channel object (AIChan, etc.) is used for Inp_PV",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Cfg_HasChanObj"
+        }
+      },
+      {
+        "name": "Cfg_HasFailAlm",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Cfg_HasFailAlm"
+        }
+      },
+      {
+        "name": "Cfg_HasHiAlm",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Cfg_HasHiAlm"
+        }
+      },
+      {
+        "name": "Cfg_HasHiHiAlm",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Cfg_HasHiHiAlm"
+        }
+      },
+      {
+        "name": "Cfg_HasLoAlm",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Cfg_HasLoAlm"
+        }
+      },
+      {
+        "name": "Cfg_HasLoLoAlm",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Cfg_HasLoLoAlm"
+        }
+      },
+      {
+        "name": "Cfg_HiDB",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "High Status Deadband (EU)",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Cfg_HiDB"
+        }
+      },
+      {
+        "name": "Cfg_HiHiDB",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "High-High Status Deadband (EU)",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Cfg_HiHiDB"
+        }
+      },
+      {
+        "name": "Cfg_InpRawMax",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "Input (unscaled) Maximum for Scaling",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Cfg_InpRawMax"
+        }
+      },
+      {
+        "name": "Cfg_InpRawMin",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "Input (unscaled) Minimum for Scaling",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Cfg_InpRawMin"
+        }
+      },
+      {
+        "name": "Cfg_Label",
+        "tagType": "AtomicTag",
+        "dataType": "String",
+        "readOnly": true,
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Cfg_Label"
+        }
+      },
+      {
+        "name": "Cfg_LoDB",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "Low Status Deadband (EU)",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Cfg_LoDB"
+        }
+      },
+      {
+        "name": "Cfg_LoLoDB",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "Low-Low Status Deadband (EU)",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Cfg_LoLoDB"
+        }
+      },
+      {
+        "name": "Cfg_NoSubstPV",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "1\u003dDisallow selection of Substitute PV",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Cfg_NoSubstPV"
+        }
+      },
+      {
+        "name": "Cfg_PCmdClear",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Cfg_PCmdClear"
+        }
+      },
+      {
+        "name": "Cfg_PVEUMax",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "PV (Output) Maximum for Scaling to EU",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Cfg_PVEUMax"
+        }
+      },
+      {
+        "name": "Cfg_PVEUMin",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "PV (Output) Minimum for Scaling to EU",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Cfg_PVEUMin"
+        }
+      },
+      {
+        "name": "Cfg_SetTrack",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "1\u003dPSets track OSets in Oper, OSets track PSets in Prog, 0\u003dno tracking",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Cfg_SetTrack"
+        }
+      },
+      {
+        "name": "Cfg_Tag",
+        "tagType": "AtomicTag",
+        "dataType": "String",
+        "readOnly": true,
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Cfg_Tag"
+        }
+      },
+      {
+        "name": "Err_Alarm",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "1\u003dError in Config: Alarm Min On Time, Shelf Time, Severity",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Err_Alarm"
+        }
+      },
+      {
+        "name": "Err_DB",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "1\u003dError in Config: a Status Deadband is \u003c 0.0",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Err_DB"
+        }
+      },
+      {
+        "name": "Err_EU",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "1\u003dError in Config: Scaled EU Min \u003d Max",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Err_EU"
+        }
+      },
+      {
+        "name": "Err_Filt",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "1\u003dError in Config: PV filter params (RateTime, TC)",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Err_Filt"
+        }
+      },
+      {
+        "name": "Err_Raw",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "1\u003dError in Config: Raw Input Scaling Min \u003d Max",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Err_Raw"
+        }
+      },
+      {
+        "name": "Err_Timer",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "1\u003dError in Config: On Delay, Off Delay, Gate Delay Time Invalid (use 0 to 2147483 s)",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Err_Timer"
+        }
+      },
+      {
+        "name": "Inf_Lib",
+        "tagType": "AtomicTag",
+        "dataType": "String",
+        "readOnly": true,
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Inf_Lib"
+        }
+      },
+      {
+        "name": "Inf_Type",
+        "tagType": "AtomicTag",
+        "dataType": "String",
+        "readOnly": true,
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Inf_Type"
+        }
+      },
+      {
+        "name": "Inp_PV",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "Input Signal (process variable) from Sensor",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Inp_PV"
+        }
+      },
+      {
+        "name": "Inp_PVBad",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "1\u003dPV or I/O Comms Status Bad, 0\u003dOK",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Inp_PVBad"
+        }
+      },
+      {
+        "name": "Inp_PVUncertain",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "1\u003dPV Value Not Reliable, 0\u003dOK",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Inp_PVUncertain"
+        }
+      },
+      {
+        "name": "Inp_Sim",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "1\u003dUse simulated PV (Set_SimPV); 0\u003dUse Input (Inp_PV)",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Inp_Sim"
+        }
+      },
+      {
+        "name": "MCmd_InpPV",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "Maintenance Command to use Input PV (normal)",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/MCmd_InpPV"
+        }
+      },
+      {
+        "name": "MCmd_SubstPV",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "Maintenance Command to use Substitute PV (override input)",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/MCmd_SubstPV"
+        }
+      },
+      {
+        "name": "MSet_SubstPV",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "Maintenance-Entered Substitute PV (EU)",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/MSet_SubstPV"
+        }
+      },
+      {
+        "name": "OCmd_ClearCapt",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "Operator Command to Clear the captured min / max PV excursion values",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/OCmd_ClearCapt"
+        }
+      },
+      {
+        "name": "OCmd_Reset",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "Operator Command to Reset all Alarms requiring Reset",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/OCmd_Reset"
+        }
+      },
+      {
+        "name": "OCmd_ResetAckAll",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "Operator Command to Reset and Acknowledge all Alarms",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/OCmd_ResetAckAll"
+        }
+      },
+      {
+        "name": "OSet_HiHiLim",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "Operator-Entered High-High Status Threshold (EU)",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/OSet_HiHiLim"
+        }
+      },
+      {
+        "name": "OSet_HiLim",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "Operator-Entered High Status Threshold (EU)",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/OSet_HiLim"
+        }
+      },
+      {
+        "name": "OSet_LoLim",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "Operator-Entered Low Status Threshold (EU)",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/OSet_LoLim"
+        }
+      },
+      {
+        "name": "OSet_LoLoLim",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "Operator-Entered Low-Low Status Threshold (EU)",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/OSet_LoLoLim"
+        }
+      },
+      {
+        "name": "Rdy_InpPV",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "1\u003dReady for MCmd_InpPV",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Rdy_InpPV"
+        }
+      },
+      {
+        "name": "Rdy_OSet",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "1\u003dReady to receive OSets (enables data entry fields)",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Rdy_OSet"
+        }
+      },
+      {
+        "name": "Rdy_SubstPV",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "1\u003dReady for MCmd_SubstPV",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Rdy_SubstPV"
+        }
+      },
+      {
+        "name": "Set_SimPV",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "PV used in Simulation (Inp_Sim\u003d1) (EU)",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Set_SimPV"
+        }
+      },
+      {
+        "name": "SrcQ",
+        "tagType": "AtomicTag",
+        "dataType": "Int1",
+        "readOnly": true,
+        "documentation": "Source and Quality of primary Val/Sts (enumeration)",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/SrcQ"
+        }
+      },
+      {
+        "name": "SrcQ_IO",
+        "tagType": "AtomicTag",
+        "dataType": "Int1",
+        "readOnly": true,
+        "documentation": "Source and Quality of primary I/O (enumeration)",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/SrcQ_IO"
+        }
+      },
+      {
+        "name": "Sts_AlmInh",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "1\u003dAn Alarm is Shelved, Disabled or Suppressed: display icon",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Sts_AlmInh"
+        }
+      },
+      {
+        "name": "Sts_Err",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "1\u003dError in Config (see detail Err_ bits for reason), display icon",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Sts_Err"
+        }
+      },
+      {
+        "name": "Sts_Fail",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "1\u003dAnalog Input is Out of Range or PV Bad",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Sts_Fail"
+        }
+      },
+      {
+        "name": "Sts_Hi",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "1\u003dAnalog Input is above High limit",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Sts_Hi"
+        }
+      },
+      {
+        "name": "Sts_HiHi",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "1\u003dAnalog Input is above High-High limit",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Sts_HiHi"
+        }
+      },
+      {
+        "name": "Sts_InpPV",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "1\u003dUsing Input PV (normal)",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Sts_InpPV"
+        }
+      },
+      {
+        "name": "Sts_Lo",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "1\u003dAnalog Input is below Low limit",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Sts_Lo"
+        }
+      },
+      {
+        "name": "Sts_LoLo",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "1\u003dAnalog Input is below Low-Low limit",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Sts_LoLo"
+        }
+      },
+      {
+        "name": "Sts_Maint",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Sts_Maint"
+        }
+      },
+      {
+        "name": "Sts_MaintByp",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "1\u003dA Maintenance Bypass is Active, display icon",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Sts_MaintByp"
+        }
+      },
+      {
+        "name": "Sts_NoMode",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Sts_NoMode"
+        }
+      },
+      {
+        "name": "Sts_Oper",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Sts_Oper"
+        }
+      },
+      {
+        "name": "Sts_Prog",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Sts_Prog"
+        }
+      },
+      {
+        "name": "Sts_PVBad",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "1\u003dPV Bad quality or Out of Range",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Sts_PVBad"
+        }
+      },
+      {
+        "name": "Sts_PVUncertain",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "1\u003dPV Value is Uncertain (quality)",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Sts_PVUncertain"
+        }
+      },
+      {
+        "name": "Sts_SubstPV",
+        "tagType": "AtomicTag",
+        "dataType": "Boolean",
+        "readOnly": true,
+        "documentation": "1\u003dUsing Substitute PV (Input being overridden)",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Sts_SubstPV"
+        }
+      },
+      {
+        "name": "Val",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "Analog Value (after Substitute PV, if used)",
+        "engUnit": {
+          "bindType": "parameter",
+          "binding": "{EngUnit}"
+        },
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Val"
+        }
+      },
+      {
+        "name": "Val_Fault",
+        "tagType": "AtomicTag",
+        "dataType": "Int1",
+        "readOnly": true,
+        "documentation": "Device Fault Status 0\u003dnone, 20\u003dLo, 21\u003dHi, 24\u003dLoLo, 25\u003dHiHi, 32\u003dFail, 34\u003dCfgErr",
+        "metadata": {
+          "shortDescription": "sensor status",
+          "longDescription": "PLC Val_Fault: 0\u003dnone/OK, 20\u003dLo, 21\u003dHi, 24\u003dLoLo, 25\u003dHiHi, 32\u003dFail, 34\u003dCfgErr",
+          "states": [
+            {
+              "label": "OK",
+              "value": 0
+            },
+            {
+              "label": "LO",
+              "value": 20
+            },
+            {
+              "label": "HI",
+              "value": 21
+            },
+            {
+              "label": "LOLO",
+              "value": 24
+            },
+            {
+              "label": "HIHI",
+              "value": 25
+            },
+            {
+              "label": "FAIL",
+              "value": 32
+            },
+            {
+              "label": "CFGERR",
+              "value": 34
+            }
+          ]
+        },
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Val_Fault"
+        }
+      },
+      {
+        "name": "Val_HiHiLim",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "Current High-High Status Threshold",
+        "engUnit": {
+          "bindType": "parameter",
+          "binding": "{EngUnit}"
+        },
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Val_HiHiLim"
+        }
+      },
+      {
+        "name": "Val_HiLim",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "Current High Status Threshold",
+        "engUnit": {
+          "bindType": "parameter",
+          "binding": "{EngUnit}"
+        },
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Val_HiLim"
+        }
+      },
+      {
+        "name": "Val_InpPV",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "Analog Input Value (actual, before Substitute PV selection)",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Val_InpPV"
+        }
+      },
+      {
+        "name": "Val_LoLim",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "Current Low Status Threshold",
+        "engUnit": {
+          "bindType": "parameter",
+          "binding": "{EngUnit}"
+        },
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Val_LoLim"
+        }
+      },
+      {
+        "name": "Val_LoLoLim",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "Current Low-Low Status Threshold",
+        "engUnit": {
+          "bindType": "parameter",
+          "binding": "{EngUnit}"
+        },
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Val_LoLoLim"
+        }
+      },
+      {
+        "name": "Val_Mode",
+        "tagType": "AtomicTag",
+        "dataType": "Int1",
+        "readOnly": true,
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Val_Mode"
+        }
+      },
+      {
+        "name": "Val_Notify",
+        "tagType": "AtomicTag",
+        "dataType": "Int1",
+        "readOnly": true,
+        "documentation": "Current Alarm Level and Acknowledgement (enumeration)",
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Val_Notify"
+        }
+      },
+      {
+        "name": "Val_PVEUMax",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "Maximum of scaled range \u003d MAX (Cfg_PVEUMin, Cfg_PVEUMax)",
+        "engUnit": {
+          "bindType": "parameter",
+          "binding": "{EngUnit}"
+        },
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Val_PVEUMax"
+        }
+      },
+      {
+        "name": "Val_PVEUMin",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "Minimum of scaled range \u003d MIN (Cfg_PVEUMin, Cfg_PVEUMax)",
+        "engUnit": {
+          "bindType": "parameter",
+          "binding": "{EngUnit}"
+        },
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Val_PVEUMin"
+        }
+      },
+      {
+        "name": "Val_PVMaxCapt",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "Captured PV Maximum (excursion) since last cleared",
+        "engUnit": {
+          "bindType": "parameter",
+          "binding": "{EngUnit}"
+        },
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Val_PVMaxCapt"
+        }
+      },
+      {
+        "name": "Val_PVMinCapt",
+        "tagType": "AtomicTag",
+        "dataType": "Float4",
+        "readOnly": true,
+        "documentation": "Captured PV Minimum (excursion) since last cleared",
+        "engUnit": {
+          "bindType": "parameter",
+          "binding": "{EngUnit}"
+        },
+        "valueSource": "reference",
+        "sourceTagPath": {
+          "bindType": "parameter",
+          "binding": "{Source}/Val_PVMinCapt"
+        }
+      }
+    ]
+  }
+]

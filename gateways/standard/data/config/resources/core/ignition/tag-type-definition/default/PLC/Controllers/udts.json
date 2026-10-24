@@ -1,0 +1,402 @@
+[
+  {
+    "name": "CompactLogix_5370",
+    "tagType": "UdtType",
+    "metadata": {
+      "shortDescription": "CompactLogix 5370 L3 controller base (read only)",
+      "longDescription": "Family base for every 1769-L3x controller: Logix driver diagnostics [{DeviceName}][Diagnostics]/..., identity Status -> mode / faults. Site UDTs inherit it and add their cards (.cursor/tasks/plc-rack-io/build.py)"
+    },
+    "parameters": {
+      "DeviceName": {
+        "dataType": "String",
+        "value": null
+      },
+      "Description": {
+        "dataType": "String",
+        "value": ""
+      }
+    },
+    "tags": [
+      {
+        "name": "Bus",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "'1769 Local Bus (CompactBus)'",
+        "readOnly": true,
+        "documentation": "Local I/O bus"
+      },
+      {
+        "name": "CommLoss",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "Boolean",
+        "expression": "!coalesce({[.]Connected}, false)",
+        "readOnly": true,
+        "documentation": "Logix driver not connected to the controller",
+        "alarms": [
+          {
+            "mode": "WhenTrue",
+            "name": "Controller Communication Lost",
+            "priority": "Critical",
+            "notes": "PLC communication lost: Logix driver [Diagnostics]/Connected = false for 12 s (active delay rides through short SecureLink blips). While it is active the dependent PLC alarms (module, mode, fault) are suppressed.",
+            "enabled": true,
+            "displayPath": {
+              "bindType": "Expression",
+              "value": "replace(try(split({PathToTag}, '/')[1, 0], ''), 'GrovePort', 'Groveport') + ' / ' + try(split({PathToTag}, '/')[2, 0], '') + ' / PLC / ' + try(split({PathToTag}, '/')[4, 0], '')"
+            },
+            "label": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[4, 0], '') + ' Communication Lost'"
+            },
+            "Site": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[1, 0], '')"
+            },
+            "Area": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[2, 0], '')"
+            },
+            "Device": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[4, 0], '')"
+            },
+            "timeOnDelaySeconds": 12
+          }
+        ]
+      },
+      {
+        "name": "Connected",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}][Diagnostics]/Connected"
+        },
+        "dataType": "Boolean",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "Logix driver connected to the controller"
+      },
+      {
+        "name": "DeviceType",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}][Diagnostics]/Device/DeviceType"
+        },
+        "dataType": "Int4",
+        "readOnly": true,
+        "tagGroup": "PAX_Faceplate",
+        "documentation": "CIP identity device type (14 = PLC)"
+      },
+      {
+        "name": "ExtStatus",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "Int4",
+        "expression": "(({[.]Status} >> 4) & 15)",
+        "readOnly": true,
+        "documentation": "CIP extended device status (Status bits 4-7)"
+      },
+      {
+        "name": "Family",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "'CompactLogix 5370 L3'",
+        "readOnly": true,
+        "documentation": "Controller family"
+      },
+      {
+        "name": "IOFault",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "Boolean",
+        "expression": "{[.]Connected} && (({[.]Status} >> 4) & 15) = 2",
+        "readOnly": true,
+        "documentation": "At least one faulted I/O connection",
+        "alarms": [
+          {
+            "mode": "WhenTrue",
+            "name": "Controller I/O Fault",
+            "priority": "High",
+            "notes": "CIP identity extended status 2: at least one faulted I/O connection. Suppressed while PLC communication is lost.",
+            "enabled": true,
+            "displayPath": {
+              "bindType": "Expression",
+              "value": "replace(try(split({PathToTag}, '/')[1, 0], ''), 'GrovePort', 'Groveport') + ' / ' + try(split({PathToTag}, '/')[2, 0], '') + ' / PLC / ' + try(split({PathToTag}, '/')[4, 0], '')"
+            },
+            "label": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[4, 0], '') + ' Controller I/O Fault'"
+            },
+            "Site": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[1, 0], '')"
+            },
+            "Area": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[2, 0], '')"
+            },
+            "Device": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[4, 0], '')"
+            }
+          }
+        ]
+      },
+      {
+        "name": "KeySwitch",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "case(({[.]Status} >> 12) & 3, 1, 'Run', 2, 'Program', 3, 'Remote', 'Unknown')",
+        "readOnly": true,
+        "documentation": "Mode switch (Status bits 12-13)"
+      },
+      {
+        "name": "MajorFault",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "Boolean",
+        "expression": "{[.]Connected} && (getBit({[.]Status}, 10) = 1 || getBit({[.]Status}, 11) = 1 || (({[.]Status} >> 4) & 15) = 5)",
+        "readOnly": true,
+        "documentation": "Major fault (gated on Connected)",
+        "alarms": [
+          {
+            "mode": "WhenTrue",
+            "name": "Controller Major Fault",
+            "priority": "Critical",
+            "notes": "CIP identity Status major fault (bits 10/11 or extended status 5). Suppressed while PLC communication is lost.",
+            "enabled": true,
+            "displayPath": {
+              "bindType": "Expression",
+              "value": "replace(try(split({PathToTag}, '/')[1, 0], ''), 'GrovePort', 'Groveport') + ' / ' + try(split({PathToTag}, '/')[2, 0], '') + ' / PLC / ' + try(split({PathToTag}, '/')[4, 0], '')"
+            },
+            "label": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[4, 0], '') + ' Controller Major Fault'"
+            },
+            "Site": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[1, 0], '')"
+            },
+            "Area": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[2, 0], '')"
+            },
+            "Device": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[4, 0], '')"
+            }
+          }
+        ]
+      },
+      {
+        "name": "MajorRevision",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}][Diagnostics]/Device/MajorRevision"
+        },
+        "dataType": "Int4",
+        "readOnly": true,
+        "tagGroup": "PAX_Faceplate",
+        "documentation": "Firmware major revision"
+      },
+      {
+        "name": "MinorFault",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "Boolean",
+        "expression": "{[.]Connected} && (getBit({[.]Status}, 8) = 1 || getBit({[.]Status}, 9) = 1)",
+        "readOnly": true,
+        "documentation": "Minor fault (gated on Connected: the driver keeps the last Status while disconnected)",
+        "alarms": [
+          {
+            "mode": "WhenTrue",
+            "name": "Controller Minor Fault",
+            "priority": "Low",
+            "notes": "CIP identity Status minor fault (bits 8/9). Suppressed while PLC communication is lost.",
+            "enabled": true,
+            "displayPath": {
+              "bindType": "Expression",
+              "value": "replace(try(split({PathToTag}, '/')[1, 0], ''), 'GrovePort', 'Groveport') + ' / ' + try(split({PathToTag}, '/')[2, 0], '') + ' / PLC / ' + try(split({PathToTag}, '/')[4, 0], '')"
+            },
+            "label": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[4, 0], '') + ' Controller Minor Fault'"
+            },
+            "Site": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[1, 0], '')"
+            },
+            "Area": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[2, 0], '')"
+            },
+            "Device": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[4, 0], '')"
+            }
+          }
+        ]
+      },
+      {
+        "name": "MinorRevision",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}][Diagnostics]/Device/MinorRevision"
+        },
+        "dataType": "Int4",
+        "readOnly": true,
+        "tagGroup": "PAX_Faceplate",
+        "documentation": "Firmware minor revision"
+      },
+      {
+        "name": "Mode",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "if((({[.]Status} >> 12) & 3) = 3, 'Remote ', '') + case((({[.]Status} >> 4) & 15), 0, 'Self Test', 1, 'Firmware Update', 2, 'I/O Fault', 3, 'No I/O', 4, 'Config Bad', 5, 'Major Fault', 6, 'Run', 7, 'Program', 'Unknown')",
+        "readOnly": true,
+        "documentation": "Controller mode text"
+      },
+      {
+        "name": "NotRun",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "Boolean",
+        "expression": "{[.]Connected} && !((({[.]Status} >> 4) & 15) = 6 || (({[.]Status} >> 4) & 15) = 2)",
+        "readOnly": true,
+        "documentation": "Connected but not in run mode (Program / Faulted / Test)",
+        "alarms": [
+          {
+            "mode": "WhenTrue",
+            "name": "Controller Not In Run Mode",
+            "priority": "High",
+            "notes": "Controller connected but its extended status is not Run (6) or Run with I/O fault (2): Program, Faulted or Test. Suppressed while PLC communication is lost.",
+            "enabled": true,
+            "displayPath": {
+              "bindType": "Expression",
+              "value": "replace(try(split({PathToTag}, '/')[1, 0], ''), 'GrovePort', 'Groveport') + ' / ' + try(split({PathToTag}, '/')[2, 0], '') + ' / PLC / ' + try(split({PathToTag}, '/')[4, 0], '')"
+            },
+            "label": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[4, 0], '') + ' Controller Not In Run Mode'"
+            },
+            "Site": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[1, 0], '')"
+            },
+            "Area": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[2, 0], '')"
+            },
+            "Device": {
+              "bindType": "Expression",
+              "value": "try(split({PathToTag}, '/')[4, 0], '')"
+            }
+          }
+        ]
+      },
+      {
+        "name": "PowerSupply",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "'Separate 1769 Power Supply (Catalog Not In L5X)'",
+        "readOnly": true,
+        "documentation": "The L3 has no embedded supply (1769-UM021): the bank is powered by a separate 1769 power supply beside the controller"
+      },
+      {
+        "name": "ProductCode",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}][Diagnostics]/Device/ProductCode"
+        },
+        "dataType": "Int4",
+        "readOnly": true,
+        "tagGroup": "PAX_Faceplate",
+        "documentation": "CIP identity product code"
+      },
+      {
+        "name": "ProductName",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}][Diagnostics]/Device/ProductName"
+        },
+        "dataType": "String",
+        "readOnly": true,
+        "tagGroup": "PAX_Faceplate",
+        "documentation": "CIP identity product name"
+      },
+      {
+        "name": "Run",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "Boolean",
+        "expression": "{[.]Connected} && (({[.]Status} >> 4) & 15) = 6",
+        "readOnly": true,
+        "documentation": "Controller in run (I/O connections in run mode)"
+      },
+      {
+        "name": "SerialNumber",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}][Diagnostics]/Device/SerialNumber"
+        },
+        "dataType": "Int8",
+        "readOnly": true,
+        "tagGroup": "PAX_Faceplate",
+        "documentation": "Controller serial number"
+      },
+      {
+        "name": "Status",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}][Diagnostics]/Device/Status"
+        },
+        "dataType": "Int4",
+        "readOnly": true,
+        "tagGroup": "PAX_Status",
+        "documentation": "CIP identity Status word: bit 8/9 minor fault, 10/11 major fault, bits 4-7 extended status (5 major fault, 6 run, 7 program), bits 12-13 mode switch (1 run, 2 program, 3 remote)"
+      },
+      {
+        "name": "VendorId",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}][Diagnostics]/Device/VendorId"
+        },
+        "dataType": "Int4",
+        "readOnly": true,
+        "tagGroup": "PAX_Faceplate",
+        "documentation": "CIP identity vendor (1 = Rockwell)"
+      }
+    ]
+  }
+]

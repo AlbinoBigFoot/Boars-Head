@@ -1,0 +1,146 @@
+[
+  {
+    "metadata": {
+      "shortDescription": "FIRE",
+      "longDescription": "Fire detection rollup (Program:RCP_Alarm_Circuit.FD_Alarm)"
+    },
+    "name": "FIRE",
+    "typeId": "_Root/Digital",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Value",
+        "tagType": "AtomicTag",
+        "sourceTagPath": "[default]_RCP1_/Program:RCP_Alarm_Circuit/FD_Alarm",
+        "valueSource": "reference",
+        "readOnly": true
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "MR AD",
+      "longDescription": "Machine Room ammonia detector (PLC AD_MR1.Alm_TgtDisagree)"
+    },
+    "name": "MR AD",
+    "typeId": "_Root/Digital",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Value",
+        "tagType": "AtomicTag",
+        "sourceTagPath": "[default]Boars_Head/GrovePort/Machine Room/Detectors/MR-AD1/DIn/Alm_TgtDisagree",
+        "valueSource": "reference",
+        "readOnly": true
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "RDISKS",
+      "longDescription": "Rupture disks rollup (Program:RCP_Alarm_Circuit.PS_Alarm)"
+    },
+    "name": "RDISKS",
+    "typeId": "_Root/Digital",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Value",
+        "tagType": "AtomicTag",
+        "sourceTagPath": "[default]_RCP1_/Program:RCP_Alarm_Circuit/PS_Alarm",
+        "valueSource": "reference",
+        "readOnly": true
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "VL AD",
+      "longDescription": "Vent Line ammonia detector (PLC AD_VL.Alm_TgtDisagree)"
+    },
+    "name": "VL AD",
+    "typeId": "_Root/Digital",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Value",
+        "tagType": "AtomicTag",
+        "sourceTagPath": "[default]Boars_Head/GrovePort/Machine Room/Detectors/VL-AD/DIn/Alm_TgtDisagree",
+        "valueSource": "reference",
+        "readOnly": true
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "Alarm Light",
+      "longDescription": "Alarm light on ([RCP1]Alarm_Light.Sts_Out) - shows Reset"
+    },
+    "name": "Alarm Light",
+    "typeId": "_Root/Digital",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Value",
+        "tagType": "AtomicTag",
+        "valueSource": "reference",
+        "sourceTagPath": "[default]_RCP1_/Controller:Global/Alarm_Light/Sts_Out",
+        "readOnly": true
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "Alarm Horn",
+      "longDescription": "Alarm horn circuit on ([RCP1]Alarm_Circuit.Sts_Out) - shows Silence"
+    },
+    "name": "Alarm Circuit",
+    "typeId": "_Root/Digital",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Value",
+        "tagType": "AtomicTag",
+        "valueSource": "reference",
+        "sourceTagPath": "[default]_RCP1_/Controller:Global/Alarm_Circuit/Sts_Out",
+        "readOnly": true
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "Alarm Reset",
+      "longDescription": "Reset alarm light and horn ([RCP1]ALARM.HMI_Reset)"
+    },
+    "name": "Alarm Reset",
+    "typeId": "_Root/Digital",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Value",
+        "tagType": "AtomicTag",
+        "valueSource": "reference",
+        "sourceTagPath": "[default]_RCP1_/Controller:Global/ALARM/HMI_Reset",
+        "readOnly": true
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "Alarm Silence",
+      "longDescription": "Silence alarm horn ([RCP1]ALARM.HMI_Silence)"
+    },
+    "name": "Alarm Silence",
+    "typeId": "_Root/Digital",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Value",
+        "tagType": "AtomicTag",
+        "valueSource": "reference",
+        "sourceTagPath": "[default]_RCP1_/Controller:Global/ALARM/HMI_Silence",
+        "readOnly": true
+      }
+    ]
+  }
+]

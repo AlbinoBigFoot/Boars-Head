@@ -1,0 +1,914 @@
+[
+  {
+    "valueSource": "memory",
+    "dataType": "Document",
+    "documentation": "Custom report builder data catalog (shared.Reports): sources, measures, scope trees, breakdowns, filters, sections, presets. Written by .cursor/tasks/report-builder (catalog.py) when its version is newer; edit labels / units / targets here, bump \u0027version\u0027 only through the builder. Schema: docs/report-builder.md.",
+    "name": "Catalog",
+    "defaultValue": {
+      "version": 3,
+      "sectionTypes": [
+        {
+          "id": "cards",
+          "label": "Summary Cards"
+        },
+        {
+          "id": "trend",
+          "label": "Trend Chart"
+        },
+        {
+          "id": "table",
+          "label": "Table"
+        },
+        {
+          "id": "shifts",
+          "label": "Shift Comparison"
+        },
+        {
+          "id": "topn",
+          "label": "Top N"
+        },
+        {
+          "id": "notes",
+          "label": "Notes"
+        }
+      ],
+      "presets": [
+        {
+          "id": "lbsHrOnly",
+          "label": "LBS/HR Only",
+          "def": {
+            "source": "production",
+            "title": "LBS/HR - Last 7 Days",
+            "measures": [
+              "rate"
+            ],
+            "scope": [
+              "line"
+            ],
+            "time": {
+              "preset": "last7"
+            },
+            "shifts": [],
+            "breakdown": "day",
+            "sections": [
+              {
+                "type": "cards",
+                "on": true
+              },
+              {
+                "type": "trend",
+                "on": true
+              },
+              {
+                "type": "table",
+                "on": true
+              }
+            ]
+          }
+        },
+        {
+          "id": "zoneDeepDive",
+          "label": "Zone Deep Dive (Everything For One Zone)",
+          "def": {
+            "source": "production",
+            "title": "Prep Zone Deep Dive",
+            "measures": "*",
+            "scope": [
+              "zone:Prep",
+              "unit:VD",
+              "unit:HOP"
+            ],
+            "time": {
+              "preset": "today"
+            },
+            "shifts": [],
+            "breakdown": "shift",
+            "sections": [
+              {
+                "type": "cards",
+                "on": true
+              },
+              {
+                "type": "table",
+                "on": true
+              },
+              {
+                "type": "trend",
+                "on": true
+              },
+              {
+                "type": "topn",
+                "on": true,
+                "topN": "downtime",
+                "n": 5,
+                "orderBy": "minutes"
+              }
+            ]
+          }
+        },
+        {
+          "id": "singleShift",
+          "label": "Single Shift Summary",
+          "def": {
+            "source": "production",
+            "title": "Shift B Summary - Yesterday",
+            "measures": [
+              "rate",
+              "vsTarget",
+              "throughput",
+              "oee",
+              "availability",
+              "performance",
+              "quality",
+              "yield",
+              "reject",
+              "uptime",
+              "runTime",
+              "downtime",
+              "downtimeEvents"
+            ],
+            "scope": [
+              "line"
+            ],
+            "time": {
+              "preset": "yesterday"
+            },
+            "shifts": [
+              "B"
+            ],
+            "breakdown": "none",
+            "sections": [
+              {
+                "type": "cards",
+                "on": true
+              },
+              {
+                "type": "table",
+                "on": true
+              },
+              {
+                "type": "topn",
+                "on": true,
+                "topN": "downtime",
+                "n": 5,
+                "orderBy": "minutes"
+              }
+            ]
+          }
+        },
+        {
+          "id": "topAlarms",
+          "label": "Top Alarms (Last 7 Days)",
+          "def": {
+            "source": "alarms",
+            "title": "Top Alarms - Last 7 Days",
+            "measures": [
+              "activations",
+              "highPriority",
+              "avgAck",
+              "avgClear"
+            ],
+            "scope": [
+              "all"
+            ],
+            "time": {
+              "preset": "last7"
+            },
+            "shifts": [],
+            "breakdown": "day",
+            "sections": [
+              {
+                "type": "cards",
+                "on": true
+              },
+              {
+                "type": "topn",
+                "on": true,
+                "topN": "alarms",
+                "n": 10,
+                "orderBy": "count"
+              },
+              {
+                "type": "trend",
+                "on": true
+              },
+              {
+                "type": "table",
+                "on": false
+              }
+            ]
+          }
+        }
+      ],
+      "sources": [
+        {
+          "id": "production",
+          "label": "Production - FCM Chipotle Chicken Line",
+          "description": "Line, zone and unit KPIs from the Production Overview dashboard. Historian data where tag history covers the period (FCM tags historized since 2026-10-13), the dashboard\u0027s demo generator otherwise (labelled Demo Data).",
+          "permission": "Reports/Production",
+          "fetcher": "production",
+          "historyRoot": "[default]Boars_Head/GrovePort/Production/FCM/",
+          "breakdowns": [
+            {
+              "id": "none",
+              "label": "Total (No Breakdown)"
+            },
+            {
+              "id": "hour",
+              "label": "By Hour"
+            },
+            {
+              "id": "shift",
+              "label": "By Shift"
+            },
+            {
+              "id": "day",
+              "label": "By Day"
+            },
+            {
+              "id": "week",
+              "label": "By Week"
+            }
+          ],
+          "defaultBreakdown": "day",
+          "scopeLevels": [
+            {
+              "id": "line",
+              "label": "Line"
+            },
+            {
+              "id": "zone",
+              "label": "Zone"
+            },
+            {
+              "id": "unit",
+              "label": "Unit"
+            }
+          ],
+          "scope": [
+            {
+              "id": "line",
+              "label": "FCM Line",
+              "level": "line",
+              "parent": ""
+            },
+            {
+              "id": "zone:Prep",
+              "label": "Prep Zone",
+              "level": "zone",
+              "parent": "line"
+            },
+            {
+              "id": "zone:Forming",
+              "label": "Forming Zone",
+              "level": "zone",
+              "parent": "line"
+            },
+            {
+              "id": "zone:Packaging",
+              "label": "Packaging Zone",
+              "level": "zone",
+              "parent": "line"
+            },
+            {
+              "id": "unit:VD",
+              "label": "Vat Dumper",
+              "level": "unit",
+              "parent": "zone:Prep"
+            },
+            {
+              "id": "unit:HOP",
+              "label": "Hopper",
+              "level": "unit",
+              "parent": "zone:Prep"
+            },
+            {
+              "id": "unit:HND",
+              "label": "Handtman",
+              "level": "unit",
+              "parent": "zone:Forming"
+            },
+            {
+              "id": "unit:LDR",
+              "label": "Loaders",
+              "level": "unit",
+              "parent": "zone:Forming"
+            },
+            {
+              "id": "unit:RSM",
+              "label": "Roll Stock",
+              "level": "unit",
+              "parent": "zone:Packaging"
+            },
+            {
+              "id": "unit:ST",
+              "label": "Shrink Tunnel",
+              "level": "unit",
+              "parent": "zone:Packaging"
+            },
+            {
+              "id": "unit:LS",
+              "label": "Lazy Susan",
+              "level": "unit",
+              "parent": "zone:Packaging"
+            }
+          ],
+          "scopeMulti": true,
+          "defaultScope": [
+            "line"
+          ],
+          "filters": [
+            {
+              "id": "shifts",
+              "label": "Shifts",
+              "options": [
+                {
+                  "value": "A",
+                  "label": "Shift A (07:00-15:00)"
+                },
+                {
+                  "value": "B",
+                  "label": "Shift B (15:00-23:00)"
+                },
+                {
+                  "value": "C",
+                  "label": "Shift C (23:00-07:00)"
+                }
+              ]
+            }
+          ],
+          "sections": [
+            "cards",
+            "trend",
+            "table",
+            "shifts",
+            "topn",
+            "notes"
+          ],
+          "defaultSections": [
+            "cards",
+            "trend",
+            "table"
+          ],
+          "topN": [
+            {
+              "id": "downtime",
+              "label": "Top Downtime Reasons",
+              "orderBy": [
+                {
+                  "value": "minutes",
+                  "label": "Minutes"
+                },
+                {
+                  "value": "events",
+                  "label": "Events"
+                }
+              ]
+            }
+          ],
+          "targets": {
+            "line": 950,
+            "zone": 950,
+            "unit": 130
+          },
+          "groups": [
+            {
+              "id": "throughput",
+              "label": "Throughput"
+            },
+            {
+              "id": "oee",
+              "label": "OEE"
+            },
+            {
+              "id": "quality",
+              "label": "Quality"
+            },
+            {
+              "id": "downtime",
+              "label": "Uptime \u0026 Downtime"
+            },
+            {
+              "id": "state",
+              "label": "Time In State"
+            },
+            {
+              "id": "alarms",
+              "label": "Alarms"
+            }
+          ],
+          "defaultMeasures": [
+            "rate",
+            "oee",
+            "throughput"
+          ],
+          "measures": [
+            {
+              "id": "rate",
+              "label": "LBS/HR",
+              "unit": "lb/hr",
+              "decimals": 0,
+              "agg": "avg",
+              "group": "throughput",
+              "field": "lineRate",
+              "history": {
+                "line": "Line/Rate",
+                "zone": "Zones/{zone}/Rate",
+                "unit": "{unit}/Rate",
+                "mode": "Average"
+              }
+            },
+            {
+              "id": "vsTarget",
+              "label": "Vs Target",
+              "unit": "%",
+              "decimals": 1,
+              "agg": "avg",
+              "group": "throughput",
+              "field": "rateVsTarget",
+              "history": {
+                "calc": "vsTarget"
+              }
+            },
+            {
+              "id": "throughput",
+              "label": "Throughput (Cases / Units)",
+              "unit": "count",
+              "decimals": 0,
+              "agg": "sum",
+              "group": "throughput",
+              "field": "throughput",
+              "levels": [
+                "line",
+                "unit"
+              ]
+            },
+            {
+              "id": "oee",
+              "label": "OEE",
+              "unit": "%",
+              "decimals": 1,
+              "agg": "avg",
+              "group": "oee",
+              "field": "oee",
+              "history": {
+                "zone": "Zones/{zone}/OEE",
+                "unit": "{unit}/OEE",
+                "calc": "oee",
+                "mode": "Average"
+              }
+            },
+            {
+              "id": "availability",
+              "label": "Availability",
+              "unit": "%",
+              "decimals": 1,
+              "agg": "avg",
+              "group": "oee",
+              "field": "availability",
+              "history": {
+                "line": "Line/Availability",
+                "mode": "Average"
+              }
+            },
+            {
+              "id": "performance",
+              "label": "Performance",
+              "unit": "%",
+              "decimals": 1,
+              "agg": "avg",
+              "group": "oee",
+              "field": "performance",
+              "history": {
+                "line": "Line/Performance",
+                "mode": "Average"
+              }
+            },
+            {
+              "id": "quality",
+              "label": "Quality",
+              "unit": "%",
+              "decimals": 1,
+              "agg": "avg",
+              "group": "oee",
+              "field": "quality",
+              "history": {
+                "line": "Line/Quality",
+                "mode": "Average"
+              }
+            },
+            {
+              "id": "yield",
+              "label": "Yield",
+              "unit": "%",
+              "decimals": 1,
+              "agg": "avg",
+              "group": "quality",
+              "field": "yieldPct",
+              "history": {
+                "line": "Line/Yield",
+                "mode": "Average"
+              }
+            },
+            {
+              "id": "reject",
+              "label": "Reject",
+              "unit": "%",
+              "decimals": 2,
+              "agg": "avg",
+              "group": "quality",
+              "field": "rejectPct",
+              "history": {
+                "line": "Line/Reject",
+                "unit": "{unit}/Reject",
+                "mode": "Average"
+              }
+            },
+            {
+              "id": "uptime",
+              "label": "Uptime",
+              "unit": "%",
+              "decimals": 1,
+              "agg": "avg",
+              "group": "downtime",
+              "field": "uptimePct",
+              "history": {
+                "line": "Line/Uptime",
+                "mode": "Average"
+              }
+            },
+            {
+              "id": "runTime",
+              "label": "Run Time",
+              "unit": "h",
+              "decimals": 1,
+              "agg": "sum",
+              "group": "downtime",
+              "field": "runHours"
+            },
+            {
+              "id": "downtime",
+              "label": "Downtime",
+              "unit": "min",
+              "decimals": 0,
+              "agg": "sum",
+              "group": "downtime",
+              "field": "downtimeMin"
+            },
+            {
+              "id": "downtimeEvents",
+              "label": "Downtime Events",
+              "unit": "events",
+              "decimals": 0,
+              "agg": "sum",
+              "group": "downtime",
+              "field": "dtEventCount"
+            },
+            {
+              "id": "tisRunning",
+              "label": "Running",
+              "unit": "h",
+              "decimals": 1,
+              "agg": "sum",
+              "group": "state",
+              "field": "tisRunning"
+            },
+            {
+              "id": "tisChangeover",
+              "label": "Changeover",
+              "unit": "h",
+              "decimals": 1,
+              "agg": "sum",
+              "group": "state",
+              "field": "tisChangeover"
+            },
+            {
+              "id": "tisIdle",
+              "label": "Idle",
+              "unit": "h",
+              "decimals": 1,
+              "agg": "sum",
+              "group": "state",
+              "field": "tisIdle"
+            },
+            {
+              "id": "tisFault",
+              "label": "Fault",
+              "unit": "h",
+              "decimals": 1,
+              "agg": "sum",
+              "group": "state",
+              "field": "tisFault"
+            },
+            {
+              "id": "alarmCount",
+              "label": "Alarms",
+              "unit": "alarms",
+              "decimals": 0,
+              "agg": "sum",
+              "group": "alarms",
+              "field": "alarmCount"
+            },
+            {
+              "id": "alarmHigh",
+              "label": "High Priority Alarms",
+              "unit": "alarms",
+              "decimals": 0,
+              "agg": "sum",
+              "group": "alarms",
+              "field": "alarmHigh"
+            },
+            {
+              "id": "alarmDuration",
+              "label": "Alarm Duration",
+              "unit": "min",
+              "decimals": 0,
+              "agg": "sum",
+              "group": "alarms",
+              "field": "alarmDurationMin"
+            }
+          ]
+        },
+        {
+          "id": "alarms",
+          "label": "Alarms - Alarm Journal",
+          "description": "Alarm activations, response times and top offenders from the alarm journal (MSSQL profile, every tag alarm since 2026-07-25), plus the live alarm status for Active / Unacknowledged Now.",
+          "permission": "Reports/Alarms",
+          "fetcher": "alarms",
+          "breakdowns": [
+            {
+              "id": "none",
+              "label": "Total (No Breakdown)"
+            },
+            {
+              "id": "hour",
+              "label": "By Hour"
+            },
+            {
+              "id": "shift",
+              "label": "By Shift"
+            },
+            {
+              "id": "day",
+              "label": "By Day"
+            },
+            {
+              "id": "week",
+              "label": "By Week"
+            }
+          ],
+          "defaultBreakdown": "day",
+          "scopeLevels": [
+            {
+              "id": "all",
+              "label": "All"
+            },
+            {
+              "id": "area",
+              "label": "Area"
+            },
+            {
+              "id": "device",
+              "label": "Device"
+            }
+          ],
+          "scope": [
+            {
+              "id": "all",
+              "label": "All Areas",
+              "level": "all",
+              "parent": ""
+            }
+          ],
+          "scopeOptions": "dynamic",
+          "scopeMulti": true,
+          "defaultScope": [
+            "all"
+          ],
+          "filters": [
+            {
+              "id": "shifts",
+              "label": "Shifts",
+              "options": [
+                {
+                  "value": "A",
+                  "label": "Shift A (07:00-15:00)"
+                },
+                {
+                  "value": "B",
+                  "label": "Shift B (15:00-23:00)"
+                },
+                {
+                  "value": "C",
+                  "label": "Shift C (23:00-07:00)"
+                }
+              ]
+            },
+            {
+              "id": "priorities",
+              "label": "Priorities",
+              "options": [
+                {
+                  "value": "0",
+                  "label": "Diagnostic"
+                },
+                {
+                  "value": "1",
+                  "label": "Low"
+                },
+                {
+                  "value": "2",
+                  "label": "Medium"
+                },
+                {
+                  "value": "3",
+                  "label": "High"
+                },
+                {
+                  "value": "4",
+                  "label": "Critical"
+                }
+              ]
+            }
+          ],
+          "sections": [
+            "cards",
+            "trend",
+            "table",
+            "shifts",
+            "topn",
+            "notes"
+          ],
+          "defaultSections": [
+            "cards",
+            "topn",
+            "table"
+          ],
+          "topN": [
+            {
+              "id": "alarms",
+              "label": "Top Alarms",
+              "orderBy": [
+                {
+                  "value": "count",
+                  "label": "Count"
+                },
+                {
+                  "value": "duration",
+                  "label": "Total Active Time"
+                },
+                {
+                  "value": "ack",
+                  "label": "Avg Time To Ack"
+                }
+              ]
+            },
+            {
+              "id": "devices",
+              "label": "Top Devices",
+              "orderBy": [
+                {
+                  "value": "count",
+                  "label": "Count"
+                },
+                {
+                  "value": "duration",
+                  "label": "Total Active Time"
+                }
+              ]
+            },
+            {
+              "id": "areas",
+              "label": "Top Areas",
+              "orderBy": [
+                {
+                  "value": "count",
+                  "label": "Count"
+                },
+                {
+                  "value": "duration",
+                  "label": "Total Active Time"
+                }
+              ]
+            }
+          ],
+          "groups": [
+            {
+              "id": "activity",
+              "label": "Activity"
+            },
+            {
+              "id": "response",
+              "label": "Response"
+            },
+            {
+              "id": "current",
+              "label": "Current Status"
+            }
+          ],
+          "defaultMeasures": [
+            "activations",
+            "highPriority",
+            "avgAck",
+            "avgClear"
+          ],
+          "measures": [
+            {
+              "id": "activations",
+              "label": "Alarm Activations",
+              "unit": "alarms",
+              "decimals": 0,
+              "agg": "sum",
+              "group": "activity",
+              "field": "activations"
+            },
+            {
+              "id": "highPriority",
+              "label": "High / Critical Activations",
+              "unit": "alarms",
+              "decimals": 0,
+              "agg": "sum",
+              "group": "activity",
+              "field": "highCount"
+            },
+            {
+              "id": "ackedPct",
+              "label": "Acknowledged",
+              "unit": "%",
+              "decimals": 1,
+              "agg": "ratio",
+              "group": "response",
+              "field": "",
+              "num": "acked",
+              "den": "activations",
+              "scale": 100.0
+            },
+            {
+              "id": "avgAck",
+              "label": "Avg Time To Ack",
+              "unit": "min",
+              "decimals": 1,
+              "agg": "ratio",
+              "group": "response",
+              "field": "",
+              "num": "ackSec",
+              "den": "acked",
+              "scale": 0.016666666666666666
+            },
+            {
+              "id": "avgClear",
+              "label": "Avg Time To Clear",
+              "unit": "min",
+              "decimals": 1,
+              "agg": "ratio",
+              "group": "response",
+              "field": "",
+              "num": "clrSec",
+              "den": "cleared",
+              "scale": 0.016666666666666666
+            },
+            {
+              "id": "maxClear",
+              "label": "Longest Active",
+              "unit": "min",
+              "decimals": 1,
+              "agg": "max",
+              "group": "response",
+              "field": "clrMaxMin"
+            },
+            {
+              "id": "totalActive",
+              "label": "Total Active Time",
+              "unit": "min",
+              "decimals": 0,
+              "agg": "sum",
+              "group": "response",
+              "field": "clrMin"
+            },
+            {
+              "id": "activeNow",
+              "label": "Active Now",
+              "unit": "alarms",
+              "decimals": 0,
+              "agg": "last",
+              "group": "current",
+              "field": "activeNow",
+              "current": true
+            },
+            {
+              "id": "unackedNow",
+              "label": "Unacknowledged Now",
+              "unit": "alarms",
+              "decimals": 0,
+              "agg": "last",
+              "group": "current",
+              "field": "unackedNow",
+              "current": true
+            }
+          ]
+        }
+      ]
+    },
+    "tagType": "AtomicTag"
+  }
+]

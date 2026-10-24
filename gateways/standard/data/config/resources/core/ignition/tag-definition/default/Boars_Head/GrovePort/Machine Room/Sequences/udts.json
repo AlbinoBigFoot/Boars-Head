@@ -1,0 +1,185 @@
+[
+  {
+    "metadata": {
+      "shortDescription": "High Stage Suction",
+      "longDescription": "suctionsequence. Live PLC [RCP1] (read only): SeqTag=HSS. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "documentation": "FT (STELLAR) L3-HSS_Seq {[RCP1]HSS} (Comp_Sequence) - memory until mapped to RCP1",
+    "name": "HSS",
+    "typeId": "Devices/SuctionSequence",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Cfg_HasEnable",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": false
+          }
+        ]
+      },
+      {
+        "name": "Cfg_Notes",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": "Compressor 5, 6 & 7\nCompressor Swing 4\n0 = Not In Sequence"
+          }
+        ]
+      },
+      {
+        "name": "Cfg_Positions",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": 4
+          }
+        ]
+      },
+      {
+        "name": "Cfg_SensorLabel",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": "HSS-PT2"
+          }
+        ]
+      },
+      {
+        "name": "Cfg_SensorPath",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": "[default]Boars_Head/GrovePort/Machine Room/Sensors/HSS-Pumps Pressure"
+          }
+        ]
+      },
+      {
+        "name": "Seq",
+        "tagType": "UdtInstance",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "SeqTag": {
+        "dataType": "String",
+        "value": "HSS"
+      }
+    }
+  },
+  {
+    "metadata": {
+      "shortDescription": "Low Stage Suction",
+      "longDescription": "suctionsequence. Live PLC [RCP1] (read only): SeqTag=LSS, EnableTag=LSS_HMI_Enable. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "documentation": "FT (STELLAR) L3-LSS_Seq {[RCP1]LSS} (Comp_Sequence) - memory until mapped to RCP1",
+    "name": "LSS",
+    "typeId": "Devices/SuctionSequence",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Cfg_HasEnable",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": true
+          }
+        ]
+      },
+      {
+        "name": "Cfg_Notes",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": "Compressor 1\nCompressor Swing 4\n0 = Not In Sequence"
+          }
+        ]
+      },
+      {
+        "name": "Cfg_Positions",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": 2
+          }
+        ]
+      },
+      {
+        "name": "Cfg_SensorLabel",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": "LSS-PT1"
+          }
+        ]
+      },
+      {
+        "name": "Cfg_SensorPath",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": "[default]Boars_Head/GrovePort/Machine Room/Sensors/LSS-Pumps Pressure"
+          }
+        ]
+      },
+      {
+        "name": "Seq",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "PlcHmiEnable",
+        "tagType": "AtomicTag",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "SeqTag": {
+        "dataType": "String",
+        "value": "LSS"
+      },
+      "EnableTag": {
+        "dataType": "String",
+        "value": "LSS_HMI_Enable"
+      }
+    }
+  }
+]

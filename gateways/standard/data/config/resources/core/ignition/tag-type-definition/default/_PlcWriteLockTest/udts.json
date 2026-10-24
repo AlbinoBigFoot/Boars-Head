@@ -1,0 +1,39 @@
+[
+  {
+    "name": "TestCard",
+    "tagType": "UdtType",
+    "documentation": "PLC write lock test UDT: memory members whose readOnly the TEST boolean drives at the definition level (instances inherit).",
+    "tags": [
+      {
+        "name": "OCmd_Start",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "value": false,
+        "readOnly": true
+      },
+      {
+        "name": "Val_SP",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Float4",
+        "value": 50.0,
+        "readOnly": true
+      },
+      {
+        "name": "Alarm",
+        "tagType": "Folder",
+        "tags": [
+          {
+            "name": "Cfg_Limit",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "dataType": "Float4",
+            "value": 90.0,
+            "readOnly": true
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,40 @@
+[
+  {
+    "metadata": {
+      "shortDescription": "Outside Air Temp",
+      "longDescription": "sensor. Live PLC [RCP1] (read only): AInTag=TS_AIR, AInEU=°F. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "Outside Air Temp",
+    "typeId": "Devices/Sensor",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "AIn",
+        "tagType": "UdtInstance",
+        "enabled": true,
+        "tags": [
+          {
+            "name": "Val",
+            "tagType": "AtomicTag",
+            "formatString": "#,##0.0"
+          }
+        ]
+      }
+    ],
+    "documentation": "FT (STELLAR)Condensers GO_P_AIn {[RCP1]TS_AIR} - outside air temperature",
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "AInTag": {
+        "dataType": "String",
+        "value": "TS_AIR"
+      },
+      "AInEU": {
+        "dataType": "String",
+        "value": "°F"
+      }
+    }
+  }
+]

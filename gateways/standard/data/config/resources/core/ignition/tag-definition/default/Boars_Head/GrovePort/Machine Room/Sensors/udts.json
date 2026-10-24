@@ -1,0 +1,215 @@
+[
+  {
+    "metadata": {
+      "shortDescription": "LSS-Pumps Pressure",
+      "longDescription": "sensor. Live PLC [RCP1] (read only): AInTag=SYS_PT1, AInEU=PSIG. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "LSS-Pumps Pressure",
+    "typeId": "Devices/Sensor",
+    "tagType": "UdtInstance",
+    "enabled": true,
+    "tags": [
+      {
+        "name": "AIn",
+        "tagType": "UdtInstance",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "AInTag": {
+        "dataType": "String",
+        "value": "SYS_PT1"
+      },
+      "AInEU": {
+        "dataType": "String",
+        "value": "PSIG"
+      }
+    }
+  },
+  {
+    "metadata": {
+      "shortDescription": "HSD-Discharge Pressure",
+      "longDescription": "sensor. Live PLC [RCP1] (read only): AInTag=SYS_PT3, AInEU=PSIG. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "HSD-Discharge Pressure",
+    "typeId": "Devices/Sensor",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "AIn",
+        "tagType": "UdtInstance",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "AInTag": {
+        "dataType": "String",
+        "value": "SYS_PT3"
+      },
+      "AInEU": {
+        "dataType": "String",
+        "value": "PSIG"
+      }
+    }
+  },
+  {
+    "metadata": {
+      "shortDescription": "LSL-Pumps Pressure",
+      "longDescription": "sensor. Live PLC [RCP1] (read only): AInTag=SYS_PT4, AInEU=PSIG. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "LSL-Pumps Pressure",
+    "typeId": "Devices/Sensor",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "AIn",
+        "tagType": "UdtInstance",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "AInTag": {
+        "dataType": "String",
+        "value": "SYS_PT4"
+      },
+      "AInEU": {
+        "dataType": "String",
+        "value": "PSIG"
+      }
+    }
+  },
+  {
+    "metadata": {
+      "shortDescription": "HSL-Pumps Pressure",
+      "longDescription": "sensor. Live PLC [RCP1] (read only): AInTag=SYS_PT5, AInEU=PSIG. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "HSL-Pumps Pressure",
+    "typeId": "Devices/Sensor",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "AIn",
+        "tagType": "UdtInstance",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "AInTag": {
+        "dataType": "String",
+        "value": "SYS_PT5"
+      },
+      "AInEU": {
+        "dataType": "String",
+        "value": "PSIG"
+      }
+    }
+  },
+  {
+    "name": "Overview",
+    "typeId": "Overview/Sensor Overview",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "ActiveAlarmCount",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "expr",
+            "expression": "sum({[default]Boars_Head/GrovePort/Machine Room/Sensors/Condenser Sump Level/_Alarms/_Active},\n{[default]Boars_Head/GrovePort/Machine Room/Sensors/HSD-Discharge Pressure/_Alarms/_Active},\n{[default]Boars_Head/GrovePort/Machine Room/Sensors/HSL-Pumps Pressure/_Alarms/_Active},\n{[default]Boars_Head/GrovePort/Machine Room/Sensors/HSS-Pumps Pressure/_Alarms/_Active},\n{[default]Boars_Head/GrovePort/Machine Room/Sensors/LSL-Pumps Pressure/_Alarms/_Active},\n{[default]Boars_Head/GrovePort/Machine Room/Sensors/LSS-Pumps Pressure/_Alarms/_Active})",
+            "dataType": "Int4",
+            "formatString": "0",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "typeId": "_Root/Document",
+        "name": "Instances",
+        "tagType": "AtomicTag"
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "name": "Rebuild",
+        "tagType": "AtomicTag"
+      }
+    ]
+  },
+  {
+    "metadata": {
+      "shortDescription": "HSS-Pumps Pressure",
+      "longDescription": "sensor. Live PLC [RCP1] (read only): AInTag=SYS_PT2, AInEU=PSIG. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "HSS-Pumps Pressure",
+    "typeId": "Devices/Sensor",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "AIn",
+        "tagType": "UdtInstance",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "AInTag": {
+        "dataType": "String",
+        "value": "SYS_PT2"
+      },
+      "AInEU": {
+        "dataType": "String",
+        "value": "PSIG"
+      }
+    }
+  },
+  {
+    "metadata": {
+      "shortDescription": "Condenser Sump Level",
+      "longDescription": "sensor. Live PLC [RCP1] (read only): AInSource=[default]Boars_Head/GrovePort/Condensers/Tanks/CSV/LvlAIn, AInEU=In\". PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "Condenser Sump Level",
+    "typeId": "Devices/Sensor",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "AInRef",
+        "tagType": "UdtInstance",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "AInSource": {
+        "dataType": "String",
+        "value": "[default]Boars_Head/GrovePort/Condensers/Tanks/CSV/LvlAIn"
+      },
+      "AInEU": {
+        "dataType": "String",
+        "value": "In\""
+      }
+    }
+  }
+]

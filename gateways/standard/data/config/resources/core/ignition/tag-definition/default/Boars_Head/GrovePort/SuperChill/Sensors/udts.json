@@ -1,0 +1,40 @@
+[
+  {
+    "metadata": {
+      "shortDescription": "Superchill Underfloor Temp",
+      "longDescription": "sensor. Live PLC [RCP1] (read only): AInTag=TS_UF1, AInEU=°F. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "documentation": "FT P_AIn {[RCP1]TS_UF2} - SuperChill underfloor temperature",
+    "name": "Underfloor Temp",
+    "typeId": "Devices/Sensor",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "AIn",
+        "tagType": "UdtInstance",
+        "enabled": true,
+        "tags": [
+          {
+            "name": "Val",
+            "tagType": "AtomicTag",
+            "formatString": "#,##0.00"
+          }
+        ]
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "AInTag": {
+        "dataType": "String",
+        "value": "TS_UF1"
+      },
+      "AInEU": {
+        "dataType": "String",
+        "value": "°F"
+      }
+    }
+  }
+]

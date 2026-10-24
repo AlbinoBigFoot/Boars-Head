@@ -1,0 +1,1485 @@
+[
+  {
+    "name": "BH_Groveport_RCP1",
+    "typeId": "PLC/Controllers/CompactLogix_5370",
+    "tagType": "UdtType",
+    "metadata": {
+      "shortDescription": "Groveport RCP1 PLC (CompactLogix 5370, 19 local 1769 cards, read only)",
+      "longDescription": "Inherits PLC/Controllers/CompactLogix_5370; one PLC/Modules card per occupied slot + Rack document (.cursor/tasks/plc-rack-io/build.py)"
+    },
+    "parameters": {
+      "DeviceName": {
+        "dataType": "String",
+        "value": null
+      },
+      "Description": {
+        "dataType": "String",
+        "value": ""
+      }
+    },
+    "tags": [
+      {
+        "name": "CatalogNumber",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "'1769-L36ERM'",
+        "readOnly": true,
+        "documentation": "Catalog: [Diagnostics] ProductName 1769-L36ERM/A LOGIX5336ERM, product code 108 (ACD backup identity)"
+      },
+      {
+        "name": "IPAddress",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "''",
+        "readOnly": true,
+        "documentation": "Controller IP: per PLC, set by the instance (expression override, PLCS in the builder)"
+      },
+      {
+        "name": "MaxLocalModules",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "Int4",
+        "expression": "30",
+        "readOnly": true,
+        "documentation": "1769-L36ERM local module limit"
+      },
+      {
+        "name": "MajorFaultRecordCode",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]MajorFaultRecord_Code"
+        },
+        "dataType": "Int4",
+        "readOnly": true,
+        "tagGroup": "PAX_Faceplate",
+        "documentation": "Last major fault code (controller tag MajorFaultRecord_Code)"
+      },
+      {
+        "name": "MajorFaultRecordType",
+        "tagType": "AtomicTag",
+        "valueSource": "opc",
+        "opcServer": "Ignition OPC UA Server",
+        "opcItemPath": {
+          "bindType": "parameter",
+          "binding": "ns=1;s=[{DeviceName}]MajorFaultRecord_Type"
+        },
+        "dataType": "Int4",
+        "readOnly": true,
+        "tagGroup": "PAX_Faceplate",
+        "documentation": "Last major fault type (controller tag MajorFaultRecord_Type)"
+      },
+      {
+        "name": "Rack",
+        "tagType": "AtomicTag",
+        "valueSource": "memory",
+        "dataType": "Document",
+        "value": {
+          "controller": {
+            "member": "Controller",
+            "name": "BoarsHead",
+            "ip": "10.80.31.60",
+            "plc": "RCP1",
+            "catalog": "1769-L36ERM",
+            "family": "CompactLogix 5370 L3",
+            "power": "1769 Power Supply \u00b7 Catalog Not In L5X"
+          },
+          "slots": [
+            {
+              "slot": 1,
+              "member": "Slot01",
+              "name": "IF8_S1",
+              "catalog": "1769-IF8",
+              "series": "A",
+              "type": "AI",
+              "points": 8,
+              "description": "8-Channel Analog Input (0-5 V / 4-20 mA)",
+              "pointNames": {
+                "0": "CG-A1 -10 \u00b0F Freezer (CG_ZAT[1])",
+                "1": "CG-A2 -10 \u00b0F Freezer (CG_ZAT[2])",
+                "2": "CG-B1 +26 \u00b0F Super Chill (CG_ZAT[3])",
+                "3": "CG-B2 +26 \u00b0F Super Chill (CG_ZAT[4])",
+                "4": "CG-C1 +36 \u00b0F Club (CG_ZAT[5])",
+                "5": "CG-D1 +36 \u00b0F Palletizing (CG_ZAT[6])",
+                "6": "CG-G4 +36 \u00b0F Dock (CG_ZAT[18])",
+                "7": "CG-E2 +36 \u00b0F East Penthouse (CG_ZAT[8])"
+              },
+              "channels": {
+                "0": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                },
+                "1": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                },
+                "2": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                },
+                "3": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                },
+                "4": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                },
+                "5": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                },
+                "6": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                },
+                "7": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                }
+              }
+            },
+            {
+              "slot": 2,
+              "member": "Slot02",
+              "name": "IF8_S2",
+              "catalog": "1769-IF8",
+              "series": "A",
+              "type": "AI",
+              "points": 8,
+              "description": "8-Channel Analog Input (0-5 V / 4-20 mA)",
+              "pointNames": {
+                "0": "CG-E3 +36 \u00b0F East Penthouse (CG_ZAT[9])",
+                "1": "CG-E4 +36 \u00b0F East Penthouse (CG_ZAT[10])",
+                "2": "Low Stage Recirculator Level (LT_LVL)",
+                "3": "High Stage Recirculator Level (HT_LVL)",
+                "4": "Low Stage Recirculator Pressure (SYS_PT4)",
+                "5": "System Pressure - Low Stage Suction (LSS) (SYS_PT1)",
+                "6": "System Pressure - High Stage Suction (HSS) (SYS_PT2)",
+                "7": "System Pressure - High Discharge (HSD) (SYS_PT3)"
+              },
+              "channels": {
+                "0": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                },
+                "1": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                },
+                "2": {
+                  "enabled": true,
+                  "range": 3,
+                  "format": 1,
+                  "signal": "4 to 20 mA"
+                },
+                "3": {
+                  "enabled": true,
+                  "range": 3,
+                  "format": 1,
+                  "signal": "4 to 20 mA"
+                },
+                "4": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                },
+                "5": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                },
+                "6": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                },
+                "7": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                }
+              }
+            },
+            {
+              "slot": 3,
+              "member": "Slot03",
+              "name": "IF8_S3",
+              "catalog": "1769-IF8",
+              "series": "A",
+              "type": "AI",
+              "points": 8,
+              "description": "8-Channel Analog Input (0-5 V / 4-20 mA)",
+              "pointNames": {
+                "0": "CG-F1 +36 \u00b0F West Penthouse (CG_ZAT[11])",
+                "1": "CG-F2 +36 \u00b0F West Penthouse (CG_ZAT[12])",
+                "2": "CG-F3 +36 \u00b0F West Penthouse (CG_ZAT[13])",
+                "3": "CG-F4 +36 \u00b0F West Penthouse (CG_ZAT[14])",
+                "4": "CG-G1 +36 \u00b0F Dock (CG_ZAT[15])",
+                "5": "CG-G2 +36 \u00b0F Dock (CG_ZAT[16])",
+                "6": "CG-E1 +36 \u00b0F East Penthouse (CG_ZAT[7])",
+                "7": "CG-G3 +36 \u00b0F Dock (CG_ZAT[17])"
+              },
+              "channels": {
+                "0": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                },
+                "1": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                },
+                "2": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                },
+                "3": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                },
+                "4": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                },
+                "5": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                },
+                "6": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                },
+                "7": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                }
+              }
+            },
+            {
+              "slot": 4,
+              "member": "Slot04",
+              "name": "IF8_S4",
+              "catalog": "1769-IF8",
+              "series": "A",
+              "type": "AI",
+              "points": 8,
+              "description": "8-Channel Analog Input (0-5 V / 4-20 mA)",
+              "pointNames": {
+                "0": "CG-G5 +36 \u00b0F Dock (CG_ZAT[19])",
+                "1": "-10 \u00b0F Freezer Underfloor (TS_UF1)",
+                "2": "+26 \u00b0F Superchill Underfloor (TS_UF2)",
+                "3": "Outside Air (TS_AIR)",
+                "4": "Spare (Not In Logic)",
+                "5": "Sump_pT (Sump_pT)",
+                "6": "Hi Pressure Recirculator Level (LT_HPR)",
+                "7": "High Stage Recirculator Pressure (SYS_PT5)"
+              },
+              "channels": {
+                "0": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                },
+                "1": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                },
+                "2": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                },
+                "3": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                },
+                "4": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                },
+                "5": {
+                  "enabled": true,
+                  "range": 3,
+                  "format": 1,
+                  "signal": "4 to 20 mA"
+                },
+                "6": {
+                  "enabled": true,
+                  "range": 3,
+                  "format": 1,
+                  "signal": "4 to 20 mA"
+                },
+                "7": {
+                  "enabled": true,
+                  "range": 1,
+                  "format": 1,
+                  "signal": "0 to 5 V"
+                }
+              }
+            },
+            {
+              "slot": 5,
+              "member": "Slot05",
+              "name": "IA16_S5",
+              "catalog": "1769-IA16",
+              "series": "A",
+              "type": "DI",
+              "points": 16,
+              "description": "16-Point 120V AC Input",
+              "pointNames": {
+                "0": "Low Stage Recirculator HLCO Shutdown (LTR_HLCO)",
+                "1": "Low Stage Recirculator Hi Level Alarm (LTR_HIHI, Inverted)",
+                "2": "Spare (Not In Logic)",
+                "3": "Low Stage Recirculator Operating Level (LTR_OPL, Inverted)",
+                "4": "Low Stage Recirculator Low Level Alarm (LTR_LOLO, Inverted)",
+                "5": "Spare (Not In Logic)",
+                "6": "Spare (Not In Logic)",
+                "7": "Low Stage Recirculator Pump # 1 Run Feedback (LTR_PUMPS[1])",
+                "8": "Ltlr Pump #1 Alarm From Pump Guardian (LTR_PUMPS_ALM[1])",
+                "9": "Spare (Not In Logic)",
+                "10": "Low Stage Recirculator Pump # 2 Run Feedback (LTR_PUMPS[2])",
+                "11": "Ltlr Pump #2 Alarm From Pump Guardian (LTR_PUMPS_ALM[2])",
+                "12": "Liquid Transfer Unit Controller Running (NH3_LTU)",
+                "13": "Alarm Silence (ALARM)",
+                "14": "RCP Alarm Reset",
+                "15": "Spare (Not In Logic)"
+              },
+              "channels": {}
+            },
+            {
+              "slot": 6,
+              "member": "Slot06",
+              "name": "IA16_S6",
+              "catalog": "1769-IA16",
+              "series": "A",
+              "type": "DI",
+              "points": 16,
+              "description": "16-Point 120V AC Input",
+              "pointNames": {
+                "0": "High Stage Recirculator HLCO Shutdown (HTR_HLCO)",
+                "1": "High Stage Recirculator Hi Level Alarm (HTR_HIHI, Inverted)",
+                "2": "Spare (Not In Logic)",
+                "3": "High Stage Recirculator Operating Level (HTR_OPL, Inverted)",
+                "4": "High Stage Recirculator High Level Alarm (HTR_LOLO, Inverted)",
+                "5": "Spare (Not In Logic)",
+                "6": "Spare (Not In Logic)",
+                "7": "High Stage Recirculator Pump # 1 Run Feedback (HTR_PUMPS[1])",
+                "8": "Htlr Pump #1 Alarm From Pump Guardian (HTR_PUMPS_ALM[1])",
+                "9": "Spare (Not In Logic)",
+                "10": "High Stage Recirculator Pump # 2 Run Feedback (HTR_PUMPS[2])",
+                "11": "Htlr Pump #2 Alarm From Pump Guardian (HTR_PUMPS_ALM[2])",
+                "12": "High Pressure Receiver Low Level Alarm (HPR_LOLO)",
+                "13": "Machine Room Exhaust Fan 15 Sail Switch Run Confirm (MR_EEF15)",
+                "14": "Battery Room Exhaust Fan 17 Sail Switch Run Confirm (BR_EEF17)",
+                "15": "Master Ammonia Detector (MASTER_AD1)"
+              },
+              "channels": {}
+            },
+            {
+              "slot": 7,
+              "member": "Slot07",
+              "name": "IQ16_S7",
+              "catalog": "1769-IQ16",
+              "series": "A",
+              "type": "DI",
+              "points": 16,
+              "description": "16-Point 24V DC Sink / Source Input",
+              "pointNames": {
+                "0": "Rupture Disks PS[1] (PS[1], Inverted)",
+                "1": "Rupture Disks PS[2] (PS[2], Inverted)",
+                "2": "Rupture Disks PS[3] (PS[3], Inverted)",
+                "3": "Rupture Disks PS[4] (PS[4], Inverted)",
+                "4": "Rupture Disks PS[5] (PS[5], Inverted)",
+                "5": "Spare (Not In Logic)",
+                "6": "Rupture Disks PS[7] (PS[7], Inverted)",
+                "7": "Rupture Disks PS[8] (PS[8], Inverted)",
+                "8": "Rupture Disks PS[9] (PS[9], Inverted)",
+                "9": "Rupture Disks PS[10] (PS[10], Inverted)",
+                "10": "Rupture Disks PS[11] (PS[11], Inverted)",
+                "11": "Rupture Disks PS[12] (PS[12], Inverted)",
+                "12": "Rupture Disks PS[13] (PS[13], Inverted)",
+                "13": "Rupture Disks PS[14] (PS[14], Inverted)",
+                "14": "Rupture Disks PS[15] (PS[15], Inverted)",
+                "15": "Rupture Disks PS[16] (PS[16], Inverted)"
+              },
+              "channels": {}
+            },
+            {
+              "slot": 8,
+              "member": "Slot08",
+              "name": "IQ16_S8",
+              "catalog": "1769-IQ16",
+              "series": "A",
+              "type": "DI",
+              "points": 16,
+              "description": "16-Point 24V DC Sink / Source Input",
+              "pointNames": {
+                "0": "Rupture Disks PS[17] (PS[17], Inverted)",
+                "1": "Rupture Disks PS[18] (PS[18], Inverted)",
+                "2": "Rupture Disks PS[19] (PS[19], Inverted)",
+                "3": "Rupture Disks PS[20] (PS[20], Inverted)",
+                "4": "Rupture Disks PS[21] (PS[21], Inverted)",
+                "5": "Rupture Disks PS[22] (PS[22], Inverted)",
+                "6": "Rupture Disks PS[23] (PS[23], Inverted)",
+                "7": "Rupture Disks PS[24] (PS[24], Inverted)",
+                "8": "Rupture Disks PS[25] (PS[25], Inverted)",
+                "9": "Rupture Disks PS[26] (PS[26], Inverted)",
+                "10": "Rupture Disks PS[27] (PS[27], Inverted)",
+                "11": "Rupture Disks PS[28] (PS[28], Inverted)",
+                "12": "Rupture Disks PS[29] (PS[29], Inverted)",
+                "13": "Rupture Disks PS[30] (PS[30], Inverted)",
+                "14": "Rupture Disks PS[31] (PS[31], Inverted)",
+                "15": "Rupture Disks PS[32] (PS[32], Inverted)"
+              },
+              "channels": {}
+            },
+            {
+              "slot": 9,
+              "member": "Slot09",
+              "name": "IQ16_S9",
+              "catalog": "1769-IQ16",
+              "series": "A",
+              "type": "DI",
+              "points": 16,
+              "description": "16-Point 24V DC Sink / Source Input",
+              "pointNames": {
+                "0": "Rupture Disks PS[33] (PS[33], Inverted)",
+                "1": "Rupture Disks PS[34] (PS[34], Inverted)",
+                "2": "Rupture Disks PS[35] (PS[35], Inverted)",
+                "3": "Rupture Disks PS[36] (PS[36], Inverted)",
+                "4": "Rupture Disks PS[37] (PS[37], Inverted)",
+                "5": "Rupture Disks PS[38] (PS[38], Inverted)",
+                "6": "Rupture Disks PS[39] (PS[39], Inverted)",
+                "7": "Rupture Disks PS[40] (PS[40], Inverted)",
+                "8": "Rupture Disks PS[41] (PS[41], Inverted)",
+                "9": "RCP Reset (ALARM)",
+                "10": "Spare (Not In Logic)",
+                "11": "Spare (Not In Logic)",
+                "12": "Spare (Not In Logic)",
+                "13": "Spare (Not In Logic)",
+                "14": "Spare (Not In Logic)",
+                "15": "Spare (Not In Logic)"
+              },
+              "channels": {}
+            },
+            {
+              "slot": 10,
+              "member": "Slot10",
+              "name": "IA16_S10",
+              "catalog": "1769-IA16",
+              "series": "A",
+              "type": "DI",
+              "points": 16,
+              "description": "16-Point 120V AC Input",
+              "pointNames": {
+                "0": "(-10 \u00b0F Freezer) Ammonia Detector (AD[1])",
+                "1": "(+26 \u00b0F Superchill) Ammonia Detector (AD[2])",
+                "2": "(+36 \u00b0F Club) Ammonia Detector (AD[3])",
+                "3": "(+36 \u00b0F Palletizing) Ammonia Detector (AD[4])",
+                "4": "(+36 \u00b0F East Penthouse) Ammonia Detector (AD[5])",
+                "5": "(+36 \u00b0F West Penthouse) Ammonia Detector (AD[6])",
+                "6": "(+36 \u00b0F West Dock) Ammonia Detector (AD[7])",
+                "7": "(+36 \u00b0F East Dock) Ammonia Detector (AD[8])",
+                "8": "Machine Room Ammonia Detector (AD_MR1)",
+                "9": "Vent Line Ammonia Detector (AD_VL)",
+                "10": "Condenser Sump Water Level Up (RS_LVL_OL2, Inverted)",
+                "11": "Condenser Sump Water Level Down (RS_LVL_OL3, Inverted)",
+                "12": "Condenser Sump Low Level Alarm (RS_LLCO2, Inverted)",
+                "13": "Spare (Not In Logic)",
+                "14": "Spare (Not In Logic)",
+                "15": "Spare (Not In Logic)"
+              },
+              "channels": {}
+            },
+            {
+              "slot": 11,
+              "member": "Slot11",
+              "name": "IA16_S11",
+              "catalog": "1769-IA16",
+              "series": "A",
+              "type": "DI",
+              "points": 16,
+              "description": "16-Point 120V AC Input",
+              "pointNames": {
+                "0": "(-10 \u00b0F Freezer) Fire Detector (FD[1])",
+                "1": "(+26 \u00b0F Superchill) Fire Detector (FD[2])",
+                "2": "(+36 \u00b0F West Penthouse) Fire Detector (FD[3])",
+                "3": "(+36 \u00b0F East Penthouse) Fire Detector (FD[4])",
+                "4": "(+36 \u00b0F Truck Dock) Fire Detector (FD[5])",
+                "5": "KW Pulse (KW_PULSE)",
+                "6": "Spare (Not In Logic)",
+                "7": "Spare (Not In Logic)",
+                "8": "Condenser #1 A Fan 1 Run Feedback (CD1A_FAN1)",
+                "9": "Condenser #1 A Fan 2 Run Feedback (CD1A_FAN2)",
+                "10": "Condenser #1 B Fan 1 Run Feedback (CD1B_FAN1)",
+                "11": "Condenser #1 B Fan 2 Run Feedback (CD1B_FAN2)",
+                "12": "Condenser Sump Pump 1 Run Feedback (CD1_P1)",
+                "13": "Condenser Sump Pump 2 Run Feedback (CD1_P2)",
+                "14": "Condenser Sump Pump 3 Run Feedback (CD1_P3)",
+                "15": "Spare (Not In Logic)"
+              },
+              "channels": {}
+            },
+            {
+              "slot": 12,
+              "member": "Slot12",
+              "name": "OA16_S12",
+              "catalog": "1769-OA16",
+              "series": "A",
+              "type": "DO",
+              "points": 16,
+              "description": "16-Point 120/240V AC Triac Output",
+              "pointNames": {
+                "0": "CG-A1 -10\u00b0F Freezer Liquid Valve (CG_Liquid_SV[1])",
+                "1": "CG-A1 -10\u00b0F Freezer Suction Valve (CG_Suction_SV[1])",
+                "2": "CG-A1 -10\u00b0F Freezer Hot Gas Valve (CG_HotGas_SV[1])",
+                "3": "CG-A1 -10\u00b0F Freezer Bleed Gas Valve (CG_Bleed_SV[1])",
+                "4": "Main Liquid Valve (MAIN_LIQ_CV5)",
+                "5": "CG-A2 -10\u00b0F Freezer Liquid Valve (CG_Liquid_SV[2])",
+                "6": "CG-A2 -10\u00b0F Freezer Suction Valve (CG_Suction_SV[2])",
+                "7": "CG-A2 -10\u00b0F Freezer Hot Gas Valve (CG_HotGas_SV[2])",
+                "8": "CG-A2 -10\u00b0F Freezer Bleed Gas Valve (CG_Bleed_SV[2])",
+                "9": "Main Hot Gas Valve (MAIN_HG_CV6)",
+                "10": "CG-B1 +26\u00b0F Superchill Liquid Valve (CG_Liquid_SV[3])",
+                "11": "CG-B1 +26\u00b0F Superchill Suction Valve (CG_Suction_SV[3])",
+                "12": "CG-B1 +26\u00b0F Superchill Hot Gas Valve (CG_HotGas_SV[3])",
+                "13": "CG-B1 +26\u00b0F Superchill Bleed Gas Valve (CG_Bleed_SV[3])",
+                "14": "Condenser Sump Make Up Water (RS_MW_CV25)",
+                "15": "CG-B2 +26\u00b0F Superchill Bleed Gas Valve (CG_Bleed_SV[4])"
+              },
+              "channels": {}
+            },
+            {
+              "slot": 13,
+              "member": "Slot13",
+              "name": "OA16_S13",
+              "catalog": "1769-OA16",
+              "series": "A",
+              "type": "DO",
+              "points": 16,
+              "description": "16-Point 120/240V AC Triac Output",
+              "pointNames": {
+                "0": "CG-A2 +26\u00b0F Superchill Liquid Valve (CG_Liquid_SV[4])",
+                "1": "CG-A2 +26\u00b0F Superchill Suction Valve (CG_Suction_SV[4])",
+                "2": "CG-A2 +26\u00b0F Superchill Hot Gas Valve (CG_HotGas_SV[4])",
+                "3": "Condenser Sump Back Up Make Up Water (RS_BACKUP_MW_CV26)",
+                "4": "CG-C1 +36\u00b0F Club Liquid Valve (CG_Liquid_SV[5])",
+                "5": "CG-C1 +36\u00b0F Club Suction Valve (CG_Suction_SV[5])",
+                "6": "CG-C1 +36\u00b0F Club Hot Gas Valve (CG_HotGas_SV[5])",
+                "7": "Spare (Not In Logic)",
+                "8": "CG-D1 +36\u00b0F Palletizing Liquid Valve (CG_Liquid_SV[6])",
+                "9": "CG-D1 +36\u00b0F Palletizing Suction Valve (CG_Suction_SV[6])",
+                "10": "CG-D1 +36\u00b0F Palletizing Hot Gas Valve (CG_HotGas_SV[6])",
+                "11": "RCP_Reset (RCP_Reset)",
+                "12": "Alarm Ligth (Alarm_Light)",
+                "13": "Alarm Circuit (Alarm_Circuit)",
+                "14": "Spare (Not In Logic)",
+                "15": "Spare (Not In Logic)"
+              },
+              "channels": {}
+            },
+            {
+              "slot": 14,
+              "member": "Slot14",
+              "name": "OA16_S14",
+              "catalog": "1769-OA16",
+              "series": "A",
+              "type": "DO",
+              "points": 16,
+              "description": "16-Point 120/240V AC Triac Output",
+              "pointNames": {
+                "0": "CG-E1 +36\u00b0F East Penthouse Liquid Valve (CG_Liquid_SV[7])",
+                "1": "CG-E1 +36\u00b0F East Penthouse Suction Valve (CG_Suction_SV[7])",
+                "2": "CG-E1 +36\u00b0F East Penthouse Hot Gas Valve (CG_HotGas_SV[7])",
+                "3": "CG-E1 +36\u00b0F East Penthouse Bleed Valve (CG_Bleed_SV[7])",
+                "4": "Spare (Not In Logic)",
+                "5": "CG-E2 +36\u00b0F East Penthouse Liquid Valve (CG_Liquid_SV[8])",
+                "6": "CG-E2 +36\u00b0F East Penthouse Suction Valve (CG_Suction_SV[8])",
+                "7": "CG-E2 +36\u00b0F East Penthouse Hot Gas Valve (CG_HotGas_SV[8])",
+                "8": "CG-E2 +36\u00b0F East Penthouse Bleed Valve (CG_Bleed_SV[8])",
+                "9": "Spare (Not In Logic)",
+                "10": "CG-E3 +36\u00b0F East Penthouse Liquid Valve (CG_Liquid_SV[9])",
+                "11": "CG-E3 +36\u00b0F East Penthouse Suction Valve (CG_Suction_SV[9])",
+                "12": "CG-E3 +36\u00b0F East Penthouse Hot Gas Valve (CG_HotGas_SV[9])",
+                "13": "CG-E3 +36\u00b0F East Penthouse Bleed Valve (CG_Bleed_SV[9])",
+                "14": "Spare (Not In Logic)",
+                "15": "Spare (Not In Logic)"
+              },
+              "channels": {}
+            },
+            {
+              "slot": 15,
+              "member": "Slot15",
+              "name": "OA16_S15",
+              "catalog": "1769-OA16",
+              "series": "A",
+              "type": "DO",
+              "points": 16,
+              "description": "16-Point 120/240V AC Triac Output",
+              "pointNames": {
+                "0": "CG-E4 +36\u00b0F East Penthouse Liquid Valve (CG_Liquid_SV[10])",
+                "1": "CG-E4 +36\u00b0F East Penthouse Suction Valve (CG_Suction_SV[10])",
+                "2": "CG-E4 +36\u00b0F East Penthouse Hot Gas Valve (CG_HotGas_SV[10])",
+                "3": "CG-E4 +36\u00b0F East Penthouse Bleed Valve (CG_Bleed_SV[10])",
+                "4": "Spare (Not In Logic)",
+                "5": "CG-F1 +36\u00b0F West Penthouse Liquid Valve (CG_Liquid_SV[11])",
+                "6": "CG-F1 +36\u00b0F West Penthouse Suction Valve (CG_Suction_SV[11])",
+                "7": "CG-F1 +36\u00b0F West Penthouse Hot Gas Valve (CG_HotGas_SV[11])",
+                "8": "CG-F1 +36\u00b0F West Penthouse Bleed Valve (CG_Bleed_SV[11])",
+                "9": "Spare (Not In Logic)",
+                "10": "CG-F2 +36\u00b0F West Penthouse Liquid Valve (CG_Liquid_SV[12])",
+                "11": "CG-F2 +36\u00b0F West Penthouse Suction Valve (CG_Suction_SV[12])",
+                "12": "CG-F2 +36\u00b0F West Penthouse Hot Gas Valve (CG_HotGas_SV[12])",
+                "13": "CG-F2 +36\u00b0F West Penthouse Bleed Valve (CG_Bleed_SV[12])",
+                "14": "Spare (Not In Logic)",
+                "15": "Spare (Not In Logic)"
+              },
+              "channels": {}
+            },
+            {
+              "slot": 16,
+              "member": "Slot16",
+              "name": "OA16_S16",
+              "catalog": "1769-OA16",
+              "series": "A",
+              "type": "DO",
+              "points": 16,
+              "description": "16-Point 120/240V AC Triac Output",
+              "pointNames": {
+                "0": "CG-F3 +36\u00b0F West Penthouse Liquid Valve (CG_Liquid_SV[13])",
+                "1": "CG-F3 +36\u00b0F West Penthouse Suction Valve (CG_Suction_SV[13])",
+                "2": "CG-F3 +36\u00b0F West Penthouse Hot Gas Valve (CG_HotGas_SV[13])",
+                "3": "CG-F3 +36\u00b0F West Penthouse Bleed Valve (CG_Bleed_SV[13])",
+                "4": "Spare (Not In Logic)",
+                "5": "CG-F4 +36\u00b0F West Penthouse Liquid Valve (CG_Liquid_SV[14])",
+                "6": "CG-F4 +36\u00b0F West Penthouse Suction Valve (CG_Suction_SV[14])",
+                "7": "CG-F4 +36\u00b0F West Penthouse Hot Gas Valve (CG_HotGas_SV[14])",
+                "8": "CG-F4 +36\u00b0F West Penthouse Bleed Valve (CG_Bleed_SV[14])",
+                "9": "Spare (Not In Logic)",
+                "10": "CG-G1 +36\u00b0F Truck Dock Liquid Valve (CG_Liquid_SV[15])",
+                "11": "CG-G1 +36\u00b0F Truck Dock Suction Valve (CG_Suction_SV[15])",
+                "12": "CG-G1 +36\u00b0F Truck Dock Hot Gas Valve (CG_HotGas_SV[15])",
+                "13": "CG-G1 +36\u00b0F Truck Dock Bleed Valve (CG_Bleed_SV[15])",
+                "14": "Spare (Not In Logic)",
+                "15": "Machine Room Ammonia Detector Output (AD_MR1)"
+              },
+              "channels": {}
+            },
+            {
+              "slot": 17,
+              "member": "Slot17",
+              "name": "OA16_S17",
+              "catalog": "1769-OA16",
+              "series": "A",
+              "type": "DO",
+              "points": 16,
+              "description": "16-Point 120/240V AC Triac Output",
+              "pointNames": {
+                "0": "CG-G2 +36\u00b0F Truck Dock Liquid Valve (CG_Liquid_SV[16])",
+                "1": "CG-G2 +36\u00b0F Truck Dock Suction Valve (CG_Suction_SV[16])",
+                "2": "CG-G2 +36\u00b0F Truck Dock Hot Gas Valve (CG_HotGas_SV[16])",
+                "3": "Spare (Not In Logic)",
+                "4": "CG-G3 +36\u00b0F Truck Dock Liquid Valve (CG_Liquid_SV[17])",
+                "5": "CG-G3 +36\u00b0F Truck Dock Suction Valve (CG_Suction_SV[17])",
+                "6": "CG-G3 +36\u00b0F Truck Dock Hot Gas Valve (CG_HotGas_SV[17])",
+                "7": "Spare (Not In Logic)",
+                "8": "CG-G4 +36\u00b0F Truck Dock Liquid Valve (CG_Liquid_SV[18])",
+                "9": "CG-G4 +36\u00b0F Truck Dock Suction Valve (CG_Suction_SV[18])",
+                "10": "CG-G4 +36\u00b0F Truck Dock Hot Gas Valve (CG_HotGas_SV[18])",
+                "11": "Spare (Not In Logic)",
+                "12": "CG-G5 +36\u00b0F Truck Dock Liquid Valve (CG_Liquid_SV[19])",
+                "13": "CG-G5 +36\u00b0F Truck Dock Suction Valve (CG_Suction_SV[19])",
+                "14": "CG-G5 +36\u00b0F Truck Dock Hot Gas Valve (CG_HotGas_SV[19])",
+                "15": "Spare (Not In Logic)"
+              },
+              "channels": {}
+            },
+            {
+              "slot": 18,
+              "member": "Slot18",
+              "name": "OW16_S18",
+              "catalog": "1769-OW16",
+              "series": "A",
+              "type": "DO",
+              "points": 16,
+              "description": "16-Point AC/DC Relay Output",
+              "pointNames": {
+                "0": "Low Stage Recirculator Pump # 1 Run (LTR_PUMPS[1])",
+                "1": "Low Stage Recirculator Pump # 2 Run (LTR_PUMPS[2])",
+                "2": "High Stage Recirculator Pump # 1 Run (HTR_PUMPS[1])",
+                "3": "High Stage Recirculator Pump # 2 Run (HTR_PUMPS[2])",
+                "4": "Condenser #1 A Fan 1 Run (CD1A_FAN1)",
+                "5": "Condenser #1 A Fan 2 Run (CD1A_FAN2)",
+                "6": "Condenser #1 B Fan 2 Run (CD1B_FAN2)",
+                "7": "Condenser #1 B Fan 1 Run (CD1B_FAN1)",
+                "8": "Condenser Sump Pump 3 Run (CD1_P3)",
+                "9": "Condenser Sump Pump 2 Run (CD1_P2)",
+                "10": "Condenser Sump Pump 1 Run (CD1_P1)",
+                "11": "CG-A1 -10\u00b0F Freezer Fans Run (CG_Fans[1])",
+                "12": "CG-A2 -10\u00b0F Freezer Fans Run (CG_Fans[2])",
+                "13": "CG-B1 +26\u00b0F Superchill Fans Run (CG_Fans[3])",
+                "14": "CG-B2 +26\u00b0F Superchill Fans Run (CG_Fans[4])",
+                "15": "CG-C1 +36\u00b0F Club Fans Run (CG_Fans[5])"
+              },
+              "channels": {}
+            },
+            {
+              "slot": 19,
+              "member": "Slot19",
+              "name": "OW16_S19",
+              "catalog": "1769-OW16",
+              "series": "A",
+              "type": "DO",
+              "points": 16,
+              "description": "16-Point AC/DC Relay Output",
+              "pointNames": {
+                "0": "CG-D1 +36\u00b0F Palletizing Fans Run (CG_Fans[6])",
+                "1": "CG-E1 +36\u00b0F East Penthouse Fans Run (CG_Fans[7])",
+                "2": "CG-E2 +36\u00b0F East Penthouse Fans Run (CG_Fans[8])",
+                "3": "CG-E3 +36\u00b0F East Penthouse Fans Run (CG_Fans[9])",
+                "4": "CG-E4 +36\u00b0F East Penthouse Fans Run (CG_Fans[10])",
+                "5": "CG-F1 +36\u00b0F West Penthouse Fans Run (CG_Fans[11])",
+                "6": "CG-F2 +36\u00b0F West Penthouse Fans Run (CG_Fans[12])",
+                "7": "CG-F3 +36\u00b0F West Penthouse Fans Run (CG_Fans[13])",
+                "8": "CG-F4 +36\u00b0F West Penthouse Fans Run (CG_Fans[14])",
+                "9": "CG-G1 +36\u00b0F Truck Dock Fans Run (CG_Fans[15])",
+                "10": "CG-G2 +36\u00b0F Truck Dock Fans Run (CG_Fans[16])",
+                "11": "CG-G3 +36\u00b0F Truck Dock Fans Run (CG_Fans[17])",
+                "12": "CG-G4 +36\u00b0F Truck Dock Fans Run (CG_Fans[18])",
+                "13": "CG-G5 +36\u00b0F Truck Dock Fans Run (CG_Fans[19])",
+                "14": "Safety Ctrl Relay - Master Control (RCP_MCR)",
+                "15": "Spare (Not In Logic)"
+              },
+              "channels": {}
+            }
+          ],
+          "items": [
+            {
+              "kind": "controller",
+              "member": "Controller",
+              "units": 114,
+              "x": 0,
+              "catalog": "1769-L36ERM",
+              "name": "BoarsHead"
+            },
+            {
+              "kind": "power",
+              "member": "PowerSupply",
+              "units": 96,
+              "x": 114,
+              "catalog": "1769 Power Supply",
+              "name": "Bank Power Supply"
+            },
+            {
+              "kind": "card",
+              "member": "Slot01",
+              "units": 54,
+              "x": 210,
+              "catalog": "1769-IF8",
+              "name": "IF8_S1",
+              "slot": 1,
+              "type": "AI"
+            },
+            {
+              "kind": "card",
+              "member": "Slot02",
+              "units": 54,
+              "x": 264,
+              "catalog": "1769-IF8",
+              "name": "IF8_S2",
+              "slot": 2,
+              "type": "AI"
+            },
+            {
+              "kind": "card",
+              "member": "Slot03",
+              "units": 54,
+              "x": 318,
+              "catalog": "1769-IF8",
+              "name": "IF8_S3",
+              "slot": 3,
+              "type": "AI"
+            },
+            {
+              "kind": "card",
+              "member": "Slot04",
+              "units": 54,
+              "x": 372,
+              "catalog": "1769-IF8",
+              "name": "IF8_S4",
+              "slot": 4,
+              "type": "AI"
+            },
+            {
+              "kind": "card",
+              "member": "Slot05",
+              "units": 54,
+              "x": 426,
+              "catalog": "1769-IA16",
+              "name": "IA16_S5",
+              "slot": 5,
+              "type": "DI"
+            },
+            {
+              "kind": "card",
+              "member": "Slot06",
+              "units": 54,
+              "x": 480,
+              "catalog": "1769-IA16",
+              "name": "IA16_S6",
+              "slot": 6,
+              "type": "DI"
+            },
+            {
+              "kind": "card",
+              "member": "Slot07",
+              "units": 54,
+              "x": 534,
+              "catalog": "1769-IQ16",
+              "name": "IQ16_S7",
+              "slot": 7,
+              "type": "DI"
+            },
+            {
+              "kind": "card",
+              "member": "Slot08",
+              "units": 54,
+              "x": 588,
+              "catalog": "1769-IQ16",
+              "name": "IQ16_S8",
+              "slot": 8,
+              "type": "DI"
+            },
+            {
+              "kind": "card",
+              "member": "Slot09",
+              "units": 54,
+              "x": 642,
+              "catalog": "1769-IQ16",
+              "name": "IQ16_S9",
+              "slot": 9,
+              "type": "DI"
+            },
+            {
+              "kind": "card",
+              "member": "Slot10",
+              "units": 54,
+              "x": 696,
+              "catalog": "1769-IA16",
+              "name": "IA16_S10",
+              "slot": 10,
+              "type": "DI"
+            },
+            {
+              "kind": "card",
+              "member": "Slot11",
+              "units": 54,
+              "x": 750,
+              "catalog": "1769-IA16",
+              "name": "IA16_S11",
+              "slot": 11,
+              "type": "DI"
+            },
+            {
+              "kind": "card",
+              "member": "Slot12",
+              "units": 54,
+              "x": 804,
+              "catalog": "1769-OA16",
+              "name": "OA16_S12",
+              "slot": 12,
+              "type": "DO"
+            },
+            {
+              "kind": "card",
+              "member": "Slot13",
+              "units": 54,
+              "x": 858,
+              "catalog": "1769-OA16",
+              "name": "OA16_S13",
+              "slot": 13,
+              "type": "DO"
+            },
+            {
+              "kind": "card",
+              "member": "Slot14",
+              "units": 54,
+              "x": 912,
+              "catalog": "1769-OA16",
+              "name": "OA16_S14",
+              "slot": 14,
+              "type": "DO"
+            },
+            {
+              "kind": "card",
+              "member": "Slot15",
+              "units": 54,
+              "x": 966,
+              "catalog": "1769-OA16",
+              "name": "OA16_S15",
+              "slot": 15,
+              "type": "DO"
+            },
+            {
+              "kind": "card",
+              "member": "Slot16",
+              "units": 54,
+              "x": 1020,
+              "catalog": "1769-OA16",
+              "name": "OA16_S16",
+              "slot": 16,
+              "type": "DO"
+            },
+            {
+              "kind": "card",
+              "member": "Slot17",
+              "units": 54,
+              "x": 1074,
+              "catalog": "1769-OA16",
+              "name": "OA16_S17",
+              "slot": 17,
+              "type": "DO"
+            },
+            {
+              "kind": "card",
+              "member": "Slot18",
+              "units": 54,
+              "x": 1128,
+              "catalog": "1769-OW16",
+              "name": "OW16_S18",
+              "slot": 18,
+              "type": "DO"
+            },
+            {
+              "kind": "card",
+              "member": "Slot19",
+              "units": 54,
+              "x": 1182,
+              "catalog": "1769-OW16",
+              "name": "OW16_S19",
+              "slot": 19,
+              "type": "DO"
+            },
+            {
+              "kind": "endcap",
+              "member": "",
+              "units": 24,
+              "x": 1236,
+              "catalog": "1769-ECR"
+            }
+          ],
+          "units": 1260,
+          "height": 280,
+          "emptySlots": [],
+          "endCap": "1769-ECR",
+          "typeSummary": "4 IF8 \u00b7 4 IA16 \u00b7 3 IQ16 \u00b7 6 OA16 \u00b7 2 OW16",
+          "source": {
+            "file": "C:\\Users\\dylan.jones\\Downloads\\BoarsHead.L5X",
+            "exportDate": "Fri Oct 23 12:24:33 2026",
+            "revision": "24.13"
+          },
+          "notes": "Slots: Studio 5000 I/O Configuration > 1769 Bus. pointNames / channels: L5X export via .cursor/tasks/plc-rack-io/import_l5x.py (logic BufferIO rungs, module comments, descriptions)."
+        },
+        "readOnly": true,
+        "documentation": "Slot list for the rack view (slot, member, catalog, type, points, description, pointNames)"
+      },
+      {
+        "name": "Slot01",
+        "typeId": "PLC/Modules/1769_IF8",
+        "tagType": "UdtInstance",
+        "parameters": {
+          "DeviceName": {
+            "dataType": "String",
+            "value": {
+              "bindType": "parameter",
+              "binding": "{DeviceName}"
+            }
+          },
+          "Slot": {
+            "dataType": "Integer",
+            "value": 1
+          },
+          "Description": {
+            "dataType": "String",
+            "value": "IF8_S1 (slot 1, 1769-IF8)"
+          }
+        }
+      },
+      {
+        "name": "Slot02",
+        "typeId": "PLC/Modules/1769_IF8",
+        "tagType": "UdtInstance",
+        "parameters": {
+          "DeviceName": {
+            "dataType": "String",
+            "value": {
+              "bindType": "parameter",
+              "binding": "{DeviceName}"
+            }
+          },
+          "Slot": {
+            "dataType": "Integer",
+            "value": 2
+          },
+          "Description": {
+            "dataType": "String",
+            "value": "IF8_S2 (slot 2, 1769-IF8)"
+          }
+        }
+      },
+      {
+        "name": "Slot03",
+        "typeId": "PLC/Modules/1769_IF8",
+        "tagType": "UdtInstance",
+        "parameters": {
+          "DeviceName": {
+            "dataType": "String",
+            "value": {
+              "bindType": "parameter",
+              "binding": "{DeviceName}"
+            }
+          },
+          "Slot": {
+            "dataType": "Integer",
+            "value": 3
+          },
+          "Description": {
+            "dataType": "String",
+            "value": "IF8_S3 (slot 3, 1769-IF8)"
+          }
+        }
+      },
+      {
+        "name": "Slot04",
+        "typeId": "PLC/Modules/1769_IF8",
+        "tagType": "UdtInstance",
+        "parameters": {
+          "DeviceName": {
+            "dataType": "String",
+            "value": {
+              "bindType": "parameter",
+              "binding": "{DeviceName}"
+            }
+          },
+          "Slot": {
+            "dataType": "Integer",
+            "value": 4
+          },
+          "Description": {
+            "dataType": "String",
+            "value": "IF8_S4 (slot 4, 1769-IF8)"
+          }
+        }
+      },
+      {
+        "name": "Slot05",
+        "typeId": "PLC/Modules/1769_IA16",
+        "tagType": "UdtInstance",
+        "parameters": {
+          "DeviceName": {
+            "dataType": "String",
+            "value": {
+              "bindType": "parameter",
+              "binding": "{DeviceName}"
+            }
+          },
+          "Slot": {
+            "dataType": "Integer",
+            "value": 5
+          },
+          "Description": {
+            "dataType": "String",
+            "value": "IA16_S5 (slot 5, 1769-IA16)"
+          }
+        }
+      },
+      {
+        "name": "Slot06",
+        "typeId": "PLC/Modules/1769_IA16",
+        "tagType": "UdtInstance",
+        "parameters": {
+          "DeviceName": {
+            "dataType": "String",
+            "value": {
+              "bindType": "parameter",
+              "binding": "{DeviceName}"
+            }
+          },
+          "Slot": {
+            "dataType": "Integer",
+            "value": 6
+          },
+          "Description": {
+            "dataType": "String",
+            "value": "IA16_S6 (slot 6, 1769-IA16)"
+          }
+        }
+      },
+      {
+        "name": "Slot07",
+        "typeId": "PLC/Modules/1769_IQ16",
+        "tagType": "UdtInstance",
+        "parameters": {
+          "DeviceName": {
+            "dataType": "String",
+            "value": {
+              "bindType": "parameter",
+              "binding": "{DeviceName}"
+            }
+          },
+          "Slot": {
+            "dataType": "Integer",
+            "value": 7
+          },
+          "Description": {
+            "dataType": "String",
+            "value": "IQ16_S7 (slot 7, 1769-IQ16)"
+          }
+        }
+      },
+      {
+        "name": "Slot08",
+        "typeId": "PLC/Modules/1769_IQ16",
+        "tagType": "UdtInstance",
+        "parameters": {
+          "DeviceName": {
+            "dataType": "String",
+            "value": {
+              "bindType": "parameter",
+              "binding": "{DeviceName}"
+            }
+          },
+          "Slot": {
+            "dataType": "Integer",
+            "value": 8
+          },
+          "Description": {
+            "dataType": "String",
+            "value": "IQ16_S8 (slot 8, 1769-IQ16)"
+          }
+        }
+      },
+      {
+        "name": "Slot09",
+        "typeId": "PLC/Modules/1769_IQ16",
+        "tagType": "UdtInstance",
+        "parameters": {
+          "DeviceName": {
+            "dataType": "String",
+            "value": {
+              "bindType": "parameter",
+              "binding": "{DeviceName}"
+            }
+          },
+          "Slot": {
+            "dataType": "Integer",
+            "value": 9
+          },
+          "Description": {
+            "dataType": "String",
+            "value": "IQ16_S9 (slot 9, 1769-IQ16)"
+          }
+        }
+      },
+      {
+        "name": "Slot10",
+        "typeId": "PLC/Modules/1769_IA16",
+        "tagType": "UdtInstance",
+        "parameters": {
+          "DeviceName": {
+            "dataType": "String",
+            "value": {
+              "bindType": "parameter",
+              "binding": "{DeviceName}"
+            }
+          },
+          "Slot": {
+            "dataType": "Integer",
+            "value": 10
+          },
+          "Description": {
+            "dataType": "String",
+            "value": "IA16_S10 (slot 10, 1769-IA16)"
+          }
+        }
+      },
+      {
+        "name": "Slot11",
+        "typeId": "PLC/Modules/1769_IA16",
+        "tagType": "UdtInstance",
+        "parameters": {
+          "DeviceName": {
+            "dataType": "String",
+            "value": {
+              "bindType": "parameter",
+              "binding": "{DeviceName}"
+            }
+          },
+          "Slot": {
+            "dataType": "Integer",
+            "value": 11
+          },
+          "Description": {
+            "dataType": "String",
+            "value": "IA16_S11 (slot 11, 1769-IA16)"
+          }
+        }
+      },
+      {
+        "name": "Slot12",
+        "typeId": "PLC/Modules/1769_OA16",
+        "tagType": "UdtInstance",
+        "parameters": {
+          "DeviceName": {
+            "dataType": "String",
+            "value": {
+              "bindType": "parameter",
+              "binding": "{DeviceName}"
+            }
+          },
+          "Slot": {
+            "dataType": "Integer",
+            "value": 12
+          },
+          "Description": {
+            "dataType": "String",
+            "value": "OA16_S12 (slot 12, 1769-OA16)"
+          }
+        }
+      },
+      {
+        "name": "Slot13",
+        "typeId": "PLC/Modules/1769_OA16",
+        "tagType": "UdtInstance",
+        "parameters": {
+          "DeviceName": {
+            "dataType": "String",
+            "value": {
+              "bindType": "parameter",
+              "binding": "{DeviceName}"
+            }
+          },
+          "Slot": {
+            "dataType": "Integer",
+            "value": 13
+          },
+          "Description": {
+            "dataType": "String",
+            "value": "OA16_S13 (slot 13, 1769-OA16)"
+          }
+        }
+      },
+      {
+        "name": "Slot14",
+        "typeId": "PLC/Modules/1769_OA16",
+        "tagType": "UdtInstance",
+        "parameters": {
+          "DeviceName": {
+            "dataType": "String",
+            "value": {
+              "bindType": "parameter",
+              "binding": "{DeviceName}"
+            }
+          },
+          "Slot": {
+            "dataType": "Integer",
+            "value": 14
+          },
+          "Description": {
+            "dataType": "String",
+            "value": "OA16_S14 (slot 14, 1769-OA16)"
+          }
+        }
+      },
+      {
+        "name": "Slot15",
+        "typeId": "PLC/Modules/1769_OA16",
+        "tagType": "UdtInstance",
+        "parameters": {
+          "DeviceName": {
+            "dataType": "String",
+            "value": {
+              "bindType": "parameter",
+              "binding": "{DeviceName}"
+            }
+          },
+          "Slot": {
+            "dataType": "Integer",
+            "value": 15
+          },
+          "Description": {
+            "dataType": "String",
+            "value": "OA16_S15 (slot 15, 1769-OA16)"
+          }
+        }
+      },
+      {
+        "name": "Slot16",
+        "typeId": "PLC/Modules/1769_OA16",
+        "tagType": "UdtInstance",
+        "parameters": {
+          "DeviceName": {
+            "dataType": "String",
+            "value": {
+              "bindType": "parameter",
+              "binding": "{DeviceName}"
+            }
+          },
+          "Slot": {
+            "dataType": "Integer",
+            "value": 16
+          },
+          "Description": {
+            "dataType": "String",
+            "value": "OA16_S16 (slot 16, 1769-OA16)"
+          }
+        }
+      },
+      {
+        "name": "Slot17",
+        "typeId": "PLC/Modules/1769_OA16",
+        "tagType": "UdtInstance",
+        "parameters": {
+          "DeviceName": {
+            "dataType": "String",
+            "value": {
+              "bindType": "parameter",
+              "binding": "{DeviceName}"
+            }
+          },
+          "Slot": {
+            "dataType": "Integer",
+            "value": 17
+          },
+          "Description": {
+            "dataType": "String",
+            "value": "OA16_S17 (slot 17, 1769-OA16)"
+          }
+        }
+      },
+      {
+        "name": "Slot18",
+        "typeId": "PLC/Modules/1769_OW16",
+        "tagType": "UdtInstance",
+        "parameters": {
+          "DeviceName": {
+            "dataType": "String",
+            "value": {
+              "bindType": "parameter",
+              "binding": "{DeviceName}"
+            }
+          },
+          "Slot": {
+            "dataType": "Integer",
+            "value": 18
+          },
+          "Description": {
+            "dataType": "String",
+            "value": "OW16_S18 (slot 18, 1769-OW16)"
+          }
+        }
+      },
+      {
+        "name": "Slot19",
+        "typeId": "PLC/Modules/1769_OW16",
+        "tagType": "UdtInstance",
+        "parameters": {
+          "DeviceName": {
+            "dataType": "String",
+            "value": {
+              "bindType": "parameter",
+              "binding": "{DeviceName}"
+            }
+          },
+          "Slot": {
+            "dataType": "Integer",
+            "value": 19
+          },
+          "Description": {
+            "dataType": "String",
+            "value": "OW16_S19 (slot 19, 1769-OW16)"
+          }
+        }
+      },
+      {
+        "name": "ModulesFaulted",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "Int4",
+        "expression": "if(coalesce({[.]Slot01/Faulted}, false), 1, 0) + if(coalesce({[.]Slot02/Faulted}, false), 1, 0) + if(coalesce({[.]Slot03/Faulted}, false), 1, 0) + if(coalesce({[.]Slot04/Faulted}, false), 1, 0) + if(coalesce({[.]Slot05/Faulted}, false), 1, 0) + if(coalesce({[.]Slot06/Faulted}, false), 1, 0) + if(coalesce({[.]Slot07/Faulted}, false), 1, 0) + if(coalesce({[.]Slot08/Faulted}, false), 1, 0) + if(coalesce({[.]Slot09/Faulted}, false), 1, 0) + if(coalesce({[.]Slot10/Faulted}, false), 1, 0) + if(coalesce({[.]Slot11/Faulted}, false), 1, 0) + if(coalesce({[.]Slot12/Faulted}, false), 1, 0) + if(coalesce({[.]Slot13/Faulted}, false), 1, 0) + if(coalesce({[.]Slot14/Faulted}, false), 1, 0) + if(coalesce({[.]Slot15/Faulted}, false), 1, 0) + if(coalesce({[.]Slot16/Faulted}, false), 1, 0) + if(coalesce({[.]Slot17/Faulted}, false), 1, 0) + if(coalesce({[.]Slot18/Faulted}, false), 1, 0) + if(coalesce({[.]Slot19/Faulted}, false), 1, 0)",
+        "readOnly": true,
+        "documentation": "Number of cards with a non-zero Fault word"
+      },
+      {
+        "name": "ModuleCount",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "Int4",
+        "expression": "19",
+        "readOnly": true,
+        "documentation": "Number of cards in the rack"
+      },
+      {
+        "name": "ControllerName",
+        "tagType": "AtomicTag",
+        "valueSource": "expr",
+        "dataType": "String",
+        "expression": "''",
+        "readOnly": true,
+        "documentation": "Studio 5000 controller name: per PLC, set by the instance (expression override, PLCS in the builder)"
+      }
+    ]
+  }
+]

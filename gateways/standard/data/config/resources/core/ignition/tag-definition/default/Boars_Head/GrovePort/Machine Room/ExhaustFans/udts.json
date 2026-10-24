@@ -1,0 +1,104 @@
+[
+  {
+    "metadata": {
+      "shortDescription": "BR EF",
+      "longDescription": "exhaustfan. Live PLC [RCP1] (read only): FanTag=BR_EEF17, FailTag=BR_EEF17_FailToStart. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "BR EF",
+    "typeId": "Devices/ExhaustFan",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "DIn",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "FailToStart",
+        "tagType": "AtomicTag",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "FanTag": {
+        "dataType": "String",
+        "value": "BR_EEF17"
+      },
+      "FailTag": {
+        "dataType": "String",
+        "value": "BR_EEF17_FailToStart"
+      }
+    }
+  },
+  {
+    "metadata": {
+      "shortDescription": "MR EF",
+      "longDescription": "exhaustfan. Live PLC [RCP1] (read only): FanTag=MR_EEF15, FailTag=MR_EEF15_FailToStart. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "name": "MR EF",
+    "typeId": "Devices/ExhaustFan",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "DIn",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "FailToStart",
+        "tagType": "AtomicTag",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "FanTag": {
+        "dataType": "String",
+        "value": "MR_EEF15"
+      },
+      "FailTag": {
+        "dataType": "String",
+        "value": "MR_EEF15_FailToStart"
+      }
+    }
+  },
+  {
+    "name": "Overview",
+    "typeId": "Overview/Exhaust Fan Overview",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "ActiveAlarmCount",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "valueSource": "expr",
+            "expression": "sum({[default]Boars_Head/GrovePort/Machine Room/ExhaustFans/BR EF/_Alarms/_Active},\n{[default]Boars_Head/GrovePort/Machine Room/ExhaustFans/MR EF/_Alarms/_Active})",
+            "dataType": "Int4",
+            "formatString": "0",
+            "name": "Value",
+            "tagType": "AtomicTag"
+          }
+        ]
+      },
+      {
+        "typeId": "_Root/Document",
+        "name": "Instances",
+        "tagType": "AtomicTag"
+      },
+      {
+        "valueSource": "memory",
+        "dataType": "Boolean",
+        "name": "Rebuild",
+        "tagType": "AtomicTag"
+      }
+    ]
+  }
+]

@@ -1,0 +1,194 @@
+[
+  {
+    "metadata": {
+      "shortDescription": "High Stage Discharge",
+      "longDescription": "dischargesequence. Live PLC [RCP1] (read only): SeqrTag=HSD_Seqr, Seq1Tag=HSD_Sequence[1], Seq2Tag=HSD_Sequence[2], Seq3Tag=HSD_Sequence[3], Seq4Tag=HSD_Sequence[4], Seq5Tag=HSD_Sequence[5], Seq6Tag=HSD_Sequence[6], Seq7Tag=HSD_Sequence[7], FixedSPTag=HSD_Fixed_SP, FirstNoDelayTag=Cmd_FirstNoDelay, MainOpenTag=CD_SUMP_OPLL_SET, MainCloseTag=CD_SUMP_OPLH_SET, BackupOpenTag=CD_SUMP_OPL1L_SET, BackupCloseTag=CD_SUMP_OPL1H_SET. PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "documentation": "FT (STELLAR) L3-HSD_Seq {[RCP1]HSD_Seqr} (FB_2SpUpDownSeqr), HSD_Sequence[1..7], HSD_Fixed_SP, CD_SUMP_OPL*_SET - memory until mapped to RCP1",
+    "name": "HSD",
+    "typeId": "Devices/DischargeSequence",
+    "tagType": "UdtInstance",
+    "tags": [
+      {
+        "name": "Cfg_LevelLabel",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": "CSV-LEVEL"
+          }
+        ]
+      },
+      {
+        "name": "Cfg_LevelPath",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": "[default]Boars_Head/GrovePort/Machine Room/Sensors/Condenser Sump Level"
+          }
+        ]
+      },
+      {
+        "name": "Cfg_SensorLabel",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": "HSD-PT3"
+          }
+        ]
+      },
+      {
+        "name": "Cfg_SensorPath",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": "[default]Boars_Head/GrovePort/Machine Room/Sensors/HSD-Discharge Pressure"
+          }
+        ]
+      },
+      {
+        "name": "Seqr",
+        "tagType": "UdtInstance",
+        "enabled": true
+      },
+      {
+        "name": "PlcSequence1",
+        "tagType": "AtomicTag",
+        "enabled": true
+      },
+      {
+        "name": "PlcSequence2",
+        "tagType": "AtomicTag",
+        "enabled": true
+      },
+      {
+        "name": "PlcSequence3",
+        "tagType": "AtomicTag",
+        "enabled": true
+      },
+      {
+        "name": "PlcSequence4",
+        "tagType": "AtomicTag",
+        "enabled": true
+      },
+      {
+        "name": "PlcSequence5",
+        "tagType": "AtomicTag",
+        "enabled": true
+      },
+      {
+        "name": "PlcSequence6",
+        "tagType": "AtomicTag",
+        "enabled": true
+      },
+      {
+        "name": "PlcSequence7",
+        "tagType": "AtomicTag",
+        "enabled": true
+      },
+      {
+        "name": "PlcFixedSP",
+        "tagType": "AtomicTag",
+        "enabled": true
+      },
+      {
+        "name": "PlcFirstNoDelay",
+        "tagType": "AtomicTag",
+        "enabled": true
+      },
+      {
+        "name": "PlcMainOpenSP",
+        "tagType": "AtomicTag",
+        "enabled": true
+      },
+      {
+        "name": "PlcMainCloseSP",
+        "tagType": "AtomicTag",
+        "enabled": true
+      },
+      {
+        "name": "PlcBackupOpenSP",
+        "tagType": "AtomicTag",
+        "enabled": true
+      },
+      {
+        "name": "PlcBackupCloseSP",
+        "tagType": "AtomicTag",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "SeqrTag": {
+        "dataType": "String",
+        "value": "HSD_Seqr"
+      },
+      "Seq1Tag": {
+        "dataType": "String",
+        "value": "HSD_Sequence[1]"
+      },
+      "Seq2Tag": {
+        "dataType": "String",
+        "value": "HSD_Sequence[2]"
+      },
+      "Seq3Tag": {
+        "dataType": "String",
+        "value": "HSD_Sequence[3]"
+      },
+      "Seq4Tag": {
+        "dataType": "String",
+        "value": "HSD_Sequence[4]"
+      },
+      "Seq5Tag": {
+        "dataType": "String",
+        "value": "HSD_Sequence[5]"
+      },
+      "Seq6Tag": {
+        "dataType": "String",
+        "value": "HSD_Sequence[6]"
+      },
+      "Seq7Tag": {
+        "dataType": "String",
+        "value": "HSD_Sequence[7]"
+      },
+      "FixedSPTag": {
+        "dataType": "String",
+        "value": "HSD_Fixed_SP"
+      },
+      "FirstNoDelayTag": {
+        "dataType": "String",
+        "value": "Cmd_FirstNoDelay"
+      },
+      "MainOpenTag": {
+        "dataType": "String",
+        "value": "CD_SUMP_OPLL_SET"
+      },
+      "MainCloseTag": {
+        "dataType": "String",
+        "value": "CD_SUMP_OPLH_SET"
+      },
+      "BackupOpenTag": {
+        "dataType": "String",
+        "value": "CD_SUMP_OPL1L_SET"
+      },
+      "BackupCloseTag": {
+        "dataType": "String",
+        "value": "CD_SUMP_OPL1H_SET"
+      }
+    }
+  }
+]

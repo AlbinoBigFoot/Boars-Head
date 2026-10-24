@@ -1,0 +1,10 @@
+[
+  {
+    "valueSource": "memory",
+    "dataType": "Boolean",
+    "documentation": "PLC WRITE LOCK (docs/plc-write-lock.md). true \u003d every tag that reads the RCP1 controller (all of [default]_RCP1_ and the OPC members of the PLC / Devices UDT definitions) is read only and HMI writes into the PLC are refused. Set false in the Designer / Tag Browser to unlock for testing, true to relock - the gateway tag-change event plcWriteLock applies it (gateway log: shared.PlcWriteLock). Bad / null and gateway startup \u003d locked. A PLC write also needs the OPC UA server block removed (.cursor/tasks/rcp1-write-block).",
+    "name": "Locked",
+    "defaultValue": true,
+    "tagType": "AtomicTag"
+  }
+]

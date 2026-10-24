@@ -1,0 +1,33 @@
+[
+  {
+    "name": "CSV",
+    "typeId": "Devices/Tank",
+    "tagType": "UdtInstance",
+    "metadata": {
+      "shortDescription": "CSV",
+      "longDescription": "tank. Live PLC [RCP1] (read only): LevelTag\u003dLT_CSV, LevelEU\u003dIn\". PLC parts only (flat stand-ins removed 2026-10-23)."
+    },
+    "documentation": "FT (STELLAR)Condensers CSV vessel + GO_P_AInX6 {[RCP1]LT_CSV} (0-180 in bar)",
+    "tags": [
+      {
+        "name": "LvlAIn",
+        "tagType": "UdtInstance",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "LevelTag": {
+        "dataType": "String",
+        "value": "LT_CSV"
+      },
+      "LevelEU": {
+        "dataType": "String",
+        "value": "In\""
+      }
+    }
+  }
+]

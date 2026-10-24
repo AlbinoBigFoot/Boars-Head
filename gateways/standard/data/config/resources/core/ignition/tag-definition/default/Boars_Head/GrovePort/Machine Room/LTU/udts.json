@@ -1,0 +1,240 @@
+[
+  {
+    "metadata": {
+      "shortDescription": "NH3 LTU",
+      "longDescription": "NH3 liquid transfer unit"
+    },
+    "documentation": "FT (STELLAR)MachineRoom LTU: {[RCP1]NH3_LTU_HMI_Count}, NH3_LTU_Count_Alarm_SP, NH3_LTU_Count_Alarm_Inp, NH3_LTU (P_DIn) - memory until mapped to RCP1",
+    "name": "NH3 LTU",
+    "typeId": "Devices/LTU",
+    "tagType": "UdtInstance",
+    "enabled": true,
+    "tags": [
+      {
+        "name": "Cmd_ResetCount",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": false
+          }
+        ]
+      },
+      {
+        "name": "Count",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": 1950
+          }
+        ]
+      },
+      {
+        "name": "Count_Alarm",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": false
+          }
+        ]
+      },
+      {
+        "name": "Count_Alarm_SP",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": 2000
+          }
+        ]
+      },
+      {
+        "name": "Input",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "DIn",
+            "tagType": "UdtInstance",
+            "enabled": true
+          },
+          {
+            "name": "Cfg_Label",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "valueSource": "memory",
+                "value": "NH3 LTU"
+              }
+            ]
+          },
+          {
+            "name": "Cfg_Tag",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "valueSource": "memory",
+                "value": "NH3_LTU"
+              }
+            ]
+          },
+          {
+            "name": "Cfg_Desc",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "valueSource": "memory",
+                "value": "NH3 Liquid Transfer Unit Valve"
+              }
+            ]
+          },
+          {
+            "name": "Cfg_State0Txt",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "valueSource": "memory",
+                "value": "Idle"
+              }
+            ]
+          },
+          {
+            "name": "Cfg_State1Txt",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "valueSource": "memory",
+                "value": "Transfer"
+              }
+            ]
+          },
+          {
+            "name": "Sts_PV",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "valueSource": "memory",
+                "value": false
+              }
+            ]
+          },
+          {
+            "name": "Sts_InpPV",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "valueSource": "memory",
+                "value": false
+              }
+            ]
+          },
+          {
+            "name": "Inp_Target",
+            "tagType": "UdtInstance",
+            "tags": [
+              {
+                "name": "Value",
+                "tagType": "AtomicTag",
+                "valueSource": "memory",
+                "value": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "PlcCount",
+        "tagType": "AtomicTag",
+        "enabled": true
+      },
+      {
+        "name": "PlcCountAlarm",
+        "tagType": "AtomicTag",
+        "enabled": true
+      },
+      {
+        "name": "PlcCountAlarmSP",
+        "tagType": "AtomicTag",
+        "enabled": true
+      },
+      {
+        "name": "ResetDaily",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": false
+          }
+        ]
+      },
+      {
+        "name": "ResetTime",
+        "tagType": "UdtInstance",
+        "tags": [
+          {
+            "name": "Value",
+            "tagType": "AtomicTag",
+            "valueSource": "memory",
+            "value": 0
+          }
+        ]
+      },
+      {
+        "name": "PlcResetCount",
+        "tagType": "AtomicTag",
+        "enabled": true
+      }
+    ],
+    "parameters": {
+      "PlcDevice": {
+        "dataType": "String",
+        "value": "RCP1"
+      },
+      "InputTag": {
+        "dataType": "String",
+        "value": "NH3_LTU"
+      },
+      "CountTag": {
+        "dataType": "String",
+        "value": "NH3_LTU_HMI_Count"
+      },
+      "CountAlarmTag": {
+        "dataType": "String",
+        "value": "NH3_LTU_Count_Alarm_Inp"
+      },
+      "CountAlarmSPTag": {
+        "dataType": "String",
+        "value": "NH3_LTU_Count_Alarm_SP"
+      },
+      "ResetCountTag": {
+        "dataType": "String",
+        "value": "HMI_Ltu_Clear"
+      }
+    }
+  }
+]
