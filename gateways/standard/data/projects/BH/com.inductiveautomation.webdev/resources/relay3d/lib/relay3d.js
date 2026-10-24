@@ -254,11 +254,12 @@ function piEnetTex() {
     txt(g, '440C-ENET', w / 2, 5, 3.0, '#1c1f22', 'center');
     txt(g, 'EtherNet/IP', w / 2, 9.2, 2.1, '#2c3034', 'center', 600);
     ['MS', 'NS', 'LNK'].forEach((s, i) => { g.fillStyle = '#26282b'; rrect(g, 7.5, 15.4 + i * 5.2 - 1.5, 4.0, 3.0, 0.5); g.fill(); txt(g, s, 14.5, 15.4 + i * 5.2, 2.2, '#1c1f22', 'left'); });
-    g.fillStyle = '#50565b'; rrect(g, 6.2, 31.0, 19.2, 15.4, 1.2); g.fill();   // RJ45 jack opening
-    g.fillStyle = '#0f1113'; rrect(g, 7.6, 32.4, 16.4, 12.6, 0.8); g.fill();
-    g.fillStyle = '#2a2d30'; rrect(g, 12.4, 31.4, 6.8, 2.6, 0.6); g.fill();
-    g.fillStyle = '#d4a935'; for (let i = 0; i < 8; i++) g.fillRect(9.0 + i * 1.7, 38.2, 0.9, 5.6);
-    txt(g, 'RJ45', w / 2, 51.5, 2.4, '#1c1f22', 'center', 600);
+    const jx = w / 2, jy = 38.0;   // RJ45: 11.7 x 8 mm opening, 14 x 11 mm collar, latch notch, 8 contacts at 1.02 mm pitch
+    g.fillStyle = '#50565b'; rrect(g, jx - 7.0, jy - 5.5, 14.0, 11.0, 0.9); g.fill();
+    g.fillStyle = '#0f1113'; rrect(g, jx - 5.85, jy - 4.0, 11.7, 8.0, 0.5); g.fill();
+    g.fillStyle = '#2a2d30'; rrect(g, jx - 1.9, jy - 4.9, 3.8, 1.8, 0.4); g.fill();
+    g.fillStyle = '#d4a935'; for (let i = 0; i < 8; i++) g.fillRect(jx - 3.57 + i * 1.02 - 0.3, jy + 0.6, 0.6, 3.0);
+    txt(g, 'RJ45', w / 2, 47.5, 2.4, '#1c1f22', 'center', 600);
   });
 }
 function piIoTex() {
